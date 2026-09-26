@@ -1,0 +1,212 @@
+# 1.JUnit 单元测试
+
+## 1.1 适用场景
+
+- 纯 Java 逻辑测试、工具类测试、算法与业务规则测试。
+- 不依赖 Spring 容器，启动速度快。
+
+## 1.2 命名规范
+
+- 测试类名：`被测类名 + Test`，例如 `OrderServiceTest`。
+- 测试方法名：动词 + 场景 + 期望结果，例如 `createOrder_shouldReturnId_whenValid`。
+- 包名：与被测类保持相同层级，便于定位。
+
+## 1.3 常用类与导入包
+
+- JUnit 5（推荐）：
+  - `org.junit.jupiter.api.Test`
+  - `org.junit.jupiter.api.BeforeEach`
+  - `org.junit.jupiter.api.AfterEach`
+  - `org.junit.jupiter.api.Assertions`
+- JUnit 4（旧项目）：
+  - `org.junit.Test`
+  - `org.junit.Before`
+  - `org.junit.After`
+  - `org.junit.Assert`
+
+## 1.4 版本差异
+
+- JUnit 4 使用 `org.junit.Test` 与 `@RunWith`。
+- JUnit 5 使用 `org.junit.jupiter.api.Test`，支持更丰富的扩展模型。
+- JUnit 5 的断言类为 `Assertions`，JUnit 4 为 `Assert`。
+- JUnit 5 支持 `@BeforeAll/@AfterAll`（静态方法），JUnit 4 使用 `@BeforeClass/@AfterClass`。
+
+## 1.5 常用注解与用法（JUnit 5）
+
+- `@Test`：声明测试方法。
+- `@BeforeEach` / `@AfterEach`：每个测试前后执行。
+- `@BeforeAll` / `@AfterAll`：所有测试前后执行（需静态方法）。
+- `@DisplayName`：为测试类/方法设置可读名称。
+- `@Disabled`：禁用测试。
+- `@Tag`：标签分类，便于筛选执行。
+- `@Nested`：嵌套测试类，组织测试结构。
+- `@ExtendWith`：扩展机制（替代 JUnit 4 的 `@RunWith`）。
+
+示例：
+```java
+import org.junit.jupiter.api.*;
+
+@DisplayName("计算器测试")
+class CalculatorTest {
+	@BeforeAll
+	static void initAll() {}
+
+	@BeforeEach
+	void init() {}
+
+	@Test
+	@DisplayName("加法-正常场景")
+	void add_shouldReturnSum_whenTwoNumbers() {}
+
+	@Nested
+	class DivideTests {
+		@Test
+		void divide_shouldThrow_whenZero() {}
+	}
+}
+```
+
+## 1.6 常用注解与用法（JUnit 4）
+
+- `@Test`：声明测试方法。
+- `@Before` / `@After`：每个测试前后执行。
+- `@BeforeClass` / `@AfterClass`：所有测试前后执行（静态方法）。
+- `@Ignore`：禁用测试。
+- `@RunWith`：指定测试运行器（常用于与 Spring、Mockito 集成）。
+
+示例（@RunWith）：
+```java
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class UserServiceTest {
+	@Test
+	public void shouldReturnUser() {}
+}
+```
+
+## 1.7 怎么写测试代码
+
+示例（JUnit 5）：
+```java
+package com.example.demo;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class CalculatorTest {
+	private Calculator calculator;
+
+	@BeforeEach
+	void setUp() {
+		calculator = new Calculator();
+	}
+
+	@Test
+	void add_shouldReturnSum_whenTwoNumbers() {
+		int result = calculator.add(2, 3);
+		assertEquals(5, result);
+	}
+}
+```
+
+示例（JUnit 4）：
+```java
+package com.example.demo;
+
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
+public class CalculatorTest {
+	private Calculator calculator;
+
+	@Before
+	public void setUp() {
+		calculator = new Calculator();
+	}
+
+	@Test
+	public void add_shouldReturnSum_whenTwoNumbers() {
+		int result = calculator.add(2, 3);
+		assertEquals(5, result);
+	}
+}
+```
+
+## 1.8 常见断言与技巧
+
+- `assertEquals`：断言期望值
+- `assertThrows`：断言异常
+- `assertAll`：组合多个断言
+
+```java
+import static org.junit.jupiter.api.Assertions.*;
+
+@Test
+void divide_shouldThrow_whenZero() {
+	assertThrows(IllegalArgumentException.class, () -> calculator.divide(1, 0));
+}
+```
+
+## 1.9 参数化测试
+
+- 适合用多组输入验证同一逻辑。
+
+```java
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@ParameterizedTest
+@ValueSource(ints = {1, 3, 5})
+void isOdd_shouldReturnTrue_whenOdd(int value) {
+	assertTrue(value % 2 != 0);
+}
+```
+
+## 1.10 常用断言库补充
+
+- JUnit 自带断言已够用。
+- 常见替代：AssertJ（链式断言，可读性强）。
+
+```java
+import static org.assertj.core.api.Assertions.assertThat;
+
+@Test
+void list_shouldContain() {
+	assertThat(List.of("a", "b")).contains("a");
+}
+```
+
+## 1.11 过滤执行与标签
+
+```bash
+mvn -Dgroups=fast test
+```
+
+JUnit 5 标签示例：
+```java
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+@Tag("fast")
+@Test
+void fastTest() {}
+```
+
+## 1.12 企业实践建议
+
+- 保持测试方法独立，避免相互依赖。
+- 测试粒度小、覆盖关键分支。
+- 使用 `mvn test` 或 `mvn -DskipTests` 控制执行。
+
+## 1.13 常见问题排查清单
+
+- 测试不执行：确认测试类命名是否符合规则。
+- 注解不生效：检查是否引入了 JUnit 5 或 JUnit 4 的正确依赖。
+- `@RunWith` 无效：确认项目使用 JUnit 4，或在 JUnit 5 中改用 `@ExtendWith`。
+- 参数化测试报错：确认引入了 `junit-jupiter-params`。

@@ -1,0 +1,180 @@
+# 1.Spring Boot 测试
+
+## 1.1 适用场景
+
+- 需要 Spring 容器的集成测试。
+- 测试控制器、Service、数据库交互、配置绑定等。
+
+## 1.2 命名规范
+
+- 测试类名：`被测类名 + Test` 或 `被测类名 + IT`。
+- Web 层测试：`UserControllerTest`。
+- 集成测试：`UserServiceIT`（IT 表示 Integration Test）。
+
+## 1.3 常用类与导入包
+
+- 核心：
+	- `org.springframework.boot.test.context.SpringBootTest`
+	- `org.springframework.test.context.junit.jupiter.SpringExtension`
+- Web 测试：
+	- `org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest`
+	- `org.springframework.test.web.servlet.MockMvc`
+	- `org.springframework.test.web.servlet.request.MockMvcRequestBuilders`
+	- `org.springframework.test.web.servlet.result.MockMvcResultMatchers`
+- Mock：
+	- `org.mockito.Mockito`
+	- `org.mockito.junit.jupiter.MockitoExtension`
+
+## 1.4 版本差异
+
+- Spring Boot 2.x 默认配合 JUnit 5，但可兼容 JUnit 4。
+- Spring Boot 3.x 基于 Jakarta 命名空间（`jakarta.*`）。
+- Boot 3.x 要求 JDK 17+，Boot 2.x 常见 JDK 8/11。
+
+## 1.5 Spring 与 JUnit 的整合方式
+
+- JUnit 5：使用 `@ExtendWith(SpringExtension.class)` 或直接用 `@SpringBootTest`。
+- JUnit 4：使用 `@RunWith(SpringRunner.class)`。
+
+JUnit 4 示例：
+```java
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ApplicationTests {
+	@Test
+	public void contextLoads() {}
+}
+```
+
+## 1.6 怎么写测试代码
+
+### 1.6.1 启动完整容器测试
+
+```java
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ApplicationTests {
+		@Test
+		void contextLoads() {
+				// 验证 Spring 容器是否能启动
+		}
+}
+```
+
+### 1.6.2 Web 层测试（不启动全量容器）
+
+```java
+package com.example.demo.web;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(UserController.class)
+class UserControllerTest {
+		@Autowired
+		private MockMvc mockMvc;
+
+		@Test
+		void getUser_shouldReturnOk() throws Exception {
+				mockMvc.perform(get("/users/1"))
+							 .andExpect(status().isOk());
+		}
+}
+```
+
+### 1.6.3 Service 层测试（注入真实 Bean）
+
+```java
+package com.example.demo.service;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@SpringBootTest
+class UserServiceTest {
+		@Autowired
+		private UserService userService;
+
+		@Test
+		void findUser_shouldNotBeNull() {
+				assertNotNull(userService.findUser(1L));
+		}
+}
+```
+
+## 1.7 常见注解与技巧
+
+- `@SpringBootTest`：启动完整 Spring Boot 容器。
+- `@WebMvcTest`：只启动 Web 层。
+- `@MockBean`：替换 Spring 容器中的 Bean。
+- `@DataJpaTest`：只测试 JPA 层。
+- `@ActiveProfiles("test")`：使用测试配置。
+
+补充常用注解：
+- `@AutoConfigureMockMvc`：注入 `MockMvc`。
+- `@TestConfiguration`：测试专用配置。
+- `@Transactional`：测试后自动回滚。
+- `@DirtiesContext`：标记上下文脏数据，需要重建。
+- `@TestPropertySource`：指定测试配置文件。
+
+示例：
+```java
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+class UserControllerTest {}
+```
+
+## 1.8 Mock 与替身策略
+
+- `@MockBean`：替换 Spring 容器中的 Bean。
+- Mockito：直接构造 mock 并指定行为。
+
+```java
+import static org.mockito.Mockito.when;
+
+@MockBean
+private UserService userService;
+
+@Test
+void getUser_shouldReturnOk() {
+	when(userService.findUser(1L)).thenReturn(new User());
+}
+```
+
+## 1.9 企业实践建议
+
+- 控制测试粒度，避免全量容器过度使用。
+- CI 使用 `mvn test` 或 `mvn -DskipTests` 灵活控制。
+- 对外部依赖使用 Mock，避免不可控的网络或数据库依赖。
+- Web 层优先用 `@WebMvcTest`，只在必要场景用 `@SpringBootTest`。
+
+## 1.10 常见问题排查清单
+
+- `@SpringBootTest` 启动慢：拆分为 `@WebMvcTest` 或切片测试。
+- Bean 装配失败：检查 `@MockBean` 是否替换了真实依赖。
+- 测试用配置未生效：确认 `@ActiveProfiles` 与配置文件命名。
+- JUnit 4/5 混用：确认依赖版本与注解一致。
+
+## 1.11 企业实践建议
+
+- 控制测试粒度，避免全量容器过度使用。
+- CI 使用 `mvn test` 或 `mvn -DskipTests` 灵活控制。
+- 对外部依赖使用 Mock，避免不可控的网络或数据库依赖。
