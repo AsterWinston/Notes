@@ -69,6 +69,51 @@
 - **可变长参数(Varargs)**: 方法接受不定数量参数，用`...`声明，方法内部作为数组处理，必须是参数列表最后一个参数
 - **变量和常量的区别**: 变量值运行时可变/驼峰命名/运行时分配内存；常量final修饰/值不可变/全大写下划线命名/编译期确定值分配一次
 - **Integer缓存机制**: Integer内部缓存 -128 ~ 127 的常用整数对象 (可通过`java.lang.Integer.IntegerCache.high`调整上限)。`Integer.valueOf()`在缓存范围内直接返回缓存对象，避免重复创建，本质是**享元模式**
+- **类加载5阶段**：加载（读.class字节流生成Class对象）→ 验证（文件格式/元数据/字节码校验）→ 准备（为static变量分配内存并赋默认值0/null，static final常量直接赋确定值）→ 解析（符号引用替换为直接引用）→ 初始化（执行<clinit>，为static变量赋程序员指定的值）
+- **类初始化时机（主动引用6种）**：new实例、读写static字段（final编译期常量除外）、调用static方法、反射Class.forName、初始化子类先触发父类初始化、含main的启动类
+- **类不会初始化（被动引用3种）**：子类引用父类静态字段（只初始化父类）、通过数组定义引用类（`A[] a = new A[10]`不触发A初始化）、引用编译期常量（static final值可编译期确定，被内联进常量池直接使用）
+- **Class.forName vs loadClass**：Class.forName执行初始化（加载+连接+初始化，JDBC驱动靠static块注册驱动）；ClassLoader.loadClass只加载不初始化（Spring懒加载Bean、AOP延迟代理用此特性）
+- **初始化顺序（有继承）**：父类静态变量/静态块 → 子类静态变量/静态块 → 父类实例变量/实例块 → 父类构造器 → 子类实例变量/实例块 → 子类构造器；静态只执行一次，实例每次new都按此顺序执行
+- **this关键字**：引用当前对象；this.x区分成员字段与局部变量、this()调用本类重载构造器（必须首行且只能调用一次）；static方法中不能使用this
+- **super关键字**：super.x访问父类成员、super.method()调用父类方法、super()调用父类构造器（子类构造默认隐式调用无参super()，必须首行）；super不能跨代只能访问直接父类
+- **switch支持类型**：byte/short/char/int及其包装类、枚举enum(JDK5)、String(JDK7)；不支持long/float/double/boolean；编译分为tableswitch（case密集连续，跳转表O(1)）和lookupswitch（case稀疏，二分查找）
+- **类型提升(Type Promotion)**：byte/short/char参与算术运算自动提升为int（byte+byte结果也是int）；表达式中出现long/float/double则结果提升为最高类型
+- **隐式/显式转换**：宽化自动（byte→short→int→long→float→double，char→int）；窄化需强转（可能丢精度/溢出）；复合赋值+=、-=隐含强转（`byte b=10; b+=1`合法，`b=b+1`编译错）
+- **整数溢出**：int最大约21亿，超范围回绕为负数；用Math.addExact/Math.multiplyExact（溢出抛ArithmeticException）或升级long/BigDecimal
+- **位运算**：&按位与、|按位或、^异或、~取反、<<左移(乘2^n)、>>右移(除2^n，符号位填充)、>>>无符号右移(高位补0)；应用：n&1判奇偶、n<<1乘2、a^b^b==a交换两数、HashMap扰动(h^(h>>>16))、权限位掩码
+- **短路运算**：&&/||短路（左条件已能确定结果则不执行右边），&/|不短路（两边都执行）；&\|同时用于按位与/或
+- **字符串拼接底层**：+拼接编译期常量直接折叠为常量池字符串；变量拼接编译为StringBuilder.append；循环中每轮new StringBuilder有性能问题（建议循环外复用）；JDK9改用invokedynamic+StringConcatFactory动态拼装
+- **intern()版本差异**：native方法；JDK6将字符串复制到永久代（返回副本引用）；JDK7+常量池在堆中，intern先查池，无则把当前对象的引用直接放入池并返回该引用（不复制）
+- **Arrays.asList的坑**：返回的ArrayList是Arrays内部类（定长），底层仍是原数组，add/remove抛UnsupportedOperationException，修改会同步影响原数组；原始类型数组`int[]`会被当作单个元素
+- **Objects工具类**：requireNonNull(obj,msg)判空抛NPE、equals(null安全比较)、isNull/nonNull、hashCode(自动处理null为0)、toString
+- **System.arraycopy vs Arrays.copyOf**：System.arraycopy是native方法，需目标数组已存在，只能数组间复制；Arrays.copyOf内部调arraycopy，自动创建目标数组并返回
+- **异常链**：catch后抛新异常时把原异常作为cause传入（new XxxException(msg, e)或initCause(e)），保留根因；靠Throwable.getCause()追溯
+- **桥方法(Bridge Method)**：类型擦除后编译器为保持多态生成的合成方法。实现Comparator<String>会生成compare(Object,Object)桥方法，先强转再调compare(String,String)；反射getMethods能看到且调用可能抛ClassCastException
+- **匿名内部类访问局部变量**：JDK7前要求final，JDK8+改为effectively final（声明后不再修改即可）；原因：内部类拷贝了局部变量副本，若变量可变会导致方法返回后内外不一致，故强制不可变
+
+### 集合精华速览（完整版见 30_java_collections.md）
+- **集合体系**：Collection（Iterable根）分List/Set/Queue，Map是独立体系不继承Collection；核心实现：ArrayList、LinkedList、HashSet、TreeSet、HashMap、TreeMap、ConcurrentHashMap
+- **ArrayList vs LinkedList**：ArrayList=Object[]数组，随机访问O(1)、尾插O(1)均摊、扩容1.5倍；LinkedList=双向链表，头尾操作O(1)、随机访问O(n)、内存开销大
+- **HashMap**：JDK8数组+链表+红黑树（链表≥8且数组≥64才树化）；hash=(h=hashCode())^(h>>>16)，(n-1)&hash定位；容量2的幂、负载因子0.75、扩容2倍；JDK7头插法扩容死链 vs JDK8尾插法仍有数据覆盖问题
+- **ConcurrentHashMap**：JDK7分段锁Segment(继承ReentrantLock) vs JDK8 CAS+synchronized锁桶头节点；get无锁，put锁桶，多线程协同扩容
+- **fail-fast**：modCount与expectedModCount不一致抛ConcurrentModificationException；迭代中删除用迭代器remove()，多线程用CopyOnWriteArrayList
+- **ArrayList线程安全替代**：Vector(过时)、Collections.synchronizedList、CopyOnWriteArrayList(写时复制，读多写少)
+
+### 多线程/锁精华速览（完整版见 31_java_concurrency.md）
+- **线程6状态**：NEW / RUNNABLE / BLOCKED / WAITING / TIMED_WAITING / TERMINATED
+- **锁升级**：无锁 → 偏向锁 → 轻量级锁(自旋) → 重量级锁(阻塞)，基于对象头MarkWord的低2位标记
+- **volatile**：可见性 + 禁止指令重排，不保证原子性；DCL单例的instance必须volatile
+- **CAS/ABA**：CAS是CPU原子指令(compareAndSwap)；ABA问题用AtomicStampedReference(版本号)解决
+- **AQS**：volatile state + CLH队列，ReentrantLock/CountDownLatch/Semaphore等JUC同步器的基础
+- **ReentrantLock vs synchronized**：ReentrantLock可中断/超时/公平/多Condition，需手动释放；synchronized自动释放、JVM锁升级优化好
+- **线程池7参数+4拒绝策略**：core/max/keepAlive/queue/factory/handler；AbortPolicy抛异常(默认)/CallerRuns调用者执行/Discard丢弃/DiscardOldest丢最老重试
+- **ThreadLocal**：每线程一个ThreadLocalMap；Entry的key是弱引用，ThreadLocal被GC后value强引用残留导致泄漏，用完必须remove()
+
+### IO精华速览（完整版见 33_java_io_nio.md）
+- **BIO/NIO/AIO**：同步阻塞(一连接一线程) / 同步非阻塞(Selector多路复用) / 异步非阻塞(OS回调)
+- **NIO三组件**：Channel(双向通道) / Buffer(数据容器) / Selector(多路复用器)
+- **零拷贝**：mmap文件映射、FileChannel.transferTo(sendfile)、Netty的DirectByteBuf/FileRegion/CompositeByteBuf
+- **Reactor线程模型**：主从Reactor多线程(Netty)，BossGroup接受连接、WorkerGroup处理读写
 
 # 2. 面试题
 
@@ -487,3 +532,255 @@ JDK8 引入 default 方法后，一个类可能实现两个包含同名 default 
 4. **集合框架要求**：Java 集合类存储的是 Object 类型，基本类型不能直接放入。
 
 **选择建议**：局部变量/循环计数用 `int`（性能好、无需拆箱）；PO/VO 字段、集合元素、泛型参数用 `Integer`；需要区分"0 值"和"未设置"的场景用 `Integer`。
+
+## 2.34 类的初始化时机和执行顺序是什么？
+**触发类初始化（主动引用）的 6 种情况**：
+1. `new` 实例化对象
+2. 读取或设置类的 `static` 字段（`static final` 编译期常量除外）
+3. 调用类的 `static` 方法
+4. 反射调用该类，如 `Class.forName("xxx")`
+5. 初始化子类时会先触发父类初始化
+6. 含 `main` 方法的启动类（虚拟机入口）
+
+**不会触发初始化（被动引用）的 3 种情况**：
+- 子类引用父类的静态字段：`Sub.MAX` 只初始化父类，不初始化 `Sub`
+- 定义数组：`A[] a = new A[10]` 不触发 `A` 初始化
+- 引用编译期常量：`static final int X = 100` 被内联进常量池，直接使用，不触发初始化
+
+**初始化顺序（有继承）**：
+```
+父类静态代码块/静态变量 → 子类静态代码块/静态变量
+→ 父类实例代码块/实例变量 → 父类构造器
+→ 子类实例代码块/实例变量 → 子类构造器
+```
+记忆口诀：静态先于实例，父类先于子类，变量/代码块按书写顺序，构造器最后。
+
+**Class.forName vs loadClass**：`Class.forName` 会执行类的初始化（静态块执行），典型应用是 JDBC 驱动 `Class.forName("com.mysql.cj.jdbc.Driver")`（静态块里调用 `DriverManager.registerDriver` 注册驱动）。`ClassLoader.loadClass` 只加载不初始化，Spring 懒加载 Bean、CGLIB 延迟代理常利用此特性。
+
+## 2.35 this 和 super 的区别与用法？
+| 关键字 | 含义 | 典型用法 |
+|--------|------|---------|
+| `this` | 引用当前对象 | `this.name` 区分成员变量与局部变量；`this()` 调用本类重载构造器 |
+| `super` | 引用父类 | `super.name` 访问父类成员；`super.method()` 调用父类方法；`super()` 调用父类构造器 |
+
+关键规则：
+- `this()` / `super()` 必须写在构造器**第一行**，二者只能其一（不能同时出现）
+- 子类构造器若不显式写 `super()`，编译器默认在第一行插入无参 `super()`
+- `this` 不能用于 `static` 方法（没有当前对象概念）
+- `super` 不能跨代：只能访问直接父类，不存在 `super.super`
+
+## 2.36 switch 支持哪些类型？底层原理？
+**支持**：`byte`、`short`、`char`、`int` 及其包装类（Byte/Short/Character/Integer）、枚举（JDK5）、`String`（JDK7）。
+
+**不支持**：`long`、`float`、`double`、`boolean`。
+
+**底层编译**：
+- `tableswitch`：case 值连续密集时使用，跳转表 O(1) 定位
+- `lookupswitch`：case 值稀疏时使用，二分查找
+- `String` 的 switch 先比较 `hashCode`（因为有哈希碰撞，命中后再调用 `equals` 二次确认）
+- 枚举的 switch 基于枚举 `ordinal` 序号生成映射
+
+## 2.37 类型转换和类型提升的规则？
+**类型提升（隐式）**：`byte`/`short`/`char` 参与算术运算自动提升为 `int`：
+```java
+byte a = 1, b = 2;
+byte c = a + b;           // 编译错误，a+b 结果是 int
+byte c2 = (byte)(a + b);  // 需强转
+```
+表达式中只要出现 `long`/`float`/`double`，结果就提升为最高等级的类型。
+
+**复合赋值隐含强转**：`byte c = 1; c += 2;` 合法，因为 `c += 2` 等价于 `c = (byte)(c + 2)`，编译器自动插入强转。
+
+**widening（自动）与 narrowing（强转）**：
+- 自动：byte→short→int→long→float→double，char→int
+- 强转：可能溢出（如 `(byte) 200 == -56`）、截断小数（`(int) 3.9 == 3`）
+
+## 2.38 位运算符有哪些？常见应用场景？
+七个位运算符：`&`(与)、`|`(或)、`^`(异或)、`~`(取反)、`<<`(左移)、`>>`(右移带符号)、`>>>`(无符号右移)。
+
+常见应用：
+- `n & 1` 判断奇偶
+- `n << 1` 乘以 2，`n >> 1` 除以 2（性能优化写法）
+- `a ^ b ^ b == a` 不借助临时变量交换两个数
+- HashMap 扰动函数：`(h = key.hashCode()) ^ (h >>> 16)`，让高位参与低位运算
+- 权限位掩码：`READ=1<<0, WRITE=1<<1, EXECUTE=1<<2`，`perm & READ` 判断是否有权限
+- `>>>` 无符号右移：正数右移高位补 0
+
+注意：移位运算结果至少为 `int`；对 `int` 移位时位数会 `mod 32`。
+
+## 2.39 new String("abc") 创建了几个对象？intern 是什么？
+`new String("abc")` 创建 **2 个对象**（前提是常量池中还没有 "abc"）：
+1. 字面量 "abc" 放入字符串常量池（JDK7+ 在堆中）
+2. `new` 出来的堆上的 String 对象
+
+如果之前常量池已有 "abc"，则只创建 1 个（new 的对象）。
+
+`intern()`：native 方法，把字符串放入常量池并返回池中引用。
+- JDK6：常量池在永久代，intern 会**复制**一份到池中（返回副本引用，与堆对象不是同一个）
+- JDK7+：常量池移到堆，intern 先查池，无则直接把**当前对象的引用**放入池并返回该引用（不再复制）
+
+经典面试题（JDK7+）：
+```java
+String s1 = new String("1") + new String("1"); // 堆中"11"，不在常量池
+s1.intern();          // 把 s1 引用放入常量池
+String s2 = "11";     // 常量池已有，返回 s1 的引用
+System.out.println(s1 == s2); // true
+```
+
+## 2.40 字符串 + 拼接的底层原理？
+- **编译期常量折叠**：纯粹的字面量/常量拼接，编译器直接算出结果并入常量池，如 `"a"+"b"` 编译后就是 `"ab"`
+- **变量拼接**：`str += "x"` 编译为 `str = new StringBuilder().append(str).append("x").toString()`，每次循环都会 new 一个 StringBuilder
+- **循环拼接**：应使用 StringBuilder（容量可预估的更好），避免反复创建对象；StringBuffer 用于多线程
+- **JDK9+**：`+` 拼接改用 `invokedynamic` 调用 `StringConcatFactory` 动态选择拼接策略，减少生成的字节码、提升性能
+- `String.concat()`：内部用数组复制，少量拼接可用
+
+## 2.41 Arrays.asList 有哪些坑？
+1. **不是 ArrayList**：返回的是 `Arrays` 内部类 `ArrayList`，并非 `java.util.ArrayList`
+2. **定长不可变结构**：`add`/`remove` 会抛 `UnsupportedOperationException`（没有重写这些方法）
+3. **与原数组联动**：底层就是原数组，修改返回的 List 会同步影响原数组（反之亦然）
+4. **原始类型陷阱**：`Arrays.asList(new int[]{1,2,3})` 把 `int[]` 当成单个元素，得到 `List<int[]>`；需要 `Arrays.asList(1,2,3)`（自动装箱）
+
+需要真正可变、可增删的列表用 `new ArrayList<>(Arrays.asList(...))`。
+
+## 2.42 Objects、System.arraycopy 等常用工具方法？
+- `Objects.requireNonNull(obj, "msg")`：非空校验，空则抛带自定义消息的 NPE（参数校验）
+- `Objects.equals(a, b)`：null 安全比较，内部先 `a == b`，再 `a.equals(b)`
+- `Objects.isNull(obj)` / `Objects.nonNull(obj)`：可读性更好的判空
+- `System.arraycopy(src, srcPos, dest, destPos, len)`：native 数组复制（浅拷贝），目标数组需提前创建
+- `Arrays.copyOf(arr, newLen)`：内部调 arraycopy，自动创建目标数组并返回
+- `Math.addExact(a, b)` / `Math.multiplyExact(a, b)`：检测整数溢出，溢出抛 ArithmeticException
+- `Objects.hashCode(obj)`：自动处理 null（返回 0），配合重写 hashCode 使用
+
+## 2.43 什么是异常链？异常处理有哪些最佳实践？
+**异常链**：catch 捕获异常后抛出新的业务异常时，把原始异常作为 cause 传入，保留根因：
+```java
+try {
+    queryDao();
+} catch (SQLException e) {
+    throw new BizException("查询失败", e); // e 作为 cause，不丢失堆栈
+}
+```
+好处：外层通过 `getCause()` 追溯真正的根因。
+
+**最佳实践**：
+- 捕获具体的异常，不要 `catch (Exception)` 一把梭
+- 子类异常在父类异常之前 catch（先小后大，否则编译报错）
+- `finally` 中不要 `return` 或抛异常（会覆盖原返回值和原异常）
+- 不要用异常控制正常业务流程（性能差、可读性差）
+- 业务边界做异常翻译：底层技术异常转为统一业务异常再抛出
+- 释放资源优先使用 try-with-resources
+
+## 2.44 什么是桥方法（Bridge Method）？
+类型擦除后，编译器为保持多态而自动生成的合成方法。
+
+例如：
+```java
+class MyCmp implements Comparator<String> {
+    public int compare(String a, String b) { ... }
+}
+```
+类型擦除后 `Comparator` 接口的抽象方法变成 `compare(Object, Object)`。如果 MyCmp 没有这个方法，会被判定未实现接口而报错。因此编译器自动生成桥方法：
+```java
+public int compare(Object a, Object b) {
+    return compare((String) a, (String) b); // 强转后调用实际方法
+}
+```
+
+影响：反射 `getMethods()` 时能看到这些参数含 Object 的"多余"方法，直接调用可能抛 `ClassCastException`。这是理解泛型擦除机制的重要切入点。
+
+## 2.45 匿名内部类访问局部变量为什么要是 final / effectively final？
+根本原因是 **Java 的值传递 + 生命周期错位**：
+- 匿名内部类对象可能比方法更晚存活（如传给线程池、回调）
+- 它对局部变量的访问，实际是**拷贝了一份变量的值**到内部类的成员字段
+- 如果允许修改局部变量，方法返回后局部变量已随栈帧销毁，而内部类持有的副本与之不一致，语义混乱
+
+因此 Java 强制要求被内部类访问的局部变量不可变：JDK7 前必须显式 `final`，JDK8+ 改为 effectively final（声明后不再被重新赋值即可）。
+
+与之相反，访问成员变量不需要 final，因为内部类持有外部类对象的引用，通过 `Outer.this.xxx` 访问的是同一份内存。
+
+## 2.46 Java 集合体系结构是怎样的？（速览，完整版见 30_java_collections.md）
+两大根接口：
+- **Collection**（单列集合，根还继承 Iterable）：
+  - **List** 有序可重复：ArrayList（数组）、LinkedList（双向链表）、Vector（过时）、CopyOnWriteArrayList（并发）
+  - **Set** 无序不可重复：HashSet、LinkedHashSet、TreeSet、CopyOnWriteArraySet
+  - **Queue**：LinkedList、ArrayDeque、PriorityQueue、BlockingQueue 系列（ArrayBlockingQueue/LinkedBlockingQueue/SynchronousQueue/DelayQueue）
+- **Map**（双列集合，独立体系，不继承 Collection）：HashMap、LinkedHashMap、TreeMap、Hashtable（过时）、ConcurrentHashMap
+
+## 2.47 ArrayList 和 LinkedList 的区别与适用场景？（速览）
+| 维度 | ArrayList | LinkedList |
+|------|-----------|-----------|
+| 底层 | Object[] 数组 | 双向链表（Node 含 prev/item/next） |
+| 随机访问 | O(1) | O(n) |
+| 头/中间增删 | O(n)（元素移动） | O(1)（修改指针，已定位节点） |
+| 内存 | 连续，尾部有扩容余量 | 每个节点额外存前后指针 |
+| 实现接口 | List | List + Deque |
+
+场景：读多写少、按索引访问用 ArrayList（默认首选）；频繁头尾增删、当队列/栈用 LinkedList 或 ArrayDeque（ArrayDeque 不支持随机访问但性能更好）。
+
+## 2.48 HashMap 底层原理？为什么线程不安全？（速览）
+JDK8 结构：数组 + 链表 + 红黑树。put 流程：`hashCode` 经高 16 位异或扰动 `(h = key.hashCode()) ^ (h >>> 16)` → `(n-1) & hash` 定位桶 → 空桶直接插入 / 非空遍历链表或红黑树逐 Key 比较（先 `==` 再 `equals`）→ 相同替换 value、不同尾插 → 链表长度 ≥8 且数组 ≥64 树化 → size 超阈值扩容（2 倍）。
+
+设计要点：容量为 2 的幂（`&` 替代取模、扩容迁移只需 `hash & oldCap`）；负载因子 0.75（时间空间折中）。
+
+线程不安全表现：并发 put 数据覆盖、size 不准确、JDK7 头插法扩容形成死链（CPU 100%）。解决：ConcurrentHashMap。
+
+## 2.49 线程安全的集合如何选型？（速览）
+| 集合 | 原理 | 适用场景 |
+|------|------|---------|
+| ConcurrentHashMap | JDK8 CAS + synchronized 锁桶头，粒度细 | 高并发 Map 首选 |
+| CopyOnWriteArrayList / CopyOnWriteSet | 写时复制，读无锁 | 读多写少（配置、监听器） |
+| Collections.synchronizedList / Map | 全方法加 synchronized 包装 | 低并发、简单场景 |
+| BlockingQueue 系列 | 锁 + Condition 阻塞等待 | 生产者-消费者 |
+| Hashtable / Vector | JDK1.0 遗留全表 synchronized | 不推荐 |
+
+## 2.50 synchronized 和 ReentrantLock 的区别？（速览，完整版见 31_java_concurrency.md）
+| 维度 | synchronized | ReentrantLock |
+|------|-------------|--------------|
+| 实现 | JVM 内置关键字（Monitor） | JDK API（基于 AQS） |
+| 释放 | 自动释放（异常也释放） | 手动 unlock()（finally 中） |
+| 可中断 | 不可中断 | lockInterruptibly() 可中断 |
+| 超时 | 不支持 | tryLock(time, unit) 可超时 |
+| 公平锁 | 非公平 | 支持公平/非公平 |
+| 条件变量 | 单条件 wait/notify | 多个 Condition |
+| 锁优化 | JDK6 后锁升级优化好 | — |
+
+JDK6 后性能接近。简单场景优先 synchronized；需要可中断、超时、公平、多条件时用 ReentrantLock。
+
+## 2.51 volatile 和 CAS 的作用？（速览）
+**volatile**：保证可见性（写刷主存、读取主存，MESI 协议）+ 禁止指令重排（内存屏障）；**不保证原子性**（`i++` 读-改-写仍会出错）。DCL 单例中 `instance` 必须 volatile，防止 `new` 的重排序（分配内存→赋引用先于初始化）导致拿到未初始化对象。
+
+**CAS（Compare And Swap）**：CPU 级原子指令，预期值匹配才更新。JUC 大量使用（AtomicInteger、AQS、ConcurrentHashMap）。缺点：ABA 问题（用 AtomicStampedReference 加版本号解决）、自旋空转开销。
+
+## 2.52 线程池 7 个核心参数和执行流程？（速览）
+7 参数：`corePoolSize`、`maximumPoolSize`、`keepAliveTime`、`unit`、`workQueue`、`threadFactory`、`handler`（拒绝策略）。
+
+执行流程：核心线程未满 → 建核心线程；核心满 → 任务入队；队满 → 建非核心线程（未到 max）；到达 max 且队满 → 拒绝策略：
+1. AbortPolicy：抛异常（默认）
+2. CallerRunsPolicy：调用者线程执行
+3. DiscardPolicy：直接丢弃
+4. DiscardOldestPolicy：丢弃最老任务重试
+
+不推荐 Executors：Fixed/Single 使用无界队列可能 OOM，Cached 无限建线程可能 OOM，应手动用 ThreadPoolExecutor 指定参数。
+
+## 2.53 ThreadLocal 的原理和内存泄漏？（速览）
+原理：每个 `Thread` 内部有一个 `ThreadLocalMap`，以 ThreadLocal 对象为 key 存值，实现线程间变量隔离。
+
+内存泄漏：Map 的 Entry 对 key（ThreadLocal）是**弱引用**。ThreadLocal 失去外部强引用被 GC 回收后，value 是强引用仍被 `Thread → ThreadLocalMap → Entry → value` 链引用，线程池线程长期存活导致 value 无法回收。
+
+解决：使用完必须调用 `remove()`。
+
+## 2.54 BIO、NIO、AIO 的区别？（速览，完整版见 33_java_io_nio.md）
+| 模型 | IO 模型 | 线程模型 | 特点 |
+|------|---------|---------|------|
+| BIO | 同步阻塞 | 一连接一线程 | 简单，连接多时资源耗尽 |
+| NIO | 同步非阻塞 | 一线程管 N 连接（Selector） | 高并发，编程复杂 |
+| AIO | 异步非阻塞 | OS 完成回调 | 高并发，Java 生态较少用 |
+
+实际业务常用 NIO（Netty 封装的 Reactor 主从模型）。
+
+## 2.55 NIO 的三大核心组件？（速览）
+- **Channel（通道）**：双向数据传输，FileChannel / SocketChannel / ServerSocketChannel / DatagramChannel
+- **Buffer（缓冲区）**：数据容器，核心属性 capacity/limit/position/mark，`flip()` 切换读写模式
+- **Selector（选择器）**：多路复用器，`select()` 阻塞等待就绪事件（OP_ACCEPT / OP_READ / OP_WRITE / OP_CONNECT）
+
+协作流程：Channel 注册到 Selector → `select()` → 遍历 SelectionKey → `Channel.read(Buffer)` → 处理数据 → 继续轮询。
