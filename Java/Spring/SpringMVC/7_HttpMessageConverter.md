@@ -476,8 +476,8 @@ public class UserController {
     }
 }
 
-# 8.HttpMessageConverter内置实现类大全
 ```
+# 8. HttpMessageConverter内置实现类大全
 SpringMVC提供了丰富的内置HttpMessageConverter实现：
 
 | 实现类 | 支持的Content-Type | 用途 |
@@ -498,10 +498,8 @@ SpringMVC提供了丰富的内置HttpMessageConverter实现：
 不需要手动配置，SpringMVC会根据classpath中的依赖自动选择注册哪些转换器。
 例如：classpath中有jackson-databind → 自动注册MappingJackson2HttpMessageConverter
 classpath中有jackson-dataformat-xml → 自动注册MappingJackson2XmlHttpMessageConverter
-```
 
-# 9.HttpMessageConverter选择机制详解
-```
+# 9. HttpMessageConverter选择机制详解
 SpringMVC如何决定使用哪个HttpMessageConverter？
 
 9.1 读入请求体（@RequestBody）时的选择过程：
@@ -544,10 +542,8 @@ public User getUser() {
 
 produces和consumes会进一步缩小转换器的选择范围，当多个转换器同时canRead/canWrite时，
 produces/consumes起到精确定位的作用。
-```
 
-# 10.配置XML格式的HttpMessageConverter
-```
+# 10. 配置XML格式的HttpMessageConverter
 SpringMVC支持JSON和XML双格式响应，通过内容协商（Accept请求头）自动选择。
 
 10.1 添加依赖：
@@ -582,10 +578,8 @@ Accept: application/xml
 
 注意：Jackson默认将Java对象序列化为JSON。
 添加jackson-dataformat-xml依赖后，Jackson会根据请求的Accept头自动选择JSON或XML格式输出。
-```
 
-# 11.自定义HttpMessageConverter
-```
+# 11. 自定义HttpMessageConverter
 当内置转换器不满足需求时，可以自定义转换器（例如：Protocol Buffers、MessagePack等）。
 
 示例：自定义一个处理YAML格式的转换器（教学演示，实际建议用Jackson的YAML模块）
@@ -650,10 +644,8 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 注意：
 ● configureMessageConverters()：会覆盖默认的转换器列表
 ● extendMessageConverters()：在默认列表基础上追加（推荐）
-```
 
-# 12.配置Jackson ObjectMapper
-```
+# 12. 配置Jackson ObjectMapper
 SpringMVC使用Jackson进行JSON序列化和反序列化。
 通过自定义ObjectMapper Bean，可以控制JSON的输出格式。
 
@@ -733,10 +725,8 @@ public class User {
 | @JsonInclude(Include.NON_NULL) | 不序列化null字段 |
 | @JsonPropertyOrder({"id","name"}) | 指定字段序列化顺序 |
 | @JsonIgnoreProperties({"password"}) | 类级别忽略多个字段 |
-```
 
-# 13.流式响应与Server-Sent Events
-```
+# 13. 流式响应与Server-Sent Events
 对于大数据量的响应或实时推送场景，可以使用流式响应。
 
 13.1 StreamingResponseBody（流式下载）：

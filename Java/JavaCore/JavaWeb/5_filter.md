@@ -48,7 +48,7 @@ chain.doFilter(request, response); 这行代码的作用：
 /a.do 对应一个Filter，也对应一个Servlet。那么一定是先执行Filter，然后再执行Servlet。
 ```
 
-# 3. 关于Filter的配置路径：
+# 3. 关于Filter的配置路径
 
 ```
 /a.do、/b.do、/dept/save。这些配置方式都是精确匹配。

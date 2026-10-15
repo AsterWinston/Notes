@@ -3092,7 +3092,6 @@ stats.clear();
    - `SessionImplementor` (SPI) -> `SessionImpl` (internal)
    - `EntityPersister` (SPI) -> `AbstractEntityPersister` -> `SingleTableEntityPersister`
    - `RegionFactory` (SPI) -> `EhcacheRegionFactory` / `JCacheRegionFactory`
-```
 
 ## 10.4 常见调试场景速查
 
@@ -3108,4 +3107,3 @@ stats.clear();
 | Session 泄漏 | `SessionImpl` 构造函数 / `close()` | 打开/关闭计数器 |
 | 死锁 | `ActionQueue.prepareActions()` | `ActionSorter` 排序结果 |
 | 批处理不生效 | `BatchingBatch.addToBatch()` | `batchSize` / `currentBatchCount` |
-```

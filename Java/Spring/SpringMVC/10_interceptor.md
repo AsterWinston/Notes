@@ -142,7 +142,7 @@ public class HandlerExecutionChain {
 ```
 规则：只要有一个拦截器preHandle返回false，任何postHandle都不执行。但返回false的拦截器的前面的拦截器按照逆序执行afterCompletion。注意只有返回false的拦截器执行afterCompletion
 ```
-## 4.2 DispatcherServlet和 HandlerExecutionChain的部分源码：
+## 4.2 DispatcherServlet和 HandlerExecutionChain的部分源码
 ```
 public class DispatcherServlet extends FrameworkServlet {
     protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {

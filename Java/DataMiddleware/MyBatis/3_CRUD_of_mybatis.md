@@ -365,7 +365,7 @@ public void testSelectAll(){
 ```
 # 6. 关于SQL Mapper 的namespace
 ```
-在SQL Mapper配置⽂件中标签的namespace属性可以翻译为命名空间，这个命名空间主要是为了防⽌sqlId冲突的。
+在SQL Mapper配置文件中标签的namespace属性可以翻译为命名空间，这个命名空间主要是为了防止sqlId冲突的。
 
 当有两个不同的Mapper.xml文件中的sql语句id相同的时候，就需要使用命名空间加id的形式。
 
@@ -373,18 +373,17 @@ public void testSelectAll(){
 public void testNamespace(){
     // 获取SqlSession对象
     SqlSession sqlSession = SqlSessionUtil.openSession();
-    // 执⾏SQL语句，使用namespace.id的形式
+    // 执行SQL语句，使用namespace.id的形式
     List<Object> cars = sqlSession.selectList("car.selectCarAll");
     // 输出结果
     cars.forEach(car -> System.out.println(car));
 }
 
-# 7.CRUD 操作的源码调用链
-
 ```
+# 7. CRUD 操作的源码调用链
+
 所有 CRUD 操作（insert/delete/update/selectOne/selectList）
 在 DefaultSqlSession 中都最终委托给 Executor 执行。
-```
 
 ## 7.1 insert/update/delete 调用链
 

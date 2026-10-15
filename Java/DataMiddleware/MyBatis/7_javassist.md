@@ -126,15 +126,14 @@ public class GenerateDaoProxy {
     }
 }
 
-# 3.MyBatis 内部对 Javassist 的使用
-
 ```
+# 3. MyBatis 内部对 Javassist 的使用
+
 MyBatis 内部大量使用了 Javassist，主要用于以下场景：
   1. 延迟加载代理对象生成
   2. 对象工厂（创建结果对象）
   3. Reflector（反射工具优化）
   4. SqlRunner（SQL 执行工具）
-```
 
 ## 3.1 延迟加载代理对象生成
 

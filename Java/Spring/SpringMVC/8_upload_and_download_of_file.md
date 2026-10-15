@@ -127,8 +127,8 @@ public ResponseEntity<byte[]> downloadFile(HttpServletResponse response, HttpSer
     return entity;
 }
 
-# 3.多文件上传
 ```
+# 3. 多文件上传
 前端页面修改（支持多文件选择）：
 <!--多文件上传表单-->
 <form th:action="@{/file/multiUp}" method="post" enctype="multipart/form-data">
@@ -180,10 +180,8 @@ public String batchFileUp(@RequestParam("files") List<MultipartFile> files, Http
 注意：
 ● transferTo()方法是MultipartFile提供的便捷方法，底层也是通过IO流实现的
 ● 使用file.isEmpty()判断文件是否为空（用户可能没有选择文件）
-```
 
-# 4.文件上传时的类型和大小校验
-```
+# 4. 文件上传时的类型和大小校验
 在实际开发中，上传文件时必须进行安全校验，防止用户上传恶意文件。
 
 4.1 文件类型校验（通过文件扩展名）：
@@ -239,10 +237,8 @@ public String fileUpWithSizeCheck(@RequestParam("fileName") MultipartFile file) 
 ● web.xml中的<max-file-size>是Servlet容器级别的限制，超出后直接抛出异常
 ● Controller中的文件大小校验是应用级别的，可以在抛出异常前给用户友好提示
 ● 文件类型校验仅靠扩展名和MIME类型不够安全，建议结合文件头（magic number）校验
-```
 
-# 5.文件下载增强
-```
+# 5. 文件下载增强
 5.1 下载中文文件名处理：
 当下载的文件名包含中文时，不同的浏览器对文件名编码的处理方式不同，需要进行兼容处理。
 

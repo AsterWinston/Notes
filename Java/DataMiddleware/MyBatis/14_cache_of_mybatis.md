@@ -1,21 +1,21 @@
 ```
 MyBatis的缓存
 缓存：cache
-缓存的作⽤：通过减少IO的⽅式，来提⾼程序的执⾏效率。
-mybatis的缓存：将select语句的查询结果放到缓存（内存）当中，下⼀次还是这条select语句的话，直接从缓存中取，不再查数据库。⼀⽅⾯是减少了IO。另⼀⽅⾯不再执⾏繁琐的查找算法。效率⼤⼤提升。
+缓存的作用：通过减少IO的方式，来提高程序的执行效率。
+mybatis的缓存：将select语句的查询结果放到缓存（内存）当中，下一次还是这条select语句的话，直接从缓存中取，不再查数据库。一方面是减少了IO。另一方面不再执行繁琐的查找算法。效率大大提升。
 mybatis缓存包括：
 
-⼀级缓存：将查询到的数据存储到SqlSession中。
-⼆级缓存：将查询到的数据存储到SqlSessionFactory中。
-或者集成其它第三⽅的缓存：⽐如EhCache【Java语⾔开发的】、Memcache【C语⾔开发的】等。
+一级缓存：将查询到的数据存储到SqlSession中。
+二级缓存：将查询到的数据存储到SqlSessionFactory中。
+或者集成其它第三方的缓存：比如EhCache【Java语言开发的】、Memcache【C语言开发的】等。
 缓存只针对于DQL语句，也就是说缓存机制只对应select语句。
 ```
 
 # 1. 一级缓存
 
-## 1.1 ⼀级缓存默认是开启的。不需要做任何配置。
+## 1.1 一级缓存默认是开启的。不需要做任何配置
 ```
-原理：只要使⽤同⼀个SqlSession对象执⾏同⼀条SQL语句，就会⾛缓存。
+原理：只要使用同一个SqlSession对象执行同一条SQL语句，就会走缓存。
 
 测试
 
@@ -32,15 +32,15 @@ public void testSelectByCollection(){
 
 执行结果，只执行了一次sql语句，第二次是直接从缓存中拿到数据输出
 ```
-## 1.2 什么情况下不会⾛缓存？
+## 1.2 什么情况下不会走缓存？
 ```
-第⼀种：不同的SqlSession对象。
-第⼆种：查询条件变化了。
+第一种：不同的SqlSession对象。
+第二种：查询条件变化了。
 ```
-## 1.3 ⼀级缓存失效情况包括两种
+## 1.3 一级缓存失效情况包括两种
 ```
-第⼀种：第⼀次查询和第⼆次查询之间，⼿动清空了⼀级缓存。
-第⼆种：第⼀次查询和第⼆次查询之间，执⾏了增删改操作。【这个增删改和哪张表没有关系，只要有insert delete update操作，⼀级缓存就失效。】
+第一种：第一次查询和第二次查询之间，手动清空了一级缓存。
+第二种：第一次查询和第二次查询之间，执行了增删改操作。【这个增删改和哪张表没有关系，只要有insert delete update操作，一级缓存就失效。】
 ```
 ## 1.4 关闭一级缓存
 ```
@@ -73,37 +73,37 @@ sqlSession.selectOne(...); // 必然重新查库
 
 # 2. 二级缓存
 ```
-⼆级缓存的范围是SqlSessionFactory。
+二级缓存的范围是SqlSessionFactory。
 ```
-## 2.1 使⽤⼆级缓存需要具备以下⼏个条件：
+## 2.1 使用二级缓存需要具备以下几个条件
 ```
-1.全局性地开启或关闭所有映射器配置⽂件中已配置的任何缓存。默认就是true，⽆需设置。
+1.全局性地开启或关闭所有映射器配置文件中已配置的任何缓存。默认就是true，无需设置。
 <setting name="cacheEnabled" value="true">
-2.在需要使⽤⼆级缓存的SqlMapper.xml⽂件中添加配置：
+2.在需要使用二级缓存的SqlMapper.xml文件中添加配置：
 <!--默认情况下，二级缓存是开启的。只要在对应的SqlMapperx.xml文件中添加如下标签，就表示此文件中使用二级缓存-->
 <cache/>
 <cache/>标签位置要求：<cache/> 必须放在 <mapper> 内 最顶层位置；必须在 所有 SQL 语句之前；<resultMap>、<select>、<insert>、<update>、<delete> 都必须在 <cache/> 之后
-3.使⽤⼆级缓存的实体类对象必须是可序列化的，也就是必须实现java.io.Serializable接⼝
-4.SqlSession对象关闭或提交之后，⼀级缓存中的数据才会被写⼊到⼆级缓存当中。此时⼆级缓存才可⽤。
+3.使用二级缓存的实体类对象必须是可序列化的，也就是必须实现java.io.Serializable接口
+4.SqlSession对象关闭或提交之后，一级缓存中的数据才会被写入到二级缓存当中。此时二级缓存才可用。
 ```
-## 2.2 ⼆级缓存的失效
+## 2.2 二级缓存的失效
 ```
-只要两次查询之间出现了增删改操作。⼆级缓存就会失效。【⼀级缓存也会失效】
+只要两次查询之间出现了增删改操作。二级缓存就会失效。【一级缓存也会失效】
 ```
-## 2.3 ⼆级缓存的相关配置（<cache/>标签的属性）
+## 2.3 二级缓存的相关配置（<cache/>标签的属性）
 ```
-1.eviction：指定从缓存中移除某个对象的淘汰算法。默认采⽤LRU策略。
-LRU：Least Recently Used。最近最少使⽤。优先淘汰在间隔时间内使⽤频率最低的对象。(其实还有⼀种淘汰算法LFU，最不常⽤。)
-FIFO：First In First Out。⼀种先进先出的数据缓存器。先进⼊⼆级缓存的对象最先被淘汰。
-SOFT：软引⽤。淘汰软引⽤指向的对象。具体算法和JVM的垃圾回收算法有关。
-WEAK：弱引⽤。淘汰弱引⽤指向的对象。具体算法和JVM的垃圾回收算法有关。
+1.eviction：指定从缓存中移除某个对象的淘汰算法。默认采用LRU策略。
+LRU：Least Recently Used。最近最少使用。优先淘汰在间隔时间内使用频率最低的对象。(其实还有一种淘汰算法LFU，最不常用。)
+FIFO：First In First Out。一种先进先出的数据缓存器。先进入二级缓存的对象最先被淘汰。
+SOFT：软引用。淘汰软引用指向的对象。具体算法和JVM的垃圾回收算法有关。
+WEAK：弱引用。淘汰弱引用指向的对象。具体算法和JVM的垃圾回收算法有关。
 2.flushInterval：
-⼆级缓存的刷新时间间隔。单位毫秒。如果没有设置。就代表不刷新缓存，只要内存⾜够⼤，⼀直会向⼆级缓存中缓存数据。除⾮执⾏了增删改。
+二级缓存的刷新时间间隔。单位毫秒。如果没有设置。就代表不刷新缓存，只要内存足够大，一直会向二级缓存中缓存数据。除非执行了增删改。
 3.readOnly：
-true：多条相同的sql语句执⾏之后返回的对象是共享的同⼀个。性能好。但是多线程并发可能会存在安全问题。
-false：多条相同的sql语句执⾏之后返回的对象是副本，调⽤了clone⽅法。性能⼀般。但安全。
+true：多条相同的sql语句执行之后返回的对象是共享的同一个。性能好。但是多线程并发可能会存在安全问题。
+false：多条相同的sql语句执行之后返回的对象是副本，调用了clone方法。性能一般。但安全。
 4.size：默认1024
-设置⼆级缓存中最多可存储的java对象数量。
+设置二级缓存中最多可存储的java对象数量。
 5.type：PERPETUAL是默认值，对应类org.apache.ibatis.cache.impl.PerpetualCache，这是默认缓存实现，永久缓存，回收依赖 eviction 策略
 实现了 org.apache.ibatis.cache.Cache 接口就可以用于这个配置，只需要把类的全限定类名指定即可。
 6.blocking：默认false
@@ -113,11 +113,11 @@ false：所有线程都会并发去数据库查询，容易造成“缓存击穿
 
 # 3. MyBatis集成EhCache（二级缓存实现）
 ```
-集成EhCache是为了代替mybatis⾃带的⼆级缓存。⼀级缓存是⽆法替代的。
-mybatis对外提供了接⼝，也可以集成第三⽅的缓存组件。⽐如EhCache、Memcache等。都可以。
-EhCache是Java写的。Memcache是C语⾔写的。所以mybatis集成EhCache较为常⻅，按照以下步骤操作，就可以完成集成：
+集成EhCache是为了代替mybatis自带的二级缓存。一级缓存是无法替代的。
+mybatis对外提供了接口，也可以集成第三方的缓存组件。比如EhCache、Memcache等。都可以。
+EhCache是Java写的。Memcache是C语言写的。所以mybatis集成EhCache较为常见，按照以下步骤操作，就可以完成集成：
 ```
-## 3.1 第⼀步：引⼊mybatis整合ehcache的依赖。
+## 3.1 第一步：引入mybatis整合ehcache的依赖
 ```
 <!--mybatis集成ehcache的组件，本质上这就是一个适配器包，依靠依赖传递就可以将核心类库引入-->
 <dependency>
@@ -131,7 +131,7 @@ EhCache是Java写的。Memcache是C语⾔写的。所以mybatis集成EhCache较�
     	<artifactId>ehcache</artifactId>
     	<version>2.10.9.2</version>
 	</dependency>-->
-<!--ehcache需要slf4j的⽇志组件,log4j不好使-->
+<!--ehcache需要slf4j的日志组件,log4j不好使-->
 <dependency>
     <groupId>ch.qos.logback</groupId>
     <artifactId>logback-classic</artifactId>
@@ -139,36 +139,36 @@ EhCache是Java写的。Memcache是C语⾔写的。所以mybatis集成EhCache较�
     <scope>test</scope>
 </dependency>
 ```
-## 3.2 第⼆步：在类的根路径下新建ehcache.xml⽂件，并提供以下配置信息。
+## 3.2 第二步：在类的根路径下新建ehcache.xml文件，并提供以下配置信息
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
          updateCheck="false">
-    <!--磁盘存储:将缓存中暂时不使⽤的对象,转移到硬盘,类似于Windows系统的虚拟内存-->
+    <!--磁盘存储:将缓存中暂时不使用的对象,转移到硬盘,类似于Windows系统的虚拟内存-->
     <diskStore path="d:/ehcache"/>
 
     <!--defaultCache：默认的管理策略-->
     <!--eternal：设定缓存的elements是否永远不过期。如果为true，则缓存的数据始终有效，如果为false那么还要根据timeToIdleSeconds，timeToLiveSeconds判断-->
-    <!--maxElementsInMemory：在内存中缓存的element的最⼤数⽬-->
+    <!--maxElementsInMemory：在内存中缓存的element的最大数目-->
     <!--overflowToDisk：如果内存中数据超过内存限制，是否要缓存到磁盘上-->
     <!--diskPersistent：是否在磁盘上持久化。指重启jvm后，数据是否有效。默认为false-->
-    <!--timeToIdleSeconds：对象空闲时间(单位：秒)，指对象在多⻓时间没有被访问就会失效。只对eternal为false的有效。默认值0，表示⼀直可以访问-->
-    <!--timeToLiveSeconds：对象存活时间(单位：秒)，指对象从创建到失效所需要的时间。只对eternal为false的有效。默认值0，表示⼀直可以访问-->
+    <!--timeToIdleSeconds：对象空闲时间(单位：秒)，指对象在多长时间没有被访问就会失效。只对eternal为false的有效。默认值0，表示一直可以访问-->
+    <!--timeToLiveSeconds：对象存活时间(单位：秒)，指对象从创建到失效所需要的时间。只对eternal为false的有效。默认值0，表示一直可以访问-->
     <!--memoryStoreEvictionPolicy：缓存的3 种清空策略-->
     <!--FIFO：first in first out (先进先出)-->
-    <!--LFU：Less Frequently Used (最少使⽤).意思是⼀直以来最少被使⽤的。缓存的元素有⼀个hit 属性，hit 值最⼩的将会被清出缓存-->
-    <!--LRU：Least Recently Used(最近最少使⽤). (ehcache 默认值).缓存的元素有⼀个时间戳，当缓存容量满了，⽽⼜需要腾出地⽅来缓存新的元素的时候，那么现有缓存元素中时间戳离当前时间最远的元素将被清出缓存-->
+    <!--LFU：Less Frequently Used (最少使用).意思是一直以来最少被使用的。缓存的元素有一个hit 属性，hit 值最小的将会被清出缓存-->
+    <!--LRU：Least Recently Used(最近最少使用). (ehcache 默认值).缓存的元素有一个时间戳，当缓存容量满了，而又需要腾出地方来缓存新的元素的时候，那么现有缓存元素中时间戳离当前时间最远的元素将被清出缓存-->
     <defaultCache eternal="false" maxElementsInMemory="1000" overflowToDisk="false" diskPersistent="false"
                   timeToIdleSeconds="0" timeToLiveSeconds="600" memoryStoreEvictionPolicy="LRU"/>
 
 </ehcache>
 ```
-## 3.3 第三步：修改SqlMapper.xml⽂件中的标签，添加type属性。
+## 3.3 第三步：修改SqlMapper.xml文件中的标签，添加type属性
 ```
 <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
 ```
-## 3.4 第四步：编写测试程序使⽤。
+## 3.4 第四步：编写测试程序使用
 ```
 ```
 

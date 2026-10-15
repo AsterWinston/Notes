@@ -1,12 +1,12 @@
 # 1. limit分页
 ```
-mysql的limit后⾯两个数字：
+mysql的limit后面两个数字：
 
-第⼀个数字：startIndex（起始下标。下标从0开始。）
-第⼆个数字：pageSize（每⻚显示的记录条数）
-假设已知⻚码pageNum，还有每⻚显示的记录条数pageSize，第⼀个数字可以动态的获取吗？
+第一个数字：startIndex（起始下标。下标从0开始。）
+第二个数字：pageSize（每页显示的记录条数）
+假设已知页码pageNum，还有每页显示的记录条数pageSize，第一个数字可以动态的获取吗？
 startIndex = (pageNum - 1) * pageSize
-所以，标准通⽤的mysql分⻚SQL：
+所以，标准通用的mysql分页SQL：
 
 select * from tableName ...
 limit (pageNum - 1) * pageSize, pageSize
@@ -43,13 +43,13 @@ public void testPageHelper() throws Exception {
     SqlSession sqlSession = sqlSessionFactory.openSession();
     CarMapper mapper = sqlSession.getMapper(CarMapper.class);
 
-    // 开启分⻚
+    // 开启分页
     PageHelper.startPage(2, 2);
 
-    // 执⾏查询语句
+    // 执行查询语句
     List<Car> cars = mapper.selectAll();
 
-    // 获取分⻚信息对象
+    // 获取分页信息对象
     PageInfo<Car> pageInfo = new PageInfo<>(cars, 5);
 
     System.out.println(pageInfo);
@@ -64,16 +64,14 @@ public void testPageHelper() throws Exception {
     */
 }
 
-# 4.PageHelper 插件原理源码分析
-
 ```
+# 4. PageHelper 插件原理源码分析
+
 PageHelper 是基于 MyBatis 拦截器（Interceptor）机制实现的分页插件。
 它的核心逻辑在 PageInterceptor 中。
-```
 
 ## 4.1 PageHelper 工作流程
 
-```
 1. 用户调用 PageHelper.startPage(pageNum, pageSize)
    → 将分页参数存入 ThreadLocal
 
@@ -89,7 +87,6 @@ PageHelper 是基于 MyBatis 拦截器（Interceptor）机制实现的分页插�
    e. 通过反射修改 BoundSql 中的 SQL
    f. 执行分页后的 SQL
    g. 将结果封装为 Page 对象
-```
 
 ## 4.2 核心拦截链路
 

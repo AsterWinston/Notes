@@ -18,7 +18,7 @@ JAXP（Java API for XML Processing）是 Java 处理 XML 的**标准 API**，提
 ```
 
 - JAXP 默认实现包含在 JDK 中（Xerces 的部分能力）。
-- 从 JDK 11 起，Xalan 转换器部分独立化，推荐通过 Maven 显式引入（见 15.5）。
+- 从 JDK 11 起，Xalan 转换器部分独立化，推荐通过 Maven 显式引入（见 5.1）。
 
 ## 1.2 三种解析方式
 

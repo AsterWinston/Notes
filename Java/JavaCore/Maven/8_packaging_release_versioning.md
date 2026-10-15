@@ -222,7 +222,7 @@ mvn -Drevision=1.2.0 -Dchangelist= clean deploy
 	</repository>
 </distributionManagement>
 ```
-4. **同时配置 GPG 签名**（见 1.9）。
+4. **同时配置 GPG 签名**（见 7.2）。
 5. **同时配置 sources + javadoc 插件**（Maven Central 强制要求）。
 6. **执行发布**：
 ```bash

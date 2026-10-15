@@ -15,7 +15,7 @@ SQL映射文件中的标签比较完整的写法是：
 	select * from t_student where name = #{name, javaType=String, jdbcType=VARCHAR}
 </select>
 
-resultType和parameterType里面本来应该填写全限定类名，但是mybatis默认提供了别名（详细查看mybatis文档），所以这里直接填写类简名。另外，sql语句中的javaType，jdbcType，以及select标签中的parameterType属性，都是⽤来帮助mybatis进⾏类型确定的。不过这些配置多数是可以省略的。因为mybatis它有强⼤的⾃动类型推断机制。
+resultType和parameterType里面本来应该填写全限定类名，但是mybatis默认提供了别名（详细查看mybatis文档），所以这里直接填写类简名。另外，sql语句中的javaType，jdbcType，以及select标签中的parameterType属性，都是用来帮助mybatis进行类型确定的。不过这些配置多数是可以省略的。因为mybatis它有强大的自动类型推断机制。
 
 jdbcType参考org.apache.ibatis.type.JdbcType
 public enum JdbcType {
@@ -130,19 +130,19 @@ parameterType：可以省略
 
 # 2. map参数
 ```
-这种⽅式是⼿动封装Map集合，将每个条件以key和value的形式存放到集合中。然后在使⽤的时候通过#{map集合的key}来取值。
+这种方式是手动封装Map集合，将每个条件以key和value的形式存放到集合中。然后在使用的时候通过#{map集合的key}来取值。
 ```
 
 # 3. 实体类参数
 ```
-这⾥需要注意的是：#{} ⾥⾯写的是属性名字。这个属性名其本质上是：set/get⽅法名去掉set/get之后的名字。
+这里需要注意的是：#{} 里面写的是属性名字。这个属性名其本质上是：set/get方法名去掉set/get之后的名字。
 ```
 
 # 4. 多参数
 ```
-对于多个参数，mybatis底层会创建⼀个map集合，以arg0/param1为key，传入的参数为 value
+对于多个参数，mybatis底层会创建一个map集合，以arg0/param1为key，传入的参数为 value
 例如：
-List<Student> students = mapper.selectByNameAndSex("张三", '⼥')
+List<Student> students = mapper.selectByNameAndSex("张三", '女')
 //底层封装成了这样的map集合，其中arg从0开始，param从1开始
 
 Map<String,Object> map = new HashMap<>();

@@ -1,21 +1,21 @@
 # 1. 框架
-	Java常⽤框架：
+	Java常用框架：
 	
-	SSM三⼤框架：Spring + SpringMVC + MyBatis
+	SSM三大框架：Spring + SpringMVC + MyBatis
 	SpringBoot
 	SpringCloud 等。。
 	
-	SSM三⼤框架的学习顺序：MyBatis、Spring、SpringMVC（建议）
+	SSM三大框架的学习顺序：MyBatis、Spring、SpringMVC（建议）
 
 # 2. 三层架构
-	表现层（UI）：直接跟前端打交互（⼀是接收前端ajax请求，⼆是返回json数据给前端）
-	业务逻辑层（BLL）：⼀是处理表现层转发过来的前端请求（也就是具体业务），⼆是将从持久层获取的数据返回到表现层。
-	数据访问层（DAL）：直接操作数据库完成CRUD，并将获得的数据返回到上⼀层（也就是业务逻辑层）。
+	表现层（UI）：直接跟前端打交互（一是接收前端ajax请求，二是返回json数据给前端）
+	业务逻辑层（BLL）：一是处理表现层转发过来的前端请求（也就是具体业务），二是将从持久层获取的数据返回到表现层。
+	数据访问层（DAL）：直接操作数据库完成CRUD，并将获得的数据返回到上一层（也就是业务逻辑层）。
 
 # 3. JDBC的不足
 	SQL语句写死在Java程序中，不灵活。改SQL的话就要改Java代码。违背开闭原则OCP。
-	给占位符 ? 传值是繁琐的。能不能⾃动化？？？
-	将结果集封装成Java对象是繁琐的。能不能⾃动化？？？
+	给占位符 ? 传值是繁琐的。能不能自动化？？？
+	将结果集封装成Java对象是繁琐的。能不能自动化？？？
 
 # 4. 了解MyBatis
 	MyBatis本质上就是对JDBC的封装，通过MyBatis完成CRUD。
@@ -23,30 +23,30 @@
 	ORM：对象关系映射
 	O（Object）：Java虚拟机中的Java对象
 	R（Relational）：关系型数据库
-	M（Mapping）：将Java虚拟机中的Java对象映射到数据库表中⼀⾏记录，或是将数据库表中⼀⾏记录映射成Java虚拟机中的⼀个Java对象。
+	M（Mapping）：将Java虚拟机中的Java对象映射到数据库表中一行记录，或是将数据库表中一行记录映射成Java虚拟机中的一个Java对象。
 	MyBatis框架特点：
 	
-	⽀持定制化 SQL、存储过程、基本映射以及⾼级映射
+	支持定制化 SQL、存储过程、基本映射以及高级映射
 	
-	避免了⼏乎所有的 JDBC 代码中⼿动设置参数以及获取结果集
+	避免了几乎所有的 JDBC 代码中手动设置参数以及获取结果集
 	
-	⽀持XML开发，也⽀持注解式开发。【为了保证sql语句的灵活，所以mybatis⼤部分是采⽤
+	支持XML开发，也支持注解式开发。【为了保证sql语句的灵活，所以mybatis大部分是采用
 	
-	XML⽅式开发。】
+	XML方式开发。】
 	
-	将接⼝和 Java 的 POJOs(Plain Ordinary Java Object，简单普通的Java对象)映射成数据库中的
+	将接口和 Java 的 POJOs(Plain Ordinary Java Object，简单普通的Java对象)映射成数据库中的
 	
 	记录
 	
-	体积⼩好学：两个jar包，两个XML配置⽂件。
+	体积小好学：两个jar包，两个XML配置文件。
 	
 	完全做到sql解耦合。
 	
 	提供了基本映射标签。
 	
-	提供了⾼级映射标签。
+	提供了高级映射标签。
 	
-	提供了XML标签，⽀持动态SQL的编写。
+	提供了XML标签，支持动态SQL的编写。
 
 # 5. MyBatis 与 Hibernate 的对比
 

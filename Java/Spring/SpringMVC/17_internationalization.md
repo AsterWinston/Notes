@@ -85,10 +85,8 @@ public MessageSource messageSource() {
     messageSource.setFallbackToSystemLocale(false);   // 是否回退到系统区域
     return messageSource;
 }
-```
 
-# 3.配置LocaleResolver（区域解析器）
-```
+# 3. 配置LocaleResolver（区域解析器）
 LocaleResolver负责解析用户的区域信息（语言、国家）。
 SpringMVC提供了多种LocaleResolver实现：
 
@@ -135,10 +133,8 @@ public LocaleResolver localeResolver() {
     resolver.setCookieMaxAge(7 * 24 * 60 * 60);  // 7天
     return resolver;
 }
-```
 
-# 4.配置LocaleChangeInterceptor（语言切换拦截器）
-```
+# 4. 配置LocaleChangeInterceptor（语言切换拦截器）
 LocaleChangeInterceptor允许用户通过URL参数动态切换语言。
 
 4.1 配置拦截器（XML方式）：
@@ -168,10 +164,8 @@ http://localhost:8080/springmvc/index?lang=en_US  （切换到英文）
 http://localhost:8080/springmvc/index?lang=ja_JP  （切换到日文）
 
 切换后，后续的所有请求都会使用新语言（SessionLocaleResolver或CookieLocaleResolver会记录）。
-```
 
-# 5.在Controller中使用国际化消息
-```
+# 5. 在Controller中使用国际化消息
 5.1 注入MessageSource手动获取消息：
 
 @Controller
@@ -202,10 +196,8 @@ user.welcome=欢迎您，{0}！今天是{1}。
 Controller中获取：
 String msg = messageSource.getMessage("user.welcome", new Object[]{"张三", "星期一"}, locale);
 // 输出：欢迎您，张三！今天是星期一。
-```
 
-# 6.在Thymeleaf视图中使用国际化消息
-```
+# 6. 在Thymeleaf视图中使用国际化消息
 SpringMVC集成的Thymeleaf支持国际化消息表达式 #{key}：
 
 <!DOCTYPE html>
@@ -236,10 +228,8 @@ SpringMVC集成的Thymeleaf支持国际化消息表达式 #{key}：
 注意：
 ● #{key} 会自动根据当前Locale获取对应的语言消息
 ● @{/index(lang=zh_CN)} 是Thymeleaf生成带参数的URL
-```
 
-# 7.国际化综合示例
-```
+# 7. 国际化综合示例
 完整配置流程总结（注解方式）：
 
 第一步：创建消息文件

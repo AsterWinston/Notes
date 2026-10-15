@@ -129,7 +129,7 @@ public class LoggingInterceptor { }
 | 业务方法 | `@AroundInvoke` | 最常用，拦截方法调用 |
 | 构造 | `@AroundConstruct` | 拦截 Bean 实例化（CDI 2.0+） |
 | 定时器 | `@AroundTimeout` | 拦截 EJB 定时器执行 |
-| 生命周期 | `@PostConstruct` / `@PreDestroy` | 见 6.4 |
+| 生命周期 | `@PostConstruct` / `@PreDestroy` | 见 3.2 |
 
 # 3. Jakarta Managed Beans
 

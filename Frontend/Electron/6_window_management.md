@@ -17,7 +17,7 @@ const win = new BrowserWindow({
 win.once('ready-to-show', () => win.show())
 ```
 
-★ **关键认知**：窗口外观靠构造选项——`frame`(边框)、`resizable`(可缩放)、`alwaysOnTop`(置顶)、`show: false`+`ready-to-show`。⚠ `frame: false` 是"**无边框窗口**"的开关(做自绘标题栏/登录窗/悬浮面板),代价是**失去系统标题栏**(要自己实现拖拽、关闭),见 2.3。
+★ **关键认知**：窗口外观靠构造选项——`frame`(边框)、`resizable`(可缩放)、`alwaysOnTop`(置顶)、`show: false`+`ready-to-show`。⚠ `frame: false` 是"**无边框窗口**"的开关(做自绘标题栏/登录窗/悬浮面板),代价是**失去系统标题栏**(要自己实现拖拽、关闭),见 3。
 
 ## 1.2 窗口内容加载
 

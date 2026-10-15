@@ -1,13 +1,13 @@
 # 1. #{}和${}
 ```
-#{}：先编译sql语句，再给占位符传值，底层是PreparedStatement实现。可以防⽌sql注⼊，⽐较常⽤。
-${}：先进⾏sql语句拼接，然后再编译sql语句，底层是Statement实现。存在sql注⼊现象。只有在需要进⾏sql语句关键字拼接的情况下才会⽤到。
+#{}：先编译sql语句，再给占位符传值，底层是PreparedStatement实现。可以防止sql注入，比较常用。
+${}：先进行sql语句拼接，然后再编译sql语句，底层是Statement实现。存在sql注入现象。只有在需要进行sql语句关键字拼接的情况下才会用到。
 
 使用${}的时机：
 
-当需要进⾏sql语句关键字拼接的时候。必须使⽤${}
+当需要进行sql语句关键字拼接的时候。必须使用${}
 
-例如：通过向sql语句中注⼊asc或desc关键字，来完成数据的升序或降序排列。
+例如：通过向sql语句中注入asc或desc关键字，来完成数据的升序或降序排列。
 
 拼接表名
 
@@ -59,14 +59,14 @@ name like "%"#{name}"%"
     mapper的三个属性：
         resource：从类路径中加载
         url：从指定的全限定资源路径中加载
-        class：使⽤映射器接⼝实现类的完全限定类名，这种方式，要将XxxMapper.xml这个文件放到与接口同目录下，接口名字和XxxMapper.xml中的XxxMapper一致，也就是说，当指定<mapper class="me.aster.mybatis.mapper.AccountMapper">后，mybatis会到classPath:me/aster/mybatis/mapper这个目录下找AccountMapper.xml文件
-        package：将包内的映射器接⼝实现全部注册为映射器
+        class：使用映射器接口实现类的完全限定类名，这种方式，要将XxxMapper.xml这个文件放到与接口同目录下，接口名字和XxxMapper.xml中的XxxMapper一致，也就是说，当指定<mapper class="me.aster.mybatis.mapper.AccountMapper">后，mybatis会到classPath:me/aster/mybatis/mapper这个目录下找AccountMapper.xml文件
+        package：将包内的映射器接口实现全部注册为映射器
 -->
 <mapper resource=""/>
 <mapper class=""/>
 <mapper url=""/>
 <!--
-	package：将包内的映射器接⼝实现全部注册为映射器
+	package：将包内的映射器接口实现全部注册为映射器
 	使用此方法需要将SqlMapper.xml文件和同名接口放在同一个目录下，比<mapper class=""/>更加高效了
 -->
 <package name="com.ziv.mybatis.mapper"/>

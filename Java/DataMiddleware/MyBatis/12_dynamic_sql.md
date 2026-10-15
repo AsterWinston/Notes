@@ -26,10 +26,10 @@ test使用的参数必须要可以从传入的参数中获取，哪怕是null或
 ```
 # 2. where标签
 ```
-where标签的作⽤：让where⼦句更加动态智能。
+where标签的作用：让where子句更加动态智能。
 
-所有条件都为空时，where标签保证不会⽣成where⼦句。
-⾃动去除某些条件前⾯多余的and或or。
+所有条件都为空时，where标签保证不会生成where子句。
+自动去除某些条件前面多余的and或or。
 
 <select id="selectByMultiConditionWithWhere" resultType="car">
     select * from t_car
@@ -109,7 +109,7 @@ if () {
 } else {
 }
 
-有且仅有⼀个分⽀会被选择！！！！
+有且仅有一个分支会被选择！！！！
 
 <select id="selectByChoose" resultType="Car">
     select * from t_car
@@ -131,15 +131,15 @@ if () {
 ```
 # 6. foreach标签
 ```
-循环数组或集合，动态⽣成sql，⽐如这样的SQL：
+循环数组或集合，动态生成sql，比如这样的SQL：
 
 delete from t_car where id in(1,2,3);
 delete from t_car where id = 1 or id = 2 or id = 3;
 
 insert into t_car values
-    (null,'1001','凯美瑞',35.0,'2010-10-11','燃油⻋'),
-    (null,'1002','⽐亚迪唐',31.0,'2020-11-11','新能源'),
-    (null,'1003','⽐亚迪宋',32.0,'2020-10-11','新能源')
+    (null,'1001','凯美瑞',35.0,'2010-10-11','燃油车'),
+    (null,'1002','比亚迪唐',31.0,'2020-11-11','新能源'),
+    (null,'1003','比亚迪宋',32.0,'2020-10-11','新能源')
 ```
 ## 6.1 批量删除
 ```
@@ -184,9 +184,9 @@ sql语句
 # 7. sql标签与include标签
 
 ```
-sql标签⽤来声明sql⽚段
-include标签⽤来将声明的sql⽚段包含到某个sql语句当中
-作⽤：代码复⽤。易维护。
+sql标签用来声明sql片段
+include标签用来将声明的sql片段包含到某个sql语句当中
+作用：代码复用。易维护。
 
 <sql id="carColumnName">
     id,

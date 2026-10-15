@@ -109,22 +109,22 @@ public void configTest() throws IOException {
 
 # 4. properties
 ```
-mybatis提供了更加灵活的配置，连接数据库的信息可以单独写到⼀个属性资源⽂件中，假设在类的根路
-径下创建jdbc.properties⽂件，配置如下：
+mybatis提供了更加灵活的配置，连接数据库的信息可以单独写到一个属性资源文件中，假设在类的根路
+径下创建jdbc.properties文件，配置如下：
 jdbc.driver=com.mysql.cj.jdbc.Driver
 jdbc.url=jdbc:mysql://localhost:3306/ziv_mybatis2
 jdbc.username=root
 jdbc.password=123456
 
 在mybatis核心配置文件中引入并使用：
-<!--引⼊外部属性资源⽂件-->
+<!--引入外部属性资源文件-->
 <properties resource="jdbc.properties"/>
 这个标签需要在environments之前
 
 <environment id="production">
     <transactionManager type="JDBC"/>
     <dataSource type="POOLED">
-        <!--${key}使⽤-->
+        <!--${key}使用-->
         <property name="driver" value="${jdbc.driver}"/>
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
@@ -133,25 +133,25 @@ jdbc.password=123456
 </environment>
 
 properties两个属性：
-resource：这个属性从类的根路径下开始加载。【常⽤的。】
-url：从指定的url加载，假设⽂件放在d:/jdbc.properties，这个url可以写成：file:///d:/jdbc.properties。注意是三个斜杠哦。?
+resource：这个属性从类的根路径下开始加载。【常用的。】
+url：从指定的url加载，假设文件放在d:/jdbc.properties，这个url可以写成：file:///d:/jdbc.properties。注意是三个斜杠哦。?
 ```
 
 # 5. mapper
 ```
-mapper标签⽤来指定SQL映射⽂件的路径，包含多种指定⽅式，这⾥先主要看其中两种：
+mapper标签用来指定SQL映射文件的路径，包含多种指定方式，这里先主要看其中两种：
 
-第⼀种：resource，从类的根路径下开始加载【⽐url常⽤】
+第一种：resource，从类的根路径下开始加载【比url常用】
 <mappers>
     <mapper resource="CarMapper.xml"/>
 </mappers>
 
-第⼆种：url，从指定的url位置加载
+第二种：url，从指定的url位置加载
 <mappers>
 	<mapper url="file:///d:/CarMapper.xml"/>
 </mappers>
 
-mapper还有其他的指定⽅式，后⾯再看！！！
+mapper还有其他的指定方式，后面再看！！！
 
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
@@ -265,14 +265,13 @@ mapper还有其他的指定⽅式，后⾯再看！！！
 
 </configuration>
 
-# 7.XMLConfigBuilder 源码解析
-
 ```
+# 7. XMLConfigBuilder 源码解析
+
 XMLConfigBuilder 是 mybatis-config.xml 的解析器，
 它是理解 MyBatis 配置加载机制的核心入口。
 
 源码位置：org.apache.ibatis.builder.xml.XMLConfigBuilder
-```
 
 ## 7.1 解析入口 parseConfiguration()
 

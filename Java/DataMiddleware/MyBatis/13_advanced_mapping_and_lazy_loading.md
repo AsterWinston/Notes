@@ -1,14 +1,14 @@
 # 1. 多对一
 ```
-多种⽅式，常⻅的包括三种：
+多种方式，常见的包括三种：
 
-第⼀种⽅式：⼀条SQL语句，级联属性映射。
-第⼆种⽅式：⼀条SQL语句，association。
-第三种⽅式：两条SQL语句，分步查询。（这种⽅式常⽤：优点⼀是可复⽤。优点⼆是⽀持懒加载。）
+第一种方式：一条SQL语句，级联属性映射。
+第二种方式：一条SQL语句，association。
+第三种方式：两条SQL语句，分步查询。（这种方式常用：优点一是可复用。优点二是支持懒加载。）
 ```
 ## 1.1 级联属性映射（cascade）
 ```
-pojo类Student中添加⼀个属性：Clazz clazz; 表示学⽣关联的班级对象。
+pojo类Student中添加一个属性：Clazz clazz; 表示学生关联的班级对象。
 
 编写sql语句：
 <!--多对一映射的第一种方式：一条SQL语句，级联属性映射-->
@@ -69,7 +69,7 @@ public void testSelectById(){
 ## 1.3 分步查询
 ```
 其他位置不需要修改，只需要修改以及添加以下三处：
-第⼀处：association中select位置填写sqlId。sqlId=namespace+id。其中column属性作为这条⼦sql语句的条件。
+第一处：association中select位置填写sqlId。sqlId=namespace+id。其中column属性作为这条子sql语句的条件。
 <!--两天SQl语句完成多对一的分步查询-->
 <!--第一步：根据学生的id查询学生的所有信息，这些信息中含有班级id（cid）-->
 <resultMap id="selectResultMapByStep" type="Student">
@@ -88,7 +88,7 @@ public void testSelectById(){
     select sid,sname,cid from t_stu where sid = #{sid}
 </select>
 
-第⼆处：在ClazzMapper接⼝中添加⽅法
+第二处：在ClazzMapper接口中添加方法
 package com.ziv.mybatis.mapper;
 
 import com.ziv.mybatis.pojo.Clazz;
@@ -106,7 +106,7 @@ public interface ClazzMapper {
     Clazz selectByIdStepTwo(Integer cid);
 }
 
-第三处：在ClazzMapper.xml⽂件中进⾏配置
+第三处：在ClazzMapper.xml文件中进行配置
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -122,14 +122,14 @@ public interface ClazzMapper {
 
 分步优点：
 
-第⼀个优点：代码复⽤性增强。
-第⼆个优点：⽀持延迟加载。【暂时访问不到的数据可以先不查询。提⾼程序的执⾏效率。】
+第一个优点：代码复用性增强。
+第二个优点：支持延迟加载。【暂时访问不到的数据可以先不查询。提高程序的执行效率。】
 ```
 
 # 2. 多对一延迟加载
 ```
-要想⽀持延迟加载，⾮常简单，只需要在association标签中添加fetchType="lazy"即可。
-修改StudentMapper.xml⽂件：
+要想支持延迟加载，非常简单，只需要在association标签中添加fetchType="lazy"即可。
+修改StudentMapper.xml文件：
 <resultMap id="selectResultMapByStep" type="Student">
     <id property="sid" column="sid"/>
     <result property="sname" column="sname"/>
@@ -162,13 +162,13 @@ public void testSelectByIdStepOne(){
 ```
 # 3. 一对多
 ```
-⼀对多的实现，通常是在⼀的⼀⽅中有List集合属性。
+一对多的实现，通常是在一的一方中有List集合属性。
 在Clazz类中添加List stus; 属性。
 
-⼀对多的实现通常包括两种实现⽅式：
+一对多的实现通常包括两种实现方式：
 
-第⼀种⽅式：collection
-第⼆种⽅式：分步查询
+第一种方式：collection
+第二种方式：分步查询
 ```
 
 ## 3.1 collection

@@ -10,7 +10,7 @@ http://localhost:8080/jsp/index.jsp 展现在大家面前的是一个空白。
 访问index.jsp，实际上执行的是index_jsp.class中的方法。
 ```
 
-# 2. JSP实际上就是一个Servlet。
+# 2. JSP实际上就是一个Servlet
 
 ```
 index.jsp访问的时候，会自动翻译生成index_jsp.java，会自动编译生成index_jsp.class，那么index_jsp 这就是一个类。
@@ -150,7 +150,7 @@ javabean其实就是java中的实体类。负责数据的封装。
 完成剩下所有功能的改造。
 ```
 
-# 5. 当前的oa应用存在的问题：
+# 5. 当前的oa应用存在的问题
 
 ```
 任何一个用户都可以访问这个系统，都可以对这个系统当中的数据进行增删改这些危险的操作。我只想让合法的用户去使用这个系统，不合法的用户不能访问这个系统，怎么办？

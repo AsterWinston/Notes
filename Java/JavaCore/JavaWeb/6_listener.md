@@ -36,7 +36,7 @@ HttpSessionActivationListener
 活化：从硬盘文件把 session 恢复到内存。
 ```
 
-# 3. 实现一个监听器的步骤：以 ServletContextListener 为例。
+# 3. 实现一个监听器的步骤：以 ServletContextListener 为例
 
 ```
 第一步：编写一个类实现 ServletContextListener 接口。并且实现里面的方法。

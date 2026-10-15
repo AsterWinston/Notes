@@ -363,7 +363,7 @@ public class AccountDaoImpl implements AccountDao {
     </update>
 </mapper>
 ```
-## 3.7 第七步：编写AccountService接⼝和AccountServiceImpl，以及异常类
+## 3.7 第七步：编写AccountService接口和AccountServiceImpl，以及异常类
 ```
 public class MoneyNotEnoughException extends Exception {
     public MoneyNotEnoughException(){}
@@ -440,7 +440,7 @@ public class AccountServiceImpl implements AccountService {
     }
 }
 ```
-## 3.8 第⼋步：编写AccountController
+## 3.8 第八步：编写AccountController
 ```
 package com.ziv.bank.web;
 
@@ -498,9 +498,9 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
 ```
 
 # 5. 分析当前程序存在的问题
-我们不难发现，这个dao实现类中的⽅法代码很固定，基本上就是⼀⾏代码，通过SqlSession对象调⽤
-insert、delete、update、select等⽅法，这个类中的⽅法没有任何业务逻辑，既然是这样，这个类我们
- 能不能动态的⽣成，以后可以不写这个类吗？答案：可以。
+我们不难发现，这个dao实现类中的方法代码很固定，基本上就是一行代码，通过SqlSession对象调用
+insert、delete、update、select等方法，这个类中的方法没有任何业务逻辑，既然是这样，这个类我们
+ 能不能动态的生成，以后可以不写这个类吗？答案：可以。
 
 # 6. ThreadLocal 事务管理源码分析
 

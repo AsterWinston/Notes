@@ -1,15 +1,15 @@
 ```
 MyBatis的逆向工程
-所谓的逆向⼯程是：根据数据库表逆向⽣成Java的pojo类，SqlMapper.xml⽂件，以及Mapper接⼝类等。
-要完成这个⼯作，需要借助别⼈写好的逆向⼯程插件。
+所谓的逆向工程是：根据数据库表逆向生成Java的pojo类，SqlMapper.xml文件，以及Mapper接口类等。
+要完成这个工作，需要借助别人写好的逆向工程插件。
 
-思考：使⽤这个插件的话，需要给这个插件配置哪些信息？
+思考：使用这个插件的话，需要给这个插件配置哪些信息？
 
-pojo类名、包名以及⽣成位置。
-SqlMapper.xml⽂件名以及⽣成位置。
-Mapper接⼝名以及⽣成位置。
+pojo类名、包名以及生成位置。
+SqlMapper.xml文件名以及生成位置。
+Mapper接口名以及生成位置。
 连接数据库的信息。
-指定哪些表参与逆向⼯程。
+指定哪些表参与逆向工程。
 …
 ```
 # 1. 逆向工程配置与生产
@@ -25,7 +25,7 @@ Mapper接⼝名以及⽣成位置。
 <build>
     <!--可配置多个插件-->
     <plugins>
-        <!--其中的⼀个插件：mybatis逆向⼯程插件-->
+        <!--其中的一个插件：mybatis逆向工程插件-->
         <plugin>
             <!--插件的GAV坐标-->
             <groupId>org.mybatis.generator</groupId>
@@ -51,8 +51,8 @@ Mapper接⼝名以及⽣成位置。
 
 ## 1.3 第三步：配置generatorConfig.xml
 ```
-该⽂件名必须叫做：generatorConfig.xml
-该⽂件必须放在类的根路径下。
+该文件名必须叫做：generatorConfig.xml
+该文件必须放在类的根路径下。
 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
@@ -62,14 +62,14 @@ Mapper接⼝名以及⽣成位置。
 <generatorConfiguration>
     <!--
       targetRuntime有两个值：
-          MyBatis3Simple：⽣成的是基础版，只有基本的增删改查。
-          MyBatis3：⽣成的是增强版，除了基本的增删改查之外还有复杂的增删改查。
+          MyBatis3Simple：生成的是基础版，只有基本的增删改查。
+          MyBatis3：生成的是增强版，除了基本的增删改查之外还有复杂的增删改查。
     -->
     <context id="DB2Tables" targetRuntime="MyBatis3">
-        <!--防⽌⽣成重复代码-->
+        <!--防止生成重复代码-->
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
         <commentGenerator>
-            <!--是否去掉⽣成⽇期-->
+            <!--是否去掉生成日期-->
             <property name="suppressDate" value="true"/>
             <!--是否去除注释-->
             <property name="suppressAllComments" value="true"/>
@@ -80,19 +80,19 @@ Mapper接⼝名以及⽣成位置。
                         userId="root"
                         password="root">
         </jdbcConnection>
-        <!-- ⽣成pojo包名和位置 -->
+        <!-- 生成pojo包名和位置 -->
         <javaModelGenerator targetPackage="com.ziv.mybatis.pojo" targetProject="src/main/java">
-            <!--是否开启⼦包-->
+            <!--是否开启子包-->
             <property name="enableSubPackages" value="true"/>
-            <!--是否去除字段名的前后空⽩-->
+            <!--是否去除字段名的前后空白-->
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
-        <!-- ⽣成SQL映射⽂件的包名和位置 -->
+        <!-- 生成SQL映射文件的包名和位置 -->
         <sqlMapGenerator targetPackage="com.ziv.mybatis.mapper" targetProject="src/main/resources">
-            <!--是否开启⼦包-->
+            <!--是否开启子包-->
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
-        <!-- ⽣成Mapper接⼝的包名和位置 -->
+        <!-- 生成Mapper接口的包名和位置 -->
         <javaClientGenerator
                 type="xmlMapper"
                 targetPackage="com.ziv.mybatis.mapper"

@@ -1044,7 +1044,7 @@ session.enableFilter("localeFilter")
        .setParameter("locale", "zh_CN");
 ```
 
-### 4.3.5 完整示例——软删除 + 多租户组合：
+### 4.3.5 完整示例——软删除 + 多租户组合
 
 ```java
 @FilterDef(name = "softDeleteFilter", defaultCondition = "deleted = false")
