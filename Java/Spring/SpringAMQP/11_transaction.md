@@ -1,6 +1,6 @@
-# 1.AMQP事务概述
+# 1. AMQP事务概述
 
-## 1.1什么是AMQP事务
+## 1.1 什么是AMQP事务
 AMQP协议提供了事务机制，允许生产者将多条消息的发送操作放入一个事务中，**要么全部成功，要么全部失败**。这与数据库的事务概念类似，但实现方式不同。
 
 AMQP事务的工作流程：
@@ -13,7 +13,7 @@ AMQP事务的工作流程：
 4. txRollback()  → 回滚：所有消息被丢弃
 ```
 
-## 1.2事务的代价
+## 1.2 事务的代价
 AMQP事务会**严重降低性能**（吞吐量可能下降100-250倍），因为：
 - 每条消息的发送都需要等待Broker的事务确认
 - 事务模式下的Channel是同步的，不能并发发送
@@ -21,7 +21,7 @@ AMQP事务会**严重降低性能**（吞吐量可能下降100-250倍），因�
 
 因此，**在生产环境中一般不推荐使用AMQP事务**，而是使用Publisher Confirm机制替代。
 
-## 1.3事务 vs Publisher Confirm
+## 1.3 事务 vs Publisher Confirm
 | 对比维度 | AMQP事务 | Publisher Confirm |
 |---------|---------|-------------------|
 | 性能 | 极低（吞吐量下降100-250倍） | 较高（吞吐量下降10-20%） |
@@ -30,9 +30,9 @@ AMQP事务会**严重降低性能**（吞吐量可能下降100-250倍），因�
 | 复杂度 | 低（类似数据库事务） | 中（需要处理回调、CorrelationData） |
 | 推荐度 | 不推荐 | 推荐 |
 
-# 2.Spring AMQP中的事务配置
+# 2. Spring AMQP中的事务配置
 
-## 2.1开启事务支持
+## 2.1 开启事务支持
 ```java
 @Bean
 public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
@@ -53,7 +53,7 @@ spring:
       channel-transacted: true
 ```
 
-## 2.2使用@Transactional管理事务
+## 2.2 使用@Transactional管理事务
 Spring AMQP可以与Spring事务管理集成，通过`@Transactional`注解声明式管理RabbitMQ事务：
 
 ```java
@@ -82,7 +82,7 @@ public class TransactionalMessageService {
 }
 ```
 
-## 2.3配置RabbitTransactionManager
+## 2.3 配置RabbitTransactionManager
 ```java
 @Bean
 public RabbitTransactionManager rabbitTransactionManager(
@@ -91,7 +91,7 @@ public RabbitTransactionManager rabbitTransactionManager(
 }
 ```
 
-## 2.4使用TransactionTemplate编程式事务
+## 2.4 使用TransactionTemplate编程式事务
 ```java
 @Service
 public class ProgrammaticTxService {
@@ -120,9 +120,9 @@ public class ProgrammaticTxService {
 }
 ```
 
-# 3.分布式事务：数据库 + MQ
+# 3. 分布式事务：数据库 + MQ
 
-## 3.1问题场景
+## 3.1 问题场景
 常见的分布式事务场景：
 
 ```
@@ -131,12 +131,12 @@ public class ProgrammaticTxService {
 
 如何保证数据库写入和MQ发送两个操作的一致性？如果在数据库写入成功后MQ发送失败（或反过来），就会出现数据不一致。
 
-## 3.2解决方案
+## 3.2 解决方案
 
-### 3.2.1半消息 + 事务回查（RocketMQ原生支持）
+### 3.2.1 半消息 + 事务回查（RocketMQ原生支持）
 RocketMQ原生支持事务消息，RabbitMQ没有这种能力。可以用以下方案替代。
 
-### 3.2.2本地消息表（最经典的方案）
+### 3.2.2 本地消息表（最经典的方案）
 ```
 1. 在数据库中创建一个"消息发送表"（message_log）
 2. 同一事务中操作：
@@ -231,7 +231,7 @@ public class OrderServiceWithMessageTable {
 }
 ```
 
-### 3.2.3定时补偿任务
+### 3.2.3 定时补偿任务
 ```java
 @Component
 public class MessageCompensationTask {
@@ -277,9 +277,9 @@ public class MessageCompensationTask {
 }
 ```
 
-# 4.RabbitMQ事务的底层原理
+# 4. RabbitMQ事务的底层原理
 
-## 4.1AMQP事务命令
+## 4.1 AMQP事务命令
 AMQP协议定义了以下事务相关命令：
 
 | AMQP命令 | 说明 |
@@ -288,7 +288,7 @@ AMQP协议定义了以下事务相关命令：
 | tx.commit | 提交当前事务 |
 | tx.rollback | 回滚当前事务 |
 
-## 4.2事务的底层流程
+## 4.2 事务的底层流程
 ```
 Client (Producer)                    Broker (RabbitMQ)
       |                                    |
@@ -302,15 +302,15 @@ Client (Producer)                    Broker (RabbitMQ)
       |<------ tx.commit-ok --------------|  确认提交成功
 ```
 
-## 4.3事务的局限性
+## 4.3 事务的局限性
 1. **性能极差**：同步等待，无法批量确认
 2. **不支持消费者事务**：AMQP事务只在生产者端有意义，消费者的事务通常用数据库事务代替
 3. **不支持跨Channel事务**：事务范围仅限于单个Channel
 4. **与高可用不兼容**：事务模式下无法使用Publisher Confirm
 
-# 5.可靠消息方案的演进
+# 5. 可靠消息方案的演进
 
-## 5.1方案对比
+## 5.1 方案对比
 | 方案 | 一致性 | 性能 | 复杂度 | 适用场景 |
 |------|--------|------|--------|---------|
 | AMQP事务 | 强一致 | 极低 | 低 | 几乎不推荐 |
@@ -319,7 +319,7 @@ Client (Producer)                    Broker (RabbitMQ)
 | 事务消息（RocketMQ）| 最终一致 | 较高 | 中 | 核心业务 |
 | 最大努力通知 | 弱一致 | 高 | 低 | 非核心通知 |
 
-## 5.2推荐方案
+## 5.2 推荐方案
 对于大多数Spring AMQP + RabbitMQ的分布式场景，推荐使用**本地消息表 + Publisher Confirm + 定时补偿**方案：
 - 满足最终一致性要求
 - 性能较好

@@ -1,16 +1,16 @@
-# 1.javassist的使用
+# 1. javassist的使用
 
-## 1.1介绍
+## 1.1 介绍
 ```
 Javassist（Java Programming Assistant）是一个用于处理 Java 字节码的开源库。它允许开发者在运行时（Run-time）动态地创建、检查和修改 Java 类，而无需了解底层的字节码规范。
 ```
-## 1.2定义
+## 1.2 定义
 ```
 定义: Javassist 是一个高性能的 Java 字节码工程库（Bytecode Engineering Library）。
 
 目标: 简化字节码操作的复杂性。与 ASM 或 ByteBuddy 等库不同，Javassist 允许开发者使用高层级的 Java 源代码形式来定义或修改类结构，而不是直接操作底层的 JVM 指令。
 ```
-## 1.3核心能力
+## 1.3 核心能力
 ```
 动态创建: 在内存中从零开始定义新的类。
 
@@ -18,7 +18,7 @@ Javassist（Java Programming Assistant）是一个用于处理 Java 字节码的
 
 方法织入: 在现有方法的开始、结束或环绕（around）添加代码片段（AOP 基础）。
 ```
-## 1.4关键概念与类
+## 1.4 关键概念与类
 ```
 ClassPool	类的容器，负责查找、读取和存储 CtClass 实例。它类似于 JVM 的 ClassLoader。
 CtClass	"Compile-time Class" 的缩写。它是 Javassist 中类的抽象表示，提供了修改类结构的方法。
@@ -26,7 +26,7 @@ CtMethod	"Compile-time Method"。用于表示和操作类中的方法。
 CtField	"Compile-time Field"。用于表示和操作类中的字段。
 ```
 
-## 1.5常见用途 (Use Cases)
+## 1.5 常见用途 (Use Cases)
 ```
 AOP (面向切面编程): Spring 框架等在使用 Javassist 或类似的字节码技术，在运行时为 Service 等对象生成代理类，以实现事务、日志记录等横切关注点。
 
@@ -36,7 +36,7 @@ ORM/持久化框架: 有些 ORM 框架利用字节码技术动态地为实体类
 
 热部署/Hotswap: 允许在不重启应用的情况下替换和更新已加载的类定义。
 ```
-# 2.使用javassist生成DaoImpl类
+# 2. 使用javassist生成DaoImpl类
 
 ```
 package com.ziv.bank.utils;

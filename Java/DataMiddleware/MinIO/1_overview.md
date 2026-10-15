@@ -1,10 +1,10 @@
-# 1.认识MinIO
+# 1. 认识MinIO
 
-## 1.1存储系统基础概念
+## 1.1 存储系统基础概念
 
 在理解 MinIO 之前，需要先理解三种基本存储形态：
 
-### 块存储（Block Storage）
+### 1.1.1 块存储（Block Storage）
 块存储将存储设备上的原始存储空间划分为大小固定的块（Block），每块有唯一地址，操作系统直接读写块设备。
 
 - 代表产品：SAN (Storage Area Network)、iSCSI、AWS EBS、Ceph RBD
@@ -19,7 +19,7 @@
 磁盘阵列 (RAID)
 ```
 
-### 文件存储（File Storage）
+### 1.1.2 文件存储（File Storage）
 在块存储之上叠加文件系统层，以目录树和文件的形式组织数据，通过 NFS/CIFS 等网络协议共享。
 
 - 代表产品：NFS、NAS、CephFS、AWS EFS、GlusterFS
@@ -36,7 +36,7 @@
 磁盘阵列
 ```
 
-### 对象存储（Object Storage）
+### 1.1.3 对象存储（Object Storage）
 对象存储摒弃了传统的目录树结构，将所有数据作为"对象"管理在扁平的命名空间（Bucket）中。每个对象包含：
 - **数据本身**（任意二进制数据）
 - **元数据**（自定义属性，如 Content-Type、标签等）
@@ -56,7 +56,7 @@ Erasure Coding / 分布式块存储
 物理磁盘 (JBOD，无需RAID)
 ```
 
-### 三种存储形态对比
+### 1.1.4 三种存储形态对比
 
 | 维度 | 块存储 | 文件存储 | 对象存储 |
 |------|--------|----------|----------|
@@ -71,21 +71,21 @@ Erasure Coding / 分布式块存储
 
 ---
 
-## 1.2什么是MinIO
+## 1.2 什么是MinIO
 
 MinIO 是一个高性能、Kubernetes 原生、S3 兼容的对象存储系统，使用 Go 语言编写，采用 Apache License 2.0 开源协议（AGPLv3 用于商业再分发）。
 
-### 设计哲学
+### 1.2.1 设计哲学
 MinIO 的设计理念是 **"简单即高效"**：
 - 单个静态二进制文件，无外部依赖，部署只需一条命令
 - 不依赖外部数据库存储元数据（元数据与对象数据一同存储在内置的 xl.meta 中）
 - 通过 Erasure Coding（纠删码）替代 RAID，在软件层面实现数据保护
 - 原生支持 S3 API，与 AWS S3 SDK 完全兼容，降低迁移成本
 
-### 创始人背景
+### 1.2.2 创始人背景
 MinIO 由 Garima Kapoor、Anand Babu Periasamy 和 Harshavardhana（社区通称"harsha"）于 2014 年创立。核心团队曾参与 GlusterFS 项目开发，在分布式存储领域拥有深厚积累。创始团队总结了 GlusterFS 的复杂性问题，决定打造一个极致简单的对象存储系统。
 
-### 核心特性一览
+### 1.2.3 核心特性一览
 
 | 特性 | 说明 |
 |------|------|
@@ -107,9 +107,9 @@ MinIO 由 Garima Kapoor、Anand Babu Periasamy 和 Harshavardhana（社区通称
 
 ---
 
-## 1.3MinIO 与同类产品的对比
+## 1.3 MinIO 与同类产品的对比
 
-### MinIO vs AWS S3
+### 1.3.1 MinIO vs AWS S3
 
 | 维度 | MinIO | AWS S3 |
 |------|-------|--------|
@@ -125,7 +125,7 @@ MinIO 由 Garima Kapoor、Anand Babu Periasamy 和 Harshavardhana（社区通称
 
 **选型建议**：MinIO 适合对数据主权、低延迟、高吞吐有要求的私有云/混合云/边缘场景，或需要控制成本的场景。AWS S3 适合完全不需要管理基础设施的全托管场景。
 
-### MinIO vs Ceph (RADOS Gateway)
+### 1.3.2 MinIO vs Ceph (RADOS Gateway)
 
 | 维度 | MinIO | Ceph RGW |
 |------|-------|----------|
@@ -140,7 +140,7 @@ MinIO 由 Garima Kapoor、Anand Babu Periasamy 和 Harshavardhana（社区通称
 
 **选型建议**：如果只需要对象存储，MinIO 的部署和维护成本远低于 Ceph。如果需要块+文件+对象统一存储，Ceph 是更好的选择。
 
-### MinIO vs OpenStack Swift
+### 1.3.3 MinIO vs OpenStack Swift
 
 | 维度 | MinIO | Swift |
 |------|-------|------|
@@ -150,7 +150,7 @@ MinIO 由 Garima Kapoor、Anand Babu Periasamy 和 Harshavardhana（社区通称
 | 生态 | 独立生态，K8s 原生 | OpenStack 生态 |
 | 社区趋势 | 持续增长 | 逐渐衰退（被 Ceph RGW 替代） |
 
-### MinIO vs SeaweedFS
+### 1.3.4 MinIO vs SeaweedFS
 
 | 维度 | MinIO | SeaweedFS |
 |------|-------|-----------|
@@ -162,9 +162,9 @@ MinIO 由 Garima Kapoor、Anand Babu Periasamy 和 Harshavardhana（社区通称
 
 ---
 
-## 1.4MinIO 架构概览
+## 1.4 MinIO 架构概览
 
-### 整体架构
+### 1.4.1 整体架构
 MinIO 采用**无共享（Shared Nothing）**架构，每个节点都是对等的，不存在独立的元数据服务器。这种架构消除了单点瓶颈和单点故障。
 
 ```text
@@ -192,7 +192,7 @@ MinIO 采用**无共享（Shared Nothing）**架构，每个节点都是对等�
          (节点发现、状态同步、故障检测)
 ```
 
-### 组件说明
+### 1.4.2 组件说明
 
 | 组件 | 职责 |
 |------|------|
@@ -202,7 +202,7 @@ MinIO 采用**无共享（Shared Nothing）**架构，每个节点都是对等�
 | MinIO Operator | Kubernetes Operator，管理 MinIO Tenant（租户）的生命周期（创建、扩缩容、升级、备份）。 |
 | KES | Key Encryption Service，用于 SSE-KMS 场景的密钥管理服务，支持 HashiCorp Vault 等后端。 |
 
-### Server Pool（服务器池）概念
+### 1.4.3 Server Pool（服务器池）概念
 
 从 MinIO RELEASE.2021-04-22T15-44-28Z 开始，引入 Server Pool 概念：
 
@@ -218,7 +218,7 @@ Cluster
 └── Pool 2: 8 nodes × 2 drives = 16 drives (EC: 8+8)  ← 再次扩容
 ```
 
-### 数据写入流程（简化）
+### 1.4.4 数据写入流程（简化）
 
 ```text
 客户端 PUT /bucket/object
@@ -242,7 +242,7 @@ Cluster
   等待 N/2+1 个写入确认 → 返回成功
 ```
 
-### 数据读取流程（简化）
+### 1.4.5 数据读取流程（简化）
 
 ```text
 客户端 GET /bucket/object
@@ -265,7 +265,7 @@ Cluster
 
 ---
 
-## 1.5MinIO版本历史
+## 1.5 MinIO版本历史
 
 | 版本 | 发布时间 | 关键特性 |
 |------|----------|----------|
@@ -284,9 +284,9 @@ Cluster
 
 ---
 
-## 1.6MinIO适用场景与不适用场景
+## 1.6 MinIO适用场景与不适用场景
 
-### 适用场景
+### 1.6.1 适用场景
 
 | 场景 | 说明 | 典型案例 |
 |------|------|----------|
@@ -299,7 +299,7 @@ Cluster
 | **边缘计算** | 边缘节点本地存储，轻量级部署 | 工业IoT数据采集、CDN边缘缓存 |
 | **DevOps/CI/CD** | 制品、构建缓存、测试数据存储 | Maven/NPM/Docker Registry 替代后端 |
 
-### 不适用场景
+### 1.6.2 不适用场景
 
 | 场景 | 原因 | 替代方案 |
 |------|------|----------|
@@ -310,7 +310,7 @@ Cluster
 | **极小文件（< 1KB）且数量极大** | 每个对象的元数据占 2-4KB，小文件过多会导致存储放大 | 数据库、列式存储 |
 | **目录层级深度嵌套** | MinIO 是平面命名空间，"目录"只是 Key 前缀的显示效果 | 文件存储 |
 
-### 对象存储中的"目录"机制
+### 1.6.3 对象存储中的"目录"机制
 
 MinIO 是平面命名空间，**不存在真正的目录**。`photos/2024/vacation/pic.jpg` 中的 `/` 是 Key 名称的一部分。
 
@@ -339,11 +339,11 @@ for (Result<Item> result : results) {
 
 ---
 
-## 1.7S3 API 协议简介
+## 1.7 S3 API 协议简介
 
 MinIO 的核心价值之一是**兼容 AWS S3 API**。理解 S3 API 有助于深入使用 MinIO。
 
-### S3 API 的基本要素
+### 1.7.1 S3 API 的基本要素
 
 | 要素 | 说明 | 示例 |
 |------|------|------|
@@ -354,7 +354,7 @@ MinIO 的核心价值之一是**兼容 AWS S3 API**。理解 S3 API 有助于深
 | Metadata | 用户自定义的键值对（x-amz-meta-前缀） | `x-amz-meta-author: john` |
 | ACL | 访问控制列表（MinIO 建议使用 IAM Policy 而非 ACL） | `private`, `public-read` |
 
-### S3 API 核心操作分类
+### 1.7.2 S3 API 核心操作分类
 
 ```text
 Service API (服务级别)
@@ -412,7 +412,7 @@ Presigned URL
 ├── PresignedGetObject   生成预签名下载URL
 ```
 
-### 签名版本
+### 1.7.3 签名版本
 
 MinIO 支持两种 AWS 签名版本：
 
@@ -431,11 +431,11 @@ V4 签名流程：
 
 ---
 
-## 1.8知识储备
+## 1.8 知识储备
 
 学习 MinIO 之前，建议具备以下基础：
 
-### 必备基础
+### 1.8.1 必备基础
 - **HTTP/REST API**：理解 HTTP 方法（GET/PUT/DELETE/HEAD）、状态码、请求/响应头
 - **AWS S3 基础概念**：Bucket、Object、Key、Region、AccessKey/SecretKey 的基本认知
 - **Java SE**：基础语法、IO流、文件操作
@@ -443,7 +443,7 @@ V4 签名流程：
 - **Docker**：基础镜像操作（pull、run、compose）
 - **Linux**：基础命令（文件管理、进程管理、网络配置）
 
-### 可选基础
+### 1.8.2 可选基础
 - **Kubernetes**：学习 Operator 部署和 Tenant 管理时需要
 - **Prometheus + Grafana**：学习监控告警时需要
 - **分布式系统理论**：CAP 定理、Quorum 机制、一致性哈希等（理解分布式部署时非常有帮助）
@@ -451,7 +451,7 @@ V4 签名流程：
 
 ---
 
-## 1.9本笔记使用的版本
+## 1.9 本笔记使用的版本
 
 | 组件 | 版本 |
 |------|------|

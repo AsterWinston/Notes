@@ -1,4 +1,4 @@
-# 1.代码生成
+# 1. 代码生成
 
 Mybatis-Plus 提供了强大的代码生成器，可以根据数据库表自动生成 Entity、Mapper、Service、Controller 等代码。
 
@@ -175,7 +175,7 @@ public class InteractiveCodeGenerator {
 
 ---
 
-# 2.静态工具（Db 类）
+# 2. 静态工具（Db 类）
 
 Mybatis-Plus 3.5.1+ 提供了 `Db` 静态工具类，无需注入 Mapper 即可在任何位置操作数据库。
 
@@ -271,7 +271,7 @@ public class DbUtilsExample {
 
 ---
 
-# 3.逻辑删除
+# 3. 逻辑删除
 
 逻辑删除指的是在数据库中不真正删除记录，而是通过一个字段标记记录是否被删除。查询时自动过滤已删除记录。
 
@@ -340,7 +340,7 @@ userMapper.updateById(user);
 
 ---
 
-# 4.枚举处理器
+# 4. 枚举处理器
 
 Mybatis-Plus 提供了枚举类型与数据库值之间的自动转换功能，避免手动进行枚举与 Integer/String 的转换。
 
@@ -470,7 +470,7 @@ public enum AgeEnum implements IEnum<Integer> {
 
 ---
 
-# 5.JSON 处理器
+# 5. JSON 处理器
 
 当数据库字段类型为 JSON（MySQL 5.7+ 支持）或 text/varchar 存储 JSON 字符串时，MP 提供了 JSON 类型处理器，自动进行 Java 对象与 JSON 字符串之间的转换。
 

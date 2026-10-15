@@ -56,9 +56,9 @@ public class Dog {
 
 ```
 
-# 源码解析：Spring XML 命名空间机制
+# 2. 源码解析：Spring XML 命名空间机制
 
-## 1. NamespaceHandler — 自定义命名空间的背后
+## 2.1 NamespaceHandler — 自定义命名空间的背后
 
 ```
 <p:name="小花" />、<c:_0="张三" />、<util:properties>、<context:component-scan> 等
@@ -92,7 +92,7 @@ if (delegate.isDefaultNamespace(ele)) {
 }
 ```
 
-## 2. ContextNamespaceHandler — 处理 <context:> 标签
+## 2.2 ContextNamespaceHandler — 处理 <context:> 标签
 
 ```
 public class ContextNamespaceHandler extends NamespaceHandlerSupport {
@@ -138,7 +138,7 @@ public BeanDefinition parse(Element element, ParserContext parserContext) {
 }
 ```
 
-## 3. p/c 命名空间的处理机制
+## 2.3 p/c 命名空间的处理机制
 
 ```
 p/c 命名空间没有对应的 NamespaceHandler，而是由 BeanDefinitionParserDelegate 直接处理。
@@ -199,7 +199,7 @@ public BeanDefinitionHolder decorateBeanDefinitionIfRequired(
   二者在 XML 解析时被转换为相同的内部表示（TypedStringValue / RuntimeBeanReference）
 ```
 
-## 4. util 命名空间的处理机制
+## 2.4 util 命名空间的处理机制
 
 ```
 util-namespace 有对应的 NamespaceHandler：
@@ -249,7 +249,7 @@ public class PropertiesBeanDefinitionParser extends AbstractSingleBeanDefinition
   → 注册到 beanDefinitionMap["prop"]
 ```
 
-## 5. 设计思想总结
+## 2.5 设计思想总结
 
 1. 策略模式 + 注册表模式（NamespaceHandler）：
    每个 XML 命名空间对应一个 NamespaceHandler，每个标签对应一个 BeanDefinitionParser。

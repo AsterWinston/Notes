@@ -1,4 +1,4 @@
-# 1.什么是跨域（CORS）
+# 1. 什么是跨域（CORS）
 ```
 跨域，全称Cross-Origin Resource Sharing（跨域资源共享），是浏览器的一种安全机制。
 
@@ -29,7 +29,7 @@
 因此需要后端配置CORS策略，允许来自前端地址的请求。
 ```
 
-# 2.CORS的工作原理
+# 2. CORS的工作原理
 ```
 2.1 简单请求和预检请求：
 浏览器将跨域请求分为两类：
@@ -70,7 +70,7 @@
 | Access-Control-Max-Age | 预检请求缓存时间 |
 ```
 
-# 3.@CrossOrigin注解（局部跨域配置）
+# 3. @CrossOrigin注解（局部跨域配置）
 ```
 SpringMVC提供了@CrossOrigin注解，可以在Controller类或方法上配置跨域策略。
 
@@ -118,7 +118,7 @@ public class UserController {
 ● @CrossOrigin只在SpringMVC管理的请求中生效（被DispatcherServlet拦截的请求）
 ```
 
-# 4.全局CORS配置（推荐）
+# 4. 全局CORS配置（推荐）
 ```
 当项目中有很多Controller需要配置跨域时，逐个添加@CrossOrigin会很繁琐。
 推荐使用全局CORS配置，一次性为所有接口设置跨域策略。
@@ -168,7 +168,7 @@ public class CorsConfig implements WebMvcConfigurer {
 ● allowedOrigins不能和allowCredentials(true)同时使用*，否则浏览器会拒绝
 ```
 
-# 5.跨域问题常见场景和解决方案
+# 5. 跨域问题常见场景和解决方案
 ```
 5.1 场景一：前端Axios请求携带Cookie
 默认情况下，Axios的跨域请求不会携带Cookie。
@@ -223,7 +223,7 @@ registry.addInterceptor(authInterceptor)
         .excludePathPatterns("/login", "/register");  // 预检是自动的，不影响
 ```
 
-# 6.生产环境的CORS建议
+# 6. 生产环境的CORS建议
 ```
 1. 不要使用 allowedOrigins("*")：
    生产环境必须明确指定允许的域名，如："https://www.yourdomain.com"

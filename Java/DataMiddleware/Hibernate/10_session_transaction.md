@@ -30,7 +30,7 @@ public interface Session extends SharedSessionContract, EntityManager {
 }
 ```
 
-### JPA EntityManager 与 Hibernate Session 的关系
+### 1.1.1 JPA EntityManager 与 Hibernate Session 的关系
 
 Session 接口直接继承了 `javax.persistence.EntityManager`，因此 Session 就是 EntityManager。在 Hibernate 5.x+ 中，两者完全等同：
 
@@ -49,7 +49,7 @@ EntityManager em = (EntityManager) session;
 
 Hibernate 内部的实际实现类是 `SessionImpl`，它同时实现了 `Session` 接口和 `SessionImplementor` 内部接口。`SessionImplementor` 供 Hibernate 内部模块调用，暴露更多底层细节（如 PersistenceContext、JDBC 协调器等），不推荐应用代码直接使用。
 
-### 线程安全性
+### 1.1.2 线程安全性
 
 Session 不是线程安全的。一个 Session 实例同一时刻只能由一个线程访问。多个线程共享同一个 Session 会导致数据混乱、脏检查异常。正确做法是为每个线程/请求创建独立的 Session：
 
@@ -89,7 +89,7 @@ configuration.addAnnotatedClass(Order.class);
 SessionFactory sessionFactory = configuration.buildSessionFactory();
 ```
 
-### 创建成本分析
+### 1.2.1 创建成本分析
 
 1. **解析映射元数据（ORM 元模型）**：读取 hbm.xml 或注解，构建 `EntityPersister`、`CollectionPersister`
 2. **构建 Persister 对象**：每个实体生成一个 `EntityPersister`（如 `SingleTableEntityPersister`），缓存 CRUD SQL 模板、字段映射
@@ -120,7 +120,7 @@ public class SessionFactoryImpl implements SessionFactoryImplementor {
 }
 ```
 
-### 与 JPA EntityManagerFactory 的关系
+### 1.2.2 与 JPA EntityManagerFactory 的关系
 
 Hibernate 的 `SessionFactory` 接口继承了 `javax.persistence.EntityManagerFactory`，二者完全互通：
 
@@ -139,7 +139,7 @@ SessionFactory sf = new Configuration().configure().buildSessionFactory();
 EntityManagerFactory emf = (EntityManagerFactory) sf;
 ```
 
-### 关闭与资源释放
+### 1.2.3 关闭与资源释放
 
 SessionFactory 关闭时会释放所有底层资源：
 
@@ -178,7 +178,7 @@ public class HibernateConfig {
 
 ## 1.3 Persistence Context 的核心职责
 
-### 实体身份保证
+### 1.3.1 实体身份保证
 
 在同一个 Persistence Context 范围内，同一数据库行始终映射到同一个 Java 对象实例（按 ID 和实体类型保证唯一性）：
 
@@ -200,7 +200,7 @@ try {
 
 这一特性避免了数据不一致：修改 `u1` 的字段后，通过 `u2` 读到的就是修改后的值（因为是同一个对象），无需担心 `u1` 和 `u2` 分别持有不同版本的数据。
 
-### 脏检查（Dirty Checking）
+### 1.3.2 脏检查（Dirty Checking）
 
 Persistence Context 在加载实体时保存一份快照（snapshot）。Flush 时，Hibernate 对比实体当前状态与快照，自动生成 UPDATE 语句，开发者无需显式调用 `session.update()`：
 
@@ -223,7 +223,7 @@ SELECT * FROM users WHERE id = 1;
 UPDATE users SET name = 'New Name', email = 'new@example.com' WHERE id = 1;
 ```
 
-### 写后延迟（Write-Behind）
+### 1.3.3 写后延迟（Write-Behind）
 
 所有持久化操作（INSERT、UPDATE、DELETE）先在 Persistence Context 的内存中缓存，记录到 ActionQueue 中。直到 Flush 时，才将累积的操作按正确顺序批量发送到数据库：
 
@@ -245,7 +245,7 @@ session.close();
 - 优化 SQL 执行顺序以遵守外键约束
 - 合并相邻的同类型操作
 
-### 自动版本检查（乐观锁）
+### 1.3.4 自动版本检查（乐观锁）
 
 对使用 `@Version` 的实体，Hibernate 在 UPDATE 和 DELETE 时自动在 WHERE 子句中追加版本号条件，并在 SET 中递增版本号：
 
@@ -255,11 +255,11 @@ session.close();
 // 若 version 不匹配（已被其他事务修改），UPDATE 影响 0 行 → OptimisticLockException
 ```
 
-### 级联操作传播
+### 1.3.5 级联操作传播
 
 Persistence Context 根据级联设置（`CascadeType`），将操作从父实体传播到关联子实体。
 
-### 持久化上下文清理（clear）
+### 1.3.6 持久化上下文清理（clear）
 
 调用 `session.clear()` 会清空整个 Persistence Context，所有被管理的实体变为游离态，快照也被丢弃：
 
@@ -289,7 +289,7 @@ Hibernate/JPA 定义实体实例在 Persistence Context 中的生命周期有四
 | Detached（游离态） | 有 | 有 | 否 | 否 |
 | Removed（删除态） | 有 | 有（待删） | 是 | 否 |
 
-### Transient（瞬时态）
+### 2.1.1 Transient（瞬时态）
 
 通过 `new` 创建，尚未与任何 Persistence Context 关联，数据库中没有对应记录：
 
@@ -299,7 +299,7 @@ User user = new User("John");
 // 调用 persist(user) 后转为托管态
 ```
 
-### Managed/Persistent（托管态）
+### 2.1.2 Managed/Persistent（托管态）
 
 实体已与 Persistence Context 关联，由 Hibernate 管理其生命周期。所有属性变更都会被脏检查监控，在 Flush 时自动同步到数据库：
 
@@ -309,7 +309,7 @@ user.setName("Updated");                    // 修改被监控
 // flush 时自动 UPDATE
 ```
 
-### Detached（游离态）
+### 2.1.3 Detached（游离态）
 
 实体曾经与 Persistence Context 关联，但 Session 已关闭或实体被显式脱管（evict/detach）。数据库仍有对应记录，但不再被监控：
 
@@ -322,7 +322,7 @@ user.setName("Change");  // 不会自动同步到数据库
 
 游离态实体的常用场景：在 Web 层编辑、跨请求传输实体 → 再通过 `merge()` 重新同步回数据库。
 
-### Removed（删除态）
+### 2.1.4 Removed（删除态）
 
 实体被标记为待删除，仍然受 Persistence Context 管理，但在 Flush 时将执行 DELETE 语句：
 
@@ -987,7 +987,7 @@ session.close();
 
 ## 3.4 脏检查机制（Dirty Checking）
 
-### 原理
+### 3.4.1 原理
 
 脏检查的核心机制：Persistence Context 在加载实体时保存一份属性值快照（snapshot）。在 Flush 时，逐个比较当前实体属性值与快照，发现差异则生成 UPDATE：
 
@@ -1018,7 +1018,7 @@ public void dirtyCheck(EntityEntry entry, Object entity) {
 }
 ```
 
-### 比较策略
+### 3.4.2 比较策略
 
 **默认：全字段深度比较**——遍历每个属性，调用 Hibernate Type 的 `isEqual()` 方法：
 
@@ -1067,7 +1067,7 @@ public class User {
 // </plugin>
 ```
 
-### 性能影响与优化
+### 3.4.3 性能影响与优化
 
 **问题场景：** 每个托管实体 Flush 时都要遍历所有属性进行等值比较，当 Persistence Context 中有大量实体时开销显著。
 
@@ -1322,7 +1322,7 @@ session.close();
 
 ## 4.3 Spring 中的 Session 管理
 
-### SpringSessionContext
+### 4.3.1 SpringSessionContext
 
 Spring 框架提供了自己的 `CurrentSessionContext` 实现——`SpringSessionContext`，与 Spring 事务管理器集成：
 
@@ -1347,7 +1347,7 @@ public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
 }
 ```
 
-### @Transactional 管理 Session
+### 4.3.2 @Transactional 管理 Session
 
 ```java
 @Service
@@ -1372,7 +1372,7 @@ public class UserService {
 }
 ```
 
-### HibernateTransactionManager
+### 4.3.3 HibernateTransactionManager
 
 Spring 的 `HibernateTransactionManager` 负责协调 Hibernate Session 与 Spring 事务：
 
@@ -1398,7 +1398,7 @@ public class AppConfig {
 }
 ```
 
-### 完整 Spring + Hibernate Session 管理示例
+### 4.3.4 完整 Spring + Hibernate Session 管理示例
 
 ```java
 @Configuration
@@ -1543,7 +1543,7 @@ public class UserService {
 
 ## 5.1 事务基础概念
 
-### ACID 属性
+### 5.1.1 ACID 属性
 
 | 属性 | 含义 | Hibernate 中的体现 |
 |------|------|-------------------|
@@ -1552,7 +1552,7 @@ public class UserService {
 | Isolation（隔离性） | 并发事务互不干扰 | 隔离级别 + 乐观锁/悲观锁 |
 | Durability（持久性） | 提交后永久保存 | 数据库保证（WAL、Redo Log） |
 
-### 事务隔离级别
+### 5.1.2 事务隔离级别
 
 ```java
 // JDBC 定义的四种隔离级别
@@ -1569,7 +1569,7 @@ Connection.TRANSACTION_SERIALIZABLE      // 8 — 最高隔离，防所有并发
 | REPEATABLE_READ | ✗ | ✗ | ✓（部分数据库不防） |
 | SERIALIZABLE | ✗ | ✗ | ✗ |
 
-### 在 Hibernate 中配置隔离级别
+### 5.1.3 在 Hibernate 中配置隔离级别
 
 ```java
 // 方式 1：Hibernate 属性
@@ -1767,7 +1767,7 @@ try {
 
 JTA 用于分布式事务场景，协调多个资源（多个数据库、消息队列等）在同一事务中操作。
 
-### 两阶段提交（2PC）简介
+### 5.4.1 两阶段提交（2PC）简介
 
 ```
 Phase 1 — 准备阶段（Prepare）：
@@ -1779,7 +1779,7 @@ Phase 2 — 提交阶段（Commit）：
   任一 RM 返回 fail → TransactionManager 发送 rollback 指令
 ```
 
-### Hibernate 与 JTA 集成配置
+### 5.4.2 Hibernate 与 JTA 集成配置
 
 ```xml
 <!-- persistence.xml -->
@@ -1796,7 +1796,7 @@ Phase 2 — 提交阶段（Commit）：
 </persistence-unit>
 ```
 
-### 常见 JTA 实现
+### 5.4.3 常见 JTA 实现
 
 **Atomikos（独立 JTA 实现，适合 Spring Boot）：**
 
@@ -1874,7 +1874,7 @@ public class CrossDbService {
 
 ## 5.5 Spring 事务集成
 
-### @Transactional 注解
+### 5.5.1 @Transactional 注解
 
 ```java
 @Service
@@ -1905,7 +1905,7 @@ public class OrderService {
 }
 ```
 
-### 事务传播行为
+### 5.5.2 事务传播行为
 
 | 传播行为 | 说明 | 典型场景 |
 |---------|------|---------|
@@ -1950,7 +1950,7 @@ public class OrderService {
 }
 ```
 
-### 只读事务优化
+### 5.5.3 只读事务优化
 
 ```java
 @Service
@@ -2494,7 +2494,7 @@ public class SessionPerRequestFilter implements Filter {
 }
 ```
 
-### Open Session in View（OSIV）模式
+### 8.1.1 Open Session in View（OSIV）模式
 
 **原理：** 请求开始打开 Session，请求完全结束（包括视图渲染）后才关闭。使得视图层可以触发懒加载：
 

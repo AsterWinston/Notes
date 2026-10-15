@@ -28,7 +28,7 @@ Hibernate 关联映射的核心任务，就是在这两种范式之间建立桥�
 
 ## 1.2 关联的方向性
 
-### 单向关联（Unidirectional）
+### 1.2.1 单向关联（Unidirectional）
 
 只有一方持有对另一方的引用。数据库中外键在哪一方取决于映射配置。
 
@@ -52,7 +52,7 @@ public class Order {
 }
 ```
 
-### 双向关联（Bidirectional）
+### 1.2.2 双向关联（Bidirectional）
 
 双方互相持有对方的引用。但在数据库中，外键仍然只存在于一方（或中间表）——这就是"拥有方"概念的来源。
 
@@ -745,7 +745,7 @@ CREATE TABLE order_item (
 );
 ```
 
-### FetchType 对查询的影响
+### 3.1.1 FetchType 对查询的影响
 
 ```java
 // @ManyToOne 默认 EAGER → 执行 LEFT OUTER JOIN，一条 SQL 查出所有数据
@@ -1039,7 +1039,7 @@ INSERT INTO order_item (product_name, quantity, unit_price, order_id) VALUES (?,
 UPDATE orders SET total_amount = ? WHERE id = ?;
 ```
 
-### 循环引用风险
+### 3.3.1 循环引用风险
 
 ```java
 // ❌ 危险：toString() 循环引用 → StackOverflowError

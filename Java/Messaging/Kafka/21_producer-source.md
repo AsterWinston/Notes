@@ -1,4 +1,4 @@
-# 1 源码分析总览
+# 1. 源码分析总览
 
 ## 1.1 源码环境准备
 
@@ -45,7 +45,7 @@ KafkaProducer
 └── TransactionManager (事务管理, 可选)
 ```
 
-# 2 KafkaProducer 初始化
+# 2. KafkaProducer 初始化
 
 ## 2.1 构造器分析
 
@@ -147,7 +147,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
 
 > 文件位置: `clients/src/main/java/org/apache/kafka/clients/producer/KafkaProducer.java:120`
 
-# 3 send() 方法核心链路
+# 3. send() 方法核心链路
 
 ## 3.1 KafkaProducer.send()
 
@@ -280,7 +280,7 @@ public int partition(String topic, Object key, byte[] keyBytes,
 
 > 文件位置: `clients/src/main/java/org/apache/kafka/clients/producer/internals/DefaultPartitioner.java:70`
 
-# 4 RecordAccumulator 内部机制
+# 4. RecordAccumulator 内部机制
 
 ## 4.1 追加逻辑 append()
 
@@ -416,7 +416,7 @@ public class BufferPool {
 
 > 文件位置: `clients/src/main/java/org/apache/kafka/clients/producer/internals/BufferPool.java:93`
 
-# 5 Sender 线程核心逻辑
+# 5. Sender 线程核心逻辑
 
 ## 5.1 Sender.run()
 
@@ -543,7 +543,7 @@ private void sendProduceRequests(Map<Integer, List<ProducerBatch>> collated, lon
 
 > 文件位置: `clients/src/main/java/org/apache/kafka/clients/producer/internals/Sender.java:597`
 
-# 6 幂等与事务源码分析
+# 6. 幂等与事务源码分析
 
 ## 6.1 幂等 Sequence Number 管理
 
@@ -623,7 +623,7 @@ public class TransactionManager {
 
 > 文件位置: `clients/src/main/java/org/apache/kafka/clients/producer/internals/TransactionManager.java:120`
 
-# 7 关键并发设计分析
+# 7. 关键并发设计分析
 
 ## 7.1 生产者线程模型
 

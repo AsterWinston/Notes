@@ -1,6 +1,6 @@
-# 1.Spring Boot 整合 MinIO — 基础篇
+# 1. Spring Boot 整合 MinIO — 基础篇
 
-## 1.1创建项目与引入依赖
+## 1.1 创建项目与引入依赖
 
 ```xml
 <parent>
@@ -49,7 +49,7 @@
 </dependencies>
 ```
 
-## 1.2application.yml 配置
+## 1.2 application.yml 配置
 
 ```yaml
 spring:
@@ -66,7 +66,7 @@ minio:
   bucket-name: my-app-bucket
 ```
 
-## 1.3MinioClient 配置类
+## 1.3 MinioClient 配置类
 
 ```java
 import io.minio.MinioClient;
@@ -109,9 +109,9 @@ public class MinioProperties {
 
 ---
 
-# 2.文件服务封装 — 基础版本
+# 2. 文件服务封装 — 基础版本
 
-## 2.1通用文件服务接口
+## 2.1 通用文件服务接口
 
 ```java
 public interface FileService {
@@ -139,7 +139,7 @@ public interface FileService {
 }
 ```
 
-## 2.2接口实现
+## 2.2 接口实现
 
 ```java
 import io.minio.*;
@@ -224,7 +224,7 @@ public class MinioFileService implements FileService {
 }
 ```
 
-## 2.3文件上传 Controller
+## 2.3 文件上传 Controller
 
 ```java
 import org.springframework.http.ResponseEntity;
@@ -294,9 +294,9 @@ public class FileController {
 
 ---
 
-# 3.增强型文件服务 — 生产级别
+# 3. 增强型文件服务 — 生产级别
 
-## 3.1对象 Key 命名策略
+## 3.1 对象 Key 命名策略
 
 ```java
 import java.time.LocalDate;
@@ -333,7 +333,7 @@ public class ObjectKeyGenerator {
 }
 ```
 
-## 3.2增强型文件服务
+## 3.2 增强型文件服务
 
 ```java
 import io.minio.*;
@@ -481,7 +481,7 @@ public class EnhancedFileService {
 }
 ```
 
-## 3.3DTO 定义
+## 3.3 DTO 定义
 
 ```java
 import lombok.Builder;
@@ -510,7 +510,7 @@ public class ObjectInfo {
 }
 ```
 
-## 3.4增强型 Controller
+## 3.4 增强型 Controller
 
 ```java
 import lombok.RequiredArgsConstructor;
@@ -618,9 +618,9 @@ public class EnhancedFileController {
 
 ---
 
-# 4.大文件分片上传 — 前后端完整方案
+# 4. 大文件分片上传 — 前后端完整方案
 
-## 4.1后端：分片上传 API
+## 4.1 后端：分片上传 API
 
 ```java
 import io.minio.*;
@@ -763,7 +763,7 @@ public class ChunkUploadController {
 }
 ```
 
-## 4.2前端：分片上传实现（JavaScript）
+## 4.2 前端：分片上传实现（JavaScript）
 
 ```javascript
 const CHUNK_SIZE = 5 * 1024 * 1024; // 每片 5MB
@@ -856,9 +856,9 @@ document.getElementById('fileInput').addEventListener('change', async (e) => {
 
 ---
 
-# 5.图片处理与缩略图方案
+# 5. 图片处理与缩略图方案
 
-## 5.1图片上传 + 缩略图生成（服务端处理）
+## 5.1 图片上传 + 缩略图生成（服务端处理）
 
 ```java
 import org.springframework.scheduling.annotation.Async;
@@ -953,7 +953,7 @@ public class ImageService {
 }
 ```
 
-## 5.2缩略图访问 Controller
+## 5.2 缩略图访问 Controller
 
 ```java
 @RestController
@@ -996,9 +996,9 @@ public class ImageController {
 
 ---
 
-# 6.文件访问控制与防盗链
+# 6. 文件访问控制与防盗链
 
-## 6.1基于预签名 URL 的访问控制
+## 6.1 基于预签名 URL 的访问控制
 
 ```java
 @Service
@@ -1058,7 +1058,7 @@ public class SecureFileService {
 
 ---
 
-# 7.文件上传完整校验
+# 7. 文件上传完整校验
 
 ```java
 import org.springframework.stereotype.Component;
@@ -1148,7 +1148,7 @@ public class FileValidator {
 
 ---
 
-# 8.全局异常处理
+# 8. 全局异常处理
 
 ```java
 import io.minio.errors.ErrorResponseException;
@@ -1204,7 +1204,7 @@ public class GlobalExceptionHandler {
 
 ---
 
-# 9.集成测试
+# 9. 集成测试
 
 ```java
 import org.junit.jupiter.api.*;

@@ -1,10 +1,10 @@
-# 1.Service概述
+# 1. Service概述
 
 ## 1.1 为什么需要Service
 
 在 Kubernetes 集群中，Pod 是最小的调度单元，承载着实际运行的容器。然而，如果直接使用 Pod 的 IP 来访问应用，将会遇到一系列致命的问题。理解这些问题的本质，才能真正理解 Service 设计的必要性。
 
-### Pod IP 的不稳定性
+### 1.1.1 Pod IP 的不稳定性
 
 每个 Pod 在创建时会被分配一个集群内部的 IP 地址（来自 CNI 网络插件分配的 Pod CIDR）。但这个 IP 是**临时且不可靠**的，原因包括：
 
@@ -38,7 +38,7 @@ Node 2 宕机，Pod B 漂移到 Node 3:
 
 如果应用之间通过写死的 IP 地址互相通信，运维将变成一场灾难。每次 Pod 重启都需要重新配置连接信息，这在拥有数十个微服务、数百个 Pod 实例的生产环境中是完全不可接受的。
 
-### 负载均衡的需求
+### 1.1.2 负载均衡的需求
 
 即使 Pod IP 固定不变，仍然存在另一个核心问题：**多副本负载均衡**。
 
@@ -52,7 +52,7 @@ Node 2 宕机，Pod B 漂移到 Node 3:
 
 4. **连接管理的一致性**：当后端 Pod 集发生变化时，已经建立的连接应该如何处理？新连接是否应该排除正在终止的 Pod？
 
-### 服务发现的简化
+### 1.1.3 服务发现的简化
 
 在没有 Kubernetes 的经典架构中，通常会使用独立的外部服务发现系统（如 Consul、ZooKeeper、etcd）来管理服务注册与发现。工作流程是：
 
@@ -68,7 +68,7 @@ Node 2 宕机，Pod B 漂移到 Node 3:
 
 Kubernetes 的目标是将这些基础设施能力**下沉到平台层**，让应用代码无需感知服务发现的细节。
 
-### 抽象统一访问入口的需求
+### 1.1.4 抽象统一访问入口的需求
 
 假设一个电商系统的订单服务部署了 5 个 Pod 副本：
 
@@ -86,7 +86,7 @@ Kubernetes 的目标是将这些基础设施能力**下沉到平台层**，让�
 
 Service 是 Kubernetes 中定义的一种资源对象，它为后端的一组 Pod 提供**稳定的、统一的网络访问端点**。可以将 Service 理解为一个"四层代理"（L4 Load Balancer），它工作在 OSI 模型的传输层（TCP/UDP/SCTP）。
 
-### Service 的核心能力
+### 1.2.1 Service 的核心能力
 
 Service 提供了以下核心能力：
 
@@ -100,7 +100,7 @@ Service 提供了以下核心能力：
 
 5. **Pod 选择器**：通过 Label Selector，Service 动态地识别哪些 Pod 属于其后端，无需硬编码 IP 列表。
 
-### Service 的抽象模型
+### 1.2.2 Service 的抽象模型
 
 从概念上理解，Service 扮演了以下角色：
 
@@ -136,7 +136,7 @@ Service 提供了以下核心能力：
 
 客户端永远连接 `10.96.100.1:8080`，具体将请求转发到哪个 Pod 完全由 Service 决定。Pod A 被销毁重建后的新 IP 变成 `10.244.3.20`——只要它的 Label 仍然是 `app=order`，它就会被 Service 自动纳入后端列表。
 
-### Service 并非真正存在的网络实体
+### 1.2.3 Service 并非真正存在的网络实体
 
 需要特别强调的是：**Service 的 ClusterIP 只是一个虚拟 IP，它不对应任何具体的网络接口**。你在任何 Node 上执行 `ip addr` 都看不到这个 IP。它只存在于：
 
@@ -146,7 +146,7 @@ Service 提供了以下核心能力：
 
 这意味着：你不能 `ping` 一个 ClusterIP（它不是一个真实的存在），只能通过 TCP/UDP 连接到它。这是初学者最常见的困惑之一。
 
-### Service 的工作范围
+### 1.2.4 Service 的工作范围
 
 Service 工作在 OSI 模型的第 4 层（传输层），这意味着：
 - **能做**：基于 TCP/UDP/SCTP 的端口转发和负载均衡
@@ -162,7 +162,7 @@ Service 工作在 OSI 模型的第 4 层（传输层），这意味着：
 
 Service 与 Pod 之间的关键设计原则是**松耦合**（Loose Coupling）。Service 不通过硬编码的 IP 列表来指定后端 Pod，而是通过 **Label Selector**（标签选择器）动态发现后端。
 
-### Label 与 Selector 的匹配机制
+### 1.3.1 Label 与 Selector 的匹配机制
 
 Service 使用 `spec.selector` 字段来定义后端 Pod 的选择条件：
 
@@ -187,7 +187,7 @@ spec:
 
 注意：Selector 的多个条件是**AND（与）**关系，Pod 必须满足所有条件才会被选中。
 
-### 解耦带来的工程优势
+### 1.3.2 解耦带来的工程优势
 
 这种基于 Label 的解耦带来了巨大的工程灵活性：
 
@@ -295,7 +295,7 @@ subsets:
   - port: 3306
 ```
 
-### 健康检查与就绪探测
+### 1.3.3 健康检查与就绪探测
 
 Service 不会简单地将所有匹配 Label 的 Pod 加入后端列表。它还会检查 Pod 的 **Ready 状态**：
 
@@ -328,7 +328,7 @@ spec:
       successThreshold: 1        # 成功1次即标记为 Ready
 ```
 
-### Endpoints Controller 的工作流
+### 1.3.4 Endpoints Controller 的工作流
 
 Service 与 Pod 解耦的背后，是 Endpoints Controller 的持续工作。完整流程如下：
 
@@ -361,7 +361,7 @@ Service 与 Pod 解耦的背后，是 Endpoints Controller 的持续工作。完
 
 ClusterIP 是 Service 最核心的设计概念之一。它本质上是一个**虚拟 IP**（Virtual IP），不对应任何真实的网络接口，仅存在于内核的 netfilter（iptables）或 IPVS 规则中。
 
-### 虚拟IP的本质：不存在的IP如何工作
+### 1.4.1 虚拟IP的本质：不存在的IP如何工作
 
 理解 ClusterIP 的关键在于：**数据包在网络层的处理是由内核完成的**。当一个 Pod 想要连接 ClusterIP `10.96.100.1:8080` 时，发生了什么？
 
@@ -375,7 +375,7 @@ ClusterIP 是 Service 最核心的设计概念之一。它本质上是一个**�
 
 关键洞察：**ClusterIP 从来没有被任何网络接口应答。没有任何 ARP 回应，没有网卡声称拥有这个 IP。数据包永远不会被"路由到"这个 IP，而是在到达路由决策之前就被 iptables 规则拦截并重写了目标地址。**
 
-### iptables 规则链的完整路径
+### 1.4.2 iptables 规则链的完整路径
 
 以 iptables 模式为例，发往 ClusterIP 的数据包经过的规则链如下（Node 上的规则）：
 
@@ -391,7 +391,7 @@ PREROUTING → KUBE-SERVICES → KUBE-SVC-XXXX → KUBE-SEP-XXXX → DNAT to Pod
 4. **KUBE-SEP-XXXX**：**S**ervice **E**nd**P**oint，每个后端 Pod 对应一条自定义链。
 5. **DNAT**：最终执行 DNAT，将目标地址改写为后端 Pod IP。
 
-### DNAT 后的数据包走向
+### 1.4.3 DNAT 后的数据包走向
 
 DNAT 之后，数据包的新目标 IP 是后端 Pod 的 IP。此时需要区分两种情况：
 
@@ -403,7 +403,7 @@ DNAT 之后，数据包的新目标 IP 是后端 Pod 的 IP。此时需要区分
 
 数据包在 OUTPUT 链被 DNAT 后，目标 IP 变成了另一个 Node 上的 Pod IP。数据包经过正常的跨节点路由：CNI 网络通过 VXLAN/BGP/IP-in-IP 等 Overlay 或 Underlay 方式将数据包发送到目标 Node，然后到达目标 Pod。
 
-### ClusterIP 的分配机制
+### 1.4.4 ClusterIP 的分配机制
 
 Service 的 ClusterIP 由 `kube-apiserver` 中的 `ServiceClusterIPAllocator` 负责分配：
 
@@ -442,7 +442,7 @@ Service 的 ClusterIP 由 `kube-apiserver` 中的 `ServiceClusterIPAllocator` �
 通知所有 watcher（包括 kube-proxy）
 ```
 
-### 为什么不能 Ping ClusterIP
+### 1.4.5 为什么不能 Ping ClusterIP
 
 这是 Kubernetes 新手最常见的困惑。`ping` 使用 ICMP 协议，它的工作流程是：
 
@@ -466,7 +466,7 @@ $ curl http://10.96.100.1:8080
 200 OK
 ```
 
-### Service 的并发访问安全
+### 1.4.6 Service 的并发访问安全
 
 多个客户端同时访问同一个 Service 的 ClusterIP 时，iptables/IPVS 的负载均衡行为如何？
 
@@ -481,7 +481,7 @@ $ curl http://10.96.100.1:8080
 - 调度器为每个新连接选择一个后端，之后的同一个连接的所有数据包都发往该后端
 - 连接断开/超时后，下次新连接可能被调度到不同的后端
 
-### ClusterIP 的不可路由性
+### 1.4.7 ClusterIP 的不可路由性
 
 ClusterIP 只在集群内部有效。这有两个层面的含义：
 
@@ -490,13 +490,13 @@ ClusterIP 只在集群内部有效。这有两个层面的含义：
 2. **配置层面**：iptables/IPVS 规则只存在于集群内的每个 Node 上。集群外部的机器上没有这些规则，即使数据包到达也不会被 DNAT。
 
 因此，要从集群外部访问 Service，必须使用 NodePort 或 LoadBalancer 类型的 Service，它们提供了外部访问的入口点。ClusterIP 类型是"仅限集群内部"的。
-# 2.Service类型详解
+# 2. Service类型详解
 
 ## 2.1 ClusterIP (集群内部访问，默认类型)
 
 ClusterIP 是 Service 的**默认类型**。如果不显式指定 `spec.type`，则默认创建 ClusterIP 类型的 Service。它也是最基础的类型，其他类型（NodePort、LoadBalancer）都是在 ClusterIP 基础上扩展的。
 
-### 典型 YAML
+### 2.1.1 典型 YAML
 
 ```yaml
 apiVersion: v1
@@ -516,7 +516,7 @@ spec:
   sessionAffinity: None             # 默认值，不使用会话亲和性
 ```
 
-### 创建后的资源状态
+### 2.1.2 创建后的资源状态
 
 ```shell
 $ kubectl get svc my-clusterip-service
@@ -526,7 +526,7 @@ my-clusterip-service    ClusterIP   10.96.100.42    <none>        80/TCP    10s
 
 注意 EXTERNAL-IP 列显示 `<none>`，说明该 Service 没有外部可访问的 IP。
 
-### 访问方式
+### 2.1.3 访问方式
 
 ClusterIP Service 可以从以下位置访问：
 
@@ -538,7 +538,7 @@ ClusterIP Service 可以从以下位置访问：
 - 集群外部的客户端（无 NodePort，无外部 LB）
 - 其他 Kubernetes 集群中的 Pod（除非有 VPN 或 VPC Peering 打通网络）
 
-### 内部访问模式的流量路径
+### 2.1.4 内部访问模式的流量路径
 
 ```
 客户端 Pod (10.244.1.5)
@@ -557,7 +557,7 @@ Pod 所在 Node 的网络栈
 后端 Pod (10.244.2.8:8080)
 ```
 
-### 使用场景
+### 2.1.5 使用场景
 
 ClusterIP 是最常用的 Service 类型，适用于绝大部分集群内部服务间通信场景：
 
@@ -568,7 +568,7 @@ ClusterIP 是最常用的 Service 类型，适用于绝大部分集群内部服�
 
 一般生产环境中，80% 以上的 Service 都是 ClusterIP 类型。只有少数需要从外部访问的服务才使用 NodePort 或 LoadBalancer。
 
-### ClusterIP 的不变性
+### 2.1.6 ClusterIP 的不变性
 
 一旦 Service 被创建并分配了 ClusterIP，这个 IP 在 Service 的整个生命周期中都不会改变（除非删除并重新创建 Service）。即使你修改 Service 的 Selector、Port 等配置，ClusterIP 保持不变。这个特性保证了：
 
@@ -592,7 +592,7 @@ spec:
 
 NodePort 类型的 Service 是在 ClusterIP 基础上，额外暴露一个 Node 上的端口（称为 NodePort），使得集群外部的客户端可以通过 `<任意Node的IP>:<NodePort>` 访问到 Service。
 
-### 典型 YAML
+### 2.2.1 典型 YAML
 
 ```yaml
 apiVersion: v1
@@ -611,7 +611,7 @@ spec:
     nodePort: 30080                 # Node 上暴露的端口 (可选，30000-32767)
 ```
 
-### NodePort 端口范围
+### 2.2.2 NodePort 端口范围
 
 NodePort 的端口范围默认为 **30000-32767**，可以通过 `kube-apiserver` 的 `--service-node-port-range` 参数配置：
 
@@ -621,7 +621,7 @@ NodePort 的端口范围默认为 **30000-32767**，可以通过 `kube-apiserver
 
 如果指定的 `nodePort` 在这个范围内且未被其他 NodePort Service 占用，系统会接受；如果不指定，系统自动分配一个未被占用的端口。
 
-### 创建后的资源状态
+### 2.2.3 创建后的资源状态
 
 ```shell
 $ kubectl get svc my-nodeport-service
@@ -634,7 +634,7 @@ PORT(S) 列显示为 `80:30080/TCP`，含义是：
 - 访问 ClusterIP:80 → 后端 Pod:8080（集群内部路径）
 - 访问 NodeIP:30080 → ClusterIP:80 → 后端 Pod:8080（外部路径）
 
-### 外部访问的流量路径
+### 2.2.4 外部访问的流量路径
 
 ```
 外部客户端 (192.168.1.100)
@@ -656,7 +656,7 @@ Node1 网络栈
 
 需要特别注意的是：即使客户端连接的 Node 上没有运行该 Service 的后端 Pod，请求也能正常到达。iptables 规则会将流量从 Node1 DNAT 到 ClusterIP，再从 ClusterIP DNAT 到实际后端的 Pod IP——如果 Pod 在 Node2 上，数据包会经过跨节点路由到达 Node2。
 
-### 双重 DNAT 过程
+### 2.2.5 双重 DNAT 过程
 
 NodePort 请求经历了**两次 DNAT**：
 
@@ -667,7 +667,7 @@ NodePort 请求经历了**两次 DNAT**：
 
 这就是为什么即使在集群内部，你也可以通过 NodePort 访问 Service——数据经过两次 DNAT 最终到达后端 Pod。
 
-### NodePort 的优缺点
+### 2.2.6 NodePort 的优缺点
 
 **优点**：
 - 配置简单，不需要额外的负载均衡器
@@ -681,7 +681,7 @@ NodePort 请求经历了**两次 DNAT**：
 - **客户端耦合**：客户端需要知道 Node IP 和端口，不够灵活
 - **没有外部负载均衡**：需要在客户端侧或通过外部负载均衡器分发到多个 Node
 
-### 生产环境中的使用
+### 2.2.7 生产环境中的使用
 
 NodePort 在生产环境中**不建议直接暴露给外部用户**。更常见的做法是：
 
@@ -695,7 +695,7 @@ NodePort 在生产环境中**不建议直接暴露给外部用户**。更常见�
 
 LoadBalancer 是云环境中最常用的 Service 类型。它在 NodePort 的基础上，通过云服务商的 API 自动创建一个外部的云负载均衡器（如 AWS ELB/NLB、GCP Cloud Load Balancer、Azure Load Balancer），并将其配置为将流量转发到各 Node 的 NodePort。
 
-### 典型 YAML
+### 2.3.1 典型 YAML
 
 ```yaml
 apiVersion: v1
@@ -719,7 +719,7 @@ spec:
   - 198.51.100.0/24
 ```
 
-### 云控制器管理器 (Cloud Controller Manager)
+### 2.3.2 云控制器管理器 (Cloud Controller Manager)
 
 LoadBalancer Service 的自动创建依赖 **Cloud Controller Manager (CCM)**，它是 Kubernetes 控制平面的一个组件，负责与底层云平台交互：
 
@@ -755,7 +755,7 @@ Service Controller 的工作流程：
 7. 用户通过 EXTERNAL-IP 访问服务
 ```
 
-### 创建后的资源状态
+### 2.3.3 创建后的资源状态
 
 ```shell
 $ kubectl get svc my-lb-service
@@ -765,7 +765,7 @@ my-lb-service     LoadBalancer   10.96.100.44    203.0.113.50     80:30081/TCP  
 
 EXTERNAL-IP 列显示了一个公网可访问的 IP 地址。这个 IP 是云负载均衡器的 VIP。
 
-### 流量路径
+### 2.3.4 流量路径
 
 ```
 外部客户端 (Internet)
@@ -789,7 +789,7 @@ EXTERNAL-IP 列显示了一个公网可访问的 IP 地址。这个 IP 是云负
 └───────────────┴───────────────┴───────────────┘
 ```
 
-### 云厂商特定的实现差异
+### 2.3.5 云厂商特定的实现差异
 
 不同云厂商的 LoadBalancer Service 实现有显著差异：
 
@@ -814,7 +814,7 @@ EXTERNAL-IP 列显示了一个公网可访问的 IP 地址。这个 IP 是云负
 - 可以使用 **MetalLB**（裸金属 LoadBalancer 实现），通过 ARP/NDP 或 BGP 协议实现外部 LB
 - MetalLB 为 LoadBalancer Service 提供可路由的 EXTERNAL-IP
 
-### loadBalancerSourceRanges
+### 2.3.6 loadBalancerSourceRanges
 
 通过 `spec.loadBalancerSourceRanges` 可以限制哪些来源 IP 可以访问 LoadBalancer：
 
@@ -828,7 +828,7 @@ spec:
 
 这个配置会被翻译为云平台 LB 对应的安全组/防火墙规则。这是在平台层面实现的安全隔离，比在应用层面配置更高效、更安全。
 
-### 内部负载均衡器 (Internal LoadBalancer)
+### 2.3.7 内部负载均衡器 (Internal LoadBalancer)
 
 LoadBalancer 不一定是面向公网的。通过云厂商特定的注解，可以创建仅在 VPC 内部可访问的内部负载均衡器：
 
@@ -857,7 +857,7 @@ spec:
 
 ExternalName 是一种非常特殊的 Service 类型。它**不创建 ClusterIP，不创建 Endpoints，不进行任何代理或负载均衡**。它只是在集群 DNS 中创建一个 **CNAME 记录**，将一个 Kubernetes Service DNS 名称映射到一个外部的 DNS 名称。
 
-### 典型 YAML
+### 2.4.1 典型 YAML
 
 ```yaml
 apiVersion: v1
@@ -870,7 +870,7 @@ spec:
   externalName: db.example.com       # 外部 DNS 名称
 ```
 
-### DNS 解析行为
+### 2.4.2 DNS 解析行为
 
 创建上述 Service 后，集群内的 Pod 访问 `external-database.production.svc.cluster.local` 时：
 
@@ -891,7 +891,7 @@ Pod 内的 DNS 解析器继续解析 db.example.com
 最终获得 db.example.com 的实际 IP 地址
 ```
 
-### 使用场景
+### 2.4.3 使用场景
 
 1. **访问外部服务**：将数据库、消息队列等运行在集群外的服务通过内部 DNS 名称暴露给 Pod。
 
@@ -919,7 +919,7 @@ Service名称.命名空间.svc.cluster.local
 
 3. **环境适配**：开发环境中的 Service 映射到本地开发服务，生产环境映射到云厂商托管服务。
 
-### 限制与注意事项
+### 2.4.4 限制与注意事项
 
 - **没有负载均衡**：ExternalName 只是 DNS CNAME，不做任何流量代理
 - **没有端口映射**：ExternalName 仅仅做 DNS 解析，调用方必须知道目标服务的端口
@@ -933,7 +933,7 @@ Service名称.命名空间.svc.cluster.local
 
 Headless Service 是一种特殊的 Service 配置，通过设置 `clusterIP: None` 来创建。它不分配 ClusterIP，也不进行负载均衡。DNS 查询会直接返回后端所有 Ready Pod 的 IP 地址列表（A 记录或 AAAA 记录）。
 
-### 典型 YAML
+### 2.5.1 典型 YAML
 
 ```yaml
 apiVersion: v1
@@ -949,7 +949,7 @@ spec:
     targetPort: 9042
 ```
 
-### DNS 解析行为
+### 2.5.2 DNS 解析行为
 
 当客户端 Pod 查询 Headless Service 的 DNS 时：
 
@@ -972,7 +972,7 @@ DNS 返回的是 A 记录列表，而不是一个单独的 ClusterIP。这意味
 - 客户端需要自己实现负载均衡逻辑
 - 客户端可以直接与特定 Pod 建立连接（如需要粘性会话的场景）
 
-### 与 StatefulSet 的配合
+### 2.5.3 与 StatefulSet 的配合
 
 Headless Service 最常见的用法是与 StatefulSet 配合使用。StatefulSet 会给每个 Pod 分配一个稳定的**主机名**和**网络标识**（如 `cassandra-0.cassandra.default.svc.cluster.local`）。
 
@@ -1019,7 +1019,7 @@ spec:
 
 对于 Cassandra/Elasticsearch/etcd/ZooKeeper 这类需要节点间互相发现和通信的分布式系统，这种稳定的网络标识至关重要。
 
-### 适用场景
+### 2.5.4 适用场景
 
 1. **分布式数据库**：Cassandra、MongoDB、Elasticsearch 等需要节点间直接通信
 2. **集群中的集群**：etcd、ZooKeeper、Consul 等需要自定义选举协议
@@ -1030,7 +1030,7 @@ spec:
 
 ## 2.6 各类型对比与选择指南
 
-### 对比表格
+### 2.6.1 对比表格
 
 | 特性 | ClusterIP | NodePort | LoadBalancer | ExternalName | Headless |
 |------|-----------|----------|--------------|--------------|----------|
@@ -1044,7 +1044,7 @@ spec:
 | **端口管理** | 自动 | 需配置 NodePort范围 | 自动分配 | 无需 | 自动 |
 | **使用复杂度** | 低 | 中 | 中 | 低 | 中 |
 
-### 选择决策树
+### 2.6.2 选择决策树
 
 ```
 需要访问集群外部服务？
@@ -1066,7 +1066,7 @@ spec:
   └── 是 → 使用 ExternalName
 ```
 
-### 生产环境推荐实践
+### 2.6.3 生产环境推荐实践
 
 1. **集群内部服务间通信**：默认使用 ClusterIP。一个典型的微服务集群中，90% 以上的 Service 都是 ClusterIP 类型。
 
@@ -1081,7 +1081,7 @@ spec:
 
 5. **端口规划**：NodePort 的 30000-32767 范围是集群级别共享的。大型集群中，建议通过 `--service-node-port-range` 扩展范围或使用指定端口来避免冲突。
 
-# 3.Service YAML详解
+# 3. Service YAML详解
 
 ## 3.1 完整YAML结构
 
@@ -1149,7 +1149,7 @@ status:
     lastTransitionTime: "2024-01-01T00:00:00Z"
 ```
 
-### 各字段层级关系
+### 3.1.1 各字段层级关系
 
 ```
 Service
@@ -1191,7 +1191,7 @@ Service
 
 Service 配置中有多个端口相关的字段，它们之间的关系经常让初学者困惑。以下是每个字段的精确定义：
 
-### port (Service 端口)
+### 3.2.1 port (Service 端口)
 
 **定义**：Service 对外暴露的端口，即客户端连接 Service 时使用的端口。
 
@@ -1201,7 +1201,7 @@ Service 配置中有多个端口相关的字段，它们之间的关系经常让
 
 `port` 是 Service 本身的属性。对于 ClusterIP 类型的 Service，客户端通过 `ClusterIP:port` 来访问。对于 NodePort/LoadBalancer 类型，这个端口也会被保留。
 
-### targetPort (目标端口)
+### 3.2.2 targetPort (目标端口)
 
 **定义**：后端 Pod 上容器监听的实际端口。Service 将流量转发到 Pod 的 `targetPort`。
 
@@ -1226,7 +1226,7 @@ ports:
 
 使用端口名称的好处是：即使 Pod 中的实际端口号改变（比如从 8080 改为 8081），只要保持端口名称不变，Service 就不需要修改。这提高了 Pod 模板与 Service 之间的解耦程度。
 
-### nodePort (节点端口)
+### 3.2.3 nodePort (节点端口)
 
 **定义**：在集群每个 Node 上暴露的端口，用以接收来自集群外部的流量。仅在 `type: NodePort` 或 `type: LoadBalancer` 时有效。
 
@@ -1238,7 +1238,7 @@ ports:
 - 可以通过 `--service-node-port-range` 配置
 - 如果未指定，系统自动分配
 
-### containerPort (容器端口)
+### 3.2.4 containerPort (容器端口)
 
 **定义**：在 Pod 的 Container 规格中定义的端口。
 
@@ -1261,7 +1261,7 @@ spec:
 3. 在 Service 定义中通过端口名称 `targetPort: http` 来引用
 4. 供平台工具和监控系统使用
 
-### 四种端口的关系图
+### 3.2.5 四种端口的关系图
 
 ```
                      ┌──────────────────────────────────┐
@@ -1296,7 +1296,7 @@ nodePort: 30080 (仅在 NodePort/LoadBalancer 类型)
    外部客户端 → Node_IP:nodePort → Service_IP:port → Pod_IP:targetPort
 ```
 
-### 常见配置范例
+### 3.2.6 常见配置范例
 
 ```yaml
 # 场景1: Service 端口与 Pod 端口相同（简化配置）
@@ -1333,13 +1333,13 @@ ports:
 
 ## 3.3 SessionAffinity (ClientIP, 超时配置)
 
-### 会话亲和性的概念
+### 3.3.1 会话亲和性的概念
 
 默认情况下，Service 对每个新连接独立地进行负载均衡（随机或轮询）。这意味着同一个客户端发起的多次连接可能被转发到不同的后端 Pod。对于大多数无状态应用来说，这是理想的行为。
 
 但某些应用需要**会话亲和性**（Session Affinity / Sticky Session）：来自同一个客户端的连接始终转发到同一个后端 Pod。这在使用本地缓存、WebSocket 连接、或有状态协议时是必需的。
 
-### Kubernetes 支持的会话亲和性
+### 3.3.2 Kubernetes 支持的会话亲和性
 
 Kubernetes 只支持一种会话亲和性策略：**ClientIP**。它基于客户端的源 IP 地址来决定将连接转发到哪个 Pod。相同源 IP 的客户端在 `timeoutSeconds` 时间段内，始终连接到同一个后端 Pod。
 
@@ -1360,7 +1360,7 @@ spec:
       timeoutSeconds: 10800                  # 默认 10800 秒 (3小时)
 ```
 
-### ClientIP 的底层实现
+### 3.3.3 ClientIP 的底层实现
 
 **iptables 模式**：kube-proxy 使用 iptables 的 `recent` 模块来实现 ClientIP 会话亲和性。规则逻辑如下：
 
@@ -1377,7 +1377,7 @@ spec:
 
 **IPVS 模式**：IPVS 原生支持持久连接（Persistence）。kube-proxy 将 `sessionAffinity: ClientIP` 翻译为 IPVS 的持久性参数。
 
-### 超时配置详解
+### 3.3.4 超时配置详解
 
 ```yaml
 sessionAffinityConfig:
@@ -1397,7 +1397,7 @@ sessionAffinityConfig:
     timeoutSeconds: 300       # 5分钟无活动后重新分配
 ```
 
-### 注意事项与局限性
+### 3.3.5 注意事项与局限性
 
 1. **只支持 ClientIP**：Kubernetes 原生不支持基于 Cookie 或其他 HTTP 层信息的会话亲和性。需要七层会话亲和性时，使用 Ingress Controller（如 Nginx Ingress 通过 annotation `nginx.ingress.kubernetes.io/affinity: cookie` 支持）。
 
@@ -1415,13 +1415,13 @@ sessionAffinityConfig:
 
 ## 3.4 publishNotReadyAddresses
 
-### 默认行为
+### 3.4.1 默认行为
 
 默认情况下（`publishNotReadyAddresses: false`），只有通过了 Readiness Probe 的 Pod 才会出现在 Service 的 Endpoints 中，并接收流量。这确保了：
 - 启动中的 Pod 不会收到请求（避免冷启动导致的超时）
 - 就绪探测失败的 Pod 不会收到请求（自动摘除不健康的 Pod）
 
-### publishNotReadyAddresses: true 的使用场景
+### 3.4.2 publishNotReadyAddresses: true 的使用场景
 
 当设置为 `true` 时，即使 Pod 还未就绪（Readiness Probe 未通过），它也会出现在 Service 的 Endpoints 中。
 
@@ -1439,7 +1439,7 @@ spec:
   - port: 9042
 ```
 
-### 场景分析
+### 3.4.3 场景分析
 
 **场景1：分布式数据库集群的发现**
 Cassandra、Elasticsearch 等系统在启动阶段需要互相发现和通信来完成集群组建。如果启动中的节点不暴露其地址，其他节点无法联系它，集群可能永远无法形成。通过 `publishNotReadyAddresses: true`，即使 Pod 还在启动中，其 IP 也在 DNS 中可解析，其他节点可以发现并与之通信。
@@ -1447,13 +1447,13 @@ Cassandra、Elasticsearch 等系统在启动阶段需要互相发现和通信来
 **场景2：StatefulSet 的顺序启动**
 StatefulSet 默认按序启动（从 0 到 N-1）。Pod-1 的启动可能依赖 Pod-0 已启动但不一定需要 Pod-0 完全就绪。通过 `publishNotReadyAddresses: true`，Pod-1 可以在 Pod-0 还未完全就绪之前就解析 Pod-0 的地址。
 
-### 风险与注意事项
+### 3.4.4 风险与注意事项
 
 - **流量丢失**：客户端可能将请求发送给尚未就绪的 Pod，导致请求失败
 - **需要应用层重试**：启用此配置的应用必须能处理连接失败或请求超时
 - **与真正的就绪探测冲突**：Readiness Probe 的作用被部分削弱
 
-### 与 externalTrafficPolicy 的交互
+### 3.4.5 与 externalTrafficPolicy 的交互
 
 当 `publishNotReadyAddresses: true` 与 `externalTrafficPolicy: Local` 组合使用时：
 - 未就绪的 Pod 地址被发布
@@ -1470,7 +1470,7 @@ StatefulSet 默认按序启动（从 0 到 N-1）。Pod-1 的启动可能依赖 
 
 它**不影响**集群内部的流量（Pod 到 Pod 通过 ClusterIP 的流量）。
 
-### externalTrafficPolicy: Cluster（默认值）
+### 3.5.1 externalTrafficPolicy: Cluster（默认值）
 
 **行为**：
 - 外部流量到达任何 Node 的 NodePort 后，可以被转发到集群内**任意 Node** 上的后端 Pod
@@ -1506,7 +1506,7 @@ Pod 响应 → Node2 → 外部客户端
 **额外跳数**：
 如果外部请求到达 Node2，但后端 Pod 在 Node1 上，数据包需要跨节点传输一次，增加延迟。
 
-### externalTrafficPolicy: Local
+### 3.5.2 externalTrafficPolicy: Local
 
 **行为**：
 - 外部流量到达某个 Node 后，**只能**转发到该 Node 上的后端 Pod
@@ -1542,7 +1542,7 @@ Pod 收到请求，源 IP = 10.0.1.100 (客户端真实 IP 保留)
 - 需要在外部 LB 层配置健康检查
 - 如果某个 Node 上 Pod 全部不可用，该 Node 会拒绝外部请求
 
-### 配置示例
+### 3.5.3 配置示例
 
 ```yaml
 apiVersion: v1
@@ -1559,7 +1559,7 @@ spec:
     targetPort: 8080
 ```
 
-### 与 LoadBalancer 的配合
+### 3.5.4 与 LoadBalancer 的配合
 
 当 `externalTrafficPolicy: Local` 与 LoadBalancer 配合时：
 - 云 LB 的健康检查需要能检测到 Node 上是否有 Ready 的 Pod
@@ -1580,11 +1580,11 @@ kube-proxy 在所有有 Ready Pod 的 Node 上监听 `healthCheckNodePort` 端�
 
 `internalTrafficPolicy` 是 Kubernetes v1.22 引入的功能（Beta，v1.26 GA），控制集群**内部**流量的路由行为（即 Pod 到 Service 的流量）。
 
-### internalTrafficPolicy: Cluster（默认值）
+### 3.6.1 internalTrafficPolicy: Cluster（默认值）
 
 **行为**：集群内部流量可以被转发到集群中**任何 Node** 上的后端 Pod，不限制在源 Pod 所在的 Node。
 
-### internalTrafficPolicy: Local
+### 3.6.2 internalTrafficPolicy: Local
 
 **行为**：集群内部流量**只能**转发到与源 Pod **在同一 Node** 上的后端 Pod。如果源 Pod 所在的 Node 上没有该 Service 的后端 Pod，流量被丢弃。
 
@@ -1603,13 +1603,13 @@ spec:
   internalTrafficPolicy: Local       # 优先使用本节点 Pod
 ```
 
-### 使用场景
+### 3.6.3 使用场景
 
 1. **拓扑感知访问**：将流量限制在本节点，减少跨节点网络延迟
 2. **本地缓存优化**：DaemonSet 部署的缓存代理（如 Envoy Sidecar）
 3. **节点级故障隔离**：本节点后端不可用，即快速失败，不将流量发送到其他节点（避免级联效应）
 
-### internalTrafficPolicy 与 externalTrafficPolicy 的组合
+### 3.6.4 internalTrafficPolicy 与 externalTrafficPolicy 的组合
 
 ```yaml
 # 场景: 外部流量本地保留源IP，内部流量也本地化
@@ -1618,7 +1618,7 @@ spec:
   internalTrafficPolicy: Local
 ```
 
-### 与 Service Topology/Topology Aware Hints 的关系
+### 3.6.5 与 Service Topology/Topology Aware Hints 的关系
 
 `internalTrafficPolicy: Local` 是最简单的拓扑感知形式——按节点限制。更复杂的拓扑感知（如按可用区 AZ）需要使用 Topology Aware Hints 特性。
 
@@ -1628,7 +1628,7 @@ spec:
 
 Kubernetes v1.20 引入了双栈（Dual-Stack）支持（Alpha），v1.23 成为 Beta（默认启用），v1.27 达到 Stable。双栈允许 Service 同时拥有 IPv4 和 IPv6 两个 ClusterIP。
 
-### ipFamilyPolicy
+### 3.7.1 ipFamilyPolicy
 
 控制 Service 使用哪种 IP 协议族：
 
@@ -1638,7 +1638,7 @@ Kubernetes v1.20 引入了双栈（Dual-Stack）支持（Alpha），v1.23 成为
 | `PreferDualStack` | 优先双栈：如果集群支持双栈则分配两个 ClusterIP，否则回退到单栈 |
 | `RequireDualStack` | 必须双栈：必须分配两个 ClusterIP，如果集群不支持则 Service 创建失败 |
 
-### ipFamilies
+### 3.7.2 ipFamilies
 
 指定 IP 协议族的顺序。第一个 IP 族用于 `spec.clusterIP`，所有族用于 `spec.clusterIPs`。
 
@@ -1695,7 +1695,7 @@ spec:
   - port: 80
 ```
 
-### 集群级别的双栈配置
+### 3.7.3 集群级别的双栈配置
 
 要启用双栈支持，kube-apiserver、kube-controller-manager 和 kube-proxy 都需要配置双网段：
 
@@ -1718,7 +1718,7 @@ spec:
 --feature-gates=IPv6DualStack=true
 ```
 
-### DNS 中的双栈记录
+### 3.7.4 DNS 中的双栈记录
 
 双栈 Service 在 CoreDNS 中会同时创建 A 记录（IPv4）和 AAAA 记录（IPv6）：
 
@@ -1735,7 +1735,7 @@ Address: 2001:db8::1          # AAAA 记录 (IPv6)
 
 `allocateLoadBalancerNodePorts` 控制是否为 LoadBalancer 类型的 Service 自动分配 NodePort。这在 v1.20 引入，用于优化不需要 NodePort 的场景。
 
-### allocateLoadBalancerNodePorts: true（默认）
+### 3.8.1 allocateLoadBalancerNodePorts: true（默认）
 
 对于 LoadBalancer 类型 Service，除了分配 LB 外部 IP，还会自动分配 NodePort。外部 LB 通过 NodePort 将流量转发到 Node。
 
@@ -1745,7 +1745,7 @@ spec:
   allocateLoadBalancerNodePorts: true   # 默认行为
 ```
 
-### allocateLoadBalancerNodePorts: false
+### 3.8.2 allocateLoadBalancerNodePorts: false
 
 在某些场景下，NodePort 是不必要的：
 
@@ -1766,11 +1766,11 @@ spec:
 
 设置后，Service 仍然创建，但不会占用 NodePort 范围内的端口。
 
-# 4.Service底层实现
+# 4. Service底层实现
 
 ## 4.1 kube-proxy角色与工作方式
 
-### kube-proxy 的核心职责
+### 4.1.1 kube-proxy 的核心职责
 
 kube-proxy 是运行在 Kubernetes 集群每个 Node 上的网络代理（以 DaemonSet、静态 Pod 或系统进程方式部署）。它是 Service 抽象的具体实现者，负责将发往 Service ClusterIP 的流量转发到后端的 Pod。
 
@@ -1780,7 +1780,7 @@ kube-proxy 的核心职责包括：
 3. 将发往 Service VIP 的流量负载均衡到后端 Pod
 4. 在后端 Pod 集合变化时更新规则
 
-### kube-proxy 的架构
+### 4.1.2 kube-proxy 的架构
 
 kube-proxy 的内部架构包含以下关键组件：
 
@@ -1807,7 +1807,7 @@ kube-proxy 的内部架构包含以下关键组件：
 +-----------------------------------------------------+
 ```
 
-### Informer 机制
+### 4.1.3 Informer 机制
 
 kube-proxy 使用 Informer 模式来高效监听 API 变化，而不是轮询。每次 `syncProxyRules()` 调用都会：
 
@@ -1815,7 +1815,7 @@ kube-proxy 使用 Informer 模式来高效监听 API 变化，而不是轮询。
 2. 计算与当前规则的差异（增量更新，iptables 模式下是完整重建）
 3. 写入新规则到内核
 
-### kube-proxy 的三种工作模式
+### 4.1.4 kube-proxy 的三种工作模式
 
 | 模式 | 引入版本 | 成熟度 | 默认/推荐 |
 |------|---------|--------|----------|
@@ -1825,7 +1825,7 @@ kube-proxy 使用 Informer 模式来高效监听 API 变化，而不是轮询。
 | **nftables** | v1.29 (Alpha) | Alpha | 未来可能取代 iptables |
 | **eBPF (Cilium)** | 第三方 | 第三方 | 云原生网络未来方向 |
 
-### kube-proxy 启动参数
+### 4.1.5 kube-proxy 启动参数
 
 ```bash
 kube-proxy \
@@ -1847,7 +1847,7 @@ kube-proxy \
 
 ## 4.2 iptables模式详解 (规则链: KUBE-SERVICES->KUBE-SVC->KUBE-SEP, DNAT)
 
-### iptables 基础回顾
+### 4.2.1 iptables 基础回顾
 
 iptables 是 Linux 内核的 netfilter 框架的用户态管理工具。它通过在内核中创建规则链（Chain）来管理网络数据包的流向。
 
@@ -1867,7 +1867,7 @@ netfilter 提供了 5 个钩子（Hook）点：
 
 kube-proxy 主要在 `PREROUTING`、`OUTPUT` 和 `POSTROUTING` 链上添加规则。
 
-### kube-proxy 的 iptables 规则结构
+### 4.2.2 kube-proxy 的 iptables 规则结构
 
 kube-proxy 在 iptables 的 `nat` 表中创建了一系列自定义链：
 
@@ -1893,7 +1893,7 @@ POSTROUTING
         +-- MASQUERADE (Pod 流量伪装为 Node IP)
 ```
 
-### 自定义链的命名规则
+### 4.2.3 自定义链的命名规则
 
 kube-proxy 使用 Service 名称和 Namespace 的哈希值来命名自定义链：
 
@@ -1905,7 +1905,7 @@ kube-proxy 使用 Service 名称和 Namespace 的哈希值来命名自定义链�
 - `KUBE-MARK-MASQ`：标记需要 SNAT 的数据包
 - `KUBE-MARK-DROP`：标记需要丢弃的数据包
 
-### 概率性负载均衡实现
+### 4.2.4 概率性负载均衡实现
 
 iptables 本身不支持加权轮询或真正的负载均衡。kube-proxy 使用 iptables 的 `statistic` 模块来实现概率性随机负载均衡：
 
@@ -1924,7 +1924,7 @@ Pod C: 概率 1/1 (100% 的剩余流量 = 33.33%)
 
 每条新连接被概率匹配，被分配到不同的后端 Pod。通过 conntrack，同一个连接的所有后续数据包都发送到同一个后端。
 
-### KUBE-SEP 链的内部
+### 4.2.5 KUBE-SEP 链的内部
 
 单个 KUBE-SEP 链包含以下规则：
 
@@ -1935,7 +1935,7 @@ KUBE-SEP-XXXX:
   2. DNAT: 目标 IP -> Pod IP, 目标端口 -> targetPort
 ```
 
-### DNAT 与 SNAT 的完整流程
+### 4.2.6 DNAT 与 SNAT 的完整流程
 
 以集群内 Pod A（10.244.1.5）访问 ClusterIP（10.96.100.42:80）-> 后端 Pod B（10.244.2.8:8080）为例：
 
@@ -1970,7 +1970,7 @@ KUBE-SEP-XXXX:
    -> Pod B 收到 SYN: src=10.244.1.5:45678, dst=10.244.2.8:8080
 ```
 
-### Hairpin NAT 问题
+### 4.2.7 Hairpin NAT 问题
 
 当一个 Pod 通过 Service ClusterIP 访问同一个 Service，而负载均衡恰好选中了该 Pod 自己时，会产生 Hairpin NAT 问题：
 
@@ -1984,7 +1984,7 @@ Pod A (10.244.1.5:45678) -> ClusterIP (10.96.100.42:80) -> DNAT -> Pod A (10.244
 
 kube-proxy 通过 MARK 标记来解决此问题（在 KUBE-SEP 链中标记 hairpin 流量），然后依赖 CNI 和 bridge 处理回环流量。
 
-### iptables 模式的可观察性
+### 4.2.8 iptables 模式的可观察性
 
 ```shell
 # 查看 nat 表中 kube-proxy 创建的所有链
@@ -2008,13 +2008,13 @@ iptables -t nat -S | wc -l
 
 ## 4.3 IPVS模式详解 (虚拟服务器+真实服务器, 调度算法)
 
-### IPVS 简介
+### 4.3.1 IPVS 简介
 
 **IPVS**（IP Virtual Server）是 Linux 内核的一个模块，实现了传输层的负载均衡。它是 Linux Virtual Server（LVS）项目的核心组件，从 Linux 2.4 开始就已存在于内核中。
 
 与 iptables 不同，IPVS 是一个**专门的负载均衡框架**，它维护一个高效的连接调度表，支持多种调度算法，并且性能不受规则数量线性影响。
 
-### IPVS 的核心概念
+### 4.3.2 IPVS 的核心概念
 
 IPVS 有三个核心概念：
 
@@ -2035,7 +2035,7 @@ IPVS 有三个核心概念：
   :8080         :8080         :8080
 ```
 
-### kube-proxy 如何创建 IPVS 规则
+### 4.3.3 kube-proxy 如何创建 IPVS 规则
 
 kube-proxy 通过 netlink 接口直接与内核 IPVS 模块通信，而不是通过 iptables 命令。创建流程简化为：
 
@@ -2044,7 +2044,7 @@ kube-proxy 通过 netlink 接口直接与内核 IPVS 模块通信，而不是通
 3. 对每个 Service 的后端 Pod 添加真实服务器（Pod IP:targetPort）
 4. 清理不存在的后端和虚拟服务器
 
-### 支持的调度算法
+### 4.3.4 支持的调度算法
 
 IPVS 支持多种调度算法，通过 `kube-proxy` 的 `--ipvs-scheduler` 参数配置：
 
@@ -2061,7 +2061,7 @@ IPVS 支持多种调度算法，通过 `kube-proxy` 的 `--ipvs-scheduler` 参�
 
 默认使用 `rr`（轮询）。对于大多数应用场景来说轮询就足够了。
 
-### IPVS 的持久连接
+### 4.3.5 IPVS 的持久连接
 
 IPVS 原生支持持久连接（Persistence），对应 Kubernetes 的 `sessionAffinity: ClientIP`。kube-proxy 将 `sessionAffinityConfig.clientIP.timeoutSeconds` 翻译为 IPVS 的持久超时参数。
 
@@ -2075,7 +2075,7 @@ TCP  10.96.100.42:80              rr persistent 10800
   -> 10.244.3.12:8080             Masq    1      0          0
 ```
 
-### IPVS 模式下的 iptables 角色
+### 4.3.6 IPVS 模式下的 iptables 角色
 
 IPVS 模式仍然需要 iptables，但角色大大简化。主要用于：
 - 数据包的初始拦截（将发往 ClusterIP 的数据包引导到 IPVS）
@@ -2084,7 +2084,7 @@ IPVS 模式仍然需要 iptables，但角色大大简化。主要用于：
 
 iptables 规则数量从 O(N*M) 降低到 O(N)（N=Service 数，比 iptables 模式的 O(N*M) 低得多，M=Pod 数）。
 
-### 观察 IPVS 状态
+### 4.3.7 观察 IPVS 状态
 
 ```shell
 # 安装 ipvsadm 工具
@@ -2113,7 +2113,7 @@ ipvsadm -L -n --rate
 
 ## 4.4 iptables vs IPVS 性能对比
 
-### 规则规模对比
+### 4.4.1 规则规模对比
 
 **iptables 模式**的规则数量与服务数量和后端 Pod 数量强相关：
 
@@ -2133,7 +2133,7 @@ iptables 使用链表结构存储规则。每个数据包需要**线性遍历**�
 # 真实服务器调度: O(1) (基于调度算法的常数时间选择)
 ```
 
-### 性能基准测试
+### 4.4.2 性能基准测试
 
 以下是典型测试场景的对比（来源于 Kubernetes 社区的性能测试数据）：
 
@@ -2146,7 +2146,7 @@ iptables 使用链表结构存储规则。每个数据包需要**线性遍历**�
 | **CPU 占用** | 高（规则同步 + 匹配） | 低 |
 | **吞吐量** | 受规则数量线性影响 | 几乎不受影响 |
 
-### iptables 的性能瓶颈
+### 4.4.3 iptables 的性能瓶颈
 
 1. **全量规则同步**：kube-proxy 在 iptables 模式下，每次 `syncProxyRules()` 调用都会完全重建整个规则集。这会短暂锁定 iptables，导致瞬时的规则真空期。
 
@@ -2156,7 +2156,7 @@ iptables 使用链表结构存储规则。每个数据包需要**线性遍历**�
 
 4. **规则更新不可中断**：iptables-restore 是原子操作，大量规则一次性提交。提交期间无法处理增量更新。
 
-### 何时必须切换到 IPVS
+### 4.4.4 何时必须切换到 IPVS
 
 如果你的集群出现以下信号，说明应该从 iptables 切换到 IPVS：
 
@@ -2167,7 +2167,7 @@ iptables 使用链表结构存储规则。每个数据包需要**线性遍历**�
 - **新连接建立 P99 延迟超过 10ms**
 - **kube-proxy 进程 CPU 使用率持续 > 50%**
 
-### 切换方法
+### 4.4.5 切换方法
 
 ```bash
 # 1. 在所有 Node 上加载 IPVS 内核模块
@@ -2192,7 +2192,7 @@ kubectl delete pod -n kube-system -l k8s-app=kube-proxy
 
 ## 4.5 eBPF/Cilium替代kube-proxy的方式 (未来趋势)
 
-### eBPF 技术简介
+### 4.5.1 eBPF 技术简介
 
 **eBPF**（Extended Berkeley Packet Filter）是 Linux 内核中的一项革命性技术。它允许在**内核空间**执行沙箱化的用户态程序，而不需要修改内核源代码或加载内核模块。
 
@@ -2204,7 +2204,7 @@ eBPF 程序可以挂载到内核的各种钩子点（如网络数据包处理路
 - **可编程性强**：可以实现复杂的网络策略
 - **性能极高**：接近线速的数据包处理
 
-### Cilium 的 kube-proxy Replacement
+### 4.5.2 Cilium 的 kube-proxy Replacement
 
 **Cilium** 是一个基于 eBPF 的 CNI 插件和网络平台，它可以在不需要 kube-proxy 的情况下实现 Service 的负载均衡。
 
@@ -2224,7 +2224,7 @@ Cilium 的 Service 负载均衡实现：
 - 使用 **eBPF Map** 存储 Service 到 EP 的映射
 - 支持 **Maglev一致性哈希**算法保证后端变化时连接影响最小
 
-### 启用 kube-proxy Replacement
+### 4.5.3 启用 kube-proxy Replacement
 
 在 Cilium 中启用 kube-proxy 替换：
 
@@ -2242,7 +2242,7 @@ data:
   bpf-lb-acceleration: "native"         # 原生加速
 ```
 
-### 性能对比
+### 4.5.4 性能对比
 
 Cilium 的基准测试数据（相对传统 kube-proxy）：
 
@@ -2260,7 +2260,7 @@ Cilium 的基准测试数据（相对传统 kube-proxy）：
 
 ## 4.6 iptables模式下的连接追踪 (conntrack) 问题与优化
 
-### conntrack 简介
+### 4.6.1 conntrack 简介
 
 **conntrack**（Connection Tracking）是 Linux 内核的连接追踪子系统。它记录系统中每个网络连接的元数据（源IP、源端口、目标IP、目标端口、协议、状态），用于：
 
@@ -2270,7 +2270,7 @@ Cilium 的基准测试数据（相对传统 kube-proxy）：
 
 对于 Kubernetes 集群来说，conntrack 表特别重要——每个通过 Service 的 TCP/UDP 连接都在 conntrack 表中占用一个条目。
 
-### conntrack 表在 Kubernetes 中的压力
+### 4.6.2 conntrack 表在 Kubernetes 中的压力
 
 在 iptables 模式下，Kubernetes 的高度动态特性给 conntrack 带来了巨大压力：
 
@@ -2279,7 +2279,7 @@ Cilium 的基准测试数据（相对传统 kube-proxy）：
 3. **条目生命周期长**：TCP TIME_WAIT 默认 120 秒，CLOSE_WAIT 默认 60 秒（远长于实际连接）
 4. **SNAT 导致额外条目**：externalTrafficPolicy: Cluster 时，每个外部连接都产生一个 SNAT 条目
 
-### conntrack 表满的症状
+### 4.6.3 conntrack 表满的症状
 
 ```shell
 # 内核日志
@@ -2300,7 +2300,7 @@ $ cat /proc/sys/net/netfilter/nf_conntrack_max
 - 间歇性连接失败
 - 名为"随机掉线"的诡异行为
 
-### conntrack 表的配置优化
+### 4.6.4 conntrack 表的配置优化
 
 ```bash
 # conntrack 表的最大条目数
@@ -2313,7 +2313,7 @@ EOF
 sysctl -p /etc/sysctl.d/99-kubernetes.conf
 ```
 
-### conntrack 超时时间优化
+### 4.6.5 conntrack 超时时间优化
 
 ```bash
 # 查看当前超时配置
@@ -2327,7 +2327,7 @@ sysctl -w net.netfilter.nf_conntrack_tcp_timeout_close_wait=3600      # 1小时
 sysctl -w net.netfilter.nf_conntrack_tcp_timeout_fin_wait=30          # 30秒
 ```
 
-### conntrack 哈希表大小优化
+### 4.6.6 conntrack 哈希表大小优化
 
 ```bash
 # 哈希表大小（bucket 数量）
@@ -2337,7 +2337,7 @@ sysctl -w net.netfilter.nf_conntrack_buckets=262144
 # 如果 conntrack_max = 1048576, buckets 应为 262144
 ```
 
-### 监控 conntrack
+### 4.6.7 监控 conntrack
 
 ```shell
 # 查看当前使用量和最大容量
@@ -2356,7 +2356,7 @@ conntrack -L -d 10.96.100.42
 # node_nf_conntrack_entries_limit  # 最大条目数
 ```
 
-### 缓解 conntrack 压力的架构方案
+### 4.6.8 缓解 conntrack 压力的架构方案
 
 1. **切换到 IPVS 模式**：IPVS 维护自己的连接表，减少了对 conntrack 的依赖
 2. **使用 eBPF/Cilium**：Cilium 使用自己的连接追踪实现（基于 eBPF Map），不依赖传统 conntrack
@@ -2364,11 +2364,11 @@ conntrack -L -d 10.96.100.42
 4. **避免不必要的 SNAT**：使用 `externalTrafficPolicy: Local`（保留源 IP，减少 SNAT 条目）
 5. **应用层优化**：使用 HTTP Keep-Alive 复用连接，使用 gRPC 的长连接模型，引入连接池
 
-# 5.Endpoints与EndpointSlice
+# 5. Endpoints与EndpointSlice
 
 ## 5.1 Endpoints对象 (传统: 所有后端Pod IP集合)
 
-### Endpoints 对象的结构
+### 5.1.1 Endpoints 对象的结构
 
 Endpoints 是 Kubernetes 的一个原生资源对象，它存储了 Service 对应的所有后端 Pod 的网络信息（IP + Port）。每个 Service 会自动创建一个同名的 Endpoints 对象。
 
@@ -2405,7 +2405,7 @@ subsets:
       namespace: default
 ```
 
-### Endpoints Controller 的工作机制
+### 5.1.2 Endpoints Controller 的工作机制
 
 Endpoints Controller 是 `kube-controller-manager` 中的一个组件，它负责根据 Service 的 Selector 自动管理 Endpoints 对象：
 
@@ -2424,7 +2424,7 @@ for each Service:
     6. 更新 Endpoints 对象
 ```
 
-### Endpoints 的性能问题
+### 5.1.3 Endpoints 的性能问题
 
 在大型集群中，Endpoints 对象存在明显的性能问题：
 
@@ -2441,7 +2441,7 @@ for each Service:
 - 每次滚动更新，每秒可能有数十次 Endpoints 更新
 - kube-proxy 需要解析 1MB 的对象来确定只有 1 个 IP 发生了变更
 
-### 注意事项
+### 5.1.4 注意事项
 
 对于有 Selector 的 Service，Endpoints 由 Endpoints Controller 自动管理。手动修改 Endpoints 会立即被控制器回写覆盖。只有无 Selector 的 Service 才适合手动管理 Endpoints。
 
@@ -2449,7 +2449,7 @@ for each Service:
 
 ## 5.2 EndpointSlice (v1.21 GA: 按Pod分组切片, 减少大Service的API对象大小)
 
-### EndpointSlice 的诞生
+### 5.2.1 EndpointSlice 的诞生
 
 为了解决 Endpoints 对象的性能瓶颈，Kubernetes 社区设计了 **EndpointSlice**（端点切片）。它在 v1.17 引入（Alpha），v1.21 达到 GA（默认启用）。
 
@@ -2479,7 +2479,7 @@ EndpointSlice:
 50 个 Slice 对象 (5000/100)，每个最多 100 个端点
 ```
 
-### EndpointSlice 的结构
+### 5.2.2 EndpointSlice 的结构
 
 ```yaml
 apiVersion: discovery.k8s.io/v1
@@ -2524,7 +2524,7 @@ ports:
   protocol: TCP
 ```
 
-### EndpointSlice 的关键优势
+### 5.2.3 EndpointSlice 的关键优势
 
 1. **拓扑信息前置**：每个端点包含 `nodeName` 和 `zone` 信息，kube-proxy 可以快速实现拓扑感知路由，无需额外查询 Node/Pod API
 
@@ -2536,7 +2536,7 @@ ports:
 
 5. **减少内存占用**：kube-proxy 只缓存相关 Slice，不需要在内存中维护整个巨型 Endpoints 对象
 
-### 每个 Slice 的容量
+### 5.2.4 每个 Slice 的容量
 
 默认每个 EndpointSlice 最多包含 **100 个端点**。这个数量可通过 `kube-controller-manager` 的 `--max-endpoints-per-slice` 参数配置：
 
@@ -2550,7 +2550,7 @@ kube-controller-manager --max-endpoints-per-slice=100
 
 ## 5.3 EndpointSlice控制器工作原理
 
-### 架构概述
+### 5.3.1 架构概述
 
 EndpointSlice 控制器（EndpointSlice Controller）是 `kube-controller-manager` 中的一个控制器，替代了传统的 Endpoints 控制器。在 Kubernetes v1.21+ 中默认启用。
 
@@ -2560,7 +2560,7 @@ EndpointSlice 控制器（EndpointSlice Controller）是 `kube-controller-manage
 3. 计算每个 Service 应该拥有的 EndpointSlice 集合
 4. 创建、更新、删除 EndpointSlice 对象以匹配期望状态
 
-### 控制器工作流程
+### 5.3.2 控制器工作流程
 
 ```
 EndpointSlice Controller 控制循环:
@@ -2573,7 +2573,7 @@ for each Service (event-driven):
     6. 创建/更新/删除 EndpointSlice 以匹配期望状态
 ```
 
-### 分片策略
+### 5.3.3 分片策略
 
 EndpointSlice 控制器使用以下策略将 Pod 分配到不同的 Slice：
 
@@ -2586,7 +2586,7 @@ EndpointSlice 控制器使用以下策略将 Pod 分配到不同的 Slice：
 
 3. **Zone 分组（可选）**：将同一可用区（Zone）的 Pod 分组到同一个 Slice。
 
-### 边界条件处理
+### 5.3.4 边界条件处理
 
 **Pod 列表过大**：当 Service 有超过 `max-endpoints-per-slice` 个 Pod 时，控制器自动创建多个 Slice。
 
@@ -2596,7 +2596,7 @@ EndpointSlice 控制器使用以下策略将 Pod 分配到不同的 Slice：
 
 **Service Selector 变化**：如果 Service 的 Selector 被修改（如从 `app=v1` 改为 `app=v2`），旧的后端 Pod 不再匹配。控制器会识别这种变化，重建所有 Slice。
 
-### 性能对比
+### 5.3.5 性能对比
 
 使用 EndpointSlice 替代 Endpoints 后，在大规模 Service 场景下的改善：
 
@@ -2612,7 +2612,7 @@ EndpointSlice 控制器使用以下策略将 Pod 分配到不同的 Slice：
 
 ## 5.4 手动管理Endpoints (自定义Service后端)
 
-### 无 Selector 的 Service
+### 5.4.1 无 Selector 的 Service
 
 当 Service 的 `spec.selector` 字段为空时，Kubernetes 不会自动创建 Endpoints 或 EndpointSlice。用户需要手动创建同名的 Endpoints（或 EndpointSlice）对象来定义后端。
 
@@ -2647,7 +2647,7 @@ subsets:
     port: 80
 ```
 
-### 使用场景
+### 5.4.2 使用场景
 
 1. **将外部服务引入集群内 DNS**：外部数据库、消息队列、第三方 API 可以通过 Service DNS 名称访问
 
@@ -2680,7 +2680,7 @@ subsets:
 
 4. **迁移过渡方案**：在将服务从虚拟机迁移到 Kubernetes 期间，Service 的后端混合包含 Pod 和 VM
 
-### 手动 Endpoints vs ExternalName
+### 5.4.3 手动 Endpoints vs ExternalName
 
 | 特性 | 手动 Endpoints | ExternalName |
 |------|---------------|--------------|
@@ -2690,7 +2690,7 @@ subsets:
 | **健康检查** | 不支持（无 Endpoints Controller） | 不支持 |
 | **适用场景** | 外部服务有多 IP，需要负载均衡 | 单一外部域名别名 |
 
-### 使用 EndpointSlice 进行手动管理
+### 5.4.4 使用 EndpointSlice 进行手动管理
 
 从 v1.21 开始，推荐使用 EndpointSlice 而不是 Endpoints 进行手动管理：
 
@@ -2720,7 +2720,7 @@ ports:
   protocol: TCP
 ```
 
-### 自动化外部端点管理
+### 5.4.5 自动化外部端点管理
 
 对于需要动态管理外部端点的高级场景，可以编写自定义控制器（Operator）来自动维护 Endpoints/EndpointSlice：
 
@@ -2737,11 +2737,11 @@ ports:
 
 ---
 
-# 6.服务发现
+# 6. 服务发现
 
 ## 6.1 环境变量注入 (启动时注入Service信息，不推荐)
 
-### 环境变量注入机制
+### 6.1.1 环境变量注入机制
 
 当 Pod 启动时，kubelet 会在 Pod 的容器中注入一组环境变量，这些环境变量包含了当前 Namespace 中**已经存在**的 Service 的连接信息：
 
@@ -2759,7 +2759,7 @@ REDIS_PORT_6379_TCP_PORT=6379
 REDIS_PORT_6379_TCP_ADDR=10.96.100.42
 ```
 
-### 环境变量注入的严重问题
+### 6.1.2 环境变量注入的严重问题
 
 **问题1：时序依赖**
 
@@ -2784,11 +2784,11 @@ REDIS_PORT_6379_TCP_ADDR=10.96.100.42
 
 环境变量可以被同一 Pod 内的任何容器读取。
 
-### 强烈不推荐使用
+### 6.1.3 强烈不推荐使用
 
 环境变量注入在 Kubernetes 社区已被**强烈不推荐**用于生产环境。现代 Kubernetes 应用应使用 **DNS 服务发现**。
 
-### 禁用环境变量注入
+### 6.1.4 禁用环境变量注入
 
 ```yaml
 apiVersion: v1
@@ -2806,7 +2806,7 @@ spec:
 
 ## 6.2 DNS服务发现 (CoreDNS, FQDN格式, SRV记录)
 
-### DNS 服务发现的工作原理
+### 6.2.1 DNS 服务发现的工作原理
 
 Kubernetes 集群内置了 DNS 服务（默认使用 CoreDNS），为每个 Service 自动创建 DNS 记录。Pod 通过 DNS 解析来发现和连接到 Service。
 
@@ -2816,7 +2816,7 @@ DNS 服务发现的优势：
 - **跨命名空间**：统一的 FQDN 格式支持跨 Namespace 访问
 - **丰富记录类型**：支持 A、AAAA、SRV、PTR 等多种记录类型
 
-### FQDN 格式
+### 6.2.2 FQDN 格式
 
 Kubernetes 为 Service 自动创建的 FQDN 格式：
 
@@ -2841,7 +2841,7 @@ redis.default.svc.cluster.local
 +----------------------------- 根域名
 ```
 
-### DNS 解析的短名称
+### 6.2.3 DNS 解析的短名称
 
 在 Pod 内部，DNS 解析器配置了搜索域（search domain），使得可以使用短名称来访问 Service：
 
@@ -2864,7 +2864,7 @@ options ndots:5                              # 域名中点的数量阈值
 | `redis.default.svc.cluster.local` | (完整 FQDN) |
 | `redis.production` | `redis.production.svc.cluster.local` |
 
-### DNS 记录类型
+### 6.2.4 DNS 记录类型
 
 **A 记录（IPv4 地址）**：
 
@@ -2887,13 +2887,13 @@ _http._tcp.my-service.default.svc.cluster.local  service = 0 100 80 my-service.d
 
 SRV 记录的字段含义：`优先级 权重 端口 目标`
 
-### Headless Service 的 DNS 特殊行为
+### 6.2.5 Headless Service 的 DNS 特殊行为
 
 Headless Service（`clusterIP: None`）的 DNS 行为与普通 Service 不同：
 - 返回所有 Ready Pod 的 IP（A/AAAA 记录列表）
 - 配合 StatefulSet 时，每个 Pod 有独立的 DNS 名称
 
-### ndots 配置与 DNS 查询优化
+### 6.2.6 ndots 配置与 DNS 查询优化
 
 `ndots:5` 的含义：如果域名中的点（.）数量少于 5 个，则首先使用搜索域进行查询。
 
@@ -2930,7 +2930,7 @@ spec:
 
 ## 6.3 CoreDNS架构与配置 (Corefile, 插件链)
 
-### CoreDNS 简介
+### 6.3.1 CoreDNS 简介
 
 CoreDNS 是 Kubernetes 集群的默认 DNS 服务器（从 v1.13 开始替代 kube-dns）。它是一个用 Go 编写的、基于插件架构的灵活 DNS 服务器，以 Deployment 方式在集群中运行。
 
@@ -2940,7 +2940,7 @@ CoreDNS 的核心特点：
 - **Kubernetes 集成**：内置 kubernetes 插件，直接通过 API Server 获取 Service/Pod 信息
 - **可扩展**：支持自定义插件和转发策略
 
-### CoreDNS 在 Kubernetes 中的部署
+### 6.3.2 CoreDNS 在 Kubernetes 中的部署
 
 ```yaml
 # CoreDNS Deployment (简化)
@@ -3001,7 +3001,7 @@ spec:
     k8s-app: kube-dns
 ```
 
-### Corefile 配置
+### 6.3.3 Corefile 配置
 
 Corefile 是 CoreDNS 的核心配置文件，定义了插件链。一个典型的 Kubernetes Corefile：
 
@@ -3028,7 +3028,7 @@ Corefile 是 CoreDNS 的核心配置文件，定义了插件链。一个典型�
 }
 ```
 
-### 插件链详解
+### 6.3.4 插件链详解
 
 CoreDNS 的每个 DNS 请求按配置顺序经过每个插件：
 
@@ -3046,7 +3046,7 @@ DNS 请求 -> errors -> health -> kubernetes 插件 -> prometheus -> forward -> 
 
 4. **loadbalance 插件**：对上游 DNS 返回的多条 A 记录进行轮询负载均衡。
 
-### CoreDNS 的副本数和高可用
+### 6.3.5 CoreDNS 的副本数和高可用
 
 ```yaml
 # CoreDNS Horizontal Pod Autoscaler
@@ -3092,7 +3092,7 @@ spec:
             topologyKey: kubernetes.io/hostname
 ```
 
-### 监控 CoreDNS
+### 6.3.6 监控 CoreDNS
 
 ```shell
 # CoreDNS 暴露的指标
@@ -3113,7 +3113,7 @@ coredns_cache_misses_total           # 缓存未命中数
 
 Kubernetes 为 Pod 提供了三种 DNS 策略，通过 `spec.dnsPolicy` 字段配置：
 
-### ClusterFirst（默认策略）
+### 6.4.1 ClusterFirst（默认策略）
 
 所有使用 `cluster.local` 后缀的 DNS 查询都先发送到集群 DNS（CoreDNS）。非集群域名的查询根据 Pod 的 `dnsConfig` 或上游设置决定。
 
@@ -3130,7 +3130,7 @@ search default.svc.cluster.local svc.cluster.local cluster.local
 options ndots:5
 ```
 
-### Default
+### 6.4.2 Default
 
 继承 Pod 所在 Node 的 DNS 解析配置（即宿主机的 `/etc/resolv.conf`）。集群内 DNS 服务发现将不可用。
 
@@ -3143,7 +3143,7 @@ spec:
 - Pod 不需要访问集群内 Service
 - 需要使用宿主机特定的 DNS 配置（如企业内网 DNS）
 
-### None
+### 6.4.3 None
 
 不使用 Kubernetes 的默认 DNS 配置。必须配合 `spec.dnsConfig` 显式指定 DNS 设置。
 
@@ -3169,7 +3169,7 @@ spec:
 - Pod 需要特定的 DNS 解析行为
 - 使用 DNS 加密（如 DNS-over-TLS）
 
-### 三种策略对比
+### 6.4.4 三种策略对比
 
 | 策略 | 集群DNS可用 | /etc/resolv.conf 来源 | 适用场景 |
 |------|-----------|---------------------|---------|
@@ -3177,7 +3177,7 @@ spec:
 | **Default** | 否 | 继承宿主机 | 不需要集群服务的特殊 Pod |
 | **None** | 取决于 dnsConfig | 用户自定义 | 需要完全控制 DNS 配置 |
 
-### 不需要集群 DNS 方案的 Pod
+### 6.4.5 不需要集群 DNS 方案的 Pod
 
 某些系统级 Pod（如网络插件、某些 DaemonSet）在集群 DNS 可用之前就启动，或者不需要访问集群内 Service。它们应使用 `dnsPolicy: Default` 配合 `hostNetwork: true`。
 
@@ -3187,7 +3187,7 @@ spec:
 
 `spec.dnsConfig` 允许用户在 Pod 级别覆盖 DNS 配置的各个方面。这比整个集群级别的 CoreDNS 配置更精细。
 
-### dnsConfig 字段
+### 6.5.1 dnsConfig 字段
 
 ```yaml
 apiVersion: v1
@@ -3218,7 +3218,7 @@ spec:
     image: nginx:1.21
 ```
 
-### 实际生成 /etc/resolv.conf
+### 6.5.2 实际生成 /etc/resolv.conf
 
 kubelet 根据以上配置生成的 `/etc/resolv.conf`：
 
@@ -3229,7 +3229,7 @@ search my-app.svc.cluster.local svc.cluster.local cluster.local
 options ndots:2 timeout:2 attempts:3 single-request-reopen edns0
 ```
 
-### 使用场景
+### 6.5.3 使用场景
 
 1. **减少外部域名查询延迟**：将 `ndots` 从 5 降到 2，减少不必要的搜索域查询
 
@@ -3247,7 +3247,7 @@ spec:
 
 4. **DNS over HTTPS/TLS**：配置安全的 DNS 解析通道
 
-### 与 dnsPolicy 的配合
+### 6.5.4 与 dnsPolicy 的配合
 
 | dnsPolicy | dnsConfig 作用 |
 |-----------|---------------|
@@ -3255,7 +3255,7 @@ spec:
 | `Default` | dnsConfig 完全覆盖，只使用 dnsConfig 中的内容 |
 | `None` | 必须使用 dnsConfig，完全自定义 |
 
-### Pod DNS 配置的排查
+### 6.5.5 Pod DNS 配置的排查
 
 ```shell
 # 进入 Pod 查看 DNS 配置
@@ -3274,13 +3274,13 @@ kubectl exec -it coredns-xxx -n kube-system -- cat /proc/net/udp
 
 
 
-# 7.无头服务 (Headless Service)
+# 7. 无头服务 (Headless Service)
 
 ## 7.1 ClusterIP=None的含义
 
 Headless Service 的核心标志是 `clusterIP: None`。当这个字段被设置为 `None` 时，Kubernetes 的 Service ClusterIP Allocator 不会为该 Service 分配虚拟 IP 地址。
 
-### 与普通 Service 的本质区别
+### 7.1.1 与普通 Service 的本质区别
 
 ```
 普通 Service (ClusterIP: 10.96.100.42):
@@ -3294,7 +3294,7 @@ Headless Service (ClusterIP: None):
   客户端可见：知道所有后端 Pod 的 IP，需要自己决定连接哪个
 ```
 
-### 底层原理
+### 7.1.2 底层原理
 
 从 kube-proxy 的视角看：
 - `clusterIP: None` -> kube-proxy **不会**为该 Service 创建 iptables/IPVS 规则
@@ -3309,7 +3309,7 @@ Headless Service (ClusterIP: None):
 - `clusterIP: None` -> 不占用 Service ClusterIP CIDR 中的任何 IP
 - Endpoints/EndpointSlice 仍然正常维护
 
-### 创建 Headless Service 实例
+### 7.1.3 创建 Headless Service 实例
 
 ```yaml
 apiVersion: v1
@@ -3330,7 +3330,7 @@ spec:
 
 ## 7.2 DNS返回Pod IP列表 (非VIP)
 
-### DNS 查询行为对比
+### 7.2.1 DNS 查询行为对比
 
 ```shell
 # 普通 Service
@@ -3348,7 +3348,7 @@ Address:   10.244.3.12
 
 DNS 记录是动态的：当 Pod 增加、删除或就绪状态变化时，DNS 记录实时更新。
 
-### StatefulSet 的独立 DNS 名称
+### 7.2.2 StatefulSet 的独立 DNS 名称
 
 当 Headless Service 配合 StatefulSet 使用时，每个 Pod 还有独立的 DNS 名称（A 记录）：
 
@@ -3374,7 +3374,7 @@ Address: 10.244.3.12   # web-2 的 IP
 
 ## 7.3 适用场景 (StatefulSet/数据库集群/自定义负载均衡)
 
-### 场景1：StatefulSet + Headless Service
+### 7.3.1 场景1：StatefulSet + Headless Service
 
 最经典的组合。适用于需要稳定网络标识的系统：Kafka、ZooKeeper、etcd、Cassandra、MongoDB 副本集、Elasticsearch 集群。
 
@@ -3418,11 +3418,11 @@ spec:
 
 每个 Kafka Broker 有独立的 DNS 名称用于节点间通信和客户端连接。
 
-### 场景2：数据库集群的自发现
+### 7.3.2 场景2：数据库集群的自发现
 
 Cassandra、MongoDB 等数据库需要在启动时发现集群中的其他节点，通过 DNS 查询 Headless Service 获取所有成员的 IP。
 
-### 场景3：自定义客户端负载均衡
+### 7.3.3 场景3：自定义客户端负载均衡
 
 当应用使用 gRPC 客户端负载均衡时：
 
@@ -3437,17 +3437,17 @@ conn, err := grpc.Dial(
 
 gRPC 的 DNS resolver 解析 Headless Service，获取所有后端 Pod IP，然后在客户端侧进行轮询负载均衡。避免了 kube-proxy 的额外跳数和延迟。
 
-### 场景4：需要发现所有成员的分布式系统
+### 7.3.4 场景4：需要发现所有成员的分布式系统
 
 Apache Spark、Apache Flink 等大数据框架需要知道所有 Worker 节点的信息。通过 Headless Service，Master 节点可以解析到所有 Worker Pod 的 IP。
 
 ---
 
-# 8.拓扑感知服务 (Topology Aware Service)
+# 8. 拓扑感知服务 (Topology Aware Service)
 
 ## 8.1 Service Topology (v1.17-1.21, 已被弃用)
 
-### 历史背景
+### 8.1.1 历史背景
 
 Service Topology 是 Kubernetes v1.17 引入的一个 Alpha 特性，旨在让 Service 能够根据网络拓扑（如节点、可用区、区域）将流量优先路由到就近的端点。由于配置复杂和行为不确定，在 v1.21 后被弃用。
 
@@ -3455,11 +3455,11 @@ Service Topology 是 Kubernetes v1.17 引入的一个 Alpha 特性，旨在让 S
 
 ## 8.2 Topology Aware Hints / Topology Aware Routing (v1.21+)
 
-### 新设计理念
+### 8.2.1 新设计理念
 
 Topology Aware Hints（v1.21 Alpha -> v1.23 Beta -> v1.27 GA 更名为 Topology Aware Routing）是 Service Topology 的替代方案。它自动根据节点的拓扑标签（特别是 `topology.kubernetes.io/zone`）优化 EndpointSlice 中端点的分布。
 
-### 工作原理
+### 8.2.2 工作原理
 
 Topology Aware Routing 改进了 EndpointSlice 的分配方式：
 
@@ -3472,7 +3472,7 @@ Topology Aware Routing:
   kube-proxy 优先选择本 Zone 的 Slice 中的端点
 ```
 
-### 启用方式
+### 8.2.3 启用方式
 
 Topology Aware Routing 在 v1.27+ 默认启用。通过 Service 的 annotation 控制：
 
@@ -3490,7 +3490,7 @@ spec:
   - port: 80
 ```
 
-### 触发条件
+### 8.2.4 触发条件
 
 拓扑感知路由只在以下条件全部满足时生效：
 
@@ -3501,7 +3501,7 @@ spec:
 
 如果端点分布不均匀，系统会自动回退到标准路由模式。
 
-### 均匀性检查
+### 8.2.5 均匀性检查
 
 系统使用以下逻辑判断分布是否均匀：
 
@@ -3519,7 +3519,7 @@ spec:
 
 ## 8.3 就近路由的实现原理
 
-### kube-proxy 的 Node Zone 感知
+### 8.3.1 kube-proxy 的 Node Zone 感知
 
 kube-proxy 启动时会通过 Node 对象的标签获取当前 Node 所在的 Zone。当 kube-proxy 消费 EndpointSlice 时，会检查每个端点的 `zone` 字段：
 
@@ -3532,7 +3532,7 @@ endpoints:
     ready: true
 ```
 
-### 就近路由逻辑
+### 8.3.2 就近路由逻辑
 
 kube-proxy 在选择后端 Pod 时的优先级逻辑：
 
@@ -3542,7 +3542,7 @@ kube-proxy 在选择后端 Pod 时的优先级逻辑：
 3. 如果本 Zone 没有 Ready 的端点 -> 对所有 Zone 的端点负载均衡（自动降级）
 ```
 
-### iptables 模式下的实现
+### 8.3.3 iptables 模式下的实现
 
 在 iptables 模式下，kube-proxy 为每个 Service 生成两组规则链：
 
@@ -3556,7 +3556,7 @@ KUBE-SVC-XXXX:
          -> KUBE-SEP-DDDD (其他 Zone Pod D)
 ```
 
-### 端到端流量路径
+### 8.3.4 端到端流量路径
 
 ```
 Pod A (us-east-1a)
@@ -3576,7 +3576,7 @@ Pod B (us-east-1a, 同一 Zone)
 Pod A 收到响应
 ```
 
-### 优势与限制
+### 8.3.5 优势与限制
 
 **优势**：减少跨可用区流量（降低延迟和成本）；自动降级；无需手动配置。
 
@@ -3584,11 +3584,11 @@ Pod A 收到响应
 
 ---
 
-# 9.流量策略
+# 9. 流量策略
 
 ## 9.1 externalTrafficPolicy详解 (Cluster: 集群内节点间转发, 源IP SNAT; Local: 仅本节点Pod, 保留源IP)
 
-### externalTrafficPolicy: Cluster（默认值）
+### 9.1.1 externalTrafficPolicy: Cluster（默认值）
 
 **行为**：外部流量到达任何 Node 的 NodePort 后，可以被转发到集群内**任意 Node** 上的后端 Pod。
 
@@ -3610,7 +3610,7 @@ Pod 收到请求，源 IP = 10.0.0.2 (Node2 的 IP)  <- 源 IP 丢失！
 
 **核心问题**：由于 SNAT，后端 Pod 看到的源 IP 是 Node 的 IP，而不是客户端的真实 IP。
 
-### externalTrafficPolicy: Local
+### 9.1.2 externalTrafficPolicy: Local
 
 **行为**：外部流量到达某个 Node 后，**只能**转发到该 Node 上的后端 Pod。如果接收请求的 Node 上没有后端 Pod，连接被拒绝。不会进行 SNAT，后端 Pod 可以直接看到客户端的真实 IP。
 
@@ -3631,7 +3631,7 @@ Pod 收到请求，源 IP = 10.0.1.100 (客户端真实 IP 保留)
 
 **劣势**：负载均衡粒度较粗；需要外部 LB 层配置健康检查。
 
-### 配置示例
+### 9.1.3 配置示例
 
 ```yaml
 apiVersion: v1
@@ -3654,11 +3654,11 @@ spec:
 
 `internalTrafficPolicy` 控制集群**内部**流量的路由行为（Pod 到 Service 的流量），在 v1.22 引入。
 
-### internalTrafficPolicy: Cluster（默认值）
+### 9.2.1 internalTrafficPolicy: Cluster（默认值）
 
 集群内部流量可以被转发到集群中**任何 Node** 上的后端 Pod。
 
-### internalTrafficPolicy: Local
+### 9.2.2 internalTrafficPolicy: Local
 
 集群内部流量**只能**转发到与源 Pod **在同一 Node** 上的后端 Pod。
 
@@ -3675,13 +3675,13 @@ spec:
   internalTrafficPolicy: Local       # 优先使用本节点 Pod
 ```
 
-### 使用场景
+### 9.2.3 使用场景
 
 1. **拓扑感知访问**：将流量限制在本节点，减少跨节点网络延迟
 2. **本地缓存优化**：DaemonSet 部署的缓存代理（如 Envoy Sidecar）
 3. **节点级故障隔离**：本节点后端不可用，即快速失败
 
-### externalTrafficPolicy + internalTrafficPolicy 的组合
+### 9.2.4 externalTrafficPolicy + internalTrafficPolicy 的组合
 
 ```yaml
 spec:
@@ -3693,7 +3693,7 @@ spec:
 
 ## 9.3 保留客户端源IP的方案对比
 
-### 方案1：externalTrafficPolicy: Local
+### 9.3.1 方案1：externalTrafficPolicy: Local
 
 工作原理：不自做 SNAT，直接将外部流量的源 IP 传递给本节点 Pod。
 
@@ -3703,7 +3703,7 @@ spec:
 
 **适用**：云环境 LoadBalancer + 均匀分布的 Pod。
 
-### 方案2：PROXY Protocol
+### 9.3.2 方案2：PROXY Protocol
 
 在外部 LB 到 Node 的连接中插入 PROXY Protocol 头，携带客户端真实 IP。
 
@@ -3726,7 +3726,7 @@ spec:
 
 **缺点**：需要应用支持 PROXY Protocol。
 
-### 方案3：X-Forwarded-For (HTTP 层面)
+### 9.3.3 方案3：X-Forwarded-For (HTTP 层面)
 
 通过 Ingress Controller 在 HTTP 头中添加 `X-Forwarded-For`。
 
@@ -3740,7 +3740,7 @@ metadata:
 
 **优点**：HTTP 层解决方案，应用广泛。**缺点**：仅适用于 HTTP/HTTPS。
 
-### 方案对比总结
+### 9.3.4 方案对比总结
 
 | 方案 | 协议支持 | 配置复杂度 | 性能 | 源 IP 准确性 |
 |------|---------|-----------|------|------------|
@@ -3750,11 +3750,11 @@ metadata:
 
 ---
 
-# 10.Service常见问题与排查
+# 10. Service常见问题与排查
 
 ## 10.1 Service不可达的排查流程
 
-### 排查步骤（自底向上）
+### 10.1.1 排查步骤（自底向上）
 
 **第1步：检查 Service 本身**
 
@@ -3813,7 +3813,7 @@ kubectl exec -it <test-pod> -- curl http://<service-name>.<namespace>:<port>
 curl http://<cluster-ip>:<port>  # 从 Node 上测试
 ```
 
-### 快速定位命令集合
+### 10.1.2 快速定位命令集合
 
 ```shell
 SVC=my-service
@@ -3827,7 +3827,7 @@ kubectl describe svc $SVC -n $NS | grep -A5 "Endpoints:"
 
 ## 10.2 Endpoints为空的原因
 
-### 原因1：Selector 不匹配
+### 10.2.1 原因1：Selector 不匹配
 
 ```shell
 $ kubectl get svc my-service -o jsonpath='{.spec.selector}'
@@ -3840,7 +3840,7 @@ my-app-xxx              app=my-app,version=v2  <- version 不匹配！
 
 **解决方案**：确保 Pod 的 Labels 与 Service 的 Selector 完全匹配。
 
-### 原因2：Pod 未就绪
+### 10.2.2 原因2：Pod 未就绪
 
 ```shell
 $ kubectl get pods -l app=my-app
@@ -3853,7 +3853,7 @@ Readiness probe failed: HTTP probe failed with statuscode: 500
 
 **解决方案**：检查 Readiness Probe 配置（端口、路径、超时）；等待应用启动完成。
 
-### 原因3：Pod 处于 Pending 状态
+### 10.2.3 原因3：Pod 处于 Pending 状态
 
 ```shell
 $ kubectl describe pod my-app-xxx
@@ -3863,19 +3863,19 @@ Events:
 
 **解决方案**：解决资源不足、节点选择器、污点/容忍等问题。
 
-### 原因4：Pod 正在终止
+### 10.2.4 原因4：Pod 正在终止
 
 Pod 有 `deletionTimestamp` 时，其 IP 从 Endpoints 中移除。等待新 Pod 创建并就绪。
 
-### 原因5：Service 类型为 ExternalName
+### 10.2.5 原因5：Service 类型为 ExternalName
 
 ExternalName 类型 Service 没有 Selector，不会有 Endpoints。这是预期行为。
 
-### 原因6：命名空间不匹配
+### 10.2.6 原因6：命名空间不匹配
 
 Service 和 Pod 必须在同一个 Namespace 中。
 
-### 原因7：publishNotReadyAddresses 未启用
+### 10.2.7 原因7：publishNotReadyAddresses 未启用
 
 对于 StatefulSet 的集群组建场景，如果 Pod 在启动时需要通过 Service 发现其他成员，需要设置 `publishNotReadyAddresses: true`。
 
@@ -3888,7 +3888,7 @@ spec:
 
 ## 10.3 kube-proxy规则同步延迟
 
-### 延迟的组成
+### 10.3.1 延迟的组成
 
 ```
 总延迟 = API 延迟 + 规则同步延迟 + 规则生效延迟
@@ -3898,14 +3898,14 @@ API 延迟: API Server 接收变更 + etcd 持久化 + Watch 推送 = 通常 < 5
 规则生效延迟: 内核处理新规则 = 通常 < 100ms
 ```
 
-### iptables 模式下的规则同步间隔
+### 10.3.2 iptables 模式下的规则同步间隔
 
 ```bash
 kube-proxy --iptables-sync-period=30s          # 全量同步间隔
 kube-proxy --iptables-min-sync-period=1s       # 最小同步间隔
 ```
 
-### 减少同步延迟的方法
+### 10.3.3 减少同步延迟的方法
 
 1. **切换到 IPVS 模式**：增量更新代替全量重建
 2. **调整同步间隔**（权衡 CPU 使用）：
@@ -3915,7 +3915,7 @@ kube-proxy --iptables-min-sync-period=1s       # 最小同步间隔
 3. **使用 EndpointSlice 替代 Endpoints**：减少 Watch 事件大小
 4. **减少不必要的变更**：合理设置 Readiness Probe 的 `periodSeconds`；使用 PodDisruptionBudget
 
-### 检测同步延迟
+### 10.3.4 检测同步延迟
 
 ```shell
 curl http://localhost:10249/metrics | grep kubeproxy
@@ -3926,7 +3926,7 @@ kubeproxy_sync_proxy_rules_last_timestamp_seconds  # 上次同步时间戳
 kubeproxy_network_programming_duration_seconds      # 网络编程延迟
 ```
 
-### 应用层优雅处理
+### 10.3.5 应用层优雅处理
 
 应用开发时应假设 Service 后端的变更存在秒级延迟：
 1. **重试机制**：连接失败时自动重试

@@ -103,7 +103,7 @@ public class ImmutableCollectionExample {
 }
 ```
 
-### 不可变集合 vs Collections.unmodifiableXXX
+### 2.1.1 不可变集合 vs Collections.unmodifiableXXX
 
 ```java
 // Collections.unmodifiableList 是"视图"模式
@@ -122,7 +122,7 @@ System.out.println(immutable.size());  // 2（真正的快照）
 
 ## 2.2 新集合类型
 
-### Multimap（多值 Map）
+### 2.2.1 Multimap（多值 Map）
 
 一个键对应多个值，替代 `Map<K, Collection<V>>` 的繁琐操作。
 
@@ -190,7 +190,7 @@ public class MultimapExample {
 }
 ```
 
-### BiMap（双向 Map）
+### 2.2.2 BiMap（双向 Map）
 
 键和值都是唯一的，可互相查找。
 
@@ -224,7 +224,7 @@ public class BiMapExample {
 }
 ```
 
-### Table（双键 Map）
+### 2.2.3 Table（双键 Map）
 
 使用两个键（行和列）定位一个值，相当于 `Map<R, Map<C, V>>` 的简化。
 
@@ -276,7 +276,7 @@ public class TableExample {
 }
 ```
 
-### RangeSet（区间集合）
+### 2.2.4 RangeSet（区间集合）
 
 用于管理不重叠的区间集合。
 
@@ -317,7 +317,7 @@ public class RangeSetExample {
 }
 ```
 
-### ClassToInstanceMap
+### 2.2.5 ClassToInstanceMap
 
 类型到实例的 Map，类型安全。
 
@@ -332,7 +332,7 @@ Integer i = classMap.getInstance(Integer.class);
 
 ## 2.3 字符串工具
 
-### Joiner（连接器）
+### 2.3.1 Joiner（连接器）
 
 ```java
 public class JoinerExample {
@@ -366,7 +366,7 @@ public class JoinerExample {
 }
 ```
 
-### Splitter（分割器）
+### 2.3.2 Splitter（分割器）
 
 ```java
 public class SplitterExample {
@@ -411,7 +411,7 @@ public class SplitterExample {
 }
 ```
 
-### CharMatcher（字符匹配器）
+### 2.3.3 CharMatcher（字符匹配器）
 
 ```java
 public class CharMatcherExample {
@@ -560,7 +560,7 @@ public class OptionalExample {
 
 ## 2.6 排序与比较
 
-### ComparisonChain
+### 2.6.1 ComparisonChain
 
 ```java
 public class Person implements Comparable<Person> {
@@ -580,7 +580,7 @@ public class Person implements Comparable<Person> {
 }
 ```
 
-### Ordering（Guava 排序器）
+### 2.6.2 Ordering（Guava 排序器）
 
 ```java
 public class OrderingExample {
@@ -728,7 +728,7 @@ public class CacheExample {
 }
 ```
 
-### 缓存配置详解
+### 3.1.1 缓存配置详解
 
 | 配置项 | 说明 | 适用场景 |
 |--------|------|----------|
@@ -922,7 +922,7 @@ public class RateLimiterExample {
 }
 ```
 
-### RateLimiter 原理
+### 3.3.1 RateLimiter 原理
 
 RateLimiter 基于令牌桶算法（Token Bucket）实现：
 - 以固定速率向桶中添加令牌
@@ -1250,7 +1250,7 @@ BloomFilter<String> filter = BloomFilter.create(
 
 ## 6.1 最佳实践
 
-### 1. 优先使用不可变集合
+### 6.1.1 优先使用不可变集合
 
 ```java
 // 推荐：方法返回不可变集合
@@ -1266,7 +1266,7 @@ public static final ImmutableMap<String, String> ERROR_CODES = ImmutableMap.of(
 );
 ```
 
-### 2. 缓存配置模板
+### 6.1.2 缓存配置模板
 
 ```java
 LoadingCache<String, Object> cache = CacheBuilder.newBuilder()
@@ -1281,7 +1281,7 @@ LoadingCache<String, Object> cache = CacheBuilder.newBuilder()
     });
 ```
 
-### 3. Preconditions 统一参数校验
+### 6.1.3 Preconditions 统一参数校验
 
 ```java
 public void createUser(String name, Integer age, String email) {
@@ -1294,7 +1294,7 @@ public void createUser(String name, Integer age, String email) {
 }
 ```
 
-### 4. Splitter/Joiner 作为常量
+### 6.1.4 Splitter/Joiner 作为常量
 
 ```java
 public class CsvConstants {
@@ -1304,7 +1304,7 @@ public class CsvConstants {
 }
 ```
 
-### 5. EventBus 使用规范
+### 6.1.5 EventBus 使用规范
 
 ```java
 // 为不同领域创建独立 EventBus
@@ -1321,7 +1321,7 @@ public void handleEvent(OrderEvent event) {
 
 ## 6.2 常见坑
 
-### 坑 1：ImmutableList 包含 null
+### 6.2.1 坑 1：ImmutableList 包含 null
 
 ```java
 // ImmutableList 不允许 null 元素！
@@ -1337,7 +1337,7 @@ list.add("a");
 list.add(null);
 ```
 
-### 坑 2：Multimap.get() 返回的是活视图
+### 6.2.2 坑 2：Multimap.get() 返回的是活视图
 
 ```java
 ArrayListMultimap<String, String> multimap = ArrayListMultimap.create();
@@ -1349,7 +1349,7 @@ values.add("b");  // 会影响 multimap！
 // multimap 现在包含 {key=[a, b]}
 ```
 
-### 坑 3：Cache 的 value 不能为 null
+### 6.2.3 坑 3：Cache 的 value 不能为 null
 
 ```java
 LoadingCache<String, String> cache = CacheBuilder.newBuilder()
@@ -1376,7 +1376,7 @@ Cache<String, Optional<String>> cache2 = CacheBuilder.newBuilder()
     });
 ```
 
-### 坑 4：EventBus 异常处理
+### 6.2.4 坑 4：EventBus 异常处理
 
 ```java
 // EventBus 默认不会抛出异常！
@@ -1396,14 +1396,14 @@ EventBus safeBus = new EventBus((exception, context) -> {
 });
 ```
 
-### 坑 5：RateLimiter 不支持分布式
+### 6.2.5 坑 5：RateLimiter 不支持分布式
 
 ```java
 // RateLimiter 是单机限流
 // 分布式环境需使用 Redis + Lua 或 Sentinel 等方案
 ```
 
-### 坑 6：ComparisonChain 不能比较 long/double 正确性
+### 6.2.6 坑 6：ComparisonChain 不能比较 long/double 正确性
 
 ```java
 // ComparisonChain 的 compare 方法使用的是 Long.compare / Double.compare
@@ -1411,7 +1411,7 @@ EventBus safeBus = new EventBus((exception, context) -> {
 // 建议使用 Double.compare / Float.compare 的显式比较
 ```
 
-### 坑 7：Guava 版本冲突
+### 6.2.7 坑 7：Guava 版本冲突
 
 ```java
 // Guava 不同大版本 API 不兼容！

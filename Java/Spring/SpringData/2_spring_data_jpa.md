@@ -1,4 +1,4 @@
-# 1.JPA 概述与核心概念
+# 1. JPA 概述与核心概念
 
 ## 1.1 JPA、Hibernate 与 Spring Data JPA 的关系
 
@@ -67,7 +67,7 @@ ORM（Object-Relational Mapping）解决的核心问题是面向对象编程与�
 | **PersistenceContext** | 持久化上下文，管理着一组实体实例的集合（一级缓存） |
 | **PersistenceUnit** | 持久化单元，定义了一组实体类与数据库的映射关系 |
 
-# 2.快速入门
+# 2. 快速入门
 
 ## 2.1 Maven 依赖
 
@@ -183,7 +183,7 @@ public class UserService {
 }
 ```
 
-# 3.实体映射详解
+# 3. 实体映射详解
 
 ## 3.1 基础注解
 
@@ -438,7 +438,7 @@ public class Bike extends Vehicle {
 | `JOINED` | 父表 + 每个子类独立表 | 结构清晰，符合范式 | 查询需要 JOIN |
 | `TABLE_PER_CLASS` | 每个具体子类一张完整表 | 无 NULL 列 | 多态查询需 UNION |
 
-# 4.持久化上下文与实体状态
+# 4. 持久化上下文与实体状态
 
 ## 4.1 持久化上下文
 
@@ -516,7 +516,7 @@ flush 执行顺序（重要）：
 6. 所有 DELETE
 ```
 
-# 5.Repository 详解
+# 5. Repository 详解
 
 ## 5.1 Repository 接口层级
 
@@ -614,7 +614,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 ## 5.3 @Query 注解 —— JPQL 与原生 SQL
 
-### JPQL 查询
+### 5.3.1 JPQL 查询
 
 ```java
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -636,7 +636,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 }
 ```
 
-### 更新与删除
+### 5.3.2 更新与删除
 
 ```java
 @Modifying
@@ -653,7 +653,7 @@ int deleteOldProducts(@Param("status") String status, @Param("time") LocalDateTi
 // 3. 返回 int 为影响行数
 ```
 
-### 原生 SQL
+### 5.3.3 原生 SQL
 
 ```java
 @Query(value = "SELECT * FROM t_product WHERE MATCH(name, description) AGAINST(:keyword IN NATURAL LANGUAGE MODE)",
@@ -728,7 +728,7 @@ ProductDto findDtoById(@Param("id") Long id);
 // 调用：productRepository.findByCategory("电子", ProductSummary.class);
 ```
 
-# 6.JPA 高级查询
+# 6. JPA 高级查询
 
 ## 6.1 Specification（动态查询）
 
@@ -846,7 +846,7 @@ public class ProductQueryService {
 }
 ```
 
-# 7.N+1 问题与加载策略
+# 7. N+1 问题与加载策略
 
 ## 7.1 N+1 问题剖析
 
@@ -868,7 +868,7 @@ for (Order order : orders) {
 
 ## 7.2 解决方案
 
-### JOIN FETCH
+### 7.2.1 JOIN FETCH
 
 ```java
 @Query("SELECT o FROM Order o JOIN FETCH o.items WHERE o.customerId = :customerId")
@@ -882,7 +882,7 @@ List<Order> findOrdersWithItems(@Param("customerId") Long customerId);
 Optional<Order> findOrderDetail(@Param("id") Long id);
 ```
 
-### @EntityGraph
+### 7.2.2 @EntityGraph
 
 ```java
 // 方式1：实体上定义命名 EntityGraph
@@ -913,7 +913,7 @@ Optional<Order> findById(Long id);
 | `FETCH`（默认） | 图中指定的属性使用 EAGER，其他遵循默认策略 |
 | `LOAD` | 图中指定的属性使用 EAGER，其他全部使用 LAZY |
 
-### @BatchSize
+### 7.2.3 @BatchSize
 
 ```java
 @Entity
@@ -931,7 +931,7 @@ public class Order {
 }
 ```
 
-### FetchMode（Hibernate 特有）
+### 7.2.4 FetchMode（Hibernate 特有）
 
 ```java
 @Entity
@@ -960,7 +960,7 @@ public class Order {
 5. 复杂嵌套 → 拆分为多个简单查询，应用层组装
 ```
 
-# 8.缓存机制
+# 8. 缓存机制
 
 ## 8.1 一级缓存
 
@@ -1030,7 +1030,7 @@ public class Product {
 | `READ_WRITE` | 读写缓存，软锁定保证一致性 | 经常更新的数据 |
 | `TRANSACTIONAL` | 全事务缓存 | 需 JTA 环境 |
 
-# 9.锁机制
+# 9. 锁机制
 
 ## 9.1 乐观锁
 
@@ -1096,7 +1096,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 | 冲突概率高（秒杀） | 悲观锁 | 避免频繁重试 |
 | 长事务 | 乐观锁 | 悲观锁长时间持有会造成阻塞 |
 
-# 10.性能优化
+# 10. 性能优化
 
 ## 10.1 批量操作
 
@@ -1176,7 +1176,7 @@ logging:
     org.hibernate.stat: DEBUG
 ```
 
-# 11.Auditing（审计）
+# 11. Auditing（审计）
 
 ## 11.1 启用审计
 
@@ -1227,7 +1227,7 @@ public class SpringSecurityAuditorAware implements AuditorAware<Long> {
 }
 ```
 
-# 12.源码与底层机制
+# 12. 源码与底层机制
 
 ## 12.1 Repository 代理创建流程
 
@@ -1291,7 +1291,7 @@ findByUserNameAndAgeGreaterThanOrderByCreateTimeDesc
   ORDER BY u.create_time DESC
 ```
 
-# 13.常见问题与面试题
+# 13. 常见问题与面试题
 
 ## 13.1 save vs persist vs merge 的区别
 
@@ -1367,7 +1367,7 @@ public class User {
 - 一对多：子集合可能很大，EAGER 加载导致大量不必要的数据查询
 - 多对一：只加载一个对象，开销较小（实践中也建议改为 LAZY）
 
-# 14.测试
+# 14. 测试
 
 ## 14.1 Repository 集成测试
 
@@ -1419,7 +1419,7 @@ class UserServiceTest {
 }
 ```
 
-# 15.多数据源配置
+# 15. 多数据源配置
 
 ```java
 @Configuration

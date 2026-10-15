@@ -1,4 +1,4 @@
-# 1.浏览器环境，规格
+# 1. 浏览器环境，规格
 
 ```javascript
 JavaScript 语言最初是为 Web 浏览器创建的。此后，它已经演变成了一种具有多种用途和平台的语言。
@@ -21,7 +21,7 @@ window.sayHi();
 alert(window.innerHeight); // 内部窗口高度
 还有更多窗口特定的方法和属性，我们稍后会介绍。
 ```
-## 1.1文档对象模型（DOM）
+## 1.1 文档对象模型（DOM）
 ```javascript
 文档对象模型（Document Object Model），简称 DOM，将所有页面内容表示为可以修改的对象。
 
@@ -47,7 +47,7 @@ DOM 规范解释了文档的结构，并提供了操作文档的对象。有的�
 当我们修改文档的样式规则时，CSSOM 与 DOM 是一起使用的。但实际上，很少需要 CSSOM，因为我们很少需要从 JavaScript 中修改 CSS 规则（我们通常只是添加/移除一些 CSS 类，而不是直接修改其中的 CSS 规则），但这也是可行的。
 
 ```
-## 1.2浏览器对象模型
+## 1.2 浏览器对象模型
 ```javascript
 浏览器对象模型（Browser Object Model），简称 BOM，表示由浏览器（主机环境）提供的用于处理文档（document）之外的所有内容的其他对象。
 
@@ -68,7 +68,7 @@ BOM 是通用 HTML 规范 的一部分。
 
 是的，你没听错。在 https://html.spec.whatwg.org 中的 HTML 规范不仅是关于“HTML 语言”（标签，特性）的，还涵盖了一堆对象、方法和浏览器特定的 DOM 扩展。这就是“广义的 HTML”。此外，某些部分也有其他的规范，它们被列在 https://spec.whatwg.org 中。
 ```
-# 2.DOM树
+# 2. DOM树
 ```javascript
 HTML 文档的主干是标签（tag）。
 
@@ -91,7 +91,7 @@ offsetWidth —— 节点宽度（以像素度量）
 ……等。
 很快，我们将学习更多操作 DOM 的方法，但首先我们需要了解 DOM 的结构。
 ```
-## 2.1DOM的例子
+## 2.1 DOM的例子
 ```javascript
 让我们从下面这个简单的文档（document）开始：
 
@@ -144,7 +144,7 @@ DOM 将 HTML 表示为标签的树形结构。它看起来如下所示：
 
 在本教程中，如果这些空格和空文本节点无关紧要时，我们在后面出现的关于 DOM 的示意图中会忽略它们。这样的空格通常不会影响文档的显示方式。
 ```
-## 2.2自动修正
+## 2.2 自动修正
 ```javascript
 如果浏览器遇到格式不正确的 HTML，它会在形成 DOM 时自动更正它。
 
@@ -175,7 +175,7 @@ DOM 结构会变成：
 
 看到了吗？<tbody> 出现了。我们应该记住这一点，以免在使用表格时，对这种情况感到惊讶。
 ```
-## 2.3其他节点类型
+## 2.3 其他节点类型
 ```javascript
 除了元素和文本节点外，还有一些其他的节点类型。
 
@@ -211,7 +211,7 @@ document —— DOM 的“入口点”。
 文本节点 —— 包含文本。
 注释 —— 有时我们可以将一些信息放入其中，它不会显示，但 JS 可以从 DOM 中读取它。
 ```
-## 2.4自己看看
+## 2.4 自己看看
 ```javascript
 要在实际中查看 DOM 结构，请尝试 Live DOM Viewer。只需输入文档，它将立即显示为 DOM。
 
@@ -239,7 +239,7 @@ Event Listeners —— 查看附加到 DOM 元素的事件侦听器（我们将�
 ……等。
 学习它们的最佳方式就是多点一点看一下。大多数值都是可以就地编辑的。
 ```
-## 2.5与控制台交互
+## 2.5 与控制台交互
 ```javascript
 在我们处理 DOM 时，我们可能还希望对其应用 JavaScript。例如：获取一个节点并运行一些代码来修改它，以查看结果。以下是在元素（Elements）选项卡和控制台（Console）之间切换的一些技巧。
 
@@ -265,7 +265,7 @@ Event Listeners —— 查看附加到 DOM 元素的事件侦听器（我们将�
 
 浏览器开发者工具对于开发有很大的帮助：我们可以探索 DOM，尝试一些东西，并找出问题所在。
 ```
-# 3.遍历DOM
+# 3. 遍历DOM
 ```javascript
 DOM 让我们可以对元素和它们中的内容做任何事，但是首先我们需要获取到对应的 DOM 对象。
 
@@ -275,7 +275,7 @@ DOM 让我们可以对元素和它们中的内容做任何事，但是首先我�
 
 图略
 ```
-## 3.1在最顶层：documentElement和body
+## 3.1 在最顶层：documentElement和body
 ```
 最顶层的树节点可以直接作为 document 的属性来使用：
 
@@ -318,7 +318,7 @@ DOM 让我们可以对元素和它们中的内容做任何事，但是首先我�
 在 DOM 中，null 值就意味着“不存在”或者“没有这个节点”。
 ```
 
-## 3.2子节点：childNodes, firstChild, lastChild
+## 3.2 子节点：childNodes, firstChild, lastChild
 ```javascript
 从现在开始，我们将使用下面这两个术语：
 
@@ -416,7 +416,7 @@ DOM 集合是实时的
 </script>
 </body>
 ```
-## 3.3兄弟节点和父节点
+## 3.3 兄弟节点和父节点
 ```javascript
 兄弟节点（sibling） 是指有同一个父节点的节点。
 
@@ -441,7 +441,7 @@ alert( document.head.nextSibling ); // HTMLBodyElement
 // <body> 的前一个是 <head>
 alert( document.body.previousSibling ); // HTMLHeadElement
 ```
-## 3.4纯元素导航
+## 3.4 纯元素导航
 ```javascript
 上面列出的导航（navigation）属性引用 所有 节点。例如，在 childNodes 中我们可以看到文本节点，元素节点，甚至包括注释节点（如果它们存在的话）。
 
@@ -512,7 +512,7 @@ while(elem = elem.parentElement) { // 向上，直到 <html>
 </body>
 </html>
 ```
-## 3.5更多链接：表格
+## 3.5 更多链接：表格
 ```javascript
 到现在，我们已经描述了基本的导航（navigation）属性。
 
@@ -557,13 +557,13 @@ td.cellIndex —— 在封闭的 <tr> 中单元格的编号。
 
 HTML 表单（form）还有其它导航（navigation）属性。稍后当我们开始使用表单（form）时，我们将对其进行研究。
 ```
-# 4.搜索：getElement *，querySelector *
+# 4. 搜索：getElement *，querySelector *
 ```javascript
 当元素彼此靠得近时，DOM 导航属性（navigation property）非常有用。如果不是，那该怎么办？如何去获取页面上的任意元素？
 
 还有其他搜索方法。
 ```
-## 4.1document.getElementById或者只使用id
+## 4.1 document.getElementById或者只使用id
 ```javascript
 如果一个元素有 id 特性（attribute），那我们就可以使用 document.getElementById(id) 方法获取该元素，无论它在哪里。
 
@@ -616,7 +616,7 @@ id 必须是唯一的。在文档中，只能有一个元素带有给定的 id�
 只有 document.getElementById，没有 anyElem.getElementById
 getElementById 方法只能被在 document 对象上调用。它会在整个文档中查找给定的 id。
 ```
-## 4.2querySelectorAll
+## 4.2 querySelectorAll
 ```javascript
 到目前为止，最通用的方法是 elem.querySelectorAll(css)，它返回 elem 中与给定 CSS 选择器匹配的所有元素。
 
@@ -642,13 +642,13 @@ getElementById 方法只能被在 document 对象上调用。它会在整个文�
 也可以使用伪类
 CSS 选择器的伪类，例如 :hover 和 :active 也都是被支持的。例如，document.querySelectorAll(':hover') 将会返回鼠标指针正处于其上方的元素的集合（按嵌套顺序：从最外层 <html> 到嵌套最多的元素）。
 ```
-## 4.3querySelector
+## 4.3 querySelector
 ```javascript
 elem.querySelector(css) 调用会返回给定 CSS 选择器的第一个元素。
 
 换句话说，结果与 elem.querySelectorAll(css)[0] 相同，但是后者会查找 所有 元素，并从中选取一个，而 elem.querySelector 只会查找一个。因此它在速度上更快，并且写起来更短。
 ```
-## 4.4matches
+## 4.4 matches
 ```javascript
 之前的方法是搜索 DOM。
 
@@ -670,7 +670,7 @@ elem.matches(css) 不会查找任何内容，它只会检查 elem 是否与给�
   }
 </script>
 ```
-## 4.5closest
+## 4.5 closest
 ```javascript
 元素的祖先（ancestor）是：父级，父级的父级，它的父级等。祖先们一起组成了从元素到顶端的父级链。
 
@@ -698,7 +698,7 @@ elem.closest(css) 方法会查找与 CSS 选择器匹配的最近的祖先。ele
   alert(chapter.closest('h1')); // null（因为 h1 不是祖先）
 </script>
 ```
-## 4.6getElementsBy*
+## 4.6 getElementsBy*
 ```javascript
 还有其他通过标签，类等查找节点的方法。
 
@@ -773,7 +773,7 @@ document.getElementsByTagName('input')[0].value = 5;
   alert(articles.length); // 2, found two elements with class "article"
 </script>
 ```
-## 4.7实时的集合
+## 4.7 实时的集合
 ```javascript
 所有的 "getElementsBy*" 方法都会返回一个 实时的（live） 集合。这样的集合始终反映的是文档的当前状态，并且在文档发生更改时会“自动更新”。
 
@@ -811,7 +811,7 @@ document.getElementsByTagName('input')[0].value = 5;
 </script>
 现在我们可以很容易地看到不同之处。在文档中出现新的 div 后，静态集合并没有增加。
 ```
-## 4.8总结
+## 4.8 总结
 ```javascript
 有 6 种主要的方法，可以在 DOM 中搜索元素节点：
 
@@ -832,13 +832,13 @@ elem.closest(css) 用于查找与给定 CSS 选择器相匹配的最近的祖先
 
 如果 elemB 在 elemA 内（elemA 的后代）或者 elemA==elemB，elemA.contains(elemB) 将返回 true。
 ```
-# 5.节点属性type, tag和content
+# 5. 节点属性type, tag和content
 ```javascript
 让我们更深入地了解一下 DOM 节点。
 
 在本章中，我们将更深入地了解它们是什么，并学习它们最常用的属性。
 ```
-## 5.1DOM节点类
+## 5.1 DOM节点类
 ```javascript
 不同的 DOM 节点可能有不同的属性。例如，标签 <a> 相对应的元素节点具有链接相关的（link-related）属性，标签 <input> 相对应的元素节点具有与输入相关的属性，等。文本节点与元素节点不同。但是所有这些标签对应的 DOM 节点之间也存在共有的属性和方法，因为所有类型的 DOM 节点都形成了一个单一层次的结构（single hierarchy）。
 
@@ -950,7 +950,7 @@ interface HTMLInputElement: HTMLElement {
   ...
 }
 ```
-## 5.2"node Type"属性
+## 5.2 "node Type"属性
 ```javascript
 nodeType 属性提供了另一种“过时的”用来获取 DOM 节点类型的方法。
 
@@ -978,7 +978,7 @@ nodeType 属性提供了另一种“过时的”用来获取 DOM 节点类型的
 </body>
 在现代脚本中，我们可以使用 instanceof 和其他基于类的检查方法来查看节点类型，但有时 nodeType 可能更简单。我们只能读取 nodeType 而不能修改它。
 ```
-## 5.3标签：nodeName和tagName
+## 5.3 标签：nodeName和tagName
 ```javascript
 给定一个 DOM 节点，我们可以从 nodeName 或者 tagName 属性中读取它的标签名：
 
@@ -1019,7 +1019,7 @@ nodeName 是为任意 Node 定义的：
 
 在 XML 模式中，大小写保持为“原样”。如今，XML 模式很少被使用。
 ```
-## 5.4innerHTML：内容
+## 5.4 innerHTML：内容
 ```javascript
 innerHTML 属性允许将元素中的 HTML 获取为字符串形式。
 
@@ -1076,7 +1076,7 @@ elem.innerHTML = elem.innerHTML + "..."
 
 幸运的是，除了 innerHTML，还有其他可以添加 HTML 的方法，我们很快就会学到。
 ```
-## 5.5outerHTML：元素的完整HTML
+## 5.5 outerHTML：元素的完整HTML
 ```javascript
 outerHTML 属性包含了元素的完整 HTML。就像 innerHTML 加上元素本身一样。
 
@@ -1119,7 +1119,7 @@ div 仍拥有其旧的值。新的 HTML 没有被赋值给任何变量。
 
 我们可以向 elem.outerHTML 写入内容，但是要记住，它不会改变我们所写的元素（‘elem’）。而是将新的 HTML 放在其位置上。我们可以通过查询 DOM 来获取对新元素的引用。
 ```
-## 5.6nodeValue/data：文本节点内容
+## 5.6 nodeValue/data：文本节点内容
 ```javascript
 innerHTML 属性仅对元素节点有效。
 
@@ -1147,7 +1147,7 @@ innerHTML 属性仅对元素节点有效。
 <!-- /if -->
 ……然后，JavaScript 可以从 data 属性中读取它，并处理嵌入的指令。
 ```
-## 5.7textContent：纯文本
+## 5.7 textContent：纯文本
 ```javascript
 textContent 提供了对元素内的 文本 的访问权限：仅文本，去掉所有 <tags>。
 
@@ -1187,7 +1187,7 @@ textContent 提供了对元素内的 文本 的访问权限：仅文本，去掉
 第二个 <div> 获取 name “作为文本”，因此我们可以从字面上看到 <b>Winnie-the-Pooh!</b>。
 在大多数情况下，我们期望来自用户的文本，并希望将其视为文本对待。我们不希望在我们的网站中出现意料不到的 HTML。对 textContent 的赋值正好可以做到这一点。
 ```
-## 5.8"hidden"属性
+## 5.8 "hidden"属性
 ```javascript
 “hidden” 特性（attribute）和 DOM 属性（property）指定元素是否可见。
 
@@ -1212,7 +1212,7 @@ textContent 提供了对元素内的 文本 的访问权限：仅文本，去掉
   setInterval(() => elem.hidden = !elem.hidden, 1000);
 </script>
 ```
-## 5.9更多属性
+## 5.9 更多属性
 ```javascript
 DOM 元素还有其他属性，特别是那些依赖于 class 的属性：
 
@@ -1235,7 +1235,7 @@ id —— 所有元素（HTMLElement）的 “id” 特性（attribute）的值�
 
 或者，如果我们想要快速获取它们，或者对具体的浏览器规范感兴趣 — 我们总是可以使用 console.dir(elem) 输出元素并读取其属性。或者在浏览器的开发者工具的元素（Elements）标签页中探索“DOM 属性”。
 ```
-## 5.10总结
+## 5.10 总结
 ```
 每个 DOM 节点都属于一个特定的类。这些类形成层次结构（hierarchy）。完整的属性和方法集是继承的结果。
 
@@ -1259,7 +1259,7 @@ DOM 节点还具有其他属性，具体有哪些属性则取决于它们的类�
 
 然而，但是 HTML 特性（attribute）和 DOM 属性（property）并不总是相同的，我们将在下一章中看到。
 ```
-# 6.特性和属性（Attributes and properties）
+# 6. 特性和属性（Attributes and properties）
 ```
 当浏览器加载页面时，它会“读取”（或者称之为：“解析”）HTML 并从中生成 DOM 对象。对于元素节点，大多数标准的 HTML 特性（attributes）会自动变成 DOM 对象的属性（properties）。（译注：attribute 和 property 两词意思相近，为作区分，全文将 attribute 译为“特性”，property 译为“属性”，请读者注意区分。）
 
@@ -1267,7 +1267,7 @@ DOM 节点还具有其他属性，具体有哪些属性则取决于它们的类�
 
 但特性—属性映射并不是一一对应的！在本章，我们将带领你一起分清楚这两个概念，了解如何使用它们，了解它们何时相同何时不同。
 ```
-## 6.1DOM属性
+## 6.1 DOM属性
 ```javascript
 我们已经见过了内建 DOM 属性。它们数量庞大。但是从技术上讲，没有人会限制我们，如果我们觉得这些 DOM 还不够，我们可以添加我们自己的。
 
@@ -1301,7 +1301,7 @@ document.body.sayHi(); // Hello, I'm BODY
 它们可以有很多值。
 它们是大小写敏感的（要写成 elem.nodeType，而不是 elem.NoDeTyPe）。
 ```
-## 6.2HTML特性
+## 6.2 HTML特性
 ```javascript
 在 HTML 中，标签可能拥有特性（attributes）。当浏览器解析 HTML 文本，并根据标签创建 DOM 对象时，浏览器会辨别 标准的 特性并以此创建 DOM 属性。
 
@@ -1374,7 +1374,7 @@ getAttribute('About') —— 这里的第一个字母是大写的，但是在 HT
 所有特性，包括我们设置的那个特性，在 outerHTML 中都是可见的。
 attributes 集合是可迭代对象，该对象将所有元素的特性（标准和非标准的）作为 name 和 value 属性存储在对象中。
 ```
-## 6.3属性-特性同步
+## 6.3 属性-特性同步
 ```javascript
 当一个标准的特性被改变，对应的属性也会自动更新，（除了几个特例）反之亦然。
 
@@ -1414,7 +1414,7 @@ attributes 集合是可迭代对象，该对象将所有元素的特性（标准
 但是属性的更改不会影响特性。
 这个“功能”在实际中会派上用场，因为用户行为可能会导致 value 的更改，然后在这些操作之后，如果我们想从 HTML 中恢复“原始”值，那么该值就在特性中。
 ```
-## 6.4DOM属性是多类型的
+## 6.4 DOM属性是多类型的
 ```javascript
 DOM 属性不总是字符串类型的。例如，input.checked 属性（对于 checkbox 的）是布尔型的。
 
@@ -1452,7 +1452,7 @@ DOM 属性不总是字符串类型的。例如，input.checked 属性（对于 c
 </script>
 如果我们需要 href 特性的值，或者其他与 HTML 中所写的完全相同的特性，则可以使用 getAttribute。
 ```
-## 6.5非标准的特性，dataset
+## 6.5 非标准的特性，dataset
 ```javascript
 当编写 HTML 时，我们会用到很多标准的特性。但是非标准的，自定义的呢？首先，让我们看看它们是否有用？用来做什么？
 
@@ -1561,7 +1561,7 @@ div.setAttribute('order-state', 'canceled');
 
 请注意，我们不仅可以读取数据，还可以修改数据属性（data-attributes）。然后 CSS 会更新相应的视图：在上面这个例子中的最后一行 (*) 将颜色更改为了蓝色。
 ```
-## 6.6总结
+## 6.6 总结
 ```
 特性（attribute）—— 写在 HTML 中的内容。
 属性（property）—— DOM 对象中的内容。
@@ -1585,13 +1585,13 @@ elem.attributes —— 所有特性的集合。
 我们需要一个非标准的特性。但是如果它以 data- 开头，那么我们应该使用 dataset。
 我们想要读取 HTML 中“所写的”值。对应的 DOM 属性可能不同，例如 href 属性一直是一个 完整的 URL，但是我们想要的是“原始的”值。
 ```
-# 7.修改文档
+# 7. 修改文档
 ```
 DOM 修改是创建“实时”页面的关键。
 
 在这里，我们将会看到如何“即时”创建新元素并修改现有页面内容。
 ```
-## 7.1例子：展示一条消息
+## 7.1 例子：展示一条消息
 ```javascript
 让我们使用一个示例进行演示。我们将在页面上添加一条比 alert 更好看的消息。
 
@@ -1613,7 +1613,7 @@ DOM 修改是创建“实时”页面的关键。
 
 这是一个 HTML 示例。现在，让我们使用 JavaScript 创建一个相同的 div（假设样式已经在 HTML/CSS 文件中）。
 ```
-## 7.2创建一个元素
+## 7.2 创建一个元素
 ```javascript
 要创建 DOM 节点，这里有两种方法：
 
@@ -1640,7 +1640,7 @@ div.className = "alert";
 div.innerHTML = "<strong>Hi there!</strong> You've read an important message.";
 我们已经创建了该元素。但到目前为止，它还只是在一个名为 div 的变量中，尚未在页面中。所以我们无法在页面上看到它。
 ```
-## 7.3插入方法
+## 7.3 插入方法
 ```javascript
 为了让 div 显示出来，我们需要将其插入到 document 中的某处。例如，通过 document.body 将其插入到 <body> 元素里。
 
@@ -1734,7 +1734,7 @@ after
 
 但如果我们想要将内容“作为 HTML 代码插入”，让内容中的所有标签和其他东西都像使用 elem.innerHTML 所表现的效果一样，那应该怎么办呢？
 ```
-## 7.4insertAdjacentHTML/Text/Element
+## 7.4 insertAdjacentHTML/Text/Element
 ```javascript
 为此，我们可以使用另一个非常通用的方法：elem.insertAdjacentHTML(where, html)。
 
@@ -1789,7 +1789,7 @@ elem.insertAdjacentElement(where, elem) —— 语法一样，但是插入的是
   </div>`);
 </script>
 ```
-## 7.5节点移除
+## 7.5 节点移除
 ```javascirpt
 想要移除一个节点，可以使用 node.remove()。
 
@@ -1827,7 +1827,7 @@ elem.insertAdjacentElement(where, elem) —— 语法一样，但是插入的是
   second.after(first); // 获取 #second，并在其后面插入 #first
 </script>
 ```
-## 7.6克隆节点：cloneNode
+## 7.6 克隆节点：cloneNode
 ```javascript
 如何再插入一条类似的消息？
 
@@ -1860,7 +1860,7 @@ elem.insertAdjacentElement(where, elem) —— 语法一样，但是插入的是
   div.after(div2); // 在已有的 div 后显示克隆
 </script>
 ```
-## 7.7DocumentFragment
+## 7.7 DocumentFragment
 ```javascript
 DocumentFragment 是一个特殊的 DOM 节点，用作来传递节点列表的包装器（wrapper）。
 
@@ -1913,7 +1913,7 @@ ul.append(...getListContent()); // append + "..." operator = friends!
 </script>
 我们之所以提到 DocumentFragment，主要是因为它上面有一些概念，例如 template 元素，我们将在以后讨论。
 ```
-## 7.8老式的insert/remove方法
+## 7.8 老式的insert/remove方法
 ```javascript
 老式用法
 这些内容有助于理解旧脚本，但不适合用于新代码的开发中。
@@ -1979,7 +1979,7 @@ parentElem.removeChild(node)
 </script>
 所有这些方法都会返回插入/删除的节点。换句话说，parentElem.appendChild(node) 返回 node。但是通常我们不会使用返回值，我们只是使用对应的方法。
 ```
-## 7.9聊一聊"document.write"
+## 7.9 聊一聊"document.write"
 ```javascript
 还有一个非常古老的向网页添加内容的方法：document.write。
 
@@ -2018,7 +2018,7 @@ document.write 调用只在页面加载时工作。
 
 因此，如果我们需要向 HTML 动态地添加大量文本，并且我们正处于页面加载阶段，并且速度很重要，那么它可能会有帮助。但实际上，这些要求很少同时出现。我们可以在脚本中看到此方法，通常是因为这些脚本很旧。
 ```
-## 7.10总结
+## 7.10 总结
 ```javascript
 创建新节点的方法：
 
@@ -2056,7 +2056,7 @@ parent.replaceChild(newElem, node)
 document.write(html)
 页面加载完成后，这样的调用将会擦除文档。多见于旧脚本。
 ```
-# 8.样式和类
+# 8. 样式和类
 ```
 在我们讨论 JavaScript 处理样式和类的方法之前 —— 有一个重要的规则。希望它足够明显，但是我们仍然必须提到它。
 
@@ -2077,7 +2077,7 @@ elem.style.left = left; // 例如 '123px'，在运行时计算出的
 elem.style.top = top; // 例如 '456px'
 对于其他情况，例如将文本设为红色，添加一个背景图标 —— 可以在 CSS 中对这些样式进行描述，然后添加类（JavaScript 可以做到）。这样更灵活，更易于支持。
 ```
-## 8.1className和classList
+## 8.1 className和classList
 ```javascript
 更改类是脚本中最常见的操作之一。
 
@@ -2125,7 +2125,7 @@ elem.classList.contains(class) —— 检查给定类，返回 true/false。
   </script>
 </body>
 ```
-## 8.2元素样式
+## 8.2 元素样式
 ```javascript
 elem.style 属性是一个对象，它对应于 "style" 特性（attribute）中所写的内容。elem.style.width="100px" 的效果等价于我们在 style 特性中有一个 width:100px 字符串。
 
@@ -2145,7 +2145,7 @@ document.body.style.backgroundColor = prompt('background color?', 'green');
 button.style.MozBorderRadius = '5px';
 button.style.WebkitBorderRadius = '5px';
 ```
-## 8.3重置样式属性
+## 8.3 重置样式属性
 ```javascript
 有时我们想要分配一个样式属性，稍后移除它。
 
@@ -2185,7 +2185,7 @@ setTimeout(() => document.body.style.removeProperty('background'), 1000); // 1 �
 
 可以通过设置一个特性（attribute）来实现同样的效果：div.setAttribute('style', 'color: red...')。
 ```
-## 8.4注意单位
+## 8.4 注意单位
 ```javascript
 不要忘记将 CSS 单位添加到值上。
 
@@ -2207,7 +2207,7 @@ setTimeout(() => document.body.style.removeProperty('background'), 1000); // 1 �
 </body>
 请注意：浏览器在最后几行代码中对属性 style.margin 进行了“解包”，并从中推断出 style.marginLeft 和 style.marginTop。
 ```
-## 8.5计算样式：getComputedStyle
+## 8.5 计算样式：getComputedStyle
 ```javascript
 修改样式很简单。但是如何 读取 样式呢？
 
@@ -2282,7 +2282,7 @@ getComputedStyle 需要完整的属性名
 JavaScript 看不到 :visited 所应用的样式。此外，CSS 中也有一个限制，即禁止在 :visited 中应用更改几何形状的样式。这是为了确保一个不好的页面无法检测链接是否被访问，进而窥探隐私。
 
 ```
-## 8.6总结
+## 8.6 总结
 ```
 要管理 class，有两个 DOM 属性：
 
@@ -2298,13 +2298,13 @@ style.cssText 属性对应于整个 "style" 特性（attribute），即完整的
 
 getComputedStyle(elem, [pseudo]) 返回与 style 对象类似的，且包含了所有类的对象。只读。
 ```
-# 9.元素大小和滚动
+# 9. 元素大小和滚动
 ```javascript
 JavaScript 中有许多属性可让我们读取有关元素宽度、高度和其他几何特征的信息。
 
 我们在 JavaScript 中移动或定位元素时，我们会经常需要它们。
 ```
-## 9.1示例元素
+## 9.1 示例元素
 ```javascript
 作为演示属性的示例元素，我们将使用下面给出的元素：
 
@@ -2335,7 +2335,7 @@ JavaScript 中有许多属性可让我们读取有关元素宽度、高度和其
 文本可能会溢出到 padding-bottom 中
 在我们的插图中的 padding 中通常显示为空，但是如果元素中有很多文本，并且溢出了，那么浏览器会在 padding-bottom 处显示“溢出”文本，这是正常现象。
 ```
-## 9.2几何
+## 9.2 几何
 ```javascript
 这是带有几何属性的整体图片：
 
@@ -2344,7 +2344,7 @@ JavaScript 中有许多属性可让我们读取有关元素宽度、高度和其
 
 让我们从元素外部开始探索属性。
 ```
-## 9.3offsetParent, offsetLeft/Top
+## 9.3 offsetParent, offsetLeft/Top
 ```javascript
 这些属性很少使用，但它们仍然是“最外面”的几何属性，所以我们将从它们开始。
 
@@ -2376,7 +2376,7 @@ CSS 定位的（position 为 absolute、relative、fixed 或 sticky），
 对于 <body> 与 <html>。
 对于带有 position:fixed 的元素。
 ```
-## 9.4offsetWidth/Height
+## 9.4 offsetWidth/Height
 ```javascript
 现在，让我们继续关注元素本身。
 
@@ -2401,7 +2401,7 @@ function isHidden(elem) {
 }
 请注意，对于会展示在屏幕上，但大小为零的元素，它们的 isHidden 返回 true。
 ```
-## 9.5clientTop/Left
+## 9.5 clientTop/Left
 ```javascript
 在元素内部，我们有边框（border）。
 
@@ -2422,7 +2422,7 @@ clientTop = 25 —— 上边框宽度
 
 这是希伯来语的例子：
 ```
-## 9.5clientWidth/Height
+## 9.5 clientWidth/Height
 ```javascript
 这些属性提供了元素边框内区域的大小。
 
@@ -2439,7 +2439,7 @@ clientTop = 25 —— 上边框宽度
 
 因此，当没有 padding 时，我们可以使用 clientWidth/clientHeight 来获取内容区域的大小。
 ```
-## 9.6scrollWidth/Height
+## 9.6 scrollWidth/Height
 ```javascript
 这些属性就像 clientWidth/clientHeight，但它们还包括滚动出（隐藏）的部分：
 
@@ -2459,7 +2459,7 @@ element.style.height = `${element.scrollHeight}px`;
 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text
 element.style.height = ${element.scrollHeight}px
 ```
-## 9.7scrollLeft/scrollTop
+## 9.7 scrollLeft/scrollTop
 ```javascript
 属性 scrollLeft/scrollTop 是元素的隐藏、滚动部分的 width/height。
 
@@ -2486,7 +2486,7 @@ Me
 9
 将 scrollTop 设置为 0 或一个大的值，例如 1e9，将会使元素滚动到顶部/底部。
 ```
-## 9.8不要从CSS中获取width/height
+## 9.8 不要从CSS中获取width/height
 ```javascript
 我们刚刚介绍了 DOM 元素的几何属性，它们可用于获得宽度、高度和计算距离。
 
@@ -2523,7 +2523,7 @@ alert( getComputedStyle(elem).width ); // 显示 elem 的 CSS width
 
 请注意，所描述的差异只是关于从 JavaScript 读取的 getComputedStyle(...).width，而视觉上看，一切都是正确的。
 ```
-## 9.9总结
+## 9.9 总结
 ```javascript
 元素具有以下几何属性：
 
@@ -2536,13 +2536,13 @@ scrollWidth/scrollHeight —— 内容的 width/height，就像 clientWidth/clie
 scrollLeft/scrollTop —— 从元素的左上角开始，滚动出元素的上半部分的 width/height。
 除了 scrollLeft/scrollTop 外，所有属性都是只读的。如果我们修改 scrollLeft/scrollTop，浏览器会滚动对应的元素。
 ```
-# 10.window大小和滚动
+# 10. window大小和滚动
 ```
 我们如何找到浏览器窗口（window）的宽度和高度呢？我们如何获得文档（document）的包括滚动部分在内的完整宽度和高度呢？我们如何使用 JavaScript 滚动页面？
 
 对于此类信息，我们可以使用与 <html> 标签相对应的根文档元素 document.documentElement。但是还有其他方法和特性需要考虑。
 ```
-## 10.1窗口的width/height
+## 10.1 窗口的width/height
 ```javascript
 为了获取窗口（window）的宽度和高度，我们可以使用 document.documentElement 的 clientWidth/clientHeight：
 
@@ -2569,7 +2569,7 @@ DOCTYPE 很重要
 
 在现代 HTML 中，我们始终都应该写 DOCTYPE。
 ```
-## 10.2文档的width/height
+## 10.2 文档的width/height
 ```javascript
 从理论上讲，由于根文档元素是 document.documentElement，并且它包围了所有内容，因此我们可以通过使用 documentElement.scrollWidth/scrollHeight 来测量文档的完整大小。
 
@@ -2586,7 +2586,7 @@ let scrollHeight = Math.max(
 alert('Full document height, with scrolled out part: ' + scrollHeight);
 为什么这样？最好不要问。这些不一致来源于远古时代，而不是“聪明”的逻辑。
 ```
-## 10.3获得当前滚动
+## 10.3 获得当前滚动
 ```javascript
 DOM 元素的当前滚动状态在其 scrollLeft/scrollTop 属性中。
 
@@ -2604,7 +2604,7 @@ alert('当前已从左侧滚动：' + window.pageXOffset);
 window.pageXOffset 是 window.scrollX 的别名。
 window.pageYOffset 是 window.scrollY 的别名。
 ```
-## 10.4滚动：scrollTo, scrollBy, scrollIntoView
+## 10.4 滚动：scrollTo, scrollBy, scrollIntoView
 ```javascript
 重要：
 必须在 DOM 完全构建好之后才能通过 JavaScript 滚动页面。
@@ -2631,7 +2631,7 @@ window.scrollTo(0,0)
 
 这些方法适用于所有浏览器。
 ```
-## 10.5scrollIntoView
+## 10.5 scrollIntoView
 ```javascript
 为了完整起见，让我们再介绍一种方法：elem.scrollIntoView(top)。
 
@@ -2647,7 +2647,7 @@ this.scrollIntoView()
 
 this.scrollIntoView(false)
 ```
-## 10.6禁止滚动
+## 10.6 禁止滚动
 ```javascript
 有时候我们需要使文档“不可滚动”。例如，当我们需要用一条需要立即引起注意的大消息来覆盖文档时，我们希望访问者与该消息而不是与文档进行交互。
 
@@ -2667,7 +2667,7 @@ document.body.style.overflow = ‘’
 
 这看起来有点奇怪，但是我们可以对比冻结前后的 clientWidth。如果它增加了（滚动条消失后），那么我们可以在 document.body 中滚动条原来的位置处通过添加 padding，来替代滚动条，这样这个问题就解决了。保持了滚动条冻结前后文档内容宽度相同。
 ```
-## 10.7总结
+## 10.7 总结
 ```javascript
 几何：
 
@@ -2690,7 +2690,7 @@ window.scrollTo(pageX,pageY) —— 绝对坐标，
 window.scrollBy(x,y) —— 相对当前位置进行滚动，
 elem.scrollIntoView(top) —— 滚动以使 elem 可见（elem 与窗口的顶部/底部对齐）。
 ```
-# 11.坐标
+# 11. 坐标
 ```javascript
 要移动页面的元素，我们应该先熟悉坐标。
 
@@ -2710,7 +2710,7 @@ elem.scrollIntoView(top) —— 滚动以使 elem 可见（elem 与窗口的顶�
 pageY —— 元素在文档中的相对坐标保持不变，从文档顶部（现在已滚动出去）开始计算。
 clientY —— 窗口相对坐标确实发生了变化（箭头变短了），因为同一个点越来越靠近窗口顶部。
 ```
-## 11.1元素坐标：getBoundingClientRect
+## 11.1 元素坐标：getBoundingClientRect
 ```javascript
 方法 elem.getBoundingClientRect() 返回最小矩形的窗口坐标，该矩形将 elem 作为内建 DOMRect 类的对象。
 
@@ -2766,7 +2766,7 @@ IE 浏览器不支持 x/y
 
 如果我们再看一下上面的图片，我们可以看到在 JavaScript 中并非如此。窗口的所有坐标都从左上角开始计数，包括这些坐标。
 ```
-## 11.2elementFromPoint(x, y)
+## 11.2 elementFromPoint(x, y)
 ```javascript
 对 document.elementFromPoint(x, y) 的调用会返回在窗口坐标 (x, y) 处嵌套最多（the most nested）的元素。
 
@@ -2797,7 +2797,7 @@ let elem = document.elementFromPoint(x, y);
 // 如果坐标恰好在窗口外，则 elem = null
 elem.style.background = ''; // Error!
 ```
-## 11.3用于"fixed"定位
+## 11.3 用于"fixed"定位
 ```javascript
 大多数时候，我们需要使用坐标来确定某些内容的位置。
 
@@ -2841,7 +2841,7 @@ Button with id=“coords-show-mark”, the message will appear under it
 
 要改变这一点，我们需要使用基于文档（document）的坐标和 position:absolute 样式。
 ```
-## 11.4文档坐标
+## 11.4 文档坐标
 ```javascript
 文档相对坐标从文档的左上角开始计算，而不是窗口。
 
@@ -2886,7 +2886,7 @@ function createMessageUnder(elem, html) {
   return message;
 }
 ```
-## 11.5总结
+## 11.5 总结
 ```javascript
 页面上的任何点都有坐标：
 

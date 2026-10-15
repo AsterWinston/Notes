@@ -1,10 +1,10 @@
-# 1.表单属性和方法
+# 1. 表单属性和方法
 ```
 表单（form）以及例如 <input> 的控件（control）元素有许多特殊的属性和事件。
 
 当我们学习了这些相关内容后，处理表单会变得更加方便。
 ```
-## 1.1导航：表单和元素
+## 1.1 导航：表单和元素
 ```javascript
 文档中的表单是特殊集合 document.forms 的成员。
 
@@ -98,7 +98,7 @@ Fieldset 作为“子表单”
 </script>
 这通常来说并不是一个问题，因为我们很少修改表单元素的名字。
 ```
-## 1.2反向引用：element.form
+## 1.2 反向引用：element.form
 ```javascript
 对于任何元素，其对应的表单都可以通过 element.form 访问到。因此，表单引用了所有元素，元素也引用了表单。
 
@@ -119,7 +119,7 @@ Fieldset 作为“子表单”
   alert(login.form); // HTMLFormElement
 </script>
 ```
-## 1.3表单元素
+## 1.3 表单元素
 ```javascript
 让我们来谈谈表单控件。
 
@@ -215,11 +215,11 @@ option.index
 option.text
 <option> 的文本内容（可以被访问者看到）。
 ```
-## 1.4参考资料
+## 1.4 参考资料
 ```javascript
 规范：https://html.spec.whatwg.org/multipage/forms.html.
 ```
-## 1.5总结
+## 1.5 总结
 ```javascript
 表单导航：
 
@@ -238,7 +238,7 @@ value 可以被通过 input.value，textarea.value，select.value 等来获取�
 在下一章中，我们将介绍可能在任何元素上出现，但主要在表单上处理的 focus 和 blur 事件。
 ```
 
-# 2.聚焦：focus/blur
+# 2. 聚焦：focus/blur
 ```
 当用户点击某个元素或使用键盘上的 Tab 键选中时，该元素将会获得聚焦（focus）。还有一个 HTML 特性（attribute）autofocus 可以让焦点在网页加载时默认落在一个元素上，此外还有其它途径可以获得焦点。
 
@@ -250,7 +250,7 @@ value 可以被通过 input.value，textarea.value，select.value 等来获取�
 
 当处理焦点事件时，有一些重要的特性。我们将尽力把这些内容介绍完整。
 ```
-## 2.1focus/blur事件
+## 2.1 focus/blur事件
 ```javascript
 当元素聚焦时，会触发 focus 事件，当元素失去焦点时，会触发 blur 事件。
 
@@ -288,7 +288,7 @@ input.onfocus = function() {
 
 现代 HTML 允许我们使用 input 特性（attribute）进行许多验证：required，pattern 等。有时它们正是我们所需要的。当我们需要更大的灵活性时，可以使用 JavaScript。如果数据是正确的，我们可以把它自动发送到服务器。
 ```
-## 2.2focus/blur方法
+## 2.2 focus/blur方法
 ```javascript
 elem.focus() 和 elem.blur() 方法可以设置和移除元素上的焦点。
 
@@ -337,7 +337,7 @@ JavaScript 导致的焦点丢失
 
 
 ```
-## 2.3允许在任何元素上聚焦：tabindex
+## 2.3 允许在任何元素上聚焦：tabindex
 ```javascript
 默认情况下，很多元素不支持聚焦。
 
@@ -383,7 +383,7 @@ tabindex="-1" 只允许以编程的方式聚焦于元素。Tab 键会忽略这�
 属性 elem.tabIndex 也有效
 我们可以使用 elem.tabIndex 通过 JavaScript 来添加 tabindex。效果是一样的。
 ```
-## 2.4focus/blur委托
+## 2.4 focus/blur委托
 ```javascript
 focus 和 blur 事件不会向上冒泡。
 
@@ -438,7 +438,7 @@ focus 和 blur 事件不会向上冒泡。
 
 
 ```
-## 2.5总结
+## 2.5 总结
 ```javascript
 在元素获得/失去焦点时会触发 focus 和 blur 事件。
 
@@ -451,11 +451,11 @@ focus 和 blur 事件不会向上冒泡。
 任务
 ```
 
-# 3.事件：change, input, cut, copy, paste
+# 3. 事件：change, input, cut, copy, paste
 ```
 让我们介绍一下伴随数据更新的各种事件。
 ```
-## 3.1事件：change
+## 3.1 事件：change
 ```javascript
 当元素更改完成时，将触发 change 事件。
 
@@ -477,7 +477,7 @@ focus 和 blur 事件不会向上冒泡。
 
 
 ```
-## 3.2事件：input
+## 3.2 事件：input
 ```javascript
 每当用户对输入值进行修改后，就会触发 input 事件。
 
@@ -501,7 +501,7 @@ focus 和 blur 事件不会向上冒泡。
 
 所以，我们无法使用 event.preventDefault() —— 已经太迟了，不会起任何作用了。
 ```
-## 3.3事件：cut, copy, paste
+## 3.3 事件：cut, copy, paste
 ```javascript
 这些事件发生于剪切/拷贝/粘贴一个值的时候。
 
@@ -547,7 +547,7 @@ focus 和 blur 事件不会向上冒泡。
 
 另外, navigator.clipboard 是一个较新的 API，适用于任何上下文。如果需要，它会请求用户的许可。
 ```
-## 3.4总结
+## 3.4 总结
 ```javascript
 数据更改事件:
 
@@ -557,7 +557,7 @@ input	文本输入的每次更改。	立即触发，与 change 不同。
 cut/copy/paste	剪贴/拷贝/粘贴行为。	行为可以被阻止。event.clipboardData 属性可以用于访问剪贴板。除了火狐（Firefox）之外的浏览器都支持 navigator.clipboard。
 ```
 
-# 4.表单：事件和方法提交
+# 4. 表单：事件和方法提交
 ```
 提交表单时，会触发 submit 事件，它通常用于在将表单发送到服务器之前对表单进行校验，或者中止提交，并使用 JavaScript 来处理表单。
 
@@ -565,7 +565,7 @@ form.submit() 方法允许从 JavaScript 启动表单发送。我们可以使用
 
 让我们看看它们的更多细节。
 ```
-## 4.1事件：submit
+## 4.1 事件：submit
 ```javascript
 提交表单主要有两种方式：
 
@@ -596,7 +596,7 @@ submit 和 click 的关系
  <input type="submit" value="Submit" onclick="alert('click')">
 </form>
 ```
-## 4.2方法：submit
+## 4.2 方法：submit
 ```javascript
 如果要手动将表单提交到服务器，我们可以调用 form.submit()。
 

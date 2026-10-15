@@ -1,9 +1,9 @@
-# 1.延迟队列概述
+# 1. 延迟队列概述
 
-## 1.1什么是延迟队列
+## 1.1 什么是延迟队列
 延迟队列是一种特殊的消息队列，消息被发送后不会立即被消费，而是在经过指定的延迟时间后才会被路由到目标队列。
 
-## 1.2延迟队列的实现方式
+## 1.2 延迟队列的实现方式
 RabbitMQ本身不直接支持延迟队列功能，需要通过以下方式实现：
 
 | 实现方式 | 原理 | 优点 | 缺点 |
@@ -12,12 +12,12 @@ RabbitMQ本身不直接支持延迟队列功能，需要通过以下方式实现
 | 延迟插件 | RabbitMQ官方插件rabbitmq_delayed_message_exchange | 灵活性高，每条消息可指定不同延迟 | 需要安装额外插件 |
 | 第二种方式(每级延迟一个队列) | 为不同延迟时间创建多个死信队列 | 无需插件 | 配置复杂，粒度有限 |
 
-# 2.TTL + 死信队列实现
+# 2. TTL + 死信队列实现
 
-## 2.1TTL（Time To Live）详解
+## 2.1 TTL（Time To Live）详解
 TTL是消息或队列的存活时间。RabbitMQ支持两种TTL设置：
 
-### 2.1.1队列级别TTL
+### 2.1.1 队列级别TTL
 在队列声明时设置，此队列中的所有消息都遵循相同的TTL：
 
 ```java
@@ -31,7 +31,7 @@ public Queue delayQueue() {
 }
 ```
 
-### 2.1.2消息级别TTL
+### 2.1.2 消息级别TTL
 在发送消息时设置，每条消息可以有不同的TTL：
 
 ```java
@@ -42,7 +42,7 @@ rabbitTemplate.convertAndSend("delay.exchange", "delay.routing", order,
     });
 ```
 
-### 2.1.3TTL的重要特性
+### 2.1.3 TTL的重要特性
 > **关键限制**：如果同时设置了队列TTL和消息TTL，以**较小的值**为准。消息过期时会被**从队首开始移除**（非严格按过期时间），这意味着队首的消息TTL较长时，会阻塞后面已过期的消息移出队列。
 
 这导致了消息级别TTL的一个重要问题：
@@ -54,7 +54,7 @@ Queue: [消息A(TTL=5分钟), 消息B(TTL=30秒), 消息C(TTL=30秒)]
 直到消息A过期或被消费，B和C才会被移出。
 ```
 
-## 2.2多级延迟队列实现
+## 2.2 多级延迟队列实现
 解决TTL粒度问题：为不同的延迟时间创建不同的队列。
 
 ```java
@@ -146,12 +146,12 @@ public class DelayMessageService {
 }
 ```
 
-# 3.延迟插件实现（推荐）
+# 3. 延迟插件实现（推荐）
 
-## 3.1延迟插件介绍
+## 3.1 延迟插件介绍
 `rabbitmq_delayed_message_exchange`是RabbitMQ官方团队开发的插件（Community Plugin），它允许声明延迟交换机，每条消息可以指定独立的延迟时间。
 
-## 3.2安装延迟插件
+## 3.2 安装延迟插件
 ```bash
 # 1. 下载插件（版本需与RabbitMQ版本匹配）
 # https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases
@@ -167,7 +167,7 @@ public class DelayMessageService {
 # systemctl restart rabbitmq-server
 ```
 
-## 3.3Spring AMQP配置延迟交换机
+## 3.3 Spring AMQP配置延迟交换机
 ```java
 @Configuration
 public class DelayedPluginConfig {
@@ -202,7 +202,7 @@ public class DelayedPluginConfig {
 }
 ```
 
-## 3.4使用延迟插件发送消息
+## 3.4 使用延迟插件发送消息
 ```java
 @Service
 public class DelayedMessageService {
@@ -249,7 +249,7 @@ public class PaymentCheckConsumer {
 }
 ```
 
-## 3.5延迟插件的优缺点
+## 3.5 延迟插件的优缺点
 优点：
 - 灵活性高：每条消息可以指定不同的延迟时间
 - 无需创建多个队列：一个交换机+一个队列即可
@@ -260,11 +260,11 @@ public class PaymentCheckConsumer {
 - 延迟消息存储在Mnesia表中，有性能限制（不适合大量消息堆积）
 - 延迟消息在Broker重启时会丢失（不持久化到磁盘）
 
-# 4.消息重试机制
+# 4. 消息重试机制
 
-## 4.1两种重试层级
+## 4.1 两种重试层级
 
-### 4.1.1Spring Retry（应用层重试）
+### 4.1.1 Spring Retry（应用层重试）
 在消费者方法抛出异常时，Spring AMQP在应用内部进行重试（不涉及Broker）：
 
 ```yaml
@@ -290,7 +290,7 @@ Spring Retry的重试逻辑：
 → 抛出AmqpRejectAndDontRequeueException → 消息被Nack(requeue=false) → 进入死信
 ```
 
-### 4.1.2Broker层重试（延迟+死信）
+### 4.1.2 Broker层重试（延迟+死信）
 当应用层重试全部失败后，消息进入死信队列，可以在死信队列的消费者中实现更"重量级"的重试逻辑：
 
 ```java
@@ -351,7 +351,7 @@ public class DeadLetterRetryConsumer {
 }
 ```
 
-## 4.2指数退避策略
+## 4.2 指数退避策略
 为了尽可能不丢失消息且不过度重试，推荐使用指数退避（Exponential Backoff）：
 
 ```java
@@ -377,9 +377,9 @@ public class RetryDelayCalculator {
 }
 ```
 
-# 5.延迟队列的应用场景
+# 5. 延迟队列的应用场景
 
-## 5.1订单超时取消
+## 5.1 订单超时取消
 ```java
 // 场景：下单后30分钟内未支付，自动取消订单
 @Service
@@ -418,7 +418,7 @@ public class OrderTimeoutConsumer {
 }
 ```
 
-## 5.2定时任务调度
+## 5.2 定时任务调度
 ```java
 // 场景：每天凌晨3点执行报表生成
 // 不推荐用MQ做定时任务（应该用XXL-JOB、Quartz等），这里仅供参考
@@ -436,7 +436,7 @@ public void scheduleReportTask() {
 }
 ```
 
-## 5.3验证码过期
+## 5.3 验证码过期
 ```java
 // 场景：发送验证码后5分钟过期
 public void sendVerificationCode(String phone, String code) {
@@ -454,7 +454,7 @@ public void sendVerificationCode(String phone, String code) {
 }
 ```
 
-## 5.4重试场景：不可靠的外部服务调用
+## 5.4 重试场景：不可靠的外部服务调用
 ```java
 // 场景：调用第三方支付接口失败后，延迟重试
 public void callExternalPayment(Order order) {
@@ -473,7 +473,7 @@ public void callExternalPayment(Order order) {
 }
 ```
 
-# 6.延迟队列的选型建议
+# 6. 延迟队列的选型建议
 
 | 场景 | 推荐方案 | 原因 |
 |------|---------|------|
@@ -484,9 +484,9 @@ public void callExternalPayment(Order order) {
 | 秒级延迟精确度 | 延迟插件 | TTL方案受队列队首阻塞影响 |
 | 可选的替代方案 | Redis延迟队列 / 定时任务 | 当RabbitMQ延迟队列无法满足需求时 |
 
-# 7.生产者重试（发送重试）
+# 7. 生产者重试（发送重试）
 
-## 7.1RabbitTemplate发送重试
+## 7.1 RabbitTemplate发送重试
 ```yaml
 spring:
   rabbitmq:
@@ -499,7 +499,7 @@ spring:
         max-interval: 10000
 ```
 
-## 7.2自定义RetryTemplate
+## 7.2 自定义RetryTemplate
 ```java
 @Bean
 public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
@@ -524,7 +524,7 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 }
 ```
 
-# 8.对比总结
+# 8. 对比总结
 
 | 机制 | 实现方式 | 适用场景 | 复杂度 |
 |------|---------|---------|--------|

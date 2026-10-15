@@ -1,4 +1,4 @@
-# 1.认识 Kubernetes
+# 1. 认识 Kubernetes
 
 ## 1.1 什么是 Kubernetes
 

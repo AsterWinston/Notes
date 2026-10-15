@@ -1,4 +1,4 @@
-# 1.序列化与序列（Sequence）
+# 1. 序列化与序列（Sequence）
 
 ## 1.1 内置主键策略对比
 
@@ -81,7 +81,7 @@ List<User> users = new User()
 
 ---
 
-# 3.自定义通用方法（SQL 注入器）
+# 3. 自定义通用方法（SQL 注入器）
 
 当 Mybatis-Plus 内置的通用方法不满足需求时，可以通过 SQL 注入器自定义通用方法。
 
@@ -149,7 +149,7 @@ public interface UserMapper extends MyBaseMapper<User> {
 
 ---
 
-# 4.动态表名插件
+# 4. 动态表名插件
 
 当需要根据时间、租户等动态切换表名时使用（如按月分表：`t_order_202401`、`t_order_202402`）。
 
@@ -193,7 +193,7 @@ public class TableNameContextHolder {
 
 ---
 
-# 5.数据安全保护（字段加密）
+# 5. 数据安全保护（字段加密）
 
 ## 5.1 配置密钥
 
@@ -256,7 +256,7 @@ public class User {
 
 ---
 
-# 6.Mybatis-Plus 与 Mybatis 对比
+# 6. Mybatis-Plus 与 Mybatis 对比
 
 | 方面 | Mybatis | Mybatis-Plus |
 |------|---------|-------------|
@@ -276,7 +276,7 @@ public class User {
 
 ---
 
-# 7.常见问题与最佳实践
+# 7. 常见问题与最佳实践
 
 ## 7.1 字段更新策略
 
@@ -390,7 +390,7 @@ interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
 
 ---
 
-# 8.Mybatis-Plus 配置大全
+# 8. Mybatis-Plus 配置大全
 
 ```yaml
 mybatis-plus:

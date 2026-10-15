@@ -1,4 +1,4 @@
-# 1.CRD 与 Operator 概述
+# 1. CRD 与 Operator 概述
 
 ## 1.1 Kubernetes 的扩展性哲学
 
@@ -91,7 +91,7 @@ spec:
       jsonPath: .status.phase
 ```
 
-### 安装 CRD 后
+### 1.2.1 安装 CRD 后
 
 ```bash
 # 创建自定义资源
@@ -132,7 +132,7 @@ Operator 模式（自动化）:
   → 自动配置复制 → 自动备份 → 自动监控 → 自动故障恢复 → 自动升级
 ```
 
-### 典型的 Operator 能力阶梯
+### 1.3.1 典型的 Operator 能力阶梯
 
 | 等级 | 能力 | 说明 |
 |------|------|------|
@@ -142,7 +142,7 @@ Operator 模式（自动化）:
 | Level 4 | 深度洞察 | 指标收集、告警、性能分析 |
 | Level 5 | 自动导航 | 自动调优、自动扩缩容、自动问题修复 |
 
-# 2.CRD 深入
+# 2. CRD 深入
 
 ## 2.1 API 版本管理
 
@@ -179,7 +179,7 @@ spec:
     conversionReviewVersions: ["v1"]
 ```
 
-### 版本升级的场景
+### 2.1.1 版本升级的场景
 
 ```
 用户创建 v1alpha1 的资源:
@@ -201,7 +201,7 @@ API Server:
 
 ## 2.2 验证与默认值
 
-### 声明式验证 (Schema)
+### 2.2.1 声明式验证 (Schema)
 
 ```yaml
 schema:
@@ -244,7 +244,7 @@ schema:
             x-kubernetes-preserve-unknown-fields: true   # 允许未知字段
 ```
 
-### 验证 Webhook (更灵活的验证)
+### 2.2.2 验证 Webhook (更灵活的验证)
 
 对于 Schema 无法表达的复杂验证逻辑（如跨字段验证），使用 Validating Webhook：
 
@@ -280,7 +280,7 @@ additionalPrinterColumns:
   priority: 1              # 默认隐藏，-o wide 时显示
 ```
 
-# 3.Operator 开发
+# 3. Operator 开发
 
 ## 3.1 Kubebuilder 脚手架
 
@@ -307,7 +307,7 @@ kubebuilder create webhook \
   --programmatic-validation  # Validating Webhook
 ```
 
-### 生成的项目结构
+### 3.1.1 生成的项目结构
 
 ```
 my-operator/
@@ -331,7 +331,7 @@ my-operator/
 
 ## 3.2 Operator 核心代码
 
-### 类型定义 (database_types.go)
+### 3.2.1 类型定义 (database_types.go)
 
 ```go
 package v1
@@ -389,7 +389,7 @@ type DatabaseList struct {
 }
 ```
 
-### 控制器逻辑 (database_controller.go)
+### 3.2.2 控制器逻辑 (database_controller.go)
 
 ```go
 func (r *DatabaseReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
@@ -488,7 +488,7 @@ func (r *DatabaseReconciler) updateStatus(ctx context.Context, db *databasev1.Da
 }
 ```
 
-### RBAC 标记
+### 3.2.3 RBAC 标记
 
 ```go
 // +kubebuilder:rbac:groups=database.example.com,resources=databases,verbs=get;list;watch;create;update;patch;delete
@@ -504,7 +504,7 @@ func (r *DatabaseReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 ## 3.3 Webhook 实现
 
-### Defaulting Webhook（设置默认值）
+### 3.3.1 Defaulting Webhook（设置默认值）
 
 ```go
 // +kubebuilder:webhook:path=/mutate-database-example-com-v1-database,mutating=true,failurePolicy=fail,groups=database.example.com,resources=databases,verbs=create;update,versions=v1,name=mdatabase.kb.io,sideEffects=None,admissionReviewVersions=v1
@@ -527,7 +527,7 @@ func (d *Database) Default() {
 }
 ```
 
-### Validating Webhook（验证逻辑）
+### 3.3.2 Validating Webhook（验证逻辑）
 
 ```go
 // +kubebuilder:webhook:path=/validate-database-example-com-v1-database,mutating=false,failurePolicy=fail,groups=database.example.com,resources=databases,verbs=create;update,versions=v1,name=vdatabase.kb.io,sideEffects=None,admissionReviewVersions=v1
@@ -557,7 +557,7 @@ func (d *Database) validate() error {
 }
 ```
 
-# 4.生产实践
+# 4. 生产实践
 
 ## 4.1 Operator 开发生命周期
 
@@ -587,7 +587,7 @@ func (d *Database) validate() error {
 
 ## 4.2 常见模式
 
-### Finalizer 模式
+### 4.2.1 Finalizer 模式
 
 ```go
 const databaseFinalizer = "database.example.com/finalizer"
@@ -612,7 +612,7 @@ func (r *DatabaseReconciler) handleDeletion(ctx context.Context, db *databasev1.
 }
 ```
 
-### OwnerReference 模式
+### 4.2.2 OwnerReference 模式
 
 ```go
 // 设置 OwnerReference，确保父资源删除时子资源被级联删除
@@ -633,7 +633,7 @@ func (r *DatabaseReconciler) buildStatefulSet(db *databasev1.Database) *appsv1.S
 }
 ```
 
-### Status Conditions 模式
+### 4.2.3 Status Conditions 模式
 
 ```go
 func (r *DatabaseReconciler) setCondition(db *databasev1.Database, condType string, status metav1.ConditionStatus, reason, message string) {

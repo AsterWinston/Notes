@@ -1,6 +1,6 @@
-# 1.分布式部署架构详解
+# 1. 分布式部署架构详解
 
-## 1.1集群设计原则
+## 1.1 集群设计原则
 
 分布式 MinIO 的核心设计原则：
 
@@ -12,7 +12,7 @@
 6. **所有节点时间同步**：强烈建议配置 NTP，时间偏差过大会导致认证失败
 7. **推荐 XFS 文件系统**：XFS 的 O_DIRECT 模式提供最佳性能
 
-### 典型生产集群配置
+### 1.1.1 典型生产集群配置
 
 ```text
 方案 A：高密度存储（适合大文件、归档场景）
@@ -44,7 +44,7 @@
   适用: 小文件海量、高 QPS 场景
 ```
 
-## 1.2网络规划
+## 1.2 网络规划
 
 ```text
 ┌──────────────────────────────────────────────────┐
@@ -70,7 +70,7 @@
               └────────────────┘
 ```
 
-### 网络要求
+### 1.2.1 网络要求
 
 | 要求 | 说明 |
 |------|------|
@@ -80,7 +80,7 @@
 | 防火墙规则 | 开放端口 9000 (API)、9001 (Console)、节点间内部 RPC |
 | 负载均衡 | 建议使用 Nginx/HAProxy 或硬件 LB |
 
-## 1.3磁盘规划
+## 1.3 磁盘规划
 
 ```bash
 # 每个节点上准备磁盘
@@ -104,7 +104,7 @@ sudo mount LABEL=DISK2 /mnt/disk2
 # /dev/sdc /mnt/disk2 xfs defaults,noatime 0 2
 ```
 
-### 磁盘性能要求
+### 1.3.1 磁盘性能要求
 
 | 指标 | 最低要求 | 推荐 |
 |------|----------|------|
@@ -113,7 +113,7 @@ sudo mount LABEL=DISK2 /mnt/disk2
 | 单盘吞吐 | 100MB/s | 1000MB/s+ |
 | 容量 | 1TB+ | 4TB+ |
 
-## 1.4节点启动
+## 1.4 节点启动
 
 所有 4 个节点执行完全相同的命令：
 
@@ -132,7 +132,7 @@ sudo systemctl start minio
 sudo systemctl enable minio
 ```
 
-## 1.5集群状态验证
+## 1.5 集群状态验证
 
 ```bash
 # 使用 mc 查看集群信息
@@ -161,9 +161,9 @@ mc admin topology myminio
 
 ---
 
-# 2.扩容方案
+# 2. 扩容方案
 
-## 2.1添加新 Server Pool
+## 2.1 添加新 Server Pool
 
 ```text
 现有集群:
@@ -177,7 +177,7 @@ mc admin topology myminio
   总可用容量翻倍
 ```
 
-### 扩容步骤
+### 2.1.1 扩容步骤
 
 ```bash
 # 1. 准备新节点：安装 MinIO、格式化磁盘、配置 systemd
@@ -198,14 +198,14 @@ mc admin topology myminio
 mc admin info myminio
 ```
 
-### 扩容注意事项
+### 2.1.2 扩容注意事项
 
 - **不能给已有 Pool 添加磁盘**：Pool 的 EC 配置是固定的，添加磁盘到已有 Pool 会破坏 EC 条带
 - **新 Pool 应与旧 Pool 具有相同的 EC 条带大小**（即相同数量的节点和磁盘）
 - **扩容后数据不会自动重平衡**：已有数据留在旧 Pool，新数据会分布到所有 Pool
 - **如果旧 Pool 容量已满，MinIO 会自动将新对象写入新 Pool**
 
-## 2.2退役节点（Decommissioning）
+## 2.2 退役节点（Decommissioning）
 
 ```bash
 # 退役指定 Pool
@@ -220,9 +220,9 @@ mc admin decommission status myminio
 
 ---
 
-# 3.故障恢复机制
+# 3. 故障恢复机制
 
-## 3.1磁盘故障恢复
+## 3.1 磁盘故障恢复
 
 ```text
 场景: Pool 0 中 minio-2 节点的 disk3 故障
@@ -240,7 +240,7 @@ MinIO 自动检测 → 标记故障磁盘
 Heal: 从正常分片 EC 解码，重建故障磁盘上的数据
 ```
 
-### 手动触发 Heal
+### 3.1.1 手动触发 Heal
 
 ```bash
 # 扫描并修复整个集群
@@ -256,7 +256,7 @@ mc admin heal myminio --verbose
 mc admin heal myminio --pending
 ```
 
-## 3.2节点故障处理
+## 3.2 节点故障处理
 
 ```text
 如果整个节点故障（如硬件故障、网络中断）：
@@ -275,9 +275,9 @@ mc admin heal myminio --pending
 
 ---
 
-# 4.身份与访问管理（IAM）
+# 4. 身份与访问管理（IAM）
 
-## 4.1MinIO 的用户体系
+## 4.1 MinIO 的用户体系
 
 MinIO 的 IAM 系统管理两大类用户：
 
@@ -288,7 +288,7 @@ MinIO 的 IAM 系统管理两大类用户：
 | **STS 用户** | 通过 OIDC/LDAP 认证后生成的临时用户 | JWT Token (临时) 或长期凭证 |
 | **服务账号** | 绑定到 IAM 用户的长期凭证，用于应用程序 | AccessKey + SecretKey |
 
-## 4.2创建和管理 IAM 用户
+## 4.2 创建和管理 IAM 用户
 
 ```bash
 # 添加用户
@@ -308,7 +308,7 @@ mc admin user enable myminio alice
 mc admin user remove myminio alice
 ```
 
-## 4.3创建和管理服务账号（Service Accounts）
+## 4.3 创建和管理服务账号（Service Accounts）
 
 服务账号推荐用于应用程序，可以绑定特定的权限策略：
 
@@ -333,7 +333,7 @@ mc admin user svcacct remove myminio <access-key>
 mc admin user svcacct disable myminio <access-key>
 ```
 
-## 4.4创建和管理 Policy（策略）
+## 4.4 创建和管理 Policy（策略）
 
 Policy 是 JSON 格式的权限定义文件，使用 AWS IAM 兼容语法：
 
@@ -367,7 +367,7 @@ Policy 是 JSON 格式的权限定义文件，使用 AWS IAM 兼容语法：
 }
 ```
 
-### 常用策略示例
+### 4.4.1 常用策略示例
 
 **只读策略**（readonly.json）：
 ```json
@@ -420,7 +420,7 @@ Policy 是 JSON 格式的权限定义文件，使用 AWS IAM 兼容语法：
 }
 ```
 
-### 管理 Policy 和关联用户
+### 4.4.2 管理 Policy 和关联用户
 
 ```bash
 # 创建策略
@@ -449,7 +449,7 @@ mc admin policy attach myminio readwrite --group developers
 mc admin policy remove myminio readonly
 ```
 
-## 4.5用户组管理
+## 4.5 用户组管理
 
 ```bash
 # 创建用户组
@@ -470,11 +470,11 @@ mc admin group disable myminio developers
 
 ---
 
-# 5.Bucket 级别策略
+# 5. Bucket 级别策略
 
 Bucket Policy 是绑定在 Bucket 上的访问控制，支持匿名访问和条件限制。
 
-## 5.1设置公共读 Bucket
+## 5.1 设置公共读 Bucket
 
 ```json
 {
@@ -501,7 +501,7 @@ mc anonymous set private myminio/public-bucket
 mc anonymous set download myminio/public-bucket
 ```
 
-## 5.2条件访问控制
+## 5.2 条件访问控制
 
 ```json
 {
@@ -525,7 +525,7 @@ mc anonymous set download myminio/public-bucket
 }
 ```
 
-### Java SDK 设置 Bucket Policy
+### 5.2.1 Java SDK 设置 Bucket Policy
 
 ```java
 String policyJson = """
@@ -569,9 +569,9 @@ minioClient.deleteBucketPolicy(
 
 ---
 
-# 6.TLS/SSL 配置
+# 6. TLS/SSL 配置
 
-## 6.1自签名证书配置
+## 6.1 自签名证书配置
 
 ```bash
 # 生成自签名证书
@@ -600,7 +600,7 @@ sudo chmod 600 /etc/minio/certs/private.key
 minio server /data --console-address ":9001" --certs-dir /etc/minio/certs
 ```
 
-## 6.2使用 Let's Encrypt 自动签发证书
+## 6.2 使用 Let's Encrypt 自动签发证书
 
 ```bash
 # 设置环境变量
@@ -612,7 +612,7 @@ export MINIO_DOMAIN=minio.example.com
 minio server /data --console-address ":9001"
 ```
 
-## 6.3Java 客户端连接 HTTPS MinIO
+## 6.3 Java 客户端连接 HTTPS MinIO
 
 ```java
 // 信任自签名证书
@@ -652,9 +652,9 @@ MinioClient minioClient = MinioClient.builder()
 
 ---
 
-# 7.集成 LDAP / Active Directory
+# 7. 集成 LDAP / Active Directory
 
-## 7.1配置 LDAP 认证
+## 7.1 配置 LDAP 认证
 
 通过环境变量配置 LDAP 集成：
 
@@ -671,7 +671,7 @@ export MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER="(&(objectClass=groupOfNames)(mem
 minio server /data --console-address ":9001"
 ```
 
-## 7.2配置 OpenID Connect (OIDC)
+## 7.2 配置 OpenID Connect (OIDC)
 
 ```bash
 # 以 Keycloak 为例配置 OIDC
@@ -688,9 +688,9 @@ minio server /data --console-address ":9001"
 
 ---
 
-# 8.KES（Key Encryption Service）
+# 8. KES（Key Encryption Service）
 
-## 8.1KES 概述
+## 8.1 KES 概述
 
 KES 是 MinIO 官方提供的密钥加密服务，用于 SSE-KMS 场景。它需要配合外部 KMS（如 HashiCorp Vault）使用。
 
@@ -702,7 +702,7 @@ KES 是 MinIO 官方提供的密钥加密服务，用于 SSE-KMS 场景。它需
    SSE-KMS        密钥代理         密钥存储/轮换
 ```
 
-## 8.2启动 KES 服务
+## 8.2 启动 KES 服务
 
 ```bash
 # 下载 KES
@@ -716,7 +716,7 @@ sudo mv kes-linux-amd64 /usr/local/bin/kes
 kes server --config kes-config.yml --auth off
 ```
 
-### KES 配置示例（使用 Vault）
+### 8.2.1 KES 配置示例（使用 Vault）
 
 ```yaml
 # kes-config.yml
@@ -748,7 +748,7 @@ keystore:
       ping: 10s
 ```
 
-## 8.3MinIO 连接 KES
+## 8.3 MinIO 连接 KES
 
 ```bash
 # MinIO 服务端环境变量
@@ -761,9 +761,9 @@ export MINIO_KMS_KES_CA_PATH="/path/to/ca.crt"
 
 ---
 
-# 9.审计日志
+# 9. 审计日志
 
-## 9.1配置审计日志
+## 9.1 配置审计日志
 
 ```bash
 # 设置审计日志输出目标
@@ -781,7 +781,7 @@ mc admin config set myminio audit_kafka:primary \
 mc admin service restart myminio
 ```
 
-## 9.2审计日志格式
+## 9.2 审计日志格式
 
 ```json
 {
@@ -813,7 +813,7 @@ mc admin service restart myminio
 
 ---
 
-# 10.安全最佳实践清单
+# 10. 安全最佳实践清单
 
 ```text
 认证与访问控制:

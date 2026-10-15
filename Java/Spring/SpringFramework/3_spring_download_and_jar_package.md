@@ -44,7 +44,7 @@ spring-websocket-5.3.9.jar	Spring集成WebSocket框架时使用
 
 # 5. 源码视角：Spring 6 模块依赖图与包结构
 
-## 5.1. Maven 依赖传递关系
+## 5.1 Maven 依赖传递关系
 
 ```
 spring-context (最常用的入门依赖)
@@ -83,7 +83,7 @@ spring-boot-starter-web 的传递依赖精简版：
     └── spring-web
 ```
 
-## 5.2. 常见 jar 内部的包结构举例
+## 5.2 常见 jar 内部的包结构举例
 
 ```
 spring-beans-6.0.x.jar

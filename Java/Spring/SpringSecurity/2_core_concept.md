@@ -155,7 +155,7 @@ http.authorizeHttpRequests(auth -> auth
 public class SecurityConfig { ... }
 ```
 
-### 常用注解
+### 2.3.1 常用注解
 
 | 注解 | 作用 | 时机 |
 |------|------|------|

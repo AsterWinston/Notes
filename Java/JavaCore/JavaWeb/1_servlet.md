@@ -1,4 +1,4 @@
-# 1.关于系统架构
+# 1. 关于系统架构
 
 ```
 一、系统架构的两种形式
@@ -56,7 +56,7 @@ Java 的三大技术平台：
 ```
 
 
-# 2.B/S结构的系统通信原理（没有涉及到Java小程序）
+# 2. B/S结构的系统通信原理（没有涉及到Java小程序）
 
 ```java
 WEB系统的访问过程
@@ -97,7 +97,7 @@ S --> B （响应response）
 ```
 
 
-# 3.关于WEB服务器软件
+# 3. 关于WEB服务器软件
 
 ```java
 WEB服务器软件都有哪些呢？（这些软件都是提前开发好的。）
@@ -170,7 +170,7 @@ ip地址是什么？端口号我知道，是8080
 ```
 
 
-# 4.实现一个最基本的web应用（这个web应用中没有java小程序）
+# 4. 实现一个最基本的web应用（这个web应用中没有java小程序）
 
 ```
 第一步：找到CATALINA_HOME\webapps目录
@@ -202,7 +202,7 @@ ip地址是什么？端口号我知道，是8080
 ```
 
 
-# 5.对于一个动态的web应用来说，一个请求和响应的过程有多少个角色参与，角色和角色之间有多少个协议
+# 5. 对于一个动态的web应用来说，一个请求和响应的过程有多少个角色参与，角色和角色之间有多少个协议
 
 ```
 有哪些角色（在整个BS结构的系统当中，有哪些人参与进去了）
@@ -231,7 +231,7 @@ Servlet规范包括什么呢？
 ```
 
 
-# 6.开发一个带有Servlet（Java小程序）的webapp（重点）
+# 6. 开发一个带有Servlet（Java小程序）的webapp（重点）
 
 ```
 开发步骤是怎样的？
@@ -349,7 +349,7 @@ Tomcat服务器通过反射机制，创建com.bjpowernode.servlet.HelloServlet�
 Tomcat服务器调用com.bjpowernode.servlet.HelloServlet对象的service方法。
 ```
 
-# 7.关于JavaEE的版本
+# 7. 关于JavaEE的版本
 
 ```
 JavaEE目前最高版本是 JavaEE8
@@ -362,7 +362,7 @@ JakartaEE9的时候对应的Servlet类名是：jakarta.servlet.Servlet （包名
 如果你之前的项目还是在使用javax.servlet.Servlet，那么你的项目无法直接部署到Tomcat10+版本上。你只能部署到Tomcat9-版本上。在Tomcat9以及Tomcat9之前的版本中还是能够识别javax.servlet这个包。
 ```
 
-# 8.解决Tomcat服务器在DOS命令窗口中的乱码问题（控制台乱码）
+# 8. 解决Tomcat服务器在DOS命令窗口中的乱码问题（控制台乱码）
 
 ```
 将CATALINA_HOME/conf/logging.properties文件中的内容修改如下：
@@ -370,7 +370,7 @@ JakartaEE9的时候对应的Servlet类名是：jakarta.servlet.Servlet （包名
 java.util.logging.ConsoleHandler.encoding = GBK
 ```
 
-# 9.向浏览器响应一段HTML代码
+# 9. 向浏览器响应一段HTML代码
 
 ```
 public void service(ServletRequest request, ServletResponse response){
@@ -380,14 +380,14 @@ public void service(ServletRequest request, ServletResponse response){
 }
 ```
 
-# 10.在Servlet中连接数据库，怎么做？
+# 10. 在Servlet中连接数据库，怎么做？
 ```
 Servlet是Java程序，所以在Servlet中完全可以编写JDBC代码连接数据库。
 在一个webapp中去连接数据库，需要将驱动jar包放到WEB-INF/lib目录下。（com.mysql.cj.jdbc.Driver 这个类就在驱动jar包当中。）
 ```
 
 
-# 11.在集成开发环境当中开发Servlet程序
+# 11. 在集成开发环境当中开发Servlet程序
 
 ```
 集成开发工具很多，其中目前使用比较多的是：
@@ -475,7 +475,7 @@ IDEA工具右上角，绿色小锤子右边有一个：Add Configuration
 日志输出乱码-Dfile.encoding=GBK参数放到jvm options可以解决问题，但是jdk23就不行，有点阴间
 ```
 
-# 12.Servlet对象的生命周期
+# 12. Servlet对象的生命周期
 
 ```
 什么是Servlet对象生命周期？
@@ -592,7 +592,7 @@ destroy方法也很少用。
 通常在destroy方法当中，进行资源的关闭。马上对象要被销毁了，还有什么没有关闭的，抓紧时间关闭资源。还有什么资源没保存的，抓紧时间保存一下。
 ```
 
-# 13.GenericServlet
+# 13. GenericServlet
 
 ```
 我们编写一个Servlet类直接实现Servlet接口有什么缺点？
@@ -651,7 +651,7 @@ public class Tomcat {
 ```
 ```
 
-# 14.ServletConfig
+# 14. ServletConfig
 
 ```
 什么是ServletConfig？
@@ -682,7 +682,7 @@ public String getServletName(); // 获取Servlet的name
 注意<init-param>需要放在<load-on-startup>标签之前
 ```
 
-# 15.ServletContext
+# 15. ServletContext
 
 ```
 一个Servlet对象对应一个ServletConfig。100个Servlet对象则对应100个ServletConfig对象。
@@ -784,7 +784,7 @@ NoSQL数据库。非关系型数据库。缓存数据库。
 向ServletContext应用域中存储数据，也等于是将数据存放到缓存cache当中了。
 ```
 
-# 16.HTTP协议
+# 16. HTTP协议
 
 ```
 什么是协议？
@@ -988,7 +988,7 @@ pojo
 模板类当中的抽象方法就是不确定实现的方法，这个不确定怎么实现的事儿交给子类去做。
 ```
 
-# 17.HttpServlet源码分析
+# 17. HttpServlet源码分析
 
 ```
 HttpServlet类是专门为HTTP协议准备的。比GenericServlet更加适合HTTP协议下的开发。
@@ -1196,7 +1196,7 @@ public abstract class HttpServlet extends GenericServlet {
 第四步：准备前端的页面（form表单），form表单中指定请求路径即可。
 ```
 
-# 18.关于一个web站点的欢迎页面
+# 18. 关于一个web站点的欢迎页面
 
 ```java
 什么是一个web站点的欢迎页面？
@@ -1298,7 +1298,7 @@ public class WelcomeServlet extends HttpServlet {
     </welcome-file-list>
 ```
 
-# 19.关于WEB-INF目录
+# 19. 关于WEB-INF目录
 
 ```java
 在WEB-INF目录下新建了一个文件：welcome.html
@@ -1306,7 +1306,7 @@ public class WelcomeServlet extends HttpServlet {
 注意：放在WEB-INF目录下的资源是受保护的。在浏览器上不能够通过路径直接访问。所以像HTML、CSS、JS、image等静态资源一定要放到WEB-INF目录之外。
 ```
 
-# 20.HttpServletRequest接口详解
+# 20. HttpServletRequest接口详解
 
 ```java
 HttpServletRequest是一个接口，全限定名称：jakarta.servlet.http.HttpServletRequest
@@ -1494,7 +1494,7 @@ String uri = request.getRequestURI();  // /aaa/testRequest
 String servletPath = request.getServletPath(); //   /testRequest
 ```
 
-# 21.使用纯Servlet做一个单表的CRUD操作
+# 21. 使用纯Servlet做一个单表的CRUD操作
 
 ```
 使用纯粹的Servlet完成单表【对部门的】的增删改查操作。（B/S结构的。）
@@ -1718,7 +1718,7 @@ if (count == 1) {
 第十步：修改部门
 ```
 
-# 22.在一个web应用中应该如何完成资源的跳转
+# 22. 在一个web应用中应该如何完成资源的跳转
 
 ```java
 在一个web应用中通过两种方式，可以完成资源的跳转：
@@ -1772,7 +1772,7 @@ response.sendRedirect("/oa/dept/list");
 不一定，跳转的资源只要是服务器内部合法的资源即可。包括：Servlet、JSP、HTML…
 转发会存在浏览器的刷新问题。
 ```
-# 23.将oa项目中的资源跳转修改为合适的跳转方式
+# 23. 将oa项目中的资源跳转修改为合适的跳转方式
 
 ```java
 删除之后，重定向
@@ -1783,7 +1783,7 @@ response.sendRedirect("/oa/dept/list");
 失败
 ```
 
-# 24.Servlet注解，简化配置
+# 24. Servlet注解，简化配置
 
 ```java
 分析oa项目中的web.xml文件
@@ -1814,7 +1814,7 @@ value 属性：当注解的属性名是 value 的时候，使用注解的时候�
 @注解名称(属性名=属性值, 属性名=属性值, 属性名=属性值…)
 ```
 
-# 25.使用模板方法设计模式优化oa项目
+# 25. 使用模板方法设计模式优化oa项目
 
 ```java
 上面的注解解决了配置文件的问题。但是现在的 oa 项目仍然存在一个比较臃肿的问题。
@@ -1826,7 +1826,7 @@ value 属性：当注解的属性名是 value 的时候，使用注解的时候�
 处理部门相关业务的对应一个 DeptServlet。处理用户相关业务的对应一个 UserServlet。处理银行卡卡片业务对应一个 CardServlet。
 ```
 
-# 26.关于B/S结构系统的会话机制（session机制）
+# 26. 关于B/S结构系统的会话机制（session机制）
 
 ```java
 什么是会话？
@@ -1901,7 +1901,7 @@ session 掌握之后，我们怎么解决 oa 项目中的登录问题，怎么�
 session.invalidate();
 ```
 
-# 27.Cookie
+# 27. Cookie
 
 ```java
 session 的实现原理中，每一个 session 对象都会关联一个 sessionid，例如：
@@ -1995,7 +1995,7 @@ if(cookies != null){
 以上分别有两个走向，这显然是需要编写 java 程序进行控制的。
 ```
 
-# 28.错误页面配置（error-page）
+# 28. 错误页面配置（error-page）
 
 ```java
 在web.xml中通过<error-page>标签可以配置统一的错误处理页面。
@@ -2035,7 +2035,7 @@ if(cookies != null){
 该页面要使用 <%-- isErrorPage="true" --%> 才能拿到exception对象
 ```
 
-# 29.异步Servlet（AsyncContext）
+# 29. 异步Servlet（AsyncContext）
 
 ```java
 什么是异步Servlet？

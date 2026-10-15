@@ -1,4 +1,4 @@
-# 1.分页插件
+# 1. 分页插件
 
 Mybatis-Plus 3.4.0+ 使用 `MybatisPlusInterceptor` 插件体系，分页由 `PaginationInnerInterceptor` 实现。
 
@@ -143,7 +143,7 @@ IPage<Map<String, Object>> result = userMapper.selectMapsPage(page, wrapper);
 
 ---
 
-# 2.通用分页实体
+# 2. 通用分页实体
 
 ## 2.1 Page 对象详解
 
@@ -226,7 +226,7 @@ IPage<User> result = userMapper.selectPage(page, null);
 
 ---
 
-# 3.乐观锁插件
+# 3. 乐观锁插件
 
 乐观锁（Optimistic Lock）用于解决并发更新时的数据冲突问题。Mybatis-Plus 通过版本号 `version` 字段实现。
 
@@ -330,7 +330,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> {
 
 ---
 
-# 4.自动填充
+# 4. 自动填充
 
 Mybatis-Plus 的 `MetaObjectHandler` 可以自动填充 `createTime`、`updateTime` 等字段，避免每次手动设置。
 
@@ -416,7 +416,7 @@ public void insertFill(MetaObject metaObject) {
 
 ---
 
-# 5.多租户插件
+# 5. 多租户插件
 
 多租户（Multi-Tenant）是指在一个应用实例中隔离不同租户（如不同企业、不同组织）的数据。Mybatis-Plus 通过 `TenantLineInnerInterceptor` 在 SQL 执行前自动拼接租户条件。
 
@@ -550,7 +550,7 @@ userMapper.selectPage(page, wrapper);
 
 ---
 
-# 6.防全表更新与删除插件（BlockAttackInnerInterceptor）
+# 6. 防全表更新与删除插件（BlockAttackInnerInterceptor）
 
 防止开发时误操作导致全表更新或删除，仅拦截 Mapper 层。
 
@@ -590,7 +590,7 @@ userMapper.delete(new LambdaQueryWrapper<User>().eq(User::getId, 1L));
 
 ---
 
-# 7.插件配置完整示例
+# 7. 插件配置完整示例
 
 ```java
 @Configuration

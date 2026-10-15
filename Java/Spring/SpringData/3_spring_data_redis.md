@@ -1,4 +1,4 @@
-# 1.Spring Data Redis 概述
+# 1. Spring Data Redis 概述
 
 ## 1.1 什么是 Spring Data Redis
 
@@ -71,7 +71,7 @@ Spring Boot 2.x 之后默认使用 Lettuce 作为 Redis 客户端。如需使用
 └────────────────────────────────────────────────────────────────────┘
 ```
 
-# 2.快速入门
+# 2. 快速入门
 
 ## 2.1 Maven 依赖
 
@@ -192,7 +192,7 @@ public class RedisDemoService {
 }
 ```
 
-# 3.RedisTemplate 详解
+# 3. RedisTemplate 详解
 
 ## 3.1 RedisTemplate vs StringRedisTemplate
 
@@ -277,7 +277,7 @@ public class RedisSerializerConfig {
 }
 ```
 
-# 4.数据类型操作详解
+# 4. 数据类型操作详解
 
 ## 4.1 String（字符串）操作
 
@@ -687,7 +687,7 @@ List<MapRecord<String, Object, Object>> messages = streamOps.read(
 streamOps.createGroup("stream:orders", ReadOffset.from("0"), "group1");
 ```
 
-# 5.高级操作
+# 5. 高级操作
 
 ## 5.1 Pipeline（管道操作）
 
@@ -884,7 +884,7 @@ public class LuaScriptService {
 }
 ```
 
-# 6.Redis Repositories
+# 6. Redis Repositories
 
 ## 6.1 Redis Repository 概念
 
@@ -1002,7 +1002,7 @@ public interface UserRepository extends CrudRepository<User, String> {
 - 不适合大数据量场景（索引集膨胀）
 - 不支持分页（Spring Data Redis 3.x 之前）
 
-# 7.Spring Cache 集成
+# 7. Spring Cache 集成
 
 ## 7.1 启用 Redis 缓存
 
@@ -1103,7 +1103,7 @@ public class ProductService {
 @Cacheable(key = "T(java.lang.String).valueOf(#id)")  // 静态方法
 ```
 
-# 8.分布式锁
+# 8. 分布式锁
 
 ## 8.1 基于 SETNX 的简单实现
 
@@ -1240,7 +1240,7 @@ public class RedissonLockService {
 | 读写锁 | 不支持 | 支持 |
 | 联锁/红锁 | 需自行实现 | 内置支持 |
 
-# 9.Redis 集群支持
+# 9. Redis 集群支持
 
 ## 9.1 Sentinel（哨兵）模式
 
@@ -1304,7 +1304,7 @@ redis.opsForValue().set("{order:1001}:amount", "9999");
 // 这两个 key 可以使用 MULTI/EXEC 事务操作
 ```
 
-# 10.性能优化
+# 10. 性能优化
 
 ## 10.1 连接池配置优化
 
@@ -1374,7 +1374,7 @@ public void checkKeySize(String key) {
 }
 ```
 
-# 11.常见问题与面试题
+# 11. 常见问题与面试题
 
 ## 11.1 缓存穿透、击穿、雪崩
 
@@ -1463,7 +1463,7 @@ maxmemory-policy allkeys-lru
 - 延迟双删策略
 - 订阅 binlog + 消息队列异步更新缓存（最终一致性）
 
-# 12.Redis 配置详解
+# 12. Redis 配置详解
 
 ## 12.1 Spring Boot 全量配置参考
 
@@ -1538,7 +1538,7 @@ public class RedisCustomConfig {
 }
 ```
 
-# 13.响应式 Redis（Reactive）
+# 13. 响应式 Redis（Reactive）
 
 ```java
 // 依赖
@@ -1571,7 +1571,7 @@ public class ReactiveRedisService {
 }
 ```
 
-# 14.最佳实践总结
+# 14. 最佳实践总结
 
 ```
 1. 序列化器选择

@@ -1,4 +1,4 @@
-# 1 Spring Kafka 概述
+# 1. Spring Kafka 概述
 
 ## 1.1 什么是 Spring Kafka
 
@@ -18,7 +18,7 @@ Spring Kafka 是 Spring 生态中用于集成 Apache Kafka 的官方框架，提
 implementation 'org.springframework.kafka:spring-kafka'
 ```
 
-# 2 基础配置
+# 2. 基础配置
 
 ## 2.1 application.yml 配置
 
@@ -87,7 +87,7 @@ public class KafkaConfig {
 }
 ```
 
-# 3 KafkaTemplate 消息发送
+# 3. KafkaTemplate 消息发送
 
 ## 3.1 基本发送
 
@@ -184,7 +184,7 @@ public class TransactionalOrderService {
 }
 ```
 
-# 4 @KafkaListener 消息消费
+# 4. @KafkaListener 消息消费
 
 ## 4.1 基础监听
 
@@ -277,7 +277,7 @@ public class BatchConsumer {
 }
 ```
 
-# 5 手动确认（Acknowledgment）
+# 5. 手动确认（Acknowledgment）
 
 ## 5.1 确认模式
 
@@ -325,7 +325,7 @@ public class ManualAckConsumer {
 }
 ```
 
-# 6 错误处理
+# 6. 错误处理
 
 ## 6.1 ErrorHandler 基础配置
 
@@ -419,7 +419,7 @@ public class CustomErrorHandler implements CommonErrorHandler {
 }
 ```
 
-# 7 事务集成
+# 7. 事务集成
 
 ## 7.1 Kafka + 数据库事务（ChainedTransactionManager）
 
@@ -472,7 +472,7 @@ public class OrderServiceWithTx {
 }
 ```
 
-# 8 并发控制
+# 8. 并发控制
 
 ## 8.1 Listener 容器并发
 
@@ -538,7 +538,7 @@ public class ListenerManager {
 }
 ```
 
-# 9 AdminClient 集成
+# 9. AdminClient 集成
 
 ```java
 @Component
@@ -597,7 +597,7 @@ public class KafkaAdminService {
 }
 ```
 
-# 10 完整示例：Spring Boot Kafka 应用
+# 10. 完整示例：Spring Boot Kafka 应用
 
 ```java
 // ========== application.yml ==========

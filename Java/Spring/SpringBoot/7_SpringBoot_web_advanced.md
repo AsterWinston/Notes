@@ -1,8 +1,8 @@
-# 1.文件上传
+# 1. 文件上传
 
 文件上传是Web开发中的常见需求。Spring Boot对文件上传提供了自动配置支持。
 
-## 1.1Spring Boot文件上传的自动配置
+## 1.1 Spring Boot文件上传的自动配置
 
 文件上传的自动配置类是 `MultipartAutoConfiguration`，它自动配置了 `MultipartConfigElement` 和 `MultipartResolver` 组件。
 
@@ -19,9 +19,9 @@ public class MultipartProperties {
 }
 ```
 
-## 1.2单文件上传
+## 1.2 单文件上传
 
-### 1.2.1前端页面
+### 1.2.1 前端页面
 ```html
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
@@ -35,7 +35,7 @@ public class MultipartProperties {
 </html>
 ```
 
-### 1.2.2Controller代码
+### 1.2.2 Controller代码
 ```java
 @Controller
 public class FileUploadController {
@@ -61,9 +61,9 @@ public class FileUploadController {
 }
 ```
 
-## 1.3多文件上传
+## 1.3 多文件上传
 
-### 1.3.1前端页面
+### 1.3.1 前端页面
 ```html
 <form method="post" enctype="multipart/form-data" th:action="@{/upload/multi}">
     <input type="file" name="files" multiple />
@@ -71,7 +71,7 @@ public class FileUploadController {
 </form>
 ```
 
-### 1.3.2Controller代码
+### 1.3.2 Controller代码
 ```java
 @PostMapping("/upload/multi")
 @ResponseBody
@@ -94,7 +94,7 @@ public String uploadMulti(@RequestParam("files") MultipartFile[] files) {
 }
 ```
 
-## 1.4文件上传大小限制配置
+## 1.4 文件上传大小限制配置
 ```properties
 # 启用文件上传（默认true）
 spring.servlet.multipart.enabled=true
@@ -104,9 +104,9 @@ spring.servlet.multipart.max-file-size=10MB
 spring.servlet.multipart.max-request-size=50MB
 ```
 
-# 2.文件下载
+# 2. 文件下载
 
-## 2.1使用 ResponseEntity 实现下载
+## 2.1 使用 ResponseEntity 实现下载
 ```java
 @RestController
 public class FileDownloadController {
@@ -129,7 +129,7 @@ public class FileDownloadController {
 }
 ```
 
-## 2.2使用 HttpServletResponse 实现下载
+## 2.2 使用 HttpServletResponse 实现下载
 ```java
 @GetMapping("/download2")
 public void download2(HttpServletResponse response) throws IOException {
@@ -151,11 +151,11 @@ public void download2(HttpServletResponse response) throws IOException {
 }
 ```
 
-# 3.拦截器配置
+# 3. 拦截器配置
 
 拦截器（Interceptor）是Spring MVC提供的功能，可以在请求到达Controller之前或之后执行逻辑。
 
-## 3.1自定义拦截器
+## 3.1 自定义拦截器
 实现 `HandlerInterceptor` 接口：
 
 ```java
@@ -191,7 +191,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 }
 ```
 
-## 3.2注册拦截器
+## 3.2 注册拦截器
 实现 `WebMvcConfigurer` 接口，重写 `addInterceptors` 方法：
 
 ```java
@@ -216,7 +216,7 @@ public class WebConfig implements WebMvcConfigurer {
 }
 ```
 
-## 3.3多个拦截器的执行顺序
+## 3.3 多个拦截器的执行顺序
 ```java
 @Override
 public void addInterceptors(InterceptorRegistry registry) {
@@ -237,11 +237,11 @@ FirstInterceptor.preHandle()
 → FirstInterceptor.afterCompletion()
 ```
 
-# 4.过滤器配置
+# 4. 过滤器配置
 
 过滤器（Filter）是Servlet规范中的组件，工作在请求进入Servlet容器、但未到达Servlet/DispatcherServlet之前。
 
-## 4.1使用 @WebFilter 注解（需配合 @ServletComponentScan）
+## 4.1 使用 @WebFilter 注解（需配合 @ServletComponentScan）
 ```java
 @WebFilter(urlPatterns = "/*")
 public class LoggingFilter implements Filter {
@@ -273,7 +273,7 @@ public class Application {
 }
 ```
 
-## 4.2使用 FilterRegistrationBean 注册
+## 4.2 使用 FilterRegistrationBean 注册
 ```java
 @Configuration
 public class FilterConfig {
@@ -289,7 +289,7 @@ public class FilterConfig {
 }
 ```
 
-## 4.3拦截器 vs 过滤器的区别
+## 4.3 拦截器 vs 过滤器的区别
 
 | 对比项 | 过滤器（Filter） | 拦截器（Interceptor） |
 |--------|-----------------|----------------------|
@@ -299,11 +299,11 @@ public class FilterConfig {
 | 依赖注入 | 不能直接注入Spring Bean | 可以直接注入Spring Bean |
 | 生命周期 | 由Servlet容器管理 | 由Spring IOC容器管理 |
 
-# 5.数据校验
+# 5. 数据校验
 
 Spring Boot支持Bean Validation（JSR-380）规范，默认使用Hibernate Validator作为实现。
 
-## 5.1引入依赖
+## 5.1 引入依赖
 `spring-boot-starter-web` 已经默认引入了 `spring-boot-starter-validation`。如果单独使用需手动添加：
 
 ```xml
@@ -313,7 +313,7 @@ Spring Boot支持Bean Validation（JSR-380）规范，默认使用Hibernate Vali
 </dependency>
 ```
 
-## 5.2常用校验注解
+## 5.2 常用校验注解
 
 | 注解 | 说明 |
 |------|------|
@@ -328,9 +328,9 @@ Spring Boot支持Bean Validation（JSR-380）规范，默认使用Hibernate Vali
 | @Positive / @PositiveOrZero | 正数/非负数 |
 | @Range(min, max) | 数值范围 |
 
-## 5.3基本使用
+## 5.3 基本使用
 
-### 5.3.1实体类添加校验注解
+### 5.3.1 实体类添加校验注解
 ```java
 @Data
 public class User {
@@ -353,7 +353,7 @@ public class User {
 }
 ```
 
-### 5.3.2Controller中使用 @Valid
+### 5.3.2 Controller中使用 @Valid
 ```java
 @RestController
 public class UserController {
@@ -378,7 +378,7 @@ public class UserController {
 - `BindingResult` 参数必须紧跟在被校验对象后面，否则Spring会直接抛出异常
 - 如果不接收 `BindingResult`，校验失败时会抛出 `MethodArgumentNotValidException`
 
-## 5.4全局异常处理校验错误
+## 5.4 全局异常处理校验错误
 不在每个Controller中处理 `BindingResult`，使用全局异常处理器统一处理：
 
 ```java
@@ -404,16 +404,16 @@ public R<String> save(@Valid @RequestBody User user) {
 }
 ```
 
-## 5.5分组校验
+## 5.5 分组校验
 不同场景使用不同的校验规则（如：新增时不需要id，修改时需要id）：
 
-### 5.5.1定义分组接口
+### 5.5.1 定义分组接口
 ```java
 public interface AddGroup {}
 public interface UpdateGroup {}
 ```
 
-### 5.5.2实体类指定分组
+### 5.5.2 实体类指定分组
 ```java
 @Data
 public class User {
@@ -429,7 +429,7 @@ public class User {
 }
 ```
 
-### 5.5.3Controller切换 @Validated
+### 5.5.3 Controller切换 @Validated
 ```java
 // 使用 spring 的 @Validated 来指定分组
 @PostMapping("/user/add")
@@ -445,9 +445,9 @@ public R<String> update(@Validated(UpdateGroup.class) @RequestBody User user) {
 
 注意：需要使用 `org.springframework.validation.annotation.Validated`，而不是 `jakarta.validation.Valid`。
 
-## 5.6自定义校验注解
+## 5.6 自定义校验注解
 
-### 5.6.1定义注解
+### 5.6.1 定义注解
 ```java
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -459,7 +459,7 @@ public @interface Phone {
 }
 ```
 
-### 5.6.2实现校验器
+### 5.6.2 实现校验器
 ```java
 public class PhoneValidator implements ConstraintValidator<Phone, String> {
     private static final Pattern PHONE_PATTERN = Pattern.compile("^1[3-9]\\d{9}$");
@@ -474,15 +474,15 @@ public class PhoneValidator implements ConstraintValidator<Phone, String> {
 }
 ```
 
-### 5.6.3使用
+### 5.6.3 使用
 ```java
 @Phone(message = "请输入正确的手机号")
 private String phone;
 ```
 
-# 6.定时任务
+# 6. 定时任务
 
-## 6.1启用定时任务
+## 6.1 启用定时任务
 在启动类上添加 `@EnableScheduling` 注解：
 
 ```java
@@ -495,7 +495,7 @@ public class Application {
 }
 ```
 
-## 6.2使用 @Scheduled 注解
+## 6.2 使用 @Scheduled 注解
 ```java
 @Component
 public class ScheduledTasks {
@@ -527,7 +527,7 @@ public class ScheduledTasks {
 }
 ```
 
-## 6.3Cron表达式说明
+## 6.3 Cron表达式说明
 ```
 ┌────────── 秒 (0-59)
 │ ┌──────── 分 (0-59)
@@ -548,7 +548,7 @@ public class ScheduledTasks {
 | `0 0 0 1 * ?` | 每月1号0点 |
 | `0 0 0 L * ?` | 每月最后一天0点 |
 
-## 6.4定时任务线程池配置
+## 6.4 定时任务线程池配置
 默认情况下，所有 `@Scheduled` 任务共用一个单线程池，如果有多个任务会排队执行。可以通过配置修改：
 
 ```properties
@@ -558,9 +558,9 @@ spring.task.scheduling.pool.size=5
 spring.task.scheduling.thread-name-prefix=scheduled-
 ```
 
-# 7.异步任务
+# 7. 异步任务
 
-## 7.1启用异步任务
+## 7.1 启用异步任务
 在启动类上添加 `@EnableAsync` 注解：
 
 ```java
@@ -573,7 +573,7 @@ public class Application {
 }
 ```
 
-## 7.2使用 @Async 注解
+## 7.2 使用 @Async 注解
 ```java
 @Service
 public class AsyncService {
@@ -616,7 +616,7 @@ public class AsyncService {
 }
 ```
 
-## 7.3获取异步任务返回值
+## 7.3 获取异步任务返回值
 ```java
 @RestController
 public class AsyncController {
@@ -642,7 +642,7 @@ public class AsyncController {
 }
 ```
 
-## 7.4配置异步任务线程池
+## 7.4 配置异步任务线程池
 ```java
 @Configuration
 @EnableAsync
@@ -670,7 +670,7 @@ public class AsyncConfig implements AsyncConfigurer {
 }
 ```
 
-## 7.5@Async 使用注意事项
+## 7.5 @Async 使用注意事项
 - 必须通过Spring容器获取的Bean来调用，不能直接在类内部调用（this.xxx()不走代理）
 - 方法和调用方必须在不同的类中（避免AOP代理失效）
 - 返回值支持void和Future<T>（以及CompletableFuture<T>）

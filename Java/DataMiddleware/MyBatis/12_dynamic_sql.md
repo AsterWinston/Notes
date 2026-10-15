@@ -1,4 +1,4 @@
-# 1.if标签
+# 1. if标签
 ```
 <!--
     if标签中test属性的必须的，值为boolean类型，如果为true则把标签内容拼接到sql语句中，反之不拼接
@@ -24,7 +24,7 @@
 
 test使用的参数必须要可以从传入的参数中获取，哪怕是null或者''（也就是至少要声明了），否则抛出异常org.apache.ibatis.binding.BindingException，就如brand, guidePrice, catType这三个，必须可以从接口传入的参数中获取到
 ```
-# 2.where标签
+# 2. where标签
 ```
 where标签的作⽤：让where⼦句更加动态智能。
 
@@ -47,7 +47,7 @@ where标签的作⽤：让where⼦句更加动态智能。
 </select>
 
 ```
-# 3.trim标签
+# 3. trim标签
 ```
 trim标签的属性：
 
@@ -77,7 +77,7 @@ suffixOverrides：后缀覆盖掉（去掉）
 
 ```
 
-# 4.set标签
+# 4. set标签
 ```
 <update id="updateBySet">
 update t_car
@@ -91,7 +91,7 @@ update t_car
 where id = #{id};
 </update>
 ```
-# 5.choose when otherwise
+# 5. choose when otherwise
 ```
 <choose>
     <when></when>
@@ -129,7 +129,7 @@ if () {
 </select>
 
 ```
-# 6.foreach标签
+# 6. foreach标签
 ```
 循环数组或集合，动态⽣成sql，⽐如这样的SQL：
 
@@ -141,7 +141,7 @@ insert into t_car values
     (null,'1002','⽐亚迪唐',31.0,'2020-11-11','新能源'),
     (null,'1003','⽐亚迪宋',32.0,'2020-10-11','新能源')
 ```
-## 6.1批量删除
+## 6.1 批量删除
 ```
 定义接口
 
@@ -165,7 +165,7 @@ sql语句
         </foreach>
 </delete>
 ```
-## 6.2批量插入
+## 6.2 批量插入
 ```
 定义接口
 
@@ -181,7 +181,7 @@ sql语句
 </insert>
 ```
 
-# 7.sql标签与include标签
+# 7. sql标签与include标签
 
 ```
 sql标签⽤来声明sql⽚段

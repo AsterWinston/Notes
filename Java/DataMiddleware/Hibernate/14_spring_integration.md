@@ -10,7 +10,7 @@ Spring 与 Hibernate 的集成经历了三个主要阶段，每个阶段反映�
 | **原生阶段** | Spring 3.x | 原生 `SessionFactory` + `HibernateTransactionManager` | 不再强制使用模板，声明式事务管理成熟 |
 | **自动配置阶段** | Spring 4.x+ / Spring Boot | `spring-boot-starter-data-jpa` 自动配置 | 零 XML 配置，约定优于配置，JPA 标准化 |
 
-### Spring 2.x 时代：HibernateTemplate / HibernateDaoSupport
+### 1.1.1 Spring 2.x 时代：HibernateTemplate / HibernateDaoSupport
 
 ```java
 // Spring 2.x 风格的 DAO（已过时）
@@ -37,7 +37,7 @@ public class UserDao extends HibernateDaoSupport {
 - 模板方法掩盖了底层 Hibernate 行为，不利于精细化控制
 - `HibernateCallback` 回调代码冗长，可读性差
 
-### Spring 3.x 时代：原生 SessionFactory 集成
+### 1.1.2 Spring 3.x 时代：原生 SessionFactory 集成
 
 Spring 3.x 开始鼓励直接使用原生 `SessionFactory`，通过声明式事务管理处理 Session 生命周期：
 
@@ -64,7 +64,7 @@ public class UserDao {
 - 声明式事务管理（`@Transactional`）接管 Session 创建与关闭
 - `SpringSessionContext` 实现了 `CurrentSessionContext` 接口，使 `getCurrentSession()` 在 Spring 中可用
 
-### Spring 4.x+ / Spring Boot 时代：自动配置
+### 1.1.3 Spring 4.x+ / Spring Boot 时代：自动配置
 
 ```java
 // Spring Boot 应用只需添加依赖和少量配置
@@ -201,7 +201,7 @@ public class Application {
 
 Spring Boot 对 JPA / Hibernate 的自动配置由 `HibernateJpaAutoConfiguration` 类负责，其定义位于 `org.springframework.boot.autoconfigure.orm.jpa` 包下。
 
-### 自动配置的触发条件
+### 2.1.1 自动配置的触发条件
 
 ```java
 @AutoConfiguration
@@ -233,7 +233,7 @@ HibernateJpaAutoConfiguration
                     └── 抽象方法 createJpaVendorAdapter() → HibernateJpaVendorAdapter
 ```
 
-### JpaBaseConfiguration 的核心作用
+### 2.1.2 JpaBaseConfiguration 的核心作用
 
 `JpaBaseConfiguration` 是自动配置的真正核心，它使用 `@ConditionalOnMissingBean` 保护用户自定义 Bean 不被覆盖：
 
@@ -297,7 +297,7 @@ Spring Boot 自动配置启动后，ApplicationContext 中包含以下关键 Bea
 | `JpaVendorAdapter` | `jpaVendorAdapter` | JPA 适配器接口（通过 `HibernateJpaVendorAdapter` 实现） |
 | `JpaProperties` | `spring.jpa-org.springframework.boot.autoconfigure.orm.jpa.JpaProperties` | yml 配置映射类 |
 
-### EntityManagerFactory → SessionFactory 的转换
+### 2.2.1 EntityManagerFactory → SessionFactory 的转换
 
 `LocalContainerEntityManagerFactoryBean` 内部持有 Hibernate 的 `SessionFactoryImpl`（即 `EntityManagerFactory`）：
 
@@ -326,7 +326,7 @@ Spring Boot 使得 `SessionFactory` 可以直接 `@Autowired` 注入（因为 `E
 
 ## 2.3 自动配置的扫描机制
 
-### @EntityScan 注解
+### 2.3.1 @EntityScan 注解
 
 Spring Boot 默认扫描 `@SpringBootApplication` 所在包及其所有子包下的 `@Entity` 类。若实体类不在主类所在包或子包下，需使用 `@EntityScan` 显式指定：
 
@@ -343,7 +343,7 @@ public class Application {
 }
 ```
 
-### 自定义扫描路径
+### 2.3.2 自定义扫描路径
 
 ```java
 @Configuration
@@ -372,7 +372,7 @@ public class JpaScanConfig {
 }
 ```
 
-### 排除特定实体
+### 2.3.3 排除特定实体
 
 ```java
 // 使用 TypeExcludeFilter 排除带有特定注解的实体
@@ -466,7 +466,7 @@ spring:
           in_clause_parameter_padding: true
 ```
 
-### DDL 策略详解
+### 3.1.1 DDL 策略详解
 
 | 值 | 行为 | 适用环境 |
 |---|------|---------|
@@ -478,7 +478,7 @@ spring:
 
 > **警告**：`update` 策略不会删除数据库中已存在但实体中已移除的列，也不会重命名列。长期使用会导致数据库 Schema 累积垃圾字段。生产环境严禁使用。
 
-### 物理命名策略 vs 隐式命名策略
+### 3.1.2 物理命名策略 vs 隐式命名策略
 
 ```
 Java 实体属性名
@@ -637,7 +637,7 @@ spring:
         maintainTimeStats: false
 ```
 
-### 连接池大小计算公式
+### 3.3.1 连接池大小计算公式
 
 ```
 数据库连接数 = ((核心数 * 2) + 硬盘数)
@@ -652,7 +652,7 @@ connections = ((core_count * 2) + effective_spindle_count)
 
 实际情况中应考虑微服务数量与数据库最大连接数限制的协调。
 
-### 连接泄漏检测
+### 3.3.2 连接泄漏检测
 
 ```java
 // 当配置 leak-detection-threshold 后，对于超过该时间的连接将输出警告日志
@@ -763,7 +763,7 @@ public class HibernateCustomizerConfig {
 }
 ```
 
-### 自定义 Hibernate 拦截器
+### 4.2.1 自定义 Hibernate 拦截器
 
 ```java
 @Component
@@ -995,7 +995,7 @@ public class OrderService {
 }
 ```
 
-### 事务传播行为对照表
+### 5.1.1 事务传播行为对照表
 
 | 传播行为 | Hibernate 行为 | 典型场景 |
 |---------|---------------|---------|
@@ -1007,7 +1007,7 @@ public class OrderService {
 | `MANDATORY` | 必须在事务中运行，否则抛异常 | 对事务有严格要求的操作 |
 | `NEVER` | 不能在事务中运行，否则抛异常 | 防止被误放在事务中的操作 |
 
-### readOnly 优化
+### 5.1.2 readOnly 优化
 
 `@Transactional(readOnly = true)` 对 Hibernate 产生以下影响：
 
@@ -1097,7 +1097,7 @@ public class SessionBindingDemo {
 
 Hibernate 访问数据库时抛出的异常属于受检异常体系（`HibernateException` 及其子类）。Spring 通过异常翻译机制将其转换为 Spring 的非受检 `DataAccessException` 体系。
 
-### 异常转换原理
+### 5.3.1 异常转换原理
 
 ```
 Hibernate 异常层次                   Spring 异常层次
@@ -1116,7 +1116,7 @@ Hibernate 异常层次                   Spring 异常层次
 └──────────────────┘               └──────────────────────┘
 ```
 
-### @Repository 自动翻译
+### 5.3.2 @Repository 自动翻译
 
 ```java
 // @Repository 注解自动注册 PersistenceExceptionTranslationPostProcessor
@@ -1139,7 +1139,7 @@ public class UserDao {
 
 `@Repository` 注解的原理：Spring 在解析 `@Repository` 时自动注册一个 `PersistenceExceptionTranslationAdvisor`，环绕目标对象的所有方法，捕获 JPA / Hibernate 异常并转换为 Spring 异常体系。
 
-### 手动启用异常翻译
+### 5.3.3 手动启用异常翻译
 
 ```java
 @Configuration
@@ -1161,7 +1161,7 @@ public class PersistenceConfig {
 
 OSIV 是 Web 应用中最容易被忽视但也最具争议的配置。Spring Boot 默认开启 OSIV（`spring.jpa.open-in-view = true`）。
 
-### 工作流程
+### 6.1.1 工作流程
 
 ```
 HTTP Request 生命周期（OSIV 开启）：
@@ -1211,7 +1211,7 @@ public class OpenEntityManagerInViewInterceptor {
 
 ## 6.2 OSIV 的问题
 
-### 问题一：数据库连接长时间占用
+### 6.2.1 问题一：数据库连接长时间占用
 
 ```
 请求时间线（OSIV 开启）：
@@ -1227,7 +1227,7 @@ public class OpenEntityManagerInViewInterceptor {
 问题：长请求占用连接，连接池可能耗尽
 ```
 
-### 问题二：N+1 查询难以控制
+### 6.2.2 问题二：N+1 查询难以控制
 
 ```java
 @Controller
@@ -1256,7 +1256,7 @@ public class OrderController {
 
 渲染时对每个 `user` 触发一次 `SELECT * FROM orders WHERE user_id = ?`，产生 N+1 查询。而开发者难以在模板中优化此行为。
 
-### 问题三：连接池耗尽
+### 6.2.3 问题三：连接池耗尽
 
 ```
 高并发场景：
@@ -1269,7 +1269,7 @@ public class OrderController {
 
 ## 6.3 关闭 OSIV
 
-### 配置方式
+### 6.3.1 配置方式
 
 ```yaml
 spring:
@@ -1279,7 +1279,7 @@ spring:
 
 关闭 OSIV 后，`OpenEntityManagerInViewInterceptor` 不会被注册。Session 仅在 `@Transactional` 方法期间打开，事务结束后 Session 立即关闭。
 
-### 关闭后的影响与解决方案
+### 6.3.2 关闭后的影响与解决方案
 
 关闭 OSIV 后，视图层访问未加载的懒加载属性将抛出 `LazyInitializationException`：
 
@@ -1386,7 +1386,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 | `findAll(Pageable pageable)` | 分页查询 |
 | `findAll(Sort sort)` | 排序查询 |
 
-### 方法命名查询（Derived Query Methods）
+### 7.1.1 方法命名查询（Derived Query Methods）
 
 ```java
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -1434,7 +1434,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 }
 ```
 
-### @Query 注解
+### 7.1.2 @Query 注解
 
 ```java
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -1481,7 +1481,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 2. 不会自动触发持久化上下文刷新，需要手动 `clear()`
 3. 返回值为受影响的行数（不是实体）
 
-### @EntityGraph 声明抓取策略
+### 7.1.3 @EntityGraph 声明抓取策略
 
 ```java
 // 在实体上预定义 EntityGraph
@@ -1563,7 +1563,7 @@ public class UserQueryService {
 }
 ```
 
-### 封装通用动态查询工具
+### 7.2.1 封装通用动态查询工具
 
 ```java
 public class SpecificationBuilder<T> {
@@ -1626,7 +1626,7 @@ List<User> users = userRepository.findAll(
 
 ## 7.3 自定义 Repository
 
-### Fragment 组合模式
+### 7.3.1 Fragment 组合模式
 
 ```java
 // 1. 定义自定义接口
@@ -1678,7 +1678,7 @@ public interface UserRepository extends
 }
 ```
 
-### 自定义后缀名
+### 7.3.2 自定义后缀名
 
 ```java
 // 默认后缀是 Impl，可自定义
@@ -1694,7 +1694,7 @@ public class Application {
 
 ## 7.4 审计功能
 
-### 实体审计注解
+### 7.4.1 实体审计注解
 
 ```java
 @Entity
@@ -1721,7 +1721,7 @@ public class Order {
 }
 ```
 
-### 启用审计 + AuditorAware
+### 7.4.2 启用审计 + AuditorAware
 
 ```java
 @Configuration
@@ -1743,7 +1743,7 @@ public class AuditConfig {
 }
 ```
 
-### 提取公共审计基类
+### 7.4.3 提取公共审计基类
 
 ```java
 @MappedSuperclass
@@ -1845,7 +1845,7 @@ public class DataSourceConfig {
 }
 ```
 
-### 分别指定 Repository 扫描
+### 8.1.1 分别指定 Repository 扫描
 
 ```java
 // 主库 Repository
@@ -1869,7 +1869,7 @@ public class SecondaryJpaConfig {
 }
 ```
 
-### 多数据源 yml 配置
+### 8.1.2 多数据源 yml 配置
 
 ```yaml
 spring:
@@ -1997,7 +1997,7 @@ public class ReadWriteDemo {
 
 ## 8.3 多数据源事务管理
 
-### 分布式事务（JTA + Atomikos）
+### 8.3.1 分布式事务（JTA + Atomikos）
 
 ```xml
 <dependency>
@@ -2031,7 +2031,7 @@ spring:
         password: ${DB2_PASSWORD}
 ```
 
-### 非 XA 的多数据源事务方案
+### 8.3.2 非 XA 的多数据源事务方案
 
 | 方案 | 描述 | 适用场景 |
 |------|------|---------|
@@ -2095,7 +2095,7 @@ class UserRepositoryTest {
 }
 ```
 
-### @AutoConfigureTestDatabase 控制测试数据库
+### 9.1.1 @AutoConfigureTestDatabase 控制测试数据库
 
 ```java
 // 使用真实数据库（非 H2）
@@ -2119,7 +2119,7 @@ class HsqlSpecificTest {
 }
 ```
 
-### 事务不回滚
+### 9.1.2 事务不回滚
 
 ```java
 @DataJpaTest
@@ -2174,7 +2174,7 @@ class UserControllerIntegrationTest {
 
 ## 9.3 性能测试注意事项
 
-### Hibernate Statistics 断言查询次数
+### 9.3.1 Hibernate Statistics 断言查询次数
 
 ```java
 @DataJpaTest
@@ -2235,7 +2235,7 @@ class QueryPerformanceTest {
 }
 ```
 
-### 测试间的数据隔离
+### 9.3.2 测试间的数据隔离
 
 ```java
 @DataJpaTest
@@ -2267,7 +2267,7 @@ class IsolatedRepositoryTest {
 
 ## 10.1 常见启动错误
 
-### 错误一：Unable to determine Dialect
+### 10.1.1 错误一：Unable to determine Dialect
 
 ```
 Caused by: org.hibernate.HibernateException:
@@ -2295,7 +2295,7 @@ public HibernatePropertiesCustomizer dialectCustomizer() {
 }
 ```
 
-### 错误二：No EntityManager with actual transaction available
+### 10.1.2 错误二：No EntityManager with actual transaction available
 
 ```
 org.springframework.dao.InvalidDataAccessApiUsageException:
@@ -2320,7 +2320,7 @@ public void save(User user) {
 }
 ```
 
-### 错误三：Multiple representations of the same entity
+### 10.1.3 错误三：Multiple representations of the same entity
 
 ```
 java.lang.IllegalStateException:
@@ -2346,7 +2346,7 @@ public User updateUser(Long id, UserDto dto) {
 
 ## 10.2 常见运行时错误
 
-### LazyInitializationException
+### 10.2.1 LazyInitializationException
 
 ```
 org.hibernate.LazyInitializationException:
@@ -2386,7 +2386,7 @@ Optional<User> findWithOrdersById(Long id);
 Optional<UserDto> findUserDtoById(@Param("id") Long id);
 ```
 
-### OptimisticLockException
+### 10.2.2 OptimisticLockException
 
 ```
 org.hibernate.StaleObjectStateException:
@@ -2415,7 +2415,7 @@ public class OptimisticLockRetryService {
 }
 ```
 
-### NonUniqueResultException
+### 10.2.3 NonUniqueResultException
 
 ```
 org.hibernate.NonUniqueResultException:
@@ -2441,7 +2441,7 @@ Optional<User> findByEmail(@Param("email") String email);
 
 ## 10.3 排查工具
 
-### SQL 日志配置（开发环境）
+### 10.3.1 SQL 日志配置（开发环境）
 
 ```yaml
 # 方式一：Spring JPA 配置
@@ -2465,7 +2465,7 @@ logging:
     org.hibernate.engine.transaction: DEBUG            # 事务
 ```
 
-### p6spy 插件（SQL 日志 + 慢查询）
+### 10.3.2 p6spy 插件（SQL 日志 + 慢查询）
 
 ```xml
 <dependency>
@@ -2490,7 +2490,7 @@ decorator:
         - "SELECT 1"
 ```
 
-### datasource-proxy（SQL 监控 + 慢查询告警）
+### 10.3.3 datasource-proxy（SQL 监控 + 慢查询告警）
 
 ```xml
 <dependency>
@@ -2513,7 +2513,7 @@ decorator:
           log-level: WARN
 ```
 
-### Hibernate Statistics 编程式查询
+### 10.3.4 Hibernate Statistics 编程式查询
 
 ```java
 @Component
@@ -2562,7 +2562,7 @@ public class HibernateStatisticsReporter {
 
 ## 11.1 DDL 策略
 
-### 环境策略矩阵
+### 11.1.1 环境策略矩阵
 
 | 环境 | ddl-auto | 数据库版本管理 | 说明 |
 |------|----------|--------------|------|
@@ -2571,7 +2571,7 @@ public class HibernateStatisticsReporter {
 | **预发布** | `validate` | Flyway/Liquibase | 严格验证实体与表结构一致性 |
 | **生产** | `none` 或 `validate` | Flyway/Liquibase | Schema 变更由 DBA 审核后通过迁移工具执行 |
 
-### Flyway 集成
+### 11.1.2 Flyway 集成
 
 ```xml
 <dependency>
@@ -2614,7 +2614,7 @@ CREATE TABLE users (
 ALTER TABLE users ADD COLUMN status VARCHAR(20) DEFAULT 'ACTIVE';
 ```
 
-### Liquibase 集成
+### 11.1.3 Liquibase 集成
 
 ```xml
 <dependency>
@@ -2633,7 +2633,7 @@ spring:
 
 ## 11.2 配置文件 Profile 分离
 
-### 完整的多环境配置
+### 11.2.1 完整的多环境配置
 
 **application.yml（公共配置）**：
 
@@ -2723,7 +2723,7 @@ logging:
     com.example: INFO
 ```
 
-### 环境变量覆盖敏感配置
+### 11.2.2 环境变量覆盖敏感配置
 
 ```bash
 # Kubernetes / Docker Compose 环境变量
@@ -2732,7 +2732,7 @@ export DB_PASSWORD=SecureP@ssw0rd2024
 export JAVA_OPTS="-Xms512m -Xmx2g"
 ```
 
-### 敏感配置加密（Jasypt）
+### 11.2.3 敏感配置加密（Jasypt）
 
 ```xml
 <dependency>
@@ -2769,7 +2769,7 @@ java -cp jasypt-1.9.3.jar org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI \
 
 ---
 
-# 结语
+# 12. 结语
 
 Spring 与 Hibernate 的集成经历了从模板封装到原生注入再到自动配置的演进。现代 Spring Boot 项目中，开发者只需关注以下几点即可构建健壮的持久化层：
 

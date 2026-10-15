@@ -1,4 +1,4 @@
-# 1.什么是异常处理器
+# 1. 什么是异常处理器
 ```
 Spring MVC在处理器方法执行过程中出现了异常，可以采用异常处理器进行应对。
 一句话概括异常处理器作用：处理器方法执行过程中出现了异常，跳转到对应的视图，在视图上展示友好信息。
@@ -14,7 +14,7 @@ HandlerExceptionResolver 接口有两个常用的默认实现：
 ● DefaultHandlerExceptionResolver
 ● SimpleMappingExceptionResolver
 ```
-# 2.默认的异常处理器
+# 2. 默认的异常处理器
 ```
 DefaultHandlerExceptionResolver 是默认的异常处理器。
 核心方法：
@@ -25,7 +25,7 @@ DefaultHandlerExceptionResolver 是默认的异常处理器。
 ```
 当请求方式和处理方式不同时，DefaultHandlerExceptionResolver的默认处理态度是：405
 ```
-# 3.自定义的异常处理器
+# 3. 自定义的异常处理器
 ```
 自定义异常处理器需要使用：SimpleMappingExceptionResolver
 自定义异常处理机制有两种语法：
@@ -33,7 +33,7 @@ DefaultHandlerExceptionResolver 是默认的异常处理器。
 ● 通过注解
 ```
 
-## 3.1配置文件方式
+## 3.1 配置文件方式
 ```
 <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
     <property name="exceptionMappings">
@@ -59,7 +59,7 @@ tip.html如下
 </body>
 </html>
 ```
-## 3.2注解方式
+## 3.2 注解方式
 ```
 @ControllerAdvice
 public class ExceptionController {
@@ -71,7 +71,7 @@ public class ExceptionController {
     }
 }
 ```
-## 3.3自定义异常类体系
+## 3.3 自定义异常类体系
 ```
 实际开发中，通常会建立一套自定义异常类体系，让不同类型的异常对应不同的处理逻辑：
 
@@ -120,7 +120,7 @@ public class PermissionDeniedException extends BusinessException {
 ● 业务状态码可以让前端根据不同的错误码做不同的UI展示
 ● 继承体系便于统一处理和扩展
 ```
-## 3.4@ExceptionHandler处理多种异常类型
+## 3.4 @ExceptionHandler处理多种异常类型
 ```
 @ControllerAdvice
 public class ExceptionController {
@@ -165,7 +165,7 @@ public String handleMultiException(Exception e, Model model){
 
 当一个异常同时匹配多个@ExceptionHandler时，SpringMVC会选择最具体的那个（子类优先于父类）。
 ```
-## 3.5@ResponseStatus注解
+## 3.5 @ResponseStatus注解
 ```
 @ResponseStatus注解可以直接在自定义异常类上声明对应的HTTP状态码。
 当异常被抛出且没有被@ExceptionHandler捕获时，SpringMVC会自动设置响应的HTTP状态码。
@@ -188,7 +188,7 @@ public class UserNotFoundException extends BusinessException {
 ● 如果@ExceptionHandler捕获了该异常，状态码由处理方法的返回值决定
 ● reason属性的值会作为响应体返回给客户端
 ```
-## 3.6ResponseEntityExceptionHandler基类
+## 3.6 ResponseEntityExceptionHandler基类
 ```
 SpringMVC提供了ResponseEntityExceptionHandler抽象类，它预先处理了多种SpringMVC内部异常。
 我们可以继承它来快速实现RESTful API的全局异常处理：
@@ -224,7 +224,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // 这些异常在ResponseEntityExceptionHandler中已有默认处理，可以重写覆盖
 }
 ```
-## 3.7控制器级别 vs 全局级别 @ExceptionHandler
+## 3.7 控制器级别 vs 全局级别 @ExceptionHandler
 ```
 @ExceptionHandler可以写在两个位置：
 
@@ -270,7 +270,7 @@ public class GlobalExceptionController {
 ● 如果控制器中有匹配的@ExceptionHandler，则优先使用控制器的
 ● 如果控制器中没有，则查找@ControllerAdvice中的匹配方法
 ```
-## 3.8异常处理器优先级规则总结
+## 3.8 异常处理器优先级规则总结
 ```
 当发生异常时，SpringMVC按以下顺序查找异常处理器：
 
@@ -291,7 +291,7 @@ public class GlobalExceptionController {
 ● 服务器内部不可预知的异常统一处理，返回友好的错误页面或JSON
 ```
 
-# 4.web.xml配置错误页面
+# 4. web.xml配置错误页面
 ```
 除了使用SpringMVC的异常处理器外，还可以在web.xml中配置全局的错误页面。
 这种方式适用于所有未被SpringMVC异常处理器捕获的异常，包括404等HTTP错误。

@@ -47,7 +47,7 @@ Apache HttpClient广泛应用于：
 
 ## 2.1 引入依赖
 
-### HttpClient 4.5.x（Maven）
+### 2.1.1 HttpClient 4.5.x（Maven）
 
 ```xml
 <dependency>
@@ -57,7 +57,7 @@ Apache HttpClient广泛应用于：
 </dependency>
 ```
 
-### HttpClient 5.x（Maven）
+### 2.1.2 HttpClient 5.x（Maven）
 
 ```xml
 <dependency>

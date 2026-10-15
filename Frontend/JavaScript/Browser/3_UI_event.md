@@ -1,10 +1,10 @@
-# 1.鼠标事件
+# 1. 鼠标事件
 ```
 在本章中，我们将详细介绍鼠标事件及其属性。
 
 请注意：此类事件不仅可能来自于“鼠标设备”，还可能来自于对此类操作进行了模拟以实现兼容性的其他设备，例如手机和平板电脑。
 ```
-## 1.1鼠标事件类型
+## 1.1 鼠标事件类型
 ```javascript
 我们已经见过了其中一些事件：
 
@@ -22,7 +22,7 @@ contextmenu
 在鼠标右键被按下时触发。还有其他打开上下文菜单的方式，例如使用特殊的键盘按键，在这种情况下它也会被触发，因此它并不完全是鼠标事件。
 ……还有其他几种事件，我们稍后会学习它们。
 ```
-## 1.2事件顺序
+## 1.2 事件顺序
 ```javascript
 从上面的列表中我们可以看到，一个用户操作可能会触发多个事件。
 
@@ -37,7 +37,7 @@ contextmenu
 我们还可以看出 button 属性允许检测鼠标按键，演示示例如下。
 
 ```
-## 1.3鼠标按钮
+## 1.3 鼠标按钮
 ```javascript
 与点击相关的事件始终具有 button 属性，该属性允许获取确切的鼠标按钮。
 
@@ -65,7 +65,7 @@ event.which == 2 —— 鼠标中键，
 event.which == 3 —— 鼠标右键。
 现在，event.which 已经被弃用了，不应再使用它。
 ```
-## 1.4组合键：shift, alt, ctrl, meta
+## 1.4 组合键：shift, alt, ctrl, meta
 ```javascript
 所有的鼠标事件都包含有关按下的组合键的信息。
 
@@ -109,7 +109,7 @@ metaKey：对于 Mac 是 Cmd
 
 但是，如果访客的设备没有键盘 —— 那么这里应该有另一种不使用键盘也能做到这一点的方式。
 ```
-## 1.5坐标：clientX/Y, pageX/Y
+## 1.5 坐标：clientX/Y, pageX/Y
 ```javascript
 所有的鼠标事件都提供了两种形式的坐标：
 
@@ -129,7 +129,7 @@ metaKey：对于 Mac 是 Cmd
 
 
 ```
-## 1.6防止在鼠标按下时的选择
+## 1.6 防止在鼠标按下时的选择
 ```javascript
 双击鼠标会有副作用，在某些界面中可能会出现干扰：它会选择文本。
 
@@ -166,7 +166,7 @@ Before...
 
 当然，用户可以访问页面的 HTML 源码，并且可以从那里获取内容，但并不是每个人都知道如何做到这一点。
 ```
-## 1.7总结
+## 1.7 总结
 ```javascript
 鼠标事件有以下属性：
 
@@ -185,11 +185,11 @@ mousedown 的默认浏览器操作是文本选择，如果它对界面不利，�
 ```
 
 
-# 2.移动鼠标：mouseover/out, mouseenter/leave
+# 2. 移动鼠标：mouseover/out, mouseenter/leave
 ```
 我们将深入研究鼠标在元素之间移动时发生的事件。
 ```
-## 2.1事件mouseover/mouseout, relatedTarget
+## 2.1 事件mouseover/mouseout, relatedTarget
 ```javascript
 当鼠标指针移到某个元素上时，mouseover 事件就会发生，而当鼠标离开该元素时，mouseout 事件就会发生。
 
@@ -217,7 +217,7 @@ relatedTarget 属性可以为 null。
 
 当我们在代码中使用 event.relatedTarget 时，我们应该牢记这种可能性。如果我们访问 event.relatedTarget.tagName，那么就会出现错误。
 ```
-## 2.2跳过元素
+## 2.2 跳过元素
 ```javascript
 当鼠标移动时，就会触发 mousemove 事件。但这并不意味着每个像素都会导致一个事件。
 
@@ -246,7 +246,7 @@ relatedTarget 属性可以为 null。
 如果 mouseover 被触发了，则必须有 mouseout
 在鼠标快速移动的情况下，中间元素可能会被忽略，但是我们可以肯定一件事：如果鼠标指针“正式地”进入了一个元素（生成了 mouseover 事件），那么一旦它离开，我们就会得到 mouseout。
 ```
-## 2.3当移动到一个子元素时mouseout
+## 2.3 当移动到一个子元素时mouseout
 ```javascript
 mouseout 的一个重要功能 —— 当鼠标指针从元素移动到其后代时触发，例如在下面的这个 HTML 中，从 #parent 到 #child：
 
@@ -293,7 +293,7 @@ parent.onmouseover = function(event) {
 
 另外，我们可以使用其他事件：mouseenter 和 mouseleave，它们没有此类问题，接下来我们就对其进行详细介绍。
 ```
-## 2.4事件mouseenter和mouseleave
+## 2.4 事件mouseenter和mouseleave
 ```javascript
 事件 mouseenter/mouseleave 类似于 mouseover/mouseout。它们在鼠标指针进入/离开元素时触发。
 
@@ -314,7 +314,7 @@ parent.onmouseover = function(event) {
 结果script.jsstyle.cssindex.html
 
 ```
-## 2.5事件委托
+## 2.5 事件委托
 ```javascript
 事件 mouseenter/leave 非常简单且易用。但它们不会冒泡。因此，我们不能使用它们来进行事件委托。
 
@@ -423,7 +423,7 @@ function onLeave(elem) {
 
 尝试将鼠标指针移入和移出表格单元格及其内部。快还是慢都没关系。与前面的示例不同，只有 <td> 被作为一个整体高亮显示。
 ```
-## 2.6总结
+## 2.6 总结
 ```javascript
 我们讲了 mouseover，mouseout，mousemove，mouseenter 和 mouseleave 事件。
 
@@ -436,7 +436,7 @@ mouseover/out 和 mouseenter/leave 事件还有一个附加属性：relatedTarge
 mouseenter/leave 事件在这方面不同：它们仅在鼠标进入和离开元素时才触发。并且它们不会冒泡。
 ```
 
-# 3.鼠标拖放事件
+# 3. 鼠标拖放事件
 ```
 拖放（Drag’n’Drop）是一个很赞的界面解决方案。取某件东西并将其拖放是执行许多东西的一种简单明了的方式，从复制和移动文档（如在文件管理器中）到订购（将物品放入购物车）。
 
@@ -448,7 +448,7 @@ mouseenter/leave 事件在这方面不同：它们仅在鼠标进入和离开元
 
 因此，在这里我们将看到，如何使用鼠标事件来实现拖放。
 ```
-## 3.1拖放算法
+## 3.1 拖放算法
 ```javascript
 基础的拖放算法如下所示：
 
@@ -516,7 +516,7 @@ ball.ondragstart = function() {
 
 因此，我们应该监听 document 以捕获它。
 ```
-## 3.2修正定位
+## 3.2 修正定位
 ```javascript
 在上述示例中，球在移动时，球的中心始终位于鼠标指针下方：
 
@@ -587,7 +587,7 @@ In action (inside <iframe>):
 
 如果我们按住球的右下角来进行拖动，这种差异会尤其明显。在前面的示例中，球会在鼠标指针下“跳转”一下。现在，更新后的代码可以让我们从当前位置流畅地跟随鼠标。
 ```
-## 3.3潜在的放置目标
+## 3.3 潜在的放置目标
 ```javascript
 在前面的示例中，球可以被放置（drop）到“任何地方”。在实际中，我们通常是将一个元素放到另一个元素上。例如，将一个“文件”放置到一个“文件夹”或者其他地方。
 
@@ -682,7 +682,7 @@ function onMouseMove(event) {
 现在，我们在整个处理过程中，在当前变量 currentDroppable 中都存储了当前的“放置目标”，可以用它来进行高亮显示或者其他操作。
 
 ```
-## 3.4总结
+## 3.4 总结
 ```javascript
 我们考虑了一种基础的拖放算法。
 
@@ -701,11 +701,11 @@ function onMouseMove(event) {
 有一些在此基础上已经将体系结构构建好的框架：DragZone，Droppable，Draggable 及其他 class。它们中的大多数做的都是与上述类似的事情，所以现在你应该很容易理解它们了。或者自己动手实现。正如你所看到的，其实挺简单的，有时候比基于第三方解决方案进行改写还容易。
 ```
 
-# 4.指针事件
+# 4. 指针事件
 ```
 指针事件（Pointer Events）是一种用于处理来自各种输入设备（例如鼠标、触控笔和触摸屏等）的输入信息的现代化解决方案。
 ```
-## 4.1一段简史
+## 4.1 一段简史
 ```javascript
 让我们先做一个简短的概览，以便你对指针事件及其在其它事件类型中所处位置有个粗略认识。
 
@@ -729,7 +729,7 @@ function onMouseMove(event) {
 
 话虽如此，指针事件仍然有一些重要的奇怪特性，你应当对它们有所了解以正确使用指针事件，并避免一些意料之外的错误。我们将在本文中对它们进行介绍。
 ```
-## 4.2指针事件类型
+## 4.2 指针事件类型
 ```javascript
 指针事件的命名方式和鼠标事件类似：
 
@@ -751,7 +751,7 @@ lostpointercapture	-
 
 替换之后，程序对触屏设备的支持会“魔法般”地提升。但是，我们可能需要在 CSS 中的某些地方添加 touch-action: none。我们会在下文的 pointercancel 一节中描述这里面的细节。
 ```
-## 4.3指针事件属性
+## 4.3 指针事件属性
 ```javascript
 指针事件具备和鼠标事件完全相同的属性，包括 clientX/Y 和 target 等，以及一些其他属性：
 
@@ -774,7 +774,7 @@ tangentialPressure —— 归一化后的切向压力（tangential pressure）�
 tiltX, tiltY, twist —— 针对触摸笔的几个属性，用于描述笔和屏幕表面的相对位置。
 大多数设备都不支持这些属性，因此它们很少被使用。如果你需要使用它们，可以在 规范文档 中查看更多有关它们的详细信息。
 ```
-## 4.4多点触控
+## 4.4 多点触控
 ```javascript
 多点触控（用户在手机或平板上同时点击若干个位置，或执行特殊手势）是鼠标事件完全不支持的功能之一。
 
@@ -797,7 +797,7 @@ pointerdown 事件触发，isPrimary=false，并且每一个触摸都被指派�
 
 请注意：你使用的必须是一个多点触控设备（如平板或手机）才能在 pointerId/isPrimary 中看到区别。对于使用鼠标这样的单点触控设备，所有指针事件都会具有相同的 pointerId 和 isPrimary=true 属性。
 ```
-## 4.5事件：pointercancel
+## 4.5 事件：pointercancel
 ```javascript
 pointercancel 事件将会在一个正处于活跃状态的指针交互由于某些原因被中断时触发。也就是在这个事件之后，该指针就不会继续触发更多事件了。
 
@@ -845,7 +845,7 @@ pointermove 事件触发，可能触发多次
 
 现在我们就可以添加让球的位置移动的代码了，并且我们的代码对鼠标和触控设备都有效。
 ```
-## 4.6指针捕获
+## 4.6 指针捕获
 ```javascript
 指针捕获（Pointer capturing）是针对指针事件的一个特性。
 
@@ -935,7 +935,7 @@ thumb.onpointerdown = function(event) {
 gotpointercapture 会在一个元素使用 setPointerCapture 来启用捕获后触发。
 lostpointercapture 会在捕获被释放后触发：其触发可能是由于 releasePointerCapture 的显式调用，或是 pointerup/pointercancel 事件触发后的自动调用。
 ```
-## 4.7总结
+## 4.7 总结
 ```javascript
 指针事件允许我们通过一份代码，同时处理鼠标、触摸和触控笔事件。
 
@@ -953,7 +953,7 @@ lostpointercapture 会在捕获被释放后触发：其触发可能是由于 rel
 
 ```
 
-# 5.键盘：keydown和keyup
+# 5. 键盘：keydown和keyup
 ```
 在我们开始学习键盘的相关内容之前，请注意，在现代设备上，还有其他“输入内容”的方法。例如，人们使用语音识别（尤其是在移动端设备上）或用鼠标复制/粘贴。
 
@@ -961,7 +961,7 @@ lostpointercapture 会在捕获被释放后触发：其触发可能是由于 rel
 
 当我们想要处理键盘行为时，应该使用键盘事件（虚拟键盘也算）。例如，对方向键 Up 和 Down 或热键（包括按键的组合）作出反应。
 ```
-## 5.1测试台
+## 5.1 测试台
 ```javascript
 为了更好地理解键盘事件，你可以使用下面这个测试台。
 
@@ -970,7 +970,7 @@ lostpointercapture 会在捕获被释放后触发：其触发可能是由于 rel
 结果script.jsstyle.cssindex.html
 
 ```
-## 5.2Keydown和Keyup
+## 5.2 Keydown和Keyup
 ```javascript
 当一个按键被按下时，会触发 keydown 事件，而当按键被释放时，会触发 keyup 事件。
 
@@ -1048,13 +1048,13 @@ document.addEventListener('keydown', function(event) {
 
 或者我们希望一个热键即使在切换了语言后，仍能正常使用？那么 event.code 可能会更好。
 ```
-## 5.3自动重复
+## 5.3 自动重复
 ```javascript
 如果按下一个键足够长的时间，它就会开始“自动重复”：keydown 会被一次又一次地触发，然后当按键被释放时，我们最终会得到 keyup。因此，有很多 keydown 却只有一个 keyup 是很正常的。
 
 对于由自动重复触发的事件，event 对象的 event.repeat 属性被设置为 true。
 ```
-## 5.4默认行为
+## 5.4 默认行为
 ```javascript
 默认行为各不相同，因为键盘可能会触发很多可能的东西。
 
@@ -1098,19 +1098,19 @@ function checkPhoneKey(key) {
 
 另一种方式是跟踪 oninput 事件 —— 在任何修改后都会触发此事件。这样我们就可以检查新的 input.value，并在其无效时修改它/高亮显示 <input>。或者我们可以同时使用这两个事件处理程序。
 ```
-## 5.5历史遗留
+## 5.5 历史遗留
 ```javascript
 过去有一个 keypress 事件，还有事件对象的 keyCode、charCode 和 which 属性。
 
 大多数浏览器对它们都存在兼容性问题，以致使该规范的开发者不得不弃用它们并创建新的现代的事件（本文上面所讲的这些事件），除此之外别无选择。旧的代码仍然有效，因为浏览器还在支持它们，但现在完全没必要再使用它们。
 ```
-## 5.6移动端键盘
+## 5.6 移动端键盘
 ```javascript
 当使用虚拟/移动端键盘时，更正式一点的名字叫做 IME（Input-Method Editor），W3C 标准规定 KeyboardEvent 的 e.keyCode 应该为 229，并且 e.key 应该为 "Unidentified"。
 
 当按下某些按键（例如箭头或退格键）时，虽然其中一些键盘可能仍然使用正确的值来表示 e.key、e.code、e.keyCode…，但并不能保证所有情况下都能对应正确的值。所以你的键盘逻辑可能并不能保证适用于移动设备。
 ```
-## 5.7总结
+## 5.7 总结
 ```javascript
 按一个按键总是会产生一个键盘事件，无论是符号键，还是例如 Shift 或 Ctrl 等特殊按键。唯一的例外是有时会出现在笔记本电脑的键盘上的 Fn 键。它没有键盘事件，因为它通常是被在比 OS 更低的级别上实现的。
 
@@ -1127,7 +1127,7 @@ key —— 字符（"A"，"a" 等），对于非字符（non-character）的按�
 当我们真的想要键盘时，我们应该使用键盘事件。例如，对热键或特殊键作出反应。
 ```
 
-# 6.滚动
+# 6. 滚动
 ```
 scroll 事件允许对页面或元素滚动作出反应。我们可以在这里做一些有用的事情。
 
@@ -1146,7 +1146,7 @@ Current scroll = scroll the window
 
 scroll 事件在 window 和可滚动元素上都可以运行。
 ```
-## 6.1防止滚动
+## 6.1 防止滚动
 ```javascript
 我们如何使某些东西变成不可滚动？
 

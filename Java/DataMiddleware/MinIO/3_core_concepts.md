@@ -1,6 +1,6 @@
-# 1.Bucket（存储桶）
+# 1. Bucket（存储桶）
 
-## 1.1Bucket 的基本概念
+## 1.1 Bucket 的基本概念
 
 Bucket 是 MinIO 中对象的逻辑容器，类似于文件系统中的"顶层目录"或者关系型数据库中的"数据库"。
 
@@ -13,7 +13,7 @@ Bucket 是 MinIO 中对象的逻辑容器，类似于文件系统中的"顶层�
   - 不能用 `xn--` 开头（保留给国际化域名）
 - Bucket 创建后名称不可修改（但可以删除后重建）
 
-### Bucket 的内部实现
+### 1.1.1 Bucket 的内部实现
 
 每个 Bucket 在 MinIO 内部对应一个独立的命名空间，实际上映射到数据磁盘上的一个目录。但关键在于：Bucket 的配置（版本控制、生命周期、策略、加密等）存储在 MinIO 内置的 `.minio.sys` 内部 Bucket 中，通过 `xl.meta` 和配置对象来维护。
 
@@ -29,7 +29,7 @@ Bucket 是 MinIO 中对象的逻辑容器，类似于文件系统中的"顶层�
         └── versioning/                # 版本控制状态
 ```
 
-## 1.2Bucket 操作的本质
+## 1.2 Bucket 操作的本质
 
 从 S3 API 角度来看：
 
@@ -68,9 +68,9 @@ client.removeBucket(RemoveBucketArgs.builder()
 
 ---
 
-# 2.Object（对象）
+# 2. Object（对象）
 
-## 2.1对象的概念
+## 2.1 对象的概念
 
 对象是 MinIO 存储的基本单元，每个对象由三部分构成：
 
@@ -78,7 +78,7 @@ client.removeBucket(RemoveBucketArgs.builder()
 对象 = 数据（任意二进制流）+ 元数据（键值对集合）+ 唯一标识符（Bucket + Object Key）
 ```
 
-### 对象 Key 的命名
+### 2.1.1 对象 Key 的命名
 
 - 长度：1~1024 字节（UTF-8 编码）
 - 字符集：Unicode 字符
@@ -95,7 +95,7 @@ user/1001/avatar.png
 data/2024-01-15/logs/access.log
 ```
 
-### 对象元数据
+### 2.1.2 对象元数据
 
 MinIO 支持两类元数据：
 
@@ -126,7 +126,7 @@ minioClient.putObject(
 );
 ```
 
-## 2.2对象的 ETag
+## 2.2 对象的 ETag
 
 ETag（Entity Tag）是对象的哈希标识，用于验证对象完整性：
 
@@ -148,7 +148,7 @@ System.out.println("Content-Type: " + stat.contentType());
 System.out.println("Last Modified: " + stat.lastModified());
 ```
 
-## 2.3对象的不可变性
+## 2.3 对象的不可变性
 
 对象存储的核心原则之一：**对象是不可变的（Immutable）**。
 
@@ -168,11 +168,11 @@ minioClient.putObject(PutObjectArgs.builder()
 
 ---
 
-# 3.Erasure Coding（纠删码）原理详解
+# 3. Erasure Coding（纠删码）原理详解
 
 **这是 MinIO 最核心、最重要的技术。** 理解纠删码是理解 MinIO 整体架构的基础。
 
-## 3.1为什么使用纠删码而不是多副本
+## 3.1 为什么使用纠删码而不是多副本
 
 | 方案 | 冗余度 | 容错能力 | 存储效率 |
 |------|--------|----------|----------|
@@ -183,11 +183,11 @@ minioClient.putObject(PutObjectArgs.builder()
 
 > **关键洞察**：纠删码用更少的存储开销，提供与多副本相同甚至更强的数据保护能力。
 
-## 3.2Reed-Solomon 纠删码的数学原理
+## 3.2 Reed-Solomon 纠删码的数学原理
 
 MinIO 使用 Reed-Solomon（RS）纠删码。RS 码是纠删码领域最经典的算法，其核心思想是**用数据块构建多项式，通过多项式在不同点的取值作为校验块**。
 
-### 核心概念
+### 3.2.1 核心概念
 
 ```text
 假设配置为 (k, m)，其中：
@@ -202,7 +202,7 @@ MinIO 使用 Reed-Solomon（RS）纠删码。RS 码是纠删码领域最经典�
   - 存储开销：m/k (即 (N-k)/k)
 ```
 
-### 编码过程（简化数学描述）
+### 3.2.2 编码过程（简化数学描述）
 
 ```text
 给定数据块 D = [D1, D2, ..., Dk]，每个 Di 是固定大小的块（如 1MB）
@@ -229,7 +229,7 @@ MinIO 使用 Reed-Solomon（RS）纠删码。RS 码是纠删码领域最经典�
 4. 写入：N 个分片分别写入 N 个磁盘
 ```
 
-### 解码过程（恢复数据）
+### 3.2.3 解码过程（恢复数据）
 
 ```text
 当部分分片丢失时：
@@ -243,7 +243,7 @@ MinIO 使用 Reed-Solomon（RS）纠删码。RS 码是纠删码领域最经典�
 关键前提：V' 必须是可逆的（范德蒙德矩阵的任意 k 行子矩阵都是可逆的，满足该性质）
 ```
 
-### 伽罗瓦域 GF(2^8) — 为什么选择它
+### 3.2.4 伽罗瓦域 GF(2^8) — 为什么选择它
 
 纠删码运算在**有限域（伽罗瓦域）GF(2^8)**上进行，原因如下：
 
@@ -266,7 +266,7 @@ uint8_t gf_mul(uint8_t a, uint8_t b) {
 }
 ```
 
-## 3.3MinIO 中 EC 的默认配置
+## 3.3 MinIO 中 EC 的默认配置
 
 MinIO 根据总驱动器数量自动选择 EC 配置：
 
@@ -283,7 +283,7 @@ MinIO 根据总驱动器数量自动选择 EC 配置：
 - 最大校验块数不超过 16（即使总磁盘数 > 32）
 - 最小 EC 集合大小为 4（少于 4 块磁盘无法使用 EC，只能用副本模式）
 
-## 3.4Erasure Set 的划分
+## 3.4 Erasure Set 的划分
 
 MinIO 将总磁盘划分为多个大小相等的 Erasure Set（EC 集合）。每个 Set 独立进行 EC 编解码。
 
@@ -300,7 +300,7 @@ Set 15: Disk 241~256
 每个 Set 包含来自不同节点的磁盘，确保单节点故障不影响 Set 完整性
 ```
 
-### 为什么跨节点选取磁盘
+### 3.4.1 为什么跨节点选取磁盘
 
 ```text
 好的 Set 划分（跨节点）：
@@ -314,7 +314,7 @@ Set 0: [Node1:Disk1, Node1:Disk2, ..., Node1:Disk16]
 
 **MinIO 自动处理 Set 划分，无需手动配置。** 但理解这个原理有助于理解为什么分布式 MinIO 要求最少 4 个节点。
 
-## 3.5EC 条带大小与块大小
+## 3.5 EC 条带大小与块大小
 
 - **EC 条带大小（Stripe Size）**：一个 EC 编码单元的数据量。MinIO 根据 EC 配置和磁盘块大小自动计算。
 - **默认块大小（Block Size）**：10MB（通过 `MINIO_ERASURE_SET_DRIVE_COUNT` 可影响）。
@@ -339,7 +339,7 @@ EC编码  EC编码  EC编码  ...  EC编码
 (8+8)   (8+8)   (8+8)       (8+8)
 ```
 
-### 小对象的处理
+### 3.5.1 小对象的处理
 
 MinIO 对小对象有特殊优化：
 - 非常小的对象（< 128KiB）：可能不使用完整的 EC 条带，而是使用更小的块大小，甚至使用副本模式
@@ -347,11 +347,11 @@ MinIO 对小对象有特殊优化：
 
 ---
 
-## 3.6Bit Rot Protection（静默数据损坏检测）
+## 3.6 Bit Rot Protection（静默数据损坏检测）
 
 Bit Rot（数据腐化/静默数据损坏）是指磁盘上的数据因物理退化、宇宙射线等自然原因而不知不觉地发生损坏，而磁盘自身又不报告错误。
 
-### MinIO 的检测机制
+### 3.6.1 MinIO 的检测机制
 
 MinIO 在每个 64MB 数据块的末尾存储一个**高速哈希校验和**（使用 HighwayHash 算法）：
 
@@ -375,9 +375,9 @@ MinIO 在每个 64MB 数据块的末尾存储一个**高速哈希校验和**（�
 
 ---
 
-# 4.数据分布与哈希机制
+# 4. 数据分布与哈希机制
 
-## 4.1对象到 EC Set 的路由
+## 4.1 对象到 EC Set 的路由
 
 MinIO 使用 **SipHash** 哈希算法将对象 Key 路由到特定的 Erasure Set：
 
@@ -396,13 +396,13 @@ func getErasureSetIndex(objectKey string, setCount int) int {
 }
 ```
 
-### SipHash 选择的原因
+### 4.1.1 SipHash 选择的原因
 
 - **SipHash** 是速度与安全平衡的哈希算法（非密码学但具备抗哈希碰撞攻击能力）
 - 速度与 MurmurHash3 相当，但比后者更安全（MurmurHash3 可被构造碰撞攻击）
 - 64位输出足够用于 Set 路由（即使有 65536 个 Set 也不会溢出）
 
-## 4.2数据在 EC Set 内部的分布
+## 4.2 数据在 EC Set 内部的分布
 
 在一个 Erasure Set 内部，EC 编码后的 N 个分片按照**轮询（Round-Robin）**或**指定的分布序列**写入 N 个磁盘：
 
@@ -421,9 +421,9 @@ func getErasureSetIndex(objectKey string, setCount int) int {
 
 ---
 
-# 5.一致性模型
+# 5. 一致性模型
 
-## 5.1MinIO 的一致性保证
+## 5.1 MinIO 的一致性保证
 
 MinIO 提供 **强一致性（Strong Consistency）**：
 
@@ -433,7 +433,7 @@ MinIO 提供 **强一致性（Strong Consistency）**：
 
 这是通过 **Quorum 写入确认** 和 **全局元数据仲裁** 实现的。
 
-## 5.2读写 Quorum 机制
+## 5.2 读写 Quorum 机制
 
 MinIO 使用多数派（Quorum）机制确保强一致性：
 
@@ -444,7 +444,7 @@ MinIO 使用多数派（Quorum）机制确保强一致性：
 | GET | 需要成功读取至少 k 个分片 | k 为数据块数（8+8配置下需读8个分片） |
 | List | N/2 + 1 个节点响应一致 | 确保目录列表的一致性 |
 
-### Quorum 公式的含义
+### 5.2.1 Quorum 公式的含义
 
 对于 EC 8+8 配置（N=16）：
 - **写入 Quorum** = 16/2 + 1 = 9 个分片
@@ -474,7 +474,7 @@ MinIO 使用多数派（Quorum）机制确保强一致性：
 后台：MinIO 的自动修复机制会将缺失的分片写入 Disk 9~15。
 ```
 
-## 5.3与 AWS S3 的一致性对比
+## 5.3 与 AWS S3 的一致性对比
 
 | 操作 | MinIO | AWS S3（旧） | AWS S3（2020后） |
 |------|-------|-------------|-----------------|
@@ -487,9 +487,9 @@ MinIO 使用多数派（Quorum）机制确保强一致性：
 
 ---
 
-# 6.数据存储格式详解
+# 6. 数据存储格式详解
 
-## 6.1磁盘上的物理存储
+## 6.1 磁盘上的物理存储
 
 MinIO 将每个对象的 EC 分片存储在磁盘上，目录结构如下：
 
@@ -500,7 +500,7 @@ MinIO 将每个对象的 EC 分片存储在磁盘上，目录结构如下：
 └── xl.meta          # 独立元数据文件 (小对象)
 ```
 
-### part.1 文件格式
+### 6.1.1 part.1 文件格式
 
 ```
 偏移量 0:  xl.meta JSON 内容
@@ -509,7 +509,7 @@ MinIO 将每个对象的 EC 分片存储在磁盘上，目录结构如下：
 偏移量 N:  二进制数据块内容
 ```
 
-## 6.2xl.meta 详解
+## 6.2 xl.meta 详解
 
 `xl.meta` 是 MinIO 对象元数据的核心文件，JSON 格式。以下是完整字段说明：
 
@@ -544,13 +544,13 @@ MinIO 将每个对象的 EC 分片存储在磁盘上，目录结构如下：
 
 ---
 
-# 7.命名空间与"目录"
+# 7. 命名空间与"目录"
 
-## 7.1平面命名空间
+## 7.1 平面命名空间
 
 MinIO 的命名空间是扁平的。`photos/2024/01/vacation.jpg` 只是对象 Key 中的字符序列，`/` 没有文件系统级别的特殊含义。
 
-### ListObjects V2 的"目录"模拟
+### 7.1.1 ListObjects V2 的"目录"模拟
 
 ```java
 // 使用 delimiter 和 prefix 模拟目录层级
@@ -574,7 +574,7 @@ for (Result<Item> result : results) {
 }
 ```
 
-### 分页列举
+### 7.1.2 分页列举
 
 ```java
 // 使用 startAfter 和 maxKeys 实现分页
@@ -589,9 +589,9 @@ ListObjectsArgs.builder()
 
 ---
 
-# 8.MinIO 的内部组件与子系统
+# 8. MinIO 的内部组件与子系统
 
-## 8.1Object Layer（对象层接口）
+## 8.1 Object Layer（对象层接口）
 
 MinIO 定义了一个抽象的 ObjectLayer 接口，所有对象操作都基于这个接口。这样可以在不改变上层 API 的前提下，替换底层存储实现：
 
@@ -615,7 +615,7 @@ type ObjectLayer interface {
 }
 ```
 
-### 实现体系
+### 8.1.1 实现体系
 
 ```text
 ObjectLayer 接口
@@ -625,7 +625,7 @@ ObjectLayer 接口
     └── 一组 Erasure Set 的集合，每个 Set 独立进行 EC 编解码
 ```
 
-## 8.2关键内部组件
+## 8.2 关键内部组件
 
 | 组件 | 职责 |
 |------|------|
@@ -636,7 +636,7 @@ ObjectLayer 接口
 | **Lifecycle** | 执行生命周期规则（过期删除、转换存储层等） |
 | **Notifier** | 处理事件通知（对象创建/删除/访问 → Kafka/Webhook 等） |
 
-## 8.3请求处理流程
+## 8.3 请求处理流程
 
 ```text
 HTTP 请求到达
@@ -664,9 +664,9 @@ HTTP 请求到达
 
 ---
 
-# 9.MinIO 的节点发现与集群管理
+# 9. MinIO 的节点发现与集群管理
 
-## 9.1节点发现机制
+## 9.1 节点发现机制
 
 MinIO 分布式模式通过 **启动命令中的端点列表** 进行节点发现：
 
@@ -683,7 +683,7 @@ minio server \
 - 使用 **Gossip 协议**（基于 serf）进行节点状态同步
 - 使用 **内部 RPC（gRPC-like）** 进行数据复制和协调
 
-## 9.2集群共识（Leaderless 设计）
+## 9.2 集群共识（Leaderless 设计）
 
 MinIO **不使用 Raft/Paxos 等共识协议**，这是其简单性的重要来源：
 
@@ -692,7 +692,7 @@ MinIO **不使用 Raft/Paxos 等共识协议**，这是其简单性的重要来�
 - 通过 SipHash 决定对象归属的 EC Set，不需要中心化路由表
 - 节点启动时通过读取本地磁盘上的 `format.json` 判断自己是否属于某个集群
 
-### format.json
+### 9.2.1 format.json
 
 每个磁盘根目录下有 `format.json`，记录集群拓扑信息：
 
@@ -718,7 +718,7 @@ MinIO **不使用 Raft/Paxos 等共识协议**，这是其简单性的重要来�
 
 ---
 
-# 10.内部通信协议
+# 10. 内部通信协议
 
 MinIO 内部节点间通信通过 gRPC-like 的自定义 RPC 协议进行：
 
@@ -731,9 +731,9 @@ MinIO 内部节点间通信通过 gRPC-like 的自定义 RPC 协议进行：
 
 ---
 
-# 11.容量管理
+# 11. 容量管理
 
-## 11.1容量组成
+## 11.1 容量组成
 
 ```text
 总物理容量
@@ -748,7 +748,7 @@ MinIO 内部节点间通信通过 gRPC-like 的自定义 RPC 协议进行：
         └── format.json 等系统文件
 ```
 
-## 11.2容量监控
+## 11.2 容量监控
 
 ```bash
 # 命令行查看集群容量

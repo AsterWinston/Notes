@@ -1,4 +1,4 @@
-# 1.什么是 AJAX？
+# 1. 什么是 AJAX？
 
 ```
 AJAX = Asynchronous JavaScript And XML（异步的 JavaScript 和 XML）
@@ -16,7 +16,7 @@ AJAX 交互（异步）：
   优点：用户体验好，无刷新，传输数据量小，响应快
 ```
 
-# 2.XMLHttpRequest 对象
+# 2. XMLHttpRequest 对象
 
 ```
 XMLHttpRequest 是 AJAX 的核心对象，所有现代浏览器都内置了这个对象。
@@ -43,7 +43,7 @@ status HTTP状态码：
   500 —— 服务器错误
 ```
 
-# 3.AJAX 发送 GET 请求
+# 3. AJAX 发送 GET 请求
 
 ```html
 <!DOCTYPE html>
@@ -84,7 +84,7 @@ status HTTP状态码：
 </html>
 ```
 
-# 4.AJAX 发送 POST 请求
+# 4. AJAX 发送 POST 请求
 
 ```html
 <script type="text/javascript">
@@ -108,7 +108,7 @@ status HTTP状态码：
 </script>
 ```
 
-# 5.Servlet 端处理 AJAX 请求
+# 5. Servlet 端处理 AJAX 请求
 
 ```java
 @WebServlet("/ajax")
@@ -149,7 +149,7 @@ public class AjaxServlet extends HttpServlet {
 }
 ```
 
-# 6.JSON 格式
+# 6. JSON 格式
 
 ```
 JSON（JavaScript Object Notation）是一种轻量级的数据交换格式。
@@ -176,7 +176,7 @@ JSON 的值类型：
 }
 ```
 
-# 7.Servlet 返回 JSON 数据
+# 7. Servlet 返回 JSON 数据
 
 ```
 后端将 Java 对象转换成 JSON 字符串，响应给前端。
@@ -238,7 +238,7 @@ String jsonStr = gson.toJson(userList);
 response.getWriter().print(jsonStr);
 ```
 
-# 8.JSON 格式的 AJAX 交互（完整示例）
+# 8. JSON 格式的 AJAX 交互（完整示例）
 
 ```html
 <!-- 前端页面：动态加载用户列表，无刷新 -->
@@ -282,7 +282,7 @@ response.getWriter().print(jsonStr);
 </script>
 ```
 
-# 9.经典案例：用户名异步校验
+# 9. 经典案例：用户名异步校验
 
 ```html
 <!-- 注册页面 -->
@@ -345,7 +345,7 @@ public class CheckUsernameServlet extends HttpServlet {
 }
 ```
 
-# 10.Servlet 接收前端发送的 JSON 数据
+# 10. Servlet 接收前端发送的 JSON 数据
 
 ```
 前端发送 JSON 数据，Servlet 端接收并解析。
@@ -397,7 +397,7 @@ public class AjaxServlet extends HttpServlet {
 }
 ```
 
-# 11.AJAX 跨域请求
+# 11. AJAX 跨域请求
 
 ```
 浏览器的同源策略（Same-Origin Policy）：
@@ -428,7 +428,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 也可以使用 Filter 为所有 Servlet 统一设置 CORS 响应头。
 ```
 
-# 12.Axios（现代 AJAX 方案）
+# 12. Axios（现代 AJAX 方案）
 
 ```
 Axios 是一个基于 Promise 的 HTTP 客户端库，可以替代原生的 XMLHttpRequest。

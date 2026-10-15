@@ -1,4 +1,4 @@
-# 1 Kafka Streams 概述
+# 1. Kafka Streams 概述
 
 ## 1.1 什么是 Kafka Streams
 
@@ -42,7 +42,7 @@ Kafka Streams 是 Apache Kafka 官方提供的**流处理库**，允许开发者
 | 事件时间 | 支持事件时间窗口和乱序处理 |
 | DSL + Processor API | 高层次流式 DSL + 底层 Processor API |
 
-# 2 核心概念
+# 2. 核心概念
 
 ## 2.1 Topology（拓扑）
 
@@ -112,7 +112,7 @@ Task 数 = max(Topic 分区数)
 每个 Task 独占一个线程处理
 ```
 
-# 3 核心 API 详解
+# 3. 核心 API 详解
 
 ## 3.1 Streams DSL
 
@@ -283,7 +283,7 @@ KTable<String, String> joinedTable = leftTable.join(
 );
 ```
 
-# 4 状态存储（State Store）
+# 4. 状态存储（State Store）
 
 ## 4.1 本地状态 + Changelog
 
@@ -367,7 +367,7 @@ public Long getUserCount(@PathVariable String userId) {
 }
 ```
 
-# 5 精确一次配置（EOS）
+# 5. 精确一次配置（EOS）
 
 ```java
 Properties props = new Properties();
@@ -387,7 +387,7 @@ props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
 // Consumer: isolation.level=read_committed (使用 enableEos 时自动设置)
 ```
 
-# 6 Processor API（底层 API）
+# 6. Processor API（底层 API）
 
 ```java
 public class WordCountProcessor implements Processor<String, String> {
@@ -427,7 +427,7 @@ public class WordCountProcessor implements Processor<String, String> {
 }
 ```
 
-# 7 核心配置
+# 7. 核心配置
 
 ```java
 Properties props = new Properties();
@@ -461,7 +461,7 @@ props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
 // 精确一次语义
 ```
 
-# 8 常见问题与调优
+# 8. 常见问题与调优
 
 ## 8.1 状态存储恢复
 

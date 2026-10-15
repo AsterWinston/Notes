@@ -1,10 +1,10 @@
-# 1.版本控制（Versioning）
+# 1. 版本控制（Versioning）
 
-## 1.1版本控制的概念
+## 1.1 版本控制的概念
 
 MinIO 的版本控制是 Bucket 级别的功能。开启后，每个对象的每次 PUT 操作都会创建一个新版本，DELETE 操作会创建一个删除标记而非物理删除。
 
-### 版本控制的状态
+### 1.1.1 版本控制的状态
 
 | 状态 | 说明 |
 |------|------|
@@ -14,7 +14,7 @@ MinIO 的版本控制是 Bucket 级别的功能。开启后，每个对象的每
 
 > **重要**：版本控制一旦开启（ENABLED），永远不能关闭。可以挂起（SUSPEND），但无法回到 UNVERSIONED。
 
-## 1.2开启版本控制
+## 1.2 开启版本控制
 
 ```java
 // Java SDK 设置版本控制
@@ -48,7 +48,7 @@ VersioningConfiguration config = minioClient.getBucketVersioning(
 System.out.println("状态: " + config.status());
 ```
 
-## 1.3版本控制下的对象操作
+## 1.3 版本控制下的对象操作
 
 ```java
 // 上传对象（每次都生成新版本）
@@ -110,7 +110,7 @@ minioClient.removeObject(
 // 可以删除这个删除标记来恢复对象
 ```
 
-## 1.4版本控制下的存储开销
+## 1.4 版本控制下的存储开销
 
 ```text
 对象 data.txt 的版本历史:
@@ -129,9 +129,9 @@ v4 (UUID-ghi789):   DeleteMarker ← 被删除
 
 ---
 
-# 2.生命周期管理（Lifecycle / ILM）
+# 2. 生命周期管理（Lifecycle / ILM）
 
-## 2.1生命周期规则的概念
+## 2.1 生命周期规则的概念
 
 生命周期规则用于自动管理对象的生命周期，包括：
 - **过期删除**：超过指定天数后自动删除对象
@@ -139,7 +139,7 @@ v4 (UUID-ghi789):   DeleteMarker ← 被删除
 - **删除标记清理**：自动清理无关联对象的历史删除标记
 - **分层存储**：自动将对象转移到更低成本的存储层（如 Glacier）
 
-## 2.2生命周期规则 XML 格式
+## 2.2 生命周期规则 XML 格式
 
 MinIO 的生命周期规则通过 XML 定义（与 S3 兼容）：
 
@@ -167,7 +167,7 @@ MinIO 的生命周期规则通过 XML 定义（与 S3 兼容）：
 </LifecycleConfiguration>
 ```
 
-## 2.3Java SDK 设置生命周期
+## 2.3 Java SDK 设置生命周期
 
 ```java
 import io.minio.messages.*;
@@ -243,7 +243,7 @@ public class LifecycleConfigDemo {
 }
 ```
 
-## 2.4生命周期规则类型速查
+## 2.4 生命周期规则类型速查
 
 | 规则类型 | 适用对象 | 说明 |
 |----------|----------|------|
@@ -254,7 +254,7 @@ public class LifecycleConfigDemo {
 | `Transition` | 当前版本 | 将对象转移到其他存储类（MinIO 当前支持有限） |
 | `NoncurrentVersionTransition` | 非当前版本 | 将非当前版本转移到其他存储类 |
 
-## 2.5生命周期规则设计建议
+## 2.5 生命周期规则设计建议
 
 ```text
 Bucket: my-app-bucket
@@ -278,27 +278,27 @@ Bucket: my-app-bucket
 
 ---
 
-# 3.对象锁（Object Lock / WORM）
+# 3. 对象锁（Object Lock / WORM）
 
-## 3.1对象锁概述
+## 3.1 对象锁概述
 
 对象锁提供 WORM（Write Once Read Many）保护，防止对象被删除或覆盖。主要用于：
 - 合规性要求（如 SEC 17a-4、HIPAA、GDPR）
 - 防勒索软件保护（不可篡改的备份）
 - 法律证据保存
 
-### 两种保留模式
+### 3.1.1 两种保留模式
 
 | 模式 | 说明 | 谁能解除 |
 |------|------|----------|
 | **Governance** (治理模式) | 大多数用户无法修改/删除 | 具有 `bypassGovernanceRetention` 权限的用户可解除 |
 | **Compliance** (合规模式) | 任何人都无法修改/删除（包括 root 用户） | 无人能解除（保留到设置的日期） |
 
-### 依法保留（Legal Hold）
+### 3.1.2 依法保留（Legal Hold）
 
 类似于 Governance 模式但无到期日，完全冻结对象，直到明确移除 `Legal Hold`。
 
-## 3.2启用对象锁
+## 3.2 启用对象锁
 
 对象锁需要在**创建 Bucket 时**启用，且**不可逆**：
 
@@ -312,7 +312,7 @@ minioClient.makeBucket(
 );
 ```
 
-## 3.3设置默认保留策略（Bucket 级别）
+## 3.3 设置默认保留策略（Bucket 级别）
 
 ```java
 import io.minio.messages.ObjectLockConfiguration;
@@ -332,7 +332,7 @@ minioClient.setObjectLockConfiguration(
 );
 ```
 
-## 3.4对象级保留设置
+## 3.4 对象级保留设置
 
 ```java
 import io.minio.messages.Retention;
@@ -399,9 +399,9 @@ System.out.println("保留至: " + retention.retainUntilDate());
 
 ---
 
-# 4.Bucket 复制（Replication）
+# 4. Bucket 复制（Replication）
 
-## 4.1复制概述
+## 4.1 复制概述
 
 Bucket 复制用于将对象从一个桶自动同步到另一个桶（同集群或跨集群）。MinIO 支持两种复制：
 
@@ -410,7 +410,7 @@ Bucket 复制用于将对象从一个桶自动同步到另一个桶（同集群�
 | **Bucket Replication** | 桶级别的对象实时同步 | 源和目标桶都必须开启版本控制 |
 | **Site Replication** | 站点级别的全量同步（包括 IAM、Bucket、对象） | 需要先配置 Site Replication |
 
-## 4.2同集群 Bucket 复制配置
+## 4.2 同集群 Bucket 复制配置
 
 ```java
 import io.minio.messages.*;
@@ -476,7 +476,7 @@ public class ReplicationDemo {
 }
 ```
 
-## 4.3复制最佳实践
+## 4.3 复制最佳实践
 
 ```text
 场景1: 同集群备份
@@ -500,13 +500,13 @@ public class ReplicationDemo {
 
 ---
 
-# 5.事件通知（Bucket Notifications）
+# 5. 事件通知（Bucket Notifications）
 
-## 5.1事件通知概述
+## 5.1 事件通知概述
 
 MinIO 支持在对象发生特定事件时，将通知推送到各种目标系统。
 
-### 支持的事件类型
+### 5.1.1 支持的事件类型
 
 ```text
 对象事件:
@@ -527,7 +527,7 @@ ILM 事件:
   s3:ObjectRestore:Completed   恢复完成
 ```
 
-### 支持的通知目标
+### 5.1.2 支持的通知目标
 
 | 目标类型 | 说明 | 典型场景 |
 |----------|------|----------|
@@ -540,11 +540,11 @@ ILM 事件:
 | MySQL/PostgreSQL | 关系型数据库 | 同步对象元数据到业务数据库 |
 | Elasticsearch | 搜索引擎 | 实时索引对象元数据 |
 
-## 5.2配置事件通知（Java SDK + mc CLI）
+## 5.2 配置事件通知（Java SDK + mc CLI）
 
 事件通知的配置目前主要通过 `mc` 命令行工具完成。SDK 虽然也支持但较为繁琐。
 
-### 通过 mc 配置 Webhook 通知
+### 5.2.1 通过 mc 配置 Webhook 通知
 
 ```bash
 # 设置 Webhook 通知
@@ -565,7 +565,7 @@ mc event remove myminio/mybucket arn:minio:sqs::PRIMARY:webhook
 # MINIO_NOTIFY_WEBHOOK_ENDPOINT_PRIMARY=http://my-app:8080/minio/events
 ```
 
-### 配置 Kafka 通知
+### 5.2.2 配置 Kafka 通知
 
 ```bash
 # 通过环境变量配置（在 minio server 启动时设置）
@@ -578,7 +578,7 @@ mc event add myminio/mybucket arn:minio:sqs::PRIMARY:kafka \
   --event "put,delete,get"
 ```
 
-## 5.3接收 Webhook 通知的 Spring Boot 端点
+## 5.3 接收 Webhook 通知的 Spring Boot 端点
 
 ```java
 @RestController
@@ -641,7 +641,7 @@ public class MinioEventController {
 }
 ```
 
-## 5.4事件通知的 JSON 格式
+## 5.4 事件通知的 JSON 格式
 
 ```json
 {
@@ -689,9 +689,9 @@ public class MinioEventController {
 
 ---
 
-# 6.服务端加密（SSE）
+# 6. 服务端加密（SSE）
 
-## 6.1三种加密方式对比
+## 6.1 三种加密方式对比
 
 | 加密方式 | 密钥管理 | 客户端透明 | 适用场景 |
 |----------|----------|------------|----------|
@@ -699,7 +699,7 @@ public class MinioEventController {
 | **SSE-C** | 客户端提供密钥 | 否（每次请求需传密钥） | 客户端完全控制密钥 |
 | **SSE-KMS** | KES + Vault 管理密钥 | 是 | 企业级密钥管理、合规审计 |
 
-### SSE-S3 加密原理
+### 6.1.1 SSE-S3 加密原理
 
 ```text
 上传流程：
@@ -718,7 +718,7 @@ public class MinioEventController {
 5. 返回明文给客户端
 ```
 
-## 6.2使用 SSE-S3 加密
+## 6.2 使用 SSE-S3 加密
 
 ```java
 import io.minio.ServerSideEncryption;
@@ -744,7 +744,7 @@ try (InputStream stream = minioClient.getObject(
 }
 ```
 
-## 6.3使用 SSE-C 加密
+## 6.3 使用 SSE-C 加密
 
 ```java
 import io.minio.ServerSideEncryptionCustomerKey;
@@ -778,7 +778,7 @@ try (InputStream stream = minioClient.getObject(
 }
 ```
 
-## 6.4设置 Bucket 默认加密
+## 6.4 设置 Bucket 默认加密
 
 ```java
 import io.minio.messages.SseConfiguration;
@@ -814,9 +814,9 @@ minioClient.deleteBucketEncryption(
 
 ---
 
-# 7.多站点复制（Site Replication）
+# 7. 多站点复制（Site Replication）
 
-## 7.1Site Replication 与 Bucket Replication 的区别
+## 7.1 Site Replication 与 Bucket Replication 的区别
 
 | 维度 | Site Replication | Bucket Replication |
 |------|-----------------|-------------------|
@@ -826,7 +826,7 @@ minioClient.deleteBucketEncryption(
 | 节点要求 | 至少 3 个独立 MinIO 集群 | 源和目标集群均可 |
 | 使用场景 | 多数据中心全局统一管理 | 特定桶的数据同步备份 |
 
-## 7.2配置 Site Replication
+## 7.2 配置 Site Replication
 
 ```bash
 # 在集群 A 上创建站点复制别名
@@ -847,9 +847,9 @@ mc admin replicate remove cluster-a cluster-b
 
 ---
 
-# 8.分层存储（Tiering）
+# 8. 分层存储（Tiering）
 
-## 8.1Tiering 概述
+## 8.1 Tiering 概述
 
 MinIO 支持将低频访问的数据自动迁移到远程存储层，如 AWS S3、Azure Blob、GCS 等。这通过生命周期 Transition 规则实现。
 

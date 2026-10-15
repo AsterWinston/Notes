@@ -1,4 +1,4 @@
-# 1.Kubernetes 安全体系概览
+# 1. Kubernetes 安全体系概览
 
 ## 1.1 安全模型的四个层面
 
@@ -28,7 +28,7 @@ Kubernetes 的安全模型遵循"纵深防御"（Defense in Depth）原则，从
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### API 请求的完整处理链
+### 1.1.1 API 请求的完整处理链
 
 每个 API 请求在到达 etcd 之前，依次经过三个安全检查：
 
@@ -70,7 +70,7 @@ Kubernetes 早期支持多种授权模式：ABAC（基于属性的访问控制�
 4. **动态调整**：修改 Role 或 RoleBinding 立即生效，无需重启任何组件
 5. **多租户友好**：Namespace 级别的 Role 天然支持多租户隔离
 
-# 2.认证 (Authentication)
+# 2. 认证 (Authentication)
 
 ## 2.1 认证策略概览
 
@@ -90,7 +90,7 @@ Kubernetes 不管理用户，但会验证用户的身份凭证。支持的认证
 
 ServiceAccount 是 Kubernetes 中给**应用程序（Pod）**使用的身份，而非人类用户。
 
-### ServiceAccount、Token、Secret 的关系
+### 2.2.1 ServiceAccount、Token、Secret 的关系
 
 ```
 Namespace: default
@@ -110,7 +110,7 @@ Namespace: default
   └── ServiceAccount: ci-deployer (CI/CD 使用)
 ```
 
-### ServiceAccount 的 Token 演进
+### 2.2.2 ServiceAccount 的 Token 演进
 
 Kubernetes 的 ServiceAccount Token 经历了几次重要变化：
 
@@ -153,7 +153,7 @@ spec:
           audience: api                  # 目标受众
 ```
 
-### 手动创建 ServiceAccount 和绑定
+### 2.2.3 手动创建 ServiceAccount 和绑定
 
 ```bash
 # 创建 ServiceAccount
@@ -175,7 +175,7 @@ type: kubernetes.io/service-account-token
 EOF
 ```
 
-### Pod 使用 ServiceAccount
+### 2.2.4 Pod 使用 ServiceAccount
 
 ```yaml
 apiVersion: v1
@@ -201,7 +201,7 @@ TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 curl -k -H "Authorization: Bearer $TOKEN" https://kubernetes.default.svc/api/v1/namespaces/default/pods
 ```
 
-# 3.RBAC 授权体系
+# 3. RBAC 授权体系
 
 ## 3.1 RBAC 的四大核心资源
 
@@ -222,7 +222,7 @@ Subject (主体)
   - ServiceAccount (应用身份)
 ```
 
-### 四者关系
+### 3.1.1 四者关系
 
 | 资源 | 作用域 | 说明 |
 |------|--------|------|
@@ -233,7 +233,7 @@ Subject (主体)
 
 ## 3.2 Role 和 ClusterRole 详解
 
-### Role：命名空间级权限集合
+### 3.2.1 Role：命名空间级权限集合
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -283,7 +283,7 @@ rules:
   verbs: ["get", "update"]
 ```
 
-### ClusterRole：集群级权限集合
+### 3.2.2 ClusterRole：集群级权限集合
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -312,7 +312,7 @@ rules:
   verbs: ["get", "list"]
 ```
 
-### 聚合 ClusterRole（Aggregated ClusterRole）
+### 3.2.3 聚合 ClusterRole（Aggregated ClusterRole）
 
 Kubernetes 支持通过标签聚合多个 ClusterRole 规则到一个 ClusterRole：
 
@@ -331,7 +331,7 @@ rules:
 
 所有带有 `rbac.authorization.k8s.io/aggregate-to-view` 标签的 ClusterRole 的规则会被自动合并到名为 `view` 的 ClusterRole 中。Kubernetes 内置的 `view`、`edit`、`admin` ClusterRole 都使用此机制。
 
-### 内置的 ClusterRole
+### 3.2.4 内置的 ClusterRole
 
 | 内置 ClusterRole | 权限范围 |
 |-----------------|---------|
@@ -371,7 +371,7 @@ RBAC 的 `verbs` 对应 HTTP 方法：
 
 注意：给用户 `create` 权限但不同时给 `get`/`list`，用户创建资源后可能无法查看。
 
-# 4.RoleBinding 与 ClusterRoleBinding
+# 4. RoleBinding 与 ClusterRoleBinding
 
 ## 4.1 RoleBinding：命名空间级绑定
 
@@ -491,7 +491,7 @@ RBAC 权限检查:
 4. 通过 → 200 OK / 不通过 → 403 Forbidden
 ```
 
-# 5.实战：多场景 RBAC 配置
+# 5. 实战：多场景 RBAC 配置
 
 ## 5.1 场景一：开发者仅读权限
 
@@ -629,7 +629,7 @@ roleRef:
   name: ingress-nginx
 ```
 
-# 6.准入控制 (Admission Control)
+# 6. 准入控制 (Admission Control)
 
 ## 6.1 准入控制概述
 
@@ -675,7 +675,7 @@ kubectl -n kube-system describe pod kube-apiserver-<node> | grep enable-admissio
 
 ## 6.3 自定义 Webhook 示例
 
-### Mutating Webhook：自动添加资源限制
+### 6.3.1 Mutating Webhook：自动添加资源限制
 
 ```yaml
 apiVersion: admissionregistration.k8s.io/v1
@@ -703,7 +703,7 @@ webhooks:
   failurePolicy: Fail        # Fail/Ignore
 ```
 
-### Validating Webhook：禁止使用 latest 镜像
+### 6.3.2 Validating Webhook：禁止使用 latest 镜像
 
 ```yaml
 apiVersion: admissionregistration.k8s.io/v1
@@ -741,7 +741,7 @@ webhooks:
 | **Pod Security Admission** | Validating | 内置 Pod 安全标准（v1.25+ GA） |
 | **KubeLinter** | 静态分析 | 在 CI/CD 中检查 YAML 安全配置 |
 
-# 7.Pod 安全标准 (Pod Security Standards)
+# 7. Pod 安全标准 (Pod Security Standards)
 
 Kubernetes 1.25+ 使用 Pod Security Admission (PSA) 替代了已废弃的 PodSecurityPolicy (PSP)。
 
@@ -753,7 +753,7 @@ Kubernetes 1.25+ 使用 Pod Security Admission (PSA) 替代了已废弃的 PodSe
 | **Baseline** | 最小限制策略，防止已知的权限提升 | 普通应用（默认推荐） |
 | **Restricted** | 严格限制，遵循 Pod 加固最佳实践 | 安全敏感应用 |
 
-### Baseline 策略的关键限制
+### 7.1.1 Baseline 策略的关键限制
 
 - 禁止 `hostNetwork`、`hostPID`、`hostIPC`
 - 禁止 `hostPath` 卷
@@ -762,7 +762,7 @@ Kubernetes 1.25+ 使用 Pod Security Admission (PSA) 替代了已废弃的 PodSe
 - 限制 capabilities（不能添加 `NET_RAW` 等危险能力）
 - 禁止 `procMount: Unmasked`
 
-### Restricted 策略的额外限制
+### 7.1.2 Restricted 策略的额外限制
 
 - 所有 `Baseline` 限制
 - 要求 `runAsNonRoot: true`
@@ -789,7 +789,7 @@ metadata:
 - `audit`：违反策略的记录在审计日志中，Pod 仍可创建
 - `warn`：违反策略的返回给用户警告信息，Pod 仍可创建
 
-# 8.安全最佳实践
+# 8. 安全最佳实践
 
 ## 8.1 RBAC 最佳实践
 

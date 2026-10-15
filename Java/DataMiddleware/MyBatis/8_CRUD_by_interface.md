@@ -1,4 +1,4 @@
-# 1.使用 SqlSession 的 getMapper 方法
+# 1. 使用 SqlSession 的 getMapper 方法
 
 ```
 通过 SqlSession.getMapper(XXMapper.class) 可以获得 Mapper 接口的动态代理对象。
@@ -42,7 +42,7 @@ getMapper 方式的优势：
   4. 支持 IDE 代码导航和重构
 ```
 
-# 2.getMapper 底层实现原理
+# 2. getMapper 底层实现原理
 
 ## 2.1 总体流程
 
@@ -250,7 +250,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 }
 ```
 
-# 3.MapperMethod — 方法执行的核心逻辑
+# 3. MapperMethod — 方法执行的核心逻辑
 
 ```java
 /**
@@ -466,7 +466,7 @@ public class MapperMethod {
 }
 ```
 
-# 4.Mapper 接口代理的完整执行链路
+# 4. Mapper 接口代理的完整执行链路
 
 ```
 用户代码: carMapper.selectById(1);
@@ -523,7 +523,7 @@ public class MapperMethod {
   └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-# 5.使用 getMapper 的完整示例
+# 5. 使用 getMapper 的完整示例
 
 ## 5.1 Mapper 接口
 
@@ -625,7 +625,7 @@ public class CarMapperTest {
 }
 ```
 
-# 6.基于 Mapper 接口的包扫描配置
+# 6. 基于 Mapper 接口的包扫描配置
 
 ```
 当项目中有大量 Mapper 接口时，一个个配置 <mapper resource=""/> 太繁琐。
@@ -653,7 +653,7 @@ public class CarMapperTest {
       同时用 MapperAnnotationBuilder 解析接口上的注解式 SQL
 ```
 
-# 7.MapperProxy 与手写 DaoImpl 的本质区别
+# 7. MapperProxy 与手写 DaoImpl 的本质区别
 
 ```
 传统 DaoImpl 方式：

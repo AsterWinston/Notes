@@ -1,4 +1,4 @@
-# 1.为什么需要Ingress
+# 1. 为什么需要Ingress
 
 Kubernetes 的 Service 资源提供了 Pod 的网络访问能力，但 Service 本质上是四层（L4）负载均衡。当我们需要将集群内的服务暴露给外部用户时，Service 的两种主要方式——NodePort 和 LoadBalancer——在实际生产环境中暴露出诸多局限性。Ingress 正是为了解决这些问题而设计的七层（L7）负载均衡入口资源。
 
@@ -201,7 +201,7 @@ TLS 终结是指 HTTPS 请求的加密在 Ingress 层被解开（解密），之
 
 两者职责互补而非替代。许多生产环境同时使用 Ingress（入口层）和 Service Mesh（服务间），后者提供 mTLS、细粒度流量控制、延迟注入等更高级的能力。
 
-# 2.Ingress架构
+# 2. Ingress架构
 
 理解了 Ingress 解决了什么问题之后，我们来深入探讨 Ingress 的架构设计。Kubernetes Ingress 的设计采用了一种很经典的"关注点分离"模式：API 规范与实现分离。
 
@@ -527,7 +527,7 @@ Controller 通过 IngressClass 的 `spec.controller` 字段匹配。例如 Nginx
 
 如果 IngressClass 设置了 `spec.parameters`，还支持更细粒度的配置——比如指定一个 ConfigMap 来覆盖默认的 Controller 全局配置。
 
-# 3.Ingress YAML详解
+# 3. Ingress YAML详解
 
 这一章我们逐字段拆解 Ingress YAML 的每一个配置项。只有理解了每个字段的语义和背后的设计意图，才能在生产环境中写出正确且高效的 Ingress 规则。
 
@@ -958,7 +958,7 @@ spec:
   controller: k8s.io/ingress-nginx
 ```
 
-# 4.注解 (Annotations) 体系
+# 4. 注解 (Annotations) 体系
 
 注解是 Ingress 最强大的扩展机制，也是各 Controller 差异最大的地方。标准 Ingress API 只定义了基本的路由规则，而注解允许 Controller 暴露其特有功能——从 URL 重写到安全策略，从性能调优到流量管理。
 
@@ -1220,7 +1220,7 @@ Middleware 可以被多个 Ingress 共享引用，这解决了注解无法复用
 2. 对扩展功能尽量保持简洁，避免过度依赖特定 Controller 的注解
 3. 考虑使用 Gateway API 替代 Ingress，它的可移植性更好
 4. 如果必须使用大量注解，编写迁移脚本或使用 Helm 模板来管理
-# 5.甯歌Ingress Controller
+# 5. 甯歌Ingress Controller
 
 閫夋嫨涓€涓€傚悎浣犵殑 Ingress Controller 鏄叆鍙ｆ灦鏋勮璁＄殑鍏抽敭鍐崇瓥銆傛瘡涓?Controller 鏈夎嚜宸辩殑璁捐鍝插銆佹€ц兘鐗瑰緛鍜岄€傜敤鍦烘櫙銆?
 ## 5.1 Nginx Ingress Controller
@@ -1841,7 +1841,7 @@ TLS 1.3锛圧FC 8446锛夌浉姣?TLS 1.2 鏈夋樉钁楁敼杩涳細
 鎺ㄨ崘浣跨敤 Mozilla 鐨?SSL Configuration Generator 鏉ヨ幏鍙栫幇浠?TLS 閰嶇疆銆備笁涓骇鍒細
 - **Modern**锛氫粎 TLS 1.3锛屽吋瀹规€ф渶浣?- **Intermediate**锛歍LS 1.2 鍜?1.3锛屾帹鑽愮敓浜т娇鐢?- **Old**锛歍LS 1.0+锛屽吋瀹硅€佽澶?
 
-# 7.Gateway API
+# 7. Gateway API
 
 Gateway API 鏄?Kubernetes SIG-Network 绀惧尯鎺ㄥ嚭鐨勪笅涓€浠ｅ叆鍙?API锛屾棬鍦ㄦ浛浠ｅ拰瓒呰秺 Ingress銆傚畠涓嶄粎浠呮槸銆孖ngress v2銆嶏紝鑰屾槸涓€娆″鍏ュ彛娴侀噺绠＄悊妯″瀷鐨勫叏闈㈤噸鏂版€濊€冦€?
 ## 7.1 Ingress鐨勫眬闄愭€?
@@ -2329,7 +2329,7 @@ spec:
 - 鏂板缓椤圭洰灏介噺浣跨敤 Gateway API锛屼负鏈潵鐨勬爣鍑嗗寲鍜屽彲绉绘鎬у仛鍑嗗
 
 
-# 8.閲戜笣闆€鍙戝竷涓庢祦閲忕鐞?
+# 8. 閲戜笣闆€鍙戝竷涓庢祦閲忕鐞?
 閲戜笣闆€鍙戝竷锛圕anary Deployment锛夋槸涓€绉嶅皢灏戦噺鐢熶骇娴侀噺寮曞鍒版柊鐗堟湰搴旂敤鐨勫彂甯冪瓥鐣ワ紝鏈€鏃╁緱鍚嶄簬銆岀叅鐭夸腑鐨勯噾涓濋泙銆嶁€斺€旂敤灏戞暟鏁忔劅涓綋鏉ユ帰娴嬪嵄闄┿€傚湪 Kubernetes 涓紝閲戜笣闆€鍙戝竷鍙互鍦ㄥ涓眰闈㈠疄鐜帮細Ingress/鍏ュ彛灞傘€丼ervice Mesh 灞傘€佷互鍙婂簲鐢ㄩ儴缃插眰銆?
 ## 8.1 Ingress灞傚疄鐜伴噾涓濋泙
 

@@ -1,4 +1,4 @@
-# 1.文件上传基础
+# 1. 文件上传基础
 
 ```
 文件上传是指将客户端（浏览器）的文件传输到服务器的过程。
@@ -25,7 +25,7 @@ HTML 文件上传表单：
 </form>
 ```
 
-# 2.Servlet 3.0 之前的文件上传方式
+# 2. Servlet 3.0 之前的文件上传方式
 
 ```
 在 Servlet 3.0 之前，没有内置的文件上传支持，需要借助第三方库：
@@ -69,7 +69,7 @@ HTML 文件上传表单：
   2. SmartUpload（Model2 时代常用，目前已淘汰）
 ```
 
-# 3.Servlet 3.0+ 内置文件上传（Part 接口）
+# 3. Servlet 3.0+ 内置文件上传（Part 接口）
 
 ```
 从 Servlet 3.0（Tomcat 7+）开始，规范内置了文件上传支持，不再需要第三方库。
@@ -87,7 +87,7 @@ HTML 文件上传表单：
   fileSizeThreshold int     文件大小超过此阈值时，写入磁盘而非内存（字节），默认 0
 ```
 
-# 4.使用 Part 接口实现文件上传
+# 4. 使用 Part 接口实现文件上传
 
 ```java
 import jakarta.servlet.annotation.MultipartConfig;
@@ -180,7 +180,7 @@ public class UploadServlet extends HttpServlet {
 }
 ```
 
-# 5.文件上传时的注意事项
+# 5. 文件上传时的注意事项
 
 ```
 1. 文件大小限制
@@ -221,7 +221,7 @@ public class UploadServlet extends HttpServlet {
    - 或者放在磁盘上的独立目录（需要程序提供下载接口）
 ```
 
-# 6.文件下载
+# 6. 文件下载
 
 ```
 文件下载的关键是设置响应头 Content-Disposition。
@@ -285,7 +285,7 @@ Content-Disposition 的两种值：
   通用方案：使用 URLEncoder.encode(filename, "UTF-8")
 ```
 
-# 7.批量文件上传（多文件同时上传）
+# 7. 批量文件上传（多文件同时上传）
 
 ```html
 <!-- 前端：多文件选择 -->
@@ -340,7 +340,7 @@ public class BatchUploadServlet extends HttpServlet {
 }
 ```
 
-# 8.文件上传 + AJAX（无刷新上传）
+# 8. 文件上传 + AJAX（无刷新上传）
 
 ```html
 <!-- 前端：使用 FormData 实现无刷新上传 -->
@@ -381,7 +381,7 @@ public class BatchUploadServlet extends HttpServlet {
 </script>
 ```
 
-# 9.总结：文件上传下载关键点
+# 9. 总结：文件上传下载关键点
 
 ```
 上传关键点：

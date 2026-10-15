@@ -1,4 +1,4 @@
-# 1.Servlet中的三个域对象
+# 1. Servlet中的三个域对象
 ```
 请求域：request
 会话域：session
@@ -15,14 +15,14 @@ void removeAttribute(String name);
 
 主要是通过：setAttribute + getAttribute方法来完成在域中数据的传递和共享。
 ```
-## 1.1request
+## 1.1 request
 ```
 接口名：HttpServletRequest
 简称：request
 request对象代表了一次请求。一次请求一个request。
 使用请求域的业务场景：在A资源中通过转发的方式跳转到B资源，因为是转发，因此从A到B是一次请求，如果想让A资源和B资源共享同一个数据，可以将数据存储到request域中。
 ```
-## 1.2session
+## 1.2 session
 ```
 接口名：HttpSession
 简称：session
@@ -31,7 +31,7 @@ session对象代表了一次会话。从打开浏览器开始访问，到最终�
 1. 在A资源中通过重定向的方式跳转到B资源，因为是重定向，因此从A到B是两次请求，如果想让A资源和B资源共享同一个数据，可以将数据存储到session域中。
 2. 登录成功后保存用户的登录状态。
 ```
-## 1.3application
+## 1.3 application
 ```
 接口名：ServletContext
 简称：application
@@ -39,7 +39,7 @@ application对象代表了整个web应用，服务器启动时创建，服务器
 使用应用域的业务场景：记录网站的在线人数。
 ```
 
-# 2.request域对象
+# 2. request域对象
 ```
 在SpringMVC中，在request域中共享数据有以下几种方式：
 1. 使用原生Servlet API方式。
@@ -49,7 +49,7 @@ application对象代表了整个web应用，服务器启动时创建，服务器
 5. 使用ModelAndView类。
 ```
 
-## 2.1使用原生Servlet API方式
+## 2.1 使用原生Servlet API方式
 ```
 在Controller的方法上使用HttpServletRequest：
 package com.powernode.springmvc.controller;
@@ -103,7 +103,7 @@ public class RequestScopeTestController {
 
 这种方式当然可以，用SpringMVC框架，不建议使用原生Servlet API。
 ```
-## 2.2使用Model接口
+## 2.2 使用Model接口
 ```
 @RequestMapping("/testModel")
 public String testModel(Model model){
@@ -112,7 +112,7 @@ model.addAttribute("testRequestScope", "在SpringMVC中使用Model接口实现re
 return "view";
 }
 ```
-## 2.3使用Map接口
+## 2.3 使用Map接口
 ```
 @RequestMapping("/testMap")
 public String testMap(Map<String, Object> map){
@@ -122,7 +122,7 @@ public String testMap(Map<String, Object> map){
 }
 ```
 
-## 2.4使用ModelMap类
+## 2.4 使用ModelMap类
 ```
 @RequestMapping("/testModelMap")
 public String testModelMap(ModelMap modelMap){
@@ -131,7 +131,7 @@ modelMap.addAttribute("testRequestScope", "在SpringMVC中使用ModelMap实现re
 return "view";
 }
 ```
-### 2.4.1Model、Map、ModelMap的关系
+### 2.4.1 Model、Map、ModelMap的关系
 ```
 可以在以上Model、Map、ModelMap的测试程序中将其输出，看看输出什么：
 通过输出结果可以看出，无论是Model、Map还是ModelMap，底层实例化的对象都是：BindingAwareModelMap。
@@ -142,7 +142,7 @@ return "view";
 可以看出ModelMap又实现了Model接口。因此表面上是采用了不同方式，底层本质上是相同的。
 SpringMVC之所以提供了这些方式，目的就是方便程序员的使用，提供了多样化的方式，可见它的重要性。
 ```
-## 2.5使用ModelAndView类
+## 2.5 使用ModelAndView类
 ```
 在SpringMVC框架中为了更好的体现MVC架构模式，提供了一个类：ModelAndView。这个类的实例封装了Model和View。也就是说这个类既封装业务处理之后的数据，也体现了跳转到哪个视图。使用它也可以完成request域数据共享。
 @RequestMapping("/testModelAndView")
@@ -163,7 +163,7 @@ public ModelAndView testModelAndView(){
 3. 需要调用addObject向域中存储数据。
 4. 需要调用setViewName设置视图的名字。
 ```
-### 2.5.1ModelAndView源码分析
+### 2.5.1 ModelAndView源码分析
 ```
 以上我们通过了五种方式完成了request域数据共享，包括：原生Servlet API，Model、Map、ModelMap、ModelAndView
 
@@ -178,7 +178,7 @@ public ModelAndView testModelAndView(){
 可以看到这里，无论你使用哪种方式，最终都要返回一个ModelAndView对象。
 提醒：大家可以通过以下断点调试方式，采用一级一级返回，最终可以看到都会返回ModelAndView对象。
 ```
-## 2.6@RequestAttribute注解读取
+## 2.6 @RequestAttribute注解读取
 ```
 @RequestMapping("/test3")
 public String test3(@RequestAttribute("msg") String msg) {
@@ -186,14 +186,14 @@ public String test3(@RequestAttribute("msg") String msg) {
     return "success";
 }
 ```
-# 3.session域对象
+# 3. session域对象
 ```
 在SpringMVC中使用session域共享数据，实现方式有多种，其中比较常见的两种方式：
 1. 使用原生Servlet API
 2. 使用SessionAttributes注解
 ```
 
-## 3.1使用原生Servlet API
+## 3.1 使用原生Servlet API
 ```
 package com.powernode.springmvc.controller;
 
@@ -229,7 +229,7 @@ public class SessionScopeTestController {
 
 同时也可以先获取request再获取session
 ```
-## 3.2使用SessionAttributes注解（只可以放到类型上）
+## 3.2 使用SessionAttributes注解（只可以放到类型上）
 ```
 使用SessionAttributes注解标注Controller：
 package com.powernode.springmvc.controller;
@@ -264,7 +264,7 @@ public class SessionScopeTestController {
 注意：SessionAttributes注解使用在Controller类上。标注了当key是 x 或者 y 时，数据将被存储到会话session中。如果没有 SessionAttributes注解，默认存储到request域中。
 形参中不仅仅可以用ModelMap，还可以是Map、Model、ModelAndView
 ```
-## 3.3使用@SessionAttribute注解读取（只可以放到形参上）
+## 3.3 使用@SessionAttribute注解读取（只可以放到形参上）
 ```
 @RequestMapping("/session3")
 public String session3(@SessionAttribute("user") String user) {
@@ -274,7 +274,7 @@ public String session3(@SessionAttribute("user") String user) {
 
 ```
 
-# 5.RedirectAttributes（闪存属性 — Flash Scope）
+# 5. RedirectAttributes（闪存属性 — Flash Scope）
 ```
 在Web开发中，Post-Redirect-Get（PRG）是一种防止表单重复提交的重要模式：
 用户提交POST表单 → 重定向到结果页面 → 用户刷新不会重复提交。
@@ -334,7 +334,7 @@ Flash属性的底层实现：
 ● 下一个请求 → FlashMapManager取出并清理
 ```
 
-# 6.@SessionAttributes的陷阱与最佳实践
+# 6. @SessionAttributes的陷阱与最佳实践
 ```
 @SessionAttributes看似方便，但使用不当会造成数据污染和内存泄漏。
 
@@ -386,7 +386,7 @@ public class UserController {
 ● @SessionAttributes 适合向导式表单（多步骤表单），普通场景慎用
 ```
 
-# 7.@ModelAttribute深入使用
+# 7. @ModelAttribute深入使用
 ```
 @ModelAttribute既可以标注在方法参数上，也可以标注在方法上，功能细致且强大。
 
@@ -447,7 +447,7 @@ public class SomeController {
 ● 建议始终显式指定名称：@ModelAttribute("myKey")
 ```
 
-# 8.Application作用域的线程安全问题
+# 8. Application作用域的线程安全问题
 ```
 ServletContext（Application域）是在整个Web应用范围内共享的，所有用户的所有请求共享同一个空间，
 因此存在并发修改的安全隐患。
@@ -510,7 +510,7 @@ public class AppController {
   → 考虑使用Redis等分布式缓存代替Application域
 ```
 
-# 9.Thymeleaf作用域工具对象
+# 9. Thymeleaf作用域工具对象
 ```
 Thymeleaf提供了便捷的作用域访问方式，无需在Controller中将数据放入Model。
 
@@ -547,8 +547,8 @@ Thymeleaf提供了便捷的作用域访问方式，无需在Controller中将数�
 ● 过度使用这些对象会降低代码可维护性，建议主要的数据传递仍通过Model完成
 ```
 
-# 4.application域对象
-## 4.1使用Servlet API
+# 4. application域对象
+## 4.1 使用Servlet API
 ```
 在SpringMVC实现application域数据共享，最常见的方案就是直接使用Servlet API了：
 package com.powernode.springmvc.controller;
@@ -587,7 +587,7 @@ public class ApplicationScopeTestController {
 超链接：index.html
 <a th:href="@{/testApplicationScope}">在SpringMVC中使用ServletAPI实现application域共享数据</a><br>
 ```
-## 4.2使用注入
+## 4.2 使用注入
 ```
 @Controller
 public class AppController {

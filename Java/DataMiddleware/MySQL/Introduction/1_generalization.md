@@ -1,6 +1,6 @@
-# 1.MySQL概述
+# 1. MySQL概述
 
-## 1.1什么是MySQL
+## 1.1 什么是MySQL
 
 MySQL 是由瑞典 MySQL AB 公司开发的一款**开源的关系型数据库管理系统（RDBMS）**，目前属于 Oracle 公司。MySQL 将数据保存在不同的表中，而不是将所有数据放在一个大仓库内，这样就增加了速度并提高了灵活性。
 
@@ -13,7 +13,7 @@ MySQL 的核心特征：
 - **高可扩展性**：支持主从复制、读写分离、分布式集群
 - **多存储引擎**：插件式存储引擎架构，可按需选择 InnoDB、MyISAM、Memory 等
 
-## 1.2MySQL发展历史
+## 1.2 MySQL发展历史
 
 | 版本 | 发布时间 | 核心改进 |
 |------|---------|---------|
@@ -28,11 +28,11 @@ MySQL 的核心特征：
 
 > MySQL 8.0 是目前（截至 2026 年）的主流生产版本。MySQL 5.7 于 2023 年 10 月停止官方支持，生产环境应尽快迁移至 8.0 或更高版本。MySQL 版本号 6.x 和 7.x 被跳过，直接从 5.7 跳至 8.0，以表明这是一个包含重大架构变更的里程碑版本。
 
-## 1.3MySQL体系结构
+## 1.3 MySQL体系结构
 
 MySQL 采用**分层架构**设计，从上到下分为四层：
 
-### 1.3.1连接层（Connection Layer）
+### 1.3.1 连接层（Connection Layer）
 
 负责客户端连接处理、身份验证、权限校验。主要组件包括：
 
@@ -40,7 +40,7 @@ MySQL 采用**分层架构**设计，从上到下分为四层：
 - **线程处理**：每连接一线程（thread-per-connection）模型，8.0 支持线程池插件
 - **认证模块**：支持 mysql_native_password、caching_sha2_password（8.0 默认）等认证插件
 
-### 1.3.2服务层（Service Layer）
+### 1.3.2 服务层（Service Layer）
 
 MySQL 的核心功能层，完成大部分逻辑处理：
 
@@ -50,7 +50,7 @@ MySQL 的核心功能层，完成大部分逻辑处理：
 - **缓存（Query Cache）**：MySQL 8.0 已移除查询缓存（QC 在高并发下性能退化严重，弊大于利）
 - **执行器（Executor）**：调用存储引擎 API 执行查询，返回结果
 
-### 1.3.3存储引擎层（Storage Engine Layer）
+### 1.3.3 存储引擎层（Storage Engine Layer）
 
 插件式架构，负责数据的存储和提取。MySQL 通过定义统一的存储引擎 API 接口，使得不同引擎可以灵活切换。
 
@@ -63,7 +63,7 @@ MySQL 的核心功能层，完成大部分逻辑处理：
 | CSV | CSV 文件存储 | 数据交换 |
 | NDB | 分布式集群引擎 | 高可用电信级应用 |
 
-### 1.3.4文件系统层
+### 1.3.4 文件系统层
 
 负责数据在物理磁盘上的存储，包括：
 
@@ -71,7 +71,7 @@ MySQL 的核心功能层，完成大部分逻辑处理：
 - 日志文件（redo log、undo log、binlog、error log、slow log、general log）
 - 配置文件（my.cnf / my.ini）
 
-## 1.4SQL执行流程
+## 1.4 SQL执行流程
 
 一条 SELECT 语句在 MySQL 中的完整执行路径：
 
@@ -87,7 +87,7 @@ MySQL 的核心功能层，完成大部分逻辑处理：
 - **优化器**：基于成本模型（CBO，Cost-Based Optimizer），估算不同执行计划的代价，选择最优方案。核心决策包括：索引选择、多表 JOIN 顺序、子查询重写等
 - **执行器**：根据执行计划调用存储引擎接口，逐行获取数据，完成过滤、排序、分组等操作
 
-## 1.5关系型数据库核心概念
+## 1.5 关系型数据库核心概念
 
 | 概念 | 说明 |
 |------|------|
@@ -100,9 +100,9 @@ MySQL 的核心功能层，完成大部分逻辑处理：
 | 视图（View） | 虚拟表，基于 SELECT 语句的预定义查询，用于简化复杂查询或权限隔离 |
 | 事务（Transaction） | 一组不可分割的 SQL 操作，要么全部成功，要么全部失败（ACID） |
 
-## 1.6MySQL安装
+## 1.6 MySQL安装
 
-### 1.6.1安装方式概览
+### 1.6.1 安装方式概览
 
 | 方式 | 优点 | 缺点 | 适合场景 |
 |------|------|------|---------|
@@ -112,7 +112,7 @@ MySQL 的核心功能层，完成大部分逻辑处理：
 | **源码编译** | 可定制编译参数 | 耗时长、容易出错 | 深度定制需求 |
 | **Windows MSI** | 图形化安装向导 | 仅限 Windows | Windows 本地开发 |
 
-### 1.6.2Docker快速安装（开发推荐）
+### 1.6.2 Docker快速安装（开发推荐）
 
 ```bash
 # 拉取官方镜像
@@ -127,7 +127,7 @@ docker run -d \
   mysql:8.0
 ```
 
-### 1.6.3Linux二进制包安装（生产推荐）
+### 1.6.3 Linux二进制包安装（生产推荐）
 
 核心步骤：
 
@@ -140,9 +140,9 @@ docker run -d \
 7. 获取初始 root 密码：`grep 'temporary password' /var/log/mysql/mysqld.log`
 8. 修改 root 密码：`ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password';`
 
-## 1.7MySQL连接管理
+## 1.7 MySQL连接管理
 
-### 1.7.1连接方式
+### 1.7.1 连接方式
 
 ```bash
 # TCP/IP 连接（默认 3306 端口）
@@ -157,7 +157,7 @@ mysql -u root -p -e "SHOW DATABASES;"
 
 > **注意**：在生产环境中避免在命令行直接写密码 `mysql -u root -p密码`，因为系统进程列表可能泄露密码。推荐使用 `mysql_config_editor` 存储认证信息。
 
-### 1.7.2连接数管理
+### 1.7.2 连接数管理
 
 ```sql
 -- 查看最大连接数（默认 151，生产环境通常设置 500~1000）
@@ -172,7 +172,7 @@ SHOW STATUS LIKE 'Max_used_connections';
 
 > **连接数上限受系统限制**：每个连接消耗内存（约 256KB），同时受 `open_files_limit`（打开文件数）约束。`max_connections` 不宜设置过大，否则可能导致 OOM。
 
-### 1.7.3连接超时参数
+### 1.7.3 连接超时参数
 
 ```sql
 -- 非交互式连接超时（JDBC 等，默认 28800 秒 = 8 小时）
@@ -184,16 +184,16 @@ SHOW VARIABLES LIKE 'interactive_timeout';
 
 > JDBC 连接池（如 HikariCP）通常设置 `connectionTimeout=30000`（30s），远小于 MySQL 的 `wait_timeout=28800`。连接池会在空闲时发送心跳保活（`SELECT 1`），防止被 MySQL 断开。
 
-## 1.8字符集与排序规则
+## 1.8 字符集与排序规则
 
-### 1.8.1为什么字符集重要
+### 1.8.1 为什么字符集重要
 
 字符集（Character Set）决定了数据在数据库中的编码方式。选错字符集会导致：
 - **乱码**：无法正确显示中文、emoji 等字符
 - **存储浪费**：UTF-8 对 ASCII 编码的英文用 1 字节，对中文用 3 字节；UTF-8MB4 对 emoji 用 4 字节
 - **索引长度问题**：VARCHAR(255) 在 utf8mb4 下索引可能超出 767 字节限制
 
-### 1.8.2推荐配置
+### 1.8.2 推荐配置
 
 ```sql
 -- 查看当前字符集
@@ -217,7 +217,7 @@ CREATE DATABASE mydb CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 
 > **排序规则（Collation）命名解析**：如 `utf8mb4_0900_ai_ci`，`0900` = Unicode 9.0 标准，`ai` = accent insensitive（重音不敏感），`ci` = case insensitive（大小写不敏感）。`_cs` 表示大小写敏感，`_bin` 表示按二进制比较。
 
-## 1.9SQL语言分类
+## 1.9 SQL语言分类
 
 | 分类 | 全称 | 核心命令 | 说明 |
 |------|------|---------|------|
@@ -229,9 +229,9 @@ CREATE DATABASE mydb CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 
 > **补充**：MySQL 8.0 支持**原子 DDL**，即 DDL 语句（如 CREATE TABLE）在执行过程中如果系统崩溃，会自动回滚，不会留下不一致的中间状态（基于 InnoDB 的数据字典实现）。
 
-## 1.10数据模型
+## 1.10 数据模型
 
-### 1.10.1关系型数据库的数据模型
+### 1.10.1 关系型数据库的数据模型
 
 数据以**二维表（关系）**的形式组织，表与表之间通过**外键**建立关联。核心约束包括：
 
@@ -239,7 +239,7 @@ CREATE DATABASE mydb CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 - **参照完整性**：外键值要么为 NULL，要么等于主表中存在的主键值
 - **用户自定义完整性**：通过 CHECK、NOT NULL、UNIQUE 等约束业务规则
 
-### 1.10.2E-R模型（实体-关系模型）
+### 1.10.2 E-R模型（实体-关系模型）
 
 用于数据库设计的可视化方法：
 
@@ -253,7 +253,7 @@ CREATE DATABASE mydb CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 | 1:N（一对多） | 用户 ←→ 订单（一个用户多个订单） |
 | M:N（多对多） | 学生 ←→ 课程（需要中间表"选课"） |
 
-### 1.10.3范式（Normalization）
+### 1.10.3 范式（Normalization）
 
 范式是数据库设计的规范，用于减少数据冗余、避免更新异常：
 
@@ -266,7 +266,7 @@ CREATE DATABASE mydb CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 
 > **反范式化（Denormalization）**：在实际工程中，为了查询性能，有时会**故意违反范式**。例如在订单表中冗余存储"用户名"字段，避免每次都 JOIN 用户表。这是一种以空间换时间、以写入成本（维护冗余字段）换读取性能的通用优化策略。
 
-## 1.11SQL编写规范（推荐）
+## 1.11 SQL编写规范（推荐）
 
 - **关键字大写**：`SELECT name FROM user WHERE id = 1;`
 - **表名、字段名小写+下划线**：`user_order`、`create_time`

@@ -1,4 +1,4 @@
-# 1.MyBatis-Plus 概述
+# 1. MyBatis-Plus 概述
 
 ```
 MyBatis-Plus（简称 MP）是一个 MyBatis 的增强工具，
@@ -15,7 +15,7 @@ MyBatis-Plus（简称 MP）是一个 MyBatis 的增强工具，
   - 内置分页插件、逻辑删除、乐观锁等功能
 ```
 
-# 2.MyBatis-Plus 与 MyBatis 的关系
+# 2. MyBatis-Plus 与 MyBatis 的关系
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -43,7 +43,7 @@ MyBatis-Plus（简称 MP）是一个 MyBatis 的增强工具，
 └─────────────────────────────────────────────────────────┘
 ```
 
-# 3.快速开始
+# 3. 快速开始
 
 ## 3.1 依赖引入
 
@@ -154,7 +154,7 @@ public interface CarMapper extends BaseMapper<Car> {
 }
 ```
 
-# 4.条件构造器（Wrapper）
+# 4. 条件构造器（Wrapper）
 
 ```java
 /**
@@ -220,7 +220,7 @@ List<Car> cars = carMapper.selectList(lambdaQuery);
 */
 ```
 
-# 5.分页插件
+# 5. 分页插件
 
 ```java
 /**
@@ -262,7 +262,7 @@ IPage<Car> selectCustomPage(Page<Car> page, @Param("brand") String brand);
 // </select>
 ```
 
-# 6.逻辑删除
+# 6. 逻辑删除
 
 ```java
 /**
@@ -294,7 +294,7 @@ carMapper.selectById(1L);
 // 如果数据已被逻辑删除，这里查不到
 ```
 
-# 7.乐观锁
+# 7. 乐观锁
 
 ```java
 /**
@@ -325,7 +325,7 @@ carMapper.updateById(car);
 // 如果此期间有其他线程也更新了，version 已经变成 2，则此更新失败（影响行数为 0）
 ```
 
-# 8.自动填充
+# 8. 自动填充
 
 ```java
 /**
@@ -363,7 +363,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 // 3. 效果：插入或更新时，createTime 和 updateTime 字段自动填充，无需手动设置
 ```
 
-# 9.Service 层增强
+# 9. Service 层增强
 
 ```java
 /**
@@ -409,7 +409,7 @@ public class CarController {
 }
 ```
 
-# 10.代码生成器
+# 10. 代码生成器
 
 ```java
 /**
@@ -449,7 +449,7 @@ public class CodeGenerator {
 }
 ```
 
-# 11.MP 与 MyBatis 的源码衔接点
+# 11. MP 与 MyBatis 的源码衔接点
 
 ```
 MP 如何做到"只增强不做改变"？
@@ -482,7 +482,7 @@ MP 与 MyBatis 的关系总结：
    - MP 是一个"扩展包"而非"替代品"
 ```
 
-# 12.什么时候应该使用 MyBatis-Plus
+# 12. 什么时候应该使用 MyBatis-Plus
 
 ```
   适合使用 MP 的场景：

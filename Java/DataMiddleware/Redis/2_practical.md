@@ -1,6 +1,6 @@
-# 1.短信登录
+# 1. 短信登录
 
-## 1.1导入黑马点评项目
+## 1.1 导入黑马点评项目
 
 - 模块：用户、商户、优惠券、探店笔记、关注、附近商铺。
 - 技术栈：Spring Boot + MyBatis Plus + Redis + MySQL + Nginx + 前端 H5。
@@ -213,7 +213,7 @@ CREATE TABLE tb_follow (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-## 1.2基于session实现短信登陆的流程
+## 1.2 基于session实现短信登陆的流程
 
 - 发送验证码：校验手机号 -> 生成 6 位验证码 -> 保存到 session。
 - 登录：校验手机号与验证码 -> 查询/创建用户 -> 保存用户到 session。
@@ -317,7 +317,7 @@ public class UserController {
 }
 ```
 
-## 1.3实现发送短信验证码的功能
+## 1.3 实现发送短信验证码的功能
 
 核心逻辑：
 ```java
@@ -420,7 +420,7 @@ public class Result {
 }
 ```
 
-## 1.4实现短信发送验证码登陆和注册的功能
+## 1.4 实现短信发送验证码登陆和注册的功能
 
 登录流程：
 ```java
@@ -474,7 +474,7 @@ public class UserDTO {
 }
 ```
 
-## 1.5实现登陆校验拦截器
+## 1.5 实现登陆校验拦截器
 
 - 自定义拦截器 `LoginInterceptor`：
 	- 未登录返回 401 或 `Result.fail("未登录")`。
@@ -595,7 +595,7 @@ public class UserHolder {
 }
 ```
 
-## 1.6隐藏用户敏感信息
+## 1.6 隐藏用户敏感信息
 
 - 定义 `UserDTO` 仅保留 `id/nickName/icon`。
 - session 或返回给前端使用 `UserDTO`。
@@ -605,7 +605,7 @@ UserDTO dto = BeanUtil.copyProperties(user, UserDTO.class);
 session.setAttribute("user", dto);
 ```
 
-## 1.7session共享的问题分析
+## 1.7 session共享的问题分析
 
 - 多节点部署会话不共享。
 - 解决方案：
@@ -650,7 +650,7 @@ public class SessionConfig {
 }
 ```
 
-## 1.8Redis代替session的业务流程
+## 1.8 Redis代替session的业务流程
 
 - 登录成功生成 `token` 返回前端。
 - `token` 作为 key，用户信息作为 hash 存 Redis。
@@ -721,7 +721,7 @@ public class RedisConfig {
 }
 ```
 
-## 1.9基于Redis实现短信登陆
+## 1.9 基于Redis实现短信登陆
 
 保存用户信息到 Redis：
 ```java
@@ -826,7 +826,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 }
 ```
 
-## 1.10解决状态登陆刷新的问题
+## 1.10 解决状态登陆刷新的问题
 
 - 增加 `RefreshTokenInterceptor`：
 	- 只要携带 `token`，就从 Redis 刷新 TTL。
@@ -1006,9 +1006,9 @@ public boolean allowSendSmsLua(String phone) {
 }
 ```
 
-# 2.商户查询缓存
+# 2. 商户查询缓存
 
-## 2.1什么是缓存
+## 2.1 什么是缓存
 
 - 用于减少 DB 访问，提高读性能。
 - 典型模式：Cache Aside（旁路缓存）。
@@ -1046,7 +1046,7 @@ public boolean allowSendSmsLua(String phone) {
 | Write-Through | 缓存层代理写, 同步写DB | 强一致 | 中 | 写少, 要一致 |
 | Write-Behind | 异步批量写DB | 弱一致 | 高 | 写多, 容忍不一致 |
 
-## 2.2添加商户缓存
+## 2.2 添加商户缓存
 
 查询流程：
 ```java
@@ -1141,12 +1141,12 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
 }
 ```
 
-## 2.3缓存练习题分析
+## 2.3 缓存练习题分析
 
 - 关注缓存穿透、缓存雪崩、缓存击穿。
 - 结合业务和访问量选择策略。
 
-## 2.4缓存更新策略
+## 2.4 缓存更新策略
 
 - 最常用：先更新数据库，再删除缓存。
 - 可配合消息队列保证最终一致。
@@ -1187,7 +1187,7 @@ public Result updateWithDelayDoubleDelete(Shop shop) {
 }
 ```
 
-## 2.5实现商铺缓存与数据库的双写一致
+## 2.5 实现商铺缓存与数据库的双写一致
 
 更新逻辑：
 ```java
@@ -1197,7 +1197,7 @@ stringRedisTemplate.delete("cache:shop:" + shop.getId());
 
 - 删除比更新更安全，避免并发读写产生脏数据。
 
-## 2.6缓存穿透问题及解决思路
+## 2.6 缓存穿透问题及解决思路
 
 问题：请求的数据既不在缓存中，也不在数据库中，导致每次请求都会直接打到数据库。
 
@@ -1276,7 +1276,7 @@ public RBloomFilter<Long> shopRedissonBloomFilter(RedissonClient redissonClient)
 }
 ```
 
-## 2.7缓存雪崩问题及解决思路
+## 2.7 缓存雪崩问题及解决思路
 
 问题：大量 key 同时过期或 Redis 宕机。
 
@@ -1385,13 +1385,13 @@ public class MultiLevelCacheService {
 }
 ```
 
-## 2.8缓存击穿问题及解决方案
+## 2.8 缓存击穿问题及解决方案
 
 问题：热点 key 失效，瞬时高并发打到 DB。
 
 - 解决：互斥锁、逻辑过期。
 
-### 2.8.1利用互斥锁解决缓存击穿问题
+### 2.8.1 利用互斥锁解决缓存击穿问题
 
 ```java
 String lockKey = "lock:shop:" + id;
@@ -1409,7 +1409,7 @@ try {
 }
 ```
 
-### 2.8.2利用逻辑过期解决缓存击穿问题
+### 2.8.2 利用逻辑过期解决缓存击穿问题
 
 - 缓存中存 `data + expireTime`，永不过期。
 - 过期后由异步线程重建。
@@ -1499,7 +1499,7 @@ public Shop queryWithLogicalExpire(Long id) {
 }
 ```
 
-## 2.9封装Redistribution工具类
+## 2.9 封装Redistribution工具类
 
 - 工具类 `CacheClient` 统一缓存操作：
 	- `set()`、`setWithLogicalExpire()`。
@@ -1626,7 +1626,7 @@ public class CacheClient {
 }
 ```
 
-## 2.10缓存总结
+## 2.10 缓存总结
 
 - 先用穿透方案兜底，再处理击穿和雪崩。
 - 更新策略以"更新 DB + 删除缓存"为主。
@@ -1698,9 +1698,9 @@ JMeter: 商户查询压测
 └── Backend Listener -> InfluxDB + Grafana 监控
 ```
 
-# 3.优惠券秒杀
+# 3. 优惠券秒杀
 
-## 3.1全局唯一ID
+## 3.1 全局唯一ID
 
 - 订单号需要全局唯一、趋势递增、可分库分表。
 - 方案：Redis 自增 + 时间戳。
@@ -1715,7 +1715,7 @@ JMeter: 商户查询压测
 | 号段模式 | DB分配号段 | 可容灾 | DB瓶颈 |
 | 美团Leaf | 雪花+号段双模式 | 高可用, 监控完善 | 运维成本高 |
 
-## 3.2Redis实现全局唯一ID
+## 3.2 Redis实现全局唯一ID
 
 ```java
 public long nextId(String keyPrefix) {
@@ -1758,7 +1758,7 @@ public class RedisIdWorker {
 }
 ```
 
-## 3.3添加优惠券
+## 3.3 添加优惠券
 
 - `tb_voucher` 保存优惠券基础信息。
 - `tb_seckill_voucher` 保存秒杀库存、开始结束时间。
@@ -1811,7 +1811,7 @@ public void addSeckillVoucher(Voucher voucher) {
 }
 ```
 
-## 3.4实现秒杀下单
+## 3.4 实现秒杀下单
 
 - 校验时间与库存。
 - 扣减库存、创建订单。
@@ -1879,7 +1879,7 @@ public class VoucherOrderServiceImpl
 }
 ```
 
-## 3.5库存超卖问题分析
+## 3.5 库存超卖问题分析
 
 - 高并发下多线程读取库存导致重复扣减。
 - 需要原子扣减或锁。
@@ -1902,7 +1902,7 @@ public class VoucherOrderServiceImpl
 原因: 读取->判断->扣减 不是原子操作
 ```
 
-## 3.6乐观锁解决超卖
+## 3.6 乐观锁解决超卖
 
 SQL 乐观锁：
 ```sql
@@ -1933,7 +1933,7 @@ public boolean deductStockRedis(Long voucherId) {
 }
 ```
 
-## 3.7实现一人一单功能
+## 3.7 实现一人一单功能
 
 - 先查询是否已有订单；存在则拒绝。
 - 或建立唯一索引：`(user_id, voucher_id)`。
@@ -1979,7 +1979,7 @@ try { save(order); }
 catch (DuplicateKeyException e) { return Result.fail("您已抢购过该优惠券"); }
 ```
 
-## 3.8集群下的线程并发安全问题
+## 3.8 集群下的线程并发安全问题
 
 - 本地锁在多节点无效。
 - 需要分布式锁或基于 Redis 的原子校验。
@@ -2043,9 +2043,9 @@ catch (DuplicateKeyException e) { return Result.fail("您已抢购过该优惠�
 *30%错误率为乐观锁冲突导致的"库存不足", 非系统错误
 ```
 
-# 4.分布式锁
+# 4. 分布式锁
 
-## 4.1基本原理和不同实现方式对比
+## 4.1 基本原理和不同实现方式对比
 
 - 基于数据库：实现简单但性能差。
 - 基于 Redis：性能高，注意误删与原子性。
@@ -2076,12 +2076,12 @@ V6: Redisson(WatchDog自动续期)  -> 生产推荐
 V7: Redlock红锁(多Redis实例)    -> 更高可靠性
 ```
 
-## 4.2Redis的分布式锁实现思路
+## 4.2 Redis的分布式锁实现思路
 
 - `SETNX` + 过期时间。
 - 锁值设置为唯一标识，防止误删。
 
-## 4.3实现Redis分布式锁版本
+## 4.3 实现Redis分布式锁版本
 
 ```java
 Boolean ok = stringRedisTemplate.opsForValue()
@@ -2147,7 +2147,7 @@ end
 return 0
 ```
 
-## 4.4Redis分布式锁误删问题
+## 4.4 Redis分布式锁误删问题
 
 - A 线程锁过期，B 拿到锁。
 - A 执行完毕删除锁，误删 B 的锁。
@@ -2161,16 +2161,16 @@ B线程:                                        ┌加锁(锁值=B)─执行业�
     问题: A解锁时锁已被B持有, A误删B的锁 → C可以立即获取锁 → B与C产生并发安全问题
 ```
 
-## 4.5解决Redis分布式锁误删问题
+## 4.5 解决Redis分布式锁误删问题
 
 - 解锁前比对锁值，仅删除自己持有的锁。
 
-## 4.6分布式锁的原子性问题
+## 4.6 分布式锁的原子性问题
 
 - 比较与删除需要原子执行。
 - 通过 Lua 脚本保证原子性。
 
-## 4.7Lua脚本解决多条命令原子性问题
+## 4.7 Lua脚本解决多条命令原子性问题
 
 ```lua
 if redis.call('get', KEYS[1]) == ARGV[1] then
@@ -2179,7 +2179,7 @@ end
 return 0
 ```
 
-## 4.8Java调用lua脚本改造分布式锁
+## 4.8 Java调用lua脚本改造分布式锁
 
 ```java
 DefaultRedisScript<Long> script = new DefaultRedisScript<>();
@@ -2188,7 +2188,7 @@ script.setResultType(Long.class);
 Long result = stringRedisTemplate.execute(script, Collections.singletonList(key), threadId);
 ```
 
-## 4.9Redisson功能介绍
+## 4.9 Redisson功能介绍
 
 - 可重入锁、公平锁、读写锁、联锁。
 - WatchDog 自动续期。
@@ -2228,7 +2228,7 @@ public class RedissonConfig {
 }
 
 ```
-### 4.9.2redisson在springboot中的依赖
+### 4.9.2 redisson在springboot中的依赖
 
 ```xml
 <dependency>
@@ -2238,14 +2238,14 @@ public class RedissonConfig {
 </dependency>
 ```
 
-### 4.9.3redisson在普通项目中的依赖
+### 4.9.3 redisson在普通项目中的依赖
 ```xml
 <dependency>
     <groupId>org.redisson</groupId>
     <artifactId>redisson</artifactId>
 </dependency>
 ```
-## 4.10Redisson快速入门
+## 4.10 Redisson快速入门
 
 ```java
 RLock lock = redissonClient.getLock("lock:order:" + id);
@@ -2373,7 +2373,7 @@ try {
 }
 ```
 
-## 4.11Redisson的可重入锁原理
+## 4.11 Redisson的可重入锁原理
 
 - 基于 Hash 存储：`field=threadId`，`value=重入次数`。
 - 同线程重复加锁只递增计数。
@@ -2409,7 +2409,7 @@ Redisson WatchDog:
        |30s       |30s       |30s       |30s       |
 ```
 
-## 4.13Redisson的multiLock原理
+## 4.13 Redisson的multiLock原理
 
 - 多把锁一起获取，全部成功才继续。
 - 适合跨多个资源的原子操作。
@@ -2536,9 +2536,9 @@ public class RedlockService {
 | 性能 | 加锁本身有开销 | 减小锁粒度; 读写分离锁 |
 | 循环依赖 | A锁→等B锁, B锁→等A锁 | 统一加锁顺序; tryLock超时处理 |
 
-# 5.秒杀优化
+# 5. 秒杀优化
 
-## 5.1异步秒杀思路
+## 5.1 异步秒杀思路
 
 - 下单流程拆分：资格校验 -> 发送消息 -> 异步创建订单。
 - 目标：削峰、保护数据库。
@@ -2600,7 +2600,7 @@ public Result seckillVoucherAsync(Long voucherId) {
 }
 ```
 
-## 5.3基于阻塞队列实现异步下单
+## 5.3 基于阻塞队列实现异步下单
 
 - 使用 `ArrayBlockingQueue` 作为内存队列。
 - 消费线程从队列取订单并写库。
@@ -2696,9 +2696,9 @@ public class VoucherOrderStreamConsumer {
 }
 ```
 
-# 6.Redis消息队列
+# 6. Redis消息队列
 
-## 6.1认识消息队列
+## 6.1 认识消息队列
 
 - 解耦、削峰、异步、可重试。
 - Redis 可用 List、PubSub、Stream。
@@ -2724,7 +2724,7 @@ public class VoucherOrderStreamConsumer {
 需要云原生 + 低延迟       → RocketMQ
 ```
 
-## 6.2基于List实现消息队列
+## 6.2 基于List实现消息队列
 
 - 生产：`LPUSH queue msg`
 - 消费：`BRPOP queue 0`
@@ -2741,7 +2741,7 @@ while (true) {
 }
 ```
 
-## 6.3PubSub实现消息队列
+## 6.3 PubSub实现消息队列
 
 - 发布：`PUBLISH channel msg`
 - 订阅：`SUBSCRIBE channel`
@@ -2764,7 +2764,7 @@ public class OrderSubscriber implements MessageListener {
 }
 ```
 
-## 6.4Stream的单消费模式
+## 6.4 Stream的单消费模式
 
 - 生产：`XADD stream * field value`
 - 消费：`XREAD BLOCK 0 STREAMS stream >`
@@ -2783,7 +2783,7 @@ List<MapRecord<String, Object, Object>> records = stringRedisTemplate.opsForStre
               StreamReadOptions.empty().count(5).block(Duration.ofSeconds(2)));
 ```
 
-## 6.5Stream的消费者组模式
+## 6.5 Stream的消费者组模式
 
 - 创建组：`XGROUP CREATE stream g1 0 MKSTREAM`
 - 消费：`XREADGROUP GROUP g1 c1 BLOCK 2000 STREAMS stream >`
@@ -2830,7 +2830,7 @@ public void handleMessageWithIdempotence(MapRecord<String, Object, Object> recor
 }
 ```
 
-## 6.6基于Stream消息队列实现异步秒杀
+## 6.6 基于Stream消息队列实现异步秒杀
 
 - Lua 脚本中 `XADD` 写入订单消息。
 - 消费者组异步处理并创建订单。
@@ -2946,9 +2946,9 @@ public class OrderStreamService {
 }
 ```
 
-# 7.达人探店
+# 7. 达人探店
 
-## 7.1发布探店笔记
+## 7.1 发布探店笔记
 
 - 保存 `tb_blog`，关联作者 id。
 - 发布后将 blogId 推送到粉丝收件箱（ZSET）。
@@ -3071,25 +3071,25 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog>
 }
 ```
 
-## 7.2查看探店笔记
+## 7.2 查看探店笔记
 
 - 关联查询用户昵称和头像。
 - 返回是否点赞：通过 `ZSET` 判断。
 
-## 7.3点赞功能
+## 7.3 点赞功能
 
 - `ZADD blog:liked:{blogId} score=userId`，score 用时间戳。
 - 取消点赞：`ZREM`。
 - 数据库点赞数自增/自减。
 
-## 7.4点赞排行榜
+## 7.4 点赞排行榜
 
 - `ZREVRANGE blog:liked:{blogId} 0 4 WITHSCORES`。
 - 取出用户信息展示。
 
-# 8.好友关注
+# 8. 好友关注
 
-## 8.1关注和取关
+## 8.1 关注和取关
 
 - 关注写库 `tb_follow`。
 - Redis 使用 `Set` 存关注关系：`follow:{userId}`。
@@ -3177,17 +3177,17 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow>
 }
 ```
 
-## 8.2共同关注
+## 8.2 共同关注
 
 - `SINTER follow:user1 follow:user2`。
 - 再查询用户信息展示。
 
-## 8.3Feed流实现方案分析
+## 8.3 Feed流实现方案分析
 
 - 拉模式：查询关注列表再分页。
 - 推模式：发布时推送到粉丝收件箱（ZSET）。
 
-## 8.4推送到粉丝收件箱
+## 8.4 推送到粉丝收件箱
 
 - 发布 blog 后：
 ```java
@@ -3195,33 +3195,33 @@ ZSetOperations<String, String> zset = stringRedisTemplate.opsForZSet();
 zset.add("feed:" + fanId, blogId.toString(), System.currentTimeMillis());
 ```
 
-## 8.5滚动分页查询收件箱的思路
+## 8.5 滚动分页查询收件箱的思路
 
 - 以 `score`（时间戳）为游标。
 - 下一页查询 `score < lastScore`。
 
-## 8.6实现滚动分页查询
+## 8.6 实现滚动分页查询
 
 ```java
 Set<ZSetOperations.TypedTuple<String>> set = zset.reverseRangeByScoreWithScores(
 		"feed:" + userId, 0, maxTime, offset, 2);
 ```
 
-# 9.附近商铺
+# 9. 附近商铺
 
-## 9.1GEO数据结构的基本用法
+## 9.1 GEO数据结构的基本用法
 
 - `GEOADD` 添加坐标。
 - `GEOSEARCH` 按半径或范围搜索。
 
-## 9.2导入店铺数据到GEO
+## 9.2 导入店铺数据到GEO
 
 ```java
 String key = "shop:geo:" + typeId;
 redisTemplate.opsForGeo().add(key, new Point(x, y), shopId.toString());
 ```
 
-## 9.3实现附近商户功能
+## 9.3 实现附近商户功能
 
 ```java
 GeoResults<RedisGeoCommands.GeoLocation<String>> result =
@@ -3230,14 +3230,14 @@ GeoResults<RedisGeoCommands.GeoLocation<String>> result =
 				RedisGeoCommands.GeoSearchCommandArgs.newGeoSearchArgs().includeDistance().limit(10));
 ```
 
-# 10.用户签到
+# 10. 用户签到
 
-## 10.1BitMap功能演示
+## 10.1 BitMap功能演示
 
 - `SETBIT sign:2025:05:12 0 1`。
 - 用位图节省空间。
 
-## 10.2实现签到功能
+## 10.2 实现签到功能
 
 ```java
 int day = LocalDate.now().getDayOfMonth();
@@ -3245,7 +3245,7 @@ String key = "sign:" + userId + ":" + yyyyMM;
 stringRedisTemplate.opsForValue().setBit(key, day - 1, true);
 ```
 
-## 10.3统计连续签到
+## 10.3 统计连续签到
 
 ```java
 List<Long> result = stringRedisTemplate.opsForValue().bitField(key,
@@ -3254,14 +3254,14 @@ List<Long> result = stringRedisTemplate.opsForValue().bitField(key,
 
 - 从低位连续统计 1 的个数。
 
-# 11.UV统计
+# 11. UV统计
 
-## 11.1HyperLogLog的用法
+## 11.1 HyperLogLog的用法
 
 - `PFADD uv:2025-05-12 user1 user2 ...`
 - `PFCOUNT uv:2025-05-12`
 
-## 11.2测试百万数据的统计
+## 11.2 测试百万数据的统计
 
 - HyperLogLog 误差约 0.81%，占用 12KB 左右。
 - 适合大规模 UV 统计。
@@ -3564,7 +3564,7 @@ else
 end
 ```
 
-### 14.5 四种限流算法对比
+## 14.5 四种限流算法对比
 
 | 算法 | 原理 | 优点 | 缺点 | 适用 |
 |------|------|------|------|------|
@@ -3645,7 +3645,7 @@ public class SessionTestController {
 }
 ```
 
-### 15.3 自定义Session的Cookie配置
+## 15.3 自定义Session的Cookie配置
 
 ```java
 @Configuration

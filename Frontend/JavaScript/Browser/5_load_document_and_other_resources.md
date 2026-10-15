@@ -1,4 +1,4 @@
-# 1.页面生命周期：DOMContentLoaded, load, beforeunload, unload
+# 1. 页面生命周期：DOMContentLoaded, load, beforeunload, unload
 ```
 HTML 页面的生命周期包含三个重要事件：
 
@@ -13,7 +13,7 @@ beforeunload 事件 —— 用户正在离开：我们可以检查用户是否�
 unload 事件 —— 用户几乎已经离开了，但是我们仍然可以启动一些操作，例如发送统计数据。
 我们探索一下这些事件的细节。
 ```
-## 1.1DOMContentLoaded
+## 1.1 DOMContentLoaded
 ```javascript
 DOMContentLoaded 事件发生在 document 对象上。
 
@@ -84,7 +84,7 @@ Firefox，Chrome 和 Opera 都会在 DOMContentLoaded 中自动填充表单。
 
 因此，如果 DOMContentLoaded 被需要加载很长时间的脚本延迟触发，那么自动填充也会等待。你可能在某些网站上看到过（如果你使用浏览器自动填充）—— 登录名/密码字段不会立即自动填充，而是在页面被完全加载前会延迟填充。这实际上是 DOMContentLoaded 事件之前的延迟。
 ```
-## 1.2window.onload
+## 1.2 window.onload
 ```javascript
 当整个页面，包括样式、图片和其他资源被加载完成时，会触发 window 对象上的 load 事件。可以通过 onload 属性获取此事件。
 
@@ -129,7 +129,7 @@ window.addEventListener("unload", function() {
 
 如果我们要取消跳转到另一页面的操作，在这里做不到。但是我们可以使用另一个事件 —— onbeforeunload。
 ```
-## 1.3window.onunload
+## 1.3 window.onunload
 ```javascript
 当访问者离开页面时，window 对象上的 unload 事件就会被触发。我们可以在那里做一些不涉及延迟的操作，例如关闭相关的弹出窗口。
 
@@ -159,7 +159,7 @@ window.addEventListener("unload", function() {
 
 如果我们要取消跳转到另一页面的操作，在这里做不到。但是我们可以使用另一个事件 —— onbeforeunload。
 ```
-## 1.4window.onbeforeunload
+## 1.4 window.onbeforeunload
 ```javascript
 如果访问者触发了离开页面的导航（navigation）或试图关闭窗口，beforeunload 处理程序将要求进行更多确认。
 
@@ -195,7 +195,7 @@ window.addEventListener("beforeunload", (event) => {
   event.returnValue = "有未保存的值。确认要离开吗？";
 });
 ```
-## 1.5readyState
+## 1.5 readyState
 ```javascript
 如果我们在文档加载完成之后设置 DOMContentLoaded 事件处理程序，会发生什么？
 
@@ -267,7 +267,7 @@ readystatechange 事件是跟踪文档加载状态的另一种机制，它很早
 在 DOMContentLoaded 之前，document.readyState 会立即变成 interactive。它们俩的意义实际上是相同的。
 当所有资源（iframe 和 img）都加载完成后，document.readyState 变成 complete。这里我们可以发现，它与 img.onload（img 是最后一个资源）和 window.onload 几乎同时发生。转换到 complete 状态的意义与 window.onload 相同。区别在于 window.onload 始终在所有其他 load 处理程序之后运行。
 ```
-## 1.6总结
+## 1.6 总结
 ```javascript
 页面生命周期事件：
 
@@ -283,7 +283,7 @@ interactive —— 文档已被解析完成，与 DOMContentLoaded 几乎同时�
 complete —— 文档和资源均已加载完成，与 window.onload 几乎同时发生，但是在 window.onload 之前发生。
 ```
 
-# 2.脚本：async, defer
+# 2. 脚本：async, defer
 ```
 现代的网站中，脚本往往比 HTML 更“重”：它们的大小通常更大，处理时间也更长。
 
@@ -312,7 +312,7 @@ complete —— 文档和资源均已加载完成，与 window.onload 几乎同�
 
 幸运的是，这里有两个 <script> 特性（attribute）可以为我们解决这个问题：defer 和 async。
 ```
-## 2.1defer
+## 2.1 defer
 ```javascript
 defer 特性告诉浏览器不要等待脚本。相反，浏览器将继续处理 HTML，构建 DOM。脚本会“在后台”下载，然后等 DOM 构建完成后，脚本才会执行。
 
@@ -356,7 +356,7 @@ DOMContentLoaded 事件处理程序等待具有 defer 特性的脚本执行完�
 defer 特性仅适用于外部脚本
 如果 <script> 脚本没有 src，则会忽略 defer 特性。
 ```
-## 2.2async
+## 2.2 async
 ```javascript
 async 特性与 defer 有些类似。它也能够让脚本不阻塞页面。但是，在行为上二者有着重要的区别。
 
@@ -393,7 +393,7 @@ DOMContentLoaded 可能在 async 之前或之后触发，不能保证谁先谁�
 async 特性仅适用于外部脚本
 就像 defer 一样，如果 <script> 标签没有 src 特性（attribute），那么 async 特性会被忽略。
 ```
-## 2.3总结
+## 2.3 总结
 ```javascript
 此外，还有一种向页面添加脚本的重要的方式。
 
@@ -431,7 +431,7 @@ loadScript("/article/script-async-defer/small.js");
 同样，和 defer 一样，如果我们要加载一个库和一个依赖于它的脚本，那么顺序就很重要。
 ```
 
-# 3.资源加载：onload, onerror
+# 3. 资源加载：onload, onerror
 ```
 浏览器允许我们跟踪外部资源的加载 —— 脚本，iframe，图片等。
 
@@ -440,7 +440,7 @@ loadScript("/article/script-async-defer/small.js");
 onload —— 成功加载，
 onerror —— 出现 error。
 ```
-## 3.1加载脚本
+## 3.1 加载脚本
 ```javascript
 假设我们需要加载第三方脚本，并调用其中的函数。
 
@@ -493,7 +493,7 @@ onload/onerror 事件仅跟踪加载本身。
 
 在脚本处理和执行期间可能发生的 error 超出了这些事件跟踪的范围。也就是说：如果脚本成功加载，则即使脚本中有编程 error，也会触发 onload 事件。如果要跟踪脚本 error，可以使用 window.onerror 全局处理程序。
 ```
-## 3.2其他资源
+## 3.2 其他资源
 ```javascript
 load 和 error 事件也适用于其他资源，基本上（basically）适用于具有外部 src 的任何资源。
 
@@ -515,7 +515,7 @@ img.onerror = function() {
 对于 <iframe> 来说，iframe 加载完成时会触发 iframe.onload 事件，无论是成功加载还是出现 error。
 这是出于历史原因。
 ```
-## 3.3跨域策略
+## 3.3 跨域策略
 ```javascript
 这里有一条规则：来自一个网站的脚本无法访问其他网站的内容。例如，位于 https://facebook.com 的脚本无法读取位于 https://gmail.com 的用户邮箱。
 
@@ -587,7 +587,7 @@ window.onerror = function(message, url, line, col, errorObj) {
 <script crossorigin="anonymous" src="https://cors.javascript.info/article/onload-onerror/crossorigin/error.js"></script>
 现在，假设服务器提供了 Access-Control-Allow-Origin header，一切都正常。我们有了完整的 error 报告。
 ```
-## 3.4总结
+## 3.4 总结
 ```javascript
 图片 <img>，外部样式，脚本和其他资源都提供了 load 和 error 事件以跟踪它们的加载：
 

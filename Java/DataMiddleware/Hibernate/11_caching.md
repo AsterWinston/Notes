@@ -126,11 +126,11 @@ session2.close();
 
 ## 2.3 一级缓存的行为特征
 
-### 重复读取优化
+### 2.3.1 重复读取优化
 
 同一 Session 内对同一 ID 的多次读取不会重复执行 SQL。这包括 `find()`、`get()`、`load()` 以及通过关联导航加载的实体。
 
-### 写后延迟（Write Behind）
+### 2.3.2 写后延迟（Write Behind）
 
 Hibernate 不会在每次 `session.persist()` 或属性修改后立即执行 SQL。而是将变更累积在 PersistenceContext 中，在以下时机统一同步到数据库：
 
@@ -152,11 +152,11 @@ tx.commit();  // flush() → 执行 UPDATE SQL
 session.close();
 ```
 
-### 脏检查（Dirty Checking）
+### 2.3.3 脏检查（Dirty Checking）
 
 Hibernate 在 flush 时会将 PersistenceContext 中实体的当前状态与加载时的快照（Snapshot）进行比对，只有属性发生变化的实体才会生成 UPDATE 语句。这是通过 `session.flush()` → 脏检查 → 生成必要的 SQL 来实现的。
 
-### HQL/JPQL 查询的自动 Flush
+### 2.3.4 HQL/JPQL 查询的自动 Flush
 
 在 `FlushMode.AUTO` 模式下（默认），执行 HQL/JPQL 查询时，Hibernate 会自动先 flush PersistenceContext 中挂起的变更，以保证查询结果的一致性：
 
@@ -166,7 +166,7 @@ List<Book> books = session.createQuery("from Book", Book.class).list();
 // 执行 HQL 前自动 flush → INSERT 新书 → 再执行 SELECT → 结果包含新书
 ```
 
-### 批量操作绕过一级缓存
+### 2.3.5 批量操作绕过一级缓存
 
 HQL 的 UPDATE/DELETE 批量操作（`executeUpdate()`）**不会经过一级缓存**，直接在数据库层面执行。这意味着：
 
@@ -182,7 +182,7 @@ Book book = session.find(Book.class, 1L); // 从一级缓存返回旧数据
 
 ## 2.4 一级缓存的问题
 
-### 大数据量时内存溢出
+### 2.4.1 大数据量时内存溢出
 
 当需要处理大量实体（如批量导入 10 万条记录）时，如果不加以控制，PersistenceContext 会不断膨胀直至 OOM：
 
@@ -216,11 +216,11 @@ tx.commit();
 session.close();
 ```
 
-### 长 Session 持有过期数据
+### 2.4.2 长 Session 持有过期数据
 
 如果 Session 的生命周期过长（例如在 Web 应用中一个 HTTP 请求对应一个 Session 是合理的，但绝不能跨多个 HTTP 请求共用 Session），会导致一级缓存中的数据与数据库实际数据出现较大偏差。
 
-### StatelessSession 完全不使用一级缓存
+### 2.4.3 StatelessSession 完全不使用一级缓存
 
 `StatelessSession` 是 Hibernate 提供的无状态 Session 实现，它：
 
@@ -511,7 +511,7 @@ public class Account {
 
 ## 3.4 实体缓存配置
 
-### 注解方式配置
+### 3.4.1 注解方式配置
 
 ```java
 @Entity
@@ -546,7 +546,7 @@ public class Book {
 
 **`region` 属性**：自定义区域名称，多个实体可以共享同一个缓存区域（不推荐，通常一个实体一个区域）。
 
-### XML 方式配置
+### 3.4.2 XML 方式配置
 
 在 `hibernate.cfg.xml` 或 `persistence.xml` 中：
 
@@ -558,7 +558,7 @@ public class Book {
 <collection-cache collection="com.example.Department.employees" usage="read-write"/>
 ```
 
-### 哪些实体适合缓存
+### 3.4.3 哪些实体适合缓存
 
 | 适合缓存 | 不适合缓存 |
 |---------|-----------|
@@ -643,7 +643,7 @@ public class Employee {
 
 每个实体类型默认对应一个独立的缓存区域（Cache Region），可以对不同区域配置不同的缓存策略（容量、TTL、驱逐算法等）。
 
-### 区域命名规则
+### 3.6.1 区域命名规则
 
 | 区域类型 | 命名规则 | 示例 |
 |---------|---------|------|
@@ -654,7 +654,7 @@ public class Employee {
 | 查询缓存（自定义） | `query.setCacheRegion("xxx")` | `reportQueryRegion` |
 | 更新时间戳 | `TimestampsCache` | — |
 
-### Ehcache 配置示例——不同区域不同策略
+### 3.6.2 Ehcache 配置示例——不同区域不同策略
 
 **ehcache.xml**：
 
@@ -725,7 +725,7 @@ public class Employee {
 </ehcache>
 ```
 
-### 动态修改缓存区域配置
+### 3.6.3 动态修改缓存区域配置
 
 大多数缓存提供者支持通过 JMX 或管理 API 动态调整缓存配置（如 TTL、最大条目数等）。例如：
 
@@ -776,7 +776,7 @@ public class Employee {
 
 因此启用查询缓存的实体**必须**同时启用二级缓存。
 
-### 查询缓存的失效机制
+### 4.1.1 查询缓存的失效机制
 
 查询缓存的失效是**表级别**的：一旦某个表发生任何 INSERT、UPDATE 或 DELETE 操作，**所有**涉及该表的查询缓存条目都会失效。这是通过 Hibernate 的时间戳机制来实现的：
 
@@ -787,13 +787,13 @@ public class Employee {
 
 ## 4.2 查询缓存的启用
 
-### 全局启用
+### 4.2.1 全局启用
 
 ```properties
 hibernate.cache.use_query_cache=true
 ```
 
-### 按查询启用
+### 4.2.2 按查询启用
 
 ```java
 // HQL 查询
@@ -812,7 +812,7 @@ List<Book> books = session.createQuery(
     .getResultList();
 ```
 
-### @NamedQuery 方式
+### 4.2.3 @NamedQuery 方式
 
 ```java
 @Entity
@@ -828,7 +828,7 @@ public class Book {
 }
 ```
 
-### 在 Spring Data JPA 中启用
+### 4.2.4 在 Spring Data JPA 中启用
 
 ```java
 public interface BookRepository extends JpaRepository<Book, Long> {
@@ -868,7 +868,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
 ## 4.4 查询缓存的失效
 
-### 时间戳缓存区域（TimestampsCache）
+### 4.4.1 时间戳缓存区域（TimestampsCache）
 
 Hibernate 内部维护一个 `TimestampsCache` 区域，结构如下：
 
@@ -893,7 +893,7 @@ QueryCacheEntry {
 }
 ```
 
-### 失效过于频繁的问题
+### 4.4.2 失效过于频繁的问题
 
 如果一个表频繁更新（例如每秒数十条 UPDATE），查询缓存条目会不断失效，导致：
 
@@ -924,7 +924,7 @@ QueryCacheEntry {
 
 Ehcache 是 Hibernate 二级缓存最流行的实现，历史悠久、成熟稳定。Ehcache 2.x 是 Hibernate 5.x 默认支持的缓存提供者（需单独引入依赖），Ehcache 3.x 通过 JCache 接口集成。
 
-### 依赖配置
+### 5.1.1 依赖配置
 
 **Maven（Ehcache 2.x + Hibernate 5.x）：**
 
@@ -961,7 +961,7 @@ Ehcache 是 Hibernate 二级缓存最流行的实现，历史悠久、成熟稳�
 </dependency>
 ```
 
-### 完整配置示例（Ehcache 2.x）
+### 5.1.2 完整配置示例（Ehcache 2.x）
 
 **application.properties**：
 
@@ -1071,7 +1071,7 @@ hibernate.generate_statistics=true
 </ehcache>
 ```
 
-### 完整配置示例（Ehcache 3.x + JCache）
+### 5.1.3 完整配置示例（Ehcache 3.x + JCache）
 
 **ehcache3.xml**：
 
@@ -1145,7 +1145,7 @@ hibernate.generate_statistics=true
 
 Hazelcast 是分布式缓存解决方案，适合多节点集群部署。所有节点共享同一个缓存集群，天然支持跨 JVM 的缓存一致性。
 
-### 依赖配置
+### 5.2.1 依赖配置
 
 ```xml
 <!-- Hibernate 5.x + Hazelcast 集成 -->
@@ -1161,7 +1161,7 @@ Hazelcast 是分布式缓存解决方案，适合多节点集群部署。所有�
 </dependency>
 ```
 
-### 完整配置示例
+### 5.2.2 完整配置示例
 
 **application.properties**：
 
@@ -1234,7 +1234,7 @@ hibernate.generate_statistics=true
 </hazelcast>
 ```
 
-### 分布式环境下的缓存一致性
+### 5.2.3 分布式环境下的缓存一致性
 
 Hazelcast 通过以下机制保证集群缓存一致性：
 
@@ -1259,7 +1259,7 @@ Hazelcast 通过以下机制保证集群缓存一致性：
 
 Infinispan 是 Red Hat/JBoss 提供的缓存方案，与 JBoss/WildFly 深度集成。支持事务型缓存（TRANSACTIONAL 策略），需要 JTA 事务管理器。
 
-### 依赖配置
+### 5.3.1 依赖配置
 
 ```xml
 <dependency>
@@ -1280,7 +1280,7 @@ Infinispan 是 Red Hat/JBoss 提供的缓存方案，与 JBoss/WildFly 深度集
 </dependency>
 ```
 
-### 完整配置示例
+### 5.3.2 完整配置示例
 
 **application.properties**：
 
@@ -1382,7 +1382,7 @@ public class Account {
 
 Redis 作为二级缓存适用于已有 Redis 基础设施的项目，支持集群部署。
 
-### 依赖配置
+### 5.4.1 依赖配置
 
 **Maven（Hibernate 5.x）**：
 
@@ -1410,7 +1410,7 @@ Redis 作为二级缓存适用于已有 Redis 基础设施的项目，支持集�
 </dependency>
 ```
 
-### 完整配置示例
+### 5.4.2 完整配置示例
 
 **application.properties**：
 
@@ -1505,7 +1505,7 @@ public class HibernateCacheConfig {
 }
 ```
 
-### Redis 缓存的优缺点
+### 5.4.3 Redis 缓存的优缺点
 
 | 优点 | 缺点 |
 |------|------|
@@ -1518,7 +1518,7 @@ public class HibernateCacheConfig {
 
 JCache（JSR-107）是 Java 缓存标准 API。任何实现了 JCache 规范的缓存提供者都可以通过 Hibernate 的 `hibernate-jcache` 模块无缝集成。
 
-### 依赖配置
+### 5.5.1 依赖配置
 
 ```xml
 <dependency>
@@ -1539,7 +1539,7 @@ JCache（JSR-107）是 Java 缓存标准 API。任何实现了 JCache 规范的�
 </dependency>
 ```
 
-### 配置示例
+### 5.5.2 配置示例
 
 **application.properties**：
 
@@ -1614,7 +1614,7 @@ public class JCacheConfig {
 
 Caffeine 是高性能本地缓存库，基于 W-TinyLFU 驱逐算法，性能优于 Guava Cache 和 Ehcache 2.x。
 
-### 依赖配置
+### 5.6.1 依赖配置
 
 ```xml
 <!-- 第三方 hibernate-caffeine 集成 -->
@@ -1636,7 +1636,7 @@ Caffeine 是高性能本地缓存库，基于 W-TinyLFU 驱逐算法，性能优
 </dependency>
 ```
 
-### 完整配置示例
+### 5.6.2 完整配置示例
 
 **application.properties**：
 
@@ -1710,7 +1710,7 @@ public class CaffeineCacheConfig {
 }
 ```
 
-### Caffeine vs Ehcache 3.x 本地缓存性能对比
+### 5.6.3 Caffeine vs Ehcache 3.x 本地缓存性能对比
 
 | 指标 | Caffeine | Ehcache 3.x |
 |------|----------|-------------|
@@ -1883,7 +1883,7 @@ public class SessionCacheService {
 
 ## 6.3 手动控制缓存
 
-### 定时任务批量清除缓存
+### 6.3.1 定时任务批量清除缓存
 
 ```java
 @Component
@@ -1919,7 +1919,7 @@ public class CacheScheduledTasks {
 }
 ```
 
-### 外部消息队列触发缓存失效
+### 6.3.2 外部消息队列触发缓存失效
 
 ```java
 @Component
@@ -1966,7 +1966,7 @@ public class CacheInvalidationListener {
 }
 ```
 
-### Hibernate Statistics API 监控
+### 6.3.3 Hibernate Statistics API 监控
 
 ```java
 @Service
@@ -2080,7 +2080,7 @@ public class CacheStatisticsService {
 }
 ```
 
-### JMX 暴露统计信息
+### 6.3.4 JMX 暴露统计信息
 
 ```java
 @Configuration
@@ -2139,7 +2139,7 @@ public class HibernateJmxConfig {
 }
 ```
 
-### Spring Boot Actuator 集成
+### 6.3.5 Spring Boot Actuator 集成
 
 如果引入了 Spring Boot Actuator，可以通过 `/actuator/metrics` 端点查看 Hibernate 缓存指标：
 
@@ -2184,7 +2184,7 @@ public class HibernateCacheMetricsBinder {
 
 ## 7.1 缓存对象选择
 
-### 优先缓存
+### 7.1.1 优先缓存
 
 | 数据类型 | 示例 | 缓存策略 |
 |---------|------|---------|
@@ -2194,7 +2194,7 @@ public class HibernateCacheMetricsBinder {
 | 不常变的业务数据 | 产品目录、部门信息、用户基本信息 | READ_WRITE |
 | 层级数据 | 组织架构树、分类树 | READ_WRITE（连同集合缓存） |
 
-### 谨慎缓存
+### 7.1.2 谨慎缓存
 
 | 数据类型 | 风险 | 缓解措施 |
 |---------|------|---------|
@@ -2203,7 +2203,7 @@ public class HibernateCacheMetricsBinder {
 | 关联深度大的对象图 | 缓存序列化复杂、空间大 | 只缓存必要的实体和集合 |
 | 高并发更新的热点数据 | Soft Lock 竞争严重 | 考虑应用层分布式锁 + 缓存 |
 
-### 不应缓存
+### 7.1.3 不应缓存
 
 | 数据类型 | 原因 |
 |---------|------|
@@ -2258,7 +2258,7 @@ public class HibernateCacheMetricsBinder {
 
 ## 7.3 缓存大小管理
 
-### 容量配置原则
+### 7.3.1 容量配置原则
 
 | 缓存区域 | 推荐最大条目数 | 依据 |
 |---------|--------------|------|
@@ -2268,7 +2268,7 @@ public class HibernateCacheMetricsBinder {
 | 查询缓存 | 5,000 ~ 10,000 | 每个查询是一个条目 |
 | 时间戳缓存 | 500 | 每个表一个时间戳，量极小 |
 
-### 内存估算公式
+### 7.3.2 内存估算公式
 
 ```
 缓存内存占用 ≈ 条目数 × (实体序列化后大小 + 缓存 Key 开销)
@@ -2276,7 +2276,7 @@ public class HibernateCacheMetricsBinder {
               + 查询缓存条目数 × (ID 列表大小 + 查询键大小)
 ```
 
-### 驱逐策略选择
+### 7.3.3 驱逐策略选择
 
 | 策略 | 适用场景 |
 |------|---------|
@@ -2284,7 +2284,7 @@ public class HibernateCacheMetricsBinder {
 | **LFU**（Least Frequently Used） | 热点数据明确，长期低访问频率的冷数据可被驱逐 |
 | **FIFO**（First In First Out） | 简单场景，按写入时间顺序驱逐 |
 
-### TTL 与 TTI 配置
+### 7.3.4 TTL 与 TTI 配置
 
 ```properties
 # Ehcache 2.x 配置
@@ -2310,7 +2310,7 @@ Caffeine.newBuilder()
 | 业务实体 | 15～30 分钟 | 5～10 分钟 |
 | 查询缓存 | 5～15 分钟 | 3～5 分钟 |
 
-### 监控内存使用
+### 7.3.5 监控内存使用
 
 ```java
 // 获取各区域内存占用
@@ -2325,7 +2325,7 @@ System.out.println("磁盘条目数: " + regionStats.getElementCountOnDisk());
 
 ## 7.4 集群环境中的缓存一致性
 
-### 分布式缓存的挑战
+### 7.4.1 分布式缓存的挑战
 
 在多节点集群中，每个节点可能持有同一实体的旧版本缓存数据：
 
@@ -2335,9 +2335,9 @@ System.out.println("磁盘条目数: " + regionStats.getElementCountOnDisk());
 用户请求负载到节点 A → 读到旧数据
 ```
 
-### 缓存同步策略
+### 7.4.2 缓存同步策略
 
-#### 策略一：失效广播（Invalidation Broadcasting）
+**策略一：失效广播（Invalidation Broadcasting）**
 
 ```
 更新流程：
@@ -2353,7 +2353,7 @@ System.out.println("磁盘条目数: " + regionStats.getElementCountOnDisk());
 
 **适用提供者**：Ehcache（RMI/JMS 复制）、Hazelcast、Infinispan
 
-#### 策略二：更新广播（Update Broadcasting）
+**策略二：更新广播（Update Broadcasting）**
 
 ```
 更新流程：
@@ -2366,7 +2366,7 @@ System.out.println("磁盘条目数: " + regionStats.getElementCountOnDisk());
 **优点**：节点无需重新查询数据库
 **缺点**：网络传输开销大（对象序列化），大对象影响性能
 
-#### 策略三：外部消息队列通知
+**策略三：外部消息队列通知**
 
 ```
 更新流程：
@@ -2402,7 +2402,7 @@ public class DebeziumEventListener {
 }
 ```
 
-### 推荐方案
+### 7.4.3 推荐方案
 
 对于大多数场景，推荐以下组合：
 
@@ -2421,7 +2421,7 @@ public class DebeziumEventListener {
 
 ## 7.5 缓存性能监控
 
-### 关键监控指标
+### 7.5.1 关键监控指标
 
 | 指标 | 含义 | 健康值 | 告警阈值 |
 |------|------|--------|---------|
@@ -2431,7 +2431,7 @@ public class DebeziumEventListener {
 | 缓存内存占用 | 近似内存占用（字节） | 在堆内存 10% 以内 | > 堆内存 20% |
 | 缓存驱逐次数 | 因容量满被驱逐的次数 | 接近 0 | 持续增长 |
 
-### 通过 Spring Boot Actuator 自定义端点
+### 7.5.2 通过 Spring Boot Actuator 自定义端点
 
 ```java
 @Component
@@ -2517,7 +2517,7 @@ public class HibernateCacheEndpoint {
 
 ## 7.6 常见缓存问题
 
-### 缓存穿透（Cache Penetration）
+### 7.6.1 缓存穿透（Cache Penetration）
 
 **定义**：查询的数据在缓存和数据库中都不存在，每次请求都穿透缓存直接查询数据库。
 
@@ -2600,7 +2600,7 @@ public class BookExistenceFilter {
 }
 ```
 
-### 缓存击穿（Cache Breakdown / Hotspot Invalid）
+### 7.6.2 缓存击穿（Cache Breakdown / Hotspot Invalid）
 
 **定义**：热点数据缓存到期，大量并发请求同时涌入数据库。
 
@@ -2722,7 +2722,7 @@ public class NeverExpireCacheService {
 }
 ```
 
-### 缓存雪崩（Cache Avalanche）
+### 7.6.3 缓存雪崩（Cache Avalanche）
 
 **定义**：大量缓存 key 在同一时间点过期，所有请求同时涌向数据库。
 
@@ -2818,9 +2818,9 @@ public class AvalancheProtectionService {
 }
 ```
 
-### 缓存与数据库一致性
+### 7.6.4 缓存与数据库一致性
 
-#### Cache-Aside（旁路缓存）——最常用
+**Cache-Aside（旁路缓存）——最常用**
 
 ```
 读流程：
@@ -2851,7 +2851,7 @@ public Book updateBook(Long id, BookDto dto) {
 }
 ```
 
-#### Read-Through（读穿透）
+**Read-Through（读穿透）**
 
 ```
 读流程：
@@ -2864,7 +2864,7 @@ public Book updateBook(Long id, BookDto dto) {
 
 Hibernate 的二级缓存+实体缓存近似实现了 Read-Through 模式（通过 `find()` 按 ID 查询时）。
 
-#### Write-Through（写穿透）
+**Write-Through（写穿透）**
 
 ```
 写流程：
@@ -2877,7 +2877,7 @@ Hibernate 的二级缓存+实体缓存近似实现了 Read-Through 模式（通�
 
 Hibernate 的 `READ_WRITE` 策略部分近似（先更新 DB，再更新缓存，但顺序不是缓存优先）。
 
-#### Write-Behind（异步写回）
+**Write-Behind（异步写回）**
 
 ```
 写流程：
@@ -2888,7 +2888,7 @@ Hibernate 的 `READ_WRITE` 策略部分近似（先更新 DB，再更新缓存�
 
 Hibernate 的一级缓存 + `flush()` 机制类似于 Write-Behind（累积变更后批量写入数据库）。但 Hibernate 不推荐在二级缓存层面使用 Write-Behind，因为存在事务一致性风险。
 
-### 一致性总结
+### 7.6.5 一致性总结
 
 | 模式 | 读流程责任 | 写流程责任 | 一致性 | Hibernate 对应 |
 |------|-----------|-----------|--------|---------------|

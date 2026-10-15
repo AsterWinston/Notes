@@ -1,4 +1,4 @@
-# 1 Kafka Connect 概述
+# 1. Kafka Connect 概述
 
 ## 1.1 定位与价值
 
@@ -37,7 +37,7 @@ Kafka Connect 是 Apache Kafka 提供的数据集成框架，用于**将外部�
 | Transform | 消息转换（单条消息转换 SMT） |
 | Converter | 数据序列化/反序列化 |
 
-# 2 Connect 架构
+# 2. Connect 架构
 
 ## 2.1 分布式模式架构
 
@@ -94,7 +94,7 @@ Worker 进程
     记录每个 Source Connector 的消费进度
 ```
 
-# 3 配置与部署
+# 3. 配置与部署
 
 ## 3.1 Worker 配置（分布式模式）
 
@@ -138,7 +138,7 @@ curl http://localhost:8083/
 # {"version":"3.6.0","commit":"...","kafka_cluster_id":"..."}
 ```
 
-# 4 Source Connector 详解
+# 4. Source Connector 详解
 
 ## 4.1 示例：FileStream Source Connector
 
@@ -223,7 +223,7 @@ SourceOffset   = Map.of("timestamp", 1700000000000L)  // 源端的 offset
 }
 ```
 
-# 5 Sink Connector 详解
+# 5. Sink Connector 详解
 
 ## 5.1 示例：FileStream Sink Connector
 
@@ -296,7 +296,7 @@ public abstract class SinkTask {
 }
 ```
 
-# 6 Transform (SMT - Single Message Transform)
+# 6. Transform (SMT - Single Message Transform)
 
 ## 6.1 内置 Transform
 
@@ -378,7 +378,7 @@ public class UppercaseTransform<R extends ConnectRecord<R>>
 }
 ```
 
-# 7 错误处理与死信队列
+# 7. 错误处理与死信队列
 
 ## 7.1 Sink Connector 的错误处理
 
@@ -416,7 +416,7 @@ DLQ Topic 中每条记录:
     __connect.errors.exception.message: "Error processing..."
 ```
 
-# 8 核心参数速查
+# 8. 核心参数速查
 
 ## 8.1 Connector 级配置
 
@@ -455,7 +455,7 @@ connectors.creation.enable=true  # 允许通过 REST 创建 Connector
 admin.listeners=https://0.0.0.0:8084 # Admin API 监听地址 (Kafka 3.4+)
 ```
 
-# 9 常见运维操作
+# 9. 常见运维操作
 
 ```bash
 # 查看所有 Connector

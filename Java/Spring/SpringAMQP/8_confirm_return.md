@@ -1,4 +1,4 @@
-# 1.消息可靠性概述
+# 1. 消息可靠性概述
 
 在分布式系统中，消息的可靠传递是核心问题。一条消息从生产者到消费者的完整旅程中，可能在多个环节丢失：
 
@@ -17,9 +17,9 @@ RabbitMQ和Spring AMQP提供了一套完整的可靠性保障机制：
 | 存储阶段 | 消息持久化 | 消息存入磁盘防止Broker宕机丢失 |
 | 消费阶段 | Consumer Ack | 消费者确认消息已正确处理 |
 
-# 2.Publisher Confirm（发送确认）
+# 2. Publisher Confirm（发送确认）
 
-## 2.1什么是Publisher Confirm
+## 2.1 什么是Publisher Confirm
 Publisher Confirm（发布者确认）是RabbitMQ的一种可靠性机制：生产者发送消息后，Broker会异步返回一个确认（Ack或Nack），告知消息是否被成功接收。
 
 AMQP协议中确认的粒度有两种：
@@ -29,7 +29,7 @@ AMQP协议中确认的粒度有两种：
 | SIMPLE | 所有消息共享一个确认标记，任意Nack都会中断Channel | `ConfirmType.SIMPLE` |
 | CORRELATED | 每条消息有独立的确认，可精确定位哪条消息失败 | `ConfirmType.CORRELATED`（推荐） |
 
-## 2.2底层AMQP原理
+## 2.2 底层AMQP原理
 在AMQP协议层面，Publisher Confirm通过以下机制实现：
 
 ```
@@ -39,9 +39,9 @@ AMQP协议中确认的粒度有两种：
 4. 生产者通过 ConfirmListener 接收确认结果
 ```
 
-## 2.3Spring AMQP配置
+## 2.3 Spring AMQP配置
 
-### 2.3.1开启Publisher Confirm
+### 2.3.1 开启Publisher Confirm
 ```yaml
 spring:
   rabbitmq:
@@ -64,7 +64,7 @@ ConfirmType的三个可选值：
 - `SIMPLE`：简单确认模式（已过时，不推荐）
 - `CORRELATED`：关联确认模式（推荐）
 
-### 2.3.2实现ConfirmCallback
+### 2.3.2 实现ConfirmCallback
 ```java
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -94,7 +94,7 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
 }
 ```
 
-### 2.3.3完整示例
+### 2.3.3 完整示例
 ```java
 @Service
 public class ReliableMessageSender {
@@ -126,7 +126,7 @@ public class ReliableMessageSender {
 }
 ```
 
-## 2.4ConfirmCallback和ReturnsCallback的关系
+## 2.4 ConfirmCallback和ReturnsCallback的关系
 两个回调的区别：
 
 | 回调 | 触发条件 | 含义 |
@@ -162,18 +162,18 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 }
 ```
 
-## 2.5ConfirmCallback的注意事项
+## 2.5 ConfirmCallback的注意事项
 1. **异步性**：ConfirmCallback是异步执行的，不要在回调中执行耗时操作
 2. **多次回调**：如果`multiple=true`，一条Ack可能确认多条消息
 3. **性能影响**：开启Confirm模式会降低吞吐量（约10-20%），需要在可靠性和性能之间权衡
 4. **Channel独占**：启用Confirm的Channel上所有发布的消息都会被确认
 
-# 3.Return Callback（回退回调）
+# 3. Return Callback（回退回调）
 
-## 3.1什么是Return Callback
+## 3.1 什么是Return Callback
 当消息成功到达Exchange但**无法路由到任何Queue**时（如Routing Key没有匹配的Binding），如果设置了`mandatory=true`，Broker会将消息返回给生产者。
 
-## 3.2开启Return Callback
+## 3.2 开启Return Callback
 ```yaml
 spring:
   rabbitmq:
@@ -205,7 +205,7 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 }
 ```
 
-## 3.3Return Callback的触发场景
+## 3.3 Return Callback的触发场景
 ```java
 // 场景：Exchange上没有任何Binding匹配此RoutingKey
 rabbitTemplate.convertAndSend("order.exchange", "invalid.key", order);
@@ -218,14 +218,14 @@ rabbitTemplate.convertAndSend("order.exchange", "invalid.key", order);
 // 消息无法路由时被Broker静默丢弃，不触发任何回调
 ```
 
-## 3.4Return Callback的注意事项
+## 3.4 Return Callback的注意事项
 1. 只有`mandatory=true`时才会触发
 2. 如果设置了备用交换机（Alternate Exchange），消息会进入备用交换机，不会触发Return Callback
 3. 返回的消息保留了原始的所有属性（RoutingKey、Headers等）
 
-# 4.可靠消息发送的完整方案
+# 4. 可靠消息发送的完整方案
 
-## 4.1消息落库+定时任务补偿
+## 4.1 消息落库+定时任务补偿
 这是工业界常用的方案，确保消息100%投递成功：
 
 ```
@@ -235,7 +235,7 @@ rabbitTemplate.convertAndSend("order.exchange", "invalid.key", order);
 4. 定时任务：扫描状态为"待发送"且超过N分钟的消息，重新发送
 ```
 
-### 4.1.1实现示例
+### 4.1.1 实现示例
 ```java
 @Service
 public class ReliableMessageService {
@@ -278,7 +278,7 @@ public class ReliableMessageService {
 }
 ```
 
-### 4.1.2定时补偿任务
+### 4.1.2 定时补偿任务
 ```java
 @Component
 public class MessageResendTask {
@@ -319,7 +319,7 @@ public class MessageResendTask {
 }
 ```
 
-## 4.2消息落库的简化版（内存关联）
+## 4.2 消息落库的简化版（内存关联）
 如果业务允许少量消息丢失，可以使用内存中的Map暂存未确认消息，而不需要数据库。
 
 ```java
@@ -359,9 +359,9 @@ public class InMemoryConfirmManager {
 }
 ```
 
-# 5.消费者确认（Consumer Ack）
+# 5. 消费者确认（Consumer Ack）
 
-## 5.1确认机制回顾
+## 5.1 确认机制回顾
 消费者确认已在"消息接收详解"章节中详细讲解。这里是快速回顾：
 
 ```yaml
@@ -373,7 +373,7 @@ spring:
         default-requeue-rejected: true  # Nack后是否重新入队
 ```
 
-## 5.2消费端的可靠性保障
+## 5.2 消费端的可靠性保障
 ```
 1. auto模式（默认）：方法正常返回 = Ack；抛出异常 = Nack
 2. manual模式：显式调用 channel.basicAck / channel.basicNack
@@ -381,9 +381,9 @@ spring:
 4. 死信队列：重试耗尽后的消息进入死信队列，人工处理
 ```
 
-# 6.端到端的消息可靠性
+# 6. 端到端的消息可靠性
 
-## 6.1消息可靠性的完整链路
+## 6.1 消息可靠性的完整链路
 要保证消息不丢失，需要从端到端的全链路考虑：
 
 ```
@@ -407,7 +407,7 @@ spring:
    - 幂等处理（防止重复消费）
 ```
 
-## 6.2消息丢失的排查
+## 6.2 消息丢失的排查
 
 | 丢失环节 | 典型现象 | 排查方法 |
 |---------|---------|---------|
@@ -417,21 +417,21 @@ spring:
 | Broker到消费者 | 消息在Queue中但消费者没收到 | 检查消费者连接状态、prefetch设置 |
 | 消费处理 | 消费者收到但处理失败 | 检查异常处理、Ack模式、死信队列 |
 
-# 7.消息可靠性最佳实践
+# 7. 消息可靠性最佳实践
 
-## 7.1核心业务消息
+## 7.1 核心业务消息
 对于核心业务（如订单、支付），推荐：
 - 消息落库 + 定时补偿 + Publisher Confirm
 - Queue设置为持久化，消息持久化
 - 消费端manual Ack，业务处理成功后才确认
 
-## 7.2非核心业务消息
+## 7.2 非核心业务消息
 对于非核心业务（如日志、通知），可以适当降低可靠性要求：
 - Publisher Confirm（异步确认）
 - 合理设置TTL，过期自动清理
 - Auto Ack模式（性能优先）
 
-## 7.3配置清单
+## 7.3 配置清单
 ```yaml
 spring:
   rabbitmq:

@@ -1,4 +1,4 @@
-# 1.数据校验概述
+# 1. 数据校验概述
 ```
 在Web开发中，对用户输入的数据进行合法性校验是必不可少的一环。
 数据校验分为前端校验和后端校验：
@@ -22,7 +22,7 @@ SpringMVC6默认集成的Bean Validation实现是Hibernate Validator。
 4. 根据校验结果决定后续处理逻辑
 ```
 
-# 2.常用校验注解
+# 2. 常用校验注解
 ```
 JSR-380（Bean Validation 2.0）提供了以下常用校验注解：
 
@@ -51,7 +51,7 @@ JSR-380（Bean Validation 2.0）提供了以下常用校验注解：
 @NotNull同时检查null，是三者中最"弱"的校验
 ```
 
-# 3.基础使用：@Valid + BindingResult
+# 3. 基础使用：@Valid + BindingResult
 ```
 第一步：在POJO类上添加校验注解
 
@@ -160,7 +160,7 @@ Thymeleaf模板中使用th:errors展示校验错误：
 ● @Valid是jakarta.validation包下的（JavaEE规范），不是Spring的
 ```
 
-# 4.@Validated：Spring增强版校验
+# 4. @Validated：Spring增强版校验
 ```
 @Validated是Spring提供的校验注解，相比@Valid，它增加了分组校验功能。
 
@@ -209,7 +209,7 @@ public String update(@Validated(UpdateGroup.class) User user, BindingResult bind
   @Validated({UpdateGroup.class, Default.class}) User user
 ```
 
-# 5.自定义校验注解
+# 5. 自定义校验注解
 ```
 当内置的校验注解不能满足需求时，可以自定义校验注解。
 例如：定义一个"不能包含空格"的校验注解。
@@ -266,7 +266,7 @@ public class User {
 }
 ```
 
-# 6.校验消息的国际化配置
+# 6. 校验消息的国际化配置
 ```
 校验注解的message属性可以直接写死错误信息，但更好的做法是配置到属性文件中。
 
@@ -303,7 +303,7 @@ SpringMVC会自动将{min}、{max}替换为@Size、@Min等注解中设置的值�
 这样错误信息会动态生成，例如："用户名长度必须在2~20之间"。
 ```
 
-# 7.全局统一处理校验异常
+# 7. 全局统一处理校验异常
 ```
 如果Controller方法中没有声明BindingResult参数，校验失败时会抛出：
 ● org.springframework.web.bind.MethodArgumentNotValidException（@Valid校验失败）

@@ -1,4 +1,4 @@
-# 1 Consumer 总览
+# 1. Consumer 总览
 
 ## 1.1 Consumer 与 Consumer Group 关系
 
@@ -61,7 +61,7 @@ props.put("partition.assignment.strategy",
 props.put("isolation.level", "read_committed");      // read_uncommitted/read_committed
 ```
 
-# 2 消费者组协调协议
+# 2. 消费者组协调协议
 
 ## 2.1 Consumer Group 状态机
 
@@ -163,7 +163,7 @@ props.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
         "org.apache.kafka.clients.consumer.RangeAssignor");
 ```
 
-# 3 分区分配策略详解
+# 3. 分区分配策略详解
 
 ## 3.1 RangeAssignor（范围分配）
 
@@ -260,7 +260,7 @@ C3: P5, P6            ← 全部重新分配，迁移量大
 结果: C1 在整个过程中只短暂停止 P2, P3，P0, P1 持续消费
 ```
 
-# 4 Offset 管理机制
+# 4. Offset 管理机制
 
 ## 4.1 Offset 提交的三种方式
 
@@ -378,7 +378,7 @@ props.put("auto.offset.reset", "earliest"); // 从最早的 offset 开始
 //   none     → 无已提交 offset 时抛出异常
 ```
 
-# 5 Consumer 心跳与会话管理
+# 5. Consumer 心跳与会话管理
 
 ## 5.1 心跳线程
 
@@ -446,7 +446,7 @@ asyncProcess(records, () -> {
 });
 ```
 
-# 6 Consumer 拉取流程
+# 6. Consumer 拉取流程
 
 ## 6.1 Fetcher 拉取模型
 
@@ -489,7 +489,7 @@ Consumer 端行为:
   - poll(timeout): timeout 和 fetch.max.wait.ms 的较大者控制总等待
 ```
 
-# 7 再均衡监听器（Rebalance Listener）
+# 7. 再均衡监听器（Rebalance Listener）
 
 ## 7.1 ConsumerRebalanceListener 接口
 
@@ -570,7 +570,7 @@ consumer.subscribe(topics, new ConsumerRebalanceListener() {
 });
 ```
 
-# 8 消费语义保障
+# 8. 消费语义保障
 
 ## 8.1 至少一次（At-Least-Once）
 
@@ -619,7 +619,7 @@ public void onMessage(ConsumerRecord<String, String> record) {
 }
 ```
 
-# 9 Consumer 性能调优
+# 9. Consumer 性能调优
 
 ## 9.1 参数调优指南
 

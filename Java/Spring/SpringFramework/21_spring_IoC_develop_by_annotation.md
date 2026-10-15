@@ -154,7 +154,7 @@ service类上使用：Service（业务层）
 dao类上使用：Repository（持久层）
 上面四个注解中，都是只有一个value属性，用来指定 bean 的 id
 ```
-## 6.1@Component
+## 6.1 @Component
 ```
 @Target({ElementType.TYPE}) // 只能使用在类上
 @Retention(RetentionPolicy.RUNTIME) // 可以通过反射获取该注解
@@ -164,7 +164,7 @@ public @interface Component {
     String value() default "";
 }
 ```
-## 6.2@Controller
+## 6.2 @Controller
 ```
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -178,7 +178,7 @@ public @interface Controller {
     String value() default "";
 }
 ```
-## 6.3@Service
+## 6.3 @Service
 ```
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -192,7 +192,7 @@ public @interface Service {
     String value() default "";
 }
 ```
-## 6.4Repository
+## 6.4 Repository
 ```
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -367,7 +367,7 @@ class E {
     @Qualifier：org.springframework.beans.factory.annotation.Qualifier
     @Resource：javax.annotation.Resource
 ```
-## 9.1@Value：注入配置文件中的值（字符串、表达式等）
+## 9.1 @Value：注入配置文件中的值（字符串、表达式等）
 ```
 用于简单类型注入
 import org.springframework.beans.factory.annotation.Value;
@@ -506,7 +506,7 @@ public class MyDataSource {
     }
 }
 ```
-## 9.2@Autowired：按类型自动装配 Bean
+## 9.2 @Autowired：按类型自动装配 Bean
 ```
 @Autowired 注解用来注入非简单类型。
 	Autowired：自动连线，或自动装配
@@ -603,7 +603,7 @@ public class OrderService {
     }
 }
 ```
-## 9.3@Qualifier：与 `@Autowired` 配合，按名称指定注入 Bean
+## 9.3 @Qualifier：与 `@Autowired` 配合，按名称指定注入 Bean
 ```
 @Autowired 注解和 @Qualifier 注解联合起来才可以根据名称进行装配，在@Qualifier注解中指定Bean名称。
 
@@ -654,7 +654,7 @@ public class OrderService {
     }
 }
 ```
-## 9.4@Resource：JDK 提供的注解，按名称注入 Bean（也可按类型）
+## 9.4 @Resource：JDK 提供的注解，按名称注入 Bean（也可按类型）
 ```
     @Resource注解可以完成非简单类型注入。
     @Resource注解是JDK扩展包中的，也就是说属于JDK的一部分，而@Autowired注解是Spring框架自己的。
@@ -790,7 +790,7 @@ public void test03() {
 
 # 11. 源码解析：注解驱动 IoC 容器全流程
 
-## 11.1. AnnotationConfigApplicationContext 的构造链路
+## 11.1 AnnotationConfigApplicationContext 的构造链路
 
 ```
 当我们执行 new AnnotationConfigApplicationContext(Spring6Config.class) 时，
@@ -841,7 +841,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 }
 ```
 
-### 11.2. AnnotatedBeanDefinitionReader 注册配置类
+### 11.2 AnnotatedBeanDefinitionReader 注册配置类
 
 ```
 public void register(Class<?>... componentClasses) {
@@ -884,7 +884,7 @@ private <T> void doRegisterBean(
 }
 ```
 
-## 11.2. ConfigurationClassPostProcessor — 注解配置处理的核心
+## 11.2 ConfigurationClassPostProcessor — 注解配置处理的核心
 
 ```
 ConfigurationClassPostProcessor 是整个注解驱动的核心处理器！
@@ -982,7 +982,7 @@ public class ConfigurationClassPostProcessor
 }
 ```
 
-## 11.3. ConfigurationClassParser.parse() — 注解解析过程
+## 11.3 ConfigurationClassParser.parse() — 注解解析过程
 
 ```
 ConfigurationClassParser 负责解析配置类上的关键注解：
@@ -1082,7 +1082,7 @@ protected final SourceClass doProcessConfigurationClass(
 }
 ```
 
-## 11.4. ClassPathBeanDefinitionScanner — 组件扫描源码
+## 11.4 ClassPathBeanDefinitionScanner — 组件扫描源码
 
 ```
 ComponentScanAnnotationParser 调用 ClassPathBeanDefinitionScanner.doScan()：
@@ -1130,7 +1130,7 @@ protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
 // 7. 返回 ScannedGenericBeanDefinition 集合
 ```
 
-## 11.5. AutowiredAnnotationBeanPostProcessor — @Autowired 注入源码
+## 11.5 AutowiredAnnotationBeanPostProcessor — @Autowired 注入源码
 
 ```
 AutowiredAnnotationBeanPostProcessor 是注解驱动 DI 的核心 BeanPostProcessor：
@@ -1244,7 +1244,7 @@ public class AutowiredAnnotationBeanPostProcessor
 }
 ```
 
-### 11.6. @Autowired 注入的实际执行：AutowiredFieldElement.inject()
+### 11.6 @Autowired 注入的实际执行：AutowiredFieldElement.inject()
 
 ```
 // AutowiredAnnotationBeanPostProcessor 内部类 AutowiredFieldElement
@@ -1317,7 +1317,7 @@ private class AutowiredFieldElement extends InjectionMetadata.InjectedElement {
 }
 ```
 
-## 11.6. @Configuration 的 CGLIB 代理机制
+## 11.6 @Configuration 的 CGLIB 代理机制
 
 ```
 问题：为什么 @Configuration 类需要 CGLIB 代理？
@@ -1385,7 +1385,7 @@ private static class BeanMethodInterceptor implements MethodInterceptor, Conditi
   → 不创建 CGLIB 代理 → 同一类内调用 @Bean 方法 = 直接调用 Java 方法 → 可能出现多例
 ```
 
-### 11.7. Full vs Lite 模式的判定
+### 11.7 Full vs Lite 模式的判定
 
 ```
 ConfigurationClassUtils.checkConfigurationClassCandidate() 中：
@@ -1420,7 +1420,7 @@ public static boolean isFullConfigurationCandidate(AnnotationMetadata metadata) 
 // - 方法上有 @Bean（即使类没有 @Configuration）
 ```
 
-## 11.7. 注解驱动容器启动完整流程图
+## 11.7 注解驱动容器启动完整流程图
 
 ```
 new AnnotationConfigApplicationContext(Spring6Config.class)
@@ -1486,7 +1486,7 @@ new AnnotationConfigApplicationContext(Spring6Config.class)
 容器启动完成，所有单例 Bean 就绪！
 ```
 
-## 11.8. 设计思想总结
+## 11.8 设计思想总结
 
 ```
 1. BeanFactoryPostProcessor 扩展点：

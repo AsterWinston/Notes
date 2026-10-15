@@ -1,4 +1,4 @@
-# 1.从源码角度看执行流程
+# 1. 从源码角度看执行流程
 ```
 以下是核心代码：
 public class DispatcherServlet extends FrameworkServlet {
@@ -87,11 +87,11 @@ public interface View {
     throws Exception;
 }
 ```
-# 2.从图片角度看执行流程
+# 2. 从图片角度看执行流程
 
 <img src="images/14.png" width="100%"/>
 
-# 3.WEB服务器启动时都做了什么
+# 3. WEB服务器启动时都做了什么
 ```
 先搞明白核心类的继承关系：
 DispatcherServlet extends FrameworkServlet extends HttpServletBean extends HttpServlet extends GenericServlet implements Servlet
@@ -116,7 +116,7 @@ DispatcherServlet extends FrameworkServlet extends HttpServletBean extends HttpS
 
 <img src="images/22.png" width="100%"/>
 
-# 4.处理器方法参数解析器体系（HandlerMethodArgumentResolver）
+# 4. 处理器方法参数解析器体系（HandlerMethodArgumentResolver）
 ```
 这是SpringMVC中最精妙的设计之一：如何将不同类型的请求参数自动注入到Controller方法参数中。
 
@@ -165,7 +165,7 @@ public String update(@PathVariable("id") Long id,     // → PathVariableMethodA
 每个参数都由不同的解析器负责处理，实现了关注点分离和可扩展性。
 ```
 
-# 5.处理器方法返回值处理器体系（HandlerMethodReturnValueHandler）
+# 5. 处理器方法返回值处理器体系（HandlerMethodReturnValueHandler）
 ```
 与参数解析器对称，返回值处理器负责处理Controller方法的返回值。
 
@@ -205,7 +205,7 @@ public User getUser() {
 }
 ```
 
-# 6.doDispatch中的异常处理流程
+# 6. doDispatch中的异常处理流程
 ```
 当Controller方法执行过程中抛出异常时，DispatcherServlet的处理流程：
 
@@ -254,7 +254,7 @@ if (exception != null) {
 触发web.xml中配置的<error-page>。
 ```
 
-# 7.异步请求执行流程
+# 7. 异步请求执行流程
 ```
 SpringMVC支持异步处理请求，避免Servlet容器线程阻塞。
 
@@ -335,7 +335,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-# 8.类型转换与数据绑定流程
+# 8. 类型转换与数据绑定流程
 ```
 SpringMVC在进行参数绑定时，会经过一套完整的类型转换流程。
 

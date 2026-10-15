@@ -1,6 +1,6 @@
-# 1.MinIO 性能特点
+# 1. MinIO 性能特点
 
-## 1.1性能指标参考
+## 1.1 性能指标参考
 
 | 指标 | 参考值 | 条件 |
 |------|--------|------|
@@ -14,7 +14,7 @@
 
 > 以上数据来自 MinIO 官方基准测试，实际性能取决于硬件配置、网络、文件大小分布和工作负载模式。
 
-## 1.2影响性能的关键因素
+## 1.2 影响性能的关键因素
 
 ```text
 影响 MinIO 性能的因素（按重要程度排序）:
@@ -52,9 +52,9 @@
 
 ---
 
-# 2.基准测试工具
+# 2. 基准测试工具
 
-## 2.1使用 warp（MinIO 官方基准测试工具）
+## 2.1 使用 warp（MinIO 官方基准测试工具）
 
 warp 是 MinIO 团队开发的专门针对 S3 兼容存储的基准测试工具，比传统 `s3bench` 更准确。
 
@@ -98,7 +98,7 @@ warp mixed \
   --duration=5m
 ```
 
-## 2.2warp 输出解读
+## 2.2 warp 输出解读
 
 ```text
 Operation: PUT
@@ -113,7 +113,7 @@ Duration: 5m0s
    Slowest:    1.2s
 ```
 
-### 关键指标
+### 2.2.1 关键指标
 
 | 指标 | 关注重点 |
 |------|----------|
@@ -124,9 +124,9 @@ Duration: 5m0s
 
 ---
 
-# 3.硬件选型建议
+# 3. 硬件选型建议
 
-## 3.1CPU 选型
+## 3.1 CPU 选型
 
 | 场景 | 推荐配置 |
 |------|----------|
@@ -139,7 +139,7 @@ Duration: 5m0s
 - 开启 CPU 性能模式（governor: performance），关闭 C-States
 - 开启 Turbo Boost
 
-## 3.2内存选型
+## 3.2 内存选型
 
 | 场景 | 推荐配置 |
 |------|----------|
@@ -149,7 +149,7 @@ Duration: 5m0s
 
 > MinIO 本身内存占用低（Go 语言的 GC 高效），大量内存主要用于 OS 文件系统缓存，加速热数据访问。
 
-## 3.3磁盘选型
+## 3.3 磁盘选型
 
 | 类型 | IOPS | 吞吐 | 推荐场景 |
 |------|------|------|----------|
@@ -164,7 +164,7 @@ Duration: 5m0s
 - 直接使用 JBOD 模式（各磁盘独立挂载）
 - 使用一致的磁盘型号和容量
 
-## 3.4网络选型
+## 3.4 网络选型
 
 | 规模 | 推荐网络 |
 |------|----------|
@@ -174,9 +174,9 @@ Duration: 5m0s
 
 ---
 
-# 4.操作系统与内核调优
+# 4. 操作系统与内核调优
 
-## 4.1Linux 内核参数优化
+## 4.1 Linux 内核参数优化
 
 ```bash
 # /etc/sysctl.conf 或 /etc/sysctl.d/99-minio.conf
@@ -210,7 +210,7 @@ vm.swappiness = 1                       # 尽量不使用 Swap（但保留 Swap 
 sudo sysctl --system
 ```
 
-## 4.2进程文件描述符限制
+## 4.2 进程文件描述符限制
 
 ```bash
 # /etc/security/limits.conf
@@ -225,7 +225,7 @@ LimitNOFILE=1000000
 LimitNPROC=65536
 ```
 
-## 4.3磁盘挂载优化
+## 4.3 磁盘挂载优化
 
 ```bash
 # /etc/fstab
@@ -239,7 +239,7 @@ LimitNPROC=65536
 LABEL=DISK1 /mnt/disk1 xfs defaults,noatime,nodiratime,largeio,inode64,swalloc 0 2
 ```
 
-## 4.4CPU 性能模式设置
+## 4.4 CPU 性能模式设置
 
 ```bash
 # 确保 CPU 工作在 performance 模式
@@ -254,9 +254,9 @@ sudo cpupower frequency-set -g performance
 
 ---
 
-# 5.MinIO 本身配置优化
+# 5. MinIO 本身配置优化
 
-## 5.1MinIO 环境变量优化
+## 5.1 MinIO 环境变量优化
 
 ```bash
 # MinIO 高性能配置
@@ -275,7 +275,7 @@ export MINIO_SCANNER_SPEED=fast         # fast(default)/slow
 minio server /data --console-address ":9001"
 ```
 
-## 5.2使用 mc 调优运行时配置
+## 5.2 使用 mc 调优运行时配置
 
 ```bash
 # 查看当前配置
@@ -301,9 +301,9 @@ mc admin service restart myminio
 
 ---
 
-# 6.客户端优化
+# 6. 客户端优化
 
-## 6.1Java 客户端优化
+## 6.1 Java 客户端优化
 
 ```java
 // 生产环境 MinioClient 配置
@@ -333,7 +333,7 @@ MinioClient client = MinioClient.builder()
     .build();
 ```
 
-## 6.2并发上传策略
+## 6.2 并发上传策略
 
 ```java
 import java.util.concurrent.*;
@@ -359,9 +359,9 @@ CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
 ---
 
-# 7.Prometheus 监控
+# 7. Prometheus 监控
 
-## 7.1配置 MinIO 暴露 Prometheus 指标
+## 7.1 配置 MinIO 暴露 Prometheus 指标
 
 MinIO 自动在 `/minio/v2/metrics/cluster` 端点暴露 Prometheus 格式的指标。
 
@@ -379,9 +379,9 @@ scrape_configs:
     #   insecure_skip_verify: true
 ```
 
-## 7.2关键 Prometheus 指标
+## 7.2 关键 Prometheus 指标
 
-### 系统级指标
+### 7.2.1 系统级指标
 
 ```promql
 # 集群可用容量（字节）
@@ -400,7 +400,7 @@ minio_node_disk_free_bytes
 minio_node_disk_health_status
 ```
 
-### S3 API 指标
+### 7.2.2 S3 API 指标
 
 ```promql
 # 请求总数（按 API 分组）
@@ -419,7 +419,7 @@ rate(minio_s3_traffic_sent_bytes[5m])
 rate(minio_s3_traffic_received_bytes[5m])
 ```
 
-### 网络指标
+### 7.2.3 网络指标
 
 ```promql
 # 节点间网络流量
@@ -427,7 +427,7 @@ rate(minio_inter_node_traffic_sent_bytes[5m])
 rate(minio_inter_node_traffic_received_bytes[5m])
 ```
 
-### 缓存指标
+### 7.2.4 缓存指标
 
 ```promql
 # 总缓存命中次数
@@ -440,7 +440,7 @@ minio_node_cache_misses_total
 minio_node_cache_hits_total / (minio_node_cache_hits_total + minio_node_cache_misses_total)
 ```
 
-### Heal 指标
+### 7.2.5 Heal 指标
 
 ```promql
 # Heal 对象总数
@@ -455,9 +455,9 @@ minio_heal_errors_total
 
 ---
 
-# 8.Grafana 监控面板
+# 8. Grafana 监控面板
 
-## 8.1导入官方 Dashboard
+## 8.1 导入官方 Dashboard
 
 MinIO 官方提供了预制的 Grafana Dashboard（ID: 13502）：
 
@@ -470,7 +470,7 @@ curl -X POST http://grafana:3000/api/dashboards/import \
   -d '{"dashboard": {...}, "overwrite": true}'
 ```
 
-## 8.2关键告警规则
+## 8.2 关键告警规则
 
 ```yaml
 # Prometheus 告警规则 (minio-alerts.yml)
@@ -532,9 +532,9 @@ groups:
 
 ---
 
-# 9.日志管理
+# 9. 日志管理
 
-## 9.1日志格式配置
+## 9.1 日志格式配置
 
 ```bash
 # 查看日志配置
@@ -549,7 +549,7 @@ mc admin config set myminio logger_webhook:primary \
 mc admin service restart myminio
 ```
 
-## 9.2日志采集方案
+## 9.2 日志采集方案
 
 使用 Filebeat 采集 MinIO Console 日志：
 
@@ -568,9 +568,9 @@ output.elasticsearch:
 
 ---
 
-# 10.健康检查
+# 10. 健康检查
 
-## 10.1健康检查端点
+## 10.1 健康检查端点
 
 ```bash
 # 存活检查（Liveness Probe）
@@ -587,7 +587,7 @@ curl http://localhost:9000/minio/health/cluster
 # 返回 drd/stored_data(已修复/总数据)信息
 ```
 
-## 10.2K8s 健康检查配置
+## 10.2 K8s 健康检查配置
 
 ```yaml
 apiVersion: v1
@@ -618,9 +618,9 @@ spec:
 
 ---
 
-# 11.性能问题排查
+# 11. 性能问题排查
 
-## 11.1常见性能问题
+## 11.1 常见性能问题
 
 | 问题 | 可能原因 | 排查方法 |
 |------|----------|----------|
@@ -629,7 +629,7 @@ spec:
 | 小文件PUT慢 | 元数据操作过多、IOPS瓶颈 | 减少小文件、合并上传、优化 EC 配置 |
 | 集群不稳定 | 节点间时间不同步、磁盘性能不一致 | ntpq -p 检查时间偏差、iostat 检查各盘性能 |
 
-## 11.2性能诊断工具
+## 11.2 性能诊断工具
 
 ```bash
 # 磁盘 I/O 性能

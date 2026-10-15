@@ -278,7 +278,7 @@ public void test01() {
 
 # 5. 源码对比：手写 MySpring vs 真实 Spring IoC
 
-## 5.1. 架构对比
+## 5.1 架构对比
 
 ```
                           手写 MySpring                    真实 Spring 6
@@ -315,7 +315,7 @@ public void test01() {
 └──────────────┘  └────────────────────────┘  └────────────────────────────┘
 ```
 
-## 5.2. 核心代码对比
+## 5.2 核心代码对比
 
 ```
 手写 MySpring 的"两阶段"创建：
@@ -359,7 +359,7 @@ protected Object doCreateBean(String beanName, RootBeanDefinition mbd, Object[] 
 }
 ```
 
-## 5.3. 设计差异的本质
+## 5.3 设计差异的本质
 
 手写 MySpring 抓住的是 Spring IoC 最核心的三要素：
   工厂模式 + XML解析 + 反射机制

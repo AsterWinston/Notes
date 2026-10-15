@@ -1,4 +1,4 @@
-# 1.弹窗和window的方法
+# 1. 弹窗和window的方法
 ```
 弹窗（popup）是向用户显示其他文档的最古老的方法之一。
 
@@ -17,7 +17,7 @@ window.open('https://javascript.info/')
 打开弹窗非常容易。
 弹窗可以导航（修改 URL），并将消息发送到 opener 窗口（译注：即打开弹窗的窗口）。
 ```
-## 1.1阻止弹窗
+## 1.1 阻止弹窗
 ```javascript
 在过去，很多恶意网站经常滥用弹窗。一个不好的页面可能会打开大量带有广告的弹窗。因此，现在大多数浏览器都会通过阻止弹窗来保护用户。
 
@@ -48,7 +48,7 @@ setTimeout(() => window.open('http://google.com'), 3000);
 setTimeout(() => window.open('http://google.com'), 1000);
 区别在于 Firefox 可以接受 2000ms 或更短的延迟，但是超过这个时间 —— 则移除“信任”。所以，第一个弹窗被阻止，而第二个却没有。
 ```
-## 1.2window.open
+## 1.2 window.open
 ```javascript
 打开一个弹窗的语法是 window.open(url, name, params)：
 
@@ -72,7 +72,7 @@ resizable（yes/no）—— 允许禁用新窗口大小调整。不建议使用�
 scrollbars（yes/no）—— 允许禁用新窗口的滚动条。不建议使用。
 还有一些不太受支持的特定于浏览器的功能，通常不使用。通常不使用这些功能。更多示例请见 MDN 中的 window.open。
 ```
-## 1.3示例：一个最简窗口
+## 1.3 示例：一个最简窗口
 ```javascript
 让我们打开一个包含最小功能集的新窗口，来看看哪些功能是浏览器允许禁用的：
 
@@ -97,7 +97,7 @@ open('/', 'test', params);
 如果参数中没有 left/top，那么浏览器会尝试在最后打开的窗口附近打开一个新窗口。
 如果没有 width/height，那么新窗口的大小将与上次打开的窗口大小相同。
 ```
-## 1.4从窗口访问弹窗
+## 1.4 从窗口访问弹窗
 ```javascript
 open 调用会返回对新窗口的引用。它可以用来操纵弹窗的属性，更改位置，甚至更多操作。
 
@@ -124,7 +124,7 @@ newWindow.onload = function() {
 
 否则，例如，如果主窗口来自于 site.com，弹窗来自于 gmail.com，则出于安全性考虑，这两个窗口不能访问彼此的内容。有关详细信息，请参见 跨窗口通信 一章。
 ```
-## 1.5从弹窗访问窗口
+## 1.5 从弹窗访问窗口
 ```javascript
 弹窗也可以使用 window.opener 来访问 opener 窗口。除了弹窗之外，对其他所有窗口来说，window.opener 均为 null。
 
@@ -137,7 +137,7 @@ newWin.document.write(
 );
 所以，窗口之间的连接是双向的：主窗口和弹窗之间相互引用。
 ```
-## 1.6关闭弹窗
+## 1.6 关闭弹窗
 ```javascript
 关闭一个窗口：win.close()。
 
@@ -156,7 +156,7 @@ newWindow.onload = function() {
   alert(newWindow.closed); // true
 };
 ```
-## 1.7移动和调整大小
+## 1.7 移动和调整大小
 ```javascript
 有一些方法可以移动一个窗口，或者调整一个窗口的大小：
 
@@ -178,7 +178,7 @@ JavaScript 无法最小化或者最大化一个窗口。这些操作系统级别
 
 移动或者调整大小的方法不适用于最小化/最大化的窗口。
 ```
-## 1.8滚动窗口
+## 1.8 滚动窗口
 ```javascript
 我们已经在 Window 大小和滚动 一章中讨论过了滚动窗口。
 
@@ -190,7 +190,7 @@ elem.scrollIntoView(top = true)
 滚动窗口，使 elem 显示在 elem.scrollIntoView(false) 的顶部（默认）或底部。
 这里也有 window.onscroll 事件。
 ```
-## 1.9弹窗的焦点/失焦
+## 1.9 弹窗的焦点/失焦
 ```javascript
 从理论上讲，使用 window.focus() 和 window.blur() 方法可以使窗口获得或失去焦点。此外，这里还有 focus/blur 事件，可以捕获到访问者聚焦到一个窗口和切换到其他地方的时刻。
 
@@ -212,7 +212,7 @@ window.onblur = () => window.focus();
 当我们打开一个弹窗时，在它上面执行 newWindow.focus() 是个好主意。以防万一，对于某些操作系统/浏览器组合（combination），它可以确保用户现在位于新窗口中。
 如果我们想要跟踪访问者何时在实际使用我们的 Web 应用程序，我们可以跟踪 window.onfocus/onblur。这使我们可以暂停/恢复页面活动和动画等。但是请注意，blur 事件意味着访问者从窗口切换了出来，但他们仍然可以观察到它。窗口处在背景中，但可能仍然是可见的。
 ```
-## 1.10总结
+## 1.10 总结
 ```javascript
 弹窗很少使用，因为有其他选择：在页面内或在 iframe 中加载和显示信息。
 
@@ -229,13 +229,13 @@ focus() 和 blur() 方法允许聚焦/失焦于窗口。但它们并不是一直
 focus和 blur 事件允许跟踪窗口的切换。但是请注意，在 blur 之后，即使窗口在背景状态下，窗口仍有可能是可见的。
 ```
 
-# 2.跨窗口通信
+# 2. 跨窗口通信
 ```
 “同源（Same Origin）”策略限制了窗口（window）和 frame 之间的相互访问。
 
 这个想法出于这样的考虑，如果一个用户有两个打开的页面：一个来自 john-smith.com，另一个是 gmail.com，那么用户将不希望 john-smith.com 的脚本可以读取 gmail.com 中的邮件。所以，“同源”策略的目的是保护用户免遭信息盗窃。
 ```
-## 2.1同源
+## 2.1 同源
 ```javascript
 如果两个 URL 具有相同的协议，域和端口，则称它们是“同源”的。
 
@@ -312,7 +312,7 @@ iframe.onload 事件（在 <iframe> 标签上）与 iframe.contentWindow.onload�
 
 ……但是，我们无法使用 iframe.contentWindow.onload 访问不同源的 iframe。因此，请使用 iframe.onload
 ```
-## 2.2子域上的window：document.domain
+## 2.2 子域上的window：document.domain
 ```javascript
 根据定义，两个具有不同域的 URL 具有不同的源。
 
@@ -328,7 +328,7 @@ document.domain 属性正在被从 规范 中删除。跨窗口通信（下面�
 
 也就是说，到目前为止，所有浏览器都支持它。并且未来也将继续支持它，而不会导致使用了 document.domain 的旧代码出现问题。
 ```
-## 2.3Iframe：错误文档陷阱
+## 2.3 Iframe：错误文档陷阱
 ```javascript
 当一个 iframe 来自同一个源时，我们可能会访问其 document，但是这里有一个陷阱。它与跨源无关，但你一定要知道。
 
@@ -372,7 +372,7 @@ document.domain 属性正在被从 规范 中删除。跨窗口通信（下面�
   }, 100);
 </script>
 ```
-## 2.4集合：window.frames
+## 2.4 集合：window.frames
 ```javascript
 获取 <iframe> 的 window 对象的另一个方式是从命名集合 window.frames 中获取：
 
@@ -404,7 +404,7 @@ if (window == top) { // 当前 window == window.top?
   alert('The script runs in a frame!');
 }
 ```
-## 2.5"sandbox" iframe特性
+## 2.5 "sandbox" iframe特性
 ```javascript
 sandbox 特性（attribute）允许在 <iframe> 中禁止某些特定行为，以防止其执行不被信任的代码。它通过将 iframe 视为非同源的，或者应用其他限制来实现 iframe 的“沙盒化”。
 
@@ -435,7 +435,7 @@ allow-popups
 请注意：
 "sandbox" 特性的目的仅是 添加更多 限制。它无法移除这些限制。尤其是，如果 iframe 来自其他源，则无法放宽同源策略。
 ```
-## 2.6跨窗口通信
+## 2.6 跨窗口通信
 ```javascript
 postMessage 接口允许窗口之间相互通信，无论它们来自什么源。
 
@@ -500,7 +500,7 @@ window.addEventListener("message", function(event) {
   // 可以使用 event.source.postMessage(...) 向回发送消息
 });
 ```
-## 2.7总结
+## 2.7 总结
 ```javascript
 要调用另一个窗口的方法或者访问另一个窗口的内容，我们应该首先拥有对其的引用。
 
@@ -537,13 +537,13 @@ data —— 数据，可以是任何对象。但是 IE 浏览器只支持字符�
 我们应该使用 addEventListener 来在目标窗口中设置 message 事件的处理程序。
 ```
 
-# 3.点击劫持攻击
+# 3. 点击劫持攻击
 ```
 “点击劫持”攻击允许恶意页面 以用户的名义 点击“受害网站”。
 
 许多网站都被黑客以这种方式攻击过，包括 Twitter、Facebook 和 Paypal 等许多网站。当然，它们都已经被修复了。
 ```
-## 3.1原理
+## 3.1 原理
 ```javascript
 原理十分简单。
 
@@ -554,7 +554,7 @@ data —— 数据，可以是任何对象。但是 IE 浏览器只支持字符�
 恶意页面在该链接上方放置了一个透明的 <iframe>，其 src 来自于 facebook.com，这使得“点赞”按钮恰好位于该链接上面。这通常是通过 z-index 实现的。
 用户尝试点击该链接时，实际上点击的是“点赞”按钮。
 ```
-## 3.2示例
+## 3.2 示例
 ```javascript
 示例
 这是恶意页面看起来的样子。为了清楚起见，我们将 <iframe> 设置成了半透明的（在真正的恶意页面中，它是全透明的）：
@@ -601,7 +601,7 @@ iframe { /* 来自受害网站的 iframe */
 
 当用户无法在屏幕上看到自己输入的字符时，通常会停止打字。
 ```
-## 3.3传统防御（弱）
+## 3.3 传统防御（弱）
 ```javascript
 最古老的防御措施是一段用于禁止在 frame 中打开页面的 JavaScript 代码（所谓的 “framebusting”）。
 
@@ -640,7 +640,7 @@ sandbox 特性的限制之一就是导航。沙箱化的 iframe 不能更改 top
 <iframe sandbox="allow-scripts allow-forms" src="facebook.html"></iframe>
 还有其他方式可以绕过这个弱鸡防御。
 ```
-## 3.4X-Frame-Options
+## 3.4 X-Frame-Options
 ```javascript
 服务器端 header X-Frame-Options 可以允许或禁止在 frame 中显示页面。
 
@@ -662,7 +662,7 @@ ALLOW-FROM domain
 
 上面这个 iframe 可能为空，或者通过 alert 告知你浏览器不允许以这种方式导航至该页面，这取决于你的浏览器。
 ```
-## 3.5显示禁用功能
+## 3.5 显示禁用功能
 ```javascript
 X-Frame-Options 有一个副作用。其他的网站即使有充分的理由也无法在 frame 中显示我们的页面。
 
@@ -693,7 +693,7 @@ X-Frame-Options 有一个副作用。其他的网站即使有充分的理由也�
   }
 </script>
 ```
-## 3.6Samesite cookie特性
+## 3.6 Samesite cookie特性
 ```javascript
 samesite cookie 特性也可以阻止点击劫持攻击。
 
@@ -708,7 +708,7 @@ Set-Cookie: authorization=secret; samesite
 
 然而，这也可能会使得劫持攻击在少数情况下起作用。例如，通过检查 IP 地址来防止重复投票的匿名投票网站仍然会受到点击劫持的攻击，因为它不使用 cookie 对用户身份进行验证。
 ```
-## 3.7总结
+## 3.7 总结
 ```javascript
 点击劫持是一种“诱骗”用户在不知情的情况下点击恶意网站的方式。如果是重要的点击操作，这是非常危险的。
 

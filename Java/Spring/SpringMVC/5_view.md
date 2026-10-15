@@ -1,7 +1,7 @@
-# 1.SpringMVC中视图的实现原理
+# 1. SpringMVC中视图的实现原理
 ```
 ```
-## 1.1Spring MVC视图支持可配置
+## 1.1 Spring MVC视图支持可配置
 ```
 在Spring MVC中，视图View是支持定制的，例如我们之前在 springmvc.xml 文件中进行了如下的配置：
 <!--视图解析器-->
@@ -34,7 +34,7 @@
 如果你需要换成其他的视图View，修改以上的配置即可。这样就可以非常轻松的完成视图View的扩展。
 这种设计是完全符合OCP开闭原则的。视图View和框架是解耦合的，耦合度低扩展能力强。视图View可以通过配置文件进行灵活切换。
 ```
-## 1.2Spring MVC支持的常见视图
+## 1.2 Spring MVC支持的常见视图
 ```
 Spring MVC支持的常见视图包括：
 1. InternalResourceView：内部资源视图（Spring MVC框架内置的，专门为JSP模板语法准备的）
@@ -45,7 +45,7 @@ Spring MVC支持的常见视图包括：
 6. PDFView：PDF视图（第三方的，专门用来生成pdf文件视图）
 7. ExcelView：Excel视图（第三方的，专门用来生成excel文件视图）
 ```
-## 1.3实现视图机制的核心接口
+## 1.3 实现视图机制的核心接口
 ```
 实现视图的核心类与接口包括：
 1. DispatcherServlet类（前端控制器）：
@@ -69,7 +69,7 @@ Spring MVC支持的常见视图包括：
 		ThymeleafView
 		ThymeleafViewResolver
 ```
-## 1.4实现视图机制的原理描述
+## 1.4 实现视图机制的原理描述
 ```
 假设我们SpringMVC中使用了Thymeleaf作为视图。
 第一步：浏览器发送请求给web服务器
@@ -89,7 +89,7 @@ Spring MVC支持的常见视图包括：
 第六步：DispatcherServlet调用InternalResourceViewResolver的resolveViewName方法，将逻辑视图名转换为物理视图名，并创建InternalResourceView对象返回给DispatcherServlet
 第七步：DispatcherServlet再调用InternalResourceView的render方法，render方法将模板语言转换为HTML代码，响应给浏览器，完成最终的渲染。
 ```
-## 1.5逻辑视图到物理视图
+## 1.5 逻辑视图到物理视图
 ```
 逻辑视图名最终转换的物理视图名是什么，取决再springmvc.xml文件中视图解析器的配置：
 假如视图解析器配置的是ThymeleafViewResolver，如下：
@@ -131,7 +131,7 @@ public String toIndex(){
 最终逻辑视图名"index" 转换为物理视图名：/WEB-INF/templates/index.jsp
 ```
 
-# 2.Thymeleaf视图
+# 2. Thymeleaf视图
 ```
 我们在学习前面内容的时候，采用的都是Thymeleaf视图。我们再来测试一下，看看底层创建的视图对象是不是ThymeleafView
 springmvc.xml配置内容如下：
@@ -210,7 +210,7 @@ processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchExc
 
 走到上图位置就可以看到底层创建的是ThymeleafView对象。
 ```
-# 3.JSP视图（了解）
+# 3. JSP视图（了解）
 ```
 我们再来跟一下源码，看看JSP视图底层创建的是不是InternalResourceView对象。
 我们前面说过 InternalResourceView是SpringMVC框架内置的，翻译为内部资源视图，SpringMVC把JSP看做是内部资源。可见JSP在之前的技术栈中有很高的地位。
@@ -264,10 +264,10 @@ public class IndexController {
 
 通过测试得知：对于JSP视图来说，底层创建的视图对象是InternalResourceView。
 ```
-# 4.转发与重定向
+# 4. 转发与重定向
 ```
 ```
-## 4.1回顾转发和重定向
+## 4.1 回顾转发和重定向
 ```
 1. 转发是一次请求。因此浏览器地址栏上的地址不会发生变化。
 2. 重定向是两次请求。因此浏览器地址栏上的地址会发生变化。
@@ -289,7 +289,7 @@ public class IndexController {
   e. 因此对于重定向来说，发送了两次请求，一次是 /webapproot/a，另一次是/webapproot/b。
 以上所描述的是使用原生Servlet API来完成转发和重定向。在Spring MVC中是如何转发和重定向的呢？
 ```
-## 4.2forward
+## 4.2 forward
 ```
 在Spring MVC中默认就是转发的方式，我们之前所写的程序，都是转发的方式。只不过都是转发到Thymeleaf的模板文件xxx.html上。
 那么，在Spring MVC中如何转发到另一个Controller上呢？可以使用Spring MVC的forward
@@ -340,7 +340,7 @@ public class IndexController {
 这是因为forward: 后面的不是逻辑视图名，而是一个请求路径。因此转发是不需要视图解析器的。
 另外，转发使用的是InternalResourceView，也说明了转发是内部资源的跳转。（Internal是内部的意思，Resource是资源的意思。）
 ```
-## 4.3redirect
+## 4.3 redirect
 ```
 redirect是专门完成重定向效果的。和forward语法类似，只需要将之前的 return "forward:/b"修改为 return "redirect:/b"即可。
 package com.powernode.springmvc.controller;
@@ -391,7 +391,7 @@ public String a(){
 可以自行测试一下！！！
 ```
 
-# 5.\<mvc:view-controller/\>
+# 5. \<mvc:view-controller/\>
 ```
 <mvc:view-controller> 配置用于将某个请求映射到特定的视图上，即指定某一个 URL 请求到一个视图资源的映射，使得这个视图资源可以被访问。它相当于是一个独立的处理程序，不需要编写任何 Controller，只需要指定 URL 和对应的视图名称就可以了。
 一般情况下，<mvc:view-controller> 配置可以替代一些没有业务逻辑的 Controller，例如首页、错误页面等。当用户访问配置的 URL 时，框架将直接匹配到对应的视图，而无需再经过其他控制器的处理。
@@ -405,14 +405,14 @@ public String a(){
 <mvc:view-controller path="/" view-name="index" />
 上述配置将会匹配上访问应用程序的根路径，如：http://localhost:8080/。当用户在浏览器中访问该根路径时，就会直接渲染名为 index 的视图。
 ```
-# 6.\<mvc:annotation-driven/\>
+# 6. \<mvc:annotation-driven/\>
 ```
 在SpringMVC中，如果在springmvc.xml文件中配置了 <mvc:view-controller>，就需要同时在springmvc.xml文件中添加如下配置：
 <mvc:annotation-driven/>
 该配置的作用是：启用Spring MVC的注解。
 如果没有以上的配置，Controller就无法访问到。访问之前的Controller会发生 404 问题。
 ```
-# 7.访问静态资源
+# 7. 访问静态资源
 ```
 一个项目可能会包含大量的静态资源，比如：css、js、images等。
 由于我们DispatcherServlet的url-pattern配置的是“/”，之前我们说过，这个"/"代表的是除jsp请求之外的所有请求，也就是说访问应用中的静态资源，也会走DispatcherServlet，这会导致404错误，无法访问静态资源，如何解决，两种方案：
@@ -420,7 +420,7 @@ public String a(){
 	使用 mvc:resources 标签配置静态资源处理
 这两种方式都可以。自行选择。
 ```
-## 7.1使用静态Servlet处理静态资源
+## 7.1 使用静态Servlet处理静态资源
 ```
 首先需要在springmvc.xml文件中添加以下配置，开启 默认Servlet处理静态资源 功能：
 <!-- 开启注解驱动 -->
@@ -472,7 +472,7 @@ public String a(){
     
 因此我们只需要在springmvc.xml文件中启用这个默认的Servlet即可：<mvc:default-servlet-handler>
 ```
-## 7.2使用mvc:resources
+## 7.2 使用mvc:resources
 ```
 访问静态资源，也可以在springmvc.xml文件中添加如下的配置：
 <!-- 开启注解驱动 -->
@@ -485,7 +485,7 @@ public String a(){
 注意：要想使用 <mvc:resources> 配置，必须开启注解驱动 <mvc:annotation-driven />
 ```
 
-# 8.ContentNegotiatingViewResolver（内容协商视图解析器）
+# 8. ContentNegotiatingViewResolver（内容协商视图解析器）
 ```
 ContentNegotiatingViewResolver不是真正的视图解析器，它是一个"协商器"。
 它不自己解析视图，而是委托给其他ViewResolver。
@@ -539,7 +539,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-# 9.多个ViewResolver链式配置
+# 9. 多个ViewResolver链式配置
 ```
 可以配置多个ViewResolver，通过order属性控制优先级。
 SpringMVC会按order从小到大的顺序依次尝试解析。
@@ -572,7 +572,7 @@ SpringMVC会按order从小到大的顺序依次尝试解析。
 ● 建议：将处理特殊情况的ViewResolver放在前面，通用处理的放在最后
 ```
 
-# 10.Redirect时携带参数的正确方式
+# 10. Redirect时携带参数的正确方式
 ```
 10.1 使用RedirectAttributes携带闪现消息（闪现消息不显示在URL中）：
 @PostMapping("/user/save")
@@ -607,7 +607,7 @@ public RedirectView save(User user, Model model) {
 }
 ```
 
-# 11.自定义View实现
+# 11. 自定义View实现
 ```
 当Thymeleaf、JSP等内置视图不满足需求时，可以实现自定义View。
 例如：实现一个CSV文件导出视图。
@@ -662,7 +662,7 @@ public ModelAndView exportUsers() {
 注意：自定义View方式适合非模板类输出（如文件导出、验证码、二维码等）。
 ```
 
-# 12.静态资源版本化管理（缓存破坏）
+# 12. 静态资源版本化管理（缓存破坏）
 ```
 浏览器会缓存静态资源（js、css、图片），当更新了静态资源后，用户浏览器可能仍使用旧版本。
 解决方案：在静态资源URL中加入版本号，内容更新后版本号变化，浏览器重新下载。

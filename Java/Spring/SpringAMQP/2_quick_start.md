@@ -1,6 +1,6 @@
-# 1.RabbitMQ环境搭建
+# 1. RabbitMQ环境搭建
 
-## 1.1RabbitMQ简介
+## 1.1 RabbitMQ简介
 RabbitMQ是由Rabbit Technologies开发、后被VMware收购的开源消息中间件，基于Erlang/OTP平台构建。它完整实现了AMQP 0-9-1协议，并支持AMQP 1.0（通过插件）、STOMP、MQTT等多种消息协议。
 
 RabbitMQ本身不提供持久化存储（数据存储委托给了内部集成的Mnesia或外部数据库），其核心功能是**消息的路由和传递**。
@@ -14,7 +14,7 @@ RabbitMQ的核心优势：
 - **插件体系**：丰富的插件生态，如延迟队列插件、追踪插件等
 - **多语言客户端**：支持Java、Python、Go、.NET、Node.js等多种语言的官方客户端
 
-## 1.2RabbitMQ的核心概念
+## 1.2 RabbitMQ的核心概念
 在学习Spring AMQP之前，需要理解RabbitMQ的几个核心概念：
 
 | 概念 | 说明 |
@@ -30,9 +30,9 @@ RabbitMQ的核心优势：
 | Routing Key | 路由键，Producer发送消息时指定 |
 | Binding Key | 绑定键，绑定Exchange和Queue时指定 |
 
-## 1.3安装RabbitMQ
+## 1.3 安装RabbitMQ
 
-### 1.3.1下载和安装Erlang
+### 1.3.1 下载和安装Erlang
 RabbitMQ基于Erlang开发，需要先安装Erlang运行环境：
 
 1. 从Erlang官网下载对应操作系统的安装包：https://www.erlang.org/downloads
@@ -41,12 +41,12 @@ RabbitMQ基于Erlang开发，需要先安装Erlang运行环境：
 4. 将`%ERLANG_HOME%\bin`添加到PATH中
 5. 验证安装：`erl -version`
 
-### 1.3.2下载和安装RabbitMQ
+### 1.3.2 下载和安装RabbitMQ
 1. 从RabbitMQ官网下载：https://www.rabbitmq.com/download.html
 2. 按向导完成安装（Windows下选择exe安装包）
 3. 安装完成后，RabbitMQ会作为Windows服务自动启动
 
-### 1.3.3启用管理插件
+### 1.3.3 启用管理插件
 RabbitMQ提供了一个Web管理界面（Management Plugin），需要手动启用：
 
 ```bash
@@ -63,7 +63,7 @@ rabbitmq-plugins enable rabbitmq_management
 
 > 注意：`guest`用户默认只允许localhost登录，远程访问需要创建新用户。
 
-### 1.3.4Docker安装（推荐开发环境使用）
+### 1.3.4 Docker安装（推荐开发环境使用）
 使用Docker安装最为便捷：
 
 ```bash
@@ -80,7 +80,7 @@ docker run -d \
   rabbitmq:3.13-management
 ```
 
-## 1.4RabbitMQ管理界面介绍
+## 1.4 RabbitMQ管理界面介绍
 登录管理界面后，主要的Tab页面如下：
 
 | Tab | 功能 |
@@ -92,7 +92,7 @@ docker run -d \
 | Queues | 查看和管理所有队列，可手动创建Queue，查看消息，清空队列 |
 | Admin | 用户管理、vhost管理、权限设置、策略管理 |
 
-## 1.5RabbitMQ核心端口
+## 1.5 RabbitMQ核心端口
 | 端口 | 协议 | 说明 |
 |------|------|------|
 | 5672 | AMQP 0-9-1（不带TLS） | Java客户端默认连接端口 |
@@ -102,9 +102,9 @@ docker run -d \
 | 61613 | STOMP | STOMP协议端口 |
 | 1883 | MQTT | MQTT协议端口 |
 
-# 2.Spring AMQP快速入门
+# 2. Spring AMQP快速入门
 
-## 2.1创建Spring Boot项目
+## 2.1 创建Spring Boot项目
 使用Spring Initializr或IDEA的脚手架创建一个Spring Boot项目，添加以下依赖：
 
 - **Spring for RabbitMQ**：Spring AMQP的核心依赖
@@ -123,7 +123,7 @@ Maven依赖如下（Spring Boot会自动管理版本）：
 - `spring-rabbit`：RabbitMQ实现
 - `spring-messaging`：Spring消息抽象
 
-## 2.2配置RabbitMQ连接
+## 2.2 配置RabbitMQ连接
 在`application.yml`中配置RabbitMQ连接信息：
 
 ```yaml
@@ -141,10 +141,10 @@ spring:
     publisher-returns: true        # 开启发送回退
 ```
 
-## 2.3编写第一个Spring AMQP应用
+## 2.3 编写第一个Spring AMQP应用
 完整演示：生产者发送消息，消费者接收消息。
 
-### 2.3.1配置类（声明Queue、Exchange、Binding）
+### 2.3.1 配置类（声明Queue、Exchange、Binding）
 ```java
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -183,7 +183,7 @@ public class RabbitMQConfig {
 }
 ```
 
-### 2.3.2生产者（发送消息）
+### 2.3.2 生产者（发送消息）
 ```java
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -209,7 +209,7 @@ public class MessageProducer {
 }
 ```
 
-### 2.3.3消费者（接收消息）
+### 2.3.3 消费者（接收消息）
 ```java
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -225,7 +225,7 @@ public class MessageConsumer {
 }
 ```
 
-### 2.3.4启动类
+### 2.3.4 启动类
 ```java
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -238,12 +238,12 @@ public class RabbitMQApplication {
 }
 ```
 
-### 2.3.5测试
+### 2.3.5 测试
 1. 启动Spring Boot应用
 2. 访问 http://localhost:8080/send?msg=HelloRabbitMQ
 3. 控制台输出：`接收到消息: HelloRabbitMQ`
 
-## 2.4Spring Boot自动配置解析
+## 2.4 Spring Boot自动配置解析
 Spring Boot对RabbitMQ的自动配置由`RabbitAutoConfiguration`类完成，主要做了以下事情：
 
 1. **自动创建ConnectionFactory**：根据`spring.rabbitmq.*`配置自动创建`CachingConnectionFactory`
@@ -256,15 +256,15 @@ Spring Boot对RabbitMQ的自动配置由`RabbitAutoConfiguration`类完成，主
 - 编写`@RabbitListener`或使用`RabbitTemplate`
 - Spring Boot会帮你完成其余所有配置
 
-## 2.5RabbitTemplate的两种获取方式
+## 2.5 RabbitTemplate的两种获取方式
 
-### 2.5.1使用Spring Boot自动配置的RabbitTemplate（推荐）
+### 2.5.1 使用Spring Boot自动配置的RabbitTemplate（推荐）
 ```java
 @Autowired
 private RabbitTemplate rabbitTemplate;
 ```
 
-### 2.5.2自定义RabbitTemplate
+### 2.5.2 自定义RabbitTemplate
 如果需要对RabbitTemplate进行特定配置（如自定义MessageConverter、ConfirmCallback等），可以手动创建：
 
 ```java
@@ -276,7 +276,7 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 }
 ```
 
-## 2.6RabbitAdmin的作用
+## 2.6 RabbitAdmin的作用
 `RabbitAdmin`的核心职责是**自动声明AMQP实体**（Exchange、Queue、Binding）。
 
 当Spring容器启动时，RabbitAdmin会：
@@ -295,9 +295,9 @@ public Queue myQueue() {
 
 RabbitAdmin在底层通过`declareExchanges`、`declareQueues`、`declareBindings`等AMQP命令与Broker交互。
 
-# 3.配置文件详解
+# 3. 配置文件详解
 
-## 3.1核心连接配置
+## 3.1 核心连接配置
 ```yaml
 spring:
   rabbitmq:
@@ -322,7 +322,7 @@ spring:
       trust-store-password: password
 ```
 
-## 3.2缓存配置
+## 3.2 缓存配置
 ```yaml
 spring:
   rabbitmq:
@@ -339,7 +339,7 @@ spring:
 - `channel`模式（默认）：维护一个共享的Connection，缓存多个Channel。适合大多数场景
 - `connection`模式：维护多个独立的Connection（每个Connection一个Channel）。适合需要严格隔离的场景（如不同的Virtual Host、不同的SSL证书）
 
-## 3.3消息发送配置
+## 3.3 消息发送配置
 ```yaml
 spring:
   rabbitmq:
@@ -360,7 +360,7 @@ spring:
         multiplier: 2.0                  # 间隔乘数
 ```
 
-## 3.4消费者配置
+## 3.4 消费者配置
 ```yaml
 spring:
   rabbitmq:
@@ -382,9 +382,9 @@ spring:
         consumers-per-queue: 5           # 每个队列的消费者数量
 ```
 
-# 4.Maven依赖详解
+# 4. Maven依赖详解
 
-## 4.1核心依赖
+## 4.1 核心依赖
 ```xml
 <!-- Spring Boot AMQP Starter（推荐，会自动管理版本） -->
 <dependency>
@@ -393,7 +393,7 @@ spring:
 </dependency>
 ```
 
-## 4.2不使用Spring Boot时的依赖管理
+## 4.2 不使用Spring Boot时的依赖管理
 如果不使用Spring Boot，需要手动引入Spring AMQP：
 
 ```xml
@@ -414,7 +414,7 @@ spring:
 </dependencies>
 ```
 
-# 5.测试环境搭建
+# 5. 测试环境搭建
 Spring AMQP提供了测试支持，可以方便地进行集成测试：
 
 ```xml
@@ -430,7 +430,7 @@ Spring AMQP提供了测试支持，可以方便地进行集成测试：
 - `RabbitListenerTestHarness`：用于测试@RabbitListener方法
 - `@RabbitListenerTest`：标记测试配置
 
-# 6.版本兼容性
+# 6. 版本兼容性
 | Spring Boot | Spring AMQP | RabbitMQ Erlang Client | AMQP Client | Java |
 |-------------|-------------|------------------------|-------------|------|
 | 3.3.x | 3.1.x | 5.20.x | 5.20.x | 17+ |

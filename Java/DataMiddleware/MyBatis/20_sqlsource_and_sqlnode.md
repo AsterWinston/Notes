@@ -1,4 +1,4 @@
-# 1.SqlSource 体系概览
+# 1. SqlSource 体系概览
 
 ```
 SqlSource 是 MyBatis 中表示 SQL 源的抽象接口。
@@ -23,7 +23,7 @@ MyBatis 源码中 SqlSource 的体系结构：
 └──────────────────────────────────────────────────────────────┘
 ```
 
-# 2.getBoundSql() 的执行流程
+# 2. getBoundSql() 的执行流程
 
 ```
 SqlSource.getBoundSql(parameterObject) 的执行取决于具体实现：
@@ -52,7 +52,7 @@ StaticSqlSource.getBoundSql(parameterObject):
   2. 直接返回
 ```
 
-# 3.SqlNode 树 — 动态 SQL 的 AST
+# 3. SqlNode 树 — 动态 SQL 的 AST
 
 ```
 MyBatis 将动态 SQL 的 XML 标签解析为一棵 SqlNode 树（AST），
@@ -88,7 +88,7 @@ MyBatis 中所有的 SqlNode 类型：
 └─────────────────────────────────────────────────────────────┘
 ```
 
-# 4.XMLScriptBuilder — SqlNode 树的构建过程
+# 4. XMLScriptBuilder — SqlNode 树的构建过程
 
 ```
 XMLScriptBuilder 负责将 Mapper.xml 中的 SQL 标签解析为 SqlNode 树。
@@ -149,7 +149,7 @@ XMLScriptBuilder 负责将 Mapper.xml 中的 SQL 标签解析为 SqlNode 树。
   }
 ```
 
-# 5.逐个 SqlNode 源码分析
+# 5. 逐个 SqlNode 源码分析
 
 ## 5.1 IfSqlNode — 条件判断
 
@@ -392,7 +392,7 @@ public class TrimSqlNode implements SqlNode {
 // 它重写了 appendSql() 方法，通过代理模式拦截 SQL 追加操作
 ```
 
-# 6.#{} 和 ${} 的底层解析差异
+# 6. #{} 和 ${} 的底层解析差异
 
 ```java
 /**
@@ -464,7 +464,7 @@ public class SqlSourceBuilder {
 }
 ```
 
-# 7.DynamicContext — 动态 SQL 上下文
+# 7. DynamicContext — 动态 SQL 上下文
 
 ```java
 /**
@@ -511,7 +511,7 @@ public class DynamicContext {
 }
 ```
 
-# 8.GenericTokenParser — 通用占位符解析器
+# 8. GenericTokenParser — 通用占位符解析器
 
 ```java
 /**
@@ -571,7 +571,7 @@ public class GenericTokenParser {
 }
 ```
 
-# 9.SqlSource 的创建决策流程
+# 9. SqlSource 的创建决策流程
 
 ```
 XMLScriptBuilder 在解析 SQL 标签时，会根据是否包含动态元素决定创建哪种 SqlSource：
@@ -610,7 +610,7 @@ XMLScriptBuilder 在解析 SQL 标签时，会根据是否包含动态元素决�
     - 必须每次重新构建
 ```
 
-# 10.BoundSql — 最终可执行的 SQL
+# 10. BoundSql — 最终可执行的 SQL
 
 ```java
 /**
@@ -657,7 +657,7 @@ public class BoundSql {
 }
 ```
 
-# 11.实例：一条动态 SQL 的完整解析过程
+# 11. 实例：一条动态 SQL 的完整解析过程
 
 ```
 以以下 SQL 为例，追踪从 XML 到 BoundSql 的完整流程：
@@ -731,7 +731,7 @@ Step 4: SqlSourceBuilder 解析 #{}
 Step 5: 返回 BoundSql(sql="select * from t_car WHERE brand like concat('%',?, '%') and car_type = ? order by id desc", parameterMappings=[...])
 ```
 
-# 12.缓存：MapperMethod 中的 SqlCommand
+# 12. 缓存：MapperMethod 中的 SqlCommand
 
 ```
 在 MapperMethod 中，SqlCommand 的构建中也涉及到 MappedStatement 的查找：

@@ -42,7 +42,7 @@ Spring Security OAuth2 演进历程：
 
 ## 2.1 基础配置
 
-### Maven 依赖
+### 2.1.1 Maven 依赖
 
 ```xml
 <dependency>
@@ -55,7 +55,7 @@ Spring Security OAuth2 演进历程：
 </dependency>
 ```
 
-### application.yml 配置
+### 2.1.2 application.yml 配置
 
 ```yaml
 spring:
@@ -96,7 +96,7 @@ spring:
             user-name-attribute: sub
 ```
 
-### SecurityConfig 基础配置
+### 2.1.3 SecurityConfig 基础配置
 
 ```java
 @Configuration
@@ -314,7 +314,7 @@ public class OAuth2ClientConfig {
 
 ## 3.1 基础配置
 
-### Maven 依赖
+### 3.1.1 Maven 依赖
 
 ```xml
 <dependency>
@@ -327,7 +327,7 @@ public class OAuth2ClientConfig {
 </dependency>
 ```
 
-### application.yml 配置
+### 3.1.2 application.yml 配置
 
 ```yaml
 spring:
@@ -345,7 +345,7 @@ spring:
           # public-key-location: classpath:public-key.pem
 ```
 
-### SecurityConfig 配置
+### 3.1.3 SecurityConfig 配置
 
 ```java
 @Configuration
@@ -393,7 +393,7 @@ public class ResourceServerConfig {
 }
 ```
 
-### 在 Controller 中获取认证信息
+### 3.1.4 在 Controller 中获取认证信息
 
 ```java
 @RestController
@@ -429,7 +429,7 @@ public class OrderController {
 
 ## 3.2 深入 JWT 定制
 
-### 自定义 JWT 验证器
+### 3.2.1 自定义 JWT 验证器
 
 ```java
 @Bean
@@ -456,7 +456,7 @@ public JwtDecoder jwtDecoder() {
 }
 ```
 
-### 方法级权限控制
+### 3.2.2 方法级权限控制
 
 ```java
 @EnableMethodSecurity

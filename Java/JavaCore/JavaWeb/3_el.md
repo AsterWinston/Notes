@@ -1,4 +1,4 @@
-# 1.EL表达式
+# 1. EL表达式
 
 ```
 EL表达式是干什么用的？
@@ -22,13 +22,13 @@ application
 和这个一样：<%= %>，将其输出到浏览器。
 ```
 
-# 2.EL表达式很好用，基本的语法格式：
+# 2. EL表达式很好用，基本的语法格式：
 
 ```
 ${表达式}
 ```
 
-# 3.EL表达式的使用：
+# 3. EL表达式的使用：
 
 ```
 <%
@@ -133,7 +133,7 @@ ${not empty param.username}
 ${!empty param.password}
 ```
 
-# 4.EL隐式对象详解
+# 4. EL隐式对象详解
 
 ```
 EL表达式提供了11个隐式对象，分为以下几类：
@@ -193,7 +193,7 @@ ${pageContext.servletContext.serverInfo}   -- 获取服务器信息
 ${pageContext.request.requestURI}          -- 获取请求URI
 ```
 
-# 5.EL函数
+# 5. EL函数
 
 ```
 EL函数允许在EL表达式中调用Java类的静态方法。

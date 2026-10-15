@@ -1,4 +1,4 @@
-# 1.部署模式概述
+# 1. 部署模式概述
 
 MinIO 支持三种部署模式：
 
@@ -12,13 +12,13 @@ MinIO 支持三种部署模式：
 
 ---
 
-# 2.Docker 方式部署
+# 2. Docker 方式部署
 
 Docker 是最快捷的部署方式，适合开发、测试和学习场景。
 
-## 2.1Docker 环境准备
+## 2.1 Docker 环境准备
 
-### Windows — Docker Desktop
+### 2.1.1 Windows — Docker Desktop
 
 ```powershell
 # 前置条件：启用 WSL2 或 Hyper-V
@@ -30,7 +30,7 @@ docker --version
 docker run hello-world
 ```
 
-### Linux — Docker Engine
+### 2.1.2 Linux — Docker Engine
 
 ```bash
 # Ubuntu/Debian 安装
@@ -47,7 +47,7 @@ sudo usermod -aG docker $USER
 docker --version
 ```
 
-## 2.2单节点单磁盘 — 快速启动
+## 2.2 单节点单磁盘 — 快速启动
 
 ```powershell
 # 拉取最新镜像
@@ -82,7 +82,7 @@ docker run -d \
 
 > 登录 Console 使用上面设置的 `MINIO_ROOT_USER` 和 `MINIO_ROOT_PASSWORD`
 
-## 2.3单节点多磁盘 — 带纠删码
+## 2.3 单节点多磁盘 — 带纠删码
 
 ```bash
 # 先创建多个数据目录（模拟多磁盘）
@@ -107,7 +107,7 @@ docker run -d \
 - 容错能力：可容忍 2 块磁盘故障
 - 存储效率：50%（4 块盘中 2 块用于校验）
 
-## 2.4Docker Compose 生产级部署
+## 2.4 Docker Compose 生产级部署
 
 完整 `docker-compose.yml`（包含 MinIO + Nginx 负载均衡 + MinIO Console）：
 
@@ -266,7 +266,7 @@ docker compose logs -f
 docker compose ps
 ```
 
-## 2.5Docker 常用管理命令
+## 2.5 Docker 常用管理命令
 
 ```bash
 # 查看容器日志
@@ -293,9 +293,9 @@ docker stop minio; docker rm minio; docker volume prune
 
 ---
 
-# 3.二进制文件直接部署（Linux）
+# 3. 二进制文件直接部署（Linux）
 
-## 3.1下载与安装
+## 3.1 下载与安装
 
 ```bash
 # 下载最新稳定版 MinIO Server（x86_64）
@@ -308,7 +308,7 @@ chmod +x /usr/local/bin/minio
 minio --version
 ```
 
-## 3.2创建系统用户（安全最佳实践）
+## 3.2 创建系统用户（安全最佳实践）
 
 ```bash
 # 创建 minio-user 系统用户（不能登录）
@@ -321,7 +321,7 @@ sudo mkdir -p /data/minio
 sudo chown -R minio-user:minio-user /data/minio
 ```
 
-## 3.3单节点单磁盘启动
+## 3.3 单节点单磁盘启动
 
 ```bash
 # 最低配置启动
@@ -330,7 +330,7 @@ MINIO_ROOT_PASSWORD=minioadmin \
 minio server /data/minio --console-address ":9001"
 ```
 
-## 3.4单节点多磁盘启动
+## 3.4 单节点多磁盘启动
 
 ```bash
 # 4 块磁盘，EC 模式
@@ -346,7 +346,7 @@ minio server \
 
 > **注意**：`/mnt/diskX/` 应该是空的、格式化好的挂载点。如果在同一块物理盘的不同目录下启动多盘模式，MinIO 会检测到并拒绝启动（会提示 "detected overlapping roots"）。
 
-## 3.5配置为 systemd 服务
+## 3.5 配置为 systemd 服务
 
 创建服务文件 `/etc/systemd/system/minio.service`：
 
@@ -422,9 +422,9 @@ sudo journalctl -u minio -n 50
 
 ---
 
-# 4.Linux 包管理器安装
+# 4. Linux 包管理器安装
 
-## 4.1通过 DEB 包安装 (Ubuntu/Debian)
+## 4.1 通过 DEB 包安装 (Ubuntu/Debian)
 
 ```bash
 # 下载 DEB 包
@@ -437,7 +437,7 @@ sudo dpkg -i minio_latest_amd64.deb
 minio --version
 ```
 
-## 4.2通过 RPM 包安装 (CentOS/RHEL)
+## 4.2 通过 RPM 包安装 (CentOS/RHEL)
 
 ```bash
 # 下载 RPM 包
@@ -452,9 +452,9 @@ minio --version
 
 ---
 
-# 5.Kubernetes 部署
+# 5. Kubernetes 部署
 
-## 5.1使用 MinIO Operator（推荐）
+## 5.1 使用 MinIO Operator（推荐）
 
 MinIO Operator 是官方推荐的 K8s 部署方式，通过 CRD (Custom Resource Definition) 管理 Tenant。
 
@@ -546,7 +546,7 @@ kubectl get tenants -n minio
 kubectl get pods -n minio
 ```
 
-## 5.2使用 Helm Chart 直接部署
+## 5.2 使用 Helm Chart 直接部署
 
 ```bash
 # 添加 MinIO Helm 仓库
@@ -575,11 +575,11 @@ helm install minio minio/minio \
 
 ---
 
-# 6.关键环境变量详解
+# 6. 关键环境变量详解
 
 MinIO 通过环境变量进行核心配置，以下是完整的环境变量列表：
 
-## 6.1认证相关
+## 6.1 认证相关
 
 | 环境变量 | 说明 | 示例 |
 |----------|------|------|
@@ -590,14 +590,14 @@ MinIO 通过环境变量进行核心配置，以下是完整的环境变量列�
 
 > **安全建议**：生产环境不要使用 `minioadmin:minioadmin`，且在 K8s 环境中通过 Secret 挂载凭证。
 
-## 6.2存储相关
+## 6.2 存储相关
 
 | 环境变量 | 说明 |
 |----------|------|
 | `MINIO_VOLUMES` | 数据卷路径，多路径用空格分隔 |
 | `MINIO_OPTS` | 额外的命令行选项 |
 
-## 6.3网络与安全
+## 6.3 网络与安全
 
 | 环境变量 | 说明 | 默认值 |
 |----------|------|--------|
@@ -608,7 +608,7 @@ MinIO 通过环境变量进行核心配置，以下是完整的环境变量列�
 | `MINIO_PUBLIC_CERTS` | TLS 证书目录 | - |
 | `MINIO_API_CORS_ALLOW_ORIGIN` | CORS 允许的域名 | `*` |
 
-## 6.4身份与访问管理
+## 6.4 身份与访问管理
 
 | 环境变量 | 说明 |
 |----------|------|
@@ -620,7 +620,7 @@ MinIO 通过环境变量进行核心配置，以下是完整的环境变量列�
 | `MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN` | LDAP 绑定 DN |
 | `MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD` | LDAP 绑定密码 |
 
-## 6.5站点复制
+## 6.5 站点复制
 
 | 环境变量 | 说明 |
 |----------|------|
@@ -629,13 +629,13 @@ MinIO 通过环境变量进行核心配置，以下是完整的环境变量列�
 
 ---
 
-# 7.配置文件详解（minio配置目录）
+# 7. 配置文件详解（minio配置目录）
 
 从较新版本开始，MinIO 支持将部分配置通过环境变量注入，但高级配置仍通过 mc admin 命令或 K8s Operator 处理。MinIO 的运行时配置存储在 `.minio.sys` 内部 Bucket 中，不需要外部配置文件。
 
 如果需要通过文件配置（某些部署场景），可使用 MinIO 的 `--config-dir` 参数或使用 `mc admin config`。
 
-### 使用 mc 查看和修改运行时配置
+## 7.1 使用 mc 查看和修改运行时配置
 
 ```bash
 # 连接 MinIO
@@ -655,7 +655,7 @@ mc admin config set myminio heal max_sleep=5s max_io=10
 
 ---
 
-# 8.MinIO 目录结构
+# 8. MinIO 目录结构
 
 MinIO 实例的数据目录结构如下：
 
@@ -676,7 +676,7 @@ MinIO 实例的数据目录结构如下：
 └── .usage-cache.bin                   # 容量使用统计缓存
 ```
 
-### xl.meta 文件示例（简化）
+## 8.1 xl.meta 文件示例（简化）
 
 ```json
 {
@@ -702,11 +702,11 @@ MinIO 实例的数据目录结构如下：
 
 ---
 
-# 9.MinIO Client (mc) 安装
+# 9. MinIO Client (mc) 安装
 
 `mc` 是 MinIO 的命令行客户端，功能对标 AWS CLI，是管理 MinIO 的必备工具。
 
-## 9.1安装 mc
+## 9.1 安装 mc
 
 ```bash
 # Linux (amd64)
@@ -721,7 +721,7 @@ Invoke-WebRequest -Uri "https://dl.min.io/client/mc/release/windows-amd64/mc.exe
 # 将 C:\ 或自定义路径添加到 PATH 环境变量
 ```
 
-## 9.2mc 基础配置与使用
+## 9.2 mc 基础配置与使用
 
 ```bash
 # 添加 MinIO 服务别名
@@ -775,7 +775,7 @@ mc du myminio/mybucket
 
 ---
 
-# 10.启动参数详解
+# 10. 启动参数详解
 
 `minio server` 命令的完整参数列表：
 
@@ -805,9 +805,9 @@ minio server \
 
 ---
 
-# 11.多节点分布式部署详解
+# 11. 多节点分布式部署详解
 
-## 11.1环境要求
+## 11.1 环境要求
 
 | 要求项 | 说明 |
 |--------|------|
@@ -820,7 +820,7 @@ minio server \
 
 > **为什么推荐 XFS**：MinIO 利用 XFS 的 `O_DIRECT` 模式和 fallocate 特性实现高性能直接 I/O。ext4 也支持，但性能略差。ZFS/btrfs 因为其自身的校验和计算会与 MinIO 的 Bit Rot Protection 冲突，导致性能下降。
 
-## 11.2节点规划示例
+## 11.2 节点规划示例
 
 ```text
 集群规模: 4 节点 × 8 磁盘 = 32 磁盘
@@ -836,7 +836,7 @@ EC 配置:    16 数据 + 16 校验（N/2 校验）
   minio-4.example.com  (192.168.1.104)  /mnt/disk{1..8}/data
 ```
 
-## 11.3磁盘准备（每节点执行）
+## 11.3 磁盘准备（每节点执行）
 
 ```bash
 # 1. 查看可用磁盘
@@ -864,7 +864,7 @@ sudo mkdir -p /mnt/disk{1..8}/data
 sudo chown -R minio-user:minio-user /mnt/disk{1..8}
 ```
 
-## 11.4启动集群
+## 11.4 启动集群
 
 在每个节点上执行相同的 `minio server` 命令：
 
@@ -881,7 +881,7 @@ minio server \
 - `disk{1...8}` 展开为 `disk1 disk2 ... disk8`
 - 最终形成 4×8=32 个磁盘端点
 
-## 11.5扩容 — 添加新的 Server Pool
+## 11.5 扩容 — 添加新的 Server Pool
 
 ```bash
 # 查看当前集群状态
@@ -905,7 +905,7 @@ minio server \
 
 ---
 
-# 12.环境变量文件方式管理（推荐生产环境）
+# 12. 环境变量文件方式管理（推荐生产环境）
 
 为安全起见，不要直接在命令行传递密码。使用环境变量文件：
 
@@ -930,7 +930,7 @@ ExecStart=/usr/local/bin/minio server $MINIO_OPTS $MINIO_VOLUMES
 
 ---
 
-# 13.测试连接的几种方式
+# 13. 测试连接的几种方式
 
 安装完成后，验证 MinIO 是否正常运行：
 
@@ -955,7 +955,7 @@ aws configure set aws_secret_access_key minioadmin
 aws s3 ls --endpoint-url http://localhost:9000
 ```
 
-### Spring Boot 简易测试端点
+## 13.1 Spring Boot 简易测试端点
 
 ```java
 @RestController

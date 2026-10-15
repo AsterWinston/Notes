@@ -406,7 +406,7 @@ public class PreInsertEvent extends AbstractEvent {
 
 ## 2.3 注册监听器
 
-### 方式一：Integrator（推荐）
+### 2.3.1 方式一：Integrator（推荐）
 
 `org.hibernate.integrator.spi.Integrator` 是 Hibernate 的 SPI 扩展点，在 SessionFactory 构建阶段自动装配。通过 Java SPI（`ServiceLoader`）机制自动发现，无需修改业务代码。
 
@@ -526,7 +526,7 @@ public class AuditPostDeleteListener implements PostDeleteEventListener {
 }
 ```
 
-### 方式二：直接通过 EventListenerRegistry（不推荐）
+### 2.3.2 方式二：直接通过 EventListenerRegistry（不推荐）
 
 也可以直接在代码中获取 `EventListenerRegistry` 并注册监听器，但这种方式绕过了 Integrator 的标准化机制，丧失了 SPI 自动发现的优势，通常只在集成测试或特殊场景下使用：
 
@@ -811,7 +811,7 @@ public class ChildEntity extends ParentEntity {
 
 ## 4.1 @FilterDef / @Filter
 
-### @FilterDef（定义过滤器）
+### 4.1.1 @FilterDef（定义过滤器）
 
 `@FilterDef` 通常标注在包级别（`package-info.java`）或实体类上，用于定义一个过滤器的名称和参数：
 
@@ -830,7 +830,7 @@ public class ChildEntity extends ParentEntity {
 package com.example.entity;
 ```
 
-### @Filter（应用过滤器到实体）
+### 4.1.2 @Filter（应用过滤器到实体）
 
 `@Filter` 标注在实体类或集合字段上，引用已定义的 `@FilterDef`：
 
@@ -908,7 +908,7 @@ if (enabledFilter != null) {
 
 ## 4.3 典型应用场景
 
-### 场景一：软删除（Soft Delete）
+### 4.3.1 场景一：软删除（Soft Delete）
 
 ```java
 // package-info.java 或实体类
@@ -948,7 +948,7 @@ public class UserRepository {
 }
 ```
 
-### 场景二：多租户（Multi-Tenancy）
+### 4.3.2 场景二：多租户（Multi-Tenancy）
 
 ```java
 @FilterDef(
@@ -992,7 +992,7 @@ public class TenantFilterInterceptor implements HandlerInterceptor {
 }
 ```
 
-### 场景三：数据权限（行级权限）
+### 4.3.3 场景三：数据权限（行级权限）
 
 ```java
 @FilterDef(
@@ -1018,7 +1018,7 @@ session.enableFilter("deptFilter")
        .setParameterList("deptIds", userDeptIds);
 ```
 
-### 场景四：多语言（国际化）
+### 4.3.4 场景四：多语言（国际化）
 
 ```java
 @FilterDef(
@@ -1044,7 +1044,7 @@ session.enableFilter("localeFilter")
        .setParameter("locale", "zh_CN");
 ```
 
-### 完整示例——软删除 + 多租户组合：
+### 4.3.5 完整示例——软删除 + 多租户组合：
 
 ```java
 @FilterDef(name = "softDeleteFilter", defaultCondition = "deleted = false")
@@ -2050,14 +2050,14 @@ public Session openTenantAwareSession(String tenantId) {
 
 ## 6.2 多租户的最佳实践
 
-### 租户数据隔离保证
+### 6.2.1 租户数据隔离保证
 
 1. **永远不要在代码中硬编码跳过租户过滤**，即使是为了调试
 2. **在 Service 层入口统一设置租户上下文**，而非在每个 DAO 方法中分散设置
 3. **租户 ID 应从认证令牌中解析**，不可从前端直接传入（防止租户 ID 篡改）
 4. **定期审计**：编写测试用例验证租户数据隔离，确保不会出现跨租户数据泄漏
 
-### 连接池配置
+### 6.2.2 连接池配置
 
 DATABASE 策略下需为每个租户配置独立的连接池：
 
@@ -2078,7 +2078,7 @@ public Map<String, DataSource> buildTenantDataSources(Map<String, TenantConfig> 
 }
 ```
 
-### 缓存隔离
+### 6.2.3 缓存隔离
 
 无论是二级缓存还是自定义应用缓存，都必须按租户隔离：
 
@@ -2161,7 +2161,7 @@ implementation 'org.hibernate.orm:hibernate-envers:6.x'
 
 ## 7.2 @Audited
 
-### 基本使用
+### 7.2.1 基本使用
 
 ```java
 import org.hibernate.envers.Audited;
@@ -2201,7 +2201,7 @@ public class Order {
 }
 ```
 
-### @AuditTable 指定审计表名
+### 7.2.2 @AuditTable 指定审计表名
 
 ```java
 @Entity
@@ -2215,7 +2215,7 @@ public class User {
 }
 ```
 
-### @AuditOverride / @AuditOverrides
+### 7.2.3 @AuditOverride / @AuditOverrides
 
 嵌入组件（@Embeddable）默认会被审计，如需排除其中的某个字段：
 
@@ -2244,7 +2244,7 @@ public class Company {
 
 ## 7.3 查询审计数据
 
-### AuditReader 获取
+### 7.3.1 AuditReader 获取
 
 ```java
 import org.hibernate.envers.AuditReader;
@@ -2258,7 +2258,7 @@ EntityManager em = entityManagerFactory.createEntityManager();
 AuditReader auditReader = AuditReaderFactory.get(em);
 ```
 
-### 查询某实体的所有历史版本
+### 7.3.2 查询某实体的所有历史版本
 
 ```java
 // forRevisionsOfEntity： 查询指定实体的所有历史修订
@@ -2279,7 +2279,7 @@ for (Object[] row : revisions) {
 }
 ```
 
-### 查询某个版本的所有变更实体
+### 7.3.3 查询某个版本的所有变更实体
 
 ```java
 // forEntitiesModifiedAtRevision： 查询某个修订版本中所有变更的实体
@@ -2293,7 +2293,7 @@ for (Object entity : entities) {
 }
 ```
 
-### 查询某实体的某个历史版本（精确快照）
+### 7.3.4 查询某实体的某个历史版本（精确快照）
 
 ```java
 // find：查询某个实体在指定版本的历史快照
@@ -2306,7 +2306,7 @@ Customer historicalCustomer = auditReader.find(
 System.out.println("历史上版本 2 的名称: " + historicalCustomer.getName());
 ```
 
-### 查询某实体在指定日期的版本
+### 7.3.5 查询某实体在指定日期的版本
 
 ```java
 // 查询实体在 2024-01-15 10:00:00 时的状态
@@ -2463,7 +2463,7 @@ Hibernate 字节码增强（Bytecode Enhancement）是在编译期或类加载�
 | **双向关联自动同步** | 设置一端的关联时自动同步另一端 | 是（可选） |
 | **@LazyToOne(NO_PROXY)** | 无代理懒加载，避免类继承限制 | 是（必须） |
 
-### 属性级懒加载
+### 8.1.1 属性级懒加载
 
 ```java
 @Entity
@@ -2485,7 +2485,7 @@ public class Document {
 // 增强后，只有访问 document.getContent() 时才触发 SELECT
 ```
 
-### 脏检查优化
+### 8.1.2 脏检查优化
 
 增强后，Hibernate 可以通过实体内部的 tracker 精确知道哪些属性被修改，避免全字段对比：
 
@@ -2494,7 +2494,7 @@ public class Document {
 已增强:    属性 setter → tracker 记录 → 仅对比被修改的字段
 ```
 
-### 双向关联自动同步
+### 8.1.3 双向关联自动同步
 
 ```java
 @Entity
@@ -2518,7 +2518,7 @@ public class Child {
 child.setParent(parent);  // 会自动将 child 添加到 parent.children
 ```
 
-### @LazyToOne(NO_PROXY) 实现
+### 8.1.4 @LazyToOne(NO_PROXY) 实现
 
 ```java
 @OneToOne(fetch = FetchType.LAZY)
@@ -2530,7 +2530,7 @@ private UserProfile profile;
 
 ## 8.2 增强配置
 
-### Maven 插件配置
+### 8.2.1 Maven 插件配置
 
 ```xml
 <build>
@@ -2561,7 +2561,7 @@ private UserProfile profile;
 </build>
 ```
 
-### Gradle 配置
+### 8.2.2 Gradle 配置
 
 ```groovy
 // Kotlin DSL
@@ -2579,7 +2579,7 @@ hibernate {
 }
 ```
 
-### @LazyGroup 分组懒加载
+### 8.2.3 @LazyGroup 分组懒加载
 
 `@LazyGroup` 允许多个字段共享同一个懒加载组，一次数据库访问加载组内所有字段：
 
@@ -2612,7 +2612,7 @@ public class Product {
 // 访问任意 "images" 组的字段 → 触发一条 SQL 同时加载 thumbnailImage + fullImage
 ```
 
-### 验证增强是否生效
+### 8.2.4 验证增强是否生效
 
 ```java
 // 方法一：检查实体类是否实现了 ManagedEntity 接口
@@ -2638,7 +2638,7 @@ Hibernate Validator 是 Jakarta Bean Validation（JSR 380）的参考实现。�
 
 ## 9.1 Bean Validation 与 Hibernate 的协作
 
-### 自动验证时机
+### 9.1.1 自动验证时机
 
 Hibernate 在以下时机自动触发 Bean Validation：
 
@@ -2686,7 +2686,7 @@ try {
 }
 ```
 
-### hibernate.validator.apply_to_ddl
+### 9.1.2 hibernate.validator.apply_to_ddl
 
 将验证约束自动映射为数据库 DDL 约束（列长度、非空等）：
 
@@ -2710,7 +2710,7 @@ private String email;
 // DDL: email VARCHAR(255) NOT NULL  ← 自动添加 NOT NULL 约束
 ```
 
-### 验证分组
+### 9.1.3 验证分组
 
 针对不同场景使用不同的验证规则：
 
@@ -2768,7 +2768,7 @@ public class ProductService {
 }
 ```
 
-### 自定义验证器
+### 9.1.4 自定义验证器
 
 ```java
 import javax.validation.Constraint;
@@ -2996,7 +2996,7 @@ quarkus:
 
 Hibernate 提供两个层次的命名策略，允许完全掌控表名和列名的生成逻辑。
 
-### ImplicitNamingStrategy
+### 10.3.1 ImplicitNamingStrategy
 
 控制当未显式指定表名/列名时，从 Java 标识符自动推断的规则：
 
@@ -3036,7 +3036,7 @@ public class CustomImplicitNamingStrategy
 }
 ```
 
-### PhysicalNamingStrategy
+### 10.3.2 PhysicalNamingStrategy
 
 控制最终写入数据库的物理名称，是最常用的命名策略扩展点：
 

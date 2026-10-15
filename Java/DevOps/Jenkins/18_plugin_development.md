@@ -662,10 +662,8 @@ pipeline {
 }
 ```
 
-## Configuration
+## 8.4 Configuration
 Manage Jenkins > Configure System > My Plugin Configuration
 
-## Changelog
-### 1.0.0
-- Initial release
-```
+## 8.5 Changelog
+

@@ -1,6 +1,6 @@
-# 1.MinIO 源码整体架构
+# 1. MinIO 源码整体架构
 
-## 1.1源码组织结构
+## 1.1 源码组织结构
 
 MinIO 使用 Go 语言编写，源码结构清晰。虽然本笔记为 Java 技术栈相关，但理解 MinIO 的核心设计思想对深入使用和问题排查至关重要。
 
@@ -41,7 +41,7 @@ pkg/
 └── ...
 ```
 
-## 1.2核心分层架构
+## 1.2 核心分层架构
 
 ```text
 ┌──────────────────────────────────────────────────┐
@@ -71,9 +71,9 @@ pkg/
 
 ---
 
-# 2.核心接口与类型
+# 2. 核心接口与类型
 
-## 2.1ObjectLayer 接口
+## 2.1 ObjectLayer 接口
 
 `ObjectLayer` 是 MinIO 最核心的抽象接口，定义了所有对象存储操作。
 
@@ -115,7 +115,7 @@ type ObjectLayer interface {
 }
 ```
 
-### 两种实现
+### 2.1.1 两种实现
 
 ```text
 ObjectLayer 接口的两个主要实现:
@@ -133,7 +133,7 @@ ObjectLayer 接口的两个主要实现:
    - 位置: cmd/erasure-server-pool.go
 ```
 
-## 2.2Erasure Set（EC 集合）
+## 2.2 Erasure Set（EC 集合）
 
 ```go
 // 简化版 ErasureSet 结构
@@ -165,9 +165,9 @@ type erasureObjects struct {
 
 ---
 
-# 3.服务启动流程
+# 3. 服务启动流程
 
-## 3.1启动时序
+## 3.1 启动时序
 
 ```text
 minio server 命令启动流程:
@@ -219,7 +219,7 @@ minio server 命令启动流程:
        └── 绑定 :9001 (Console)
 ```
 
-## 3.2HTTP 路由注册
+## 3.2 HTTP 路由注册
 
 ```go
 // 简化版路由注册 (cmd/router.go)
@@ -248,9 +248,9 @@ func registerAPIRouter(router *mux.Router) {
 
 ---
 
-# 4.数据写入流程深度解析
+# 4. 数据写入流程深度解析
 
-## 4.1PutObject 完整调用链
+## 4.1 PutObject 完整调用链
 
 ```text
 客户端: PUT /my-bucket/photos/avatar.jpg
@@ -306,7 +306,7 @@ HTTP 路由 → PutObjectHandler()
            └── ETag: <哈希值>
 ```
 
-## 4.2EC 编码实现要点（Go 源码视角）
+## 4.2 EC 编码实现要点（Go 源码视角）
 
 ```go
 // 简化版 EC 编码器 (internal/erasure/erasure.go)
@@ -350,9 +350,9 @@ func (e *Erasure) EncodeData(ctx context.Context, data []byte) ([][]byte, error)
 
 ---
 
-# 5.Heal（自动修复）机制
+# 5. Heal（自动修复）机制
 
-## 5.1Heal 触发条件
+## 5.1 Heal 触发条件
 
 ```text
 触发 Heal 的几种情况:
@@ -363,7 +363,7 @@ func (e *Erasure) EncodeData(ctx context.Context, data []byte) ([][]byte, error)
 5. 节点重新加入集群后自动触发
 ```
 
-## 5.2Heal 执行流程
+## 5.2 Heal 执行流程
 
 ```go
 // 简化版 Heal Object 流程 (cmd/admin-heal-ops.go)
@@ -403,9 +403,9 @@ func (er *erasureObjects) HealObject(ctx context.Context, bucket, object, versio
 
 ---
 
-# 6.面试知识点汇总
+# 6. 面试知识点汇总
 
-## 6.1基础概念
+## 6.1 基础概念
 
 **Q: 什么是对象存储？和块存储、文件存储的区别？**
 - 对象存储：扁平的 Key-Value 命名空间，通过 HTTP API 访问，无限扩展
@@ -423,7 +423,7 @@ func (er *erasureObjects) HealObject(ctx context.Context, bucket, object, versio
 - 如果将 MinIO 作为 SaaS 服务提供（如公有云对象存储），需要商业许可
 - 修改源码后如果分发，需要开源修改部分
 
-## 6.2纠删码（Erasure Coding）
+## 6.2 纠删码（Erasure Coding）
 
 **Q: 解释 Erasure Coding 的工作原理？**
 - EC(k, m)：k 个数据块 + m 个校验块，共 N = k + m 个分片
@@ -448,7 +448,7 @@ func (er *erasureObjects) HealObject(ctx context.Context, bucket, object, versio
 - EC 修复只需要重建丢失的分片，RAID 需要重建整个磁盘
 - EC 可以在软件中高效实现，不依赖 RAID 控制器
 
-## 6.3一致性
+## 6.3 一致性
 
 **Q: MinIO 的一致性模型是什么？**
 - Read-after-Write 强一致：PUT 成功后 GET 立即可见
@@ -460,7 +460,7 @@ func (er *erasureObjects) HealObject(ctx context.Context, bucket, object, versio
 - SipHash 将对象一致地路由到同一个 EC Set（确定性分布）
 - 元数据通过多数派读取保证最新
 
-## 6.4分布式架构
+## 6.4 分布式架构
 
 **Q: MinIO 为什么最少需要 4 个节点？**
 - 4 节点 × 4 磁盘 = 16 磁盘，EC 可获得合理的容错能力
@@ -479,7 +479,7 @@ func (er *erasureObjects) HealObject(ctx context.Context, bucket, object, versio
 - 传播节点在线/离线、磁盘状态变更等信息
 - 不用于数据传输（数据传输通过内部 RPC）
 
-## 6.5安全
+## 6.5 安全
 
 **Q: MinIO 支持哪些认证方式？**
 - AccessKey + SecretKey（标准 S3 认证）
@@ -492,7 +492,7 @@ func (er *erasureObjects) HealObject(ctx context.Context, bucket, object, versio
 - SSE-C：用户提供密钥，每次请求都需传密钥，MinIO 不存储密钥
 - SSE-KMS：通过 KES + Vault 等外部 KMS 管理密钥，适合企业级合规场景
 
-## 6.6性能
+## 6.6 性能
 
 **Q: MinIO 的性能瓶颈通常在哪些方面？**
 - 网络带宽（节点间通信吞吐）
@@ -506,7 +506,7 @@ func (er *erasureObjects) HealObject(ctx context.Context, bucket, object, versio
 - 减少 EC 校验块比例（如 12+4 替代 8+8）
 - 使用生命周期规则自动清理
 
-## 6.7对比
+## 6.7 对比
 
 **Q: MinIO vs FastDFS？**
 - MinIO 是对象存储（S3 兼容），FastDFS 是分布式文件系统
@@ -521,7 +521,7 @@ func (er *erasureObjects) HealObject(ctx context.Context, bucket, object, versio
 - MinIO 部署运维更简单
 - HDFS 更适合大数据批处理（MapReduce/Spark），MinIO 更适合云原生和 Web 应用
 
-## 6.8实践场景
+## 6.8 实践场景
 
 **Q: 如何设计一个基于 MinIO 的云存储系统？**
 - 接入层：Nginx 反向代理 + 限流 + 认证
@@ -543,7 +543,7 @@ func (er *erasureObjects) HealObject(ctx context.Context, bucket, object, versio
 - 使用日期做前缀有利于按时间归档和生命周期管理
 - 防止热点 Key（避免所有请求命中同一个 Key）
 
-## 6.9异常处理
+## 6.9 异常处理
 
 **Q: MinIO 集群中如果超过 N/2 的磁盘故障了怎么办？**
 - 数据在该 EC Set 中永久丢失，无法通过 EC 解码恢复
@@ -561,7 +561,7 @@ func (er *erasureObjects) HealObject(ctx context.Context, bucket, object, versio
 
 ---
 
-# 7.设计模式在 MinIO 中的应用
+# 7. 设计模式在 MinIO 中的应用
 
 | 设计模式 | 应用场景 |
 |----------|----------|

@@ -1,4 +1,4 @@
-# 1.简介：回调
+# 1. 简介：回调
 ```javascript
 我们在这里的示例中使用了浏览器方法
 为了演示回调、promise 和其他抽象概念的使用，我们将使用一些浏览器方法：具体地说，是加载脚本和执行简单的文档操作的方法。
@@ -83,7 +83,7 @@ loadScript('https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js', s
 
 这里我们在 loadScript 中就是这么做的，但当然这是一种通用方法。
 ```
-## 1.1在回调中回调
+## 1.1 在回调中回调
 ```
 我们如何依次加载两个脚本：第一个，然后是第二个？
 
@@ -115,7 +115,7 @@ loadScript('/my/script.js', function(script) {
 });
 因此，每一个新行为（action）都在回调内部。这对于几个行为来说还好，但对于许多行为来说就不好了，所以我们很快就会看到其他变体。
 ```
-## 1.2处理Error
+## 1.2 处理Error
 ```
 在上述示例中，我们并没有考虑出现 error 的情况。如果脚本加载失败怎么办？我们的回调应该能够对此作出反应。
 
@@ -149,7 +149,7 @@ callback 的第一个参数是为 error 而保留的。一旦出现 error，call
 第二个参数（和下一个参数，如果需要的话）用于成功的结果。此时 callback(null, result1, result2…) 就会被调用。
 因此，单一的 callback 函数可以同时具有报告 error 和传递返回结果的作用。
 ```
-## 1.3厄运金字塔
+## 1.3 厄运金字塔
 ```
 乍一看，它像是一种可行的异步编程方式。的确如此，对于一个或两个嵌套的调用看起来还不错。
 
@@ -233,7 +233,7 @@ function step3(error, script) {
 ```
 
 
-# 2.Promise
+# 2. Promise
 ```javascript
 想象一下，你是一位顶尖歌手，粉丝没日没夜地询问你下首歌什么时候发。
 
@@ -336,7 +336,7 @@ let promise = new Promise(function(resolve, reject) {
 state 和 result 都是内部的
 Promise 对象的 state 和 result 属性都是内部的。我们无法直接访问它们。但我们可以对它们使用 .then/.catch/.finally 方法。我们在下面对这些方法进行了描述。
 ```
-## 2.1消费者：then, catch
+## 2.1 消费者：then, catch
 ```
 Promise 对象充当的是 executor（“生产者代码”或“歌手”）和消费函数（“粉丝”）之间的连接，后者将接收结果或 error。可以通过使用 .then 和 .catch 方法注册消费函数。
 
@@ -395,7 +395,7 @@ let promise = new Promise((resolve, reject) => {
 promise.catch(alert); // 1 秒后显示 "Error: Whoops!"
 .catch(f) 调用是 .then(null, f) 的完全的模拟，它只是一个简写形式。
 ```
-## 2.2清理：finally
+## 2.2 清理：finally
 ```
 就像常规 try {...} catch {...} 中的 finally 子句一样，promise 中也有 finally。
 
@@ -470,7 +470,7 @@ promise.then(alert); // done!（立刻显示）
 
 Promise 则更加灵活。我们可以随时添加处理程序（handler）：如果结果已经在了，它们就会执行。
 ```
-## 2.3示例：loadScript
+## 2.3 示例：loadScript
 ```
 接下来，让我们看一下关于 promise 如何帮助我们编写异步代码的更多实际示例。
 
@@ -520,7 +520,7 @@ promise 允许我们按照自然顺序进行编码。首先，我们运行 loadS
 因此，promise 为我们提供了更好的代码流和灵活性。但其实还有更多相关内容。我们将在下一章看到。
 ```
 
-# 3.Promise 链
+# 3. Promise 链
 ```javascript
 我们回顾一下 简介：回调 一章中提到的问题：我们有一系列的异步任务要一个接一个地执行 —— 例如，加载脚本。我们如何写出更好的代码呢？
 
@@ -596,7 +596,7 @@ promise.then(function(result) {
 
 实际上我们极少遇到一个 promise 需要多个处理程序的情况。使用链式调用的频率更高。
 ```
-## 3.1返回promise
+## 3.1 返回promise
 ```
 .then(handler) 中所使用的处理程序（handler）可以创建并返回一个 promise。
 
@@ -635,7 +635,7 @@ new Promise(function(resolve, reject) {
 
 返回 promise 使我们能够构建异步行为链。
 ```
-## 3.2示例：loadScript
+## 3.2 示例：loadScript
 ```
 让我们将本章所讲的这个特性与在 上一章 中定义的 promise 化的 loadScript 结合使用，按顺序依次加载脚本：
 
@@ -713,7 +713,7 @@ JavaScript 检查在 (*) 行中由 .then 处理程序返回的对象：如果它
 
 这个特性允许我们将自定义的对象与 promise 链集成在一起，而不必继承自 Promise。
 ```
-## 3.3更复杂的示例：fetch
+## 3.3 更复杂的示例：fetch
 ```
 在前端编程中，promise 通常被用于网络请求。那么，让我们一起来看一个相关的扩展示例吧。
 
@@ -828,7 +828,7 @@ loadJson('/article/promise-chaining/user.json')
   // ...
 ```
 
-# 4.使用 promise 进行错误处理
+# 4. 使用 promise 进行错误处理
 ```javascript
 promise 链在错误（error）处理中十分强大。当一个 promise 被 reject 时，控制权将移交至最近的 rejection 处理程序。这在实际开发中非常方便。
 
@@ -859,7 +859,7 @@ fetch('/article/promise-chaining/user.json')
   .catch(error => alert(error.message));
 通常情况下，这样的 .catch 根本不会被触发。但是如果上述任意一个 promise rejected（网络问题或者无效的 json 或其他），.catch 就会捕获它。
 ```
-## 4.1隐式try...catch
+## 4.1 隐式try...catch
 ```
 promise 的执行者（executor）和 promise 的处理程序周围有一个“隐式的 try..catch”。如果发生异常，它就会被捕获，并被视为 rejection 进行处理。
 
@@ -893,7 +893,7 @@ new Promise((resolve, reject) => {
 }).catch(alert); // ReferenceError: blabla is not defined
 最后的 .catch 不仅会捕获显式的 rejection，还会捕获它上面的处理程序中意外出现的 error。
 ```
-## 4.2再次抛出
+## 4.2 再次抛出
 ```
 正如我们已经注意到的，链尾端的 .catch 的表现有点像 try..catch。我们可能有许多个 .then 处理程序，然后在尾端使用一个 .catch 处理上面的所有 error。
 
@@ -942,7 +942,7 @@ new Promise((resolve, reject) => {
 });
 执行从第一个 .catch (*) 沿着链跳转至下一个 (**)。
 ```
-## 4.3未处理的rejection
+## 4.3 未处理的rejection
 ```
 当一个 error 没有被处理会发生什么？例如，我们忘了在链的尾端附加 .catch，像这样：
 
@@ -980,11 +980,11 @@ new Promise(function() {
 在 Node.js 等非浏览器环境中，有其他用于跟踪未处理的 error 的方法。
 ```
 
-# 5.Promise API
+# 5. Promise API
 ```javascript
 在 Promise 类中，有 6 种静态方法。我们在这里简单介绍下它们的使用场景。
 ```
-## 5.1Promise.all
+## 5.1 Promise.all
 ```
 假设我们希望并行执行多个 promise，并等待所有 promise 都准备就绪。
 
@@ -1077,7 +1077,7 @@ Promise.all([
 ]).then(alert); // 1, 2, 3
 所以我们可以在方便的地方将准备好的值传递给 Promise.all。
 ```
-## 5.2Promise.allSettled
+## 5.2 Promise.allSettled
 ```
 最近新增的特性
 这是一个最近添加到 JavaScript 的特性。 旧式浏览器可能需要 polyfills.
@@ -1141,7 +1141,7 @@ if (!Promise.allSettled) {
 
 然后我们就可以使用 Promise.allSettled 来获取 所有 给定的 promise 的结果，即使其中一些被 reject。
 ```
-## 5.3Promise.race
+## 5.3 Promise.race
 ```
 与 Promise.all 类似，但只等待第一个 settled 的 promise 并获取其结果（或 error）。
 
@@ -1157,7 +1157,7 @@ Promise.race([
 ]).then(alert); // 1
 这里第一个 promise 最快，所以它变成了结果。第一个 settled 的 promise “赢得了比赛”之后，所有进一步的 result/error 都会被忽略。
 ```
-## 5.4Promise.any
+## 5.4 Promise.any
 ```
 与 Promise.race 类似，区别在于 Promise.any 只等待第一个 fulfilled 的 promise，并将这个 fulfilled 的 promise 返回。如果给出的 promise 都 rejected，那么返回的 promise 会带有 AggregateError —— 一个特殊的 error 对象，在其 errors 属性中存储着所有 promise error。
 
@@ -1185,7 +1185,7 @@ Promise.any([
 });
 正如你所看到的，我们在 AggregateError 错误类型的 error 实例的 errors 属性中可以访问到失败的 promise 的 error 对象。
 ```
-## 5.5Promise.resolve/reject
+## 5.5 Promise.resolve/reject
 ```
 在现代的代码中，很少需要使用 Promise.resolve 和 Promise.reject 方法，因为 async/await 语法（我们会在 稍后 讲到）使它们变得有些过时了。
 
@@ -1226,7 +1226,7 @@ let promise = new Promise((resolve, reject) => reject(error));
 实际上，这个方法几乎从未被使用过。
 ```
 
-# 6.Promisification
+# 6. Promisification
 ```javascript
 对于一个简单的转换来说 “Promisification” 是一个长单词。它指将一个接受回调的函数转换为一个返回 promise 的函数。
 
@@ -1347,7 +1347,7 @@ Promisification 是一种很好的方法，特别是在你使用 async/await 的
 因此，promisification 仅适用于调用一次回调的函数。进一步的调用将被忽略。
 ```
 
-# 7.微任务（Microtask）
+# 7. 微任务（Microtask）
 ```javacript
 promise 的处理程序 .then、.catch 和 .finally 都是异步的。
 
@@ -1366,7 +1366,7 @@ alert("code finished"); // 这个 alert 先显示
 
 为什么 .then 会在之后才被触发？这是怎么回事？
 ```
-## 7.1微任务队列
+## 7.1 微任务队列
 ```
 异步任务需要适当的管理。为此，ECMA 标准规定了一个内部队列 PromiseJobs，通常被称为“微任务队列（microtask queue）”（V8 术语）。
 
@@ -1392,7 +1392,7 @@ Promise.resolve()
   .then(() => alert("code finished"));
 现在代码就是按照预期执行的。
 ```
-## 7.2未处理的rejection
+## 7.2 未处理的rejection
 ```
 还记得 使用 promise 进行错误处理 一章中的 unhandledrejection 事件吗？
 
@@ -1429,11 +1429,11 @@ window.addEventListener('unhandledrejection', event => alert(event.reason));
 在上面这个例子中，被添加到 setTimeout 中的 .catch 也会被触发。只是会在 unhandledrejection 事件出现之后才会被触发，所以它并没有改变什么（没有发挥作用）。
 ```
 
-# 8.async/await
+# 8. async/await
 ```javascript
 async/await 是以更舒适的方式使用 promise 的一种特殊语法，同时它也非常易于理解和使用。
 ```
-## 8.1async function
+## 8.1 async function
 ```
 让我们以 async 这个关键字开始。它可以被放置在一个函数前面，如下所示：
 
@@ -1458,7 +1458,7 @@ async function f() {
 f().then(alert); // 1
 所以说，async 确保了函数返回一个 promise，也会将非 promise 的值包装进去。很简单，对吧？但不仅仅这些。还有另外一个叫 await 的关键词，它只在 async 函数内工作，也非常酷。
 ```
-## 8.2await
+## 8.2 await
 ```
 语法如下：
 
@@ -1584,7 +1584,7 @@ new Waiter()
   .then(alert); // 1（alert 等同于 result => alert(result)）
 这里的含义是一样的：它确保了方法的返回值是一个 promise 并且可以在方法中使用 await。
 ```
-## 8.3Error处理
+## 8.3 Error处理
 ```
 如果一个 promise 正常 resolve，await promise 返回的就是其结果。但是如果 promise 被 reject，它将 throw 这个 error，就像在这一行有一个 throw 语句那样。
 

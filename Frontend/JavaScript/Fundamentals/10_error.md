@@ -1,4 +1,4 @@
-# 1.错误处理，"try...catch"
+# 1. 错误处理，"try...catch"
 ```javascript
 不管你多么精通编程，有时我们的脚本总还是会出现错误。可能是因为我们的编写出错，或是与预期不同的用户输入，或是错误的服务端响应以及其他数千种原因。
 
@@ -6,7 +6,7 @@
 
 但是有一种语法结构 try...catch，它使我们可以“捕获（catch）”错误，因此脚本可以执行更合理的操作，而不是死掉。
 ```
-## 1.1“try...catch"语法
+## 1.1 “try...catch"语法
 ```
 try...catch 结构由两部分组成：try 和 catch：
 
@@ -95,7 +95,7 @@ setTimeout(function() {
   }
 }, 1000);
 ```
-## 1.2Error对象
+## 1.2 Error对象
 ```
 发生错误时，JavaScript 会生成一个包含有关此 error 详细信息的对象。然后将该对象作为参数传递给 catch：
 
@@ -128,7 +128,7 @@ try {
   alert(err); // ReferenceError: lalala is not defined
 }
 ```
-## 1.3可选的"catch"绑定"
+## 1.3 可选的"catch"绑定"
 ```
 最近新增的特性
 这是一个最近添加到 JavaScript 的特性。 旧式浏览器可能需要 polyfills.
@@ -140,7 +140,7 @@ try {
   // ...
 }
 ```
-## 1.4使用"try...catch"
+## 1.4 使用"try...catch"
 ```
 让我们一起探究一下真实场景中 try...catch 的用例。
 
@@ -182,7 +182,7 @@ try {
 }
 在这儿，我们将 catch 块仅仅用于显示信息，但我们可以做更多的事：发送一个新的网络请求，向访问者建议一个替代方案，将有关错误的信息发送给记录日志的设备，……。所有这些都比代码“死掉”好得多。
 ```
-## 1.5抛出我们自定义的error
+## 1.5 抛出我们自定义的error
 ```
 如果这个 json 在语法上是正确的，但是没有所必须的 name 属性该怎么办？
 
@@ -260,7 +260,7 @@ try {
 
 现在，catch 成为了所有 error 处理的唯一场所：对于 JSON.parse 和其他情况都适用。
 ```
-## 1.6再次抛出(rethrowing)
+## 1.6 再次抛出(rethrowing)
 ```
 在上面的例子中，我们使用 try...catch 来处理不正确的数据。但是在 try {...} 块中是否可能发生 另一个预料之外的 error？例如编程错误（未定义变量）或其他错误，而不仅仅是这种“不正确的数据”。
 
@@ -351,7 +351,7 @@ try {
 }
 上面这个例子中的 readData 只知道如何处理 SyntaxError，而外部的 try...catch 知道如何处理任意的 error。
 ```
-## 1.7try...catch...finally
+## 1.7 try...catch...finally
 ```
 等一下，以上并不是所有内容。
 
@@ -456,7 +456,7 @@ function func() {
 }
 上面的代码中，由于没有 catch，所以 try 中的 error 总是会使代码执行跳转至函数 func() 外。但是，在跳出之前需要执行 finally 中的代码。
 ```
-## 1.8全局catch
+## 1.8 全局catch
 ```
 环境特定
 这个部分的内容并不是 JavaScript 核心的一部分。
@@ -505,7 +505,7 @@ error 对象。
 我们可以登录到服务方的 Web 界面来查看这些 error。
 ```
 
-# 2.自定义 Error，扩展 Error
+# 2. 自定义 Error，扩展 Error
 ```javascript
 当我们在开发某些东西时，经常会需要我们自己的 error 类来反映在我们的任务中可能出错的特定任务。对于网络操作中的 error，我们需要 HttpError，对于数据库操作中的 error，我们需要 DbError，对于搜索操作中的 error，我们需要 NotFoundError，等等。
 
@@ -515,7 +515,7 @@ JavaScript 允许将 throw 与任何参数一起使用，所以从技术上讲�
 
 随着开发的应用程序的增长，我们自己的 error 自然会形成形成一个层次结构（hierarchy）。例如，HttpTimeoutError 可能继承自 HttpError，等等。
 ```
-## 2.1扩展Error
+## 2.1 扩展Error
 ```
 例如，让我们考虑一个函数 readUser(json)，该函数应该读取带有用户数据的 JSON。
 
@@ -612,7 +612,7 @@ try {
 
 还有一点很重要，在 catch 遇到了未知的错误，它会在 (**) 行将该错误再次抛出。catch 块只知道如何处理 validation 错误和语法错误，而其他错误（由代码中的拼写错误或其他未知原因导致的）应该被扔出（fall through）。
 ```
-## 2.2深入继承
+## 2.2 深入继承
 ```
 ValidationError 类是非常通用的。很多东西都可能出错。对象的属性可能缺失或者属性可能有格式错误（例如 age 属性的值为一个字符串而不是数字）。让我们针对缺少属性的错误来制作一个更具体的 PropertyRequiredError 类。它将携带有关缺少的属性的相关信息。
 
@@ -688,7 +688,7 @@ class PropertyRequiredError extends ValidationError {
 alert( new PropertyRequiredError("field").name ); // PropertyRequiredError
 现在自定义的 error 短了很多，特别是 ValidationError，因为我们摆脱了 constructor 中的 "this.name = ..." 这一行。
 ```
-## 2.3包装异常
+## 2.3 包装异常
 ```
 在上面代码中的函数 readUser 的目的就是“读取用户数据”。在这个过程中可能会出现不同类型的 error。目前我们有了 SyntaxError 和 ValidationError，但是将来，函数 readUser 可能会不断壮大，并可能会产生其他类型的 error。
 

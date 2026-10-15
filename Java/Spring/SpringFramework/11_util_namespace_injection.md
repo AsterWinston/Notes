@@ -88,9 +88,9 @@ public class MyDataSource2 {
 
 ```
 
-# 源码解析：util 命名空间的元素与解析
+# 2. 源码解析：util 命名空间的元素与解析
 
-## 1. UtilNamespaceHandler 注册的全部元素
+## 2.1 UtilNamespaceHandler 注册的全部元素
 
 ```
 在 spring-beans 模块的 META-INF/spring.handlers 中：
@@ -115,7 +115,7 @@ public void init() {
 }
 ```
 
-## 2. 各 util 元素的用途与源码
+## 2.2 各 util 元素的用途与源码
 
 ```
 <util:constant> — 引用静态常量
@@ -148,7 +148,7 @@ public void init() {
   源码：PropertiesBeanDefinitionParser → BeanDefinition(beanClass=Properties, ...)
 ```
 
-## 3. <util:properties> 的完整解析源码
+## 2.3 <util:properties> 的完整解析源码
 
 ```
 // PropertiesBeanDefinitionParser.doParse()
@@ -172,7 +172,7 @@ protected void doParse(Element element, BeanDefinitionBuilder builder) {
 // 遍历 <prop key="x">value</prop> → Properties.setProperty("x", "value")
 ```
 
-## 4. util 命名空间 vs 内嵌集合的对比
+## 2.4 util 命名空间 vs 内嵌集合的对比
 
 ```
 不使用 util：

@@ -148,7 +148,7 @@ FROM <entity_name> [[AS] <identification_variable>]
 [ORDER BY <order_by_expression>]
 ```
 
-### 查询实体
+### 2.1.1 查询实体
 
 三种等价写法，效果一致：
 
@@ -163,7 +163,7 @@ List<User> users2 = session.createQuery("SELECT u FROM User u", User.class).list
 List<BaseEntity> entities = session.createQuery("FROM BaseEntity", BaseEntity.class).list();
 ```
 
-### 查询属性（投影）
+### 2.1.2 查询属性（投影）
 
 ```java
 // 单个属性 → 返回属性类型
@@ -188,7 +188,7 @@ List<String> distinctNames = session.createQuery(
 ).getResultList();
 ```
 
-### SELECT NEW 构造器表达式（DTO 投影）
+### 2.1.3 SELECT NEW 构造器表达式（DTO 投影）
 
 ```java
 // 定义 DTO
@@ -213,7 +213,7 @@ List<UserDTO> dtos = session.createQuery(
 - 构造器参数的顺序和类型必须匹配
 - DTO 类不需要是实体
 
-### 别名的使用规范
+### 2.1.4 别名的使用规范
 
 ```hql
 -- AS 关键字可省略，建议保留以提高可读性

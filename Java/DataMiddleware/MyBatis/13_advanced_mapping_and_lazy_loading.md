@@ -1,4 +1,4 @@
-# 1.多对一
+# 1. 多对一
 ```
 多种⽅式，常⻅的包括三种：
 
@@ -6,7 +6,7 @@
 第⼆种⽅式：⼀条SQL语句，association。
 第三种⽅式：两条SQL语句，分步查询。（这种⽅式常⽤：优点⼀是可复⽤。优点⼆是⽀持懒加载。）
 ```
-## 1.1级联属性映射（cascade）
+## 1.1 级联属性映射（cascade）
 ```
 pojo类Student中添加⼀个属性：Clazz clazz; 表示学⽣关联的班级对象。
 
@@ -39,7 +39,7 @@ public void testSelectById(){
 }
 
 ```
-## 1.2association（resultMap配置中使用association）
+## 1.2 association（resultMap配置中使用association）
 ```
 其他位置都不需要修改，只需要修改resultMap中的配置：association即可。
 <resultMap id="studentResultMapAssociation" type="Student">
@@ -66,7 +66,7 @@ public void testSelectById(){
 测试结果和第一种方法一样
 ```
 
-## 1.3分步查询
+## 1.3 分步查询
 ```
 其他位置不需要修改，只需要修改以及添加以下三处：
 第⼀处：association中select位置填写sqlId。sqlId=namespace+id。其中column属性作为这条⼦sql语句的条件。
@@ -126,7 +126,7 @@ public interface ClazzMapper {
 第⼆个优点：⽀持延迟加载。【暂时访问不到的数据可以先不查询。提⾼程序的执⾏效率。】
 ```
 
-# 2.多对一延迟加载
+# 2. 多对一延迟加载
 ```
 要想⽀持延迟加载，⾮常简单，只需要在association标签中添加fetchType="lazy"即可。
 修改StudentMapper.xml⽂件：
@@ -160,7 +160,7 @@ public void testSelectByIdStepOne(){
 
 启动 MyBatis 的懒加载（lazy loading）后返回的对象是一个代理对象（Proxy）。这时候，只有当使用getXxx()方法获取该对象属性里的级联对象时，才会执行相应的SQL，这就是反射机制的功劳了
 ```
-# 3.一对多
+# 3. 一对多
 ```
 ⼀对多的实现，通常是在⼀的⼀⽅中有List集合属性。
 在Clazz类中添加List stus; 属性。
@@ -171,7 +171,7 @@ public void testSelectByIdStepOne(){
 第⼆种⽅式：分步查询
 ```
 
-## 3.1collection
+## 3.1 collection
 ```
 <resultMap id="clazzResultMap" type="Clazz">
     <id property="cid" column="cid"/>
@@ -193,7 +193,7 @@ public void testSelectByIdStepOne(){
 </select>
 
 ```
-## 3.2分步查询
+## 3.2 分步查询
 ```
 与多对一的分步查询类似
 <resultMap id="clazzResultMapByStep" type="Clazz">
@@ -213,7 +213,7 @@ public void testSelectByIdStepOne(){
 </select>
 
 ```
-# 4.一对多延迟加载
+# 4. 一对多延迟加载
 ```
 与多对一相同
 ```

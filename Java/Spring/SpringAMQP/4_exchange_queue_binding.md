@@ -1,6 +1,6 @@
-# 1.Exchange交换机详解
+# 1. Exchange交换机详解
 
-## 1.1Exchange的职责
+## 1.1 Exchange的职责
 Exchange是AMQP协议中的消息路由组件，它的核心职责是**接收生产者发来的消息，根据Routing Key和Binding规则，将消息路由到一个或多个Queue中**。
 
 重要的设计原则：
@@ -8,9 +8,9 @@ Exchange是AMQP协议中的消息路由组件，它的核心职责是**接收生
 - **Exchange不存储消息**，它只是一个路由表，消息存储由Queue负责
 - 如果Exchange无法将消息路由到任何Queue（没有匹配的Binding），消息默认会被**丢弃**
 
-## 1.2Direct Exchange深入
+## 1.2 Direct Exchange深入
 
-### 1.2.1工作原理
+### 1.2.1 工作原理
 Direct Exchange采用**精确匹配**策略，将Routing Key与Binding Key进行完全相等的比较。
 
 ```
@@ -23,7 +23,7 @@ Direct Exchange: 检查所有Binding
 消息投递到: queue.order.creation
 ```
 
-### 1.2.2Spring声明
+### 1.2.2 Spring声明
 ```java
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
@@ -67,14 +67,14 @@ public class DirectExchangeConfig {
 }
 ```
 
-### 1.2.3使用场景
+### 1.2.3 使用场景
 - 明确的业务路由：不同的业务操作路由到不同队列
 - 精确的消息分发：每个Routing Key对应唯一的目标队列
 - 点对点通信：配合默认交换机实现精确的点对点投递
 
-## 1.3Topic Exchange深入
+## 1.3 Topic Exchange深入
 
-### 1.3.1工作原理
+### 1.3.1 工作原理
 Topic Exchange采用**模式匹配**策略，Binding Key使用`.`分隔的单词和通配符：
 - `*`（星号）：匹配**有且仅有**一个单词
 - `#`（井号）：匹配**零个或多个**单词
@@ -95,7 +95,7 @@ order.#            | order                    | ✓ (零个单词)
 *.create           | payment.order.create     | ✗ (两个单词)
 ```
 
-### 1.3.2Spring声明
+### 1.3.2 Spring声明
 ```java
 @Configuration
 public class TopicExchangeConfig {
@@ -143,15 +143,15 @@ public class TopicExchangeConfig {
 }
 ```
 
-### 1.3.3使用场景
+### 1.3.3 使用场景
 - 日志分级处理：`log.info`、`log.warn`、`log.error`分别路由到不同队列
 - 事件广播与筛选：`order.#`捕获所有订单事件，`order.create`只关注创建事件
 - 多维度路由：`region.us.store.ny`可以有`region.#`、`#.ny`等多种匹配
 - 微服务事件驱动：`user.created`、`user.updated`、`user.deleted`区分处理
 
-## 1.4Fanout Exchange深入
+## 1.4 Fanout Exchange深入
 
-### 1.4.1工作原理
+### 1.4.1 工作原理
 Fanout Exchange是最简单的交换机类型，它将接收到的消息**广播到所有绑定的Queue**，完全**忽略Routing Key**。
 
 ```
@@ -163,7 +163,7 @@ Fanout Exchange: 广播到所有绑定的Queue
   └── queue.push   ← 收到消息
 ```
 
-### 1.4.2Spring声明
+### 1.4.2 Spring声明
 ```java
 @Configuration
 public class FanoutExchangeConfig {
@@ -199,14 +199,14 @@ public class FanoutExchangeConfig {
 ```
 注意：`BindingBuilder.bind(queue).to(fanoutExchange)`在绑定到Fanout Exchange时不需要（也不能）指定Routing Key，因为Fanout Exchange会忽略它。
 
-### 1.4.3使用场景
+### 1.4.3 使用场景
 - 发布/订阅模式：一条消息需要被多个消费者同时处理
 - 数据广播：配置变更、缓存刷新通知等
 - 事件通知：用户注册后同时触发邮件、短信、推送等
 
-## 1.5Headers Exchange深入
+## 1.5 Headers Exchange深入
 
-### 1.5.1工作原理
+### 1.5.1 工作原理
 Headers Exchange通过**消息的Headers属性**进行路由匹配，完全忽略Routing Key。
 
 ```java
@@ -237,12 +237,12 @@ Headers匹配规则：
 
 注意：`BindingBuilder`对Headers Exchange的支持有类型限制（需要`HeadersExchange`类型），如果是抽象的`Exchange`接口，需要向下转型。
 
-### 1.5.2使用场景
+### 1.5.2 使用场景
 Headers Exchange的使用场景相对较少，推荐优先使用Topic Exchange。
 
-## 1.6Default Exchange（默认交换机）
+## 1.6 Default Exchange（默认交换机）
 
-### 1.6.1特性
+### 1.6.1 特性
 - 名称：`""`（空字符串）
 - 类型：Direct
 - **自动将所有Queue名称作为Binding Key**
@@ -255,14 +255,14 @@ rabbitTemplate.convertAndSend("my.queue", message);
 rabbitTemplate.convertAndSend("", "my.queue", message);
 ```
 
-### 1.6.2使用场景
+### 1.6.2 使用场景
 - 快速开发和测试
 - 简单的点对点消息传递
 - 不需要复杂路由规则的场景
 
-# 2.Queue队列详解
+# 2. Queue队列详解
 
-## 2.1Queue的属性详解
+## 2.1 Queue的属性详解
 ```java
 new Queue(
     "queue.name",      // 名称
@@ -273,13 +273,13 @@ new Queue(
 );
 ```
 
-### 2.1.1durable（持久化）
+### 2.1.1 durable（持久化）
 - `true`：队列的元数据持久化到磁盘，Broker重启后队列依然存在
 - `false`：临时队列，Broker重启后队列消失
 
 > 注意：**durable队列不代表消息持久化**。消息的持久化由`deliveryMode`属性控制。如果队列是非持久化的，即使消息设置了持久化，Broker重启后队列消失，消息也会丢失。
 
-### 2.1.2exclusive（排他性）
+### 2.1.2 exclusive（排他性）
 - `true`：该队列只能被创建它的Connection使用，Connection断开后队列自动删除
 - `false`：多个Connection可以共享该队列
 
@@ -287,11 +287,11 @@ new Queue(
 - 临时队列，如RPC回复队列
 - 单消费者场景，确保队列不被其他消费者监听
 
-### 2.1.3autoDelete（自动删除）
+### 2.1.3 autoDelete（自动删除）
 - `true`：当最后一个消费者断开连接后，队列自动删除
 - `false`：即使没有消费者，队列也继续存在
 
-### 2.1.4arguments（额外参数）
+### 2.1.4 arguments（额外参数）
 通过`arguments`可以设置队列的高级特性：
 
 ```java
@@ -308,7 +308,7 @@ args.put("x-queue-type", "quorum");             // 队列类型：classic / quor
 Queue queue = new Queue("my.queue", true, false, false, args);
 ```
 
-## 2.2临时队列与匿名队列
+## 2.2 临时队列与匿名队列
 ```java
 // 创建匿名排他自动删除队列（名称由Broker生成，形如 amq.gen-xxx）
 @Bean
@@ -324,7 +324,7 @@ public Queue anonymousQueue() {
 ```
 匿名队列适用于RPC模式中的回复队列，因为名称不需要提前约定。
 
-## 2.3Queue Builder
+## 2.3 Queue Builder
 Spring AMQP提供了`QueueBuilder`，使Queue的创建更加直观：
 
 ```java
@@ -363,7 +363,7 @@ Queue queue7 = QueueBuilder.durable("my.queue")
         .build();
 ```
 
-## 2.4Queue参数的底层实现
+## 2.4 Queue参数的底层实现
 当Spring AMQP声明Queue时，`QueueBuilder`会将配置转换为AMQP协议的arguments参数表：
 
 | QueueBuilder方法 | AMQP argument | 说明 |
@@ -381,7 +381,7 @@ Queue queue7 = QueueBuilder.durable("my.queue")
 | `.exclusive()` | `exclusive` | 排他 |
 | `.durable()` | `durable` | 持久化 |
 
-## 2.5惰性队列（Lazy Queue）
+## 2.5 惰性队列（Lazy Queue）
 从RabbitMQ 3.6开始支持惰性队列，**将消息尽可能存放到磁盘**，仅在消费者请求时才加载到内存。
 
 ```java
@@ -395,7 +395,7 @@ Queue lazyQueue = QueueBuilder.durable("lazy.queue")
 - 需要处理突发流量，允许消息堆积在磁盘上
 - 内存有限，不想消息全部驻留在内存
 
-## 2.6仲裁队列（Quorum Queue）
+## 2.6 仲裁队列（Quorum Queue）
 从RabbitMQ 3.8开始引入的一种新队列类型，基于Raft共识算法实现的持久化、复制式队列。旨在替代传统镜像队列（Mirrored Queue）。
 
 ```java
@@ -416,9 +416,9 @@ Queue quorumQueue = QueueBuilder.durable("quorum.queue")
 - 不支持排他队列
 - 仅支持`drop-head`溢出策略（不支持`reject-publish`）
 
-# 3.Binding绑定详解
+# 3. Binding绑定详解
 
-## 3.1Binding的本质
+## 3.1 Binding的本质
 Binding是Exchange和Queue之间的关联关系，定义了消息从Exchange流向Queue的规则：
 
 ```
@@ -427,7 +427,7 @@ Exchange --[Binding]--> Queue
 接收消息                 存储并投递给消费者
 ```
 
-## 3.2Binding Builder的使用
+## 3.2 Binding Builder的使用
 Spring AMQP提供了`BindingBuilder`链式API来创建Binding：
 
 ```java
@@ -453,7 +453,7 @@ BindingBuilder.bind(queue).to(exchange1).with("key1");
 BindingBuilder.bind(queue).to(exchange2).with("key2");
 ```
 
-## 3.3多Binding与路由策略
+## 3.3 多Binding与路由策略
 一个Exchange可以有多个Binding，一个Queue也可以绑定到多个Exchange：
 
 ```
@@ -468,11 +468,11 @@ BindingBuilder.bind(queue).to(exchange2).with("key2");
 
 这种灵活性可以实现复杂的消息路由拓扑。
 
-# 4.交换机与队列的高级配置
+# 4. 交换机与队列的高级配置
 
-## 4.1交换机的其他属性
+## 4.1 交换机的其他属性
 
-### 4.1.1内部交换机（Internal）
+### 4.1.1 内部交换机（Internal）
 内部交换机不能直接被生产者发布消息，只能被其他Exchange通过Exchange-to-Exchange绑定来路由消息：
 
 ```java
@@ -482,7 +482,7 @@ Exchange internalExchange = ExchangeBuilder
     .build();
 ```
 
-### 4.1.2备用交换机（Alternate Exchange, AE）
+### 4.1.2 备用交换机（Alternate Exchange, AE）
 当消息无法被路由到任何Queue时，会自动转发到备用交换机：
 
 ```java
@@ -509,7 +509,7 @@ alternate-exchange → unroutable.exchange → unroutable.queue（捕获无法�
 - 便于排查问题（通过监控备用队列中的消息，发现路由问题）
 - 实现统一的消息兜底处理
 
-### 4.1.3Exchange-to-Exchange 绑定
+### 4.1.3 Exchange-to-Exchange 绑定
 RabbitMQ支持交换机与交换机之间的绑定（Exchange-to-Exchange Binding），允许将消息从一个Exchange转发到另一个Exchange。
 
 ```java
@@ -537,7 +537,7 @@ public Binding exchangeToExchangeBinding() {
 }
 ```
 
-## 4.2ExchangeBuilder工具类
+## 4.2 ExchangeBuilder工具类
 ```java
 // Direct
 Exchange directExchange = ExchangeBuilder
@@ -573,9 +573,9 @@ Exchange exchange = ExchangeBuilder
     .build();
 ```
 
-# 5.声明式与编程式管理
+# 5. 声明式与编程式管理
 
-## 5.1声明式（通过@Bean）
+## 5.1 声明式（通过@Bean）
 声明式是Spring AMQP的常规用法，通过配置类中的@Bean方法定义Exchange、Queue、Binding，RabbitAdmin会自动声明它们到Broker。
 
 优点：
@@ -583,7 +583,7 @@ Exchange exchange = ExchangeBuilder
 - 与IoC容器结合，可以注入使用
 - 应用启动时自动声明，确保组件存在
 
-## 5.2编程式（通过AmqpAdmin）
+## 5.2 编程式（通过AmqpAdmin）
 在某些动态场景下，需要在运行时动态创建或删除组件：
 
 ```java
@@ -620,9 +620,9 @@ public int getPendingMessageCount(String queueName) {
 }
 ```
 
-# 6.声明错误处理
+# 6. 声明错误处理
 
-## 6.1属性不匹配的处理
+## 6.1 属性不匹配的处理
 当应用尝试声明的组件与Broker上已存在的同名组件属性不一致时，`RabbitAdmin`默认会失败并抛出异常。
 
 解决方案：
@@ -640,15 +640,15 @@ public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
 }
 ```
 
-# 7.开发建议与最佳实践
+# 7. 开发建议与最佳实践
 
-## 7.1命名规范
+## 7.1 命名规范
 - Exchange命名：`{domain}.{type}.exchange`，如`order.topic.exchange`
 - Queue命名：`{domain}.{action}.queue`，如`order.create.queue`
 - Routing Key命名：`{domain}.{action}`，如`order.create`
 - Dead Letter相关：加前缀`dlx.` / `dlq.`，如`dlx.order.exchange`、`dlq.order.queue`
 
-## 7.2设计原则
+## 7.2 设计原则
 - **一个Queue一个职责**：一个Queue只处理一种类型的业务消息，便于监控和维护
 - **Exchange优先Topic类型**：Topic Exchange是最灵活的，能满足大部分路由需求
 - **合理使用备用交换机**：在关键业务Exchange上配置备用交换机，捕获无法路由的消息便于排查

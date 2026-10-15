@@ -112,7 +112,7 @@ public class BasicUsage {
 }
 ```
 
-### Fastjson2 API 使用
+### 2.1.1 Fastjson2 API 使用
 
 ```java
 // Fastjson2 API 类似但包名不同
@@ -204,7 +204,7 @@ public class JSONObjectExample {
 
 ## 2.3 注解
 
-### @JSONField
+### 2.3.1 @JSONField
 
 `@JSONField` 可以作用于字段、getter、setter 或方法参数上。
 
@@ -240,7 +240,7 @@ public class Product {
 }
 ```
 
-### @JSONType
+### 2.3.2 @JSONType
 
 ```java
 @JSONType(ignores = {"internalId", "secret"})  // 类级别忽略字段
@@ -255,7 +255,7 @@ public class Employee {
 }
 ```
 
-### @JSONCreator
+### 2.3.3 @JSONCreator
 
 ```java
 public class ImmutableConfig {
@@ -281,7 +281,7 @@ public class ImmutableConfig {
 
 ## 2.4 SerializerFeature 和 Feature
 
-### SerializerFeature（序列化配置）
+### 2.4.1 SerializerFeature（序列化配置）
 
 ```java
 public class SerializerFeatureExample {
@@ -304,7 +304,7 @@ public class SerializerFeatureExample {
 }
 ```
 
-### Feature（反序列化配置）
+### 2.4.2 Feature（反序列化配置）
 
 ```java
 public class FeatureExample {
@@ -541,7 +541,7 @@ public class JSONPathExample {
 }
 ```
 
-### 常用 JSONPath 表达式
+### 3.3.1 常用 JSONPath 表达式
 
 | 表达式 | 说明 |
 |--------|------|
@@ -684,7 +684,7 @@ public class FastjsonConfig {
 
 Fastjson 实现高性能的关键技术：
 
-### 1. 自行解析字符串（非正则）
+### 4.1.1 自行解析字符串（非正则）
 
 ```java
 // Fastjson 手写解析引擎，不依赖正则表达式
@@ -701,7 +701,7 @@ public final class JSONLexer {
 }
 ```
 
-### 2. ASM 字节码增强
+### 4.1.2 ASM 字节码增强
 
 ```java
 // Fastjson 使用 ASM 动态生成字节码来替代反射
@@ -719,7 +719,7 @@ public final class JSONLexer {
 // }
 ```
 
-### 3. 高效的数据结构
+### 4.1.3 高效的数据结构
 
 ```java
 // 使用 char[] 而非 String 进行中间处理（避免 String 创建开销）
@@ -727,7 +727,7 @@ public final class JSONLexer {
 // 使用 ThreadLocal 缓存解析器实例
 ```
 
-### 4. 缓存优化
+### 4.1.4 缓存优化
 
 ```java
 // - serializeConfig 缓存序列化器（ConcurrentHashMap）

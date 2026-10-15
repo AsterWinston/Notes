@@ -96,7 +96,7 @@ Spring对AOP的实现包括以下3种方式：
 AspectJ 框架
     Eclipse组织的一个支持AOP的框架。
     AspectJ框架是独立于Spring框架之外的一个框架，Spring框架借助于AspectJ
-## 4.1依赖
+## 4.1 依赖
 ```
 <!--spring context依赖-->
 <dependency>
@@ -122,7 +122,7 @@ AspectJ 框架
   <version>6.0.8</version>
 </dependency>
 ```
-## 4.2Spring 配置文件中添加 context 命名空间和 aop 命名空间
+## 4.2 Spring 配置文件中添加 context 命名空间和 aop 命名空间
 ```
     基于注解的方式需要组件扫描，需要 context 命名空间
     需要使用aop，需要aop命名空间
@@ -140,7 +140,7 @@ AspectJ 框架
 
 </beans>
 ```
-## 4.3目标类
+## 4.3 目标类
 ```
 package cw.study.spring.service;
 
@@ -162,7 +162,7 @@ public class UserService {
     
 }
 ```
-## 4.4切面（切面 = 通知 + 切点）
+## 4.4 切面（切面 = 通知 + 切点）
 ```
 package cw.study.spring.aspect;
 
@@ -200,7 +200,7 @@ public class LogAspect {
     
 }
 ```
-## 4.5开启 AspectJ 自动代理
+## 4.5 开启 AspectJ 自动代理
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -227,7 +227,7 @@ public class LogAspect {
 	
 </beans>
 ```
-## 4.6Before 前置通知测试
+## 4.6 Before 前置通知测试
 ```
 前置通知：@Before 目标方法执行之前的通知
 
@@ -238,7 +238,7 @@ public void testBeforeAdvice() {
     userService.login();
 }
 ```
-## 4.7AfterReturning 后置通知
+## 4.7 AfterReturning 后置通知
 ```
 后置通知：@AfterReturning 目标方法执行之后的通知
 
@@ -247,7 +247,7 @@ public void afterReturningAdvice() {
     System.out.println("后置通知...");
 }
 ```
-## 4.8Around 环绕通知
+## 4.8 Around 环绕通知
 ```
 环绕通知：@Around 目标方法之前添加通知，同时目标方法执行之后添加通知。
 环绕通知是范围最大的通知，前环绕在前置通知之前，后环绕在所有通知之后
@@ -266,7 +266,7 @@ public void aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
     System.out.println("后环绕...");
 }
 ```
-## 4.9After 最终通知
+## 4.9 After 最终通知
 ```
 	最终通知：@After 放在finally语句块中的通知
 // 最终通知
@@ -275,7 +275,7 @@ public void afterAdvice() {
     System.out.println("最终通知...");
 }
 ```
-## 4.10AfterThrowing 异常通知
+## 4.10 AfterThrowing 异常通知
 ```
 	异常通知：@AfterThrowing 发生异常之后执行的通知
 // 异常通知
@@ -312,7 +312,7 @@ public void aroundAdvice(ProceedingJoinPoint joinPoint) {
     System.out.println("后环绕...");
 }
 ```
-## 4.11Order 切面顺序
+## 4.11 Order 切面顺序
 ```
 使用 @Order 注解可以指定切面的执行顺序
     数字越小，优先级越高
@@ -451,7 +451,7 @@ public class LogAspect {
 环绕通知，优先级越高越外层执行
 在切点执行之前执行的通知和在切点执行之后执行的通知，同一优先级执行完，再执行下一级优先级
 ```
-## 4.12通用切点表达式
+## 4.12 通用切点表达式
 ```
     使用通用切点表达式可以简化切点表达式，使切点表达式的代码得到复用
     在其他切面类中使用："包名.LogAspect.通用切点表达式对应方法的方法名()"
@@ -514,7 +514,7 @@ public class LogAspect {
 }
 ```
 
-## 4.13连接点
+## 4.13 连接点
 ```
 环绕通知，Spring在调用通知方法时，会传入ProceedingJionPoint对象（连接点对象）
     除了环绕通知以外的其他通知，Spring在调用时，会传入JoinPoint对象（连接点对象）
@@ -545,7 +545,7 @@ public void beforeAdvice(JoinPoint joinPoint) {
 }
 
 ```
-## 4.14执行链
+## 4.14 执行链
 ```
 JdkDynamicAopProxy / CglibAopProxy
         ↓
@@ -592,7 +592,7 @@ public void test01() {
 ```
 
 # 6. 基于XML配置方式的AOP
-## 6.1依赖
+## 6.1 依赖
 ```
 <dependencies>
 	<!-- spring 核心依赖 -->
@@ -616,7 +616,7 @@ public void test01() {
 </dependencies>
 
 ```
-## 6.2目标类
+## 6.2 目标类
 ```
 public class UserService {
     
@@ -627,7 +627,7 @@ public class UserService {
 }
 
 ```
-## 6.3切面类
+## 6.3 切面类
 ```
 public class LogAspect {
     
@@ -649,7 +649,7 @@ public class LogAspect {
 }
 
 ```
-## 6.4spring.xml配置
+## 6.4 spring.xml配置
 ```
 命名空间依然需要
 <?xml version="1.0" encoding="UTF-8"?>
@@ -685,7 +685,7 @@ public class LogAspect {
 </beans>
 ```
 
-## 6.5测试
+## 6.5 测试
 ```
 @org.junit.Test
 public void test() {
@@ -717,7 +717,7 @@ try{
 这个控制事务的代码就是和业务逻辑没有关系的“交叉业务”。这些交叉业务的代码没有得到复用，在每个业务类的业务方法中，都要开启事务、提交事务以及回滚事务的代码，代码复用低，并且如果这些交叉业务代码需要修改，那必然需要修改多处，难维护，怎么解决？可以采用AOP思想解决。
 可以把以上控制事务的代码作为环绕通知，切入到目标类的方法当中。
 ```
-## 7.1依赖
+## 7.1 依赖
 ```
 <dependencies>
   <dependency>
@@ -738,7 +738,7 @@ try{
   </dependency>
 </dependencies>
 ```
-## 7.2目标类（业务类）
+## 7.2 目标类（业务类）
 ```
 package cw.study.spring.service;
 
@@ -788,7 +788,7 @@ public class OrderService {
     
 }
 ```
-## 7.3切面类
+## 7.3 切面类
 ```
 package cw.study.spring.aspect;
 
@@ -830,7 +830,7 @@ public class TransactionAspect {
     
 }
 ```
-## 7.4spring.xml配置
+## 7.4 spring.xml配置
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -849,7 +849,7 @@ public class TransactionAspect {
 	
 </beans>
 ```
-## 7.5测试代码
+## 7.5 测试代码
 ```
 @org.junit.Test
 public void test() {
@@ -866,7 +866,7 @@ public void test() {
 
 # 8. AOP的实际案例：安全日志
 需求是这样的：项目开发结束了，已经上线了。运行正常。客户提出了新的需求：凡是在系统中进行修改操作的，删除操作的，新增操作的，都要把这个人记录下来。因为这几个操作是属于危险行为。
-## 8.1目标类
+## 8.1 目标类
 ```
 package cw.study.spring.service;
 
@@ -895,7 +895,7 @@ public class UserService {
 }
 
 ```
-## 8.2切面类
+## 8.2 切面类
 ```
 package cw.study.spring.aspect;
 
@@ -954,7 +954,7 @@ public class LogAspect {
 }
 
 ```
-## 8.3spring.xml配置
+## 8.3 spring.xml配置
 ```
 <!-- 组件扫描 -->
 <context:component-scan base-package="cw.study.spring"/>
@@ -963,7 +963,7 @@ public class LogAspect {
 <aop:aspectj-autoproxy/>
 
 ```
-## 8.4测试
+## 8.4 测试
 ```
 @org.junit.Test
 public void test() {
@@ -976,7 +976,7 @@ public void test() {
 
 # 9. 源码解析：AOP 代理创建与执行链
 
-## 9.1. @EnableAspectJAutoProxy 的事件链路
+## 9.1 @EnableAspectJAutoProxy 的事件链路
 
 ```
 当我们在配置类上添加 @EnableAspectJAutoProxy 时，发生了什么？
@@ -1029,7 +1029,7 @@ public static BeanDefinition registerAspectJAnnotationAutoProxyCreatorIfNecessar
 }
 ```
 
-## 9.2. AnnotationAwareAspectJAutoProxyCreator 的类继承结构
+## 9.2 AnnotationAwareAspectJAutoProxyCreator 的类继承结构
 
 ```
 AopProxy (Interface)                                 BeanPostProcessor (Interface)
@@ -1058,7 +1058,7 @@ AbstractAutoProxyCreator                                 │
             - 转化为 Advisor 列表                         │
 ```
 
-### 9.3. 关键接口说明
+### 9.3 关键接口说明
 
 ```
 SmartInstantiationAwareBeanPostProcessor 定义了三个与实例化相关的方法：
@@ -1077,7 +1077,7 @@ SmartInstantiationAwareBeanPostProcessor 定义了三个与实例化相关的方
    → ★ 这是普通 AOP 代理创建的主入口
 ```
 
-## 9.3. AOP 代理创建流程：wrapIfNecessary() 源码
+## 9.3 AOP 代理创建流程：wrapIfNecessary() 源码
 
 ```
 AbstractAutoProxyCreator.postProcessAfterInitialization() — AOP 代理创建的主入口：
@@ -1132,7 +1132,7 @@ protected Object wrapIfNecessary(Object bean, String beanName, Object cacheKey) 
 }
 ```
 
-### 9.4. AnnotationAwareAspectJAutoProxyCreator.getAdvicesAndAdvisorsForBean()
+### 9.4 AnnotationAwareAspectJAutoProxyCreator.getAdvicesAndAdvisorsForBean()
 
 ```
 该方法位于 AbstractAdvisorAutoProxyCreator，但 findCandidateAdvisors() 和
@@ -1156,7 +1156,7 @@ protected List<Advisor> findCandidateAdvisors() {
 // → getIntroductionFilter() 是否有引介增强
 ```
 
-### 9.5. createProxy() 源码
+### 9.5 createProxy() 源码
 
 ```
 protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
@@ -1209,7 +1209,7 @@ protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
 }
 ```
 
-## 9.4. JDK vs CGLIB 代理决策：DefaultAopProxyFactory
+## 9.4 JDK vs CGLIB 代理决策：DefaultAopProxyFactory
 
 ```
 DefaultAopProxyFactory.createAopProxy() 是决定使用 JDK 动态代理还是 CGLIB 的最终决策点：
@@ -1253,7 +1253,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 }
 ```
 
-### 9.5. 代理选择决策表
+### 9.5 代理选择决策表
 
 ```
                                      ┌─────────────────────────────┐
@@ -1278,7 +1278,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
                            ──────────────────────┘
 ```
 
-## 9.5. 通知执行链：ReflectiveMethodInvocation.proceed() 核心源码
+## 9.5 通知执行链：ReflectiveMethodInvocation.proceed() 核心源码
 
 ```
 这是整个 AOP 通知调用链的核心！它使用递归 + 责任链模式实现拦截器链的执行。
@@ -1336,7 +1336,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 }
 ```
 
-### 9.6. 各通知类型对应的 MethodInterceptor 实现
+### 9.6 各通知类型对应的 MethodInterceptor 实现
 
 ```
 五种通知类型的注解分别由不同的 MethodInterceptor（也称 Advice）实现：
@@ -1373,7 +1373,7 @@ ExposeInvocationInterceptor：固定排在第一个的拦截器
     使得其他 Advised 可以通过 AopContext.currentProxy() 获取当前代理
 ```
 
-## 9.6. 执行链完整调用时序图
+## 9.6 执行链完整调用时序图
 
 ```
 假设有一个方法被 @Around + @Before + @AfterReturning + @After 同时增强：
@@ -1423,7 +1423,7 @@ MethodBeforeAdviceInterceptor.invoke(this)
   ★ @Around 的前后逻辑像一个"鸡蛋壳"，包裹了中间的所有通知和实际方法
 ```
 
-## 9.7. JdkDynamicAopProxy.invoke() 源码
+## 9.7 JdkDynamicAopProxy.invoke() 源码
 
 ```
 JDK 动态代理的核心：InvocationHandler.invoke()
@@ -1497,7 +1497,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 }
 ```
 
-### 9.8. getInterceptorsAndDynamicInterceptionAdvice() — Advisor 与 MethodInterceptor 的转换
+### 9.8 getInterceptorsAndDynamicInterceptionAdvice() — Advisor 与 MethodInterceptor 的转换
 
 ```
 AdvisedSupport.getInterceptorsAndDynamicInterceptionAdvice():
@@ -1559,7 +1559,7 @@ public List<Object> getInterceptorsAndDynamicInterceptionAdvice(
 }
 ```
 
-## 9.8. CglibAopProxy 的代理创建与执行
+## 9.8 CglibAopProxy 的代理创建与执行
 
 ```
 CGLIB 代理使用 Enhancer 创建子类来代理目标对象：
@@ -1596,7 +1596,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 }
 ```
 
-## 9.9. @Aspect 切面类的通知转换过程
+## 9.9 @Aspect 切面类的通知转换过程
 
 ```
 当一个 @Aspect 注解的 Bean 被扫描到后，每个通知方法都会被解析为一个 Advisor：
@@ -1631,7 +1631,7 @@ InstantiationModelAwarePointcutAdvisorImpl
   └─ SimpleInstantiationModelAwarePointcutAdvisor  ← Advisor（切面 = 切点 + 通知）
 ```
 
-## 9.10. 设计思想总结
+## 9.10 设计思想总结
 
 1. 双重代理策略模式（DefaultAopProxyFactory）：
    Spring 根据目标类是否实现接口，在 JDK 动态代理和 CGLIB 之间自动切换。

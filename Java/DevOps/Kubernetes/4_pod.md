@@ -1,4 +1,4 @@
-# 1.Pod概述
+# 1. Pod概述
 
 ## 1.1 什么是Pod
 
@@ -19,7 +19,7 @@ Pod 的"原子性"体现在：
 
 Kubernetes 的设计哲学中有一个著名的"每个 Pod 一个容器"模式——多数情况下一个 Pod 只运行一个主容器。但 Pod 的设计能力原生支持多容器协同工作，这为 Sidecar、Ambassador、Adapter 等模式提供了基础。
 
-### Pod内共享命名空间的设计哲学
+### 1.1.1 Pod内共享命名空间的设计哲学
 
 Pod 通过 Linux 命名空间（Namespace）实现容器间的隔离与共享。Pod 的设计选择了**共享部分命名空间**的方案，这种"选择性共享"体现了精妙的设计权衡：
 
@@ -51,7 +51,7 @@ PID 命名空间共享是可选的，默认不共享。这是出于安全考虑�
 
 事实上，Kubernetes 完全可以直接调度容器——容器运行时（如 containerd）本身就支持单容器的生命周期管理。但 Kubernetes 引入了 Pod 这一层抽象，是出于以下深层原因：
 
-### 1. 紧密耦合容器的协同调度需求
+### 1.2.1 紧密耦合容器的协同调度需求
 
 在实际应用中，经常存在需要"绑在一起运行"的容器组：
 
@@ -86,14 +86,14 @@ PID 命名空间共享是可选的，默认不共享。这是出于安全考虑�
 
 如果没有 Pod，这些容器需要**手动**确保被调度到同一台机器，并且手动配置它们之间的网络互通——这既复杂又脆弱。
 
-### 2. 资源共享与生命周期管理的统一
+### 1.2.2 资源共享与生命周期管理的统一
 
 Pod 作为"容器组"，提供：
 - **统一的资源计量**：Pod 内所有容器的 `requests` 合计才是调度器考虑的占用量
 - **统一的终止信号**：删除 Pod 时，所有容器同步收到 SIGTERM，共享 `terminationGracePeriodSeconds`
 - **统一的状态机**：Pod 只有一套 Phase（Pending/Running/Succeeded/Failed），简化了上层控制器的状态管理
 
-### 3. 模式抽象的价值
+### 1.2.3 模式抽象的价值
 
 Pod 为上层工作负载抽象提供了统一基础：
 
@@ -104,7 +104,7 @@ Pod 为上层工作负载抽象提供了统一基础：
 
 有了 Pod 这一层抽象，上层所有控制器都操作统一的对象，无需关心底层是单个容器还是多个容器。
 
-### 4. 历史原因：Borg 的影响
+### 1.2.4 历史原因：Borg 的影响
 
 Pod 的概念直接来源于 Google 内部系统 Borg 的 `alloc`（allocation）：
 - Borg 中，任务不是单独运行的，而是分配到一个 `alloc` 中
@@ -164,7 +164,7 @@ Kubernetes 的设计者有意让 Pod 成为这个"逻辑主机"的边界，而�
 
 ## 1.4 Pod内资源共享机制
 
-### Network 命名空间共享
+### 1.4.1 Network 命名空间共享
 
 Pod 内所有容器共享同一个网络命名空间，这意味着：
 
@@ -203,7 +203,7 @@ Pod IP: 10.244.1.5
 - Pod 内通信不需要服务发现，直接 `localhost:<port>` 即可，性能极高
 - Sidecar 模式的核心技术基础就在于此
 
-### IPC 命名空间共享
+### 1.4.2 IPC 命名空间共享
 
 Pod 内所有容器共享 IPC（Inter-Process Communication）命名空间，允许使用：
 - System V 信号量（semget/semop）
@@ -229,7 +229,7 @@ spec:
 
 **注意**：虽然共享 IPC 命名空间，但实际中 Pod 内进程间通信更多使用 localhost 网络或共享 Volume，直接使用 System V IPC 的场景较少。
 
-### PID 命名空间共享（可选）
+### 1.4.3 PID 命名空间共享（可选）
 
 默认情况下，Pod 内容器不共享 PID 命名空间——每个容器只能看到自己的进程。
 
@@ -256,7 +256,7 @@ spec:
 
 **安全考量**：共享 PID 命名空间会暴露进程信息，降低了容器间的隔离性。在共享 PID 命名空间后，`/proc` 文件系统也会暴露其他容器的进程信息，这可能带来安全隐患。因此默认关闭。
 
-### UTS 命名空间共享
+### 1.4.4 UTS 命名空间共享
 
 Pod 内所有容器共享 UTS（UNIX Time-Sharing）命名空间，即共享主机名（hostname）和域名。Kubernetes 默认将 Pod 的主机名设置为 Pod 名称。
 
@@ -274,7 +274,7 @@ spec:
     # 在容器内 hostname 命令将返回 "custom-host"
 ```
 
-### Volume 共享
+### 1.4.5 Volume 共享
 
 Volume 是 Pod 内资源共享的另一个重要维度。Pod 级别定义 Volume，容器通过 `volumeMounts` 挂载：
 
@@ -323,7 +323,7 @@ spec:
 - `emptyDir` 可以使用 `medium: Memory` 选项挂载为 tmpfs
 - Pod 删除时，`emptyDir` 数据被清理；容器重启不会清理 `emptyDir`
 
-# 2.Pod YAML详解
+# 2. Pod YAML详解
 
 ## 2.1 完整YAML结构
 
@@ -364,7 +364,7 @@ status:                   # 实际状态（由系统维护，创建时不需要�
 
 ## 2.2 metadata字段详解
 
-### name
+### 2.2.1 name
 
 Pod 的名称，在同一个 namespace 内必须唯一。命名规则：
 - 最长 253 字符
@@ -377,7 +377,7 @@ metadata:
   # 格式：<deployment-name>-<replicaset-hash>-<pod-hash>
 ```
 
-### namespace
+### 2.2.2 namespace
 
 Kubernetes 使用命名空间实现资源的逻辑隔离：
 
@@ -395,7 +395,7 @@ metadata:
 
 注意：并非所有资源都属于命名空间。Node、PersistentVolume、Namespace 本身、StorageClass 等是集群级别的资源。
 
-### labels
+### 2.2.3 labels
 
 标签是键值对，用于标识和选择资源。它是 Kubernetes 中最重要的组织机制：
 
@@ -442,7 +442,7 @@ selector:
 - 使用反向域名前缀组织标签：`example.com/team: frontend`
 - 推荐的通用标签（来自 Kubernetes 官方建议）：`app.kubernetes.io/name`、`app.kubernetes.io/instance`、`app.kubernetes.io/version`、`app.kubernetes.io/component`、`app.kubernetes.io/part-of`、`app.kubernetes.io/managed-by`
 
-### annotations
+### 2.2.4 annotations
 
 注解用于存储非标识性的元数据：
 
@@ -465,7 +465,7 @@ metadata:
 - 云平台集成（AWS Load Balancer 配置等）
 - 字段级文档或联系人信息
 
-### ownerReferences
+### 2.2.5 ownerReferences
 
 `ownerReferences` 建立了资源间的父子关系。当父资源被删除时，子资源也会被级联删除（垃圾回收）：
 
@@ -489,7 +489,7 @@ metadata:
 
 ## 2.3 spec字段详解
 
-### containers（必需字段）
+### 2.3.1 containers（必需字段）
 
 Pod 中最核心的部分，定义要运行的容器列表。至少需要一个容器。
 
@@ -543,7 +543,7 @@ spec:
       periodSeconds: 10
 ```
 
-### initContainers
+### 2.3.2 initContainers
 
 初始化容器，在应用容器启动前按顺序执行：
 
@@ -567,7 +567,7 @@ Init 容器特性：
 - 如果某个 init 容器失败，kubelet 根据 `restartPolicy` 决定是否重启（`Never` 会让整个 Pod 失败）
 - Init 容器可以使用与普通容器不同的镜像，因为它们有独立的文件系统
 
-### volumes
+### 2.3.3 volumes
 
 Pod 级别的卷定义，供 Pod 内所有容器挂载使用：
 
@@ -599,7 +599,7 @@ spec:
       claimName: my-pvc
 ```
 
-### restartPolicy
+### 2.3.4 restartPolicy
 
 定义 Pod 内容器的重启策略：
 
@@ -614,7 +614,7 @@ spec:
   restartPolicy: OnFailure
 ```
 
-### serviceAccountName
+### 2.3.5 serviceAccountName
 
 指定 Pod 使用的 ServiceAccount，决定了 Pod 与 API Server 交互时的身份和权限：
 
@@ -626,7 +626,7 @@ spec:
 
 当不指定时，使用命名空间的 `default` ServiceAccount。最佳实践是为每个应用创建专用的最小权限 ServiceAccount。
 
-### nodeName
+### 2.3.6 nodeName
 
 直接指定 Pod 要调度到的节点名称，会绕过调度器的调度过程：
 
@@ -642,7 +642,7 @@ spec:
 
 注意：使用 `nodeName` 后，即使节点不可调度（cordon），Pod 仍会强制调度到该节点。这绕过了调度器的预选和优选逻辑，一般不推荐在生产环境使用。
 
-### 其他重要 spec 字段
+### 2.3.7 其他重要 spec 字段
 
 ```yaml
 spec:
@@ -705,7 +705,7 @@ spec:
   schedulerName: default-scheduler
 ```
 
-# 3.容器详解
+# 3. 容器详解
 
 ## 3.1 Container定义
 
@@ -837,7 +837,7 @@ spec:
 
 Kubernetes 提供多种环境变量注入方式，灵活度极高：
 
-### 直接定义（env）
+### 3.3.1 直接定义（env）
 
 ```yaml
 env:
@@ -849,7 +849,7 @@ env:
   value: "1"
 ```
 
-### 从 ConfigMap 引用（valueFrom.configMapKeyRef）
+### 3.3.2 从 ConfigMap 引用（valueFrom.configMapKeyRef）
 
 ```yaml
 env:
@@ -861,7 +861,7 @@ env:
       optional: true             # 设为可选，ConfigMap不存在时不报错
 ```
 
-### 从 Secret 引用（valueFrom.secretKeyRef）
+### 3.3.3 从 Secret 引用（valueFrom.secretKeyRef）
 
 ```yaml
 env:
@@ -873,7 +873,7 @@ env:
       optional: false
 ```
 
-### 从 Pod 字段引用（valueFrom.fieldRef）
+### 3.3.4 从 Pod 字段引用（valueFrom.fieldRef）
 
 ```yaml
 env:
@@ -903,7 +903,7 @@ env:
       fieldPath: spec.serviceAccountName
 ```
 
-### 从容器资源字段引用（valueFrom.resourceFieldRef）
+### 3.3.5 从容器资源字段引用（valueFrom.resourceFieldRef）
 
 ```yaml
 env:
@@ -921,7 +921,7 @@ env:
       divisor: 1Mi
 ```
 
-### 批量注入（envFrom）
+### 3.3.6 批量注入（envFrom）
 
 ```yaml
 envFrom:
@@ -952,7 +952,7 @@ resources:
     cpu: "500m"
 ```
 
-### CPU 资源单位
+### 3.4.1 CPU 资源单位
 
 | 单位 | 含义 | 等值 |
 |------|------|------|
@@ -963,7 +963,7 @@ resources:
 
 **CPU 是可压缩资源**：当 CPU 使用超过 limits 时，容器不会被杀死，而是被**限流**（throttle）。CPU 的 `requests` 决定了调度和 CPU 时间片分配。
 
-### 内存资源单位
+### 3.4.2 内存资源单位
 
 | 单位 | 含义 |
 |------|------|
@@ -975,7 +975,7 @@ Kubernetes 使用 Ki/K（2^10=1024）和 Mi/M（2^20）表示二进制单位，K
 
 **内存是不可压缩资源**：当内存使用超过 limits 时，容器会被 **OOMKilled**。这是 Linux 内核的 OOM Killer 机制，无法通过限流来缓解。
 
-### requests 与 limits 的关系
+### 3.4.3 requests 与 limits 的关系
 
 ```
 limit (500m)  ────────────────────  可能被限流
@@ -1006,7 +1006,7 @@ request(250m) ────────────────────  调�
 
 SecurityContext 可以在 Pod 级别和容器级别设置，用于控制运行时的安全参数：
 
-### Pod 级别 SecurityContext
+### 3.5.1 Pod 级别 SecurityContext
 
 ```yaml
 spec:
@@ -1024,7 +1024,7 @@ spec:
       value: "1024"
 ```
 
-### 容器级别 SecurityContext
+### 3.5.2 容器级别 SecurityContext
 
 容器级别的设置在 Pod 级别的基础上进一步细化或覆盖：
 
@@ -1046,7 +1046,7 @@ containers:
     procMount: Default                  # /proc 挂载类型 (Default/Unmasked)
 ```
 
-### 关键字段详解
+### 3.5.3 关键字段详解
 
 **runAsUser / runAsGroup**：
 指定容器进程的 UID/GID。这是一个基本但关键的安全实践——不以 root（UID 0）运行容器。即使容器镜像默认以 root 运行，此设置也会覆盖。
@@ -1095,7 +1095,7 @@ securityContext:
     type: RuntimeDefault   # 推荐的安全设置
 ```
 
-# 4.Pod生命周期
+# 4. Pod生命周期
 
 ## 4.1 Pod Phase状态机
 
@@ -1123,7 +1123,7 @@ Pod 的 `status.phase` 是对 Pod 在其生命周期中所处位置的简单、�
                     └──────────┘
 ```
 
-### Pending（等待中）
+### 4.1.1 Pending（等待中）
 
 Pod 已被 Kubernetes 接受，但有一个或多个容器尚未创建。此阶段包括：
 - 调度器正在为 Pod 选择节点
@@ -1137,19 +1137,19 @@ Pod 可能**长时间处于 Pending** 的原因：
 - 存储卷（PVC）未绑定
 - 节点资源耗尽
 
-### Running（运行中）
+### 4.1.2 Running（运行中）
 
 Pod 已被绑定到节点，所有容器至少有一个正在运行（或者正在启动/重启）。但 Running ≠ 可用——容器可能正在启动、可能还没通过 Readiness Probe。
 
-### Succeeded（成功）
+### 4.1.3 Succeeded（成功）
 
 Pod 中所有容器已正常终止（退出码 0），且不会重启。这通常发生在 `restartPolicy: Never` 或 `OnFailure` 的 Job Pod 中。
 
-### Failed（失败）
+### 4.1.4 Failed（失败）
 
 Pod 中所有容器已终止，至少有一个容器以非零退出码终止。这意味着系统不会重启这些容器。
 
-### Unknown（未知）
+### 4.1.5 Unknown（未知）
 
 无法获取 Pod 状态，通常因为 kubelet 与 API Server 通信中断。可能是节点宕机、网络分区等原因。
 
@@ -1162,7 +1162,7 @@ Pod 中所有容器已终止，至少有一个容器以非零退出码终止。�
 
 每个容器在 Pod 的 `status.containerStatuses` 中有更细粒度的状态：
 
-### Waiting
+### 4.2.1 Waiting
 
 容器尚未运行，正在执行运行前所需的操作：
 
@@ -1184,7 +1184,7 @@ state:
 | `CreateContainerConfigError` | ConfigMap/Secret 不存在或引用错误 |
 | `CreateContainerError` | 容器创建失败 |
 
-### Running
+### 4.2.2 Running
 
 容器正在执行，没有出现问题：
 
@@ -1194,7 +1194,7 @@ state:
     startedAt: "2024-01-15T10:00:00Z"
 ```
 
-### Terminated
+### 4.2.3 Terminated
 
 容器已结束运行：
 
@@ -1249,7 +1249,7 @@ status:
     lastTransitionTime: "2024-01-15T10:00:30Z"
 ```
 
-### 四种核心 Condition
+### 4.3.1 四种核心 Condition
 
 | Condition Type | 含义 | 依赖于 |
 |---------------|------|--------|
@@ -1285,7 +1285,7 @@ Ready = True               ← Pod 开始接受 Service 流量
 
 Kubernetes 提供了两个容器生命周期钩子：`PostStart` 和 `PreStop`。
 
-### PostStart
+### 4.4.1 PostStart
 
 容器创建后**立即**执行。注意：PostStart 和 ENTRYPOINT 的执行顺序是**并行的**，不能保证 PostStart 在 ENTRYPOINT 之前完成。
 
@@ -1298,7 +1298,7 @@ lifecycle:
 
 **重要陷阱**：如果 PostStart 钩子挂起或失败，容器会进入 `Waiting` 状态，`reason` 为 `PostStartHookError`。kubelet 会根据 `restartPolicy` 决定是否重启容器。
 
-### PreStop
+### 4.4.2 PreStop
 
 容器终止**之前**执行。它是**同步**的——kubelet 会等待 PreStop 执行完成后才发送 SIGTERM 给容器主进程。
 
@@ -1314,7 +1314,7 @@ PreStop 的重要特性：
 - PreStop 必须在 `terminationGracePeriodSeconds` 时间内完成，否则容器被强制 SIGKILL
 - 如果 PreStop 需要很长时间（如排空连接），要确保 `terminationGracePeriodSeconds` 足够大
 
-### 三种钩子处理器
+### 4.4.3 三种钩子处理器
 
 ```yaml
 # 1. exec - 在容器内执行命令
@@ -1393,7 +1393,7 @@ kubelet 检测到 Pod 的 deletionTimestamp 被设置
 
 `restartPolicy` 控制 Pod 内容器退出后的行为。注意：重启是**Pod 本地操作**，由 kubelet 执行，不涉及重新调度。
 
-### 三种策略
+### 4.6.1 三种策略
 
 ```yaml
 spec:
@@ -1408,7 +1408,7 @@ spec:
 | `OnFailure` | 仅非零退出码时重启 | Job（批处理任务）|
 | `Never` | 从不重启 | 一次性 Job、初始化任务 |
 
-### 退避重启延迟（Back-off）
+### 4.6.2 退避重启延迟（Back-off）
 
 kubelet 使用指数退避（exponential back-off）策略重启失败容器，避免频繁重启导致系统负载过高：
 
@@ -1429,7 +1429,7 @@ kubelet 使用指数退避（exponential back-off）策略重启失败容器，�
 - kubelet 会按照退避时间等待，在等待期间容器不会被重启
 - 这是一个保护机制，避免反复启动失败容器浪费资源
 
-# 5.容器探针
+# 5. 容器探针
 
 ## 5.1 Liveness Probe（存活探针）
 
@@ -1573,7 +1573,7 @@ Readiness 探测失败到 Pod 被摘除流量的时间：
 
 ## 5.5 探针实现方式对比
 
-### exec
+### 5.5.1 exec
 
 在容器内执行命令，退出码为 0 表示成功：
 
@@ -1597,7 +1597,7 @@ livenessProbe:
 - 命令本身可能成为故障源（依赖环境、shell 等）
 - 需要将检测脚本打包到镜像中
 
-### httpGet
+### 5.5.2 httpGet
 
 发送 HTTP GET 请求，2xx 或 3xx 状态码表示成功：
 
@@ -1622,7 +1622,7 @@ readinessProbe:
 - 探测端点的实现可能引入依赖检查（需注意区分）
 - HTTPS 涉及的证书验证可能引入额外复杂性
 
-### tcpSocket
+### 5.5.3 tcpSocket
 
 检查 TCP 端口是否可连接：
 
@@ -1643,7 +1643,7 @@ livenessProbe:
 - 只能验证端口是否可连接，不能验证应用是否真正工作
 - 端口可连接 ≠ 应用健康（例如应用线程池满，但端口仍可连接）
 
-### gRPC（Kubernetes 1.24+）
+### 5.5.4 gRPC（Kubernetes 1.24+）
 
 ```yaml
 readinessProbe:
@@ -1663,7 +1663,7 @@ readinessProbe:
 - 容器运行时需要支持此特性
 - 目前不支持 TLS 认证
 
-### 四种方式对比总结
+### 5.5.5 四种方式对比总结
 
 | 探测方式 | 开销 | 准确性 | 侵入性 | 适用场景 |
 |---------|------|--------|--------|---------|
@@ -1674,7 +1674,7 @@ readinessProbe:
 
 ## 5.6 探针最佳实践与常见陷阱
 
-### 最佳实践
+### 5.6.1 最佳实践
 
 **1. Liveness Probe 不要检查外部依赖**
 
@@ -1746,7 +1746,7 @@ periodSeconds: 10      # 推荐
 periodSeconds: 30      # 适用于判断稳定的服务
 ```
 
-### 常见陷阱
+### 5.6.2 常见陷阱
 
 **陷阱1：Liveness Probe 与 Readiness Probe 的混淆**
 
@@ -1810,7 +1810,7 @@ def healthz():
     return "OK", 200
 ```
 
-# 6.Init容器
+# 6. Init容器
 
 ## 6.1 Init容器概念与用途
 
@@ -1849,7 +1849,7 @@ spec:
 
 ## 6.2 Init容器执行顺序与特性
 
-### 执行顺序
+### 6.2.1 执行顺序
 
 Init 容器严格按照定义的顺序**串行**执行，且每个 Init 容器必须成功退出后才能执行下一个：
 
@@ -1872,7 +1872,7 @@ Init Container N 启动 ──► 完成（exit 0）
 所有应用容器并行启动
 ```
 
-### 关键特性
+### 6.2.2 关键特性
 
 | 特性 | Init 容器 | 普通容器 |
 |------|----------|---------|
@@ -1909,7 +1909,7 @@ Init Container N 启动 ──► 完成（exit 0）
 | 探针支持 | 不支持 | 支持 | 不支持 |
 | 典型用途 | 初始化、验证 | 业务逻辑 | 日志收集、代理、监控 |
 
-### 何时使用 Init 容器而非 Sidecar
+### 6.3.1 何时使用 Init 容器而非 Sidecar
 
 使用 Init 容器：
 - 任务是一次性的（数据库迁移、文件准备、依赖等待）
@@ -1970,7 +1970,7 @@ spec:
 **Sidecar 容器 vs 传统 Sidecar**：
 在 1.28 之前，Sidecar 是一个非正式的实践——通过普通容器实现。1.28+ 的原生 Sidecar 容器提供了更好的生命周期顺序保证和独立的 restartPolicy。对于 Istio 等服务网格的场景，这能避免 Sidecar 代理还没启动时，主容器就已经收到流量的问题。
 
-# 7.Pod调度约束
+# 7. Pod调度约束
 
 ## 7.1 nodeSelector
 
@@ -2030,7 +2030,7 @@ spec:
 
 亲和性（Affinity）提供了丰富的调度约束表达能力：
 
-### nodeAffinity（节点亲和性）
+### 7.3.1 nodeAffinity（节点亲和性）
 
 ```yaml
 spec:
@@ -2099,7 +2099,7 @@ requiredDuringSchedulingIgnoredDuringExecution:
   # 逻辑：(zone=zone-a AND disktype=ssd) OR (zone=zone-b)
 ```
 
-### podAffinity（Pod亲和性）
+### 7.3.2 podAffinity（Pod亲和性）
 
 Pod 亲和性基于**已运行 Pod 的标签**来调度，而非节点标签。表达"我想靠近某些 Pod"：
 
@@ -2134,7 +2134,7 @@ spec:
 - `topology.kubernetes.io/region`：按区域分组
 - `kubernetes.io/hostname`：按主机名分组（即同节点）
 
-### podAntiAffinity（Pod反亲和性）
+### 7.3.3 podAntiAffinity（Pod反亲和性）
 
 Pod 反亲和性表达"我不想和某些 Pod 在一起"，用于高可用部署：
 
@@ -2218,7 +2218,7 @@ zone-a: 3 Pods  (3 - 1 = 2 > 1) ✗ 不符合 maxSkew
 
 ## 7.5 污点与容忍
 
-### Taints（污点）
+### 7.5.1 Taints（污点）
 
 污点标注在**节点**上，排斥不符合条件的 Pod：
 
@@ -2253,7 +2253,7 @@ kubectl describe node worker-node-1 | grep Taints
 | `node.kubernetes.io/network-unavailable:NoSchedule` | 网络不可用 |
 | `node.kubernetes.io/unschedulable:NoSchedule` | 节点不可调度（cordon）|
 
-### Tolerations（容忍）
+### 7.5.2 Tolerations（容忍）
 
 容忍标注在**Pod**上，允许 Pod 调度到有污点的节点：
 
@@ -2303,7 +2303,7 @@ tolerations:
 
 ## 7.6 优先级与抢占
 
-### PriorityClass
+### 7.6.1 PriorityClass
 
 PriorityClass 定义了 Pod 的优先级，决定在资源不足时哪些 Pod 被驱逐，以及哪些 Pod 可以抢占其他 Pod 的位置：
 
@@ -2338,7 +2338,7 @@ spec:
 | `system-cluster-critical` | 2000000000 | 集群关键组件 |
 | `system-node-critical` | 2000001000 | 节点关键组件 |
 
-### 抢占（Preemption）机制
+### 7.6.2 抢占（Preemption）机制
 
 当高优先级 Pod 无法调度时，调度器会尝试**驱逐**低优先级的 Pod：
 
@@ -2377,7 +2377,7 @@ spec:
 - `system-cluster-critical` 和 `system-node-critical` 级别的 PriorityClass 应保留给系统组件
 - 业务 Pod 的 PriorityClass 通常不超过 1000-10000
 
-# 8.Pod资源与QoS
+# 8. Pod资源与QoS
 
 ## 8.1 Resource Requests vs Limits
 
@@ -2426,7 +2426,7 @@ requests  │─────────────────────│ 
 
 Kubernetes 根据 Pod 内容器的 `requests` 和 `limits` 配置，自动将 Pod 分为三个 QoS（Quality of Service）等级：
 
-### Guaranteed（保证型）
+### 8.2.1 Guaranteed（保证型）
 
 **条件**：每个容器都同时设置了 CPU 和内存的 requests 和 limits，且 requests == limits。
 
@@ -2450,7 +2450,7 @@ containers:
       memory: "128Mi"
 ```
 
-### Burstable（突发型）
+### 8.2.2 Burstable（突发型）
 
 **条件**：至少有一个容器设置了 requests（或 limits），但不满足 Guaranteed 的条件。
 
@@ -2472,7 +2472,7 @@ containers:
       cpu: "500m"       # 没有设置 memory requests，也没有 memory limits
 ```
 
-### BestEffort（尽力型）
+### 8.2.3 BestEffort（尽力型）
 
 **条件**：没有任何容器设置 requests 或 limits。
 
@@ -2519,7 +2519,7 @@ kubectl get pod my-pod -o jsonpath='{.status.qosClass}'
 
 OOM Score 是 Linux 内核在内存不足时决定杀死哪个进程的评分标准。Kubernetes 通过设置容器的 `oom_score_adj` 值来影响内核的 OOM Killer 决策。
 
-### OOM Score 计算公式
+### 8.4.1 OOM Score 计算公式
 
 ```
 oom_score = 进程内存使用百分比 × 1000 + oom_score_adj
@@ -2527,7 +2527,7 @@ oom_score = 进程内存使用百分比 × 1000 + oom_score_adj
 
 `oom_score` 越高，越容易被 OOM Killer 选中杀死。
 
-### Kubernetes 的 oom_score_adj 设置策略
+### 8.4.2 Kubernetes 的 oom_score_adj 设置策略
 
 Kubelet 根据 QoS 和 Pod 资源使用量为容器设置 `oom_score_adj`：
 
@@ -2563,7 +2563,7 @@ State:         Terminated
   Exit Code:   137
 ```
 
-# 9.临时容器（Ephemeral Container）
+# 9. 临时容器（Ephemeral Container）
 
 ## 9.1 用途与限制
 
@@ -2588,7 +2588,7 @@ State:         Terminated
 
 ## 9.2 使用方式
 
-### kubectl debug 方式
+### 9.2.1 kubectl debug 方式
 
 ```bash
 # 创建一个带调试工具的临时容器
@@ -2601,7 +2601,7 @@ kubectl debug my-pod -it --image=busybox -- sh
 kubectl debug my-pod -it --copy-to=my-pod-debug -- sh
 ```
 
-### 底层 API 实现
+### 9.2.2 底层 API 实现
 
 ```yaml
 # 临时容器通过 Pod 的 status 注入（不是 spec！）
@@ -2626,7 +2626,7 @@ PATCH /api/v1/namespaces/default/pods/my-pod/ephemeralcontainers
 **`targetContainerName` 的含义**：
 如果指定了 `targetContainerName`，临时容器会共享目标容器的进程命名空间（前提是 Pod 启用了 `shareProcessNamespace: true` 或目标容器的进程信息可见）。同时还可以挂载目标容器的文件系统。
 
-### 典型调试场景
+### 9.2.3 典型调试场景
 
 ```bash
 # 场景1：网络调试（使用 netshoot 镜像）
@@ -2647,13 +2647,13 @@ kubectl debug my-pod -it --copy-to=my-pod-debug \
 # 创建了原 Pod 的副本，可以在不影响生产 Pod 的情况下调试
 ```
 
-# 10.Pod安全
+# 10. Pod安全
 
 ## 10.1 Pod Security Standards
 
 Pod Security Standards（PSS）定义了三个安全策略级别，从宽松到严格：
 
-### Privileged（特权级）
+### 10.1.1 Privileged（特权级）
 
 最宽松的策略，几乎无限制。适用于需要访问主机资源的系统级 Pod：
 
@@ -2671,7 +2671,7 @@ metadata:
 - 以 root 用户运行
 - 使用所有 Linux capabilities
 
-### Baseline（基线级）
+### 10.1.2 Baseline（基线级）
 
 中等限制，阻止已知的权限提升路径。适合大多数应用：
 
@@ -2690,7 +2690,7 @@ metadata:
 - 限制 AppArmor、Seccomp、SELinux 的使用
 - 限制 /proc 挂载类型
 
-### Restricted（限制级）
+### 10.1.3 Restricted（限制级）
 
 最严格的策略，遵循 Pod 加固最佳实践：
 
@@ -2707,7 +2707,7 @@ metadata:
 - 必须设置 seccompProfile 为 `RuntimeDefault` 或 `Localhost`
 - 必须设置容器级别的 SecurityContext（至少有 `allowPrivilegeEscalation: false`）
 
-### 启用 Pod Security Admission
+### 10.1.4 启用 Pod Security Admission
 
 Pod Security Admission（1.25 GA）是内置的准入控制器，按命名空间级别应用安全策略：
 
@@ -2730,7 +2730,7 @@ metadata:
 
 ## 10.2 SecurityContext各字段详解
 
-### Pod 级别字段
+### 10.2.1 Pod 级别字段
 
 ```yaml
 spec:
@@ -2750,7 +2750,7 @@ spec:
       value: "1"
 ```
 
-### 容器级别字段
+### 10.2.2 容器级别字段
 
 ```yaml
 containers:
@@ -2773,7 +2773,7 @@ containers:
       type: RuntimeDefault
 ```
 
-### 字段优先级
+### 10.2.3 字段优先级
 
 容器级别的 SecurityContext 会**覆盖** Pod 级别的同名设置。例如：
 
@@ -2791,7 +2791,7 @@ spec:
 
 ## 10.3 PodSecurityPolicy → PodSecurity Admission过渡
 
-### PodSecurityPolicy（已弃用）
+### 10.3.1 PodSecurityPolicy（已弃用）
 
 PodSecurityPolicy（PSP）曾经是 Kubernetes 中控制 Pod 安全策略的机制（v1.21 弃用，v1.25 移除）：
 
@@ -2823,7 +2823,7 @@ spec:
 - 缺少审计/警告模式：只能在 enforce 层面工作
 - 与第三方准入控制器（如 OPA/Gatekeeper）功能重叠
 
-### 迁移路径
+### 10.3.2 迁移路径
 
 ```
 PSP (v1.21 deprecation → v1.25 removal)
@@ -2838,7 +2838,7 @@ OPA/Gatekeeper、Kyverno (第三方，更灵活)
 - 简单：只需给命名空间添加标签
 - 三种模式：enforce / audit / warn，支持渐进式启用
 
-# 11.Static Pod
+# 11. Static Pod
 
 ## 11.1 概念与工作原理
 
@@ -2862,7 +2862,7 @@ Static Pod：
 
 ## 11.2 配置方式
 
-### 通过 kubelet 参数配置
+### 11.2.1 通过 kubelet 参数配置
 
 ```bash
 # kubelet 启动参数
@@ -2878,7 +2878,7 @@ kubelet 会定期（默认 20 秒）扫描 `staticPodPath` 目录：
 - 发现文件被修改 → 更新 Pod（滚动更新 Static Pod）
 - 发现文件被删除 → 删除 Static Pod 和 mirror Pod
 
-### 创建 Static Pod
+### 11.2.2 创建 Static Pod
 
 直接在配置目录中放置 Pod 清单文件：
 
@@ -2953,11 +2953,11 @@ sudo vi /etc/kubernetes/manifests/kube-apiserver.yaml
 - 不能通过 `kubectl delete pod` 删除（镜像 Pod 被删除后 kubelet 会立即重建）
 - 更新需要直接访问节点文件系统
 
-# 12.Pod常见问题与排查
+# 12. Pod常见问题与排查
 
 ## 12.1 各状态原因分析
 
-### Pending（长时间停留）
+### 12.1.1 Pending（长时间停留）
 
 Pod 一直处于 Pending 状态，说明一个或多个容器尚未创建：
 
@@ -2990,7 +2990,7 @@ Pod 一直处于 Pending 状态，说明一个或多个容器尚未创建：
     └── 排查：kubectl logs my-pod -c <init-container-name>
 ```
 
-### CrashLoopBackOff
+### 12.1.2 CrashLoopBackOff
 
 容器启动后立即崩溃，不断重启：
 
@@ -3023,7 +3023,7 @@ Pod 一直处于 Pending 状态，说明一个或多个容器尚未创建：
     └── 排查：检查镜像 ENTRYPOINT 和 CMD
 ```
 
-### ImagePullBackOff
+### 12.1.3 ImagePullBackOff
 
 镜像拉取失败后的退避状态：
 
@@ -3047,7 +3047,7 @@ Pod 一直处于 Pending 状态，说明一个或多个容器尚未创建：
     └── 排查：在镜像仓库侧检查日志
 ```
 
-### Evicted（被驱逐）
+### 12.1.4 Evicted（被驱逐）
 
 Pod 被驱逐，通常因节点资源压力：
 
@@ -3077,7 +3077,7 @@ kubectl top nodes
 kubectl describe node <node-name>
 ```
 
-### Error / Unknown / Terminating 卡住
+### 12.1.5 Error / Unknown / Terminating 卡住
 
 **Error**：
 - 容器启动过程中出现错误（如挂载卷失败、创建容器失败）
@@ -3118,7 +3118,7 @@ Pod 的 `deletionTimestamp` 已设置，但 Pod 一直不消失：
 
 ## 12.2 排查命令与技巧
 
-### 基础排查命令
+### 12.2.1 基础排查命令
 
 ```bash
 # 1. 查看 Pod 状态概览
@@ -3150,7 +3150,7 @@ kubectl get pod <pod-name> -n <namespace> -o yaml
 kubectl get pod <pod-name> -n <namespace> -o json | jq '.status'
 ```
 
-### 高级诊断技巧
+### 12.2.2 高级诊断技巧
 
 ```bash
 # 1. 查看 Pod 中所有容器的状态
@@ -3184,7 +3184,7 @@ kubectl run debug --rm -it --image=nicolaka/netshoot -- bash
 kubectl debug <pod-name> -it --image=busybox --target=<container-name> -- sh
 ```
 
-### 常见排查工作流
+### 12.2.3 常见排查工作流
 
 **排查 Workflow 1：Pod 无法启动**
 
@@ -3271,7 +3271,7 @@ kubectl top node <node-name>
 kubectl describe node <node-name> | grep -A10 "Allocated resources"
 ```
 
-### 实用工具和命令组合
+### 12.2.4 实用工具和命令组合
 
 ```bash
 # 找出所有命名空间中状态异常的 Pod

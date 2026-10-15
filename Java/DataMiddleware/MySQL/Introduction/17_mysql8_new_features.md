@@ -1,6 +1,6 @@
-# 1.MySQL 8.0 重大架构变更
+# 1. MySQL 8.0 重大架构变更
 
-## 1.1原子DDL（Atomic DDL）
+## 1.1 原子DDL（Atomic DDL）
 
 DDL 操作（CREATE/ALTER/DROP TABLE 等）实现原子性——要么成功，要么自动回滚，不会留下不一致的中间状态。
 
@@ -14,7 +14,7 @@ DROP TABLE t1, t2;  -- 原子操作（5.7 可能部分成功）
 
 **实现基础**：InnoDB 将数据字典（元数据）存储到事务性表中（`mysql.ibd`），DDL 和 DML 在同一事务语义下。
 
-## 1.2事务性数据字典
+## 1.2 事务性数据字典
 
 MySQL 5.7 及之前的元数据存储在 `.frm`、`.par`、`.trg` 等文件中，容易产生不一致。MySQL 8.0 将所有元数据迁移到 **InnoDB 事务表**中：
 
@@ -26,7 +26,7 @@ MySQL 5.7 及之前的元数据存储在 `.frm`、`.par`、`.trg` 等文件中�
 
 > **升级影响**：从 5.7 升级到 8.0 时，旧的 `.frm` 文件会被迁移到数据字典表。
 
-## 1.3移除查询缓存（Query Cache）
+## 1.3 移除查询缓存（Query Cache）
 
 MySQL 8.0 彻底移除了查询缓存（Query Cache）：
 
@@ -36,13 +36,13 @@ MySQL 8.0 彻底移除了查询缓存（Query Cache）：
 
 **替代方案**：Redis 等外部缓存 + 应用层二级缓存。
 
-## 1.4默认字符集改为 utf8mb4
+## 1.4 默认字符集改为 utf8mb4
 
 MySQL 8.0 默认字符集从 `latin1` 改为 `utf8mb4`，排序规则为 `utf8mb4_0900_ai_ci`。
 
-# 2.新增核心SQL功能
+# 2. 新增核心SQL功能
 
-## 2.1窗口函数（Window Function）
+## 2.1 窗口函数（Window Function）
 
 窗口函数是 8.0 最受期待的功能，解决了"既要分组统计又要保留明细行"的痛点。
 
@@ -74,11 +74,11 @@ SELECT name, salary, NTILE(4) OVER (ORDER BY salary DESC) AS bucket
 FROM employee;
 ```
 
-## 2.2公用表表达式（CTE）
+## 2.2 公用表表达式（CTE）
 
 CTE（Common Table Expression）使用 `WITH` 子句定义临时结果集，使复杂查询更易读：
 
-### 普通CTE
+### 2.2.1 普通CTE
 
 ```sql
 WITH dept_stats AS (
@@ -91,7 +91,7 @@ JOIN dept_stats d ON e.dept_id = d.dept_id
 WHERE e.salary > d.avg_sal;
 ```
 
-### 递归CTE
+### 2.2.2 递归CTE
 
 递归 CTE 是 8.0 的重磅功能，可优雅地处理**树形/层级数据**：
 
@@ -114,7 +114,7 @@ SELECT * FROM category_tree ORDER BY level, id;
 
 **递归 CTE 替代**：MySQL 5.7 的树形查询通常需要存储过程循环或多次 SQL 查询，递归 CTE 简化了大量的代码复杂度。
 
-## 2.3降序索引（Descending Index）
+## 2.3 降序索引（Descending Index）
 
 MySQL 8.0 真正支持降序索引——索引可以声明 `DESC`，使 `ORDER BY col1 ASC, col2 DESC` 这类查询能利用索引顺序直接返回结果，无需额外排序（filesort）。
 
@@ -129,7 +129,7 @@ SELECT * FROM emp ORDER BY age ASC, salary DESC;
 
 > MySQL 5.7 语法上支持 `DESC` 但实际被忽略，索引始终以 ASC 存储。
 
-## 2.4不可见索引（Invisible Index）
+## 2.4 不可见索引（Invisible Index）
 
 将索引设为不可见（优化器不会使用），用于评估索引重要性：
 
@@ -149,7 +149,7 @@ SELECT TABLE_NAME, INDEX_NAME FROM information_schema.STATISTICS WHERE is_visibl
 
 > **使用场景**：生产环境安全删除索引——先设为 INVISIBLE 运行几天，确认性能无退化后再 DROP。
 
-## 2.5函数索引（Functional Index / 表达式索引）
+## 2.5 函数索引（Functional Index / 表达式索引）
 
 对**表达式的计算结果**建立索引，解决"WHERE 条件中有函数导致索引失效"的问题：
 
@@ -170,7 +170,7 @@ CREATE INDEX idx_month_salary ON emp ((MONTH(hire_date)), (salary * 12));
 
 > 函数索引的表达式必须用**括号括起来** `((expr))`，且表达式必须是确定性的（相同输入始终相同输出）。
 
-## 2.6角色管理（Roles）
+## 2.6 角色管理（Roles）
 
 MySQL 8.0 引入角色（Role），简化权限管理：
 
@@ -184,7 +184,7 @@ GRANT 'app_read', 'app_write' TO 'dev_user'@'%';
 SET DEFAULT ROLE ALL TO 'dev_user'@'%';
 ```
 
-## 2.7资源组（Resource Group）
+## 2.7 资源组（Resource Group）
 
 用于给不同的查询分配不同的 CPU 资源：
 
@@ -195,7 +195,7 @@ CREATE RESOURCE GROUP r2 TYPE=USER VCPU=2-3;
 SET RESOURCE GROUP r1 FOR THREAD 123;
 ```
 
-## 2.8直方图（Histogram）
+## 2.8 直方图（Histogram）
 
 8.0 支持创建列值的统计直方图，帮助优化器更准确地估算选择率：
 
@@ -209,7 +209,7 @@ SELECT * FROM information_schema.COLUMN_STATISTICS;
 
 > 对于数据分布不均匀的列（如 90% 的数据 status=1），直方图能大幅提升执行计划准确性。
 
-## 2.9双密码（Dual Password）
+## 2.9 双密码（Dual Password）
 
 8.0 支持同一用户有两个密码，用于密码平滑轮换（零停机切换）：
 
@@ -221,9 +221,9 @@ ALTER USER 'app_user'@'%' IDENTIFY BY 'new_password' RETAIN CURRENT PASSWORD;
 ALTER USER 'app_user'@'%' DISCARD OLD PASSWORD;
 ```
 
-# 3.性能相关改进
+# 3. 性能相关改进
 
-## 3.1InnoDB 改进
+## 3.1 InnoDB 改进
 
 | 改进 | 说明 |
 |------|------|
@@ -240,7 +240,7 @@ ALTER TABLE user ADD COLUMN phone VARCHAR(20) DEFAULT NULL, ALGORITHM=INSTANT;
 SELECT * FROM information_schema.INNODB_INSTANT_ADD_COLUMN;
 ```
 
-## 3.2复制增强
+## 3.2 复制增强
 
 | 改进 | 说明 |
 |------|------|
@@ -253,7 +253,7 @@ SELECT * FROM information_schema.INNODB_INSTANT_ADD_COLUMN;
 CLONE INSTANCE FROM 'repl'@'192.168.1.100':3306 IDENTIFIED BY 'password';
 ```
 
-## 3.3优化器改进
+## 3.3 优化器改进
 
 - **CBO 改进**：更好的成本估算模型
 - **anti-join / semi-join 优化**：对 `NOT IN` / `EXISTS` 更高效的执行方式
@@ -269,7 +269,7 @@ CREATE INDEX idx_status_age ON user(status, age);
 SELECT * FROM user WHERE age >= 20;
 ```
 
-# 4.安全相关改进
+# 4. 安全相关改进
 
 | 改进 | 说明 |
 |------|------|
@@ -279,7 +279,7 @@ SELECT * FROM user WHERE age >= 20;
 | **审计日志增强** | 更细粒度的审计规则 |
 | **密码策略增强** | `validate_password` 组件加强密码复杂度 |
 
-# 5.开发相关改进
+# 5. 开发相关改进
 
 | 改进 | 说明 |
 |------|------|
@@ -290,7 +290,7 @@ SELECT * FROM user WHERE age >= 20;
 | **CHECK 约束** | 8.0.16+ 真正支持 CHECK 约束 |
 | **在线修改 `innodb_buffer_pool_size`** | 无需重启 |
 
-# 6.MySQL 8.0 升级建议
+# 6. MySQL 8.0 升级建议
 
 | 项目 | 建议 |
 |------|------|

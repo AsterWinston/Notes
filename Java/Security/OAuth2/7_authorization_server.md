@@ -64,7 +64,7 @@
 
 ## 2.2 数据库设计
 
-### 客户端配置表
+### 2.2.1 客户端配置表
 
 ```sql
 CREATE TABLE oauth2_clients (
@@ -92,7 +92,7 @@ CREATE TABLE oauth2_clients (
 );
 ```
 
-### 授权码表
+### 2.2.2 授权码表
 
 ```sql
 CREATE TABLE oauth2_authorization_codes (
@@ -115,7 +115,7 @@ CREATE TABLE oauth2_authorization_codes (
 );
 ```
 
-### Token 存储表
+### 2.2.3 Token 存储表
 
 ```sql
 CREATE TABLE oauth2_tokens (
@@ -142,7 +142,7 @@ CREATE TABLE oauth2_tokens (
 );
 ```
 
-### 用户授权记录表
+### 2.2.4 用户授权记录表
 
 ```sql
 CREATE TABLE oauth2_consents (

@@ -17,7 +17,7 @@ Bean管理：Bean对象的创建，以及Bean对象中属性的赋值（或者�
 第一种：set注入
 第二种：构造注入
 
-## 2.1. set注入
+## 2.1 set注入
 ```
 set注入，基于set方法实现的，底层会通过反射机制调用属性对应的set方法然后给属性赋值。
 这种方式要求属性必须对外提供set方法。
@@ -125,7 +125,7 @@ property标签的ref属性的属性值是要注入的bean对象的id，通过ref
 总结：set注入的核心实现原理：通过反射机制调用set方法来给属性赋值，让两个对象之间产生关系。
 ```
 
-## 2.2. 构造注入
+## 2.2 构造注入
 ```
 核心原理：通过调用构造方法来给属性赋值。
 与set注入相比，构造注入是在创建对象的同时进行注入，进行属性的赋值，而set注入是在对象创建之后。
@@ -193,7 +193,7 @@ Spring在装配方面还是比较健壮的
 
 # 3. 源码解析：XML 配置如何变为 BeanDefinition
 
-## 3.1. 从 XML 文件到 BeanDefinition 的完整链路
+## 3.1 从 XML 文件到 BeanDefinition 的完整链路
 
 ```
 当我们执行 new ClassPathXmlApplicationContext("spring.xml") 时，
@@ -236,7 +236,7 @@ ClassPathXmlApplicationContext 构造器
                                                  .registerBeanDefinitions(doc, readerContext)
 ```
 
-## 3.2. XmlBeanDefinitionReader — XML 读取器
+## 3.2 XmlBeanDefinitionReader — XML 读取器
 
 ```
 XmlBeanDefinitionReader 是 Spring 专门用来从 XML 文件读取 Bean 定义的 Reader：
@@ -283,7 +283,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 }
 ```
 
-## 3.3. DefaultBeanDefinitionDocumentReader — Document → BeanDefinition
+## 3.3 DefaultBeanDefinitionDocumentReader — Document → BeanDefinition
 
 ```
 DefaultBeanDefinitionDocumentReader 负责遍历 XML Document 中的每个元素：
@@ -349,7 +349,7 @@ public class DefaultBeanDefinitionDocumentReader
 }
 ```
 
-## 3.4. processBeanDefinition() — 解析 <bean> 元素
+## 3.4 processBeanDefinition() — 解析 <bean> 元素
 
 ```
 protected void processBeanDefinition(
@@ -379,7 +379,7 @@ protected void processBeanDefinition(
 }
 ```
 
-## 3.5. BeanDefinitionParserDelegate.parseBeanDefinitionElement() — 元素解析细节
+## 3.5 BeanDefinitionParserDelegate.parseBeanDefinitionElement() — 元素解析细节
 
 ```
 // 这是将 XML <bean> 元素变成 BeanDefinition 的核心方法：
@@ -454,7 +454,7 @@ public BeanDefinitionHolder parseBeanDefinitionElement(Element ele, BeanDefiniti
 }
 ```
 
-## 3.6. <property> 标签如何解析为属性值
+## 3.6 <property> 标签如何解析为属性值
 
 ```
 BeanDefinitionParserDelegate.parsePropertyElement():
@@ -488,7 +488,7 @@ public void parsePropertyElement(Element ele, BeanDefinition bd) {
 // 3. 找到目标 setter 方法 → 反射调用 setXxx(value)
 ```
 
-## 3.7. BeanDefinition 接口的核心属性
+## 3.7 BeanDefinition 接口的核心属性
 
 ```
 BeanDefinition 是 Spring 中描述 Bean 的元数据接口：
@@ -551,7 +551,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 }
 ```
 
-## 3.8. BeanDefinition 从 XML 解析到最终注册的完整流程图
+## 3.8 BeanDefinition 从 XML 解析到最终注册的完整流程图
 
 ```
 spring.xml
@@ -602,7 +602,7 @@ spring.xml
 └─────────────────────────────────────────────────┘
 ```
 
-## 3.9. 设计思想总结
+## 3.9 设计思想总结
 
 1. Document Object Model (DOM) 解析：
    Spring 使用 DOM（而非 SAX）来解析 XML 配置文件。

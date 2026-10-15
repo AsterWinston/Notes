@@ -1,4 +1,4 @@
-# 1.etcd 概述与定位
+# 1. etcd 概述与定位
 
 ## 1.1 etcd 是什么
 
@@ -6,7 +6,7 @@ etcd 是 CoreOS 开发的开源分布式键值存储系统，使用 Go 语言编
 
 etcd 在 CNCF 的毕业时间甚至早于 Kubernetes（2018 年 11 月毕业），是云原生生态的基础设施级项目。
 
-### Kubernetes 中存储在 etcd 的数据
+### 1.1.1 Kubernetes 中存储在 etcd 的数据
 
 ```
 /registry/
@@ -33,7 +33,7 @@ etcd 在 CNCF 的毕业时间甚至早于 Kubernetes（2018 年 11 月毕业）�
 
 ## 1.2 etcd 在 Kubernetes 中的关键角色
 
-### Watch 机制的基础
+### 1.2.1 Watch 机制的基础
 
 Kubernetes 的控制循环（List-Watch）机制完全依赖 etcd 的 Watch 功能。当一个控制器需要监听 Pod 变化时：
 
@@ -45,7 +45,7 @@ etcd 的每次 key 变更都会产生一个事件，通过 Watch 流推送给所
 
 如果没有 etcd 的 Watch 能力，Kubernetes 控制器只能通过轮询来检测变化——在大规模集群中这将导致 API Server 压力剧增。
 
-### 乐观并发控制
+### 1.2.2 乐观并发控制
 
 etcd 的 `ModRevision`（全局递增版本号）是 Kubernetes 乐观并发控制的基础：
 
@@ -57,7 +57,7 @@ metadata:
 
 当控制器需要更新一个对象时，携带当前的 `resourceVersion`。如果 etcd 中的实际版本已经变化（被其他控制器先修改了），更新会被拒绝（409 Conflict），控制器需要重新获取最新版本后重试。
 
-# 2.Raft 共识算法
+# 2. Raft 共识算法
 
 ## 2.1 为什么需要 Raft
 
@@ -139,7 +139,7 @@ Raft 将一致性问题分解为三个子问题：
     └──────────┘
 ```
 
-# 3.etcd 数据模型与存储
+# 3. etcd 数据模型与存储
 
 ## 3.1 物理存储结构
 
@@ -194,7 +194,7 @@ etcdctl endpoint status --cluster -w table
 # +--------------------------+-----------------+---------+---------+--------+
 ```
 
-### 碎片整理
+### 3.3.1 碎片整理
 
 长期运行的集群中，etcd 存在磁盘碎片（BoltDB 的 B+ 树空洞）：
 
@@ -229,11 +229,11 @@ etcdctl endpoint status --write-out=json
 
 **为什么 etcd 有存储上限？** 因为 etcd 的数据完全保存在内存中（通过 mmap 映射 BoltDB 文件）。2GB 的 BoltDB 文件在内存中的映射区域会占用 2GB 虚拟内存。过大的存储会导致内存压力、启动缓慢、备份恢复耗时。
 
-# 4.etcd 运维实战
+# 4. etcd 运维实战
 
 ## 4.1 备份与恢复
 
-### 快照备份
+### 4.1.1 快照备份
 
 ```bash
 # 创建快照
@@ -254,7 +254,7 @@ etcdctl snapshot status /backup/etcd-snapshot-20240115.db --write-out=table
 # +----------+----------+------------+------------+
 ```
 
-### 从快照恢复
+### 4.1.2 从快照恢复
 
 ```bash
 # 1. 在所有 etcd 节点停止 etcd
@@ -274,7 +274,7 @@ etcdctl snapshot restore /backup/etcd-snapshot-20240115.db \
 systemctl start etcd
 ```
 
-### 定期备份 CronJob
+### 4.1.3 定期备份 CronJob
 
 ```yaml
 apiVersion: batch/v1
@@ -317,7 +317,7 @@ spec:
 
 ## 4.2 监控 etcd
 
-### 关键 PromQL 指标
+### 4.2.1 关键 PromQL 指标
 
 ```promql
 # etcd Leader 变更（最近 1 小时）
@@ -339,7 +339,7 @@ sum(etcd_debugging_mvcc_watcher_total)
 rate(grpc_server_handled_total[5m])
 ```
 
-### 关键告警规则
+### 4.2.2 关键告警规则
 
 ```yaml
 groups:
@@ -364,7 +364,7 @@ groups:
 
 ## 4.3 性能调优
 
-### 磁盘要求
+### 4.3.1 磁盘要求
 
 etcd 的 Raft 协议要求日志条目在返回客户端之前必须被持久化到磁盘（fsync）。因此磁盘延迟直接影响 etcd 的写入性能：
 
@@ -379,7 +379,7 @@ fio --rw=write --ioengine=sync --fdatasync=1 --directory=/var/lib/etcd \
     --size=22m --bs=2300 --name=mytest
 ```
 
-### 关键启动参数
+### 4.3.2 关键启动参数
 
 ```bash
 etcd \
@@ -395,7 +395,7 @@ etcd \
   --max-txn-ops=1000                      # 事务中最大操作数
 ```
 
-### 自动压缩
+### 4.3.3 自动压缩
 
 etcd 的 MVCC 会积累历史版本，必须定期压缩（compact）以释放空间：
 
@@ -411,7 +411,7 @@ etcdctl compact 50000
 # etcd_mvcc_db_total_size_in_bytes
 ```
 
-# 5.etcd 在 Kubernetes 中的配置
+# 5. etcd 在 Kubernetes 中的配置
 
 ## 5.1 kube-apiserver 与 etcd 的连接
 
@@ -450,7 +450,7 @@ resources:
 kubectl get secrets -A -o json | kubectl replace -f -
 ```
 
-# 6.常见问题诊断
+# 6. 常见问题诊断
 
 ## 6.1 etcd 性能问题
 

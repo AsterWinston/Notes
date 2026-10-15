@@ -93,9 +93,9 @@ Spring底层的IoC容器是通过：XML解析+工厂模式+反射机制实现的
 spring不是在调用getBean()方法的时候创建对象，执行new ClassPathXmlApplicationContext("spring6.xml");加载配置文件的时候，就会实例化对象。
 ```
 
-# 源码解析：ClassPathXmlApplicationContext 初始化链路
+# 2. 源码解析：ClassPathXmlApplicationContext 初始化链路
 
-## 1. 构造器调用链
+## 2.1 构造器调用链
 
 ```
 new ClassPathXmlApplicationContext("spring.xml")
@@ -117,7 +117,7 @@ new ClassPathXmlApplicationContext("spring.xml")
     └── if (refresh) { ★ refresh(); } ← 触发容器刷新
 ```
 
-## 2. refresh() → obtainFreshBeanFactory()
+## 2.2 refresh() → obtainFreshBeanFactory()
 
 ```
 refresh() 是 AbstractApplicationContext 的核心方法，包含 13 个子步骤。
@@ -170,7 +170,7 @@ protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throw
 }
 ```
 
-## 3. getBean() — 如何从容器中获取 Bean
+## 2.3 getBean() — 如何从容器中获取 Bean
 
 ```
 applicationContext.getBean("user", User.class)
@@ -194,7 +194,7 @@ applicationContext.getBean("user", User.class)
 所以 getSingleton() 直接从一级缓存中返回，不会再走 createBean()。
 ```
 
-## 4. DefaultListableBeanFactory 的存储结构
+## 2.4 DefaultListableBeanFactory 的存储结构
 
 ```
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
@@ -219,7 +219,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 }
 ```
 
-## 5. BeanDefinition 是什么
+## 2.5 BeanDefinition 是什么
 
 ```
 <bean id="user" class="cw.spring.study.pojo.User"> 
@@ -244,7 +244,7 @@ BeanDefinition 对象包含：
 }
 ```
 
-## 6. 初始化时序总结
+## 2.6 初始化时序总结
 
 ```
 new ClassPathXmlApplicationContext("spring.xml")

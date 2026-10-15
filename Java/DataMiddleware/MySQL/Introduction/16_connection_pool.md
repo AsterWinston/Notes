@@ -1,8 +1,8 @@
-# 1.连接池概述
+# 1. 连接池概述
 
 数据库连接池（Connection Pool）是预先创建一定数量的数据库连接并放入"池"中管理，当应用需要访问数据库时，从池中获取已创建好的连接；使用完毕后，将连接**归还**池中而非销毁。
 
-## 1.1为什么需要连接池
+## 1.1 为什么需要连接池
 
 | 无连接池 | 有连接池 |
 |---------|---------|
@@ -15,7 +15,7 @@
 - 创建一次 TCP + MySQL 连接：约 20~50ms
 - 从连接池获取连接：约 1~5μs（微秒级）
 
-# 2.常见连接池实现
+# 2. 常见连接池实现
 
 | 连接池 | 特点 | 性能 |
 |--------|------|------|
@@ -27,9 +27,9 @@
 
 > **推荐**：Java 项目首选 **HikariCP**（性能）或 **Druid**（监控）。
 
-# 3.HikariCP（Spring Boot 默认）
+# 3. HikariCP（Spring Boot 默认）
 
-## 3.1Spring Boot配置
+## 3.1 Spring Boot配置
 
 ```yaml
 spring:
@@ -49,7 +49,7 @@ spring:
       pool-name: HikariPool-MyDB    # 连接池名称
 ```
 
-## 3.2连接池大小公式
+## 3.2 连接池大小公式
 
 连接池大小没有万能公式，与以下因素相关：
 
@@ -65,7 +65,7 @@ spring:
 
 > **经验值**：中小项目 10~20 连接，大型服务 20~50。**不是连接数越多越好**，过多连接导致 MySQL 上下文切换开销超过收益。
 
-## 3.3连接池调优要点
+## 3.3 连接池调优要点
 
 ```yaml
 hikari:
@@ -84,7 +84,7 @@ hikari:
   register-mbeans: true
 ```
 
-## 3.4连接泄露检测
+## 3.4 连接泄露检测
 
 ```yaml
 hikari:
@@ -100,11 +100,11 @@ java.lang.Exception: Apparent connection leak detected
 
 > **生产环境务必开启 `leak-detection-threshold`**，及时发现忘关连接的代码 BUG。
 
-# 4.Druid（适合监控场景）
+# 4. Druid（适合监控场景）
 
 Druid 提供了丰富的监控和管理功能，适合需要深度监控 SQL 执行情况的团队。
 
-## 4.1Spring Boot配置
+## 4.1 Spring Boot配置
 
 ```yaml
 spring:
@@ -143,9 +143,9 @@ spring:
 
 访问 `http://localhost:8080/druid/` 查看监控面板（数据源监控、SQL 监控、URI 监控等）。
 
-# 5.MySQL连接相关参数
+# 5. MySQL连接相关参数
 
-## 5.1JDBC URL推荐参数
+## 5.1 JDBC URL推荐参数
 
 ```
 jdbc:mysql://localhost:3306/mydb
@@ -160,7 +160,7 @@ jdbc:mysql://localhost:3306/mydb
   &socketTimeout=60000                   # 读取超时(ms)
 ```
 
-## 5.2MySQL服务端连接参数
+## 5.2 MySQL服务端连接参数
 
 ```sql
 -- 查看关键连接参数
@@ -182,9 +182,9 @@ interactive_timeout = 600
 
 > `wait_timeout` 设置过短可能导致连接池中空闲连接被 MySQL 断开 → 应用获取到死连接 → `CommunicationsException`。连接池的 `max-lifetime` 必须小于 `wait_timeout`。
 
-# 6.连接池常见问题
+# 6. 连接池常见问题
 
-## 6.1连接耗尽
+## 6.1 连接耗尽
 
 ```
 java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 30000ms.
@@ -207,7 +207,7 @@ SHOW PROCESSLIST;  -- 查看所有连接的当前状态
 SELECT state, COUNT(*) FROM information_schema.PROCESSLIST GROUP BY state;
 ```
 
-## 6.2连接泄露
+## 6.2 连接泄露
 
 ```java
 // ✗ 连接泄露：没有在 finally 中关闭
@@ -232,7 +232,7 @@ private JdbcTemplate jdbcTemplate;
 // 框架自动从连接池获取和归还，无需手动管理
 ```
 
-## 6.3连接池监控指标
+## 6.3 连接池监控指标
 
 | 指标 | 说明 |
 |------|------|

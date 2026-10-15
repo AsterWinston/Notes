@@ -1,4 +1,4 @@
-# 1 副本机制概述
+# 1. 副本机制概述
 
 ## 1.1 副本拓扑
 
@@ -30,7 +30,7 @@ Topic "orders", Partitions=3, Replication Factor=3
 | Leader | Leader 副本 | 负责读写，同步数据给 Follower |
 | Follower | Follower 副本 | 被动从 Leader 同步数据 |
 
-# 2 Leader 与 Follower 同步机制
+# 2. Leader 与 Follower 同步机制
 
 ## 2.1 同步过程
 
@@ -99,7 +99,7 @@ Leader (Broker 1, P0)               Follower (Broker 2, P0)
 - **Follower** 通过 **FetchResponse** 感知 HW
 - **Leader** 通过 **FetchRequest 中携带的 Follower LEO** 感知 Follower 进度
 
-# 3 ISR 机制详解
+# 3. ISR 机制详解
 
 ## 3.1 ISR 收缩与扩展
 
@@ -155,7 +155,7 @@ replica.lag.time.max.ms=30000  # 默认 30s
 #       相同的消息数差距在实际时间上完全不同
 ```
 
-# 4 Leader Epoch 机制
+# 4. Leader Epoch 机制
 
 ## 4.1 问题背景：HW 截断的不安全性
 
@@ -217,7 +217,7 @@ class LeaderEpochCache {
 }
 ```
 
-# 5 Unclean Leader Election
+# 5. Unclean Leader Election
 
 ## 5.1 概念
 
@@ -244,7 +244,7 @@ class LeaderEpochCache {
 unclean.leader.election.enable=false  # 推荐
 ```
 
-# 6 分区副本分配策略
+# 6. 分区副本分配策略
 
 ## 6.1 默认分配算法
 
@@ -292,7 +292,7 @@ Rack 故障 (Rack-1 断电):
   P0: Leader → 变为 Broker 2 (Rack-2)，Broker 4 (Rack-3) 也有副本 ← 不丢数据
 ```
 
-# 7 副本 Fetch 机制
+# 7. 副本 Fetch 机制
 
 ## 7.1 ReplicaFetcher 线程
 
@@ -360,7 +360,7 @@ kafka-configs.sh --alter --add-config \
     --entity-type brokers --entity-name 0
 ```
 
-# 8 分区 Leader 选择
+# 8. 分区 Leader 选择
 
 ## 8.1 Preferred Leader Election
 
@@ -396,7 +396,7 @@ leader.imbalance.per.broker.percentage=10
 leader.imbalance.check.interval.seconds=300
 ```
 
-# 9 常见复制问题
+# 9. 常见复制问题
 
 ## 9.1 ISR 频繁收缩/扩展（ISR 抖动）
 

@@ -1,13 +1,13 @@
-# 1.RequestMapping的作用
+# 1. RequestMapping的作用
 ```
 @RequestMapping 注解是 Spring MVC 框架中的一个控制器映射注解，用于将请求映射到相应的处理方法上。具体来说，它可以将指定 URL 的请求绑定到一个特定的方法或类上，从而实现对请求的处理和响应。
 ```
-# 2.RequestMapping的出现位置
+# 2. RequestMapping的出现位置
 ```
 @Target({ElementType.TYPE, ElementType.METHOD})
 通过RequestMapping的源码可以看到RequestMapping注解只能出现在类上或者方法上。
 ```
-# 3.类上与方法上结合使用
+# 3. 类上与方法上结合使用
 ```
 我们先来看，在同一个web应用中，是否可以有两个完全一样的RequestMapping。测试一下：假设两个RequestMapping，其中一个是展示用户详细信息，另一个是展示商品详细信息。提供两个Controller，一个是UserController，另一个是ProductController。如下：
 package com.powernode.springmvc.controller;
@@ -43,7 +43,7 @@ com.powernode.springmvc.controller.ProductController#toDetail() mapped.
 	第一种方案：将方法上RequestMapping的映射路径修改的不一样。
 	第二种方案：在类上添加RequestMapping的映射路径，以类上的RequestMapping作为命名空间，来加以区分两个不同的映射。
 ```
-## 3.1第一种方案
+## 3.1 第一种方案
 ```
 将方法上RequestMapping的映射路径修改的不一样。
 @RequestMapping("/user/detail")
@@ -99,7 +99,7 @@ user/detail.html
 
 点击用户详情，点击商品详情，都可以正常显示
 ```
-## 3.2第二种方案
+## 3.2 第二种方案
 ```
 在类上和方法上都使用RequestMapping注解来进行路径的映射。假设在类上映射的路径是"/a"，在方法上映射的路径是"/b"，那么整体表示映射的路径就是："/a/b"
 在第一种方案中，假设UserController类中有很多方法，每个方法的 RequestMapping注解中都需要以"/user"开始，显然比较啰嗦，干脆将"/user"提升到类级别上，例如：
@@ -147,11 +147,11 @@ public class ProductController {
 
 经过测试，程序可以正常执行！！！
 ```
-# 4.RequestMapping注解的value属性
+# 4. RequestMapping注解的value属性
 ```
 ```
 
-## 4.1value属性的使用
+## 4.1 value属性的使用
 ```
 value属性是该注解最核心的属性，value属性填写的是请求路径，也就是说通过该请求路径与对应的控制器的方法绑定在一起。另外通过源码可以看到value属性是一个字符串数组：
 ...
@@ -217,7 +217,7 @@ public class RequestMappingTestController {
 
 启动服务器，测试，点击以下的两个超链接，发送请求，都可以正常访问到同一个控制器上的同一个方法
 ```
-## 4.2Ant风格的value（模糊匹配）
+## 4.2 Ant风格的value（模糊匹配）
 ```
 value是可以用来匹配路径的，路径支持模糊匹配，我们把这种模糊匹配称之为Ant风格。关于路径中的通配符包括：
 	?，代表任意一个字符
@@ -274,7 +274,7 @@ public String testValueAnt(){
 }
 进行测试
 ```
-## 4.3value中的占位符（重点）
+## 4.3 value中的占位符（重点）
 ```
 到目前为止，我们的请求路径是这样的格式：uri?name1=value1&name2=value2&name3=value3
 其实除了这种方式，还有另外一种格式的请求路径，格式为：uri/value1/value2/value3，我们将这样的请求路径叫做 RESTful 风格的请求路径。
@@ -311,9 +311,9 @@ public String testRESTful(
 <!--测试RequestMapping注解的value属性支持占位符-->
 <a th:href="@{/testRESTful/1/zhangsan/20}">测试value属性使用占位符</a>
 ```
-# 5.RequestMapping注解的method属性
+# 5. RequestMapping注解的method属性
 
-## 5.1method属性的作用
+## 5.1 method属性的作用
 ```
 在Servlet当中，如果后端要求前端必须发送一个post请求，后端可以通过重写doPost方法来实现。后端要求前端必须发送一个get请求，后端可以通过重写doGet方法来实现。当重写的方法是doPost时，前端就必须发送post请求，当重写doGet方法时，前端就必须发送get请求。如果前端发送请求的方式和后端的处理方式不一致时，会出现405错误。
 HTTP状态码405，这种机制的作用是：限制客户端的请求方式，以保证服务器中数据的安全。
@@ -382,7 +382,7 @@ public String testMethod(){
 
 因此，可以看出，对于RequestMapping注解来说，多一个属性，就相当于多了一个映射的条件，如果value和method属性都有，则表示只有前端发送的请求路径 + 请求方式都满足时才能与控制器上的方法建立映射关系，只要有一个不满足，则无法建立映射关系。例如：@RequestMapping(value="/login", method = RequestMethod.POST) 表示当前端发送的请求路径是 /login，并且发送请求的方式是POST的时候才会建立映射关系。如果前端发送的是get请求，或者前端发送的请求路径不是 /login，则都是无法建立映射的。
 ```
-## 5.2衍生Mapping
+## 5.2 衍生Mapping
 ```
 对于以上的程序来说，SpringMVC提供了另一个注解，使用这个注解更加的方便，它就是：PostMapping，使用该注解时，不需要指定method属性，因为它默认采用的就是POST处理方式：修改RequestMappingTestController代码如下
 //@RequestMapping(value="/login", method = RequestMethod.POST)
@@ -401,7 +401,7 @@ ok
     DeleteMapping：要求前端必须发送delete请求
     PatchMapping：要求前端必须发送patch请求
 ```
-## 5.3web的请求方式
+## 5.3 web的请求方式
 ```
 前端向服务器发送请求的方式包括哪些？共9种，前5种常用，后面作为了解：
     GET：获取资源，只允许读取数据，不影响数据的状态和功能。使用 URL 中传递参数或者在 HTTP 请求的头部使用参数，服务器返回请求的资源。
@@ -447,7 +447,7 @@ public String testMethod(){
 再次测试：
 ok
 ```
-## 5.4GET和POST的区别
+## 5.4 GET和POST的区别
 ```
 在之前发布的JavaWEB视频中对HTTP请求协议的GET和POST进行了详细讲解，这里就不再赘述，大致回顾一下。
 HTTP请求协议之GET请求：
@@ -514,9 +514,9 @@ username=lisi&userpwd=123                                                       
 5. 其他情况大部分都是使用get请求。
 ```
 
-# 6.RequestMapping注解的params属性
+# 6. RequestMapping注解的params属性
 
-## 6.1params属性的理解
+## 6.1 params属性的理解
 ```
 params属性用来设置通过请求参数来映射请求。
 对于RequestMapping注解来说：
@@ -525,7 +525,7 @@ params属性用来设置通过请求参数来映射请求。
     params属性也是一个数组，不过要求请求参数必须和params数组中要求的所有参数完全一致后，才能映射成功。
     
 ```
-## 6.2params属性的4种用法
+## 6.2 params属性的4种用法
 ```
 @RequestMapping(value="/login", params={"username", "password"}) 表示：请求参数中必须包含 username 和 password，才能与当前标注的方法进行映射。
 @RequestMapping(value="/login", params={"!username", "password"}) 表示：请求参数中不能包含username参数，但必须包含password参数，才能与当前标注的方法进行映射。
@@ -537,7 +537,7 @@ HTTP状态码400的原因：请求参数格式不正确而导致的。
 HTTP状态码404的原因：请求路径不正确而导致的。
 HTTP状态码405的原因：请求方法[get/post等]不正确而导致的。
 ```
-## 6.3测试params属性
+## 6.3 测试params属性
 ```
 在 RequestMappingTestController 类中添加如下方法：
 @RequestMapping(value="/testParams", params = {"username", "password"})
@@ -574,10 +574,10 @@ public String testParams(){
 提示无效的请求参数，服务器无法或不会处理当前请求。
 params属性剩下的三种情况，自行测试！！！！
 ```
-# 7.RequestMapping注解的headers属性
+# 7. RequestMapping注解的headers属性
 ```
 ```
-# 7.1认识headers属性
+## 7.1 认识headers属性
 ```
 headers和params原理相同，用法也相同。
 当前端提交的请求头信息和后端要求的请求头信息一致时，才能映射成功。
@@ -587,7 +587,7 @@ headers和params原理相同，用法也相同。
 	Referer: http://localhost:8080/springmvc/     键是Referer，值是http://localhost:8080/springmvc/
 	Host: localhost:8080     键是Host，值是localhost:8080
 ```
-## 7.2headers属性的4种用法
+## 7.2 headers属性的4种用法
 ```
 @RequestMapping(value="/login", headers={"Referer", "Host"}) 表示：请求头信息中必须包含Referer和Host，才能与当前标注的方法进行映射。
 @RequestMapping(value="/login", headers={"Referer", "!Host"}) 表示：请求头信息中必须包含Referer，但不包含Host，才能与当前标注的方法进行映射。
@@ -595,7 +595,7 @@ headers和params原理相同，用法也相同。
 @RequestMapping(value="/login", headers={"Referer!=http://localhost:8080/springmvc/", "Host"}) 表示：请求头信息中必须包含Referer和Host，并且Referer的值不是http://localhost:8080/springmvc/，才能与当前标注的方法进行映射。
 注意：如果前端提交的请求头信息，和后端要求的请求头信息不一致，则出现404错误！！！
 ```
-## 7.3测试headers属性
+## 7.3 测试headers属性
 ```
 在 RequestMappingTestController 类中添加以下方法：
 @RequestMapping(value="/testHeaders", headers = {"Referer=http://localhost:8080/springmvc/"})
@@ -631,7 +631,7 @@ public String testHeaders(){
 其他情况自行测试！！！！
 ```
 
-# 8.@RequestMapping的produces和consumes属性
+# 8. @RequestMapping的produces和consumes属性
 ```
 produces和consumes属性用于内容协商（Content Negotiation），是RESTful API开发中的重要特性。
 
@@ -681,7 +681,7 @@ public User getByIdMulti(@PathVariable("id") Long id) {
 ● 如果请求不匹配，consumes返回415，produces返回406（Not Acceptable）
 ```
 
-# 9.@RequestMapping路径中的正则表达式
+# 9. @RequestMapping路径中的正则表达式
 ```
 SpringMVC支持在@RequestMapping的路径变量中使用正则表达式，精确控制URL匹配规则。
 
@@ -720,7 +720,7 @@ public String getOrder(
 // 访问 /order/123/AB-12 ✗（格式不匹配，404）
 ```
 
-# 10.@RequestMapping的name属性和编程式URL构建
+# 10. @RequestMapping的name属性和编程式URL构建
 ```
 name属性用于给映射起一个别名，配合MvcUriComponentsBuilder可以编程式构建URL。
 
@@ -763,7 +763,7 @@ public class UrlInterceptor implements HandlerInterceptor {
 ● IDE可以提供代码提示和跳转
 ```
 
-# 11.尾部斜杠处理（Trailing Slash）
+# 11. 尾部斜杠处理（Trailing Slash）
 ```
 SpringMVC在路径匹配时对尾部斜杠的处理在不同版本中行为不同。
 
@@ -794,7 +794,7 @@ XML配置方式：
 ● 传统Web应用可以开启兼容模式，提升用户体验
 ```
 
-# 12.矩阵变量（@MatrixVariable）
+# 12. 矩阵变量（@MatrixVariable）
 ```
 矩阵变量是一种URL传参方式，使用分号(;)分隔，常用于传递过滤条件。
 

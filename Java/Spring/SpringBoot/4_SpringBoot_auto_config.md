@@ -1,6 +1,6 @@
-# 1.自动配置概述
+# 1. 自动配置概述
 
-## 1.1Spring Boot的两大核心
+## 1.1 Spring Boot的两大核心
 Spring Boot 框架的两大核心特性可以概括为“启动器”（Starter）和“自动配置”（Auto-configuration）。
 1. 启动器（Starter）：
 Spring Boot 提供了一系列的 Starter POMs，它们是一组预定义的依赖关系。
@@ -10,7 +10,7 @@ Spring Boot 提供了一系列的 Starter POMs，它们是一组预定义的依�
 如果开发者没有显式地提供任何与特定功能相关的配置，Spring Boot 将使用其默认配置来自动设置这些功能。当然，如果需要的话，用户也可以覆盖这些默认设置。
 这两个特性结合在一起，使得使用 Spring Boot 开发应用程序变得更加简单快速，减少了大量的样板代码和重复配置的工作。让程序员专注业务逻辑的开发，在环境方面耗费最少的时间。
 
-## 1.2体会自动配置带来的便捷
+## 1.2 体会自动配置带来的便捷
 
 拿SpringBoot集成MyBatis为例。
 
@@ -80,7 +80,7 @@ spring:
 
 
 
-## 1.3引入web启动器都会有哪些组件会准备好
+## 1.3 引入web启动器都会有哪些组件会准备好
 通过以下代码获取spring ioc容器中的所有注册的bean，一个Bean就是一个组件：
 ```
 package com.powernode.test;
@@ -349,7 +349,7 @@ org.springframework.aop.config.internalAutoProxyCreator
 每一个组件都有它特定的功能。
 没有使用SpringBoot之前，以上的很多组件都是需要手动配置的。
 
-## 1.4默认的包扫描规则
+## 1.4 默认的包扫描规则
 之前我们已经说过并且测试过：springboot默认情况下只扫描主入口类所在包及子包下的类。
 这是因为@SpringBootApplication注解被@ComponentScan标注，代替spring以前的这个配置：<context:component-scan base-packages="主入口类所在包"/>
 当然，我们也可以打破这个规则，通过以下两种方式：
@@ -361,7 +361,7 @@ org.springframework.aop.config.internalAutoProxyCreator
 @ComponentScan("com")
 public class TestApplication {}
 ```
-## 1.5默认配置
+## 1.5 默认配置
 springboot为功能的实现提供了非常多的默认配置.
 例如：tomcat服务器端口号在没有配置的情况下，默认是8080
 当然，也可以在application.properties文件中进行重新配置：
@@ -389,14 +389,14 @@ public class ThymeleafProperties {}
 SpringBoot官方文档当中也有指导，告诉你都有哪些属性类，告诉你在application.properties中都可以配置哪些东西。默认值都是什么：
 <img src="images/47.png" width="100%">
 
-## 1.6自动配置是按需加载的
+## 1.6 自动配置是按需加载的
 SpringBoot提供了非常多的自动配置类，有的是web相关的自动配置，有的是mail相关的自动配置。但是这些自动配置并不是全部生效，它是按需加载的。导入了哪个启动器，则该启动器对应的自动配置类才会被加载。
 这些自动配置类在哪里？
 任何启动器都会关联引入这样一个启动器：spring-boot-starter，它是springboot框架最核心的启动器。
 spring-boot-starter又关联引入了spring-boot-autoconfigure。所有的自动配置类都在这里。
 <img src="images/48.png" width="100%">
 
-## 1.7Spring Boot框架提供的条件注解
+## 1.7 Spring Boot框架提供的条件注解
 如何做到按需加载的，依靠SpringBoot框架中的条件注解来实现的。
 Spring Boot框架中的@ConditionalOnXxx系列注解属于条件注解（Conditional Annotations），它们用于基于某些条件来决定是否应该创建一个或一组Bean。这些注解通常用在自动配置类上，以确保只有在特定条件满足时才会应用相应的配置。
 这里是一些常见的@ConditionalOnXxx注解及其作用：
@@ -456,10 +456,10 @@ public class MyConfig {
 }
 ```
 
-# 2.自动配置实现原理
+# 2. 自动配置实现原理
 我们来深入的分析一个问题：为什么导入web启动器，web开发相关的自动配置就会生效？
 
-## 2.1在程序没有开始执行之前都导入了哪些依赖
+## 2.1 在程序没有开始执行之前都导入了哪些依赖
 在程序没有开始运行之前，我们先来分析一下，当导入web启动器之后，底层都一连串的导入了哪些依赖！
 1. 从这里开始：导入了spring-boot-starter-web【web启动器】
 2. 然后关联导入了spring-boot-starter、spring-boot-starter-json、spring-boot-starter-tomcat、spring-web、spring-webmvc
@@ -472,7 +472,7 @@ public class MyConfig {
     <img src="images/51.png" width="100%">
     得知springboot3.3.5这个版本共152个自动配置类。自动配置类的命名规则是XxxxAutoConfiguration。
     提示：哪个自动配置类生效，就代表哪个配置文件生效，那么对应的技术就完成了整合，就可以进行对应技术的开发。
-## 2.2从main方法开始执行之后都发生了什么
+## 2.2 从main方法开始执行之后都发生了什么
 
 以上分析的是在项目结构上已经完成了相关依赖的导入，这些自动配置了导入到了项目当中，那么在运行时哪些自动配置类会被加载？哪些自动配置类会生效呢？我们接下来进行程序运行阶段的分析：
 1. 程序从main方法进入执行，主入口类上使用@SpringBootApplication进行了标注。
@@ -523,7 +523,7 @@ public class MyConfig {
   ● fireAutoConfigurationImportEvents(configurations, exclusions);
   触发事件：触发自动配置导入事件，通知其他组件或监听器关于最终确定的配置类和排除的类。
 
-## 2.3自动配置类都干了啥
+## 2.3 自动配置类都干了啥
 自动配置类导入了一堆相关的组件（一个组件一个功能），而每个组件获取配置时都是从属性类中获取，而属性类恰好又和配置文件绑定。
 以DispatcherServletAutoConfiguration自动配置类为例，这个自动配置类主要是配置了SpringMVC中的前端控制器。
 请看源码：
@@ -540,7 +540,7 @@ public class MyConfig {
 <img src="images/62.png" width="100%">
 因此配置Tomcat服务器需要在application.properties文件中使用这样的前缀配置：server.
 
-## 2.4总结自动配置原理
+## 2.4 总结自动配置原理
 
 1. 运行环境准备阶段
     a. 引入web启动器
@@ -553,13 +553,13 @@ public class MyConfig {
     d. 属性类又和配置文件绑定在一起。
 3. 因此，最终一句话：导入启动器，修改配置文件，就可以完成对应功能的开发。
 
-## 2.5如何自行查看自动配置类
+## 2.5 如何自行查看自动配置类
 
-### 2.5.1在IDEA中查找自动配置类
+### 2.5.1 在IDEA中查找自动配置类
 1. 双击Shift → 搜索 `AutoConfiguration`，找到 `org.springframework.boot.autoconfigure` 包
 2. 或直接查看 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` 文件
 
-### 2.5.2常见自动配置类与配置前缀速查表
+### 2.5.2 常见自动配置类与配置前缀速查表
 
 | 技术 | 自动配置类 | 配置前缀 |
 |------|-----------|---------|
@@ -581,7 +581,7 @@ public class MyConfig {
 | 事务 | TransactionAutoConfiguration | `spring.transaction.` |
 | 日志 | — | `logging.` |
 
-### 2.5.3查看生效了哪些自动配置类
+### 2.5.3 查看生效了哪些自动配置类
 启动时添加 `--debug` 参数，控制台会输出 "CONDITIONS EVALUATION REPORT"：
 
 ```
@@ -610,7 +610,7 @@ Negative matches:
 - **Positive matches**：生效的自动配置
 - **Negative matches**：未生效的配置（及未生效原因）
 
-### 2.5.4排除不需要的自动配置
+### 2.5.4 排除不需要的自动配置
 ```java
 @SpringBootApplication(exclude = {
     DataSourceAutoConfiguration.class,  // 排除数据源自动配置

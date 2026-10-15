@@ -1,4 +1,4 @@
-# 1.可观测性概述
+# 1. 可观测性概述
 
 ## 1.1 可观测性的三大支柱
 
@@ -44,7 +44,7 @@
 └── 依赖状态: 数据库连接池、缓存命中率
 ```
 
-# 2.Prometheus 体系
+# 2. Prometheus 体系
 
 ## 2.1 为什么选择 Prometheus
 
@@ -131,7 +131,7 @@ kube_job_status_failed                    # Job 失败次数
 kube_statefulset_status_replicas_ready    # StatefulSet 就绪副本数
 ```
 
-### 关键告警规则示例
+### 2.4.1 关键告警规则示例
 
 ```yaml
 # PrometheusRule: 关键告警
@@ -201,7 +201,7 @@ node_filesystem_avail_bytes         # 文件系统可用空间
 node_load1 / node_load5 / node_load15  # 系统负载
 ```
 
-### 资源使用 PromQL 示例
+### 2.5.1 资源使用 PromQL 示例
 
 ```promql
 # CPU 使用率（百分比）
@@ -220,7 +220,7 @@ sum(rate(container_cpu_usage_seconds_total{namespace="production"}[5m])) by (pod
 sum(container_memory_working_set_bytes{namespace="production"}) by (pod)
 ```
 
-# 3.Prometheus Operator
+# 3. Prometheus Operator
 
 ## 3.1 核心 CRD
 
@@ -295,7 +295,7 @@ spec:
       port: web
 ```
 
-# 4.Grafana 可视化
+# 4. Grafana 可视化
 
 ## 4.1 数据源与仪表盘
 
@@ -351,7 +351,7 @@ data:
 }
 ```
 
-# 5.金丝雀发布监控
+# 5. 金丝雀发布监控
 
 ## 5.1 RED 方法
 
@@ -399,7 +399,7 @@ rate(http_requests_total{version="stable"}[5m])
 # 如果此值 > 0.999，说明过去 30 天满足 SLO
 ```
 
-# 6.Alertmanager 告警
+# 6. Alertmanager 告警
 
 ## 6.1 告警路由配置
 
@@ -457,7 +457,7 @@ curl -X POST http://alertmanager:9093/api/v2/silences \
   }'
 ```
 
-# 7.生产实践
+# 7. 生产实践
 
 ## 7.1 监控体系部署清单
 

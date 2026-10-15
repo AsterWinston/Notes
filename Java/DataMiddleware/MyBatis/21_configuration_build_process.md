@@ -1,4 +1,4 @@
-# 1.配置构建全过程概览
+# 1. 配置构建全过程概览
 
 ```
 MyBatis 启动时最重要的工作就是解析配置文件，构建 Configuration 对象。
@@ -20,7 +20,7 @@ MyBatis 启动时最重要的工作就是解析配置文件，构建 Configurati
     → 返回 Configuration
 ```
 
-# 2.XMLConfigBuilder.parse() 完整解析流程
+# 2. XMLConfigBuilder.parse() 完整解析流程
 
 ```java
 /**
@@ -105,7 +105,7 @@ public class XMLConfigBuilder extends BaseBuilder {
 }
 ```
 
-# 3.各节点的解析细节
+# 3. 各节点的解析细节
 
 ## 3.1 properties 解析
 
@@ -338,7 +338,7 @@ private void mapperElement(XNode parent) throws Exception {
 }
 ```
 
-# 4.XMLMapperBuilder — SQL 映射文件解析
+# 4. XMLMapperBuilder — SQL 映射文件解析
 
 ```java
 /**
@@ -415,7 +415,7 @@ public class XMLMapperBuilder extends BaseBuilder {
 }
 ```
 
-# 5.XMLStatementBuilder — 单条 SQL 语句的解析
+# 5. XMLStatementBuilder — 单条 SQL 语句的解析
 
 ```java
 /**
@@ -515,7 +515,7 @@ public class XMLStatementBuilder extends BaseBuilder {
 }
 ```
 
-# 6.MapperBuilderAssistant — 构建助手
+# 6. MapperBuilderAssistant — 构建助手
 
 ```java
 /**
@@ -594,7 +594,7 @@ public class MapperBuilderAssistant extends BaseBuilder {
 }
 ```
 
-# 7.Configuration 对象结构
+# 7. Configuration 对象结构
 
 ```java
 /**
@@ -704,7 +704,7 @@ public class Configuration {
 }
 ```
 
-# 8.构建过程时序总结
+# 8. 构建过程时序总结
 
 ```
 ┌─────────────┐    ┌─────────────────┐    ┌─────────────────────┐    ┌──────────────┐

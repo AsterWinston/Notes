@@ -1,6 +1,6 @@
-# 1.字符串函数
+# 1. 字符串函数
 
-## 1.1常用字符串函数
+## 1.1 常用字符串函数
 
 | 函数 | 语法 | 说明 | 示例 |
 |------|------|------|------|
@@ -25,9 +25,9 @@
 | REPEAT | REPEAT(str, count) | 重复字符串 | `SELECT REPEAT('ab', 3); → 'ababab'` |
 | SPACE | SPACE(n) | 生成 n 个空格 | `SELECT CONCAT('A', SPACE(3), 'B'); → 'A   B'` |
 
-## 1.2关键函数详解
+## 1.2 关键函数详解
 
-### 1.2.1CONCAT vs CONCAT_WS
+### 1.2.1 CONCAT vs CONCAT_WS
 
 ```sql
 -- CONCAT：任一参数为 NULL，结果即为 NULL
@@ -40,7 +40,7 @@ SELECT CONCAT_WS('-', '2026', NULL, '17');  -- '2026-17'
 SELECT CONCAT_WS(' ', first_name, middle_name, last_name) AS full_name FROM user;
 ```
 
-### 1.2.2SUBSTRING详解
+### 1.2.2 SUBSTRING详解
 
 ```sql
 -- 从位置 1 开始取 5 个字符
@@ -53,7 +53,7 @@ SELECT SUBSTRING('Hello World', 7);     -- 'World'
 SELECT SUBSTRING('Hello World', -5, 5); -- 'World'
 ```
 
-### 1.2.3字符串截取实战——提取域名
+### 1.2.3 字符串截取实战——提取域名
 
 ```sql
 -- 从邮箱中提取域名
@@ -65,7 +65,7 @@ SELECT SUBSTRING_INDEX(email, '@', -1) AS domain FROM user;
 
 > `SUBSTRING_INDEX(str, delim, count)`：按分隔符截取。count 正数从左数，负数从右数。`SUBSTRING_INDEX('a.b.c.d', '.', 2)` → `'a.b'`，`SUBSTRING_INDEX('a.b.c.d', '.', -1)` → `'d'`。
 
-# 2.数值函数
+# 2. 数值函数
 
 | 函数 | 语法 | 说明 |
 |------|------|------|
@@ -96,9 +96,9 @@ SELECT LPAD(FLOOR(RAND() * 1000000), 6, '0');
 SELECT CEIL(COUNT(*) / 10.0) AS total_pages FROM user;
 ```
 
-# 3.日期函数
+# 3. 日期函数
 
-## 3.1基本日期函数
+## 3.1 基本日期函数
 
 | 函数 | 语法 | 说明 |
 |------|------|------|
@@ -119,9 +119,9 @@ SELECT CEIL(COUNT(*) / 10.0) AS total_pages FROM user;
 | STR_TO_DATE | STR_TO_DATE(str, format) | 字符串转日期 |
 | LAST_DAY | LAST_DAY(date) | 当月最后一天 |
 
-## 3.2关键函数详解
+## 3.2 关键函数详解
 
-### 3.2.1NOW vs SYSDATE
+### 3.2.1 NOW vs SYSDATE
 
 ```sql
 -- NOW() 在语句开始时获取时间（整个语句中不变）
@@ -133,7 +133,7 @@ SELECT SYSDATE(), SLEEP(2), SYSDATE();  -- 两个时间不同（差 2 秒）
 
 > **工程意义**：表中 `create_time` 用 `DEFAULT CURRENT_TIMESTAMP`（等价于 NOW()），`update_time` 用 `ON UPDATE CURRENT_TIMESTAMP`，两者都基于语句开始时间。SYSDATE 通常仅用于特殊监控场景。
 
-### 3.2.2日期加减
+### 3.2.2 日期加减
 
 ```sql
 -- 加 7 天
@@ -150,7 +150,7 @@ SELECT NOW() + INTERVAL 1 MONTH;
 -- HOUR_MINUTE（如 '2:30'）, DAY_HOUR（如 '3 12'）
 ```
 
-### 3.2.3日期差值
+### 3.2.3 日期差值
 
 ```sql
 -- 天数差
@@ -161,7 +161,7 @@ SELECT TIMESTAMPDIFF(HOUR, '2026-05-17 08:00:00', '2026-05-17 18:00:00');  -- 10
 SELECT TIMESTAMPDIFF(YEAR, birth_date, NOW()) AS age FROM user;
 ```
 
-### 3.2.4DATE_FORMAT格式化
+### 3.2.4 DATE_FORMAT格式化
 
 ```sql
 -- 格式说明符
@@ -173,15 +173,15 @@ SELECT DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s');  -- '2026-05-17 14:30:00'
 SELECT DATE_FORMAT(NOW(), '%Y年%m月%d日');        -- '2026年05月17日'
 ```
 
-# 4.流程控制函数
+# 4. 流程控制函数
 
-## 4.1IF
+## 4.1 IF
 
 ```sql
 SELECT IF(age >= 18, '成年', '未成年') AS category FROM user;
 ```
 
-## 4.2IFNULL
+## 4.2 IFNULL
 
 ```sql
 -- 如果 email 为空，显示 "未填写"
@@ -193,7 +193,7 @@ SELECT username, IFNULL(email, '未填写') AS email FROM user;
 SELECT COALESCE(mobile, phone, email, '无联系方式') AS contact FROM user;
 ```
 
-## 4.3NULLIF
+## 4.3 NULLIF
 
 ```sql
 -- 两个参数相等则返回 NULL，否则返回参数一
@@ -201,7 +201,7 @@ SELECT COALESCE(mobile, phone, email, '无联系方式') AS contact FROM user;
 SELECT amount / NULLIF(quantity, 0) AS unit_price FROM order_item;
 ```
 
-## 4.4CASE WHEN（两种写法）
+## 4.4 CASE WHEN（两种写法）
 
 ```sql
 -- 写法一：搜索 CASE（最常用）
@@ -229,11 +229,11 @@ FROM user;
 
 > **CASE 表达式是标量表达式**，可以出现在任何允许表达式的位置：SELECT 列、WHERE 条件、ORDER BY、GROUP BY、UPDATE SET 等。
 
-# 5.聚合函数
+# 5. 聚合函数
 
-参见 [2_sql.md 第 4.6 节](#46聚合函数)，这里补充几个要点：
+参见 [2_sql.md 第 4.6 节](2_sql.md#46-聚合函数)，这里补充几个要点：
 
-### 5.1COUNT的几种写法性能对比
+## 5.1 COUNT的几种写法性能对比
 
 ```sql
 SELECT
@@ -246,7 +246,7 @@ FROM user;
 
 InnoDB 下 `COUNT(*)` 和 `COUNT(1)` 等价，会选择最小的二级索引进行遍历。`COUNT(字段)` 需要判断字段是否为 NULL，且字段不在索引中时需全表扫描，性能最差。
 
-### 5.2GROUP_CONCAT——行转列
+## 5.2 GROUP_CONCAT——行转列
 
 ```sql
 -- 将同一部门的员工姓名拼接成一个字符串
@@ -258,11 +258,11 @@ GROUP BY dept_id;
 SET SESSION group_concat_max_len = 10240;
 ```
 
-# 6.MySQL 8.0 窗口函数
+# 6. MySQL 8.0 窗口函数
 
 窗口函数是 MySQL 8.0 最重要的新增功能之一，解决了传统 GROUP BY 只能输出一行、无法同时保留明细行的痛点。
 
-## 6.1窗口函数核心语法
+## 6.1 窗口函数核心语法
 
 ```sql
 function_name([expr]) OVER (
@@ -276,7 +276,7 @@ function_name([expr]) OVER (
 - **ORDER BY**：分区内排序
 - **frame_clause**：定义窗口范围（如 `ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING`）
 
-## 6.2常用窗口函数
+## 6.2 常用窗口函数
 
 | 函数 | 说明 |
 |------|------|
@@ -290,7 +290,7 @@ function_name([expr]) OVER (
 | LAST_VALUE(expr) | 窗口内最后一个值 |
 | SUM / AVG / COUNT OVER | 累计聚合 |
 
-## 6.3实战案例
+## 6.3 实战案例
 
 ```sql
 -- ROW_NUMBER：各部门薪资排名
@@ -319,9 +319,9 @@ FROM daily_transaction;
 
 > **窗口函数 vs GROUP BY 的核心区别**：GROUP BY 将多条记录合并为一条，丢失明细；窗口函数保留每条明细行，同时附加统计值。可以理解为窗口函数是在**不丢失行的前提下**进行了分组统计。
 
-# 7.其他常用函数
+# 7. 其他常用函数
 
-## 7.1类型转换函数
+## 7.1 类型转换函数
 
 ```sql
 -- CAST（SQL 标准）
@@ -335,7 +335,7 @@ SELECT CONVERT('123', SIGNED INTEGER);         -- 123
 SELECT * FROM user WHERE phone = 13800138000;  -- phone 是 VARCHAR，数字导致隐式转换
 ```
 
-## 7.2加密函数
+## 7.2 加密函数
 
 ```sql
 -- MD5（32 位十六进制，已不安全，不用于密码存储）
@@ -351,7 +351,7 @@ SELECT AES_DECRYPT(FROM_BASE64(encrypted_text), 'secret_key');
 
 > **密码存储最佳实践**：使用 bcrypt / scrypt / Argon2（应用层），不建议在数据库层做密码哈希。MySQL 8.0 的 `caching_sha2_password` 认证插件已使用 SHA-256。
 
-## 7.3UUID函数
+## 7.3 UUID函数
 
 ```sql
 -- 生成 UUID v1（基于时间戳+MAC 地址）
@@ -364,7 +364,7 @@ SELECT BIN_TO_UUID(uuid_binary);
 
 > **UUID 做分布式主键**：不推荐直接用 UUID 字符串做主键（非递增导致页分裂、占用空间大）。推荐使用**雪花算法（Snowflake）**或**Twitter Snowflake 变体**生成有序分布式 ID。MySQL 8.0.17+ 支持 `UUID_TO_BIN(UUID(), TRUE)` 转换时重新排列时间部分，使 BINARY(16) 存储在 B+Tree 中保持有序。
 
-## 7.4JSON函数（MySQL 5.7+）
+## 7.4 JSON函数（MySQL 5.7+）
 
 ```sql
 -- JSON 提取
@@ -385,7 +385,7 @@ SELECT JSON_OBJECT('name', '张三', 'age', 25);  -- {"name": "张三", "age": 2
 SELECT JSON_CONTAINS('["a", "b", "c"]', '"b"');  -- 1
 ```
 
-## 7.5位运算函数（分表/权限场景）
+## 7.5 位运算函数（分表/权限场景）
 
 ```sql
 -- 位运算

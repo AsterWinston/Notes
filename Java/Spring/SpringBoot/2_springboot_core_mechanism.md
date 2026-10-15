@@ -1,5 +1,5 @@
-# 1.为何以继承方式引入SpringBoot
-## 1.1提出疑问
+# 1. 为何以继承方式引入SpringBoot
+## 1.1 提出疑问
 以前我们在开发项目时，需要什么，引入对应的依赖就行，比如我们需要连接mysql数据，则引入mysql驱动的依赖，如下：
 ```
 <dependency>
@@ -38,7 +38,7 @@
 ```
 为什么？
 
-## 1.2作为父项目和作为依赖的区别
+## 1.2 作为父项目和作为依赖的区别
 
 继承父工程的优势
 ● 依赖管理：可以在父工程中定义依赖的版本，子模块可以直接引用而不必指定版本号。
@@ -56,14 +56,14 @@
 ● 如果你希望多个项目之间共享构建配置，那么使用父项目是一个好的选择；
 ● 如果你只是想在项目之间共享代码，那么应该使用依赖关系。
 
-## 1.3原理揭晓
+## 1.3 原理揭晓
 通过源码来分析一下：
 <img src="images/12.png" width="100%">
 <img src="images/13.png" width="100%">
 <img src="images/14.png" width="100%">
 通过上图源码可以看到Spring Boot预先对开发中需要用到的依赖进行了版本的统一管理。我们需要和SpringBoot框架共享这个构建配置。因此官方推荐使用继承的方式引入SpringBoot框架。
 
-## 1.4依赖统一管理的好处
+## 1.4 依赖统一管理的好处
 Spring Boot 框架的一个重要特性就是简化了项目依赖管理。它通过提供一个叫做“依赖管理”的功能来帮助开发者更容易地管理和使用第三方库和其他 Spring 组件。具体来说，Spring Boot 提供了一个包含多个 Spring 和其他常用库的依赖版本配置文件（通常是在 spring-boot-dependencies 文件中），这使得开发者不需要在自己的项目中显式指定这些依赖的版本号。
 这样做有以下几个好处：
 1. 简化依赖声明：
@@ -111,11 +111,11 @@ Spring Boot 框架的一个重要特性就是简化了项目依赖管理。它�
 
 ```
 
-# 2.Starter启动器
+# 2. Starter启动器
 在 Spring Boot 中，启动器（Starter）本质上是一个简化依赖管理的概念。
 Spring Boot 的启动器本质上就是一组预定义的依赖集合，它们被组织成一个个 Maven的依赖，以方便开发者快速集成特定的功能模块。
 如果你想做web开发，只需要引入web启动器。web启动器会自动引入web开发所需要的子依赖。
-## 2.1启动器实现原理
+## 2.1 启动器实现原理
 1. 依赖聚合：
 每个启动器通常对应一个特定的功能集或者一个完整的应用模块，如 spring-boot-starter-web 就包含了构建 Web 应用所需的所有基本依赖项，如 Spring MVC, Tomcat 嵌入式容器等。
 2. 依赖传递：
@@ -140,25 +140,25 @@ Spring Boot 的启动器本质上就是一组预定义的依赖集合，它们�
 当你添加这个依赖时，Spring Boot 会处理所有必要的细节，包括添加 Spring MVC 和 Tomcat 作为嵌入式 Servlet 容器，并且根据类路径上的内容进行适当的自动配置。如下图所示：
 <img src="images/15.png" width="100%">
 这就是 Spring Boot 启动器的基本实现原理，它简化了依赖管理，让开发者能够更专注于业务逻辑的实现。
-## 2.2都有哪些启动器
+## 2.2 都有哪些启动器
 启动器通常包括：
 ● SpringBoot官方提供的启动器
 ● 非官方提供的启动器
-### 2.2.1官方提供的启动器
+### 2.2.1 官方提供的启动器
 启动器命名特点：spring-boot-starter-*
 <img src="images/16.png" width="100%">
 
-### 2.2.2非官方的启动器
+### 2.2.2 非官方的启动器
 启动器命名特点：*-spring-boot-starter
 <img src="images/17.png" width="100%">
 
-# 3.Spring Boot核心注解
+# 3. Spring Boot核心注解
 创建一个新的模块，来学习Spring Boot核心注解
-## 3.1@SpringBootApplication注解
+## 3.1 @SpringBootApplication注解
 Spring Boot的主入口程序被@SpringBootApplication注解标注，可见这个注解的重要性，查看它的源码：
 <img src="images/18.png" width="100%">
 可以看出这个注解属于组合注解。拥有@SpringBootConfiguration、@EnableAutoConfiguration、@ComponentScan的功能。
-## 3.2@SpringBootConfiguration注解
+## 3.2 @SpringBootConfiguration注解
 @SpringBootConfiguration注解的源码如下：
 <img src="images/19.png" width="100%">
 可以看到这个注解的被@Configuration标注，说明主入口程序是一个配置类。也就是说主入口中的方法可以被@Bean注解标注，被@Bean注解的标注的方法会被Spring容器自动调用，并且将该方法的返回对象纳入IoC容器的管理。测试一下：
@@ -184,7 +184,7 @@ public class Sb305CoreApplication {
 
 这个配置类也可以称为源，起源的意思，SpringBoot从这个配置类开始加载项目中所有的bean。
 
-## 3.3@EnableAutoConfiguration注解
+## 3.3 @EnableAutoConfiguration注解
 该注解表示启用自动配置。
 Spring Boot 会根据你引入的依赖自动为你配置好一系列的 Bean，无需手动编写复杂的配置代码。
 例如：如果你在SpringBoot项目中进行了如下配置：(classpath:/application.properties)
@@ -229,7 +229,7 @@ public class MyApplication002 {
 
 ```
 
-## 3.4@ComponentScan注解
+## 3.4 @ComponentScan注解
 这个注解的作用是：启动组件扫描功能，代替spring框架xml文件中这个配置：
 ```
 <context:component-scan base-package="com.powernode.sb305core"/>
@@ -270,9 +270,9 @@ public class UserController {
 通过测试得知UserController没有被纳入IoC容器的管理。
 
 最终结论：要让bean纳入IoC容器的管理，必须将类放到主入口程序同级目录下，或者子目录下。
-# 4.SpringBoot单元测试
+# 4. SpringBoot单元测试
 
-## 4.1不使用单元测试怎么调用service
+## 4.1 不使用单元测试怎么调用service
 创建模块
 使用脚手架创建sb3-06-test模块，不添加任何启动器
 编写service
@@ -302,7 +302,7 @@ public class Sb306TestApplication {
 }
 ```
 这种方式就是手动获取Spring上下文对象ConfigurableApplicationContext，然后调用getBean方法从Spring容器中获取service对象，然后调用方法。
-## 4.2使用单元测试怎么调用service
+## 4.2 使用单元测试怎么调用service
 test-starter引入以及测试类编写
 使用单元测试应该如何调用service对象上的方法呢？
 在使用脚手架创建Spring Boot项目时，为我们生成了单元测试类，如下：
@@ -348,10 +348,10 @@ class Sb306TestApplicationTests {
 
 }
 ```
-# 5.外部化配置
-## 5.1什么是外部化配置
+# 5. 外部化配置
+## 5.1 什么是外部化配置
 外部化配置是指：将配置信息存储在应用程序代码之外的地方。这样配置信息可以独立于代码进行管理。这样方便了配置的修改，并且修改后不需要重新编译代码，也不需要重新部署项目。
-### 5.1.1外部化配置的方式
+### 5.1.1 外部化配置的方式
 SpringBoot支持多种外部化配置方式，包括但不限于：
 ● properties文件
 ● YAML文件
@@ -359,17 +359,17 @@ SpringBoot支持多种外部化配置方式，包括但不限于：
 ● 命令行参数
 ● ......
 
-### 5.1.2外部化配置的优势
+### 5.1.2 外部化配置的优势
 1. 灵活性：配置文件可以独立于应用程序部署，这使得可以根据运行环境的不同来调整配置，而无需修改代码。
 2. 易于维护：配置变更不需要重新构建和部署应用程序，降低了维护成本。
 3. 安全性：敏感信息如数据库密码、API密钥等可以存储在外部，并且可以限制谁有权限访问这些配置信息。
 4. 共享性：多实例或多服务可以共享相同的配置信息，减少重复配置的工作量。
 5. 版本控制：配置文件可以存放在版本控制系统中，便于跟踪历史版本和回滚配置。
 总之，外部化配置使得配置更加灵活、安全、易于管理和共享，是现代云原生应用中非常推荐的做法
-### 5.1.3外部化配置对比传统配置
+### 5.1.3 外部化配置对比传统配置
 在传统的SSM三大框架中，如果修改XML的配置后，需要对应用重新打包，重新部署。
 使用SpringBoot框架的外部化配置后，修改配置后，不需要对应用重新打包，也不需要重新部署，最多重启一下服务即可。
-## 5.2application.properties
+## 5.2 application.properties
 application.properties配置文件是SpringBoot框架默认的配置文件。
 application.properties不是必须的，SpringBoot对于应用程序来说，都提供了一套默认配置（就是我们所说的自动配置）。
 如果你要改变这些默认的行为，可以在application.properties文件中进行配置。
@@ -390,7 +390,7 @@ java -jar sb3-01-first-web-1.0-SNAPSHOT.jar --spring.config.location=file:///E:\
 
 注意：以上的--spring.config.location=file:///E:\a\b\application.properties就属于命令行参数，它将来会被传递到main方法的(String[] args)参数上。
 
-## 5.3使用@Value注解
+## 5.3 使用@Value注解
 @Value注解可以将application.properties/application.yml文件中的配置信息注入/绑定到java对象的属性上。
 语法格式：@Value("${key}")
 
@@ -462,15 +462,15 @@ public class UserService {
 ```
 当然，如果配置文件进行了相关的配置，则不会采用默认值
 
-## 5.4YAML
+## 5.4 YAML
 
-### 5.4.1YAML概述
+### 5.4.1 YAML概述
 SpringBoot采用集中式配置管理，所有的配置都编写到一个配置文件中：application.properties
 如果配置非常多，层级不够分明，因此SpringBoot为了提高配置文件可读性，也支持YAML格式的配置文件：application.yml
 YAML（YAML Ain't Markup Language）是一种人类可读的数据序列化格式，它通常用于配置文件，在各种编程语言中作为一种存储或传输数据的方式。YAML的设计目标是易于阅读和编写，同时保持足够的表达能力来表示复杂的数据结构。
 YAML文件的扩展名可以是**<font style="color:#DF2A3F;">.yaml</font>**或**<font style="color:#DF2A3F;">.yml</font>**。
 
-### 5.4.2常见的数据存储和交换格式
+### 5.4.2 常见的数据存储和交换格式
 properties、XML、JSON、YAML这几种格式确实是用来存储和交换数据的常见方式，但它们各有特点和适用场景：
 Properties
 ● 这种格式主要用于Java应用程序中的配置文件。它是键值对的形式，每一行是一个键值对，使用等号或冒号分隔键和值。
@@ -486,7 +486,7 @@ YAML (YAML Ain't Markup Language)
 ● YAML非常适合用来编写配置文件，因为它允许以一种自然的方式组织数据，并且可以包含注释和其他人类可读的元素。
 总结来说，这四种格式都可以用来存储和交换数据，但它们的设计初衷和最佳使用场景有所不同。选择哪种格式取决于具体的应用需求、数据复杂度、性能要求等因素。
 
-### 5.4.3YAML的语法规则
+### 5.4.3 YAML的语法规则
 YAML的语法规则如下：
 1. 数据结构：YAML支持多种数据类型，包括：
     a. 字符串、数字、布尔值
@@ -518,7 +518,7 @@ myapp:
 5. 键必须是唯一的：在一个映射中，键必须是唯一的。
 6. 注释：使用#进行注释。
 7. 大小写敏感
-### 5.4.4YAML的使用小细节
+### 5.4.4 YAML的使用小细节
 第一：普通文本也可以使用单引号或双引号括起来：（当然普通文本也可以不使用单引号和双引号括起来。）
 ● 单引号括起来：单引号内所有的内容都被当做普通文本，不转义（例如字符串中有\n，则\n被当做普通的字符串）
 ● 双引号括起来：双引号中有 \n 则会被转义为换行符
@@ -527,7 +527,7 @@ myapp:
 第三：文档切割
 ● --- 这个符号下面的配置可以认为是一个独立的yaml文件。便于庞大文件的阅读。
 
-### 5.4.5application.yml
+### 5.4.5 application.yml
 Spring Boot框架同时支持properties和yaml。
 强调：在同一个目录下同时存在**<font style="color:#DF2A3F;">application.properties</font>**和**<font style="color:#DF2A3F;">application.yml</font>**时，SpringBoot优先解析**<font style="color:#DF2A3F;">application.properties</font>**文件。
 在resources/config目录下新建application.yml文件，进行如下配置：
@@ -541,9 +541,9 @@ myapp:
 ```
 一定要把resources/config目录下application.properties名字修改为application2.properties，这样Spring Boot才会解析resources/config/application.yml。
 
-## 5.5配置文件合并
+## 5.5 配置文件合并
 一个项目中所有的配置全部编写到application.properties文件中，会导致配置臃肿，不易维护，有时我们会将配置编写到不同的文件中，例如：application-mysql.properties专门配置mysql的信息，application-redis.properties专门配置redis的信息，最终将两个配置文件合并到一个配置文件中。
-### 5.5.1properties文件
+### 5.5.1 properties文件
 application-mysql.properties
 ```
 spring.datasource.username=root
@@ -582,7 +582,7 @@ public class UserServiceMulti {
     }
 }
 ```
-### 5.5.2yaml文件
+### 5.5.2 yaml文件
 application-mysql.yml
 ```
 spring:
@@ -606,7 +606,7 @@ spring:
       - classpath:application-mysql.yml
       - classpath:application-redis.yml
 ```
-## 5.6多环境切换
+## 5.6 多环境切换
 在Spring Boot中，多环境切换是指在一个应用程序中支持多种运行环境配置的能力。这通常用于区分开发（development）、测试（testing）、预生产（staging）和生产（production）等不同阶段的环境。
 这种功能使得开发者能够在不同的环境中使用不同的配置，比如数据库连接信息、服务器端口、环境变量等，而不需要更改代码。这对于维护一个可移植且易于管理的应用程序非常重要。
 1. 开发环境的配置文件名一般叫做：application-dev.properties
@@ -637,9 +637,9 @@ spring.datasource.url=jdbc:mysql://localhost:3306/prod
 ● 第一种方式：在application.properties文件中添加这个配置：spring.profiles.active=prod（一共四个值，dev/test/preprod/prod）
 ● 第二种方式：在命令行参数上添加：--spring.profiles.active=prod
 
-## 5.7将配置绑定到bean
+## 5.7 将配置绑定到bean
 
-### 5.7.1绑定简单bean
+### 5.7.1 绑定简单bean
 SpringBoot配置文件中的信息除了可以使用@Value注解读取之外，也可以将配置信息一次性赋值给Bean对象的属性。
 例如有这样的配置：
 application.yml
@@ -711,7 +711,7 @@ app:
 2. 这样的bean需要使用@Component注解进行标注，纳入IoC容器的管理。@Component注解负责创建Bean对象，@ConfigurationProperties(prefix = "app")注解负责给bean对象的属性赋值。
 3. bean的属性需要是非static的属性。
 
-### 5.7.2@Configuration注解
+### 5.7.2 @Configuration注解
 
 以上操作中使用了@Component注解进行了标注，来纳入IoC容器的管理。也可以使用另外一个注解@Configuration，用这个注解将Bean标注为配置类。多数情况下我们会选择使用这个注解，因为该Bean对象的属性对应的就是配置文件中的配置信息，因此这个Bean我们也可以将其看做是一个配置类。
 ```
@@ -741,7 +741,7 @@ public class AppBean {
 ```
 执行结果如下：
 <img src="images/26.png" width="100%">
-### 5.7.3绑定嵌套bean
+### 5.7.3 绑定嵌套bean
 当一个Bean中嵌套了一个Bean，这种情况下可以将配置信息绑定到该Bean上吗？当然可以。
 有这样的一个配置：
 ```
@@ -857,7 +857,7 @@ public class Address {
 
 ```
 
-### 5.7.4@EnableConfigurationProperties与@ConfigurationPropertiesScan
+### 5.7.4 @EnableConfigurationProperties与@ConfigurationPropertiesScan
 将AppBean纳入IoC容器的管理，之前我们说了两种方式：第一种是使用@Component，第二种是使用@Configuration。SpringBoot其实还提供了另外两种方式：
 ● 第一种：@EnableConfigurationProperties
 ● 第二种：@ConfigurationPropertiesScan
@@ -883,7 +883,7 @@ public class Sb307ExternalConfigApplication {
 }
 ```
 
-### 5.7.5将配置赋值到Bean的Map/List/Array属性上
+### 5.7.5 将配置赋值到Bean的Map/List/Array属性上
 代码如下：
 ```java
 package com.powernode.sb307externalconfig.bean;
@@ -1018,7 +1018,7 @@ vips:
 ```
 提醒：记得入口程序使用@ConfigurationPropertiesScan(basePackages = "com.powernode.sb307externalconfig.bean")进行标注。
 
-### 5.7.6将配置绑定到第三方对象
+### 5.7.6 将配置绑定到第三方对象
 将配置文件中的信息绑定到某个Bean对象上，如果这个Bean对象没有源码，是第三方库提供的，怎么办？
 此时可以单独编写一个方法，在方法上使用以下两个注解进行标注：
 ● @Bean
@@ -1086,7 +1086,7 @@ public class ApplicationConfig {
     }
 }
 ```
-### 5.7.7指定数据来源（@PropertySource）
+### 5.7.7 指定数据来源（@PropertySource）
 之前所讲的内容是将Spring Boot框架默认的配置文件application.properties或application.yml作为数据的来源绑定到Bean上。如果配置信息没有在默认的配置文件中呢？可以使用@PropertySource注解指定配置文件的位置，这个配置文件可以是.properties，也可以是.xml。这里重点掌握.properties即可。
 
 在resources目录下新建a目录，在a目录下新建b目录，b目录中新建group-info.properties文件，进行如下的配置：
@@ -1151,7 +1151,7 @@ public class Group {
 ● @ConfigurationProperties(prefix = "group")：将配置文件中的值赋值给Bean对象的属性
 ● @PropertySource("classpath:a/b/group-info.properties")：指定额外的配置文件
 
-## 5.8@ImportResource注解创建Bean的三种方式总结
+## 5.8 @ImportResource注解创建Bean的三种方式总结
 创建Bean的三种方式总结（实则还有@EnableConfiguration和@ConfigutationPropertiesScan用于注册Bean）：
 ● 第一种方式：编写applicationContext.xml文件，在该文件中注册Bean，Spring容器启动时实例化配置文件中的Bean对象。
 ● 第二种方式：@Configuration 注解结合@Bean注解。（@Configuration注解的类本来就会归IOC容器管理，在@Configuration注解的类中使用@Bean标注的方法又可以用于注册Bean）
@@ -1225,7 +1225,7 @@ class Sb307ExternalConfigApplicationTests {
 ```
 因此，项目中如果有类似于Spring的这种xml配置文件，要想纳入IoC容器管理，需要在入口类上使用@ImportResource("classpath:applicationContext.xml")注解即可。
 
-## 5.9Environment
+## 5.9 Environment
 <font style="color:#DF2A3F;">SpringBoot框架在启动的时候会将系统配置，环境信息全部封装到</font>**<font style="color:#DF2A3F;">Environment</font>**<font style="color:#DF2A3F;">对象中，如果要获取这些环境信息，可以调用</font>**<font style="color:#DF2A3F;">Environment</font>**<font style="color:#DF2A3F;">接口的方法。</font>**
 在Spring Boot中，Environment接口提供了访问应用程序环境信息的方法，比如活动配置文件、系统环境变量、命令行参数等。Environment接口由Spring框架提供，Spring Boot应用程序通常会使用Spring提供的实现类AbstractEnvironment及其子类来实现具体的环境功能。
 Environment对象封装的主要数据包括：
@@ -1264,8 +1264,8 @@ public class SomeBean {
 ```
 通过这种方式，你可以根据环境的不同灵活地配置你的应用程序。Environment是一个非常有用的工具，它可以帮助你管理各种类型的配置信息，并根据不同的运行时条件做出相应的调整。
 
-# 6.SpringBoot中如何进行AOP的开发
-## 6.1Spring Boot AOP概述
+# 6. SpringBoot中如何进行AOP的开发
+## 6.1 Spring Boot AOP概述
 
 面向切面编程AOP在Spring教程中已经进行了详细讲解，这里不再赘述，如果忘记的同学，可以重新听一下Spring教程中AOP相关的内容。这里仅带着大家在Spring Boot中实现AOP编程。
 
@@ -1288,9 +1288,9 @@ Spring Boot的AOP编程和Spring框架中AOP编程的唯一区别是：引入依
 - aop依赖：如果只有这一个依赖，也可以实现AOP编程，这种方式表示使用了纯Spring AOP实现aop编程。
 
 - aspectj依赖：一个独立的可以完成AOP编程的AOP框架，属于第三方的，不属于Spring框架。（我们通常用它，因为它的功能更加强大）
-## 6.2Spring Boot AOP实现
+## 6.2 Spring Boot AOP实现
 实现功能：项目中很多service，要求执行任何service中的任何方法之前记录日志。
-### 6.2.1创建Spring Boot项目引入aop启动器
+### 6.2.1 创建Spring Boot项目引入aop启动器
 项目名：sb3-08-aop
 ```
 <!--aop启动器-->
@@ -1302,7 +1302,7 @@ Spring Boot的AOP编程和Spring框架中AOP编程的唯一区别是：引入依
 </dependency>
 
 ```
-### 6.2.2编写service并提供方法
+### 6.2.2 编写service并提供方法
 ```
 package com.powernode.aop.service;
 
@@ -1339,7 +1339,7 @@ public class OrderServiceImpl implements OrderService {
 
 ```
 
-### 6.2.3编写切面
+### 6.2.3 编写切面
 ```
 package com.powernode.aop;
 
@@ -1387,7 +1387,7 @@ public class LogAspect {
 
 ```
 
-### 6.2.4测试
+### 6.2.4 测试
 ```
 package com.powernode.aop;
 
@@ -1411,7 +1411,7 @@ class Sb308AopApplicationTests {
 }
 ```
 
-## 6.3其他通知类型
+## 6.3 其他通知类型
 
 以上只演示了@Before前置通知。AOP共有五种通知类型：
 
@@ -1423,7 +1423,7 @@ class Sb308AopApplicationTests {
 | 最终通知 | @After | 目标方法执行后（不论是否异常） |
 | 环绕通知 | @Around | 可自定义目标方法执行前后逻辑 |
 
-### 6.3.1完整切面示例
+### 6.3.1 完整切面示例
 ```java
 @Component
 @Aspect
@@ -1465,7 +1465,7 @@ public class LogAspect {
 }
 ```
 
-### 6.3.2各通知执行顺序
+### 6.3.2 各通知执行顺序
 
 当目标方法正常返回时，执行顺序：
 ```
@@ -1477,7 +1477,7 @@ Around前 → Before → 目标方法 → AfterReturning → After → Around后
 Around前 → Before → 目标方法 → AfterThrowing → After → (Around后不执行)
 ```
 
-### 6.3.3提取通用切入点表达式
+### 6.3.3 提取通用切入点表达式
 通过 `@Pointcut` 注解提取公共的切入点表达式，避免重复：
 
 ```java

@@ -3,8 +3,8 @@ JdbcTemplate是Spring提供的一个JDBC模板类，是对JDBC的封装，简化
 我们可以使用JdbcTemplate完成与数据库的相关操作
 Spring也可以集成其它的ORM框架，例如：MyBatis、Hibernate等。
 # 1. 环境准备
-## 1.1创建模块
-## 1.2引入依赖
+## 1.1 创建模块
+## 1.2 引入依赖
 ```
 <dependencies>
   <!-- spring 基础依赖 -->
@@ -35,7 +35,7 @@ Spring也可以集成其它的ORM框架，例如：MyBatis、Hibernate等。
   
 </dependencies>
 ```
-## 1.3数据库表
+## 1.3 数据库表
 ```
 CREATE DATABASE spring6;
 
@@ -52,7 +52,7 @@ INSERT INTO t_user
 VALUES (NULL, '张三', 12),
        (NULL, '李四', 23);
 ```
-## 1.4数据库表对应的 Java 类
+## 1.4 数据库表对应的 Java 类
 ```
 package cw.spring.study.pojo;
 
@@ -109,7 +109,7 @@ public class User {
     }
 }
 ```
-## 1.5数据源
+## 1.5 数据源
 ```
 package cw.spring.study.pojo;
 
@@ -216,7 +216,7 @@ public class MyDataSource implements DataSource {
     }
 }
 ```
-## 1.6spring 配置文件
+## 1.6 spring 配置文件
 ```
 要使用spring中的JdbcTemplate进行数据库操作，就需要一个JdbcTemplate对象
 spring是对象的容器，可以在Spring配置文件中配置JdbcTemplate，由spring管理JdbcTemplate对象
@@ -241,7 +241,7 @@ spring是对象的容器，可以在Spring配置文件中配置JdbcTemplate，�
 	
 </beans>
 ```
-## 1.7测试
+## 1.7 测试
 ```
 @org.junit.Test
 public void testJDBC() {
@@ -252,7 +252,7 @@ public void testJDBC() {
 
 ```
 
-# 2. 新增数据 
+# 2. 新增数据
 ```
 @org.junit.Test
 public void testInsert() {
@@ -497,7 +497,7 @@ public void test06() {
 
 # 13. 源码解析：JdbcTemplate 执行链路与连接管理
 
-## 13.1. JdbcTemplate 的核心架构
+## 13.1 JdbcTemplate 的核心架构
 
 ```
 JdbcTemplate 是 Spring JDBC 的核心类，它封装了所有样板代码：
@@ -528,7 +528,7 @@ JdbcTemplate 的设计模式：
   └────────────────────────────────────────┘
 ```
 
-## 13.2. execute() — 所有操作的统一入口
+## 13.2 execute() — 所有操作的统一入口
 
 ```
 JdbcTemplate.execute() 是所有 JDBC 操作的底层统一入口：
@@ -591,7 +591,7 @@ private <T> T execute(PreparedStatementCreator psc, PreparedStatementCallback<T>
 }
 ```
 
-## 13.3. query() 方法的执行链路
+## 13.3 query() 方法的执行链路
 
 ```
 以 query(sql, RowMapper) 为例，追踪完整执行链路：
@@ -634,7 +634,7 @@ public <T> T query(
 }
 ```
 
-## 13.4. update() 方法的执行链路
+## 13.4 update() 方法的执行链路
 
 ```
 public int update(final String sql) throws DataAccessException {
@@ -674,7 +674,7 @@ protected int update(
 }
 ```
 
-## 13.5. DataSourceUtils.getConnection() — 连接获取策略
+## 13.5 DataSourceUtils.getConnection() — 连接获取策略
 
 ```
 DataSourceUtils 是 Spring JDBC 中的连接管理工具类，负责处理连接获取、事务感知和释放：
@@ -728,7 +728,7 @@ public static Connection doGetConnection(DataSource dataSource) throws SQLExcept
 }
 ```
 
-## 13.6. DataSourceUtils.releaseConnection() — 连接释放策略
+## 13.6 DataSourceUtils.releaseConnection() — 连接释放策略
 
 ```
 public static void releaseConnection(
@@ -782,7 +782,7 @@ public static void doCloseConnection(
 }
 ```
 
-## 13.7. BeanPropertyRowMapper — 结果集到 Bean 的映射
+## 13.7 BeanPropertyRowMapper — 结果集到 Bean 的映射
 
 ```
 BeanPropertyRowMapper 负责将 ResultSet 的一行转换为 Bean：
@@ -821,7 +821,7 @@ public class BeanPropertyRowMapper<T> implements RowMapper<T> {
 }
 ```
 
-## 13.8. JdbcTemplate 事务感知完整流程图
+## 13.8 JdbcTemplate 事务感知完整流程图
 
 ```
 业务方法 @Transactional
@@ -871,7 +871,7 @@ public class BeanPropertyRowMapper<T> implements RowMapper<T> {
                             └→ con.close() (归还连接池)
 ```
 
-## 13.9. 设计思想总结
+## 13.9 设计思想总结
 
 1. 模板方法模式（Template Method Pattern）：
    JdbcTemplate 是命名的来源，它将 JDBC 的固定流程（获取连接 → 创建 Statement →

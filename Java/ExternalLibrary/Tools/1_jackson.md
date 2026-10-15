@@ -101,7 +101,7 @@ public class ObjectMapperConfig {
 }
 ```
 
-### 常用配置项详解
+### 2.1.1 常用配置项详解
 
 | 配置项 | 作用 |
 |--------|------|
@@ -201,7 +201,7 @@ class ApiResponse<T> {
 }
 ```
 
-### TypeReference 的原理
+### 2.3.1 TypeReference 的原理
 
 TypeReference 通过创建匿名内部类来捕获泛型参数的类型信息。由于匿名内部类会保留父类的泛型信息，Jackson 可以通过 `TypeFactory` 从中解析出完整的参数化类型。
 
@@ -213,7 +213,7 @@ TypeReference<List<User>> typeRef = new TypeReference<List<User>>() {};
 
 ## 2.4 常用注解详解
 
-### @JsonProperty
+### 2.4.1 @JsonProperty
 
 用于指定 JSON 字段名，或标记 getter/setter 对应的属性：
 
@@ -238,7 +238,7 @@ public class Product {
 }
 ```
 
-### @JsonIgnore 和 @JsonIgnoreProperties
+### 2.4.2 @JsonIgnore 和 @JsonIgnoreProperties
 
 ```java
 public class Employee {
@@ -263,7 +263,7 @@ public class Config {
 }
 ```
 
-### @JsonInclude
+### 2.4.3 @JsonInclude
 
 控制属性何时包含在 JSON 中：
 
@@ -284,7 +284,7 @@ public class Article {
 }
 ```
 
-### @JsonFormat
+### 2.4.4 @JsonFormat
 
 格式化日期、枚举等：
 
@@ -306,7 +306,7 @@ enum OrderStatus {
 }
 ```
 
-### @JsonUnwrapped
+### 2.4.5 @JsonUnwrapped
 
 展平嵌套对象：
 
@@ -327,7 +327,7 @@ public class Person {
 // {"name":"张三","city":"北京","street":"长安街"}
 ```
 
-### @JsonCreator 和 @JsonPropertyOrder
+### 2.4.6 @JsonCreator 和 @JsonPropertyOrder
 
 ```java
 public class ImmutableConfig {
@@ -404,7 +404,7 @@ public class TreeModelExample {
 }
 ```
 
-### 常用 JsonNode 方法
+### 3.1.1 常用 JsonNode 方法
 
 | 方法 | 说明 |
 |------|------|
@@ -418,7 +418,7 @@ public class TreeModelExample {
 
 ## 3.2 自定义序列化器和反序列化器
 
-### 自定义序列化器
+### 3.2.1 自定义序列化器
 
 ```java
 public class CustomSerializer extends StdSerializer<User> {
@@ -444,7 +444,7 @@ public class CustomSerializer extends StdSerializer<User> {
 }
 ```
 
-### 自定义反序列化器
+### 3.2.2 自定义反序列化器
 
 ```java
 public class CustomDeserializer extends StdDeserializer<User> {
@@ -467,7 +467,7 @@ public class CustomDeserializer extends StdDeserializer<User> {
 }
 ```
 
-### 注册自定义序列化器
+### 3.2.3 注册自定义序列化器
 
 ```java
 @JsonSerialize(using = CustomSerializer.class)
@@ -629,7 +629,7 @@ public class StreamingExample {
 }
 ```
 
-### Streaming API vs DataBinding 性能对比
+### 3.5.1 Streaming API vs DataBinding 性能对比
 
 | 特性 | Streaming API | Data Binding |
 |------|-------------|--------------|
@@ -641,7 +641,7 @@ public class StreamingExample {
 
 ## 3.6 过滤器与视图（JsonView）
 
-### @JsonView
+### 3.6.1 @JsonView
 
 ```java
 public class Views {
@@ -672,7 +672,7 @@ String publicView = mapper
 // 只包含 title 和 summary
 ```
 
-### SimpleFilterProvider
+### 3.6.2 SimpleFilterProvider
 
 ```java
 @JsonFilter("userFilter")
@@ -878,7 +878,7 @@ public class LargeJsonProcessing {
 
 ## 6.1 最佳实践
 
-### 1. 全局配置 ObjectMapper
+### 6.1.1 全局配置 ObjectMapper
 
 ```java
 @Configuration
@@ -902,7 +902,7 @@ public class JacksonGlobalConfig {
 }
 ```
 
-### 2. 统一处理 null 值
+### 6.1.2 统一处理 null 值
 
 ```java
 // 类级别
@@ -917,7 +917,7 @@ public class ApiResult {
 mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 ```
 
-### 3. 使用 @JsonIgnore 保护敏感字段
+### 6.1.3 使用 @JsonIgnore 保护敏感字段
 
 ```java
 public class UserAccount {
@@ -929,7 +929,7 @@ public class UserAccount {
 }
 ```
 
-### 4. 枚举序列化统一处理
+### 6.1.4 枚举序列化统一处理
 
 ```java
 public enum Status {
@@ -945,7 +945,7 @@ mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
 
 ## 6.2 常见坑
 
-### 坑 1：循环引用
+### 6.2.1 坑 1：循环引用
 
 ```java
 // 双向引用导致 StackOverflowError
@@ -969,7 +969,7 @@ class Parent {
 }
 ```
 
-### 坑 2：多态反序列化漏洞
+### 6.2.2 坑 2：多态反序列化漏洞
 
 ```java
 // 安全问题：默认的多态反序列化可能导致远程代码执行
@@ -984,7 +984,7 @@ mapper.activateDefaultTyping(
 );
 ```
 
-### 坑 3：日期反序列化失败
+### 6.2.3 坑 3：日期反序列化失败
 
 ```java
 // 问题：默认日期格式不匹配
@@ -997,7 +997,7 @@ mapper.registerModule(new JavaTimeModule());
 mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 ```
 
-### 坑 4：未知属性抛异常
+### 6.2.4 坑 4：未知属性抛异常
 
 ```java
 // 后端一个字段没加 getter，或前端多传了字段都会抛 UnrecognizedPropertyException
@@ -1005,7 +1005,7 @@ mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 ```
 
-### 坑 5：泛型擦除问题
+### 6.2.5 坑 5：泛型擦除问题
 
 ```java
 // 错误：丢失泛型信息
@@ -1015,7 +1015,7 @@ List<User> users = mapper.readValue(json, List.class);  // 得到 List<LinkedHas
 List<User> users = mapper.readValue(json, new TypeReference<List<User>>() {});
 ```
 
-### 坑 6：getter 误识别
+### 6.2.6 坑 6：getter 误识别
 
 ```java
 public class BadBean {

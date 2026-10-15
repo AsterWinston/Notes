@@ -1,6 +1,6 @@
-# 1.RabbitMQ集群概述
+# 1. RabbitMQ集群概述
 
-## 1.1为什么需要集群
+## 1.1 为什么需要集群
 单节点RabbitMQ存在以下问题：
 - **单点故障**：节点宕机后所有消息服务不可用
 - **性能瓶颈**：单个节点的CPU、内存、网络带宽有限
@@ -11,7 +11,7 @@
 - **负载均衡**：多节点分担消息流量压力
 - **水平扩展**：通过增加节点来提升整体处理能力
 
-## 1.2RabbitMQ集群的架构特点
+## 1.2 RabbitMQ集群的架构特点
 RabbitMQ集群的设计与其他分布式系统有些不同：
 
 1. **元数据复制**：RabbitMQ集群会复制Exchange、Queue、Binding等元数据到所有节点（但不默认复制消息内容）
@@ -19,9 +19,9 @@ RabbitMQ集群的设计与其他分布式系统有些不同：
 3. **节点间消息拉取**：消费者连接到非Queue所在节点时，会通过集群内部通信从Queue所在节点拉取消息
 4. **基于Erlang Cookie**：节点间通过共享的Erlang Cookie建立信任关系
 
-# 2.集群模式详解
+# 2. 集群模式详解
 
-## 2.1普通集群（默认模式）
+## 2.1 普通集群（默认模式）
 ```
 节点A              节点B              节点C
  ├── Queue1         ├── Queue2         ├── Queue3（消息存储在节点A）
@@ -35,7 +35,7 @@ RabbitMQ集群的设计与其他分布式系统有些不同：
 - 优点：配置简单
 - 缺点：Queue所在节点宕机后，该Queue的消息不可用
 
-## 2.2镜像队列（经典队列镜像）
+## 2.2 镜像队列（经典队列镜像）
 镜像队列通过将Queue的数据复制到集群中的多个节点来提供高可用性。
 
 ```
@@ -52,7 +52,7 @@ RabbitMQ集群的设计与其他分布式系统有些不同：
 
 > **注意**：从RabbitMQ 3.12开始，经典镜像队列已被标记为deprecated，推荐使用仲裁队列替代。
 
-## 2.3仲裁队列（Quorum Queue，RabbitMQ 3.8+）
+## 2.3 仲裁队列（Quorum Queue，RabbitMQ 3.8+）
 仲裁队列是RabbitMQ 3.8引入的新型队列，基于Raft共识算法实现，旨在替代经典镜像队列。
 
 ```
@@ -74,7 +74,7 @@ RabbitMQ集群的设计与其他分布式系统有些不同：
 - 不支持排他队列
 - 仅支持`drop-head`溢出行为，不支持`reject-publish`
 
-## 2.4三种模式的对比
+## 2.4 三种模式的对比
 | 特性 | 普通集群 | 镜像队列 | 仲裁队列 |
 |------|---------|---------|---------|
 | 消息持久化 | 仅本地 | 主+镜像 | Raft复制（多节点） |
@@ -85,9 +85,9 @@ RabbitMQ集群的设计与其他分布式系统有些不同：
 | 复杂度 | 低 | 中 | 中 |
 | 推荐度 | 非高可用场景 | 3.12后被废弃，不推荐新项目 | 推荐（高可用场景） |
 
-# 3.Spring AMQP的集群配置
+# 3. Spring AMQP的集群配置
 
-## 3.1配置集群地址
+## 3.1 配置集群地址
 ```yaml
 spring:
   rabbitmq:
@@ -113,7 +113,7 @@ public ConnectionFactory connectionFactory() {
 }
 ```
 
-## 3.2连接恢复配置
+## 3.2 连接恢复配置
 集群中节点可能宕机，连接恢复机制至关重要：
 
 ```java
@@ -131,7 +131,7 @@ public ConnectionFactory connectionFactory() {
 }
 ```
 
-## 3.3实现自动故障转移
+## 3.3 实现自动故障转移
 ```java
 @Bean
 public ConnectionFactory connectionFactory() {
@@ -163,9 +163,9 @@ public ConnectionFactory connectionFactory() {
 }
 ```
 
-# 4.仲裁队列的配置与使用
+# 4. 仲裁队列的配置与使用
 
-## 4.1声明仲裁队列
+## 4.1 声明仲裁队列
 ```java
 // 方式一：QueueBuilder
 @Bean
@@ -186,7 +186,7 @@ public Queue quorumQueue2() {
 }
 ```
 
-## 4.2仲裁队列的最佳实践
+## 4.2 仲裁队列的最佳实践
 ```java
 @Bean
 public Queue criticalBusinessQueue() {
@@ -203,9 +203,9 @@ public Queue criticalBusinessQueue() {
 }
 ```
 
-# 5.高可用相关机制
+# 5. 高可用相关机制
 
-## 5.1连接恢复（Connection Recovery）
+## 5.1 连接恢复（Connection Recovery）
 当Broker节点宕机或网络断开时，Spring AMQP会自动尝试重新连接：
 
 ```java
@@ -236,7 +236,7 @@ public CachingConnectionFactory connectionFactory() {
 - ConfirmListener（Publisher Confirm）
 - ReturnListener（Return Callback）
 
-## 5.2消费者自动恢复
+## 5.2 消费者自动恢复
 当Broker节点故障后恢复，消费者会自动重新订阅队列：
 
 ```yaml
@@ -249,7 +249,7 @@ spring:
         missing-queues-fatal: false  # 队列不存在时不阻止启动
 ```
 
-## 5.3Exchange/Queue的HA配置
+## 5.3 Exchange/Queue的HA配置
 虽然Spring AMQP的配置主要在应用端，但Exchange和Queue的HA属性需要在RabbitMQ Server端配置：
 
 ```bash
@@ -258,7 +258,7 @@ spring:
 rabbitmqctl set_policy --priority 1 --apply-to queues quorum-policy "^order\." '{"queue-type":"quorum"}'
 ```
 
-## 5.4RabbitMQ的Policy管理
+## 5.4 RabbitMQ的Policy管理
 Policy是RabbitMQ Server端的配置策略，可以批量配置队列和交换机的属性：
 
 ```bash
@@ -279,9 +279,9 @@ rabbitmqctl set_policy max-length-policy "^bounded\." \
   '{"max-length":10000,"overflow":"reject-publish"}'
 ```
 
-# 6.集群监控与运维
+# 6. 集群监控与运维
 
-## 6.1Spring Actuator集成
+## 6.1 Spring Actuator集成
 ```yaml
 management:
   endpoint:
@@ -300,7 +300,7 @@ spring:
 
 Spring Boot Actuator会自动检测RabbitMQ连接健康状态，通过`/actuator/health`端点查看。
 
-## 6.2关键监控指标
+## 6.2 关键监控指标
 通过RabbitMQ管理API获取的集群关键指标：
 
 | 指标 | 说明 | 告警阈值建议 |
@@ -314,7 +314,7 @@ Spring Boot Actuator会自动检测RabbitMQ连接健康状态，通过`/actuator
 | message_rates_publish | 发布速率 | 关注突变 |
 | message_rates_deliver | 投递速率 | 关注突变 |
 
-## 6.3编程式获取集群信息
+## 6.3 编程式获取集群信息
 ```java
 @Component
 public class ClusterStatusMonitor {
@@ -352,15 +352,15 @@ public class ClusterStatusMonitor {
 }
 ```
 
-# 7.集群最佳实践
+# 7. 集群最佳实践
 
-## 7.1部署建议
+## 7.1 部署建议
 - **奇数节点**：使用3、5或7个节点，避免脑裂（split-brain）
 - **独立磁盘**：不同节点使用不同的物理磁盘，避免单点故障
 - **网络要求**：集群节点间需要低延迟、高带宽的内部网络
 - **负载均衡**：使用HAProxy/Nginx/Cloud Load Balancer进行连接负载均衡
 
-## 7.2配置建议
+## 7.2 配置建议
 ```bash
 # 生产环境推荐配置
 # 1. 内存限制
@@ -377,7 +377,7 @@ log.file.level = info                    # 日志级别
 queue_index_embed_msgs_below = 4096      # 小于4KB的消息嵌入索引（提升性能）
 ```
 
-## 7.3Spring AMQP的集群配置最佳实践
+## 7.3 Spring AMQP的集群配置最佳实践
 ```java
 @Configuration
 public class ClusterConfig {

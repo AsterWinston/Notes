@@ -1,4 +1,4 @@
-# 1.浏览器事件简介
+# 1. 浏览器事件简介
 ```
 事件 是某事发生的信号。所有的 DOM 节点都生成这样的信号（但事件不仅限于 DOM）。
 
@@ -26,7 +26,7 @@ CSS 事件：
 transitionend —— 当一个 CSS 动画完成时。
 还有很多其他事件。我们将在下一章中详细介绍具体事件。
 ```
-## 1.1事件处理程序
+## 1.1 事件处理程序
 ```javascript
 为了对事件作出响应，我们可以分配一个 处理程序（handler）—— 一个在事件发生时运行的函数。
 
@@ -106,7 +106,7 @@ HTML + JS：
 
 要移除一个处理程序 —— 赋值 elem.onclick = null。
 ```
-## 1.2访问元素：this
+## 1.2 访问元素：this
 ```javascript
 处理程序中的 this 的值是对应的元素。就是处理程序所在的那个元素。
 
@@ -114,7 +114,7 @@ HTML + JS：
 
 <button onclick="alert(this.innerHTML)">Click me</button>
 ```
-## 1.3可能出现的错误
+## 1.3 可能出现的错误
 ```javascript
 如果你刚开始写事件 —— 请注意一些细微之处。
 
@@ -155,7 +155,7 @@ DOM 属性是大小写敏感的。
 
 将处理程序分配给 elem.onclick，而不是 elem.ONCLICK，因为 DOM 属性是大小写敏感的。
 ```
-## 1.4addEventListener
+## 1.4 addEventListener
 ```javascript
 上述分配处理程序的方式的根本问题是 —— 我们不能为一个事件分配多个处理程序。
 
@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 所以 addEventListener 更通用。虽然这样的事件是特例而不是规则。
 ```
-## 1.5事件对象
+## 1.5 事件对象
 ```javascript
 为了正确处理事件，我们需要更深入地了解发生了什么。不仅仅是 “click” 或 “keydown”，还包括鼠标指针的坐标是什么？按下了哪个键？等等。
 
@@ -272,7 +272,7 @@ event 对象在 HTML 处理程序中也可用
 
 这是可能的，因为当浏览器读取特性（attribute）时，它会创建像这样的处理程序：function(event) { alert(event.type) }。也就是说：它的第一个参数是 "event"，而主体取自于该特性（attribute）。
 ```
-## 1.6对象处理程序：handleEvent
+## 1.6 对象处理程序：handleEvent
 
 ```javascript
 我们不仅可以分配函数，还可以使用 addEventListener 将一个对象分配为事件处理程序。当事件发生时，就会调用该对象的 handleEvent 方法。
@@ -343,7 +343,7 @@ handleEvent 方法不必通过自身完成所有的工作。它可以调用其�
 </script>
 现在事件处理程序已经明确地分离了出来，这样更容易进行代码编写和后续维护。
 ```
-## 1.7总结
+## 1.7 总结
 ```javascript
 这里有 3 种分配事件处理程序的方式：
 
@@ -361,7 +361,7 @@ DOM 属性用起来还可以，但我们无法为特定事件分配多个处理�
 在下一章中，我们将学习更多关于一般事件和不同类型事件的内容。
 ```
 
-# 2.冒泡和捕获
+# 2. 冒泡和捕获
 ```
 让我们从一个示例开始。
 
@@ -373,7 +373,7 @@ DOM 属性用起来还可以，但我们无法为特定事件分配多个处理�
 
 这是不是有点奇怪？如果实际上点击的是 <em>，为什么在 <div> 上的处理程序会运行？
 ```
-## 2.1冒泡
+## 2.1 冒泡
 ```javascript
 冒泡（bubbling）原理很简单。
 
@@ -410,7 +410,7 @@ DOM 属性用起来还可以，但我们无法为特定事件分配多个处理�
 
 例如，focus 事件不会冒泡。同样，我们以后还会遇到其他例子。但这仍然是例外，而不是规则，大多数事件的确都是冒泡的。
 ```
-## 2.2event.target
+## 2.2 event.target
 ```javascript
 父元素上的处理程序始终可以获取事件实际发生位置的详细信息。
 
@@ -432,7 +432,7 @@ event.target 是表单中实际被点击的元素。
 
 event.target 可能会等于 this —— 当点击事件发生在 <form> 元素上时，就会发生这种情况。
 ```
-## 2.3停止冒泡
+## 2.3 停止冒泡
 ```javascript
 冒泡事件从目标元素开始向上冒泡。通常，它会一直上升到 <html>，然后再到 document 对象，有些事件甚至会到达 window，它们会调用路径上所有的处理程序。
 
@@ -465,7 +465,7 @@ event.stopImmediatePropagation()
 我们的分析不适用于被 stopPropagation 所阻止点击的区域。太伤心了，我们有一个“死区”。
 通常，没有真正的必要去阻止冒泡。一项看似需要阻止冒泡的任务，可以通过其他方法解决。其中之一就是使用自定义事件，稍后我们会介绍它们。此外，我们还可以将我们的数据写入一个处理程序中的 event 对象，并在另一个处理程序中读取该数据，这样我们就可以向父处理程序传递有关下层处理程序的信息。
 ```
-## 2.4捕获
+## 2.4 捕获
 ```javascript
 事件处理的另一个阶段被称为“捕获（capturing）”。它很少被用在实际开发中，但有时是有用的。
 
@@ -534,7 +534,7 @@ DIV → FORM → BODY → HTML（冒泡阶段，第二个监听器）。
 elem.addEventListener("click", e => alert(1)); // 会先被触发
 elem.addEventListener("click", e => alert(2));
 ```
-## 2.5总结
+## 2.5 总结
 ```javascript
 当一个事件发生时 —— 发生该事件的嵌套最深的元素被标记为“目标元素”（event.target）。
 
@@ -557,7 +557,7 @@ event.eventPhase —— 当前阶段（capturing=1，target=2，bubbling=3）。
 冒泡和捕获为“事件委托”奠定了基础 —— 一种非常强大的事件处理模式，我们将在下一章中进行研究。
 ```
 
-# 3.事件委托
+# 3. 事件委托
 ```
 捕获和冒泡允许我们实现最强大的事件处理模式之一，即 事件委托 模式。
 
@@ -647,7 +647,7 @@ elem.closest(selector) 方法返回与 selector 匹配的最近的祖先。在�
 如果是的话，就高亮显示它。
 最终，我们得到了一个快速、高效的用于高亮显示的代码，该代码与表格中的 <td> 的数量无关。
 ```
-## 3.1委托示例：标记中的行为
+## 3.1 委托示例：标记中的行为
 ```javascript
 事件委托还有其他用途。（译注：本节标题中的“标记中的行为”即 action in markup）
 
@@ -702,7 +702,7 @@ elem.closest(selector) 方法返回与 selector 匹配的最近的祖先。在�
 HTML 结构非常灵活，我们可以随时添加/移除按钮。
 我们也可以使用 .action-save，.action-load 类，但 data-action 特性（attribute）在语义上更好。我们也可以在 CSS 规则中使用它。
 ```
-## 3.2“行为”模式
+## 3.2 “行为”模式
 ```javascript
 我们还可以使用事件委托将“行为（behavior）”以 声明方式 添加到具有特殊特性（attribute）和类的元素中。
 
@@ -765,7 +765,7 @@ One more counter: <input type="button" value="2" data-counter>
 
 “行为”模式可以替代 JavaScript 的小片段。
 ```
-## 3.3总结
+## 3.3 总结
 ```javascript
 事件委托真的很酷！这是 DOM 事件最有用的模式之一。
 
@@ -787,7 +787,7 @@ DOM 修改 ：我们可以使用 innerHTML 等，来批量添加/移除元素。
 其次，委托可能会增加 CPU 负载，因为容器级别的处理程序会对容器中任意位置的事件做出反应，而不管我们是否对该事件感兴趣。但是，通常负载可以忽略不计，所以我们不考虑它。
 ```
 
-# 4.浏览器默认行为
+# 4. 浏览器默认行为
 ```
 许多事件会自动触发浏览器执行某些行为。
 
@@ -798,7 +798,7 @@ DOM 修改 ：我们可以使用 innerHTML 等，来批量添加/移除元素。
 在文本上按下鼠标按钮并移动 —— 选中文本。
 如果我们使用 JavaScript 处理一个事件，那么我们通常不希望发生相应的浏览器行为。而是想要实现其他行为进行替代。
 ```
-## 4.1阻止浏览器行为
+## 4.1 阻止浏览器行为
 ```javascript
 有两种方式来告诉浏览器我们不希望它执行默认行为：
 
@@ -862,7 +862,7 @@ menu.onclick = function(event) {
 
 这是因为浏览器行为在 mousedown 上被取消。如果我们用另一种方式进行输入，则仍然可以进行聚焦。例如，可以使用 Tab 键从第一个输入切换到第二个输入。但鼠标点击则不行。
 ```
-## 4.2处理程序选项"passive"
+## 4.2 处理程序选项"passive"
 ```javascript
 addEventListener 的可选项 passive: true 向浏览器发出信号，表明处理程序将不会调用 preventDefault()。
 
@@ -876,7 +876,7 @@ passive: true 选项告诉浏览器，处理程序不会取消滚动。然后浏
 
 对于某些浏览器（Firefox，Chrome），默认情况下，touchstart 和 touchmove 事件的 passive 为 true。
 ```
-## 4.3event.defaultPrevented
+## 4.3 event.defaultPrevented
 ```javascript
 如果默认行为被阻止，那么 event.defaultPrevented 属性为 true，否则为 false。
 
@@ -968,7 +968,7 @@ event.stopPropagation() 和 event.preventDefault()
 
 但是，每段需要上下文菜单的代码都应该了解该对象，并使用它的帮助，而不是使用自己的 contextmenu 处理程序。
 ```
-## 4.4总结
+## 4.4 总结
 ```javascript
 有很多默认的浏览器行为：
 
@@ -996,7 +996,7 @@ addEventListener 的 passive: true 选项告诉浏览器该行为不会被阻止
 另外，如果我们考虑使用带有 <a> 的示例，那么请注意：浏览器允许我们在新窗口中打开此类链接（通过右键单击它们以及其他方式）。大家都喜欢这么做。但是，如果我们使用 JavaScript 让按钮行为表现得像链接，甚至使用 CSS 将其样式设置成看起来也像链接，即使这样，但仍然无法在按钮上使用特定于 <a> 的浏览器功能。
 ```
 
-# 5.创建自定义事件
+# 5. 创建自定义事件
 ```
 我们不仅可以分配事件处理程序，还可以从 JavaScript 生成事件。
 
@@ -1004,7 +1004,7 @@ addEventListener 的 passive: true 选项告诉浏览器该行为不会被阻止
 
 我们不仅可以生成出于自身目的而创建的全新事件，还可以生成例如 click 和 mousedown 等内建事件。这可能会有助于自动化测试。
 ```
-## 5.1事件构造器
+## 5.1 事件构造器
 ```javascript
 内建事件类形成一个层次结构（hierarchy），类似于 DOM 元素类。根是内建的 Event 类。
 
@@ -1021,7 +1021,7 @@ bubbles: true/false —— 如果为 true，那么事件会冒泡。
 cancelable: true/false —— 如果为 true，那么“默认行为”就会被阻止。稍后我们会看到对于自定义事件，它意味着什么。
 默认情况下，以上两者都为 false：{bubbles: false, cancelable: false}。
 ```
-## 5.2dispatchEvent
+## 5.2 dispatchEvent
 ```javascript
 事件对象被创建后，我们应该使用 elem.dispatchEvent(event) 调用在元素上“运行”它。
 
@@ -1040,7 +1040,7 @@ event.isTrusted
 
 对于来自真实用户操作的事件，event.isTrusted 属性为 true，对于脚本生成的事件，event.isTrusted 属性为 false。
 ```
-## 5.3冒泡示例
+## 5.3 冒泡示例
 ```javascript
 我们可以创建一个名为 "hello" 的冒泡事件，并在 document 上捕获它。
 
@@ -1067,7 +1067,7 @@ event.isTrusted
 必须设置 bubbles:true，否则事件不会向上冒泡。
 内建事件（click）和自定义事件（hello）的冒泡机制相同。自定义事件也有捕获阶段和冒泡阶段。
 ```
-## 5.4MouseEvent, KeyboardEvent
+## 5.4 MouseEvent, KeyboardEvent
 ```javascript
 这是一个摘自于 UI 事件规范 的一个简短的 UI 事件类列表：
 
@@ -1107,7 +1107,7 @@ alert(event.clientX); // undefined，未知的属性被忽略了！
 
 规范中提供了不同 UI 事件的属性的完整列表，例如 MouseEvent。
 ```
-## 5.5自定义事件
+## 5.5 自定义事件
 ```javascript
 对于我们自己的全新事件类型，例如 "hello"，我们应该使用 new CustomEvent。从技术上讲，CustomEvent 和 Event 一样。除了一点不同。
 
@@ -1131,7 +1131,7 @@ detail 属性可以有任何数据。从技术上讲，我们可以不用，因�
 
 此外，事件类描述了它是“什么类型的事件”，如果事件是自定义的，那么我们应该使用 CustomEvent 来明确它是什么。
 ```
-## 5.6event.preventDefault()
+## 5.6 event.preventDefault()
 ```javascript
 许多浏览器事件都有“默认行为”，例如，导航到链接，开始一个选择，等。
 
@@ -1177,7 +1177,7 @@ detail 属性可以有任何数据。从技术上讲，我们可以不用，因�
 
 请注意：该事件必须具有 cancelable: true 标志，否则 event.preventDefault() 调用将会被忽略。
 ```
-## 5.7事件中的事件是同步的
+## 5.7 事件中的事件是同步的
 ```javascript
 通常事件是在队列中处理的。也就是说：如果浏览器正在处理 onclick，这时发生了一个新的事件，例如鼠标移动了，那么它的处理程序会被排入队列，相应的 mousemove 处理程序将在 onclick 事件处理完成后被调用。
 
@@ -1233,7 +1233,7 @@ detail 属性可以有任何数据。从技术上讲，我们可以不用，因�
 
 输出顺序变成：1 → 2 → nested。
 ```
-## 5.8总结
+## 5.8 总结
 ```javascript
 要从代码生成一个事件，我们首先需要创建一个事件对象。
 

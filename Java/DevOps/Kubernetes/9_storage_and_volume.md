@@ -1,4 +1,4 @@
-# 1.存储体系概述
+# 1. 存储体系概述
 
 ## 1.1 容器存储的挑战
 
@@ -12,7 +12,7 @@
 
 这就是 Kubernetes 引入 PV/PVC/StorageClass 体系的根本原因：**将存储的生命周期与 Pod 的生命周期解耦**，使得存储成为可独立管理、独立申请、跨节点访问的集群资源。
 
-### 存储的核心矛盾
+### 1.1.1 存储的核心矛盾
 
 ```
 容器存储的三角困境：
@@ -36,7 +36,7 @@ Kubernetes 的存储体系通过多层次抽象来解决这个矛盾——让用
 
 Kubernetes 的存储体系借鉴了"计算资源"的管理模式：就像节点（Node）提供 CPU 和内存资源池、Pod 通过 `resources.requests` 申请资源一样，存储体系也分为"资源供给"和"资源消费"两层。
 
-### 三种资源抽象
+### 1.2.1 三种资源抽象
 
 ```
 ┌────────────────────────────────────────────────────┐
@@ -61,7 +61,7 @@ Kubernetes 的存储体系借鉴了"计算资源"的管理模式：就像节点�
 
 **StorageClass（存储类）**定义了存储的"类型"和"动态供给参数"。当用户创建 PVC 时，StorageClass 按照预定义的参数自动创建 PV，实现存储的按需供给。没有了 StorageClass，管理员需要手动创建每一个 PV——这在大型集群中不可行。
 
-### 为什么要分离 PV 和 PVC
+### 1.2.2 为什么要分离 PV 和 PVC
 
 这种分离体现了 Kubernetes 的核心设计理念——**关注点分离**：
 
@@ -83,7 +83,7 @@ PVC "需要10Gi RWO"     →     Kubernetes 控制循环     →     PV "20Gi NF
 - PV 的 volumeMode == PVC 的 volumeMode
 ```
 
-### 静态供给 vs 动态供给
+### 1.2.3 静态供给 vs 动态供给
 
 **静态供给（Static Provisioning）**：管理员手动创建 PV 对象，Kubernetes 从 PV 池中匹配 PVC。适用于存储资源固定、变化不频繁的场景。
 
@@ -136,7 +136,7 @@ spec:
 
 Kubernetes 支持数十种卷类型，可以按功能分为以下几类：
 
-### 临时存储（与 Pod 同生命周期）
+### 1.3.1 临时存储（与 Pod 同生命周期）
 
 | 卷类型 | 数据生命周期 | 典型场景 |
 |--------|-------------|---------|
@@ -147,7 +147,7 @@ Kubernetes 支持数十种卷类型，可以按功能分为以下几类：
 | `secret` | 独立于 Pod | 敏感信息注入 |
 | `projected` | 与 Pod 相同 | 将多个卷源投射到同一目录 |
 
-### 持久存储（独立于 Pod 生命周期）
+### 1.3.2 持久存储（独立于 Pod 生命周期）
 
 | 卷类型 | 典型实现 | 适用场景 |
 |--------|---------|---------|
@@ -157,7 +157,7 @@ Kubernetes 支持数十种卷类型，可以按功能分为以下几类：
 | `nfs` | NFS 服务器 | 多节点共享文件 |
 | `csi` | 任意 CSI 驱动 | 通用接口，几乎所有现代存储 |
 
-### 云厂商特定卷（通过 CSI 或 in-tree 驱动）
+### 1.3.3 云厂商特定卷（通过 CSI 或 in-tree 驱动）
 
 | 卷类型 | 云平台 | 特点 |
 |--------|--------|------|
@@ -167,7 +167,7 @@ Kubernetes 支持数十种卷类型，可以按功能分为以下几类：
 | `gcePersistentDisk` | GCP | GCE 持久磁盘 |
 | `cinder` | OpenStack | OpenStack Cinder 块存储 |
 
-### 特殊用途卷
+### 1.3.4 特殊用途卷
 
 | 卷类型 | 说明 |
 |--------|------|
@@ -230,13 +230,13 @@ Kubernetes 支持数十种卷类型，可以按功能分为以下几类：
 └──────────────────────────────────────────────────────────┘
 ```
 
-# 2.Volume 类型详解
+# 2. Volume 类型详解
 
 ## 2.1 emptyDir
 
 `emptyDir` 是最简单的卷类型。当 Pod 被创建时，kubelet 在节点上创建一个空目录，Pod 内所有容器都可以读写这个目录。Pod 删除时，目录及其中数据被永久删除。容器重启不影响 `emptyDir` 中的数据。
 
-### 创建与生命周期
+### 2.1.1 创建与生命周期
 
 ```yaml
 apiVersion: v1
@@ -264,7 +264,7 @@ spec:
       sizeLimit: 256Mi     # 限制卷的最大大小
 ```
 
-### 存储介质选择
+### 2.1.2 存储介质选择
 
 - `medium: ""`（默认）：使用节点磁盘，数据存储在 `/var/lib/kubelet/pods/<pod-uid>/volumes/kubernetes.io~empty-dir/<volume-name>/`。适合一般场景，性能取决于节点磁盘类型。
 - `medium: "Memory"`：使用 tmpfs（内存文件系统），数据存储在内存中。性能极高，但受限于节点内存。Pod 被删除或节点重启时数据丢失。适合缓存、临时密钥等高性能临时存储。
@@ -279,7 +279,7 @@ volumes:
 
 设置 `sizeLimit` 后，如果实际使用超过限制，kubelet 会驱逐 Pod（标记为 `Evicted`）。这是通过节点级别的监控实现的，而非在文件系统层面强制实施。
 
-### 底层实现
+### 2.1.3 底层实现
 
 kubelet 创建 emptyDir 时：
 1. 在节点文件系统上创建目录
@@ -291,7 +291,7 @@ kubelet 创建 emptyDir 时：
 
 `hostPath` 将节点上的文件或目录挂载到 Pod 中。这是最直接的方式，但也最危险——它将 Pod 与特定节点绑定，破坏了 Pod 的可移植性。
 
-### 使用场景
+### 2.2.1 使用场景
 
 ```yaml
 apiVersion: v1
@@ -319,7 +319,7 @@ spec:
       type: Socket
 ```
 
-### type 参数（安全检查）
+### 2.2.2 type 参数（安全检查）
 
 `hostPath` 的 `type` 字段用于在挂载前检查路径的类型，提供了一层安全保护：
 
@@ -334,7 +334,7 @@ spec:
 | `CharDevice` | 必须是已存在的字符设备 |
 | `BlockDevice` | 必须是已存在的块设备 |
 
-### 风险与注意事项
+### 2.2.3 风险与注意事项
 
 1. **Pod 与节点绑定**：使用 hostPath 的 Pod 一旦被调度到某个节点，如果之后重建时该节点资源不足或不可用，Pod 可能无法在其他节点运行
 2. **安全性**：hostPath 可以访问节点任意目录，具有特权级别的访问能力。必须严格限制 RBAC 权限
@@ -483,7 +483,7 @@ spec:
 
 `serviceAccountToken` 是 `projected` 独有的功能——它允许生成一个具有特定有效期和受众的 ServiceAccount Token，而非使用默认的、无过期的 Token。这是 Kubernetes 1.21+ 推荐的 Token 注入方式。
 
-# 3.持久卷 (PV) 详解
+# 3. 持久卷 (PV) 详解
 
 ## 3.1 PV 的完整 YAML 结构
 
@@ -546,14 +546,14 @@ PV 在其生命周期中经历以下状态：
    └── Recycle: (已废弃) 清空数据后 PV 变回 Available
 ```
 
-### 状态说明
+### 3.2.1 状态说明
 
 - **Available**：PV 已创建且未被任何 PVC 绑定。可以被新的 PVC 使用
 - **Bound**：PV 已被 PVC 绑定。绑定的 PV 不能被其他 PVC 使用（一对一绑定）
 - **Released**：PVC 已被删除，但 PV 尚未被回收。根据回收策略进行下一步处理
 - **Failed**：PV 的自动回收失败（如 Delete 策略下删除后端存储失败）
 
-### PV 与 PVC 的一对一绑定
+### 3.2.2 PV 与 PVC 的一对一绑定
 
 PV 和 PVC 之间的绑定是一对一关系。一旦 PV 被绑定给某个 PVC，即使 PVC 实际只使用了 PV 容量的 10%，剩余 90% 的容量也无法被其他 PVC 使用。这要求管理员在规划 PV 大小时需要谨慎。
 
@@ -570,7 +570,7 @@ PV 和 PVC 之间的绑定是一对一关系。一旦 PV 被绑定给某个 PVC�
 
 **关键理解**：`ReadWriteOnce` 约束的是"节点"而非"Pod"。同一个节点上的多个 Pod 可以同时挂载一个 RWO 卷（只要存储后端支持）。`ReadWriteOncePod` 在 v1.29 中 GA，它确保了即使在同一个节点上，只有一个 Pod 能挂载该卷——这对于需要排他性访问的数据存储特别重要。
 
-### 访问模式的选择
+### 3.3.1 访问模式的选择
 
 ```
 场景1：单实例数据库（MySQL on K8s）
@@ -590,7 +590,7 @@ PV 和 PVC 之间的绑定是一对一关系。一旦 PV 被绑定给某个 PVC�
 
 回收策略定义了 PVC 被删除后，对应的 PV 和底层存储如何处理：
 
-### Retain（保留）
+### 3.4.1 Retain（保留）
 
 PV 变为 `Released` 状态，不删除底层存储，也不删除 PV 对象。管理员需要手动处理：清理数据、删除 PV、必要时手动删除底层存储。
 
@@ -606,7 +606,7 @@ spec:
 4. 管理员手动删除 PV 对象（此时 PV 变为 Available 可被重新绑定）
 5. 如果是云端存储，管理员还需手动删除云磁盘
 
-### Delete（删除）
+### 3.4.2 Delete（删除）
 
 PV 和底层存储资源一起被删除。对于动态供给的卷（通过 StorageClass 创建的），这是默认策略。
 
@@ -623,7 +623,7 @@ spec:
 
 > ⚠️ **生产警告**：使用 `Delete` 策略时，删除 PVC 即删除数据。务必确保有备份机制。推荐使用 Velero 等工具定期备份。
 
-### Recycle（已废弃）
+### 3.4.3 Recycle（已废弃）
 
 该策略在 Kubernetes 1.12 中标记为废弃。它会执行 `rm -rf /` 来清空卷数据，然后 PV 变回 Available。这种方式在处理大容量卷时极慢且不可靠，已被 StorageClass 动态供给替代。
 
@@ -643,7 +643,7 @@ spec:
     - nodiratime     # ext4/xfs: 不更新目录访问时间
 ```
 
-# 4.持久卷声明 (PVC) 详解
+# 4. 持久卷声明 (PVC) 详解
 
 ## 4.1 PVC 的完整 YAML 结构
 
@@ -711,7 +711,7 @@ PVC 的绑定过程由 PersistentVolumeController 执行：
    PV.status.phase = Bound
 ```
 
-### storageClassName 的三种情况
+### 4.2.1 storageClassName 的三种情况
 
 | PVC 设置 | 行为 |
 |----------|------|
@@ -719,7 +719,7 @@ PVC 的绑定过程由 PersistentVolumeController 执行：
 | `storageClassName: ""` | 只绑定到没有 StorageClass 的 PV（明确拒绝动态供给）|
 | 不设置 `storageClassName` | 如果集群有默认 StorageClass，则使用默认；否则只匹配无 StorageClass 的 PV |
 
-### 绑定是排他的
+### 4.2.2 绑定是排他的
 
 PV 和 PVC 是一对一绑定。绑定后：
 - PVC 不能被其他 PV 绑定
@@ -765,7 +765,7 @@ metadata:
 
 如果用户在 Pod 仍在运行时删除 PVC，PVC 会进入 `Terminating` 状态，但直到所有使用它的 Pod 被删除后，PVC 才会被真正删除。这个机制防止了"存储被强制卸载导致应用数据损坏"的情况。
 
-# 5.StorageClass 与动态供给
+# 5. StorageClass 与动态供给
 
 ## 5.1 StorageClass 的核心概念
 
@@ -817,7 +817,7 @@ Provisioner 是 StorageClass 的核心——它是实际创建存储的后端驱
 | `openebs.io/local` | 本地磁盘 | OpenEBS 本地卷 |
 | `kubernetes.io/no-provisioner` | — | 不提供动态供给（仅静态 PV） |
 
-### 动态供给的内部流程
+### 5.2.1 动态供给的内部流程
 
 ```
 1. 用户创建 PVC (storageClassName: fast-ssd, size: 10Gi)
@@ -854,7 +854,7 @@ Provisioner 是 StorageClass 的核心——它是实际创建存储的后端驱
 
 卷绑定模式决定了 PV 的供给和绑定的时机。这是 StorageClass 最重要的配置之一：
 
-### Immediate（默认）
+### 5.3.1 Immediate（默认）
 
 PVC 创建后立刻创建 PV 并绑定。不考虑使用该 PVC 的 Pod 被调度到哪里。
 
@@ -864,7 +864,7 @@ volumeBindingMode: Immediate
 
 **问题**：如果 PV 有拓扑限制（如 AWS EBS 卷只能在特定可用区），但 Pod 还没被调度，可能出现 PV 在 us-east-1a 创建，但 Pod 被调度到 us-east-1b 无法挂载该卷。
 
-### WaitForFirstConsumer
+### 5.3.2 WaitForFirstConsumer
 
 PVC 创建后不立即创建 PV，而是等待第一个使用该 PVC 的 Pod 被调度后再创建 PV。这样 Provisioner 可以在 Pod 所在的可用区创建卷。
 
@@ -947,7 +947,7 @@ kubectl get storageclass
 
 > **注意**：即使有默认 StorageClass，如果 PVC 显式设置 `storageClassName: ""`，会绑定到无 StorageClass 的静态 PV，不会触发动态供给。
 
-# 6.CSI (Container Storage Interface)
+# 6. CSI (Container Storage Interface)
 
 ## 6.1 为什么需要 CSI
 
@@ -1016,7 +1016,7 @@ CSI 通过标准化的 gRPC 接口将存储驱动的实现完全移出 Kubernete
 
 ## 6.3 CSI 的三个服务接口
 
-### Identity Service（身份服务）
+### 6.3.1 Identity Service（身份服务）
 
 ```protobuf
 service Identity {
@@ -1028,7 +1028,7 @@ service Identity {
 
 返回驱动的名称、版本、支持的能力（如是否支持 Controller 服务、是否支持扩容）。
 
-### Controller Service（控制器服务）
+### 6.3.2 Controller Service（控制器服务）
 
 ```protobuf
 service Controller {
@@ -1049,7 +1049,7 @@ service Controller {
 
 Controller 服务处理卷的生命周期管理：创建、删除、快照、扩容、挂载到节点。这些接口由 external-provisioner、external-attacher、external-snapshotter 等 Sidecar 容器调用。
 
-### Node Service（节点服务）
+### 6.3.3 Node Service（节点服务）
 
 ```protobuf
 service Node {
@@ -1066,7 +1066,7 @@ service Node {
 
 Node 服务处理卷在节点上的挂载/卸载。由 kubelet 直接调用。
 
-### Stage vs Publish 的区别
+### 6.3.4 Stage vs Publish 的区别
 
 对于块设备（如 EBS），卷挂载分两个阶段：
 
@@ -1115,13 +1115,13 @@ spec:
         image: registry.k8s.io/sig-storage/livenessprobe:v2.12.0
 ```
 
-# 7.存储快照与克隆
+# 7. 存储快照与克隆
 
 ## 7.1 VolumeSnapshot
 
 VolumeSnapshot 是 Kubernetes 1.17+ 引入的存储快照功能，允许对 PVC 进行快照备份。
 
-### 核心 CRD
+### 7.1.1 核心 CRD
 
 ```yaml
 # VolumeSnapshotClass - 快照类（类似 StorageClass）
@@ -1145,7 +1145,7 @@ spec:
     persistentVolumeClaimName: my-pvc   # 要对哪个 PVC 做快照
 ```
 
-### 从快照恢复
+### 7.1.2 从快照恢复
 
 ```yaml
 apiVersion: v1
@@ -1191,7 +1191,7 @@ spec:
 - 源和目标必须使用相同的 StorageClass（或至少存储后端相同）
 - 底层 CSI 驱动必须支持克隆（`CLONE_VOLUME` capability）
 
-# 8.生产实践
+# 8. 生产实践
 
 ## 8.1 各场景存储选型指南
 
@@ -1208,7 +1208,7 @@ spec:
 
 ## 8.2 常见问题诊断
 
-### PVC 一直 Pending
+### 8.2.1 PVC 一直 Pending
 
 ```bash
 # 查看 PVC 事件
@@ -1221,7 +1221,7 @@ kubectl describe pvc my-pvc
 # 4. WaitForFirstConsumer - PVC 等待 Pod 使用（正常现象）
 ```
 
-### Pod 因卷无法启动
+### 8.2.2 Pod 因卷无法启动
 
 ```bash
 # Pod 状态 Pending，描述中有卷相关事件
@@ -1234,7 +1234,7 @@ kubectl describe pod my-pod
 # 4. Mount failure - kubelet 挂载卷失败（启动 kubelet 日志排查）
 ```
 
-### 卷扩容失败
+### 8.2.3 卷扩容失败
 
 ```bash
 # 检查 StorageClass 是否允许扩容

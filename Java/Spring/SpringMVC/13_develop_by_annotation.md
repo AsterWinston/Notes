@@ -1,5 +1,5 @@
-# 1.web.xml文件的替代
-## 1.1Servlet3.0新特性
+# 1. web.xml文件的替代
+## 1.1 Servlet3.0新特性
 ```
 Servlet3.0新特性：web.xml文件可以不写了
 在Servlet3.0的时候，规范中提供了一个接口：
@@ -36,7 +36,7 @@ Servlet3.0新特性：web.xml文件可以不写了
 ```
 
 <img src="images/47.png" width="100%"/>
-## 1.2编写WebAppInitializer
+## 1.2 编写WebAppInitializer
 ```
 以下这个类就是用来代替web.xml文件的：
 package com.powernode.springmvc.config;
@@ -129,8 +129,8 @@ public class SpringMVCConfig implements WebMvcConfigurer{
 }
 
 ```
-# 2.Spring MVC的配置
-## 2.1组件扫描
+# 2. Spring MVC的配置
+## 2.1 组件扫描
 ```
 // 指定该类是一个配置类，可以当配置文件使用
 @Configuration
@@ -139,7 +139,7 @@ public class SpringMVCConfig implements WebMvcConfigurer{
 public class SpringMVCConfig {
 }
 ```
-## 2.2开启注解驱动（@EnableWebMvc）
+## 2.2 开启注解驱动（@EnableWebMvc）
 ```
 // 指定该类是一个配置类，可以当配置文件使用
 @Configuration
@@ -150,7 +150,7 @@ public class SpringMVCConfig {
 public class SpringMVCConfig {
 }
 ```
-## 2.3视图解析器
+## 2.3 视图解析器
 ```
 // 指定该类是一个配置类，可以当配置文件使用
 @Configuration
@@ -189,7 +189,7 @@ public class SpringMVCConfig {
     }
 }
 ```
-## 2.4开启默认Servlet处理
+## 2.4 开启默认Servlet处理
 ```
 让SpringMVCConfig类实现这个接口：WebMvcConfigurer
 并且重写以下的方法：
@@ -198,7 +198,7 @@ public void configureDefaultServletHandling(DefaultServletHandlerConfigurer conf
     configurer.enable();
 }
 ```
-## 2.5view-controller
+## 2.5 view-controller
 ```
 重写以下方法
 @Override
@@ -206,7 +206,7 @@ public void addViewControllers(ViewControllerRegistry registry) {
     registry.addViewController("/test").setViewName("test");
 }
 ```
-## 2.6异常处理器
+## 2.6 异常处理器
 ```
 重写以下方法：
 @Override
@@ -219,7 +219,7 @@ public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> re
     resolvers.add(resolver);
 }
 ```
-## 2.7拦截器
+## 2.7 拦截器
 ```
 重写以下方法：
 @Override
@@ -229,7 +229,7 @@ public void addInterceptors(InterceptorRegistry registry) {
 }
 ```
 
-# 3.根容器与Servlet容器架构详解
+# 3. 根容器与Servlet容器架构详解
 ```
 在SpringMVC项目中存在两层IoC容器（也叫父子容器）：
 
@@ -281,7 +281,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 ● 小型项目也可以将所有的配置放在一个容器中
 ```
 
-# 4.WebMvcConfigurer接口方法大全
+# 4. WebMvcConfigurer接口方法大全
 ```
 WebMvcConfigurer是SpringMVC注解配置的核心接口，提供了所有可定制的方法。
 
@@ -404,7 +404,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-# 5.@EnableWebMvc深层剖析
+# 5. @EnableWebMvc深层剖析
 ```
 @EnableWebMvc注解的作用远不止替代<mvc:annotation-driven/>，它背后做了大量工作。
 
@@ -450,7 +450,7 @@ DelegatingWebMvcConfiguration继承自WebMvcConfigurationSupport，后者负责�
 如果SpringMvcConfig上没有@EnableWebMvc，上述组件都不会被注册，框架无法正常运行。
 ```
 
-# 6.HiddenHttpMethodFilter原理解析
+# 6. HiddenHttpMethodFilter原理解析
 ```
 HTML表单只能发送GET和POST请求，但RESTful API需要PUT、DELETE、PATCH等方法。
 HiddenHttpMethodFilter通过"伪装请求方法"解决了这个限制。
@@ -485,7 +485,7 @@ protected Filter[] getServletFilters() {
 ● Tomcat 8+中，只允许_method的值为PUT、DELETE、PATCH
 ```
 
-# 7.文件上传的注解配置
+# 7. 文件上传的注解配置
 ```
 在注解配置方式中，文件上传的配置不再通过web.xml的<multipart-config>，而是通过编程方式。
 
@@ -519,7 +519,7 @@ public MultipartResolver multipartResolver() {
 ● 文件大小限制主要在customizeRegistration中设置
 ```
 
-# 8.多环境Profile配置
+# 8. 多环境Profile配置
 ```
 在实际开发中，开发环境、测试环境、生产环境的配置往往不同。
 使用@Profile注解可以实现环境隔离。

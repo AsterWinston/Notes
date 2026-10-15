@@ -1163,7 +1163,7 @@ List<UserDTO> customList = session.createNativeQuery(
 .list();
 ```
 
-### ResultTransformer vs JPA @SqlResultSetMapping 对比
+### 3.4.1 ResultTransformer vs JPA @SqlResultSetMapping 对比
 
 | 对比维度 | ResultTransformer（Hibernate 5） | @SqlResultSetMapping（JPA 标准） |
 |----------|----------------------------------|----------------------------------|
@@ -1240,7 +1240,7 @@ private static int aliasIndex(String[] aliases, String target) {
 }
 ```
 
-### TupleTransformer vs ResultTransformer 差异
+### 3.5.1 TupleTransformer vs ResultTransformer 差异
 
 | 特性 | ResultTransformer（H5） | TupleTransformer（H6） |
 |------|-------------------------|------------------------|
@@ -2557,7 +2557,7 @@ int affected = session.createNativeMutationQuery(mergeSql)
 
 ## 9.1 原生查询与缓存的一致性问题
 
-### 问题一：一级缓存脏数据
+### 9.1.1 问题一：一级缓存脏数据
 
 ```java
 // 场景：原生 UPDATE 后，一级缓存中的实体过期
@@ -2589,7 +2589,7 @@ session.createNativeMutationQuery("UPDATE ...").executeUpdate();
 session.clear();
 ```
 
-### 问题二：二级缓存不更新
+### 9.1.2 问题二：二级缓存不更新
 
 ```java
 // 原生 SQL 操作不会更新二级缓存
@@ -2661,7 +2661,7 @@ public List<User> searchByUsername(String keyword) {
 
 ## 9.3 结果集映射失败排查
 
-### 常见问题与排查步骤
+### 9.3.1 常见问题与排查步骤
 
 ```java
 // === 问题 1：列名不匹配 ===
@@ -2706,7 +2706,7 @@ for (Object[] row : rows) {
 // 3. Hibernate.initialize(entity.getAssociation())
 ```
 
-### 调试辅助工具类
+### 9.3.2 调试辅助工具类
 
 ```java
 public class NativeQueryDebugger {
@@ -2815,7 +2815,7 @@ String compatibleSql = "SELECT * FROM ( "
 
 ## 9.5 事务与原生查询
 
-### 事务传播与隔离级别
+### 9.5.1 事务传播与隔离级别
 
 ```java
 // 1. 原生查询在当前事务上下文中执行
@@ -2878,7 +2878,7 @@ public void safeBatchUpdate() {
 }
 ```
 
-### 事务隔离级别与原生 SQL
+### 9.5.2 事务隔离级别与原生 SQL
 
 ```java
 // 不同隔离级别下原生 SQL 的可见性差异

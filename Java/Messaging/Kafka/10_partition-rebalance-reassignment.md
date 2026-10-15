@@ -1,4 +1,4 @@
-# 1 分区重平衡概述
+# 1. 分区重平衡概述
 
 ## 1.1 什么时候需要分区重平衡
 
@@ -32,7 +32,7 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-# 2 kafka-reassign-partitions 工具
+# 2. kafka-reassign-partitions 工具
 
 ## 2.1 生成迁移计划
 
@@ -106,7 +106,7 @@ bin/kafka-reassign-partitions.sh --bootstrap-server localhost:9092 \
     --cancel --reassignment-json-file reassignment.json
 ```
 
-# 3 副本迁移底层流程
+# 3. 副本迁移底层流程
 
 ## 3.1 迁移三阶段
 
@@ -151,7 +151,7 @@ Partition P0 副本从 [0,1,2] 迁移到 [2,3,4]:
    旧 Leader (Broker 0) 的未同步数据 → 通过 LeaderEpoch 截断
 ```
 
-# 4 迁移限速（Throttle）
+# 4. 迁移限速（Throttle）
 
 ## 4.1 为什么需要限速
 
@@ -193,7 +193,7 @@ bin/kafka-configs.sh --bootstrap-server localhost:9092 \
     --entity-type brokers --entity-name 0
 ```
 
-# 5 分区再平衡算法
+# 5. 分区再平衡算法
 
 ## 5.1 均衡目标
 
@@ -254,7 +254,7 @@ Cruise Control 通过分析以下指标进行自动 Rebalance:
   ④ fix_offline_replicas: 修复离线副本
 ```
 
-# 6 Consumer Group Rebalance
+# 6. Consumer Group Rebalance
 
 ## 6.1 Consumer Group Rebalance 与 Partition Reassignment 的区别
 
@@ -297,7 +297,7 @@ Static Membership 模式:
   (0 次 Rebalance!)
 ```
 
-# 7 常见操作与排查
+# 7. 常见操作与排查
 
 ## 7.1 查看当前 Partition 分布
 
@@ -368,7 +368,7 @@ kafka-topics.sh --bootstrap-server localhost:9092 \
   增大 zookeeper.connection.timeout.ms
 ```
 
-# 8 最佳实践
+# 8. 最佳实践
 
 ## 8.1 迁移操作建议
 

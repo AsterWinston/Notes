@@ -175,7 +175,7 @@ public class Main {
 
 # 4. 源码视角：Spring 如何使用反射
 
-## 4.1. BeanUtils.instantiateClass() — 构造方法反射
+## 4.1 BeanUtils.instantiateClass() — 构造方法反射
 
 ```
 Spring 中实例化 Bean 的核心反射工具：
@@ -204,7 +204,7 @@ Object bean = BeanUtils.instantiateClass(constructor);
 // 等价于：Object bean = constructor.newInstance();
 ```
 
-## 4.2. BeanWrapperImpl — setter 方法反射
+## 4.2 BeanWrapperImpl — setter 方法反射
 
 ```
 Spring 中属性注入的核心反射：
@@ -219,7 +219,7 @@ writeMethod.invoke(bean, "张三");  // ★ 反射调用 setter
 // 等价于：bean.setName("张三");
 ```
 
-## 4.3. ReflectionUtils — Spring 对 Java 反射的封装
+## 4.3 ReflectionUtils — Spring 对 Java 反射的封装
 
 ```
 Spring 在 java.lang.reflect 基础上封装了 ReflectionUtils：
@@ -257,7 +257,7 @@ public abstract class ReflectionUtils {
 }
 ```
 
-## 4.4. 反射在 Spring 中的实际应用场景
+## 4.4 反射在 Spring 中的实际应用场景
 
 ```
 1. Bean 实例化：

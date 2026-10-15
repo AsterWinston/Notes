@@ -1,9 +1,9 @@
-# 1.死信队列概述
+# 1. 死信队列概述
 
-## 1.1什么是死信（Dead Letter）
+## 1.1 什么是死信（Dead Letter）
 在RabbitMQ中，**死信（Dead Letter）**是指那些因为某些原因无法被正常消费的消息。这些消息不会被直接丢弃，而是可以被重新路由到专门的交换机（死信交换机）和队列（死信队列）中进行特殊处理。
 
-## 1.2消息变成死信的条件
+## 1.2 消息变成死信的条件
 一条消息在满足以下**任一条件**时会变成死信：
 
 | 条件 | 说明 | 适用场景 |
@@ -12,7 +12,7 @@
 | 消息过期（TTL到期） | 消息在队列中存活时间超过了TTL | 超时订单取消、验证码过期 |
 | 队列达到最大长度 | 队列中的消息数量超过max-length限制 | 流量控制，防止队列无限增长 |
 
-## 1.3死信队列的工作流程
+## 1.3 死信队列的工作流程
 ```
 正常流程:
   生产者 → Exchange → Queue → Consumer（正常消费、Ack）
@@ -27,9 +27,9 @@
                      死信消费者（特殊处理）
 ```
 
-# 2.死信队列的配置
+# 2. 死信队列的配置
 
-## 2.1声明死信Exchange和死信Queue
+## 2.1 声明死信Exchange和死信Queue
 ```java
 @Configuration
 public class DeadLetterConfig {
@@ -83,7 +83,7 @@ public class DeadLetterConfig {
 }
 ```
 
-## 2.2@QueueBinding声明（可选方式）
+## 2.2 @QueueBinding声明（可选方式）
 ```java
 @RabbitListener(bindings = @QueueBinding(
     value = @Queue(
@@ -102,9 +102,9 @@ public void handleOrder(Order order) {
 }
 ```
 
-# 3.死信消息的处理
+# 3. 死信消息的处理
 
-## 3.1死信消费者
+## 3.1 死信消费者
 ```java
 @Component
 public class DeadLetterConsumer {
@@ -170,7 +170,7 @@ public class DeadLetterConsumer {
 }
 ```
 
-## 3.2x-death头部信息
+## 3.2 x-death头部信息
 当消息变成死信时，RabbitMQ会在消息头部添加`x-death`信息，记录了消息的"死亡"过程：
 
 ```java
@@ -188,7 +188,7 @@ public class DeadLetterConsumer {
 ]
 ```
 
-## 3.3防止死信循环
+## 3.3 防止死信循环
 如果死信队列的消费者又拒绝消息（requeue=false），消息可能再次成为死信，形成循环。
 
 解决方案：
@@ -229,9 +229,9 @@ public class DeadLetterConsumer {
 }
 ```
 
-# 4.死信队列的应用场景
+# 4. 死信队列的应用场景
 
-## 4.1延迟订单取消
+## 4.1 延迟订单取消
 ```java
 // 场景：下单后30分钟内未支付，自动取消订单
 
@@ -281,7 +281,7 @@ public class OrderService {
 
 > **注意**：更灵活的实现请参考"延迟队列与消息重试"章节。
 
-## 4.2消息拒绝处理
+## 4.2 消息拒绝处理
 ```java
 // 消费者明确拒绝无效消息，不重试
 @RabbitListener(queues = "order.queue")
@@ -300,7 +300,7 @@ public void handleOrder(Order order, Channel channel, Message message) throws Ex
 }
 ```
 
-## 4.3队列溢出保护
+## 4.3 队列溢出保护
 ```java
 // 配置队列最大长度，超出后消息进入死信
 @Bean
@@ -314,7 +314,7 @@ public Queue orderQueue() {
 }
 ```
 
-## 4.4消息生命周期追踪
+## 4.4 消息生命周期追踪
 死信队列可以用来追踪消息的完整生命周期：
 
 ```
@@ -325,9 +325,9 @@ public Queue orderQueue() {
   - 定时任务自动重试
 ```
 
-# 5.死信队列的多个场景整合
+# 5. 死信队列的多个场景整合
 
-## 5.1为不同死信原因设置不同处理
+## 5.1 为不同死信原因设置不同处理
 ```java
 @Configuration
 public class MultiDLXConfig {
@@ -367,9 +367,9 @@ public class MultiDLXConfig {
 }
 ```
 
-# 6.死信队列的监控与运维
+# 6. 死信队列的监控与运维
 
-## 6.1监控指标
+## 6.1 监控指标
 ```java
 @Component
 public class DeadLetterMonitor {
@@ -388,13 +388,13 @@ public class DeadLetterMonitor {
 }
 ```
 
-## 6.2管理界面的死信信息
+## 6.2 管理界面的死信信息
 在RabbitMQ管理界面中，Queue详情页会显示死信相关信息：
 - `DLX`：关联的死信交换机
 - `DLK`：关联的死信路由键
 - 消息详情的`x-death`头部可以查看消息的死亡过程
 
-## 6.3死信队列的清理
+## 6.3 死信队列的清理
 ```java
 @Component
 public class DeadLetterCleanup {

@@ -12,13 +12,13 @@ Mapper接⼝名以及⽣成位置。
 指定哪些表参与逆向⼯程。
 …
 ```
-# 1.逆向工程配置与生产
+# 1. 逆向工程配置与生产
 
-## 1.1第一步：基础环境配置
+## 1.1 第一步：基础环境配置
 ```
 打包方式jar
 ```
-## 1.2第二步：pom中添加逆向工程依赖
+## 1.2 第二步：pom中添加逆向工程依赖
 ```
 <!--配置-->
 <!--定制构建过程-->
@@ -49,7 +49,7 @@ Mapper接⼝名以及⽣成位置。
 </build>
 ```
 
-## 1.3第三步：配置generatorConfig.xml
+## 1.3 第三步：配置generatorConfig.xml
 ```
 该⽂件名必须叫做：generatorConfig.xml
 该⽂件必须放在类的根路径下。
@@ -104,17 +104,17 @@ Mapper接⼝名以及⽣成位置。
     </context>
 </generatorConfiguration>
 ```
-## 1.4第四步：运行插件
+## 1.4 第四步：运行插件
 ```
 <context id="DB2Tables" targetRuntime="">配置不同，区别很大
 ```
 
-# 2.QBC查询风格
+# 2. QBC查询风格
 ```
 QBC全称：query by criteria
 ```
 
-# 3.测试逆向工程生成的内容
+# 3. 测试逆向工程生成的内容
 ```
 这是对<context id="DB2Tables" targetRuntime="MyBatis3Simple">生成的内容的测试
 public class BookMapperTest {

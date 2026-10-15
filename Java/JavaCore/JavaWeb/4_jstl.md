@@ -1,4 +1,4 @@
-# 1.JSTL标签库
+# 1. JSTL标签库
 
 ```
 什么是JSTL标签库？
@@ -26,7 +26,7 @@ prefix="这里随便起一个名字就行了，核心标签库，大家默认的
 第三步：在需要使用标签的位置使用即可。表面使用的是标签，底层实际上还是java程序。
 ```
 
-# 2.JSTL标签的原理
+# 2. JSTL标签的原理
 
 ```
 <%@taglib prefix="c" uri="[http://java.sun.com/jsp/jstl/core](http://java.sun.com/jsp/jstl/core)" %>
@@ -81,7 +81,7 @@ c:choose c:when c:otherwise
 </c:choose>
 ```
 
-# 3.核心标签库core的更多标签
+# 3. 核心标签库core的更多标签
 
 ```
 c:set —— 向域中存储数据
@@ -166,7 +166,7 @@ c:catch —— 捕获异常（类似于try-catch）
 </c:if>
 ```
 
-# 4.格式化标签库（fmt）
+# 4. 格式化标签库（fmt）
 
 ```
 fmt标签库主要用来格式化数据（日期、数字）和实现国际化（i18n）。
@@ -231,7 +231,7 @@ fmt:setTimeZone / fmt:timeZone —— 设置时区
 </fmt:timeZone>
 ```
 
-# 5.JSTL函数库（fn）
+# 5. JSTL函数库（fn）
 
 ```
 fn函数库提供了一系列字符串操作函数，可以配合EL表达式使用。

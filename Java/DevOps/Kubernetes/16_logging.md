@@ -1,4 +1,4 @@
-# 1.Kubernetes 日志体系概述
+# 1. Kubernetes 日志体系概述
 
 ## 1.1 日志的层次与挑战
 
@@ -65,7 +65,7 @@ Kubernetes 推荐使用**节点级日志代理**（Node-level Logging Agent）�
         └──────────────────────┘
 ```
 
-# 2.日志收集与处理
+# 2. 日志收集与处理
 
 ## 2.1 kubectl logs 的原理
 
@@ -188,7 +188,7 @@ data:
      └→ Kafka (实时处理流)
 ```
 
-# 3.EFK/ELK Stack
+# 3. EFK/ELK Stack
 
 ## 3.1 Elasticsearch + Fluentd + Kibana
 
@@ -205,7 +205,7 @@ Elasticsearch Cluster          ← 存储 + 索引 + 全文搜索
 Kibana                         ← 可视化 + 搜索 + Dashboard
 ```
 
-### Elasticsearch 部署要点
+### 3.1.1 Elasticsearch 部署要点
 
 ```yaml
 apiVersion: elasticsearch.k8s.elastic.co/v1
@@ -261,7 +261,7 @@ log: "*Error*" OR log: "*Exception*"
 # Filter: log: "*Error*"
 ```
 
-# 4.Grafana Loki
+# 4. Grafana Loki
 
 ## 4.1 Loki vs Elasticsearch
 
@@ -297,7 +297,7 @@ Loki 的设计哲学：**"不索引日志内容，只索引元数据标签"**。
 └──────────────────────────────────┘
 ```
 
-### Promtail 配置
+### 4.2.1 Promtail 配置
 
 ```yaml
 # Promtail DaemonSet 配置
@@ -389,7 +389,7 @@ sum by (namespace) (
   | line_format "{{.method}} {{.path}} → {{.status}}"
 ```
 
-# 5.审计日志 (Audit Log)
+# 5. 审计日志 (Audit Log)
 
 ## 5.1 API Server 审计
 
@@ -443,7 +443,7 @@ kubectl get events -A -o json > events-$(date +%Y%m%d).json
 # 部署 eventrouter Deployment，将 Events 转为日志输出
 ```
 
-# 6.日志管理最佳实践
+# 6. 日志管理最佳实践
 
 ## 6.1 应用日志规范
 
@@ -464,7 +464,7 @@ kubectl get events -A -o json > events-$(date +%Y%m%d).json
 }
 ```
 
-### 关键实践
+### 6.1.1 关键实践
 
 1. **使用结构化日志**：JSON 格式便于机器解析和聚合
 2. **包含 Trace ID**：关联日志与分布式追踪
@@ -485,7 +485,7 @@ kubectl get events -A -o json > events-$(date +%Y%m%d).json
   └── 用于合规和审计需求
 ```
 
-### 存储估算
+### 6.2.1 存储估算
 
 ```
 日日志量估算:

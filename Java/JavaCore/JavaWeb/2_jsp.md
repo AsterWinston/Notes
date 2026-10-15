@@ -1,4 +1,4 @@
-# 1.我的第一个JSP程序
+# 1. 我的第一个JSP程序
 
 ```
 在WEB-INF目录之外创建一个index.jsp文件，然后这个文件中没有任何内容。
@@ -10,7 +10,7 @@ http://localhost:8080/jsp/index.jsp 展现在大家面前的是一个空白。
 访问index.jsp，实际上执行的是index_jsp.class中的方法。
 ```
 
-# 2.JSP实际上就是一个Servlet。
+# 2. JSP实际上就是一个Servlet。
 
 ```
 index.jsp访问的时候，会自动翻译生成index_jsp.java，会自动编译生成index_jsp.class，那么index_jsp 这就是一个类。
@@ -30,7 +30,7 @@ java源文件要编译生成class字节码文件
 因为第二次直接调用单例servlet对象的service方法即可。
 ```
 
-# 3.JSP是什么？
+# 3. JSP是什么？
 
 ```
 JSP是java程序。（JSP本质还是一个Servlet）
@@ -50,7 +50,7 @@ Servlet的职责是什么：收集数据。（Servlet的强项是逻辑处理，
 JSP的职责是什么：展示数据。（JSP的强项是做数据的展示）
 ```
 
-# 4.JSP的基础语法
+# 4. JSP的基础语法
 
 ```
 在jsp文件中直接编写文字，都会自动被翻译到哪里？
@@ -150,7 +150,7 @@ javabean其实就是java中的实体类。负责数据的封装。
 完成剩下所有功能的改造。
 ```
 
-# 5.当前的oa应用存在的问题：
+# 5. 当前的oa应用存在的问题：
 
 ```
 任何一个用户都可以访问这个系统，都可以对这个系统当中的数据进行增删改这些危险的操作。我只想让合法的用户去使用这个系统，不合法的用户不能访问这个系统，怎么办？
@@ -173,7 +173,7 @@ t_user表当中存储的是用户的登录信息，最基本的也包括：登�
 这个登录没有真正起到拦截的作用。怎么解决？
 ```
 
-# 6.JSP的指令
+# 6. JSP的指令
 
 ```
 指令的作用：指导JSP的翻译引擎如何工作（指导当前的JSP翻译引擎如何翻译JSP文件。）
@@ -214,7 +214,7 @@ errorPage属性用来指定出错之后的跳转位置。
 默认值是false。
 ```
 
-# 7.JSP的九大内置对象
+# 7. JSP的九大内置对象
 
 ```
 jakarta.servlet.jsp.PageContext pageContext 页面作用域
@@ -239,7 +239,7 @@ jakarta.servlet.jsp.JspWriter out （负责输出）
 jakarta.servlet.http.HttpServletResponse response （负责响应）
 ```
 
-# 8.JSP的标准动作（Standard Actions）
+# 8. JSP的标准动作（Standard Actions）
 
 ```
 JSP标准动作是使用XML语法格式的标签，用来控制JSP引擎的行为。

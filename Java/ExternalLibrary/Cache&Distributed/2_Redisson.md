@@ -1298,7 +1298,7 @@ latch.await(10, TimeUnit.SECONDS);  // 超时等待
 
 ## 7.5 常见问题与解决方案
 
-### Q1：Redisson 连接超时
+### 7.5.1 Q1：Redisson 连接超时
 
 ```yaml
 # 优化配置
@@ -1321,7 +1321,7 @@ config.useSingleServer()
     .setRetryInterval(1500);
 ```
 
-### Q2：Redis 与 Redisson 版本兼容
+### 7.5.2 Q2：Redis 与 Redisson 版本兼容
 
 | Redis 版本 | Redisson 版本 |
 |-----------|--------------|
@@ -1329,18 +1329,18 @@ config.useSingleServer()
 | Redis 7.x | 3.21+ |
 | Redis 7.2 | 3.24+ |
 
-### Q3：看门狗失效场景
+### 7.5.3 Q3：看门狗失效场景
 
 - 业务线程执行时间超过 leaseTime（当指定了 leaseTime 时，看门狗不会启动）。
 - 业务线程被阻塞（如无限等待、死锁），看门狗正常续期，但需要时间超长。
 - 业务线程抛出异常后未释放锁，看门狗持续续期直到锁过期。
 
-### Q4：集群环境下的锁跨节点问题
+### 7.5.4 Q4：集群环境下的锁跨节点问题
 
 - 主从模式下，加锁后主节点宕机，从节点未同步锁信息 → 锁丢失风险。
 - 解决方案：使用 RedLock（跨多个独立节点），或使用 Redis 7.x 的 WAIT 命令。
 
-### Q5：大 Value 引起的性能问题
+### 7.5.5 Q5：大 Value 引起的性能问题
 
 ```java
 // ❌ 不推荐：大 Value（>10KB）直接存储
@@ -1358,7 +1358,7 @@ for (int i = 0; i < segments; i++) {
 }
 ```
 
-### Q6：Watchdog 导致的并发问题
+### 7.5.6 Q6：Watchdog 导致的并发问题
 
 ```java
 // 现象：业务执行时间 > leaseTime 时锁已被自动释放，但业务不知道
@@ -1460,7 +1460,7 @@ redisson.getMap("map").fastPut("field", "value");
 
 ## 9.1 高频面试题
 
-### Q1：Redisson 分布式锁的实现原理是什么？
+### 9.1.1 Q1：Redisson 分布式锁的实现原理是什么？
 
 1. **加锁（Lua 脚本）**：使用 Lua 脚本保证原子性。检查 KEYS[1] 是否存在：
    - 不存在 → 创建 Hash，field=UUID:threadId，value=1，设置过期时间。
@@ -1470,7 +1470,7 @@ redisson.getMap("map").fastPut("field", "value");
 3. **阻塞等待**：如果加锁失败，订阅 Redis 频道等待锁释放消息，收到消息后重新尝试加锁。
 4. **解锁（Lua 脚本）**：检查持有者，递减重入计数，为 0 时删除 key，向频道发送释放消息。
 
-### Q2：什么是看门狗机制？为什么要用它？
+### 9.1.2 Q2：什么是看门狗机制？为什么要用它？
 
 看门狗是一个后台定时任务，在锁持有期间自动续期过期时间，防止业务逻辑执行时间超过锁的 TTL 导致锁被提前释放。
 
@@ -1480,7 +1480,7 @@ redisson.getMap("map").fastPut("field", "value");
 
 如果指定了 leaseTime（锁持有时间），看门狗不会启动。
 
-### Q3：Redisson 的锁是可重入的吗？如何实现的？
+### 9.1.3 Q3：Redisson 的锁是可重入的吗？如何实现的？
 
 是的，RLock 是可重入锁。底层使用 Redis Hash 数据结构：
 - field = UUID + ThreadId（标识持有者）
@@ -1488,7 +1488,7 @@ redisson.getMap("map").fastPut("field", "value");
 
 重入锁确保了同一线程可以多次获取同一把锁而不会死锁。
 
-### Q4：什么是 RedLock？什么情况下需要使用？
+### 9.1.4 Q4：什么是 RedLock？什么情况下需要使用？
 
 RedLock 是跨多个独立 Redis 节点的分布式锁算法，解决主从模式下锁丢失的问题。
 
@@ -1501,7 +1501,7 @@ RedLock 是跨多个独立 Redis 节点的分布式锁算法，解决主从模�
 - 性能开销较大。
 - 有争议（Martin Kleppmann 认为 RedLock 仍有安全问题）。
 
-### Q5：Redisson 如何保证加锁操作的原子性？
+### 9.1.5 Q5：Redisson 如何保证加锁操作的原子性？
 
 通过 Lua 脚本执行所有 Redis 命令。Lua 脚本在 Redis 中是原子执行的，期间不会插入其他命令。
 
@@ -1520,7 +1520,7 @@ end;
 return redis.call('pttl', KEYS[1]);
 ```
 
-### Q6：Redisson 如何实现可重入锁的？
+### 9.1.6 Q6：Redisson 如何实现可重入锁的？
 
 记录持有者的重入次数（Hash 的 value 字段），lock() 时加 1，unlock() 时减 1，直到减到 0 才真正释放锁。
 
@@ -1531,7 +1531,7 @@ return redis.call('pttl', KEYS[1]);
 // value: 2  (重入了 2 次)
 ```
 
-### Q7：Redisson 的 RLock 和 Java 的 ReentrantLock 有什么区别？
+### 9.1.7 Q7：Redisson 的 RLock 和 Java 的 ReentrantLock 有什么区别？
 
 | 对比项 | ReentrantLock | RLock |
 |--------|--------------|-------|
@@ -1543,7 +1543,7 @@ return redis.call('pttl', KEYS[1]);
 | 等待队列 | AQS CLH 队列 | Redis Pub/Sub |
 | 性能 | 纳秒级 | 毫秒级（网络 IO） |
 
-### Q8：Redisson 的分布式集合（RMap）和 RedisTemplate 的 opsForHash 有何区别？
+### 9.1.8 Q8：Redisson 的分布式集合（RMap）和 RedisTemplate 的 opsForHash 有何区别？
 
 RMap 提供了类似 Java Map 的高级接口，包括：
 - 原子操作（putIfAbsent、replace、remove 等）
@@ -1553,14 +1553,14 @@ RMap 提供了类似 Java Map 的高级接口，包括：
 
 RedisTemplate 的 opsForHash 则更加底层，需要手动组合命令。
 
-### Q9：如何处理 Redisson 锁的超时问题？
+### 9.1.9 Q9：如何处理 Redisson 锁的超时问题？
 
 1. 明确业务耗时 → `lock(leaseTime, unit)` 指定锁超时，禁止看门狗。
 2. 耗时不确定 → `lock()` 启用看门狗自动续期。
 3. 防止死锁 → 永远在 finally 中 unlock()。
 4. 获取锁失败 → `tryLock(waitTime, leaseTime, unit)` 避免无限等待。
 
-### Q10：Redisson 的线程安全如何保证？
+### 9.1.10 Q10：Redisson 的线程安全如何保证？
 
 - 基于 Netty 的异步非阻塞模型，所有网络 IO 在 EventLoop 中处理。
 - 命令管道（CommandAsyncService）保证请求的顺序性。

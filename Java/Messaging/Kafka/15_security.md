@@ -1,4 +1,4 @@
-# 1 Kafka 安全概述
+# 1. Kafka 安全概述
 
 ## 1.1 安全威胁与防护维度
 
@@ -25,7 +25,7 @@
 └────────────────────────────────────────────────────────┘
 ```
 
-# 2 SSL/TLS 传输加密
+# 2. SSL/TLS 传输加密
 
 ## 2.1 生成证书
 
@@ -111,7 +111,7 @@ props.put("ssl.key.password", "changeit");
 props.put("ssl.endpoint.identification.algorithm", "HTTPS");
 ```
 
-# 3 SASL 认证
+# 3. SASL 认证
 
 ## 3.1 SASL/PLAIN（简单用户名密码）
 
@@ -237,7 +237,7 @@ kafka-delegation-tokens.sh --bootstrap-server localhost:9092 --expire \
     --hmac <token-hmac>
 ```
 
-# 4 ACL 授权
+# 4. ACL 授权
 
 ## 4.1 授权模型
 
@@ -345,7 +345,7 @@ kafka-acls.sh --bootstrap-server localhost:9092 \
 --allow-principal User:*
 ```
 
-# 5 安全协议组合
+# 5. 安全协议组合
 
 ## 5.1 常见安全协议堆栈
 
@@ -433,7 +433,7 @@ props.put("ssl.keystore.password", "keystore-pass");
 props.put("ssl.key.password", "key-pass");
 ```
 
-# 6 安全最佳实践
+# 6. 安全最佳实践
 
 ## 6.1 密码管理
 

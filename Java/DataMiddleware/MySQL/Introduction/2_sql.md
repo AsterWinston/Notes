@@ -1,4 +1,4 @@
-# 1.SQL概述
+# 1. SQL概述
 
 SQL（Structured Query Language，结构化查询语言）是操作关系型数据库的统一标准语言。虽然不同数据库厂商有自己的扩展（如 MySQL 的 LIMIT、Oracle 的 ROWNUM），但 SQL 的核心语法是通用的。
 
@@ -12,11 +12,11 @@ SQL 按功能分为五大类：
 | DCL | Data Control Language | GRANT、REVOKE |
 | TCL | Transaction Control Language | COMMIT、ROLLBACK、SAVEPOINT |
 
-# 2.DDL（数据定义语言）
+# 2. DDL（数据定义语言）
 
 DDL 用于定义和修改数据库对象（库、表、索引、视图等）的**结构**，不操作数据本身。
 
-## 2.1数据库操作
+## 2.1 数据库操作
 
 ```sql
 -- 创建数据库（使用推荐字符集）
@@ -42,9 +42,9 @@ DROP DATABASE IF EXISTS mydb;
 
 > **设计原则**：数据库名称应简洁有意义，使用小写+下划线命名，与项目名保持一致。建议一个微服务对应一个数据库（Database per Service）。
 
-## 2.2表操作
+## 2.2 表操作
 
-### 2.2.1数据类型概览
+### 2.2.1 数据类型概览
 
 | 分类 | 类型 | 说明 |
 |------|------|------|
@@ -63,7 +63,7 @@ DROP DATABASE IF EXISTS mydb;
 > - VARCHAR(N) 是**变长**，实际占用 = 数据长度 + 1~2 字节（长度前缀），适合长度可变的字段（如姓名、邮箱）。更省空间，但 UPDATE 可能导致页分裂。
 > - MySQL 5.0.3 之后，N 表示**字符数**而非字节数（VARCHAR(255) 在 utf8mb4 下可存 255 个字符，最多占 255×4 = 1020 字节）。
 
-### 2.2.2创建表
+### 2.2.2 创建表
 
 ```sql
 CREATE TABLE IF NOT EXISTS user (
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS user (
 - **NOT NULL** 优先，NULL 会额外占 1 字节标记位且索引和比较逻辑更复杂
 - **create_time / update_time** 是标准审计字段，几乎每张业务表都应包含
 
-### 2.2.3修改表
+### 2.2.3 修改表
 
 ```sql
 -- 添加字段
@@ -113,7 +113,7 @@ RENAME TABLE user_info TO user;
 
 > **DDL 的代价**：MySQL 5.6 之前，ALTER TABLE 会锁表并复制整张表数据（耗时 + 不可写）。5.6 引入了 **Online DDL**，部分操作可在不锁表的情况下完成。8.0 进一步支持**原子 DDL**和**瞬时 DDL**（如 `ALTER TABLE ... ADD COLUMN` 只改元数据，不重建表）。
 
-### 2.2.4删除表
+### 2.2.4 删除表
 
 ```sql
 -- 删除表
@@ -128,11 +128,11 @@ TRUNCATE TABLE user;
 > - TRUNCATE 是 DDL（原子 DDL），直接删除并重建表（或释放数据页），速度快，不可回滚（8.0 原子 DDL 下特殊），auto_increment 重置
 > - 清空千万行数据用 TRUNCATE，秒级完成；DELETE 可能需要数小时
 
-# 3.DML（数据操作语言）
+# 3. DML（数据操作语言）
 
 DML 用于对表中的**数据**进行增删改操作。
 
-## 3.1INSERT——插入数据
+## 3.1 INSERT——插入数据
 
 ```sql
 -- 插入单行（指定字段）
@@ -162,7 +162,7 @@ REPLACE INTO user (id, username, password) VALUES (1, 'zhangsan', 'new_pwd');
 > - 主键顺序插入（有序写入减少页分裂）
 > - 大批量数据可使用 `LOAD DATA INFILE`，比 INSERT 快 20 倍
 
-## 3.2UPDATE——更新数据
+## 3.2 UPDATE——更新数据
 
 ```sql
 -- 基本更新
@@ -184,7 +184,7 @@ UPDATE user SET status = 0 WHERE status = 1 LIMIT 1000;
 > - 生产环境建议开启 `sql_safe_updates` 模式：`SET SQL_SAFE_UPDATES = 1;` ——当没有 WHERE 或 LIMIT 条件时，UPDATE 和 DELETE 会拒绝执行
 > - 大表批量更新应分批进行（`LIMIT 1000` + 循环），避免长事务锁表
 
-## 3.3DELETE——删除数据
+## 3.3 DELETE——删除数据
 
 ```sql
 -- 基本删除
@@ -204,9 +204,9 @@ DELETE FROM user_log WHERE create_time < '2024-01-01' LIMIT 10000;
 > - **硬删除**：物理删除，数据不可恢复，但节省空间
 > - 业务系统通常使用软删除，日志/流水类数据用硬删除
 
-# 4.DQL（数据查询语言）
+# 4. DQL（数据查询语言）
 
-## 4.1SELECT完整语法
+## 4.1 SELECT完整语法
 
 ```sql
 SELECT [DISTINCT | ALL] select_expr [, select_expr ...]
@@ -228,7 +228,7 @@ FROM  →  WHERE  →  GROUP BY  →  HAVING  →  SELECT  →  ORDER BY  →  L
 - WHERE 中不能使用 SELECT 定义的**别名**（因为 WHERE 在 SELECT 之前执行），但 ORDER BY 可以
 - 聚合函数只能在 HAVING 中使用，不能在 WHERE 中使用（WHERE 执行时还没分组）
 
-## 4.2基本查询
+## 4.2 基本查询
 
 ```sql
 -- 查询所有字段（生产环境避免 SELECT *）
@@ -247,9 +247,9 @@ SELECT DISTINCT status FROM user;
 SELECT id, username, 'VIP用户' AS user_type FROM user;
 ```
 
-## 4.3WHERE条件过滤
+## 4.3 WHERE条件过滤
 
-### 4.3.1比较运算符
+### 4.3.1 比较运算符
 
 ```sql
 -- 等于 / 不等于
@@ -268,7 +268,7 @@ SELECT * FROM user WHERE email IS NOT NULL;
 
 > **NULL 陷阱**：NULL 表示"未知"，任何值与 NULL 比较结果都是 NULL（未知），而非 TRUE/FALSE。`NULL = NULL` 返回 NULL，`NULL <> NULL` 也返回 NULL。因此必须使用 `IS NULL` 和 `IS NOT NULL`。ORDER BY 中 NULL 默认排在最前（ASC）或最后（DESC）。
 
-### 4.3.2逻辑运算符
+### 4.3.2 逻辑运算符
 
 ```sql
 -- AND（优先级高于 OR）
@@ -283,7 +283,7 @@ SELECT * FROM user WHERE NOT status = 1;
 
 > **优先级陷阱**：`WHERE a = 1 OR b = 2 AND c = 3` 等价于 `a = 1 OR (b = 2 AND c = 3)`。为避免歧义，**始终使用括号**明确逻辑。
 
-### 4.3.3LIKE模糊查询
+### 4.3.3 LIKE模糊查询
 
 ```sql
 -- % 匹配任意字符序列（包括空字符）
@@ -301,7 +301,7 @@ SELECT * FROM user WHERE username LIKE '%\_%' ESCAPE '\';  -- 同上
 
 > **LIKE 与索引**：`LIKE '张%'`（前缀匹配）可能使用索引；`LIKE '%三'` 或 `LIKE '%三%'`（中缀/后缀匹配）通常无法使用 B+Tree 索引，会退化为全表扫描。大量模糊搜索场景应使用**全文索引（FULLTEXT）**或搜索引擎（Elasticsearch）。
 
-### 4.3.4正则表达式（REGEXP）
+### 4.3.4 正则表达式（REGEXP）
 
 ```sql
 -- MySQL 支持 POSIX 正则
@@ -313,7 +313,7 @@ SELECT * FROM user WHERE username REGEXP '三$';     -- 以"三"结尾
 SELECT * FROM user WHERE phone REGEXP '^1[3-9]\\d{9}$';  -- 手机号格式
 ```
 
-## 4.4ORDER BY排序
+## 4.4 ORDER BY排序
 
 ```sql
 -- 单列排序
@@ -329,7 +329,7 @@ SELECT id, age * 100 AS score FROM user ORDER BY score DESC;
 SELECT id, username, age FROM user ORDER BY 3 DESC;   -- 按第 3 列（age）排序
 ```
 
-## 4.5LIMIT分页
+## 4.5 LIMIT分页
 
 ```sql
 -- 前 10 条
@@ -345,7 +345,7 @@ SELECT * FROM user LIMIT 10 OFFSET 10;     -- 方式二（推荐，含义更明�
 > - **子查询 + 覆盖索引**：`SELECT * FROM t WHERE id >= (SELECT id FROM t ORDER BY id LIMIT 1000000, 1) LIMIT 10`
 > - **禁止跳页**：用户体验上，只提供"上一页"/"下一页"而非任意页码跳转
 
-## 4.6聚合函数
+## 4.6 聚合函数
 
 | 函数 | 作用 | 注意 |
 |------|------|------|
@@ -370,7 +370,7 @@ FROM user;
 
 > **COUNT 性能**：`COUNT(*)` ≈ `COUNT(1)` ≈ `COUNT(主键)` > `COUNT(字段)`。InnoDB 不会缓存 COUNT(*) 的结果，每次都是实时扫描（MyISAM 会缓存，但 MyISAM 不支持事务，不推荐使用）。
 
-## 4.7GROUP BY分组
+## 4.7 GROUP BY分组
 
 ```sql
 -- 单列分组
@@ -394,7 +394,7 @@ GROUP BY status WITH ROLLUP;  -- 最后多一行汇总
 > ```
 > 这能避免因 SQL 语义模糊导致的不确定结果，是 SQL 99 标准的要求。
 
-## 4.8HAVING过滤
+## 4.8 HAVING过滤
 
 HAVING 用于过滤分组后的结果（WHERE 用于过滤分组前的行）：
 
@@ -411,7 +411,7 @@ ORDER BY cnt DESC;          -- 最后排序
 
 > HAVING 中可以使用聚合函数（COUNT、SUM 等），WHERE 中不行。能用 WHERE 过滤的数据尽量在 WHERE 中处理——先过滤后分组，数据量更小，性能更好。
 
-## 4.9DISTINCT去重
+## 4.9 DISTINCT去重
 
 ```sql
 -- 单列去重
@@ -423,7 +423,7 @@ SELECT DISTINCT status, age FROM user;
 
 > DISTINCT 本质是对结果集做全排序（或 hash）去重，代价较大。如果只需要判断某字段是否有重复值，用 `GROUP BY ... HAVING COUNT(*) > 1` 更合适。
 
-## 4.10CASE WHEN条件表达式
+## 4.10 CASE WHEN条件表达式
 
 ```sql
 -- 简单 CASE 表达式
@@ -453,11 +453,11 @@ SELECT
 FROM user;
 ```
 
-# 5.DCL（数据控制语言）
+# 5. DCL（数据控制语言）
 
 DCL 用于管理数据库用户权限。
 
-## 5.1用户管理
+## 5.1 用户管理
 
 ```sql
 -- 创建用户（8.0 必须先创建用户再授权，不能 GRANT 隐式创建）
@@ -475,7 +475,7 @@ SELECT host, user FROM mysql.user;
 
 > **MySQL 8.0 用户管理变更**：8.0 不再支持 `GRANT ... IDENTIFIED BY` 隐式创建用户。必须显式 `CREATE USER` 后再 `GRANT`。
 
-## 5.2权限管理
+## 5.2 权限管理
 
 ```sql
 -- 授予权限

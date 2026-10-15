@@ -258,7 +258,7 @@ UsernamePasswordAuthenticationToken auth =
 
 ### 3.3.2 准备工作
 
-数据库建表 SQL 见 **[5_authentication_implement.md §3.2.1](#321-数据库表设计)**。
+数据库建表 SQL 见 **[5_authentication_implement.md §3.2.1](5_authentication_implement.md#321-数据库表设计)**。
 
 ### 3.3.3 代码实现
 

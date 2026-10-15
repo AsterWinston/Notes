@@ -160,7 +160,7 @@ public void debugJwtValidation(String token) {
 
 ## 2.1 概念与基础
 
-### Q: OAuth2 是什么？解决什么问题？
+### 2.1.1 Q: OAuth2 是什么？解决什么问题？
 
 ```
 OAuth2 是一个授权框架协议，允许第三方应用在不知道用户密码的前提下，
@@ -172,7 +172,7 @@ OAuth2 是一个授权框架协议，允许第三方应用在不知道用户密�
 - 权限分离（认证 vs 授权）
 ```
 
-### Q: OAuth2 的四种角色？
+### 2.1.2 Q: OAuth2 的四种角色？
 
 ```
 1. Resource Owner（资源拥有者）— 通常是用户
@@ -181,7 +181,7 @@ OAuth2 是一个授权框架协议，允许第三方应用在不知道用户密�
 4. Authorization Server（授权服务器）— 颁发 Token
 ```
 
-### Q: 四种授权模式及使用场景？
+### 2.1.3 Q: 四种授权模式及使用场景？
 
 ```
 1. Authorization Code（授权码模式）
@@ -200,7 +200,7 @@ OAuth2 是一个授权框架协议，允许第三方应用在不知道用户密�
    替代：Authentication Code + PKCE
 ```
 
-### Q: OAuth2 和 OIDC 的区别？
+### 2.1.4 Q: OAuth2 和 OIDC 的区别？
 
 ```
 OAuth2：授权协议 — "这个第三方应用可以访问你的什么资源"
@@ -215,7 +215,7 @@ OIDC：  ID Token 的受众是客户端
 OIDC 是建立在 OAuth2 之上的身份认证层
 ```
 
-### Q: PKCE 是什么？为什么需要它？
+### 2.1.5 Q: PKCE 是什么？为什么需要它？
 
 ```
 PKCE（Proof Key for Code Exchange）是对 Authorization Code 模式的安全增强。
@@ -235,7 +235,7 @@ PKCE（Proof Key for Code Exchange）是对 Authorization Code 模式的安全�
 
 ## 2.2 安全与架构
 
-### Q: JWT Token 如何保证安全？
+### 2.2.1 Q: JWT Token 如何保证安全？
 
 ```
 1. 签名验证：使用非对称算法（RS256/ES256），资源服务器验证签名
@@ -247,7 +247,7 @@ PKCE（Proof Key for Code Exchange）是对 Authorization Code 模式的安全�
 7. 配合 Refresh Token 轮换
 ```
 
-### Q: Token 存在服务端还是客户端？
+### 2.2.2 Q: Token 存在服务端还是客户端？
 
 ```
 按 Token 类型：
@@ -262,7 +262,7 @@ PKCE（Proof Key for Code Exchange）是对 Authorization Code 模式的安全�
 - 移动 App：Token 存储在 Keychain/KeyStore
 ```
 
-### Q: 用户修改密码后，如何让所有已颁发的 Token 失效？
+### 2.2.3 Q: 用户修改密码后，如何让所有已颁发的 Token 失效？
 
 ```
 方案对比：
@@ -290,7 +290,7 @@ PKCE（Proof Key for Code Exchange）是对 Authorization Code 模式的安全�
    缺点：影响所有用户（不精细）
 ```
 
-### Q: 如何防止 CSRF 攻击？
+### 2.2.4 Q: 如何防止 CSRF 攻击？
 
 ```
 OAuth2 中的 CSRF 攻击：
@@ -306,7 +306,7 @@ OAuth2 中的 CSRF 攻击：
 不匹配 → 拒绝请求，不交换 Token
 ```
 
-### Q: 如何防止 XSS 窃取 Token？
+### 2.2.5 Q: 如何防止 XSS 窃取 Token？
 
 ```
 问题：如果 Token 存储在 localStorage 中，XSS 可以轻易窃取
@@ -329,7 +329,7 @@ OAuth2 中的 CSRF 攻击：
 
 ## 2.3 Spring Security 相关
 
-### Q: Spring Security 中 OAuth2 的核心组件有哪些？
+### 2.3.1 Q: Spring Security 中 OAuth2 的核心组件有哪些？
 
 ```
 1. ClientRegistration — 客户端配置（client-id, client-secret, 端点等）
@@ -341,7 +341,7 @@ OAuth2 中的 CSRF 攻击：
 7. JwtAuthenticationConverter — JWT Claims 转 Authentication
 ```
 
-### Q: @EnableWebSecurity vs @EnableMethodSecurity？
+### 2.3.2 Q: @EnableWebSecurity vs @EnableMethodSecurity？
 
 ```
 @EnableWebSecurity：启用 Web 安全（URL 级别的访问控制）
@@ -356,7 +356,7 @@ OAuth2 中的 CSRF 攻击：
 两者可以同时使用，各自作用于不同层级。
 ```
 
-### Q: 如何实现方法级权限控制？
+### 2.3.3 Q: 如何实现方法级权限控制？
 
 ```java
 @EnableMethodSecurity  // 启用方法级安全
@@ -379,7 +379,7 @@ OAuth2 中的 CSRF 攻击：
 
 ## 2.4 场景设计题
 
-### Q: 设计一个支持第三方登录的系统
+### 2.4.1 Q: 设计一个支持第三方登录的系统
 
 ```
 架构：
@@ -416,7 +416,7 @@ OAuth2 中的 CSRF 攻击：
    - 每个 provider 只能绑定一次
 ```
 
-### Q: 微服务架构中如何传递用户身份？
+### 2.4.2 Q: 微服务架构中如何传递用户身份？
 
 ```
 方案：

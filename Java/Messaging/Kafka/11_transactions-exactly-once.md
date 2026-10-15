@@ -1,4 +1,4 @@
-# 1 概述：从幂等到事务
+# 1. 概述：从幂等到事务
 
 ## 1.1 消息系统的一致性需求
 
@@ -32,7 +32,7 @@
   → 要么都成功，要么都不生效
 ```
 
-# 2 幂等生产者深入
+# 2. 幂等生产者深入
 
 ## 2.1 PID 与 Sequence Number 机制
 
@@ -98,7 +98,7 @@ class ProducerStateManager {
    → 消费消息 + 处理 + 发送结果 → 整体不能保证原子
 ```
 
-# 3 事务上下文
+# 3. 事务上下文
 
 ## 3.1 事务涉及的角色
 
@@ -137,7 +137,7 @@ class ProducerStateManager {
 └──────────────────────────────────────────────────────────┘
 ```
 
-# 4 事务 API 与示例
+# 4. 事务 API 与示例
 
 ## 4.1 Producer 事务 API
 
@@ -247,7 +247,7 @@ public class TransactionalConsumeProcessProduce {
 }
 ```
 
-# 5 事务底层原理
+# 5. 事务底层原理
 
 ## 5.1 两阶段提交协议
 
@@ -344,7 +344,7 @@ Producer A 恢复，尝试继续事务：
   新 Producer B 从头开始
 ```
 
-# 6 Consumer 的隔离级别
+# 6. Consumer 的隔离级别
 
 ## 6.1 read_uncommitted vs read_committed
 
@@ -384,7 +384,7 @@ LSO (Last Stable Offset) = 最后一个已提交的事务消息的 Offset
   read_committed:   只能读到 offset=101（被 pending 事务阻塞）
 ```
 
-# 7 事务相关的内部 Topic 和参数
+# 7. 事务相关的内部 Topic 和参数
 
 ## 7.1 __transaction_state Topic
 
@@ -415,7 +415,7 @@ transactional.id.expiration.ms=604800000  # transactional.id 过期时间 (7天)
 # Producer 恢复事务状态的最大时间
 ```
 
-# 8 Exactly-Once Semantics (EOS) 详解
+# 8. Exactly-Once Semantics (EOS) 详解
 
 ## 8.1 精确一次的配置要求
 
@@ -478,7 +478,7 @@ Consumer 端:
 | 吞吐 | 轻微下降 | 额外的事务元数据开销 |
 | 磁盘 I/O | 增加 | __transaction_state 的写操作 |
 
-# 9 事务最佳实践
+# 9. 事务最佳实践
 
 ## 9.1 使用建议
 

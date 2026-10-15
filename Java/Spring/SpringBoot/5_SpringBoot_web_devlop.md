@@ -1,8 +1,8 @@
-# 1.SpringBoot的web自动配置
+# 1. SpringBoot的web自动配置
 
 创建模块，添加web启动器，添加Lombok依赖。
 
-## 1.1web自动配置的依赖是如何传递的
+## 1.1 web自动配置的依赖是如何传递的
 1. 首先引入了web启动器，如下：
 
 ```
@@ -49,7 +49,7 @@
 在spring-boot-autoconfigure包中的.imports文件中罗列的需要导入的自动配置类，如下图：
 <img src="images/64.png" width="100%">
 
-## 1.2web自动配置的实现原理
+## 1.2 web自动配置的实现原理
 1. 从入口程序开始：
 
 ```
@@ -78,7 +78,7 @@ public class Sb309WebApplication {
 例如mybatis的自动配置类的列表文件也是这样，如下图：
 <img src="images/67.png" width="100%">
 
-## 1.3通过web自动配置类逆推web配置的prefix
+## 1.3 通过web自动配置类逆推web配置的prefix
 在自动配置列表中找到web自动配置相关的类：
 <img src="images/68.png" width="100%">
 
@@ -124,7 +124,7 @@ spring.servlet.multipart.
 # 服务器配置
 server.
 ```
-## 1.4web自动配置都默认配置了什么
+## 1.4 web自动配置都默认配置了什么
 查看官方文档：
 <img src="images/76.png" width="100%">
 翻译如下：
@@ -149,9 +149,9 @@ Spring Boot 为 Spring MVC 提供了自动配置，这在大多数应用程序�
 如果您不想使用自动配置并希望完全控制 Spring MVC，可以添加您自己的带有 **<font style="color:#DF2A3F;">@EnableWebMvc</font>** 注解的 @Configuration。
 如果您希望保留这些 Spring Boot MVC 定制化设置并进行更多的 MVC 定制化（如拦截器、格式化程序、视图控制器等其他功能），可以添加您自己的类型为 WebMvcConfigurer 的 @Configuration 类。但不能使用**<font style="color:#DF2A3F;">@EnableWebMvc</font>**注解。
 
-## 1.5WebMvcAutoConfiguration原理
+## 1.5 WebMvcAutoConfiguration原理
 通过源码分析的方式，学习WebMvc的自动配置原理。
-### 1.5.1WebMvc自动配置是否生效的条件
+### 1.5.1 WebMvc自动配置是否生效的条件
 ```
 @AutoConfiguration(after = { DispatcherServletAutoConfiguration.class, TaskExecutionAutoConfiguration.class,
         ValidationAutoConfiguration.class })
@@ -182,7 +182,7 @@ public class WebMvcAutoConfiguration {}
 3. 容器中没有WebMvcConfigurationSupport的bean。
 如果这些条件都满足的话，那么这个自动配置类就会被激活，并进行相应的自动配置工作。
 
-### 1.5.2WebMvc自动配置生效后引入了两个Filter Bean
+### 1.5.2 WebMvc自动配置生效后引入了两个Filter Bean
 1. 引入了HiddenHttpMethodFilter Bean
 ```
 @Bean
@@ -204,7 +204,7 @@ public OrderedFormContentFilter formContentFilter() {
 ```
 OrderedFormContentFilter 是 Spring Boot 中用于处理 HTTP 请求的一个过滤器，特别是针对 PUT 和 DELETE 请求。这个过滤器的主要作用是在处理 PUT 和 DELETE 请求时，确保如果请求体中有表单格式的数据，这些数据会被正确解析并可用。
 
-### 1.5.3WebMvc自动配置生效后引入了WebMvcConfigurer接口的实现类
+### 1.5.3 WebMvc自动配置生效后引入了WebMvcConfigurer接口的实现类
 在SpringBoot框架的WebMvcAutoConfiguration类中提供了一个内部类：WebMvcAutoConfigurationAdapter
 <img src="images/77.png" width="100%">
 SpringBoot在这个类WebMvcAutoConfigurationAdapter中进行了一系列的Spring MVC相关配置。
@@ -264,10 +264,10 @@ WebMvcAutoConfigurationAdapter是Spring Boot框架提供的，实现了Spring MV
 ● spring.mvc：主要用于配置 Spring MVC 的相关行为，例如路径匹配、视图解析、静态资源处理等
 ● spring.web：通常用于配置一些通用的 Web 层设置，如资源处理、安全性配置等。
 
-## 1.6自动配置中的静态资源处理
+## 1.6 自动配置中的静态资源处理
 web站点中的静态资源指的是：js、css、图片等。
 
-### 1.6.1静态资源处理源码分析
+### 1.6.1 静态资源处理源码分析
 关于SpringBoot对静态资源处理的默认配置，查看WebMvcAutoConfigurationAdapter源码，核心源码如下：
 <img src="images/81.png" width="100%">
 对以上源码进行解释：
@@ -306,7 +306,7 @@ public void addResourceHandlers(ResourceHandlerRegistry registry) {
     });
 }
 ```
-### 1.6.2关于WebJars静态资源处理
+### 1.6.2 关于WebJars静态资源处理
 默认规则是：当请求路径是/webjars/**，则会去classpath:/META-INF/resources/webjars/找。
 
 WebJars介绍
@@ -337,7 +337,7 @@ WebJars官网：https://www.webjars.org/
 因此我们要想访问上图的index.js，则应该发送这样的请求路径：http://localhost:8080/webjars/vue/3.5.12/index.js
 
 启动服务器，打开浏览器，访问
-### 1.6.3关于普通静态资源处理
+### 1.6.3 关于普通静态资源处理
 SpringBoot对普通静态资源处理的规则是：
 当请求路径是http://localhost:8080/**，根据控制器方法优先原则，会先去找合适的控制器方法，如果没有合适的控制器方法，静态资源处理才会生效，则自动去类路径下的以下4个位置查找：
 ● classpath:/META-INF/resources/
@@ -345,7 +345,7 @@ SpringBoot对普通静态资源处理的规则是：
 ● classpath:/static/
 ● classpath:/public/
 
-### 1.6.4关于静态资源缓存处理
+### 1.6.4 关于静态资源缓存处理
 不管是webjars的静态资源还是普通静态资源，统一都会执行以下这个方法，这个方法最后几行代码就是关于静态资源的缓存处理方式。
 <img src="images/85.png" width="100%">
 什么是静态资源缓存，谁缓存，有什么用？
@@ -383,7 +383,7 @@ SpringBoot对普通静态资源处理的规则是：
   ○ 浏览器发送请求时，会将缓存中的资源的最后修改时间和服务器端资源的最后一次修改时间进行比对，如果没有变化，仍然从缓存中获取。
   ○ 可以通过spring.web.resources.cache.use-last-modified=false来进行重新配置。
 
-### 1.6.5静态资源缓存测试
+### 1.6.5 静态资源缓存测试
 根据之前源码分析，得知静态资源缓存相关的配置应该使用spring.web.resources.cache：
 <img src="images/88.png" width="100%">
 
@@ -418,7 +418,7 @@ spring.web.resources.add-mappings=true
 <img src="images/95.png" width="100%">
 提示，为什么显示304，这是因为这个配置：spring.web.resources.cache.use-last-modified=true
 
-### 1.6.6web应用的欢迎页面
+### 1.6.6 web应用的欢迎页面
 欢迎页测试
 先说结论：只要在静态资源路径下提供index.html，则被当做欢迎页面。静态资源路径指的是之前的4个路径：
 ```
@@ -474,7 +474,7 @@ Spring Boot项目中favicon.ico文件应该放在哪里呢？Spring Boot官方�
 我们在https://www.iconfont.cn/ （阿里巴巴提供的图标库）上随便找一个图标，然后将图片名字命名为favicon.ico，然后将其放到SpringBoot项目的静态资源路径下
 ...
 测试成功显示图标
-# 2.SpringBoot的web手动配置（静态资源处理）
+# 2. SpringBoot的web手动配置（静态资源处理）
 如果你对SpringBoot默认的静态资源处理方式不满意。可以通过两种方式来改变这些默认的配置：
 ● 第一种：配置文件方式
   ○ 通过修改application.properties或application.yml
@@ -485,7 +485,7 @@ Spring Boot项目中favicon.ico文件应该放在哪里呢？Spring Boot官方�
 ● 第二种：编写代码方式
   ○ SpringMVC框架为我们提供了WebMvcConfigurer接口，需要改变默认的行为，可以编写一个类实现WebMvcConfigurer接口，并对应重写接口中的方法即可改变默认的配置行为。
 
-## 2.1配置文件方式
+## 2.1 配置文件方式
 要修改访问静态资源URL的前缀，这样配置：
 ```
 # Spring MVC的相关配置
@@ -507,12 +507,12 @@ spring.web.resources.static-locations=classpath:/static1/,classpath:/static2/
 ...
 因此，存储在classpath:/META-INF/resources/位置的静态资源会被默认加载，不受手动配置的影响。
 
-## 2.2编写代码方式
+## 2.2 编写代码方式
 我们在前面提到过，想要定制Spring MVC的行为，也可以编写类实现Spring MVC框架提供的一个接口WebMvcConfigurer，想定制哪个行为就重写哪个方法即可。
 编写的类只要纳入IoC容器的管理。因此有以下两种实现方式：
 ● 第一种：编写类实现WebMvcConfigurer接口，重写对应的方法。
 ● 第二种：以组件的形式存在：编写一个方法，用@Bean注解标注。
-### 2.2.1第一种方式
+### 2.2.1 第一种方式
 编写配置类，对于web开发来说，配置类一般起名为：WebConfig。配置类一般存放到config包下，因此在SpringBoot主入口程序同级目录下新建config包，在config包下新建WebConfig类：
 ```
 package com.powernode.springboot.config;
@@ -557,7 +557,7 @@ public class WebConfig implements WebMvcConfigurer {
 }
 
 ```
-### 2.2.2第二种方式
+### 2.2.2 第二种方式
 采用@Bean注解提供一个WebMvcConfigurer组件，代码如下：
 ```
 package com.powernode.springboot.config;
@@ -587,7 +587,7 @@ public class WebConfig2 {
 
 如果要弃用默认配置，仍然使用	@EnableWebMvc注解进行标注。自行测试！
 
-### 2.2.3其他配置也这样做即可
+### 2.2.3 其他配置也这样做即可
 以上对静态资源处理进行了手动配置，也可以做其他配置，例如拦截器：
 ```
 package com.powernode.springboot.config;
@@ -646,7 +646,7 @@ public class WebConfig2 {
 
 ```
 
-### 2.2.4为什么只要容器中有WebMvcConfigurer组件即可
+### 2.2.4 为什么只要容器中有WebMvcConfigurer组件即可
 源码分析：
 
 WebMvcAutoConfiguration部分源码：
@@ -666,7 +666,7 @@ DelegatingWebMvcConfiguration中的setConfigurers()方法用来设置配置。�
 总结：WebMvcConfigurerComposite 主要采用了组合模式的思想，将多个 WebMvcConfigurer 实例组合在一起，形成一个整体。
 注意：组合模式是GoF 23种设计模式中的结构型设计模式。
 
-# 3.web请求的路径匹配
+# 3. web请求的路径匹配
 我们在学习SpringMVC的时候，路径匹配规则中学习了Ant风格的路径匹配规则。大家可以翻看一下之前的Spring MVC视频。
 在Spring Boot3中，对web请求的路径匹配提供了两种规则：
 ● 第一种：AntPathMatcher（Ant风格）【较旧】
@@ -677,7 +677,7 @@ SpringBoot3中默认使用的是PathPatternParser，不需要任何配置。如�
 ```
 spring.mvc.pathmatch.matching-strategy=ant_path_matcher
 ```
-## 3.1AntPathMatcher
+## 3.1 AntPathMatcher
 Ant风格的路径匹配规则回顾：
 *	匹配任意长度的任意字符序列（不包括路径分隔符）。示例：/foo/*.html 匹配 /foo/bar.html 和 /foo/baz.html。
 **	匹配任意数量的目录层级。示例：/foo/** 匹配 /foo/bar、/foo/bar/baz 和 /foo/bar/baz/qux。
@@ -707,7 +707,7 @@ public class PathController {
     }
 }
 ```
-## 3.2PathPatternParser
+## 3.2 PathPatternParser
 项目中不做配置，或者按照以下方式配置，都是PathPatternParser：
 ```
 spring.mvc.pathmatch.matching-strategy=path_pattern_parser
@@ -742,13 +742,13 @@ public String path(HttpServletRequest request, @PathVariable String path){
 }
 ```
 启动访问，可用
-## 3.3路径匹配相关源码
+## 3.3 路径匹配相关源码
 底层选择路径匹配规则的源码是：
 <img src="images/110.png" width="100%">
 
-# 4.内容协商
+# 4. 内容协商
 内容协商机制是Spring MVC框架提供的，接下来主要是学习在SpringBoot中是如何支持SpringMVC内容协商机制的。
-## 4.1对内容协商的理解
+## 4.1 对内容协商的理解
 内容协商机制是指服务器根据客户端的请求来决定返回资源的最佳表示形式。
 白话文描述：客户端要什么格式的数据，咱后端就应该返回什么格式的数据。
 ● 客户端要JSON，咱就响应JSON。
@@ -760,9 +760,9 @@ public String path(HttpServletRequest request, @PathVariable String path){
 ● 要求处理速度快的这种客户端系统，一般要求返回JSON格式的数据。
 ● 要求安全性高的客户端系统，一般要求返回XML格式的数据。
 因此，在现代的开发中，不同的客户端可能需要后端系统返回不同格式的数据。总之后端应该满足这种多样化的需求。
-## 4.2实现内容协商的两种方式
+## 4.2 实现内容协商的两种方式
 通常通过HTTP请求头（如 Accept）或请求参数（如 format）来指定客户端偏好接收的内容类型（如JSON、XML等）。服务器会根据这些信息选择最合适的格式进行响应。
-### 4.2.1通过HTTP请求头（如Accept）
+### 4.2.1 通过HTTP请求头（如Accept）
 SpringBoot框架中，在程序员不做任何配置的情况下，优先考虑的是这种方式。
 服务器会根据客户端发送请求时提交的请求头中的"Accept: application/json" 或 "Accept: application/xml" 或 "Accept: text/html"来决定响应什么格式的数据。
 
@@ -832,7 +832,7 @@ public class User {
 可以很清楚的看到，服务器根据不同的请求头返回了不同格式的数据。
 ● Accept: application/xml则返回XML格式的数据
 ● Accept: application/json则返回JSON格式的数据
-### 4.2.2通过请求参数（如format）
+### 4.2.2 通过请求参数（如format）
 接下来我们使用请求参数的方式，来测试一下服务器的响应，注意：默认的请求参数名为format。
 我们仍然使用curl命令行工具进行测试：
 <img src="images/112.png" width="100%">
@@ -853,15 +853,15 @@ spring.mvc.contentnegotiation.parameter-name=type
 再次使用curl工具进行测试：
 <img src="images/114.png" width="100%">
 
-## 4.3HttpMessageConverter接口
+## 4.3 HttpMessageConverter接口
 
-### 4.3.1HttpMessageConverter的理解
+### 4.3.1 HttpMessageConverter的理解
 HttpMessageConverter接口，对于这个接口来说，大家应该不陌生，在Spring MVC的课程当中咱们已经详细的学习过了。在这里简单回顾一下。
 HttpMessageConverter接口被翻译为：Http消息转换器。它起到转换Http消息的作用。
 什么是Http消息？所谓的Http消息本质上就是浏览器向服务器发送请求时提交的数据，或者服务器向浏览器响应的数据。
 而HttpMessageConverter接口就是负责完成请求/响应时的数据格式转换的。
 在Spring MVC中提供了很多HttpMessageConverter接口的实现类，不同的Http消息转换器具有不同的转换效果，有的负责将Java对象转换为JSON格式的字符串，有的负责将Java对象转换成XML格式的字符串。
-### 4.3.2常见的HttpMessageConverter
+### 4.3.2 常见的HttpMessageConverter
 内置的常见的HttpMessageConverter的实现类包括：
 ● 【请求】提交的表单（form）数据转换成Java对象的主要任务是由 FormHttpMessageConverter 消息转换器完成的
 ● 【请求】提交的JSON数据转换成Java对象的主要任务是由 MappingJackson2HttpMessageConverter 消息转换器完成的。（我们通常使用的<font style="color:#DF2A3F;">@RequestBody</font>注解）
@@ -869,13 +869,13 @@ HttpMessageConverter接口被翻译为：Http消息转换器。它起到转换Ht
 ● 【响应】将Java对象转换成XML格式的数据，并将其写入HTTP响应体的任务通常由 Jaxb2RootElementHttpMessageConverter 消息转换器完成。
 ● 【响应】将 String 直接写入到响应体的任务是由 StringHttpMessageConverter 消息转换器完成。
 ● ......
-### 4.3.3请求时通过哪些条件确定使用哪个转换器
+### 4.3.3 请求时通过哪些条件确定使用哪个转换器
 请求时通常根据以下条件来确定使用哪个消息转换器：
 1. 请求的 Content-Type 字段：
 Spring MVC 会检查请求的 Content-Type 字段，以确定请求体的数据格式（例如 application/json、application/x-www-form-urlencoded、application/xml 等）。
 2. 方法参数类型：
 控制器方法中接收请求体的参数类型（例如 @RequestBody）。
-### 4.3.4响应时通过哪些条件确定使用哪个转换器
+### 4.3.4 响应时通过哪些条件确定使用哪个转换器
 响应时通常根据以下条件来确定使用哪个消息转换器：
 1. 请求提交时，请求头上的Accept字段 ：
 Spring MVC 会检查客户端请求的 Accept 字段，以确定客户端期望的响应格式（例如 application/json、application/xml 等）。
@@ -883,7 +883,7 @@ Spring MVC 会检查客户端请求的 Accept 字段，以确定客户端期望�
 控制器方法的返回值类型（例如 @ResponseBody）。
 例如1：@ResponseBody + 控制器方法的返回值是String，则使用StringHttpMessageConverter转换器。（将字符串直接写入响应体）
 例如2：@ResponseBody + 控制器方法的返回值是User，则使用MappingJackson2HttpMessageConverter转换器。（将java对象转换成json格式的字符串写入到响应体）
-### 4.3.5系统默认提供了哪些HttpMessageConverter
+### 4.3.5 系统默认提供了哪些HttpMessageConverter
 查看源码：
 WebMvcAutoConfiguration.EnableWebMvcConfiguration extends DelegatingWebMvcConfiguration extends WebMvcConfigurationSupport
 WebMvcAutoConfiguration内部类EnableWebMvcConfiguration
@@ -912,9 +912,9 @@ DelegatingWebMvcConfiguration继承了WebMvcConfigurationSupport
 
 <img src="images/117.png" width="100%">
 因此，我们只要引入相关的依赖，让类路径存在某个类，则对应的消息转换器就会被加载。
-## 4.4定义自己的HttpMessageConverter
+## 4.4 定义自己的HttpMessageConverter
 可以看到以上6个消息转换器中没有yaml相关的消息转换器，可见，如果要实现yaml格式的内容协商，yaml格式的消息转换器就需要我们自定义了。
-### 4.4.1第一步：引入能够处理yaml格式的依赖
+### 4.4.1 第一步：引入能够处理yaml格式的依赖
 任何一个能够处理yaml格式数据的库都可以，这里选择使用jackson的库，因为它既可以处理json，xml，又可以处理yaml。
 ```
 <dependency>
@@ -949,14 +949,14 @@ public class Jackson2YamlTest {
     }
 }
 ```
-### 4.4.2第二步：新增一种媒体类型yaml
+### 4.4.2 第二步：新增一种媒体类型yaml
 默认支持xml和json两种媒体类型，要支持yaml格式的，需要新增一个yaml媒体类型，在springboot的配置文件中进行如下配置：
 ```
 spring.mvc.contentnegotiation.media-types.yaml=text/yaml
 ```
 注意，以上types后面的yaml是媒体类型的名字，名字随意，如果媒体类型起名为xyz，那么发送请求时的路径应该是这样的：http://localhost:8080/detail?format=xyz
 
-### 4.4.3第三步：自定义HttpMessageConverter
+### 4.4.3 第三步：自定义HttpMessageConverter
 编写类YamlHttpMessageConverter继承AbstractHttpMessageConverter，代码如下：
 ```
 package com.powernode.springboot.config;
@@ -1005,7 +1005,7 @@ public class YamlHttpMessageConverter extends AbstractHttpMessageConverter<Objec
 }
 ```
 
-### 4.4.4配置消息转换器
+### 4.4.4 配置消息转换器
 重写WebMvcConfigurer接口的configureMessageConverters方法：
 ```
 package com.powernode.springboot.config;
@@ -1026,11 +1026,11 @@ public class WebConfig implements WebMvcConfigurer {
 ```
 启动服务器并测试：http://localhost:8080/detail?type=yaml
 
-# 5.Spring boot整合Thymeleaf
+# 5. Spring boot整合Thymeleaf
 
-## 5.1传统web应用和前后端分离
+## 5.1 传统web应用和前后端分离
 
-### 5.1.1传统web应用（服务端渲染）
+### 5.1.1 传统web应用（服务端渲染）
 传统Web应用中，页面由服务端渲染生成，浏览器接收到的是完整的HTML页面。典型的技术栈是：Spring Boot + Thymeleaf/JSP + jQuery。
 
 特点：
@@ -1039,7 +1039,7 @@ public class WebConfig implements WebMvcConfigurer {
 - SEO友好，首屏加载快
 - 前后端耦合度高，维护成本大
 
-### 5.1.2前后端分离
+### 5.1.2 前后端分离
 前后端分离模式下，后端只提供RESTful API接口（返回JSON数据），前端通过Ajax/Fetch调用接口获取数据并渲染页面。典型技术栈：Spring Boot + Vue/React/Angular。
 
 特点：
@@ -1048,9 +1048,9 @@ public class WebConfig implements WebMvcConfigurer {
 - 前端负责页面渲染和用户交互
 - 可同时支持Web、移动端、小程序等多种客户端
 
-## 5.2Spring Boot整合Thymeleaf
+## 5.2 Spring Boot整合Thymeleaf
 
-### 5.2.1引入依赖
+### 5.2.1 引入依赖
 ```
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -1059,7 +1059,7 @@ public class WebConfig implements WebMvcConfigurer {
 ```
 引入该启动器后，会自动传递引入 thymeleaf-spring6 和 thymeleaf 核心库。
 
-### 5.2.2编写Controller
+### 5.2.2 编写Controller
 Thymeleaf是服务端渲染模板引擎，Controller中需要返回视图名称而不是@ResponseBody的JSON数据。因此Controller使用@Controller注解，而不是@RestController：
 
 ```java
@@ -1076,7 +1076,7 @@ public class HelloController {
 }
 ```
 
-### 5.2.3创建模板文件
+### 5.2.3 创建模板文件
 在 src/main/resources/templates/ 目录下创建 hello.html：
 
 ```html
@@ -1097,12 +1097,12 @@ public class HelloController {
 - 模板文件默认放在 classpath:/templates/ 目录下
 - Thymeleaf模板本质上是合法的HTML文件，即使不经过模板引擎处理也能在浏览器中预览
 
-## 5.3Thymeleaf的自动配置
+## 5.3 Thymeleaf的自动配置
 
-### 5.3.1自动配置类 ThymeleafAutoConfiguration
+### 5.3.1 自动配置类 ThymeleafAutoConfiguration
 Spring Boot为Thymeleaf提供了自动配置类 `ThymeleafAutoConfiguration`，其中配置了模板引擎、模板解析器、视图解析器等组件。
 
-### 5.3.2属性类 ThymeleafProperties
+### 5.3.2 属性类 ThymeleafProperties
 Thymeleaf的默认配置由 `ThymeleafProperties` 管理，配置前缀为 `spring.thymeleaf`：
 
 ```java
@@ -1122,7 +1122,7 @@ public class ThymeleafProperties {
 - 模板模式（mode）：`HTML`
 - 缓存（cache）：`true`（生产环境默认开启）
 
-### 5.3.3自定义配置示例
+### 5.3.3 自定义配置示例
 ```
 # 修改模板前缀
 spring.thymeleaf.prefix=classpath:/views/
@@ -1134,9 +1134,9 @@ spring.thymeleaf.cache=false
 spring.thymeleaf.encoding=UTF-8
 ```
 
-## 5.4Thymeleaf核心语法
+## 5.4 Thymeleaf核心语法
 
-### 5.4.1th:text 替换标签体内容
+### 5.4.1 th:text 替换标签体内容
 将标签体内的文本内容替换为表达式的值，会对HTML特殊字符进行转义：
 
 ```html
@@ -1144,7 +1144,7 @@ spring.thymeleaf.encoding=UTF-8
 <!-- 如果 user.name = "Jack<Boss>"，页面显示：Jack<Boss> -->
 ```
 
-### 5.4.2th:utext 替换标签体内容（不转义）
+### 5.4.2 th:utext 替换标签体内容（不转义）
 与 th:text 类似，但不会对HTML标签进行转义，会原样输出：
 
 ```html
@@ -1154,7 +1154,7 @@ spring.thymeleaf.encoding=UTF-8
 
 注意：使用 th:utext 需要确保内容安全，避免XSS攻击。
 
-### 5.4.3th:任意属性名 动态替换该属性的值
+### 5.4.3 th:任意属性名 动态替换该属性的值
 可以动态设置任意HTML属性的值：
 
 ```html
@@ -1163,7 +1163,7 @@ spring.thymeleaf.encoding=UTF-8
 <img th:src="@{/images/logo.png}" th:alt="${altText}" />
 ```
 
-### 5.4.4th:attr 属性合并设置
+### 5.4.4 th:attr 属性合并设置
 一次性设置多个属性：
 
 ```html
@@ -1171,7 +1171,7 @@ spring.thymeleaf.encoding=UTF-8
 <!-- 等价于分别使用 th:src, th:alt, th:title -->
 ```
 
-### 5.4.5th:指令概览
+### 5.4.5 th:指令概览
 常用指令列表：
 
 | 指令 | 作用 |
@@ -1191,7 +1191,7 @@ spring.thymeleaf.encoding=UTF-8
 | th:insert | 插入代码片段 |
 | th:with | 定义局部变量 |
 
-### 5.4.6@{} 表达式
+### 5.4.6 @{} 表达式
 用于构建URL，自动添加上下文路径：
 
 ```html
@@ -1209,7 +1209,7 @@ spring.thymeleaf.encoding=UTF-8
 /app/user/10/delete
 ```
 
-### 5.4.7Thymeleaf的内置工具
+### 5.4.7 Thymeleaf的内置工具
 Thymeleaf提供了一些内置的工具对象，使用 `#` 前缀访问：
 
 | 工具对象 | 说明 | 示例 |
@@ -1229,7 +1229,7 @@ Thymeleaf提供了一些内置的工具对象，使用 `#` 前缀访问：
 <span th:text="${#strings.toUpperCase(name)}">名称</span>
 ```
 
-### 5.4.8Thymeleaf也支持运算符
+### 5.4.8 Thymeleaf也支持运算符
 支持常见的运算符：
 
 ```html
@@ -1249,7 +1249,7 @@ Thymeleaf提供了一些内置的工具对象，使用 `#` 前缀访问：
 <div th:text="${name} ?: '匿名用户'">名称</div>
 ```
 
-### 5.4.9Thymeleaf字符串拼接
+### 5.4.9 Thymeleaf字符串拼接
 两种方式拼接字符串：
 
 ```html
@@ -1264,7 +1264,7 @@ Thymeleaf提供了一些内置的工具对象，使用 `#` 前缀访问：
 <span th:text="|欢迎您，${user.name}！（编号：${user.id}）|">欢迎语</span>
 ```
 
-### 5.4.10循环遍历
+### 5.4.10 循环遍历
 使用 th:each 进行循环，支持迭代状态变量：
 
 ```html
@@ -1291,7 +1291,7 @@ Thymeleaf提供了一些内置的工具对象，使用 `#` 前缀访问：
 - first：是否是第一个
 - last：是否是最后一个
 
-### 5.4.11条件判断th:if
+### 5.4.11 条件判断th:if
 ```html
 <!-- 单条件 -->
 <div th:if="${user.vip}">VIP用户可看内容</div>
@@ -1304,7 +1304,7 @@ Thymeleaf提供了一些内置的工具对象，使用 `#` 前缀访问：
 <div th:if="${user.age gt 18 and user.vip}">成年VIP专属</div>
 ```
 
-### 5.4.12条件判断th:switch
+### 5.4.12 条件判断th:switch
 ```html
 <div th:switch="${user.role}">
     <p th:case="'admin'">管理员</p>
@@ -1313,7 +1313,7 @@ Thymeleaf提供了一些内置的工具对象，使用 `#` 前缀访问：
 </div>
 ```
 
-### 5.4.13Thymeleaf属性优先级
+### 5.4.13 Thymeleaf属性优先级
 当同一个标签上有多个 th:* 属性时，处理顺序由优先级决定：
 
 | 优先级 | 属性 | 说明 |
@@ -1326,7 +1326,7 @@ Thymeleaf提供了一些内置的工具对象，使用 `#` 前缀访问：
 | 6 | th:value, th:href, th:src... | 特定属性 |
 | 7 | th:text, th:utext, th:fragment | 文本/片段 |
 
-### 5.4.14*{...}表达式
+### 5.4.14 *{...}表达式
 `*{}` 是选择变量表达式，必须在 th:object 指定的对象范围内使用：
 
 ```html
@@ -1344,7 +1344,7 @@ Thymeleaf提供了一些内置的工具对象，使用 `#` 前缀访问：
 
 使用 `*{}` 的好处是代码更简洁，尤其是在表单绑定场景下。
 
-### 5.4.15代码片段
+### 5.4.15 代码片段
 Thymeleaf支持模板片段复用，类似于"组件"的概念。
 
 定义片段（common.html）：
@@ -1393,9 +1393,9 @@ th:replace 和 th:insert 的区别：
 <div th:replace="common :: alert('success', '操作成功！')"></div>
 ```
 
-## 5.5Thymeleaf页面修改如何立即生效
+## 5.5 Thymeleaf页面修改如何立即生效
 
-### 5.5.1关闭模板缓存
+### 5.5.1 关闭模板缓存
 在开发阶段，希望修改模板后刷新浏览器立即看到效果，需要关闭Thymeleaf缓存：
 
 ```properties
@@ -1403,7 +1403,7 @@ th:replace 和 th:insert 的区别：
 spring.thymeleaf.cache=false
 ```
 
-### 5.5.2配合 DevTools 实现自动刷新
+### 5.5.2 配合 DevTools 实现自动刷新
 更高效的方案是配合 spring-boot-devtools，修改代码或模板后应用自动重启，配合浏览器LiveReload插件实现页面自动刷新：
 
 ```xml
@@ -1417,26 +1417,26 @@ spring.thymeleaf.cache=false
 
 DevTools + 关闭缓存 = 修改模板后浏览器自动刷新，极大提升开发效率。
 
-### 5.5.3IDEA设置（重要）
+### 5.5.3 IDEA设置（重要）
 使用DevTools时需要在IDEA中做以下设置：
 1. File → Settings → Build, Execution, Deployment → Compiler → 勾选 "Build project automatically"
 2. Ctrl+Shift+Alt+/ → Registry → 勾选 "compiler.automake.allow.when.app.running"
 
-# 6.异常处理
+# 6. 异常处理
 在controller层如果程序出现了异常，并且这个异常未被捕获，springboot提供的异常处理机制将生效。
 Spring Boot 提供异常处理机制主要是为了提高应用的健壮性和用户体验。它的好处包括：
 1. 统一错误响应：可以定义全局异常处理器来统一处理各种异常，确保返回给客户端的错误信息格式一致，便于前端解析。
 2. 提升用户体验：能够优雅地处理异常情况，避免直接将技术性错误信息暴露给用户，而是显示更加友好的提示信息。
 3. 简化代码：开发者不需要在每个可能抛出异常的方法中重复编写异常处理逻辑，减少冗余代码，使业务代码更加清晰简洁。
 4. 增强安全性：通过控制异常信息的输出，防止敏感信息泄露，增加系统的安全性。
-## 6.1自适应的错误处理机制
+## 6.1 自适应的错误处理机制
 springboot会根据请求头的Accept字段来决定错误的响应格式。
 这种机制的好处就是：客户端设备自适应，提高用户的体验。
 
 
-## 6.2SpringMVC的错误处理方案
+## 6.2 SpringMVC的错误处理方案
 重点：如果程序员使用了SpringMVC的错误处理方案，SpringBoot的错误处理方案不生效。
-### 6.2.1局部控制 @ExceptionHandler
+### 6.2.1 局部控制 @ExceptionHandler
 局部控制 @ExceptionHandler
 在控制器当中编写一个方法，方法使用@ExceptionHandler注解进行标注，凡是这个控制器当中出现了对应的异常，则走这个方法来进行异常的处理。局部生效。
 ```
@@ -1487,7 +1487,7 @@ public class OtherController {
 ```
 通过测试，确实局部生效。
 
-### 6.2.2全局控制 @ControllerAdvice + @ExceptionHadler
+### 6.2.2 全局控制 @ControllerAdvice + @ExceptionHadler
 也可以把以上局部生效的方法单独放到一个类当中，这个类使用@ControllerAdvice注解标注，凡是任何控制器当中出现了对应的异常，则走这个方法来进行异常的处理。全局生效。
 将之前的局部处理方案的代码注释掉。使用全局处理方式，编写以下类：
 ```
@@ -1510,7 +1510,7 @@ public class GlobalExceptionHandler {
 ```
 通过测试，确实全局生效。
 
-## 6.3SpringBoot的错误处理方案
+## 6.3 SpringBoot的错误处理方案
 重点：如果SpringMVC没有对应的处理方案，会开启SpringBoot默认的错误处理方案。
 SpringBoot默认的错误处理方案如下：
 1. 如果客户端要的是json，则直接响应json格式的错误信息。
@@ -1519,7 +1519,7 @@ SpringBoot默认的错误处理方案如下：
 ● 第二步（模糊错误码文件）：去classpath:/templates/error/目录下找4xx.html``5xx.html等模糊错误码.html文件。如果找不到，则去静态资源目录下的/error目录下找。如果还是找不到，才会进入下一步。
 ● 第三步（通用错误页面）：去找classpath:/templates/error.html如果找不到则进入下一步。
 ● 第四步（默认错误处理）：如果上述所有步骤都未能找到合适的错误页面，Spring Boot 会使用内置的默认错误处理机制，即 /error 端点。
-## 6.4如何在错误页获取错误信息
+## 6.4 如何在错误页获取错误信息
 Spring Boot 默认会在模型Model中放置以下信息：
 ● timestamp: 错误发生的时间戳
 ● status: HTTP 状态码
@@ -1535,11 +1535,11 @@ server.error.include-stacktrace=always
 server.error.include-exception=true
 server.error.include-message=always
 ```
-## 6.5前后端分离项目的错误处理方案
+## 6.5 前后端分离项目的错误处理方案
 统一使用SpringMVC的错误处理方案，定义全局的异常处理机制：@ControllerAdvice + @ExceptionHandler
 返回json格式的错误信息，其它的就不需要管了，因为前端接收到错误信息怎么处理是他自己的事儿。
 
-## 6.6服务器端负责页面渲染的错误处理方案
+## 6.6 服务器端负责页面渲染的错误处理方案
 建议使用SpringBoot的错误处理方案：
 1. 如果发生的异常是HTTP错误状态码：
     a. 建议常见的错误码给定精确错误码.html
@@ -1548,12 +1548,12 @@ server.error.include-message=always
     a. 在程序中处理具体的业务异常，自己通过程序来决定跳转到哪个错误页面。
 3. 建议提供classpath:/templates/error.html来处理通用错误。
 
-# 7.国际化
+# 7. 国际化
 在Spring Boot中实现国际化（i18n）是一个常见的需求，它允许应用程序根据用户的语言和地区偏好显示不同的文本。
 
-## 7.1实现国际化
+## 7.1 实现国际化
 
-### 7.1.1第一步：创建资源文件
+### 7.1.1 第一步：创建资源文件
 创建包含不同语言版本的消息文件。这些文件通常放在src/main/resources目录下，并且以.properties为扩展名。例如：
 ● messages.properties (默认语言，如英语)
 ● messages_zh_CN.properties (简体中文)
@@ -1573,7 +1573,7 @@ messages_fr.properties:
 ```
 welcome.message=Bienvenue dans notre application !
 ```
-### 7.1.2第二步：在模板文件中取出消息
+### 7.1.2 第二步：在模板文件中取出消息
 语法格式为：#{welcome.message}
 ```
 <!DOCTYPE html>
@@ -1593,7 +1593,7 @@ welcome.message=Bienvenue dans notre application !
 
 ```
 
-## 7.2国际化实现原理
+## 7.2 国际化实现原理
 做国际化的自动配置类是：MessageSourceAutoConfiguration
 <img src="images/118.png" width="100%">
 通过以上源码得知，国际化对应的配置前缀是：spring.message
@@ -1606,7 +1606,7 @@ spring.messages.basename=messages
 spring.messages.encoding=UTF-8
 ```
 注意：标准标识符：en_US 和 zh_CN 这样的标识符是固定的，不能更改。可以设置的是basename。
-## 7.3在程序当中如何获取国际化信息
+## 7.3 在程序当中如何获取国际化信息
 在国际化自动配置类中可以看到这样一个Bean：MessageSource，它是专门用来处理国际化的。我们可以将它注入到我们的程序中，然后调用相关方法在程序中获取国际化信息。
 ```
 @Controller
@@ -1625,9 +1625,9 @@ public class MyController {
 }
 ```
 
-# 8.定制web容器
+# 8. 定制web容器
 
-## 8.1web服务器切换为jetty
+## 8.1 web服务器切换为jetty
 springboot默认嵌入的web服务器是Tomcat，如何切换到jetty服务器？
 实现方式：排除Tomcat，添加Jetty依赖
 修改 pom.xml 文件：在 pom.xml 中，确保你使用 spring-boot-starter-web 并排除 Tomcat，然后添加 Jetty 依赖。
@@ -1660,14 +1660,14 @@ springboot默认嵌入的web服务器是Tomcat，如何切换到jetty服务器�
 
 ```
 
-## 8.2web服务器切换原理
+## 8.2 web服务器切换原理
 从哪里可以看出springboot是直接将tomcat服务器嵌入到应用中的呢？看这个类：ServletWebServerFactoryAutoConfiguration
 <img src="images/119.png" width="100%">
 以上代码显示嵌入的是3个服务器。但并不是都生效，我们来看一下生效条件：
 <img src="images/120.png" width="100%">
 
 生效条件是，看类路径当中是否有对应服务器相关的类，如果有则生效。spring-boot-web-starter这个web启动器引入的时候，大家都知道，它间接引入的是tomcat服务器的jar包。因此默认Tomcat服务器被嵌入。如果想要切换web服务器，将tomcat相关jar包排除掉，引入jetty的jar包之后，jetty服务器就会生效，这就是切换web服务器的原理。
-## 8.3web服务器优化
+## 8.3 web服务器优化
 通过以下源码得知，web服务器的相关配置和ServerProperties有关系：
 <img src="images/121.png" width="100%">
 查看ServerProperties源码：

@@ -1,4 +1,4 @@
-# 1 消费 Lag 过大
+# 1. 消费 Lag 过大
 
 ## 1.1 症状
 
@@ -41,7 +41,7 @@ Step 4: 检查下游系统
 | 数据倾斜 | 某些 Partition Lag 特别大 | 重新设计消息 Key, 增加分区 |
 | 下游系统瓶颈 | 处理逻辑中 DB 超时 | 批量化写入, 连接池优化 |
 
-# 2 Rebalance 风暴
+# 2. Rebalance 风暴
 
 ## 2.1 症状
 
@@ -87,7 +87,7 @@ props.put("group.instance.id", "my-consumer-1");
 props.put("group.initial.rebalance.delay.ms", 10000);
 ```
 
-# 3 Leader 分布不均衡
+# 3. Leader 分布不均衡
 
 ## 3.1 症状
 
@@ -121,7 +121,7 @@ kafka-leader-election.sh --bootstrap-server localhost:9092 \
 # leader.imbalance.per.broker.percentage=10
 ```
 
-# 4 ISR 收缩与扩展
+# 4. ISR 收缩与扩展
 
 ## 4.1 症状
 
@@ -159,7 +159,7 @@ replica.lag.time.max.ms=60000  # 30s → 60s
 num.replica.fetchers=4         # 1 → 4
 ```
 
-# 5 磁盘满
+# 5. 磁盘满
 
 ## 5.1 症状
 
@@ -196,7 +196,7 @@ retention.bytes=107374182400   # 100GB 上限
 # 告警: 磁盘使用率 > 80%
 ```
 
-# 6 Producer 性能问题
+# 6. Producer 性能问题
 
 ## 6.1 发送延迟高
 
@@ -227,7 +227,7 @@ kafka.producer:type=producer-metrics,client-id=*
   解决: 增大 buffer.memory, 增大 max.block.ms
 ```
 
-# 7 Consumer 消费问题
+# 7. Consumer 消费问题
 
 ## 7.1 消息丢失
 
@@ -260,7 +260,7 @@ kafka.producer:type=producer-metrics,client-id=*
   解决: enable.idempotence=true
 ```
 
-# 8 Controller 故障
+# 8. Controller 故障
 
 ## 8.1 症状
 
@@ -290,7 +290,7 @@ grep "Controller" /var/log/kafka/server.log | tail -50
 | 元数据加载缓慢 | 减少 Partition 总数，升级到 KRaft |
 | 网络分区 | 检查 Broker 间网络连通性 |
 
-# 9 客户端连接问题
+# 9. 客户端连接问题
 
 ## 9.1 Producer 无法连接
 
@@ -318,7 +318,7 @@ grep "Controller" /var/log/kafka/server.log | tail -50
   ③ Broker SASL 认证是否通过?
 ```
 
-# 10 其他常见问题
+# 10. 其他常见问题
 
 ## 10.1 Topic 无法删除
 

@@ -1,4 +1,4 @@
-# 1.NetworkPolicy 概述
+# 1. NetworkPolicy 概述
 
 ## 1.1 为什么需要 NetworkPolicy
 
@@ -11,7 +11,7 @@ Kubernetes 的默认网络模型有一个重要特征：**所有 Pod 之间可�
 
 NetworkPolicy 是 Kubernetes 内置的"防火墙"，允许你定义 Pod 之间、Pod 与外部之间的网络通信规则。它基于 Pod Selector、Namespace Selector 和 IP/CIDR 来精确定义哪些流量被允许。
 
-### 默认开放 vs 默认拒绝
+### 1.1.1 默认开放 vs 默认拒绝
 
 Kubernetes 的默认策略是"全部放行"（allow-all）。一旦你创建了第一条 NetworkPolicy，未被该策略明确允许的流量就可能被拒绝（取决于 CNI 插件的实现和策略的具体规则）。
 
@@ -63,7 +63,7 @@ NetworkPolicy 只是一个"规则对象"，它**需要 CNI 网络插件来实现
 - Ingress 定义"外部流量如何进入"（入口路由）
 - NetworkPolicy 定义"谁可以访问谁"（安全隔离）
 
-# 2.NetworkPolicy 资源详解
+# 2. NetworkPolicy 资源详解
 
 ## 2.1 核心字段
 
@@ -156,7 +156,7 @@ ingress:
       - 172.17.1.0/24
 ```
 
-### from 的组合逻辑
+### 2.3.1 from 的组合逻辑
 
 `from` 数组内的多个条目是 **OR** 关系：
 ```yaml
@@ -219,7 +219,7 @@ egress:
     port: 443
 ```
 
-### 常见的 Egress 规则
+### 2.4.1 常见的 Egress 规则
 
 默认情况下，如果不定义 Egress 规则，Pod 的出站流量不受限制。但一旦定义了任何 Egress 规则，所有出站流量都会被默认拒绝（需要显式允许）。
 
@@ -239,7 +239,7 @@ spec:
 - 如果不指定，默认为 Ingress（已有的 Ingress 规则生效）
 - 如果定义了 Egress 规则但 `policyTypes` 不包含 `Egress`，Egress 规则不生效
 
-# 3.实战：常见的 NetworkPolicy 模式
+# 3. 实战：常见的 NetworkPolicy 模式
 
 ## 3.1 模式一：全拒绝（Default Deny）
 
@@ -441,7 +441,7 @@ spec:
       port: 443
 ```
 
-# 4.高级特性与最佳实践
+# 4. 高级特性与最佳实践
 
 ## 4.1 策略的叠加行为
 
@@ -496,7 +496,7 @@ kubectl run debug --rm -it --image=nicolaka/netshoot -- /bin/bash
 # 容器内使用: curl, ping, dig, nslookup, nc, nmap, tcpdump
 ```
 
-### 常见陷阱
+### 4.3.1 常见陷阱
 
 1. **忘记了 DNS Egress 规则**：设置了 default-deny-egress 后忘记放行 DNS（UDP 53）
 2. **混淆了 AND/OR 逻辑**：from 的多个条目是 OR，单个条目内的多个选择器是 AND

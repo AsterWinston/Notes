@@ -169,7 +169,7 @@ public class WeChatAuthenticationProvider implements AuthenticationProvider {
 
 ## 2.2 自定义 UserDetailsService
 
-> 详见 [5_authentication_implement.md §3.3.1](#)。
+> 详见 [5_authentication_implement.md §3.3.1](5_authentication_implement.md#331-userdetailsservice-实现类)。
 
 ## 2.3 自定义 Filter 与 SecurityFilterChain
 

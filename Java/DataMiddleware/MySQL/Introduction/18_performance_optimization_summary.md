@@ -1,4 +1,4 @@
-# 1.性能优化概览
+# 1. 性能优化概览
 
 数据库性能优化是一个系统工程，需要从多个层面递进分析：
 
@@ -14,9 +14,9 @@
 2. **收益递减定律**：从成本低、收益高的点开始（如索引），逐步下探
 3. **全局视角**：优化了一个查询可能导致另一个变慢，需持续监控
 
-# 2.慢SQL排查流程
+# 2. 慢SQL排查流程
 
-## 2.1标准化排查流程
+## 2.1 标准化排查流程
 
 ```
 第 1 步：确认是否真的慢 → 开启慢查询日志
@@ -32,7 +32,7 @@
 第 6 步：持续监控 → 对比优化前后慢查询变化
 ```
 
-## 2.2关键检查命令
+## 2.2 关键检查命令
 
 ```sql
 -- 1. 当前执行的所有 SQL
@@ -68,9 +68,9 @@ SHOW STATUS LIKE 'innodb_buffer_pool_read%';
 SHOW STATUS LIKE 'Threads%';
 ```
 
-# 3.常见慢查询原因与解决
+# 3. 常见慢查询原因与解决
 
-## 3.1全表扫描（type=ALL）
+## 3.1 全表扫描（type=ALL）
 
 ```sql
 -- 问题
@@ -80,7 +80,7 @@ SELECT * FROM user WHERE email = 'test@example.com';  -- email 无索引
 CREATE INDEX idx_email ON user(email);
 ```
 
-## 3.2索引失效
+## 3.2 索引失效
 
 | 场景 | SQL 示例 | 解决 |
 |------|---------|------|
@@ -91,7 +91,7 @@ CREATE INDEX idx_email ON user(email);
 | OR 两边非全索引 | `WHERE id = 1 OR email = 'xxx'`（email 无索引） | UNION 改写或建索引 |
 | NOT IN / != | `WHERE status != 1` | 改用 `WHERE status IN (0, 2, 3)` |
 
-## 3.3深分页
+## 3.3 深分页
 
 ```sql
 -- 问题
@@ -101,7 +101,7 @@ SELECT * FROM user ORDER BY id LIMIT 1000000, 10;
 SELECT * FROM user WHERE id > 1000000 ORDER BY id LIMIT 10;
 ```
 
-## 3.4JOIN无索引
+## 3.4 JOIN无索引
 
 ```sql
 -- 问题：被驱动表的连接字段无索引
@@ -112,7 +112,7 @@ EXPLAIN SELECT * FROM emp e JOIN dept d ON e.dept_id = d.id;
 CREATE INDEX idx_emp_dept ON emp(dept_id);
 ```
 
-## 3.5Using filesort
+## 3.5 Using filesort
 
 ```sql
 -- 问题：排序未利用索引
@@ -122,7 +122,7 @@ SELECT * FROM user ORDER BY age;
 CREATE INDEX idx_age ON user(age);
 ```
 
-## 3.6Using temporary
+## 3.6 Using temporary
 
 ```sql
 -- 问题：GROUP BY 产生临时表
@@ -132,7 +132,7 @@ SELECT dept_id, COUNT(*) FROM emp GROUP BY dept_id;
 CREATE INDEX idx_dept ON emp(dept_id);
 ```
 
-## 3.7SELECT *
+## 3.7 SELECT *
 
 ```sql
 -- 问题：返回不必要的数据
@@ -142,7 +142,7 @@ SELECT * FROM user WHERE status = 1;
 SELECT id, username FROM user WHERE status = 1;  -- 若 idx_status 覆盖
 ```
 
-## 3.8大事务
+## 3.8 大事务
 
 ```sql
 -- 问题：一次事务处理大量数据
@@ -155,7 +155,7 @@ UPDATE user SET status = 0 WHERE status = 1 ORDER BY id LIMIT 1000;
 -- 循环执行，每批单独 COMMIT
 ```
 
-# 4.索引优化检查清单
+# 4. 索引优化检查清单
 
 | 检查项 | 命令/方法 |
 |--------|----------|
@@ -168,7 +168,7 @@ UPDATE user SET status = 0 WHERE status = 1 ORDER BY id LIMIT 1000;
 | 是否有冗余索引 | `sys.schema_redundant_indexes` |
 | 覆盖索引利用 | `EXPLAIN` Extra 是否为 Using index |
 
-# 5.SQL编写规范（性能视角）
+# 5. SQL编写规范（性能视角）
 
 ```sql
 -- ✓ IN 的值不宜过多（通常 < 1000）
@@ -197,7 +197,7 @@ LIMIT 1000000, 10             -- 慢
 INSERT INTO t VALUES (1,a), (2,b), (3,c);  -- 快
 ```
 
-# 6.参数调优速查
+# 6. 参数调优速查
 
 | 参数 | 建议值 | 说明 |
 |------|--------|------|
@@ -212,7 +212,7 @@ INSERT INTO t VALUES (1,a), (2,b), (3,c);  -- 快
 | `sort_buffer_size` | 256K~4M（按需） | 排序缓冲区，按连接分配 |
 | `join_buffer_size` | 256K~4M（按需） | JOIN 缓冲区 |
 
-# 7.性能基准测试
+# 7. 性能基准测试
 
 ```sql
 -- 简单测试：全表扫描
@@ -232,7 +232,7 @@ sysbench oltp_read_write --mysql-host=localhost --mysql-user=root --mysql-passwo
   --mysql-db=mydb --tables=10 cleanup
 ```
 
-# 8.紧急故障处理
+# 8. 紧急故障处理
 
 | 故障现象 | 应急处理 |
 |---------|---------|

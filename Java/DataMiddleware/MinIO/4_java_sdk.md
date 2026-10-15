@@ -1,6 +1,6 @@
-# 1.MinIO Java SDK 概述
+# 1. MinIO Java SDK 概述
 
-## 1.1SDK 基本信息
+## 1.1 SDK 基本信息
 
 MinIO Java SDK 是官方提供的 Java 客户端库，用于与 MinIO（以及任何 S3 兼容存储）交互。
 
@@ -13,7 +13,7 @@ MinIO Java SDK 是官方提供的 Java 客户端库，用于与 MinIO（以及�
 | 依赖 | OkHttp4（HTTP 客户端）、Jackson（JSON）、BouncyCastle（加密） |
 | 线程安全 | MinioClient 是线程安全的，推荐作为单例使用 |
 
-## 1.2Maven/Gradle 依赖
+## 1.2 Maven/Gradle 依赖
 
 ```xml
 <!-- pom.xml -->
@@ -29,7 +29,7 @@ MinIO Java SDK 是官方提供的 Java 客户端库，用于与 MinIO（以及�
 implementation 'io.minio:minio:8.5.12'
 ```
 
-### 完整依赖关系
+### 1.2.1 完整依赖关系
 
 ```text
 minio:8.5.x
@@ -44,9 +44,9 @@ minio:8.5.x
 
 ---
 
-# 2.MinioClient 初始化与配置
+# 2. MinioClient 初始化与配置
 
-## 2.1基本初始化
+## 2.1 基本初始化
 
 ```java
 import io.minio.MinioClient;
@@ -65,7 +65,7 @@ MinioClient minioClient = MinioClient.builder()
     .build();
 ```
 
-## 2.2完整配置项
+## 2.2 完整配置项
 
 ```java
 MinioClient minioClient = MinioClient.builder()
@@ -87,7 +87,7 @@ MinioClient minioClient = MinioClient.builder()
     .build();
 ```
 
-## 2.3自定义 OkHttpClient（生产环境推荐）
+## 2.3 自定义 OkHttpClient（生产环境推荐）
 
 ```java
 import okhttp3.OkHttpClient;
@@ -138,7 +138,7 @@ public class MinioClientFactory {
 }
 ```
 
-## 2.4Spring Boot 集成配置
+## 2.4 Spring Boot 集成配置
 
 ```java
 @Configuration
@@ -173,9 +173,9 @@ minio:
 
 ---
 
-# 3.Bucket 操作
+# 3. Bucket 操作
 
-## 3.1创建 Bucket
+## 3.1 创建 Bucket
 
 ```java
 // 基本创建（默认 region: us-east-1）
@@ -195,7 +195,7 @@ minioClient.makeBucket(
 );
 ```
 
-## 3.2检查 Bucket 是否存在
+## 3.2 检查 Bucket 是否存在
 
 ```java
 boolean exists = minioClient.bucketExists(
@@ -206,7 +206,7 @@ boolean exists = minioClient.bucketExists(
 System.out.println("Bucket 存在: " + exists);
 ```
 
-## 3.3列举所有 Bucket
+## 3.3 列举所有 Bucket
 
 ```java
 List<Bucket> buckets = minioClient.listBuckets();
@@ -215,7 +215,7 @@ for (Bucket bucket : buckets) {
 }
 ```
 
-## 3.4删除 Bucket
+## 3.4 删除 Bucket
 
 ```java
 // Bucket 必须为空才能删除
@@ -250,9 +250,9 @@ public void forceRemoveBucket(MinioClient client, String bucketName) throws Exce
 
 ---
 
-# 4.Object 上传操作
+# 4. Object 上传操作
 
-## 4.1基本上传（小文件）
+## 4.1 基本上传（小文件）
 
 ```java
 // 方式一：从 InputStream 上传
@@ -278,7 +278,7 @@ minioClient.uploadObject(
 );
 ```
 
-## 4.2设置对象元数据
+## 4.2 设置对象元数据
 
 ```java
 Map<String, String> userMetadata = new HashMap<>();
@@ -313,7 +313,7 @@ minioClient.putObject(
 );
 ```
 
-## 4.3上传时指定存储类（Storage Class）
+## 4.3 上传时指定存储类（Storage Class）
 
 ```java
 // MinIO 支持的存储类（需根据实际部署情况）
@@ -327,7 +327,7 @@ minioClient.putObject(
 );
 ```
 
-## 4.4上传时启用服务端加密（SSE）
+## 4.4 上传时启用服务端加密（SSE）
 
 ```java
 import io.minio.ServerSideEncryption;
@@ -371,9 +371,9 @@ minioClient.putObject(
 
 ---
 
-# 5.Object 下载与读取
+# 5. Object 下载与读取
 
-## 5.1基本下载
+## 5.1 基本下载
 
 ```java
 // 方式一：下载到 OutputStream
@@ -411,7 +411,7 @@ try (InputStream stream = minioClient.getObject(
 }
 ```
 
-## 5.2范围下载（Range Get）
+## 5.2 范围下载（Range Get）
 
 ```java
 // 只下载文件的第 1024~2047 字节（共 1024 字节）
@@ -432,7 +432,7 @@ try (InputStream stream = minioClient.getObject(
 // Range: bytes=1048576-    ← 从第 1MB 到文件末尾
 ```
 
-## 5.3获取对象元数据（不下载数据）
+## 5.3 获取对象元数据（不下载数据）
 
 ```java
 StatObjectResponse stat = minioClient.statObject(
@@ -466,9 +466,9 @@ public boolean objectExists(MinioClient client, String bucket, String object) {
 
 ---
 
-# 6.Object 删除与批量操作
+# 6. Object 删除与批量操作
 
-## 6.1删除单个对象
+## 6.1 删除单个对象
 
 ```java
 minioClient.removeObject(
@@ -479,7 +479,7 @@ minioClient.removeObject(
 );
 ```
 
-## 6.2批量删除
+## 6.2 批量删除
 
 ```java
 // 构建要删除的对象列表
@@ -504,7 +504,7 @@ for (Result<DeleteError> result : results) {
 }
 ```
 
-## 6.3删除带版本控制的对象
+## 6.3 删除带版本控制的对象
 
 ```java
 // 如果 Bucket 启用了版本控制
@@ -523,7 +523,7 @@ minioClient.removeObject(
 
 ---
 
-# 7.复制对象
+# 7. 复制对象
 
 ```java
 // 同 Bucket 内复制
@@ -573,9 +573,9 @@ minioClient.copyObject(
 
 ---
 
-# 8.列举对象（ListObjects）
+# 8. 列举对象（ListObjects）
 
-## 8.1基本列举
+## 8.1 基本列举
 
 ```java
 // 列举 Bucket 中所有对象（注意：如果对象数量很大，可能耗时较长）
@@ -592,7 +592,7 @@ for (Result<Item> result : results) {
 }
 ```
 
-## 8.2分页列举（模拟目录树）
+## 8.2 分页列举（模拟目录树）
 
 ```java
 // 按目录层级列举（非递归）
@@ -615,7 +615,7 @@ for (Result<Item> result : results) {
 }
 ```
 
-## 8.3使用 startAfter 实现游标分页
+## 8.3 使用 startAfter 实现游标分页
 
 ```java
 // 使用 V2 API 实现分页（推荐）
@@ -648,7 +648,7 @@ while (hasMore) {
 }
 ```
 
-## 8.4包含版本信息的列举
+## 8.4 包含版本信息的列举
 
 ```java
 // 如果 Bucket 启用了版本控制，可以列举所有版本
@@ -671,11 +671,11 @@ for (Result<Item> result : results) {
 
 ---
 
-# 9.Presigned URL（预签名 URL）
+# 9. Presigned URL（预签名 URL）
 
 Presigned URL 是 MinIO 中非常实用的特性，允许生成有时效的临时访问链接。
 
-## 9.1生成预签名下载 URL
+## 9.1 生成预签名下载 URL
 
 ```java
 // GET 预签名 URL（默认有效期 7 天）
@@ -697,7 +697,7 @@ String downloadUrl = minioClient.getPresignedObjectUrl(
 //   &X-Amz-Signature=abc123...
 ```
 
-## 9.2生成预签名上传 URL
+## 9.2 生成预签名上传 URL
 
 ```java
 // PUT 预签名 URL（允许客户端直接上传，不经过服务端中转）
@@ -722,7 +722,7 @@ String uploadUrl = minioClient.getPresignedObjectUrl(
 // });
 ```
 
-## 9.3使用 POST Policy 表单上传（浏览器直传）
+## 9.3 使用 POST Policy 表单上传（浏览器直传）
 
 POST Policy 是更安全的浏览器端直传方式，支持上传限制：
 
@@ -773,11 +773,11 @@ Map<String, String> formData = minioClient.getPresignedPostFormData(policy);
 
 ---
 
-# 10.分片上传（Multipart Upload）详解
+# 10. 分片上传（Multipart Upload）详解
 
 分片上传是上传大文件的必备技术，也是 MinIO Java SDK 中最重要的特性之一。
 
-## 10.1何时使用分片上传
+## 10.1 何时使用分片上传
 
 - 文件大小 > 16MB（MinIO 内部会强制使用分片上传）
 - 文件大小未知（如流式数据）
@@ -785,7 +785,7 @@ Map<String, String> formData = minioClient.getPresignedPostFormData(policy);
 - 需要断点续传
 - 需要并发上传提高速度
 
-## 10.2手动控制分片上传（完整流程）
+## 10.2 手动控制分片上传（完整流程）
 
 ```java
 import io.minio.*;
@@ -903,7 +903,7 @@ public class MultipartUploadDemo {
 }
 ```
 
-## 10.3断点续传实现
+## 10.3 断点续传实现
 
 ```java
 public class ResumableUploadDemo {
@@ -973,7 +973,7 @@ public class ResumableUploadDemo {
 }
 ```
 
-## 10.4使用 composeObject 进行分片合并上传
+## 10.4 使用 composeObject 进行分片合并上传
 
 `composeObject` 允许将多个已存在的对象合并为一个新对象，适合以下场景：
 - 合并多个分片文件
@@ -1010,7 +1010,7 @@ minioClient.removeObject(RemoveObjectArgs.builder()
 
 ---
 
-# 11.对象锁（Object Lock）操作
+# 11. 对象锁（Object Lock）操作
 
 需要对 Bucket 启用对象锁后，才能对对象设置保留期限和依法保留。
 
@@ -1061,7 +1061,7 @@ minioClient.setObjectLegalHold(
 
 ---
 
-# 12.对象标签管理
+# 12. 对象标签管理
 
 ```java
 // 获取对象标签
@@ -1097,9 +1097,9 @@ minioClient.deleteObjectTags(
 
 ---
 
-# 13.错误处理
+# 13. 错误处理
 
-## 13.1常见错误类型
+## 13.1 常见错误类型
 
 ```java
 import io.minio.errors.*;
@@ -1169,7 +1169,7 @@ public class MinioErrorHandling {
 }
 ```
 
-## 13.2重试机制
+## 13.2 重试机制
 
 ```java
 public class RetryableMinioOperation {
@@ -1216,7 +1216,7 @@ public class RetryableMinioOperation {
 }
 ```
 
-## 13.3S3 错误码速查表
+## 13.3 S3 错误码速查表
 
 | 错误码 | HTTP 状态码 | 说明 |
 |--------|------------|------|

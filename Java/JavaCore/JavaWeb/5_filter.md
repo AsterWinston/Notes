@@ -1,11 +1,11 @@
-# 1.当前的OA项目存在什么缺陷？
+# 1. 当前的OA项目存在什么缺陷？
 
 ```
 DeptServlet、EmpServlet、OrderServlet。每一个Servlet都是处理自己相关的业务。在这些Servlet执行之前都是需要判断用户是否登录了。如果用户登录了，可以继续操作，如果没有登录，需要用户登录。这段判断用户是否登录的代码是固定的，并且在每一个Servlet类当中都需要编写，显然代码没有得到重复利用。包括每一个Servlet都要解决中文乱码问题，也有公共的代码。这些代码目前都是重复编写，并没有达到复用。怎么解决这个问题?
 可以使用Servlet规范中的Filter过滤器来解决这个问题。
 ```
 
-# 2.Filter是什么，有什么用，执行原理是什么？
+# 2. Filter是什么，有什么用，执行原理是什么？
 
 ```
 Filter是过滤器。
@@ -48,7 +48,7 @@ chain.doFilter(request, response); 这行代码的作用：
 /a.do 对应一个Filter，也对应一个Servlet。那么一定是先执行Filter，然后再执行Servlet。
 ```
 
-# 3.关于Filter的配置路径：
+# 3. 关于Filter的配置路径：
 
 ```
 /a.do、/b.do、/dept/save。这些配置方式都是精确匹配。
@@ -78,7 +78,7 @@ Filter过滤器这里有一个设计模式：
 在程序运行阶段，动态的组合程序的调用顺序。
 ```
 
-# 4.@WebFilter
+# 4. @WebFilter
 
 ```
 属性	类型	说明
@@ -89,7 +89,7 @@ asyncSupported	boolean	是否支持异步请求
 initParams	@WebInitParam[]	初始化参数（替代 web.xml <init-param>）
 ```
 
-# 5.Filter实战示例
+# 5. Filter实战示例
 
 ```
 示例1：字符编码过滤器（解决全站中文乱码）
@@ -193,7 +193,7 @@ class MyRequestWrapper extends HttpServletRequestWrapper {
 获取到的就是已经过滤后的数据了。
 ```
 
-# 6.Filter执行顺序总结
+# 6. Filter执行顺序总结
 
 ```
 1. web.xml配置方式：按<filter-mapping>标签出现的先后顺序执行。

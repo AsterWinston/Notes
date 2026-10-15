@@ -106,7 +106,7 @@ Spring WebFlux（spring-webflux）
       └── DispatcherHandler                            ← 响应式前端控制器
 ```
 
-# 6.设计思想总结
+# 6. 设计思想总结
 
 ```
 1. 分层架构：

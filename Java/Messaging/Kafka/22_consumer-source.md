@@ -1,4 +1,4 @@
-# 1 源码分析总览
+# 1. 源码分析总览
 
 ## 1.1 Consumer 核心类图
 
@@ -31,7 +31,7 @@ KafkaConsumer
     └── Key / Value 反序列化器
 ```
 
-# 2 KafkaConsumer 初始化
+# 2. KafkaConsumer 初始化
 
 ## 2.1 构造器分析
 
@@ -125,7 +125,7 @@ public class KafkaConsumer<K, V> implements Consumer<K, V> {
 
 > 文件位置: `clients/src/main/java/org/apache/kafka/clients/consumer/KafkaConsumer.java:190`
 
-# 3 poll() 方法核心链路
+# 3. poll() 方法核心链路
 
 ## 3.1 KafkaConsumer.poll()
 
@@ -230,7 +230,7 @@ private Map<TopicPartition, List<ConsumerRecord<K, V>>> pollForFetches(Timer tim
 
 > 文件位置: `clients/src/main/java/org/apache/kafka/clients/consumer/KafkaConsumer.java:1533`
 
-# 4 ConsumerCoordinator 协调器源码
+# 4. ConsumerCoordinator 协调器源码
 
 ## 4.1 加入 Group 的主流程
 
@@ -343,7 +343,7 @@ boolean joinGroupIfNeeded(final Timer timer) {
 
 > 文件位置: `clients/src/main/java/org/apache/kafka/clients/consumer/internals/AbstractCoordinator.java:499`
 
-# 5 Fetcher 拉取器源码
+# 5. Fetcher 拉取器源码
 
 ## 5.1 sendFetches() 构建请求
 
@@ -500,7 +500,7 @@ public Map<TopicPartition, List<ConsumerRecord<K, V>>> fetchedRecords() {
 
 > 文件位置: `clients/src/main/java/org/apache/kafka/clients/consumer/internals/Fetcher.java:375`
 
-# 6 SubscriptionState 状态管理
+# 6. SubscriptionState 状态管理
 
 ```java
 // SubscriptionState.java
@@ -538,7 +538,7 @@ public class SubscriptionState {
 
 > 文件位置: `clients/src/main/java/org/apache/kafka/clients/consumer/internals/SubscriptionState.java:86`
 
-# 7 心跳与偏移提交
+# 7. 心跳与偏移提交
 
 ## 7.1 心跳周期
 

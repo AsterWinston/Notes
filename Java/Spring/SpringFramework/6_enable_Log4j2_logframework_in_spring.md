@@ -70,7 +70,7 @@ public void testLog() {
 
 # 4. 源码解析：Spring 的日志体系
 
-## 4.1. SLF4J + 桥接模式
+## 4.1 SLF4J + 桥接模式
 
 ```
 Spring 本身不实现日志功能，而是通过 SLF4J（Simple Logging Facade for Java）来桥接：
@@ -99,7 +99,7 @@ Spring 本身不实现日志功能，而是通过 SLF4J（Simple Logging Facade 
 - 各个日志框架是实现，通过桥接器（log4j-slf4j2-impl）适配到 SLF4J
 ```
 
-## 4.2. Spring 内部日志的实现：Spring-JCL 桥
+## 4.2 Spring 内部日志的实现：Spring-JCL 桥
 
 ```
 Spring 5+ 内部将 JCL 调用桥接到 SLF4J：
@@ -129,7 +129,7 @@ final class LogAdapter {
 // 最终都通过 SLF4J → Log4j2 输出
 ```
 
-## 4.3. 日志级别映射
+## 4.3 日志级别映射
 
 ```
 SLF4J 的日志级别与 Log4j2 日志级别的对应关系：
@@ -154,7 +154,7 @@ log4j2.xml 中的日志级别配置：
   ← JDBC 操作输出最详细的 trace 日志（包含 SQL 参数）
 ```
 
-## 4.4. 设计思想总结
+## 4.4 设计思想总结
 
 1. 门面模式（Facade Pattern）：
    SLF4J 作为日志门面，让 Spring 不需要绑定具体的日志实现。

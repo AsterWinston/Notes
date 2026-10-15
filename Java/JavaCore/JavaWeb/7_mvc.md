@@ -1,4 +1,4 @@
-# 1.MVC设计模式
+# 1. MVC设计模式
 
 ```
 1.1 M: Model（模型层）
@@ -31,7 +31,7 @@ MVC的执行流程：
   View:       list.jsp（展示部门列表）
 ```
 
-# 2.三层架构
+# 2. 三层架构
 
 ```
 三层架构是JavaWeb项目中最经典的分层设计，将整个应用划分为三层：
@@ -81,7 +81,7 @@ MVC的执行流程：
 这样做的好处：方便单元测试（Mock）、方便切换实现。
 ```
 
-# 3.MVC与三层架构的关系
+# 3. MVC与三层架构的关系
 
 ```
 MVC 和 三层架构 是两个不同维度的概念：
@@ -103,7 +103,7 @@ MVC 和 三层架构 是两个不同维度的概念：
     MVC是"横向"的划分（对Web层的再细分）
 ```
 
-# 4.实体类命名规范（PO / VO / DTO / POJO / BO）
+# 4. 实体类命名规范（PO / VO / DTO / POJO / BO）
 
 ```
 在JavaWeb项目中，实体类有多种叫法，每种有不同的用途：
@@ -139,7 +139,7 @@ MVC 和 三层架构 是两个不同维度的概念：
 复杂场景下（比如查询多个表的关联结果），需要额外定义VO或DTO。
 ```
 
-# 5.事务控制
+# 5. 事务控制
 
 ```
 5.1 为什么事务控制要在Service层？
@@ -326,7 +326,7 @@ public class TransferServlet extends HttpServlet {
   这些概念在Spring的声明式事务中会深入使用，在纯Servlet阶段理解即可。
 ```
 
-# 6.前端控制器模式（Front Controller Pattern）
+# 6. 前端控制器模式（Front Controller Pattern）
 
 ```
 为什么需要前端控制器？
@@ -358,7 +358,7 @@ public class TransferServlet extends HttpServlet {
 SpringMVC的DispatcherServlet就是前端控制器模式的经典实现。
 ```
 
-# 7.总结：标准JavaWeb项目目录结构
+# 7. 总结：标准JavaWeb项目目录结构
 
 ```
 项目名/

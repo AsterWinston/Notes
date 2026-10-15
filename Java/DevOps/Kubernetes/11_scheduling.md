@@ -1,4 +1,4 @@
-# 1.调度器架构深度解析
+# 1. 调度器架构深度解析
 
 ## 1.1 调度器在 Kubernetes 中的定位
 
@@ -6,7 +6,7 @@ kube-scheduler 是 Kubernetes 控制平面的核心组件之一，负责将新�
 
 调度器不负责运行 Pod（这是 kubelet 的职责），它只做一件事：**选择一个最优节点，并通过 API Server 将 Pod 的 `spec.nodeName` 设置为该节点名称**。
 
-### 为什么调度如此关键
+### 1.1.1 为什么调度如此关键
 
 在大规模集群中，调度决策直接影响：
 - **资源利用率**：合理的调度可以显著提高集群资源利用率，降低成本
@@ -72,7 +72,7 @@ Kubernetes 1.19 引入调度框架（Scheduling Framework）重构了调度器�
 每个扩展点可以注册多个插件，插件按权重和顺序执行。
 ```
 
-### 扩展点说明
+### 1.3.1 扩展点说明
 
 | 扩展点 | 作用 | 典型插件 |
 |--------|------|---------|
@@ -123,7 +123,7 @@ profiles:
 # kube-scheduler --config=/etc/kubernetes/scheduler-config.yaml
 ```
 
-# 2.节点亲和性 (Node Affinity)
+# 2. 节点亲和性 (Node Affinity)
 
 ## 2.1 为什么需要节点亲和性
 
@@ -144,7 +144,7 @@ Node Affinity 正是为了解决这些需求而设计，它支持 `required`（�
 
 ## 2.2 Node Affinity 的 YAML 配置
 
-### requiredDuringSchedulingIgnoredDuringExecution（硬约束）
+### 2.2.1 requiredDuringSchedulingIgnoredDuringExecution（硬约束）
 
 ```yaml
 apiVersion: v1
@@ -172,7 +172,7 @@ spec:
 - `requiredDuringScheduling`：调度时必须满足（否则 Pod 一直 Pending）
 - `IgnoredDuringExecution`：运行期间如果节点标签变化，已运行的 Pod 不受影响（不会被驱逐）
 
-### preferredDuringSchedulingIgnoredDuringExecution（软偏好）
+### 2.2.2 preferredDuringSchedulingIgnoredDuringExecution（软偏好）
 
 ```yaml
 spec:
@@ -193,7 +193,7 @@ spec:
             operator: Exists
 ```
 
-### 操作符说明
+### 2.2.3 操作符说明
 
 | 操作符 | 含义 | 示例 |
 |--------|------|------|
@@ -204,7 +204,7 @@ spec:
 | `Gt` | 大于（数字比较） | `node-index Gt [5]` |
 | `Lt` | 小于（数字比较） | `node-index Lt [10]` |
 
-### `nodeSelectorTerms` 的逻辑关系
+### 2.2.4 `nodeSelectorTerms` 的逻辑关系
 
 ```yaml
 requiredDuringSchedulingIgnoredDuringExecution:
@@ -226,7 +226,7 @@ requiredDuringSchedulingIgnoredDuringExecution:
   # 逻辑: (zone=zone-a AND disktype=ssd) OR (zone=zone-b AND disktype=nvme)
 ```
 
-### 内置节点标签
+### 2.2.5 内置节点标签
 
 Kubernetes 自动为每个节点设置以下标签，可用于调度策略：
 
@@ -241,13 +241,13 @@ Kubernetes 自动为每个节点设置以下标签，可用于调度策略：
 | `beta.kubernetes.io/arch` | (废弃) | — |
 | `topology.kubernetes.io/region` | (替代 failure-domain.beta) | — |
 
-# 3.Pod 亲和性与反亲和性 (Pod Affinity/Anti-Affinity)
+# 3. Pod 亲和性与反亲和性 (Pod Affinity/Anti-Affinity)
 
 ## 3.1 调度的关系维度
 
 Node Affinity 解决的是"Pod → Node"的关系，而 Pod Affinity/Anti-Affinity 解决的是"Pod → Pod（及 Pod 所在的 Node）"的关系。
 
-### 典型场景
+### 3.1.1 典型场景
 
 **Pod Affinity（聚合）**：
 - "将我的 Web Pod 和 Redis Pod 调度到同一个节点或同一个可用区"
@@ -299,7 +299,7 @@ spec:
               topologyKey: kubernetes.io/hostname # 同节点分散
 ```
 
-### `topologyKey` 是关键概念
+### 3.2.1 `topologyKey` 是关键概念
 
 `topologyKey` 定义了"拓扑域"的边界——在这个边界内，亲和性规则生效。
 
@@ -310,7 +310,7 @@ spec:
 | `topology.kubernetes.io/region` | 地域级别 | 同地域 |
 | 自定义标签 | 机架/楼层/任意 | 自定义拓扑域 |
 
-### requiredDuringScheduling vs preferredDuringScheduling
+### 3.2.2 requiredDuringScheduling vs preferredDuringScheduling
 
 ```yaml
 # 硬约束：必须和 cache Pod 在同一节点
@@ -399,7 +399,7 @@ spec:
 
 三种亲和性可以同时使用，调度器取所有约束的交集。
 
-# 4.污点与容忍 (Taints and Tolerations)
+# 4. 污点与容忍 (Taints and Tolerations)
 
 ## 4.1 污点和容忍的设计哲学
 
@@ -432,7 +432,7 @@ kubectl taint node worker-1 dedicated=gpu:NoSchedule
 kubectl taint node worker-1 dedicated=gpu:NoSchedule-
 ```
 
-### 三种 Effect（效果）
+### 4.2.1 三种 Effect（效果）
 
 | Effect | 行为 | 使用场景 |
 |--------|------|---------|
@@ -466,7 +466,7 @@ Toleration 的匹配规则：
 - `operator: Equal`：`key`、`value` 和 `effect` 必须完全相同
 - `operator: Exists`：只要 `key` 和 `effect` 相同，`value` 任意
 
-### `tolerationSeconds` 详解
+### 4.3.1 `tolerationSeconds` 详解
 
 `tolerationSeconds` 定义了 Pod 在被驱逐前可以容忍多长时间：
 
@@ -490,7 +490,7 @@ tolerations:
 
 Kubernetes 的 Node Controller 在检测到节点异常时自动添加以下污点，配合 `tolerationSeconds` 实现优雅的 Pod 驱逐：
 
-### 节点失联处理流程
+### 4.4.1 节点失联处理流程
 
 ```
 节点正常运行
@@ -525,7 +525,7 @@ tolerations:
   tolerationSeconds: 300
 ```
 
-### 节点状态与对应污点
+### 4.4.2 节点状态与对应污点
 
 | 节点 Condition | 对应 Taint |
 |---------------|-----------|
@@ -538,7 +538,7 @@ tolerations:
 
 ## 4.5 生产场景实战
 
-### 场景一：专用 GPU 节点
+### 4.5.1 场景一：专用 GPU 节点
 
 ```bash
 # 给 GPU 节点打标签和污点
@@ -571,7 +571,7 @@ spec:
         nvidia.com/gpu: 1
 ```
 
-### 场景二：控制面节点隔离
+### 4.5.2 场景二：控制面节点隔离
 
 ```bash
 # 控制面节点默认已有此污点
@@ -589,7 +589,7 @@ spec:
     effect: "NoSchedule"
 ```
 
-### 场景三：临时节点下线维护
+### 4.5.3 场景三：临时节点下线维护
 
 ```bash
 # 阻止新 Pod 调度
@@ -606,7 +606,7 @@ kubectl drain node worker-1 --ignore-daemonsets --delete-emptydir-data
 kubectl uncordon node worker-1
 ```
 
-# 5.拓扑分布约束 (Topology Spread Constraints)
+# 5. 拓扑分布约束 (Topology Spread Constraints)
 
 ## 5.1 为什么需要拓扑分布约束
 
@@ -653,7 +653,7 @@ spec:
             app: web
 ```
 
-### 关键参数详解
+### 5.2.1 关键参数详解
 
 **`maxSkew`（最大偏差）**：任何两个拓扑域之间的 Pod 数量差的最大允许值。
 
@@ -680,7 +680,7 @@ zone-c    2     maxSkew = 2（超出 maxSkew=1，不满足约束）
 
 **`labelSelector`**：计算分布时考虑哪些 Pod（通常匹配与当前 Pod 同一应用的 Pod）
 
-### 与 Pod Anti-Affinity 的对比
+### 5.2.2 与 Pod Anti-Affinity 的对比
 
 | 维度 | Pod Anti-Affinity | Topology Spread Constraints |
 |------|-------------------|---------------------------|
@@ -729,7 +729,7 @@ topologySpreadConstraints:
 
 `minDomains` 保证至少有指定数量的拓扑域被纳入计算，防止因为某些区域没有 Pod 而导致不均衡。
 
-# 6.优先级与抢占 (Priority and Preemption)
+# 6. 优先级与抢占 (Priority and Preemption)
 
 ## 6.1 Priority 机制
 
@@ -737,7 +737,7 @@ Priority（优先级）允许你为 Pod 分配相对重要性，在资源紧张�
 1. 高优先级 Pod 优先被调度
 2. 如果集群资源不足，高优先级 Pod 可以驱逐（preempt）低优先级 Pod
 
-### PriorityClass 定义
+### 6.1.1 PriorityClass 定义
 
 ```yaml
 apiVersion: scheduling.k8s.io/v1
@@ -759,7 +759,7 @@ preemptionPolicy: PreemptLowerPriority
 description: "默认优先级，用于非关键服务"
 ```
 
-### Pod 使用 Priority
+### 6.1.2 Pod 使用 Priority
 
 ```yaml
 apiVersion: v1
@@ -805,14 +805,14 @@ spec:
 7. 高优先级 Pod 被调度到释放了资源的节点
 ```
 
-### 抢占策略
+### 6.2.1 抢占策略
 
 | preemptionPolicy | 行为 |
 |-----------------|------|
 | `PreemptLowerPriority` | 可以抢占低优先级 Pod（默认） |
 | `Never` | 从不抢占其他 Pod，调度失败就等待 |
 
-### 防止核心组件被抢占
+### 6.2.2 防止核心组件被抢占
 
 ```yaml
 # kube-system 中的关键组件使用最高优先级
@@ -849,7 +849,7 @@ preemptionPolicy: PreemptLowerPriority
 | `batch` | 100 | 批处理任务 |
 | `default` | 0 | 默认 |
 
-# 7.调度策略综合实战
+# 7. 调度策略综合实战
 
 ## 7.1 多策略组合的场景
 
@@ -926,7 +926,7 @@ spec:
 
 ## 7.2 常见调度问题诊断
 
-### Pod 一直 Pending
+### 7.2.1 Pod 一直 Pending
 
 ```bash
 # 查看调度失败原因
@@ -943,7 +943,7 @@ kubectl describe pod <pod-name>
 #                                      ↑ 节点标签不匹配
 ```
 
-### 调试命令集合
+### 7.2.2 调试命令集合
 
 ```bash
 # 查看调度器日志

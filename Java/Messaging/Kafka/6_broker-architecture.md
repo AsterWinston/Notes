@@ -1,4 +1,4 @@
-# 1 Broker 整体架构
+# 1. Broker 整体架构
 
 ## 1.1 Broker 内部组件拓扑
 
@@ -56,7 +56,7 @@
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-# 2 SocketServer 网络层
+# 2. SocketServer 网络层
 
 ## 2.1 Reactor 多线程模型
 
@@ -140,7 +140,7 @@ max.connections.per.ip=2147483647
 max.connections=2147483647
 ```
 
-# 3 KafkaApis 请求路由
+# 3. KafkaApis 请求路由
 
 ## 3.1 请求处理入口
 
@@ -232,7 +232,7 @@ def handleFetchRequest(request: RequestChannel.Request): Unit = {
 }
 ```
 
-# 4 Purgatory（延迟操作机制）
+# 4. Purgatory（延迟操作机制）
 
 ## 4.1 设计目的
 
@@ -310,7 +310,7 @@ class DelayedProduce(delayMs: Long,
 }
 ```
 
-# 5 Broker 启动流程
+# 5. Broker 启动流程
 
 ## 5.1 KafkaServer 启动时序
 
@@ -378,7 +378,7 @@ KafkaServer.shutdown()
 └── ⑥ 从 ZooKeeper 注销 /brokers/ids/{brokerId}
 ```
 
-# 6 日志刷盘（Flush）策略
+# 6. 日志刷盘（Flush）策略
 
 ## 6.1 Kafka 的刷盘哲学
 
@@ -411,7 +411,7 @@ log.flush.scheduler.interval.ms=9223372036854775807
 # vm.dirty_ratio = 10
 ```
 
-# 7 请求配额（Quota）管理
+# 7. 请求配额（Quota）管理
 
 ## 7.1 配额类型
 
@@ -449,7 +449,7 @@ Kafka 使用 **Token Bucket** 算法实现限流：
 持续超配额: 令牌耗尽 → 请求被延迟（throttle_time_ms）
 ```
 
-# 8 内部 Topic 一览
+# 8. 内部 Topic 一览
 
 Kafka 使用内部 Topic 存储元数据：
 
@@ -468,7 +468,7 @@ transaction.state.log.num.partitions=50
 transaction.state.log.min.isr=2
 ```
 
-# 9 动态配置
+# 9. 动态配置
 
 Kafka Broker 支持部分配置的动态修改（无需重启）：
 

@@ -1,13 +1,13 @@
-# 1.消息转换概述
+# 1. 消息转换概述
 
-## 1.1为什么需要MessageConverter
+## 1.1 为什么需要MessageConverter
 在AMQP协议中，消息体是**二进制的字节数组**（`byte[]`），而Java应用程序中使用的是**对象**。`MessageConverter`的职责就是在这两者之间进行转换：
 
 ```
 Java对象  ←→  MessageConverter  ←→  byte[]（AMQP消息体）
 ```
 
-## 1.2Spring AMQP的转换体系
+## 1.2 Spring AMQP的转换体系
 ```
 MessageConverter（接口）
   ├── SimpleMessageConverter（默认实现）
@@ -19,12 +19,12 @@ MessageConverter（接口）
   └── CompositeMessageConverter（组合多个转换器尝试）
 ```
 
-# 2.SimpleMessageConverter（默认实现）
+# 2. SimpleMessageConverter（默认实现）
 
-## 2.1工作原理
+## 2.1 工作原理
 `SimpleMessageConverter`是Spring AMQP的**默认**消息转换器，它按以下规则进行转换：
 
-### 发送时（toMessage）
+### 2.1.1 发送时（toMessage）
 ```java
 SimpleMessageConverter converter = new SimpleMessageConverter();
 
@@ -41,7 +41,7 @@ Order order = new Order();
 Message msg3 = converter.toMessage(order, new MessageProperties());
 ```
 
-### 接收时（fromMessage）
+### 2.1.2 接收时（fromMessage）
 ```java
 // 根据MessageProperties中的contentType决定：
 // 1. contentType 以 "text" 开头 → 返回 String
@@ -49,7 +49,7 @@ Message msg3 = converter.toMessage(order, new MessageProperties());
 // 3. 其他 → 直接返回 byte[]
 ```
 
-## 2.2SimpleMessageConverter的问题
+## 2.2 SimpleMessageConverter的问题
 默认的`SimpleMessageConverter`有以下不足：
 
 1. **Java序列化问题**：
@@ -62,9 +62,9 @@ Message msg3 = converter.toMessage(order, new MessageProperties());
 
 因此，生产环境强烈建议替换为JSON转换器。
 
-# 3.Jackson2JsonMessageConverter（推荐）
+# 3. Jackson2JsonMessageConverter（推荐）
 
-## 3.1基本配置
+## 3.1 基本配置
 ```java
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
@@ -82,9 +82,9 @@ public class RabbitMQConfig {
 
 配置后，`Jackson2JsonMessageConverter`会自动注入到`RabbitTemplate`和`MessageListenerContainer`中。
 
-## 3.2工作原理
+## 3.2 工作原理
 
-### 发送时
+### 3.2.1 发送时
 ```java
 // 自动将Order对象转换为JSON，设置contentType=application/json
 rabbitTemplate.convertAndSend("order.exchange", "order.create", order);
@@ -95,7 +95,7 @@ rabbitTemplate.convertAndSend("order.exchange", "order.create", order);
 // contentEncoding: UTF-8
 ```
 
-### 接收时
+### 3.2.2 接收时
 ```java
 @RabbitListener(queues = "order.queue")
 public void handleOrder(Order order) {
@@ -104,7 +104,7 @@ public void handleOrder(Order order) {
 }
 ```
 
-## 3.3自定义ObjectMapper
+## 3.3 自定义ObjectMapper
 ```java
 @Bean
 public Jackson2JsonMessageConverter messageConverter(ObjectMapper objectMapper) {
@@ -133,7 +133,7 @@ public ObjectMapper objectMapper() {
 }
 ```
 
-## 3.4信任包配置（安全相关）
+## 3.4 信任包配置（安全相关）
 JSON反序列化时需要指定信任的包，防止反序列化漏洞：
 
 ```java
@@ -153,7 +153,7 @@ public Jackson2JsonMessageConverter messageConverter() {
 }
 ```
 
-## 3.5类型ID与类型头
+## 3.5 类型ID与类型头
 当消息需要在多个服务之间传递时，接收端需要知道消息的具体类型。Jackson2JsonMessageConverter通过在消息头中添加`__TypeId__`来传递类型信息：
 
 ```java
@@ -168,7 +168,7 @@ public void handleOrder(Order order) {
 }
 ```
 
-## 3.6ClassMapper配置
+## 3.6 ClassMapper配置
 在微服务架构中，发送端和接收端可能使用不同的包名，需要配置ClassMapper进行映射：
 
 ```java
@@ -205,9 +205,9 @@ rabbitTemplate.convertAndSend("order.exchange", "order.create", order,
     });
 ```
 
-# 4.其他MessageConverter
+# 4. 其他MessageConverter
 
-## 4.1Jackson2XmlMessageConverter
+## 4.1 Jackson2XmlMessageConverter
 使用Jackson将消息转换为XML格式：
 
 ```java
@@ -220,7 +220,7 @@ public Jackson2XmlMessageConverter xmlMessageConverter() {
 // <Order><id>1</id><name>测试订单</name></Order>
 ```
 
-## 4.2ContentTypeDelegatingMessageConverter
+## 4.2 ContentTypeDelegatingMessageConverter
 根据消息的`contentType`属性选择不同的转换器：
 
 ```java
@@ -237,7 +237,7 @@ public ContentTypeDelegatingMessageConverter messageConverter() {
 }
 ```
 
-## 4.3CompositeMessageConverter
+## 4.3 CompositeMessageConverter
 组合多个转换器，逐个尝试直到成功：
 
 ```java
@@ -254,9 +254,9 @@ public CompositeMessageConverter messageConverter() {
 }
 ```
 
-# 5.自定义MessageConverter
+# 5. 自定义MessageConverter
 
-## 5.1实现MessageConverter接口
+## 5.1 实现MessageConverter接口
 ```java
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
@@ -296,7 +296,7 @@ public class CustomMessageConverter implements MessageConverter {
 }
 ```
 
-## 5.2AbstractMessageConverter
+## 5.2 AbstractMessageConverter
 推荐继承`AbstractMessageConverter`，它提供了一些基础实现：
 
 ```java
@@ -321,9 +321,9 @@ public class ProtobufMessageConverter extends AbstractMessageConverter {
 }
 ```
 
-# 6.生产环境推荐配置
+# 6. 生产环境推荐配置
 
-## 6.1最简配置（推荐）
+## 6.1 最简配置（推荐）
 ```java
 @Configuration
 public class RabbitMQConfig {
@@ -335,7 +335,7 @@ public class RabbitMQConfig {
 }
 ```
 
-## 6.2安全配置
+## 6.2 安全配置
 ```java
 @Configuration
 public class RabbitMQConfig {
@@ -363,9 +363,9 @@ public class RabbitMQConfig {
 }
 ```
 
-# 7.消息转换的常见问题
+# 7. 消息转换的常见问题
 
-## 7.1"__TypeId__"头部的问题
+## 7.1 "__TypeId__"头部的问题
 当使用Jackson2JsonMessageConverter且配置了类型信息时，消息头部会有`__TypeId__`。如果接收端没有配置对应的类型映射，会出现`ClassNotFoundException`或`ClassNotTrustedException`。
 
 解决方案：
@@ -373,7 +373,7 @@ public class RabbitMQConfig {
 2. 配置信任包（参考上面3.4节）
 3. 使用ClassMapper进行类型映射（参考上面3.6节）
 
-## 7.2消息体与参数类型不匹配
+## 7.2 消息体与参数类型不匹配
 ```java
 // 消息体: {"name": "张三", "age": 25}
 // 但Listener参数类型是String
@@ -388,7 +388,7 @@ public void handleUser(String jsonString) {
 
 确保MessageConverter的配置与接收方法的参数类型匹配。
 
-## 7.3Null值的序列化
+## 7.3 Null值的序列化
 ```java
 // 如果发送的对象中有null字段
 Order order = new Order();  // name为null
@@ -401,7 +401,7 @@ mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 // 结果: {"id": 1, "amount": 99.99}
 ```
 
-## 7.4循环引用问题
+## 7.4 循环引用问题
 当对象之间存在双向引用时（如Order引用User，User引用Order列表），Jackson默认会抛出`JsonMappingException`。
 
 解决方案：

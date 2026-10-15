@@ -1,4 +1,4 @@
-# 1.Executor 体系概览
+# 1. Executor 体系概览
 
 ```
 Executor 是 MyBatis 执行层的核心，负责 SQL 的实际执行。
@@ -29,7 +29,7 @@ Executor 是 MyBatis 执行层的核心，负责 SQL 的实际执行。
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-# 2.BaseExecutor — 模板方法模式的核心
+# 2. BaseExecutor — 模板方法模式的核心
 
 ```java
 /**
@@ -282,7 +282,7 @@ public abstract class BaseExecutor implements Executor {
 }
 ```
 
-# 3.SimpleExecutor — 默认执行器
+# 3. SimpleExecutor — 默认执行器
 
 ```java
 /**
@@ -375,7 +375,7 @@ public class SimpleExecutor extends BaseExecutor {
 }
 ```
 
-# 4.ReuseExecutor — 复用 Statement 的执行器
+# 4. ReuseExecutor — 复用 Statement 的执行器
 
 ```java
 /**
@@ -452,7 +452,7 @@ public class ReuseExecutor extends BaseExecutor {
 }
 ```
 
-# 5.BatchExecutor — 批量执行器
+# 5. BatchExecutor — 批量执行器
 
 ```java
 /**
@@ -566,7 +566,7 @@ public class BatchExecutor extends BaseExecutor {
 }
 ```
 
-# 6.CachingExecutor — 二级缓存装饰器
+# 6. CachingExecutor — 二级缓存装饰器
 
 ```java
 /**
@@ -658,7 +658,7 @@ public class CachingExecutor implements Executor {
 }
 ```
 
-# 7.StatementHandler 体系
+# 7. StatementHandler 体系
 
 ```
 StatementHandler 负责 JDBC Statement 的创建、参数设置、SQL 执行和结果处理。
@@ -801,7 +801,7 @@ public class PreparedStatementHandler extends BaseStatementHandler {
 }
 ```
 
-# 8.ParameterHandler — 参数设置
+# 8. ParameterHandler — 参数设置
 
 ```java
 /**
@@ -875,7 +875,7 @@ public interface ParameterHandler {
 }
 ```
 
-# 9.ResultSetHandler — 结果集映射
+# 9. ResultSetHandler — 结果集映射
 
 ```java
 /**
@@ -945,7 +945,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 }
 ```
 
-# 10.Executor 的创建和拦截器包装
+# 10. Executor 的创建和拦截器包装
 
 ```java
 /**
@@ -983,7 +983,7 @@ public Executor newExecutor(Transaction transaction, ExecutorType executorType) 
 }
 ```
 
-# 11.三种 Executor 对比
+# 11. 三种 Executor 对比
 
 ```
 ┌───────────────────┬────────────────────┬──────────────────────┬──────────────────────┐
@@ -1011,7 +1011,7 @@ ExecutorType 选择示例：
   SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
 ```
 
-# 12.一级缓存深入分析
+# 12. 一级缓存深入分析
 
 ```
 一级缓存（localCache）是 SqlSession 级别的缓存

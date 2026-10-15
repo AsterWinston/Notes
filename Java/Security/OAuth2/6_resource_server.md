@@ -47,7 +47,7 @@
 
 ## 2.2 本地验证（JWT 自包含 Token）
 
-### 验证流程
+### 2.2.1 验证流程
 
 ```java
 public class JwtTokenValidator {
@@ -140,7 +140,7 @@ public class JwtTokenValidator {
 }
 ```
 
-### 公钥缓存机制
+### 2.2.2 公钥缓存机制
 
 ```java
 // 使用 Caffeine 缓存 JWKS 公钥，减少网络请求
@@ -212,7 +212,7 @@ public class IntrospectionTokenValidator {
 }
 ```
 
-### Introspection 缓存策略
+### 2.3.1 Introspection 缓存策略
 
 ```
 缓存策略精要：
@@ -517,7 +517,7 @@ WWW-Authenticate: Bearer realm="example",
 □ 定期轮换签名密钥（Key Rotation）
 ```
 
-### 签名算法验证（防止 "none" 算法攻击）
+## 7.1 签名算法验证（防止 "none" 算法攻击）
 
 ```java
 // 危险：接受 JWT Header 中声明的算法

@@ -1,8 +1,8 @@
-# 1.读写分离概述
+# 1. 读写分离概述
 
 读写分离是数据库架构中常见的扩展方案：**主库（Master）负责处理写操作（INSERT/UPDATE/DELETE），从库（Slave）负责处理读操作（SELECT）**。
 
-## 1.1为什么要读写分离
+## 1.1 为什么要读写分离
 
 大多数业务的读写比例通常在 **8:2 到 9:1**（读多写少）：
 
@@ -11,7 +11,7 @@
 - **提高可用性**：主库故障时，从库可接管读流量（甚至提升为新主库）
 - **数据安全**：可在从库执行备份、报表查询等重操作，不影响核心业务
 
-## 1.2实现层面
+## 1.2 实现层面
 
 读写分离可在不同层面实现：
 
@@ -21,9 +21,9 @@
 | **中间件层** | ShardingSphere、Mycat | 透明、集中管理，但增加维护节点 |
 | **驱动层** | MySQL Router、JDBC 路由 | 轻量，但功能有限 |
 
-# 2.一主一从架构
+# 2. 一主一从架构
 
-## 2.1架构拓扑
+## 2.1 架构拓扑
 
 ```
           ┌──────────────┐
@@ -41,9 +41,9 @@
             └──────────────┘ 主从复制
 ```
 
-## 2.2代码层实现（Spring + Dynamic DataSource）
+## 2.2 代码层实现（Spring + Dynamic DataSource）
 
-### 数据源配置
+### 2.2.1 数据源配置
 
 ```yaml
 spring:
@@ -58,7 +58,7 @@ spring:
       password: slave123
 ```
 
-### 动态数据源 + AOP
+### 2.2.2 动态数据源 + AOP
 
 ```java
 // 数据源上下文持有者
@@ -99,7 +99,7 @@ public class UserService {
 
 > **基于 AOP + 注解的读写分离**适用于中小型项目。大型系统建议使用 ShardingSphere 等中间件。
 
-## 2.3主从延时问题及处理
+## 2.3 主从延时问题及处理
 
 主从复制存在延迟（通常毫秒到秒级），可能引发"写完立即读"的数据不一致问题：
 
@@ -137,11 +137,11 @@ public User getUserAfterRegister(Long id) {
 > HintManager.getInstance().setPrimaryRouteOnly();
 > ```
 
-# 3.ShardingSphere读写分离
+# 3. ShardingSphere读写分离
 
 **Apache ShardingSphere** 是一个分布式数据库生态系统，ShardingSphere-JDBC 可嵌入应用实现读写分离。
 
-## 3.1ShardingSphere-JDBC配置
+## 3.1 ShardingSphere-JDBC配置
 
 ```yaml
 spring:
@@ -187,7 +187,7 @@ spring:
 - 内置负载均衡：轮询、随机等策略选择从库
 - 支持强制主库路由（`HintManager`）
 
-## 3.2强制走主库
+## 3.2 强制走主库
 
 ```java
 // 场景：注册后立即读取用户信息，必须走主库
@@ -200,7 +200,7 @@ public void register(User user) {
 }
 ```
 
-# 4.一主多从架构
+# 4. 一主多从架构
 
 ```
           ┌──────────────┐
@@ -219,7 +219,7 @@ public void register(User user) {
 - 单从库故障不影响整体服务（剩余从库接管）
 - 可以按业务维度指定不同从库（如报表从库、搜索从库）
 
-# 5.双主架构
+# 5. 双主架构
 
 ```
           ┌──────────────┐
@@ -259,7 +259,7 @@ auto_increment_increment = 2
 auto_increment_offset = 2
 ```
 
-# 6.读写分离的监控
+# 6. 读写分离的监控
 
 ```sql
 -- 主库查看从库连接
@@ -278,7 +278,7 @@ FROM (
 
 > **监控指标**：主从延迟（> 1s 告警）、I/O 线程状态、SQL 线程状态、从库连接数。
 
-# 7.架构演进路径
+# 7. 架构演进路径
 
 ```
 阶段 1：单机 MySQL

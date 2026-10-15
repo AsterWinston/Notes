@@ -5,7 +5,7 @@ mybatis中也提供了注解式开发方式，采用注解可以减少Sql映射�
 可以减少配置，但是有的配置无法用注释完成，如sql和include
 ```
 
-# 1.@Insert
+# 1. @Insert
 
 ```java
 public interface CarMapper {
@@ -31,14 +31,14 @@ public interface CarMapper {
 }
 ```
 
-# 2.@Delete
+# 2. @Delete
 
 ```java
 @Delete("delete from t_car where id = #{id}")
 int deleteById(Long id);
 ```
 
-# 3.@Update
+# 3. @Update
 
 ```java
 @Update("update t_car set car_num=#{carNum},brand=#{brand}," +
@@ -47,7 +47,7 @@ int deleteById(Long id);
 int update(Car car);
 ```
 
-# 4.@Select
+# 4. @Select
 
 ```java
 public interface CarMapper {
@@ -83,7 +83,7 @@ public interface CarMapper {
 }
 ```
 
-# 5.@Results 和 @Result
+# 5. @Results 和 @Result
 
 ```java
 /**
@@ -126,7 +126,7 @@ public @interface Result {
 }
 ```
 
-# 6.@One 和 @Many 替代 association、collection
+# 6. @One 和 @Many 替代 association、collection
 
 ## 6.1 @One — 一对一 / 多对一关联
 
@@ -270,7 +270,7 @@ public interface StudentMapper {
     - CglibProxyFactory
 ```
 
-# 7.@SelectProvider — Provider 类替代动态 SQL
+# 7. @SelectProvider — Provider 类替代动态 SQL
 
 ```
 @SelectProvider/@InsertProvider/@UpdateProvider/@DeleteProvider 这四个注解，
@@ -465,7 +465,7 @@ public interface UserMapper {
 }
 ```
 
-# 8.@CacheNamespace — 注解配置二级缓存
+# 8. @CacheNamespace — 注解配置二级缓存
 
 ```java
 /**
@@ -545,7 +545,7 @@ public interface BookMapper {
 可以在不同 namespace 间共享同一个缓存
 ```
 
-# 9.@Options — 配置 SQL 执行选项
+# 9. @Options — 配置 SQL 执行选项
 
 ```java
 public interface CarMapper {
@@ -570,7 +570,7 @@ public interface CarMapper {
 }
 ```
 
-# 10.@Flush — 刷新批处理语句
+# 10. @Flush — 刷新批处理语句
 
 ```java
 /**
@@ -584,7 +584,7 @@ public interface CarMapper {
 }
 ```
 
-# 11.@Lang — 指定语言驱动
+# 11. @Lang — 指定语言驱动
 
 ```java
 /**
@@ -601,7 +601,7 @@ public interface CarMapper {
 }
 ```
 
-# 12.@ConstructorArgs — 构造器参数映射
+# 12. @ConstructorArgs — 构造器参数映射
 
 ```java
 /**
@@ -620,7 +620,7 @@ public interface UserMapper {
 }
 ```
 
-# 13.@MapKey — 返回 Map 时的 key 指定
+# 13. @MapKey — 返回 Map 时的 key 指定
 
 ```java
 public interface CarMapper {
@@ -640,7 +640,7 @@ public interface CarMapper {
 }
 ```
 
-# 14.@TypeDiscriminator — 鉴别器
+# 14. @TypeDiscriminator — 鉴别器
 
 ```java
 /**
@@ -671,7 +671,7 @@ public interface VehicleMapper {
 }
 ```
 
-# 15.注解 vs XML 选型指南
+# 15. 注解 vs XML 选型指南
 
 ```
 ┌────────────────────┬──────────────────────────┬──────────────────────────┐
@@ -695,7 +695,7 @@ public interface VehicleMapper {
      （XML 的 id 优先，如果有同名 XML 和注解，XML 覆盖注解）
 ```
 
-# 16.注解方式执行原理
+# 16. 注解方式执行原理
 
 ```
 注解方式的 SQL 是如何被加载的？

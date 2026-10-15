@@ -1,4 +1,4 @@
-# 1 设计原则
+# 1. 设计原则
 
 ## 1.1 Partition 规划
 
@@ -69,7 +69,7 @@ delete.retention.ms=86400000     # tombstone 保留 24 小时
 replication.factor=3
 ```
 
-# 2 生产者最佳实践
+# 2. 生产者最佳实践
 
 ## 2.1 可靠性保障清单
 
@@ -126,7 +126,7 @@ public void sendWithProperErrorHandling(String topic, String key, String value) 
 }
 ```
 
-# 3 消费者最佳实践
+# 3. 消费者最佳实践
 
 ## 3.1 消费可靠性保障
 
@@ -176,7 +176,7 @@ public class IdempotentConsumer {
 }
 ```
 
-# 4 Broker 配置最佳实践
+# 4. Broker 配置最佳实践
 
 ## 4.1 生产级 Broker 配置
 
@@ -235,7 +235,7 @@ transaction.state.log.min.isr=2
 compression.type=producer                      # 保留 Producer 的压缩设置
 ```
 
-# 5 运维最佳实践
+# 5. 运维最佳实践
 
 ## 5.1 部署清单
 
@@ -293,7 +293,7 @@ kafka-log-dirs.sh --bootstrap-server $BS --describe --broker-list 0,1,2
 7. 生产环境不要升级到最新版（等一个补丁版本）
 ```
 
-# 6 容量规划
+# 6. 容量规划
 
 ## 6.1 估算公式
 
@@ -322,7 +322,7 @@ kafka-log-dirs.sh --bootstrap-server $BS --describe --broker-list 0,1,2
 | 50-200 MB/s | 16C/64G/2TB SSD |
 | > 200 MB/s | 32C/128G/4TB NVMe × 多目录 |
 
-# 7 安全最佳实践
+# 7. 安全最佳实践
 
 ```properties
 # 最少配置的安全生产集群
@@ -343,7 +343,7 @@ ACL 模板:
   Monitor:  需要 Topic DESCRIBE + Group DESCRIBE
 ```
 
-# 8 监控告警
+# 8. 监控告警
 
 ```
 关键告警规则:
@@ -357,7 +357,7 @@ ACL 模板:
   8. RequestHandlerIdle < 0.2 → WARNING
 ```
 
-# 9 面试 / 系统设计高频点
+# 9. 面试 / 系统设计高频点
 
 ## 9.1 高频原理题
 

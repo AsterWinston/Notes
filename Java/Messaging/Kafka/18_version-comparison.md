@@ -1,4 +1,4 @@
-# 1 版本演进总览
+# 1. 版本演进总览
 
 ## 1.1 版本号命名规则
 
@@ -13,7 +13,7 @@ Kafka 版本格式: kafka_<Scala版本>-<Kafka版本>
       Kafka 功能相同，不要混淆
 ```
 
-# 2 关键版本特性对比
+# 2. 关键版本特性对比
 
 ## 2.1 0.10.x (2016) — 流处理与时间
 
@@ -108,7 +108,7 @@ controller.quorum.voters=1@node1:9093,2@node2:9093,3@node3:9093
 controller.listener.names=CONTROLLER
 ```
 
-# 3 Producer 版本特性
+# 3. Producer 版本特性
 
 ## 3.1 Producer 参数演进
 
@@ -131,7 +131,7 @@ props.put("delivery.timeout.ms", 120000);
 // 内部自动处理重试，不需要手动指定 retries
 ```
 
-# 4 Consumer 版本特性
+# 4. Consumer 版本特性
 
 ## 4.1 Consumer Group 机制演进
 
@@ -153,7 +153,7 @@ props.put("delivery.timeout.ms", 120000);
 | 0.11 | Range, RoundRobin, Sticky |
 | 2.4+ | Range, RoundRobin, Sticky, CooperativeSticky（默认 2.5+） |
 
-# 5 Broker 版本特性
+# 5. Broker 版本特性
 
 ## 5.1 日志格式兼容
 
@@ -180,7 +180,7 @@ inter.broker.protocol.version=2.8
 # ⑤ 更新 log.message.format.version = 新版本
 ```
 
-# 6 安全特性演进
+# 6. 安全特性演进
 
 | 版本 | 新增安全特性 |
 |------|------------|
@@ -191,7 +191,7 @@ inter.broker.protocol.version=2.8
 | 2.1 | SASL/OAUTHBEARER |
 | 3.2 | 增强的 PrincipalBuilder |
 
-# 7 运维特性演进
+# 7. 运维特性演进
 
 ## 7.1 动态配置改进
 
@@ -213,7 +213,7 @@ inter.broker.protocol.version=2.8
 | 3.0 | ZK 相关工具开始标记 deprecated |
 | 3.6 | KRaft 原生元数据管理工具 |
 
-# 8 协议 API 版本对比
+# 8. 协议 API 版本对比
 
 ## 8.1 关键 API Key 版本
 
@@ -240,7 +240,7 @@ kafka-broker-api-versions.sh --bootstrap-server localhost:9092
 # )
 ```
 
-# 9 KRaft vs ZooKeeper 模式完整对比
+# 9. KRaft vs ZooKeeper 模式完整对比
 
 | 维度 | ZooKeeper 模式 | KRaft 模式 |
 |------|--------------|-----------|
@@ -266,7 +266,7 @@ kafka-metadata-quorum.sh --bootstrap-server localhost:9092 \
     describe --status
 ```
 
-# 10 版本升级建议
+# 10. 版本升级建议
 
 ## 10.1 升级路线
 

@@ -4,7 +4,7 @@
 
 Kubernetes 控制器（Controller）是 Kubernetes 架构中最核心的组件之一，它是驱动集群从"当前状态"向"期望状态"不断收敛的引擎。要理解控制器，首先必须理解 Kubernetes 的声明式设计哲学。
 
-### 声明式 API 与控制器模式
+### 1.1.1 声明式 API 与控制器模式
 
 Kubernetes 采用声明式 API（Declarative API），用户通过 YAML 或 JSON 清单文件向 API Server 提交资源的"期望状态"（Desired State），而不是编写一系列"先做什么、再做什么"的命令式脚本。例如：
 
@@ -35,7 +35,7 @@ spec:
 3. **版本控制友好**：YAML 文件可以纳入 Git 管理，通过 GitOps 流程实现基础设施即代码（IaC）。
 4. **可观察性**：控制器的工作状态通过 `status` 子资源暴露，用户可以随时查看期望状态与实际状态的差异。
 
-### 控制循环（Control Loop）
+### 1.1.2 控制循环（Control Loop）
 
 控制器的核心是一个无限循环，称为控制循环（Control Loop）或调谐循环（Reconciliation Loop）。其伪代码逻辑非常简单：
 
@@ -55,7 +55,7 @@ for {
 
 这个循环的哲学基础是"最终一致性"（Eventual Consistency）。控制器不要求状态立即一致，而是持续不断地检查和修正，确保在有限时间内达到一致。这与关系型数据库的强一致性不同，是分布式系统中常见的妥协——牺牲瞬时一致性换取高可用和分区容错性（CAP 定理中的 AP 模型）。
 
-### 为什么控制器能实现自愈
+### 1.1.3 为什么控制器能实现自愈
 
 假设用户创建了一个 `replicas: 3` 的 Deployment：
 
@@ -73,7 +73,7 @@ for {
 
 整个过程无需人工干预，这就是 Kubernetes 自愈能力的本质。
 
-### 控制器与 Operator 的关系
+### 1.1.4 控制器与 Operator 的关系
 
 控制器是 Kubernetes 的设计模式，而 Operator 是这种模式的工程化实现。Operator = CRD（Custom Resource Definition）+ 自定义控制器。例如 Prometheus Operator 定义了 `Prometheus` 和 `ServiceMonitor` 等 CRD，并提供了对应的控制器来管理 Prometheus 实例的生命周期。理解原生控制器（Deployment、StatefulSet、Job 等）是开发自定义 Operator 的基础。
 
@@ -81,7 +81,7 @@ for {
 
 ## 1.2 控制器工作原理
 
-### Informer 机制
+### 1.2.1 Informer 机制
 
 控制器不能每一轮循环都直接查询 API Server（轮询模式），因为这会带来三个问题：
 
@@ -134,23 +134,23 @@ Kubernetes 的解决方案是 **Informer 机制**，它基于 API Server 的 Wat
                 └───────────────────────┘
 ```
 
-#### Reflector（反射器）
+**Reflector（反射器）**
 
 Reflector 是 Informer 的最前端组件。它首先执行一次 `List` 操作获取资源的全量快照，然后打开一个 `Watch` 长连接接收增量事件（ADDED / MODIFIED / DELETED）。Watch 连接可能因网络问题断开，Reflector 内置了重连机制，重连后会重新 List 全量数据以确保没有漏掉事件。
 
 技术细节：API Server 的 Watch 机制基于 etcd 的 Watch 功能，etcd 会为每个 key 维护一个全局递增的 `ResourceVersion`。客户端 Watch 时携带上次看到的 `ResourceVersion`，API Server 只会推送该版本之后发生的事件。如果事件间隔太长导致 etcd 压缩了历史版本，API Server 会返回 `410 Gone` 错误，此时 Reflector 必须重新 List。
 
-#### Delta FIFO
+**Delta FIFO**
 
 Reflector 接收到的事件被封装成 Delta（变更记录），存入 Delta FIFO 队列。FIFO 保证了事件的顺序处理（先入先出），同时 Delta 机制可以合并同一对象的多个变更（例如对同一 Pod 的多次更新可以合并为一次处理，减少无意义的调谐）。
 
-#### Indexer（本地缓存）
+**Indexer（本地缓存）**
 
 Indexer 是控制器本地的线程安全存储，本质是一个带索引的内存映射表（map-based cache）。它存储了资源的全量最新状态，控制器读取资源时直接查本地缓存而非调用 API Server，极大减少了网络开销和延迟。
 
 Indexer 支持多种索引函数，最常用的是 `MetaNamespaceKeyFunc`（格式为 `<namespace>/<name>`），也可以自定义索引（例如按 Pod 的 `status.phase` 索引）。
 
-#### Event Handlers（事件处理器）
+**Event Handlers（事件处理器）**
 
 Informer 注册的事件处理器（ResourceEventHandler）包含三个回调：
 
@@ -164,7 +164,7 @@ type ResourceEventHandler interface {
 
 这些回调不会直接执行调谐逻辑（那样会阻塞事件分发），而是将受影响的资源 Key 推入 WorkQueue，由 Worker 异步处理。
 
-#### WorkQueue（工作队列）
+**WorkQueue（工作队列）**
 
 WorkQueue 不是普通的 FIFO 队列，它具备以下关键特性：
 
@@ -175,7 +175,7 @@ WorkQueue 不是普通的 FIFO 队列，它具备以下关键特性：
    - `MaxOfRateLimiter`：组合多种限速器，取最保守的值。
 3. **延迟入队**：允许将 Key 延迟指定时间后入队（例如等待其他依赖资源就绪）。
 
-#### Reconcile 循环（核心调谐逻辑）
+**Reconcile 循环（核心调谐逻辑）**
 
 Worker 从 WorkQueue 取出资源 Key，从 Indexer（本地缓存）读取该资源的最新状态，执行调谐逻辑。调谐的核心原则是 **幂等性（Idempotency）**——无论对同一个资源调谐多少次，最终状态应该是一致的。
 
@@ -205,7 +205,7 @@ func (c *Controller) reconcile(key string) error {
 
 Kubernetes 生态系统中有数十个控制器，按功能可以分为五大类：
 
-### 副本类控制器（Replication Controllers）
+### 1.3.1 副本类控制器（Replication Controllers）
 
 这一类控制器负责确保指定数量的 Pod 副本始终处于运行状态。
 
@@ -216,7 +216,7 @@ Kubernetes 生态系统中有数十个控制器，按功能可以分为五大类
 | **StatefulSet** | 专为有状态应用设计，提供稳定的 Pod 名称、网络标识、持久存储和有序的部署/终止。适用于数据库、消息队列等场景。 |
 | **DaemonSet** | 确保每个（或部分）节点上恰好运行一个 Pod 副本。适用于日志采集、监控代理、网络插件等节点级守护进程。 |
 
-### 批处理类控制器（Batch Controllers）
+### 1.3.2 批处理类控制器（Batch Controllers）
 
 这一类控制器用于管理需要运行到完成的短期任务。
 
@@ -225,7 +225,7 @@ Kubernetes 生态系统中有数十个控制器，按功能可以分为五大类
 | **Job** | 管理一次性任务，确保指定数量的 Pod 成功完成。支持并行执行、失败重试、超时控制。 |
 | **CronJob** | 在 Job 之上增加了定时调度能力，按照 Cron 表达式周期性地创建 Job。 |
 
-### 伸缩类控制器（Scaling Controllers）
+### 1.3.3 伸缩类控制器（Scaling Controllers）
 
 这一类控制器根据负载动态调整 Pod 副本数。
 
@@ -234,7 +234,7 @@ Kubernetes 生态系统中有数十个控制器，按功能可以分为五大类
 | **HorizontalPodAutoscaler (HPA)** | 根据 CPU/内存使用率或自定义指标，自动调整 Deployment、ReplicaSet 或 StatefulSet 的副本数。 |
 | **VerticalPodAutoscaler (VPA)** | 根据历史使用情况，自动调整 Pod 中容器的资源请求和限制（不属核心控制器，由社区维护）。 |
 
-### 节点类控制器（Node Controllers）
+### 1.3.4 节点类控制器（Node Controllers）
 
 这一类控制器负责管理和监控集群节点。
 
@@ -243,14 +243,14 @@ Kubernetes 生态系统中有数十个控制器，按功能可以分为五大类
 | **Node Controller** | 监控节点健康状态，在节点不可达时驱逐 Pod、标记节点为 NotReady 等。 |
 | **Node IPAM Controller** | 为节点分配 CIDR 块，管理 Pod 网络 IP 地址池。 |
 
-### 服务与网络类控制器（Service & Network Controllers）
+### 1.3.5 服务与网络类控制器（Service & Network Controllers）
 
 | 控制器 | 说明 |
 |--------|------|
 | **EndpointSlice Controller** | 根据 Service 的 Selector 和 Pod 状态，自动生成 EndpointSlice 对象，记录后端 Pod 的 IP 和端口。 |
 | **Ingress Controller** | 监听 Ingress 资源变更，更新负载均衡器的配置。Ingress Controller 不是核心组 __ 件，由各厂商或社区提供（如 ingress-nginx、Traefik、Istio Gateway）。 |
 
-### 其他基础设施控制器
+### 1.3.6 其他基础设施控制器
 
 | 控制器 | 说明 |
 |--------|------|
@@ -259,17 +259,17 @@ Kubernetes 生态系统中有数十个控制器，按功能可以分为五大类
 | **Namespace Controller** | 在 Namespace 被删除时，清理该命名空间下的所有资源。 |
 | **ServiceAccount Token Controller** | 自动为 ServiceAccount 创建 Secret（K8s 1.22-）或通过 TokenRequest API 生成令牌。 |
 
-# 2.ReplicaSet
+# 2. ReplicaSet
 
 ## 2.1 ReplicaSet 的作用与 YAML 定义
 
-### 设计动机
+### 2.1.1 设计动机
 
 ReplicaSet（简称 RS）是 Kubernetes 中最基础的 Pod 副本管理单元。它的唯一职责是：**在任何时刻，确保匹配特定标签选择器的 Pod 数量等于用户指定的 replicas 值**。
 
 在 Kubernetes 的早期版本中，这个角色由 ReplicationController（RC）承担。随着 Kubernetes API 的演进，Selector 从等式匹配（`app=nginx`）扩展到集合匹配（`env in (production, staging)`），ReplicaSet 作为更通用的替代方案被引入，RC 现已标记为废弃。
 
-### 为什么需要 ReplicaSet
+### 2.1.2 为什么需要 ReplicaSet
 
 直接创建裸 Pod（Bare Pod）存在以下问题：
 
@@ -279,7 +279,7 @@ ReplicaSet（简称 RS）是 Kubernetes 中最基础的 Pod 副本管理单元�
 
 ReplicaSet 通过控制循环解决了这些问题。
 
-### YAML 示例
+### 2.1.3 YAML 示例
 
 ```yaml
 apiVersion: apps/v1
@@ -321,7 +321,7 @@ spec:
             memory: 256Mi
 ```
 
-### 关键字段解析
+### 2.1.4 关键字段解析
 
 - **replicas**：期望的 Pod 副本数量。控制器会持续监控，若实际数量不符，则创建或删除 Pod 以达到期望值。设为 0 相当于停止该 RS（Pod 全部删除），但 RS 对象本身保留。
 - **minReadySeconds**：Pod 通过 Readiness Probe 变为 Ready 后，必须持续保持 Ready 状态达到该秒数，控制器才将其计入"可用副本"（availableReplicas）。这个参数对于滚动更新至关重要——防止新 Pod 短暂 Ready 后又崩溃，导致假性可用。
@@ -334,7 +334,7 @@ spec:
 
 Selector 是 ReplicaSet 识别和管理 Pod 的核心机制。Kubernetes 支持两种类型的选择器：
 
-### matchLabels（等式选择器）
+### 2.2.1 matchLabels（等式选择器）
 
 最简单的匹配方式，要求 Pod 的标签与指定键值对完全一致。多个 matchLabels 之间是 AND 关系。
 
@@ -346,7 +346,7 @@ selector:
     # Pod 必须同时具有 app=nginx 和 env=production 两个标签
 ```
 
-### matchExpressions（集合选择器）
+### 2.2.2 matchExpressions（集合选择器）
 
 更灵活的匹配方式，支持四种操作符：
 
@@ -377,7 +377,7 @@ selector:
 
 matchLabels 和 matchExpressions 可以同时指定，此时 Pod 必须同时满足所有条件（AND 逻辑）。
 
-### Selector 的不可变性
+### 2.2.3 Selector 的不可变性
 
 ReplicaSet 创建后，`selector` 字段不可修改。这是因为 Kubernetes 需要在创建 RS 时确保 template 的 labels 包含 selector 要求的所有标签，如果后续允许修改 selector，可能导致：
 - RS 失去对已有 Pod 的管理（Pod 不再匹配 selector），造成孤儿 Pod。
@@ -391,7 +391,7 @@ ReplicaSet 创建后，`selector` 字段不可修改。这是因为 Kubernetes �
 
 ReplicaSet Controller 是 kube-controller-manager 中的一个独立 goroutine，其工作流程如下：
 
-### 第一步：事件驱动
+### 2.3.1 第一步：事件驱动
 
 RS Controller 通过 Informer 机制监听 ReplicaSet 和 Pod 的变更事件：
 
@@ -406,7 +406,7 @@ Pod 变为 Ready/NotReady          → 更新 RS 的 readyReplicas
 节点故障导致 Pod 被驱逐            → 在其他节点创建新 Pod
 ```
 
-### 第二步：调谐逻辑
+### 2.3.2 第二步：调谐逻辑
 
 RS 控制器的核心逻辑可以概括为以下伪代码：
 
@@ -437,7 +437,7 @@ func reconcile(rs) {
 }
 ```
 
-### 第三步：缩容时的 Pod 优先级
+### 2.3.3 第三步：缩容时的 Pod 优先级
 
 当 RS 需要缩容时，控制器不会随机删除 Pod，而是按照以下优先级排序：
 
@@ -448,7 +448,7 @@ func reconcile(rs) {
 5. **Pod Conditions 异常的 Pod**优先于正常的 Pod。
 6. 如果以上条件都相同，则随机选择。
 
-### OwnerReference 保护
+### 2.3.4 OwnerReference 保护
 
 ReplicaSet 在创建 Pod 时，会在 Pod 的 metadata 中设置 OwnerReference：
 
@@ -469,7 +469,7 @@ metadata:
 
 ## 2.4 ReplicaSet vs ReplicationController
 
-### 为什么 RC 被废弃
+### 2.4.1 为什么 RC 被废弃
 
 ReplicationController（RC）是 Kubernetes 最早的 Pod 副本管理器，它在 v1 版本引入。ReplicaSet 在 v1.2 版本引入，作为 RC 的进化版本。两者的核心区别：
 
@@ -482,7 +482,7 @@ ReplicationController（RC）是 Kubernetes 最早的 Pod 副本管理器，它�
 
 RC 选择器的局限性在复杂场景中会暴露问题。例如，假设一个 RC 的选择器是 `version=1.0`，当需要区分 `version=1.0-beta` 和 `version=1.0-stable` 时，等式选择器无法做到，因为 `version=1.0` 会同时匹配两者。而 RS 的 matchExpressions 可以通过 `version NotIn [1.0-beta]` 来排除。
 
-### 迁移建议
+### 2.4.2 迁移建议
 
 - 新部署直接使用 Deployment（底层自动管理 RS），无需手动创建 RS。
 - 已有 RC 的集群不需要紧急迁移，RC 在未来很长一段时间内仍然可用。
@@ -492,7 +492,7 @@ RC 选择器的局限性在复杂场景中会暴露问题。例如，假设一�
 
 ## 2.5 孤立 Pod 与接管
 
-### 孤立 Pod 的产生
+### 2.5.1 孤立 Pod 的产生
 
 以下场景会导致 Pod 成为"孤立 Pod"（Orphan Pod）：
 
@@ -515,7 +515,7 @@ kubectl label pod nginx-rs-abc123 app=not-nginx --overwrite
 kubectl delete rs nginx-rs --cascade=orphan
 ```
 
-### 接管（Adoption）
+### 2.5.2 接管（Adoption）
 
 ReplicaSet 的接管指的是 RS 将符合其 selector 但未被任何控制器管理的 Pod 纳入管理。
 
@@ -528,7 +528,7 @@ ReplicaSet 的接管指的是 RS 将符合其 selector 但未被任何控制器�
 
 实际工程中，手动利用接管实现"将一个 RS 的 Pod 迁移到另一个 RS"是不推荐的。正确的方式是通过 Deployment 的滚动更新或更改 Service 的 selector 来切换流量。
 
-### 安全排查
+### 2.5.3 安全排查
 
 ```bash
 # 查找集群中没有控制器的孤立 Pod
@@ -540,13 +540,13 @@ kubectl get pod <pod-name> -o yaml | grep -A5 ownerReferences
 
 ---
 
-# 3.Deployment
+# 3. Deployment
 
 ## 3.1 Deployment 设计目标
 
 Deployment 是 Kubernetes 中最重要的高级工作负载控制器，它在 ReplicaSet 之上提供了一层抽象，核心设计目标包括：
 
-### 1. 声明式更新（Declarative Updates）
+### 3.1.1 声明式更新（Declarative Updates）
 
 用户只需修改 Deployment YAML（例如 `kubectl edit deploy/nginx` 或 `kubectl set image deploy/nginx nginx=nginx:1.22`），Deployment Controller 会自动完成后续的所有操作——包括创建新 ReplicaSet、执行滚动更新、清理旧 ReplicaSet。
 
@@ -559,7 +559,7 @@ kubectl create -f nginx-v2-rs.yaml
 # 问题：有停机时间、无流量切换、无进度监控
 ```
 
-### 2. 滚动更新（Rolling Updates）
+### 3.1.2 滚动更新（Rolling Updates）
 
 Deployment 支持零停机时间的滚动更新：逐批将旧版本 Pod 替换为新版本，整个过程对外提供不间断服务。
 
@@ -567,7 +567,7 @@ Deployment 支持零停机时间的滚动更新：逐批将旧版本 Pod 替换�
 - **速度优先**：允许更多 Pod 在新旧版本之间临时存在（更大的 maxSurge/maxUnavailable），更新更快但可能消耗更多资源。
 - **稳定优先**：严格控制每次替换的 Pod 数量，更新较慢但风险更低。
 
-### 3. 版本管理与回滚
+### 3.1.3 版本管理与回滚
 
 Deployment 自动保存每次更新的历史记录（通过保留旧 ReplicaSet），支持：
 
@@ -576,7 +576,7 @@ Deployment 自动保存每次更新的历史记录（通过保留旧 ReplicaSet�
 - **回滚到指定版本**：`kubectl rollout undo deployment/nginx --to-revision=3`
 - **查看具体版本的差异**：比较不同版本的 Pod Template
 
-### 4. 多副本集协调
+### 3.1.4 多副本集协调
 
 Deployment 的核心工作模型是"多代 ReplicaSet 并存"：
 
@@ -651,14 +651,14 @@ spec:
           periodSeconds: 20
 ```
 
-### 关键字段详解
+### 3.2.1 关键字段详解
 
-#### strategy
+**strategy**
 
 - **type: RollingUpdate**：默认策略，滚动更新。通过逐步替换 Pod 实现零停机更新。
 - **type: Recreate**：先删除所有旧版本 Pod，再创建新版本 Pod。适用于不支持多版本并存的场景（如数据库 Schema 变更）。
 
-#### revisionHistoryLimit
+**revisionHistoryLimit**
 
 默认值为 10。Deployment 每次更新会创建一个新的 ReplicaSet，旧的 ReplicaSet 被保留（缩容至 0）以备回滚。`revisionHistoryLimit` 限制了保留的旧 RS 数量。超出该值时，最老的 RS 会被删除。
 
@@ -667,14 +667,14 @@ spec:
 - 如果经常需要回滚到多个版本之前，适当增大此值。
 - 设得太小可能导致需要回滚到已经被清理的版本，此时需要通过 Git 中的 YAML 重新部署。
 
-#### minReadySeconds
+**minReadySeconds**
 
 Pod 变为 Ready 后，必须保持 Ready 状态至少 `minReadySeconds` 秒，Deployment 才将其计入可用副本（availableReplicas）。这个参数的主要作用是：
 
 1. **防止"假性可用"**：Pod 的 Readiness Probe 可能短暂通过，但应用实际上还没加载完数据。minReadySeconds 提供了一个缓冲期。
 2. **减慢滚动更新速度**：新 Pod Ready 后需要等待 minReadySeconds 秒，Deployment 控制器才会继续处理下一批 Pod，这为问题发现提供了时间窗口。
 
-#### progressDeadlineSeconds
+**progressDeadlineSeconds**
 
 滚动更新必须在 `progressDeadlineSeconds` 秒内完成，否则 Deployment 的状态会被标记为 `ProgressDeadlineExceeded`（置为 Failed）。
 
@@ -691,7 +691,7 @@ kubectl describe deployment nginx-deployment
 kubectl rollout undo deployment/nginx-deployment
 ```
 
-#### paused
+**paused**
 
 将 `paused` 设为 `true` 后，Deployment 控制器停止对当前 Deployment 做任何更改（包括滚动更新、缩扩容）。但对已存在的 ReplicaSet 的扩缩容仍由 RS 控制器负责。
 
@@ -709,7 +709,7 @@ kubectl rollout resume deployment/nginx-deployment
 
 ## 3.3 滚动更新策略（RollingUpdate）
 
-### maxSurge
+### 3.3.1 maxSurge
 
 `maxSurge` 定义了滚动更新期间，允许超出期望副本数的最大 Pod 数量。它可以是绝对值（如 `3`）或百分比（如 `25%`）。
 
@@ -722,7 +722,7 @@ kubectl rollout resume deployment/nginx-deployment
 
 **为什么允许超出期望值**：如果每次必须先删除旧 Pod 才能创建新 Pod，服务容量会暂时下降，可能无法承载当前流量。允许临时超额，保证了服务容量不下降。
 
-### maxUnavailable
+### 3.3.2 maxUnavailable
 
 `maxUnavailable` 定义了滚动更新期间，允许不可用的 Pod 最大数量。它也可以是绝对值或百分比。
 
@@ -731,7 +731,7 @@ kubectl rollout resume deployment/nginx-deployment
 | 10 | 2 | 更新期间至少有 8 个 Pod 保持可用 |
 | 10 | 25% | 更新期间至少有 8 个 Pod 保持可用（四舍五入向下取整） |
 
-### 参数组合效果
+### 3.3.3 参数组合效果
 
 maxSurge 和 maxUnavailable 的不同组合决定了滚动更新的行为模式：
 
@@ -741,7 +741,7 @@ maxSurge 和 maxUnavailable 的不同组合决定了滚动更新的行为模式�
 | 0 | 1 | **逐 Pod 替换，允许短暂降级**。每次删除 1 个旧 Pod，再创建 1 个新 Pod。Pod 总数不超过期望值，但服务容量可能短暂下降。 |
 | 25% | 25% | **批量替换**。每次同时处理一批 Pod（replicas × 25%），更新速度快但瞬时资源开销大。 |
 
-### 计算示例
+### 3.3.4 计算示例
 
 假设 replicas = 10，maxSurge = 25%，maxUnavailable = 25%：
 
@@ -767,7 +767,7 @@ maxUnavailable = floor(10 × 25%) = floor(2.5) = 2
 完成。
 ```
 
-### 注意事项
+### 3.3.5 注意事项
 
 1. **maxSurge 不能为 0 且 maxUnavailable 不能同时为 0**——否则更新无法进行（不能创建新 Pod 也不能删除旧 Pod）。
 2. **百分比取整规则**：
@@ -779,7 +779,7 @@ maxUnavailable = floor(10 × 25%) = floor(2.5) = 2
 
 ## 3.4 Recreate 策略
 
-### 适用场景
+### 3.4.1 适用场景
 
 Recreate 策略的逻辑非常简单：先删除所有旧版本 Pod，等它们完全终止后，再创建新版本 Pod。
 
@@ -798,7 +798,7 @@ Recreate 适用于以下场景：
 - **需要完整的资源释放**：旧版本占用的存储卷、网络端口等资源必须先完全释放。
 - **更新速度要求极高，且可接受停机**：批量删除和创建通常比逐个滚动要快。
 
-### YAML 配置
+### 3.4.2 YAML 配置
 
 ```yaml
 spec:
@@ -806,7 +806,7 @@ spec:
     type: Recreate
 ```
 
-### 与 RollingUpdate 的对比
+### 3.4.3 与 RollingUpdate 的对比
 
 | 维度 | RollingUpdate | Recreate |
 |------|--------------|----------|
@@ -820,7 +820,7 @@ spec:
 
 ## 3.5 更新过程深度解析
 
-### 完整的滚动更新时序
+### 3.5.1 完整的滚动更新时序
 
 当用户更新 Deployment 的 Pod Template（例如修改镜像版本）时，以下事件按顺序发生：
 
@@ -863,7 +863,7 @@ spec:
 └─ T7: 如果 revisionHistoryLimit 超限，删除最老的 RS
 ```
 
-### pod-template-hash
+### 3.5.2 pod-template-hash
 
 每当 Deployment 的 Pod Template 发生变化，Deployment Controller 会计算 template 的 Hash 值，并以标签的形式附加到 ReplicaSet 和 Pod 上：
 
@@ -880,7 +880,7 @@ metadata:
 2. **关联 Pod 与 RS**：RS 的 selector 包含 `pod-template-hash` 标签，使得每个 RS 只会管理自己创建的 Pod，不会争抢其他 RS 的 Pod。
 3. **滚动更新时的精确控制**：Deployment Controller 通过 hash 精确知道哪些 Pod 属于旧版本，哪些属于新版本。
 
-### Status 字段的变化
+### 3.5.3 Status 字段的变化
 
 在更新过程中，Deployment 的 `status` 字段实时反映更新进度：
 
@@ -910,7 +910,7 @@ status:
 
 ## 3.6 回滚机制
 
-### 回滚的实现原理
+### 3.6.1 回滚的实现原理
 
 Deployment 的回滚并非真正"撤销操作"，而是**切换到旧 ReplicaSet**。
 
@@ -935,7 +935,7 @@ kubectl rollout history deployment/nginx-deployment
 kubectl rollout history deployment/nginx-deployment --revision=3
 ```
 
-### revision 的存储
+### 3.6.2 revision 的存储
 
 Deployment 的历史版本信息不存储在 Deployment 对象本身，而是散布在：
 
@@ -943,7 +943,7 @@ Deployment 的历史版本信息不存储在 Deployment 对象本身，而是散
 2. **Deployment 的 `revisionHistoryLimit`**：限制保留多少个历史 RS。
 3. RS 的 `ownerReferences` 指向 Deployment，Deployment 由此获知 RS 的归属。
 
-### 重要注意事项
+### 3.6.3 重要注意事项
 
 **回滚不会恢复其他资源**：回滚只恢复 Pod Template（镜像、环境变量、资源请求等），不会恢复以下内容：
 - ConfigMap 和 Secret 的内容变更（需要单独回滚）。
@@ -970,7 +970,7 @@ kubectl rollout history deployment/nginx-deployment
 
 ## 3.7 暂停/恢复更新
 
-### 用例：实现金丝雀发布的前置操作
+### 3.7.1 用例：实现金丝雀发布的前置操作
 
 ```bash
 # 1. 创建 Deployment
@@ -989,7 +989,7 @@ kubectl set resources deployment/nginx --limits=cpu=200m,memory=256Mi
 kubectl rollout resume deployment/nginx
 ```
 
-### 暂停后的限制
+### 3.7.2 暂停后的限制
 
 暂停（`paused: true`）期间：
 - Deployment Controller **不会**执行任何滚动更新操作。
@@ -997,7 +997,7 @@ kubectl rollout resume deployment/nginx
 - pause 状态会被记录在 Deployment 的 `.spec.paused` 字段中。
 - pause 状态在 Deployment 更新期间持久化，即使 Controller Manager 重启也不会丢失。
 
-### 常见问题
+### 3.7.3 常见问题
 
 **Q: 暂停后修改 replicas 会怎样？**
 
@@ -1014,7 +1014,7 @@ kubectl get deployment nginx-deployment -o jsonpath='{.spec.paused}'
 
 ## 3.8 Deployment 更新失败场景与处理
 
-### 场景一：镜像拉取失败（ImagePullBackOff / ErrImagePull）
+### 3.8.1 场景一：镜像拉取失败（ImagePullBackOff / ErrImagePull）
 
 **症状**：
 - 新 Pod 状态为 `ImagePullBackOff` 或 `ErrImagePull`。
@@ -1044,7 +1044,7 @@ kubectl get serviceaccount default -o yaml
 - 使用 CI/CD 流程自动验证镜像存在性。
 - 对于生产环境，使用不可变 tag 或 Digest（如 `nginx@sha256:...`）。
 
-### 场景二：健康检查失败
+### 3.8.2 场景二：健康检查失败
 
 **症状**：
 - 新 Pod 状态为 `Running` 但 `READY 0/1`。
@@ -1070,7 +1070,7 @@ kubectl edit deployment/nginx
 # 增加 initialDelaySeconds 或调整探针路径
 ```
 
-### 场景三：资源配额不足
+### 3.8.3 场景三：资源配额不足
 
 **症状**：
 - 新 Pod 状态为 `Pending`。
@@ -1097,7 +1097,7 @@ kubectl describe limitrange -n <namespace>
 # - 调整 ResourceQuota 限制
 ```
 
-### 场景四：更新过程中被中断
+### 3.8.4 场景四：更新过程中被中断
 
 如果 Controller Manager 在更新过程中崩溃重启，Deployment Controller 重启后会：
 1. 从 API Server 重新 List 所有 Deployment、ReplicaSet 和 Pod。
@@ -1107,7 +1107,7 @@ kubectl describe limitrange -n <namespace>
 
 这得益于 Deployment Controller 的无状态设计——所有状态都存储在 etcd 中，Controller 本身不保存任何内存状态。这也是为什么 Controller Manager 可以水平扩展（通过 Leader Election 选举主实例）。
 
-### 状态转换图
+### 3.8.5 状态转换图
 
 ```
 Deployment 更新状态机：
@@ -1125,13 +1125,13 @@ Deployment 更新状态机：
 
 ## 3.9 金丝雀发布
 
-### 原理
+### 3.9.1 原理
 
 金丝雀发布（Canary Deployment）是一种渐进式发布策略：将新版本部署到少量实例上，只让一部分用户流量访问新版本，验证无误后再全量切换。
 
 Kubernetes 本身没有内置"金丝雀"控制器，但可以通过组合 Deployment 和 Service 的 Label Selector 来实现。
 
-### 实现步骤
+### 3.9.2 实现步骤
 
 **第一步：创建稳定的主 Deployment**
 
@@ -1205,7 +1205,7 @@ spec:
 
 验证金丝雀版本无误后，更新 stable Deployment 的镜像为 `nginx:1.22`，然后删除 canary Deployment。
 
-### 缺点与替代方案
+### 3.9.3 缺点与替代方案
 
 手动组合 Deployment + Service 实现金丝雀发布存在以下限制：
 
@@ -1220,11 +1220,11 @@ spec:
 - **Istio VirtualService**：通过 Istio 的流量路由实现精确的流量切分（例如 5% 流量到新版本）。
 - **OpenKruise Rollout**：阿里开源的渐进式交付框架。
 
-# 4.StatefulSet
+# 4. StatefulSet
 
 ## 4.1 有状态应用的需求
 
-### 有状态 vs 无状态
+### 4.1.1 有状态 vs 无状态
 
 Deployment 管理的 Pod 是"无状态"的（Stateless）：所有 Pod 完全相同，可以随时被替换。对于 Web 服务器、API 网关这类应用，这种同构性是合适的。
 
@@ -1238,7 +1238,7 @@ Deployment 管理的 Pod 是"无状态"的（Stateless）：所有 Pod 完全相
 | 启动/停止顺序 | 无序、可并行 | 有序（主从架构必须先启动主库） |
 | 集群拓扑 | 不关心 | Pod 需要知道其他 Pod 的身份（如 etcd 集群成员） |
 
-### StatefulSet 提供的保障
+### 4.1.2 StatefulSet 提供的保障
 
 1. **稳定的网络标识**：每个 Pod 有固定的序号和 DNS 名称。Pod 重新调度到其他节点后，名称和 DNS 不变。
 2. **稳定的持久存储**：每个 Pod 绑定独立的 PVC。Pod 重建后，重新挂载同一个 PVC，数据不丢失。
@@ -1320,9 +1320,9 @@ spec:
           storage: 20Gi
 ```
 
-### 关键字段详解
+### 4.2.1 关键字段详解
 
-#### serviceName（必填）
+**serviceName（必填）**
 
 StatefulSet 必须关联一个 Headless Service（ClusterIP 为 None）。这个 Service 负责为每个 Pod 提供 DNS 解析。Headless Service 的定义：
 
@@ -1342,12 +1342,12 @@ spec:
 
 注意：除了 Headless Service，通常还会创建一个普通的 ClusterIP Service 供客户端访问（流量被分发到任意一个 Pod）。
 
-#### podManagementPolicy
+**podManagementPolicy**
 
 - **OrderedReady**（默认）：Pod 严格按序号顺序创建/删除/更新。对于每个 Pod，控制器会等待其 Ready 后，才处理下一个。这保证了集群启动时的拓扑正确性。
 - **Parallel**：Pod 可以并行创建/删除，不等待其他 Pod 就绪。适用于对启动顺序不敏感的有状态应用（如纯计算型应用，或应用层自己处理集群发现）。
 
-#### volumeClaimTemplates
+**volumeClaimTemplates**
 
 StatefulSet 不会在 `spec.template.spec.volumes` 中定义卷，而是通过 `volumeClaimTemplates` 为每个 Pod 动态创建 PVC。每个 Pod 的 PVC 命名规则为 `<volumeClaimTemplates.metadata.name>-<StatefulSetName>-<序号>`，例如 `data-mysql-0`。
 
@@ -1357,7 +1357,7 @@ StatefulSet 不会在 `spec.template.spec.volumes` 中定义卷，而是通过 `
 
 ## 4.3 网络标识
 
-### DNS 名称规则
+### 4.3.1 DNS 名称规则
 
 StatefulSet 中每个 Pod 有一个稳定、可预测的 DNS 名称，格式为：
 
@@ -1375,7 +1375,7 @@ mysql-2.mysql-headless.default.svc.cluster.local
 
 即使 Pod 被删除重建，甚至迁移到其他节点，这个 DNS 名称保持不变。
 
-### 为什么需要稳定网络标识
+### 4.3.2 为什么需要稳定网络标识
 
 以 MySQL 主从复制集群为例：
 
@@ -1394,7 +1394,7 @@ CHANGE MASTER TO MASTER_HOST='mysql-0.mysql-headless.default.svc.cluster.local'
 
 如果没有稳定的 DNS 名称，Slave 无法找到 Master 的地址（因为 Pod IP 和名称都会变化）。
 
-### 应用如何获取自己的序号和 DNS 名称
+### 4.3.3 应用如何获取自己的序号和 DNS 名称
 
 通过 Downward API 可以将 Pod 的名称和序号注入到环境变量或文件中：
 
@@ -1416,9 +1416,9 @@ env:
 
 ## 4.4 Pod 顺序管理
 
-### OrderedReady 模式（默认）
+### 4.4.1 OrderedReady 模式（默认）
 
-#### 创建过程（0 → N-1）
+**创建过程（0 → N-1）**
 
 ```
 T0: StatefulSet 创建，replicas=3
@@ -1430,7 +1430,7 @@ T4: 全部 Ready，StatefulSet 状态变为 Complete
 
 **为什么顺序很重要**：以 ZooKeeper 集群为例，ZK 节点的配置文件中包含所有节点的地址。如果先启动 `zk-2`，zk-2 会发现 `zk-0` 和 `zk-1` 不存在，可能进入异常状态或启动失败。有序启动确保集群中最关键的节点首先就绪。
 
-#### 缩容过程（N-1 → 0）
+**缩容过程（N-1 → 0）**
 
 缩容是逆序的。例如 replicas: 3 → 1：
 
@@ -1442,13 +1442,13 @@ T2: mysql-1 终止后，完成缩容。mysql-0 继续运行。
 
 逆序删除确保最后创建的从副本先被移除，最小化对集群的影响。
 
-#### 更新过程（逆序）
+**更新过程（逆序）**
 
 滚动更新也是逆序的（N-1 → 0）。replicas=3 的更新顺序：mysql-2 → mysql-1 → mysql-0。这与 Deployment 正序或无序的更新方式不同，原因是：
 - 至少有一个副本保持旧版本（更安全）。
 - 主副本（序号最小）最后更新，避免主从切换带来的混乱。
 
-### Parallel 模式
+### 4.4.2 Parallel 模式
 
 在 `podManagementPolicy: Parallel` 模式下：
 
@@ -1464,7 +1464,7 @@ T2: mysql-1 终止后，完成缩容。mysql-0 继续运行。
 
 ## 4.5 持久存储
 
-### volumeClaimTemplates 的工作原理
+### 4.5.1 volumeClaimTemplates 的工作原理
 
 StatefulSet 的 `volumeClaimTemplates` 字段定义了 PVC 模板。当 StatefulSet 创建 Pod 时，会自动为每个 Pod 创建一个独立的 PVC。
 
@@ -1490,7 +1490,7 @@ StatefulSet: mysql
 2. **Pod 重建后重新挂载同一 PVC**：StatefulSet Controller 会在创建新 Pod 时，通过标签查找属于该序号的 PVC，并重新挂载。
 3. **存储拓扑感知**：如果 PV 绑定到特定可用区的云盘，Pod 重新调度时会被约束到同一可用区。
 
-### PVC 保留策略（Kubernetes 1.27+）
+### 4.5.2 PVC 保留策略（Kubernetes 1.27+）
 
 从 Kubernetes 1.27 开始（Beta），StatefulSet 支持通过 `persistentVolumeClaimRetentionPolicy` 控制 PVC 的保留行为：
 
@@ -1510,7 +1510,7 @@ spec:
 
 在 1.27 之前，缩容时 PVC 总是被保留。这可能导致大量"孤儿"PVC 占用存储资源，需要手动清理。
 
-### 存储类选择
+### 4.5.3 存储类选择
 
 为 StatefulSet 选择存储类时需要考虑：
 
@@ -1527,7 +1527,7 @@ spec:
 
 ## 4.6 StatefulSet 更新策略
 
-### RollingUpdate（默认）
+### 4.6.1 RollingUpdate（默认）
 
 StatefulSet 的滚动更新与 Deployment 不同：
 
@@ -1546,7 +1546,7 @@ Step 3: mysql-0 删除（v1） → 创建 mysql-0 (v2) → 等待 Ready
 完成
 ```
 
-### OnDelete 策略
+### 4.6.2 OnDelete 策略
 
 ```yaml
 spec:
@@ -1565,7 +1565,7 @@ spec:
 
 ## 4.7 分区更新
 
-### partition 参数
+### 4.7.1 partition 参数
 
 StatefulSet 的滚动更新策略支持 `partition` 参数，实现"分期更新"：
 
@@ -1579,7 +1579,7 @@ spec:
 
 只有序号大于或等于 `partition` 的 Pod 会被更新到新 template。序号小于 partition 的 Pod 保持不变（即使被删除重建，也用旧 template）。
 
-### 实现金丝雀发布
+### 4.7.2 实现金丝雀发布
 
 ```
 StatefulSet replicas=5, partition=4:
@@ -1599,7 +1599,7 @@ kubectl patch statefulset mysql -p '{"spec":{"updateStrategy":{"rollingUpdate":{
 # 现在 mysql-3 和 mysql-4 都会更新到 v2
 ```
 
-### 与 OnDelete 的对比
+### 4.7.3 与 OnDelete 的对比
 
 | 策略 | partition | OnDelete |
 |------|-----------|----------|
@@ -1612,7 +1612,7 @@ kubectl patch statefulset mysql -p '{"spec":{"updateStrategy":{"rollingUpdate":{
 
 ## 4.8 StatefulSet 缩放
 
-### 扩容注意事项
+### 4.8.1 扩容注意事项
 
 **扩容时（replicas 增加）**，StatefulSet Controller 按顺序（从小到大）创建新 Pod。整个过程是"惰性"的——必须等待上一个 Pod Ready 后才创建下一个。
 
@@ -1622,7 +1622,7 @@ kubectl patch statefulset mysql -p '{"spec":{"updateStrategy":{"rollingUpdate":{
 2. **集群拓扑检查**：某些有状态应用（如 ZK、etcd）要求奇数个节点以实现多数派投票。直接扩容到偶数可能导致无效扩容。
 3. **数据复制时间**：新加入的副本需要从主节点同步数据，启动时间可能远长于 Readiness Probe 的 initialDelaySeconds。应设置足够的 `initialDelaySeconds` 和 `periodSeconds`。
 
-### 缩容注意事项
+### 4.8.2 缩容注意事项
 
 **缩容时（replicas 减少）**，StatefulSet Controller 按逆序（从大到小）删除 Pod。
 
@@ -1653,7 +1653,7 @@ kubectl patch statefulset mysql -p '{"spec":{"updateStrategy":{"rollingUpdate":{
 
 4. **避免数据丢失**：例如，一个 3 节点的 etcd 集群，如果直接缩容到 2 节点，虽然理论上仍保持多数派（2/2），但在一个节点故障时丧失写入能力。最佳实践是保持奇数节点。
 
-### 全量缩容到 0
+### 4.8.3 全量缩容到 0
 
 ```bash
 kubectl scale statefulset mysql --replicas=0
@@ -1663,19 +1663,19 @@ kubectl scale statefulset mysql --replicas=0
 
 ---
 
-# 5.DaemonSet
+# 5. DaemonSet
 
 ## 5.1 DaemonSet 设计目标
 
 DaemonSet（简称 DS）确保所有（或部分）节点上运行一个 Pod 的副本。它是一种特化的控制器，设计目标与 Deployment/StatefulSet 截然不同：
 
-### 核心语义
+### 5.1.1 核心语义
 
 - **每个节点一个 Pod**：当新节点加入集群时，DaemonSet Controller 自动在该节点上创建 Pod。当节点离开集群时，对应的 Pod 被 GC 回收。
 - **节点级服务**：DS 管理的 Pod 通常提供与节点强相关的服务（日志采集、监控、网络、存储插件）。
 - **无视 Scheduler**：默认情况下，DaemonSet 绕过调度器（Scheduler）直接分配 Pod 到节点，除非显式指定了 `nodeName` 才会被调度器接管。
 
-### 与 Deployment 的本质区别
+### 5.1.2 与 Deployment 的本质区别
 
 | 维度 | Deployment | DaemonSet |
 |------|-----------|-----------|
@@ -1751,7 +1751,7 @@ spec:
           name: fluentd-config
 ```
 
-### 关键特性说明
+### 5.2.1 关键特性说明
 
 - **tolerations**：默认情况下，DaemonSet Pod 不会被调度到有 NoSchedule 污点的节点（如 Control Plane Node）。显式添加 tolerations 可以让 DaemonSet 在控制平面节点上也运行。
 - **hostNetwork/hostPID**：许多 DaemonSet 应用需要访问宿主机级别的资源（网络、进程、文件系统）。示例中 Fluentd 需要读取 `/var/log` 和容器日志路径。
@@ -1761,7 +1761,7 @@ spec:
 
 ## 5.3 调度机制
 
-### 默认调度（bypass scheduler）
+### 5.3.1 默认调度（bypass scheduler）
 
 DaemonSet Controller 为每个匹配条件的节点生成 Pod，并直接设置 `nodeName` 字段（而非让调度器决策）。这有以下影响：
 
@@ -1769,7 +1769,7 @@ DaemonSet Controller 为每个匹配条件的节点生成 Pod，并直接设置 
 2. **无视资源请求**：默认不检查节点是否有足够的 CPU/内存（可能导致节点资源过载）。
 3. **必须使用 `NodeAffinity` 或 `nodeSelector` 来限定目标节点**。
 
-### 通过 nodeSelector 限制目标节点
+### 5.3.2 通过 nodeSelector 限制目标节点
 
 ```yaml
 spec:
@@ -1780,7 +1780,7 @@ spec:
         # 仅在 disktype=ssd 的节点上运行
 ```
 
-### 通过 nodeAffinity 限制目标节点
+### 5.3.3 通过 nodeAffinity 限制目标节点
 
 ```yaml
 spec:
@@ -1807,15 +1807,15 @@ spec:
 
 `requiredDuringSchedulingIgnoredDuringExecution`：硬性要求，节点必须满足。`preferredDuringSchedulingIgnoredDuringExecution`：软性偏好，尽量满足。
 
-### 节点亲和性默认添加（Kubernetes 1.12+）
+### 5.3.4 节点亲和性默认添加（Kubernetes 1.12+）
 
 从 K8s 1.12 开始，DaemonSet Controller 会自动为 Pod 添加与节点角色相关的 nodeAffinity。例如，Control Plane 节点的 DaemonSet Pod 会自动添加 `node-role.kubernetes.io/control-plane` nodeAffinity。用户可以通过显式设置 nodeAffinity 来覆盖默认值。
 
-### Pod 驱逐与优先级
+### 5.3.5 Pod 驱逐与优先级
 
 DaemonSet Pod 默认被标记为 `priorityClassName: system-node-critical`（高优先级）。在资源紧张时，kubelet 的驱逐管理器（Eviction Manager）会优先驱逐低优先级的普通 Pod，保护 DaemonSet Pod。但这并不意味着 DaemonSet Pod 永不驱逐——在极端内存不足时，连 `system-critical` Pod 也可能被驱逐。
 
-### 节点删除时的行为
+### 5.3.6 节点删除时的行为
 
 当节点从集群中移除时：
 - DaemonSet Controller 检测到节点不存在，不会为该节点创建新 Pod。
@@ -1825,7 +1825,7 @@ DaemonSet Pod 默认被标记为 `priorityClassName: system-node-critical`（高
 
 ## 5.4 DaemonSet 更新策略
 
-### RollingUpdate
+### 5.4.1 RollingUpdate
 
 ```yaml
 spec:
@@ -1853,7 +1853,7 @@ Step 2: 删除 Node4, Node5 上的旧 Pod
 完成
 ```
 
-### OnDelete
+### 5.4.2 OnDelete
 
 ```yaml
 spec:
@@ -1863,7 +1863,7 @@ spec:
 
 DaemonSet Controller 只在 Pod 被手动删除后才创建新版本 Pod。适用于需要严格控制每个节点的更新时机的场景。
 
-### 查看更新状态
+### 5.4.3 查看更新状态
 
 ```bash
 kubectl rollout status daemonset/fluentd-logging -n kube-system
@@ -1883,7 +1883,7 @@ kubectl get ds fluentd-logging -n kube-system
 
 ## 5.5 典型应用场景
 
-### 场景一：日志采集（Fluentd / Filebeat）
+### 5.5.1 场景一：日志采集（Fluentd / Filebeat）
 
 日志采集是 DaemonSet 最经典的应用场景。每个节点上的 Fluentd 负责：
 
@@ -1925,7 +1925,7 @@ spec:
           path: /var/lib/docker/containers
 ```
 
-### 场景二：监控代理（Prometheus Node-Exporter）
+### 5.5.2 场景二：监控代理（Prometheus Node-Exporter）
 
 Node Exporter 收集节点级别的硬件和操作系统指标（CPU、内存、磁盘、网络），通常以 DaemonSet 方式部署。
 
@@ -1978,7 +1978,7 @@ spec:
 
 **为什么必须用 hostPath 和 hostNetwork**：Node Exporter 需要读取宿主机的 `/proc`、`/sys` 文件系统，这些在容器内是隔离的（容器的 `/proc` 只显示容器自己的进程）。通过 hostPath 挂载，容器可以访问宿主机的内核信息。
 
-### 场景三：网络插件（Calico / Flannel / Cilium）
+### 5.5.3 场景三：网络插件（Calico / Flannel / Cilium）
 
 CNI 网络插件通常有一个"节点代理"组件，以 DaemonSet 形式在每个节点上运行，负责：
 
@@ -2012,7 +2012,7 @@ spec:
       path: /var/run/calico
 ```
 
-### 场景四：存储插件（CSI Node Plugin）
+### 5.5.4 场景四：存储插件（CSI Node Plugin）
 
 CSI（Container Storage Interface）驱动通常分为 Controller 插件（Deployment）和 Node 插件（DaemonSet）。Node 插件负责在节点上：
 
@@ -2050,20 +2050,20 @@ spec:
 
 ---
 
-# 6.Job
+# 6. Job
 
 ## 6.1 Job 设计目标
 
 Job 是 Kubernetes 中管理**一次性任务**（Run-to-Completion）的控制器。与 Deployment/StatefulSet（持续运行的服务）不同，Job 管理的 Pod 在执行完毕后应该终止，而不是被重启。
 
-### 核心设计目标
+### 6.1.1 核心设计目标
 
 1. **任务完成保证**：确保指定数量的 Pod 成功完成（而非永远运行）。
 2. **并行执行**：允许多个 Pod 并行处理任务，提高吞吐量。
 3. **失败处理**：自动重试失败的 Pod，直到达到成功次数或重试上限。
 4. **资源清理**：任务完成后，支持自动或手动清理 Pod 和 Job 对象。
 
-### 典型场景
+### 6.1.2 典型场景
 
 - **ETL 任务**：从数据库提取数据、转换、加载到数据仓库。
 - **批量处理**：图片转码、视频处理、邮件群发。
@@ -2111,23 +2111,23 @@ spec:
             memory: 256Mi
 ```
 
-### 关键字段详解
+### 6.2.1 关键字段详解
 
-#### parallelism
+**parallelism**
 
 控制同时运行的 Pod 数量。如果不指定或设为 0，默认值为 1（串行执行）。
 
 - `parallelism=1, completions=N`：串行执行 N 次，一次一个 Pod。
 - `parallelism=M, completions=N`：并行执行，最多同时 M 个 Pod 运行，总共需要 N 个 Pod 成功。
 
-#### completions
+**completions**
 
 Job 需要成功完成的 Pod 总数。默认值为 1（单个 Pod 成功完成即结束）。
 
 - 如果 `completions` 未指定且 `parallelism` 也未指定，Job 创建一个 Pod 并等待其成功或失败。
 - 如果指定了 `completions`，Job 会持续创建 Pod（受 `parallelism` 限制），直到有指定数量的 Pod 成功。
 
-#### backoffLimit
+**backoffLimit**
 
 失败重试次数上限。一个失败的 Pod 会计入重试计数。当重试次数达到 `backoffLimit` 后：
 
@@ -2141,7 +2141,7 @@ Job 需要成功完成的 Pod 总数。默认值为 1（单个 Pod 成功完成�
 
 注意：`backoffLimit` 是按 Job 全局计算的，不是单个 Pod 的重试次数。
 
-#### activeDeadlineSeconds
+**activeDeadlineSeconds**
 
 Job 的总超时时间（秒）。从 Job 创建开始计时，一旦超过此时间：
 
@@ -2149,11 +2149,11 @@ Job 的总超时时间（秒）。从 Job 创建开始计时，一旦超过此�
 - Job 状态变为 Failed，状态原因为 `DeadlineExceeded`。
 - `activeDeadlineSeconds` 优先级高于 `backoffLimit`（即使 `backoffLimit` 还有剩余，超时也直接失败）。
 
-#### ttlSecondsAfterFinished
+**ttlSecondsAfterFinished**
 
 Job 完成（成功或失败）后自动清理的等待时间（秒）。Kubernetes 的 TTL Controller 会在该时间后将 Job 及其 Pod 删除。如果不设置此值，Job 和 Pod 会一直保留，需要手动清理。生产环境强烈建议设置此值以避免集群中积累大量已完成 Job。
 
-#### completionMode
+**completionMode**
 
 Kubernetes 1.21+ 的新特性（Beta in 1.24, GA in 1.25）：
 
@@ -2164,7 +2164,7 @@ Kubernetes 1.21+ 的新特性（Beta in 1.24, GA in 1.25）：
 
 ## 6.3 Job 执行模式
 
-### 模式一：单 Pod 单完成（Non-parallel Job）
+### 6.3.1 模式一：单 Pod 单完成（Non-parallel Job）
 
 ```yaml
 spec:
@@ -2174,7 +2174,7 @@ spec:
 
 最简单的模式。创建一个 Pod，等待其成功（exit code 0）或失败。适用于简单的一次性任务。
 
-### 模式二：固定完成次数（Fixed Completion Count）
+### 6.3.2 模式二：固定完成次数（Fixed Completion Count）
 
 ```yaml
 spec:
@@ -2189,7 +2189,7 @@ Job Controller 维护一个计数器，每当一个 Pod 成功退出，计数器
 - 每个 Pod 处理一个或多个工作项。
 - 例如：对 1000 张图片进行转码，completions=1000，每个 Pod 处理 1 张图片。
 
-### 模式三：工作队列（Work Queue Pattern）
+### 6.3.3 模式三：工作队列（Work Queue Pattern）
 
 ```yaml
 spec:
@@ -2208,7 +2208,7 @@ spec:
 - 自动适应队列长度变化。
 - Pod 之间可以协调（例如通过共享计数器或分布式锁避免重复消费）。
 
-### 四种模式的对比
+### 6.3.4 四种模式的对比
 
 | 模式 | completions | parallelism | 适用场景 |
 |------|------------|-------------|---------|
@@ -2221,14 +2221,14 @@ spec:
 
 ## 6.4 Job 失败处理与重试
 
-### Pod 失败类型
+### 6.4.1 Pod 失败类型
 
 Pod 的失败分为两种：
 
 1. **容器级别的失败**：容器以非零退出码退出。此时 kubelet 根据 `restartPolicy` 决定是否重启容器。
 2. **Pod 级别的失败**：Pod 被驱逐（Eviction）、节点宕机、Pod 被删除等。对于 Job，`restartPolicy` 只能是 `OnFailure` 或 `Never`。
 
-### restartPolicy 的选择
+### 6.4.2 restartPolicy 的选择
 
 ```yaml
 spec:
@@ -2249,7 +2249,7 @@ spec:
   - Job Controller 会在其他节点上创建新的 Pod。
   - 适合于：任务不可重入（重启可能导致副作用），每次失败需要全新环境。
 
-### 重试机制
+### 6.4.3 重试机制
 
 ```
 Job 生命周期中的重试逻辑：
@@ -2262,7 +2262,7 @@ Pod 2 创建 → 失败 → 计数器 + 1 → 达到 backoffLimit
 
 **指数退避**：Job Controller 不是立即创建新 Pod，而是使用指数退避（10s, 20s, 40s, ... 最长 6 分钟）。这是为了避免持续对 API Server 和节点造成压力。
 
-### 使用 restartPolicy=Never 时的 podFailurePolicy
+### 6.4.4 使用 restartPolicy=Never 时的 podFailurePolicy
 
 Kubernetes 1.26+ 引入了 `podFailurePolicy`（Alpha→Beta），允许更精细地控制 Pod 失败处理：
 
@@ -2288,7 +2288,7 @@ spec:
 
 ## 6.5 Job 清理策略
 
-### 手动清理
+### 6.5.1 手动清理
 
 ```bash
 # 删除 Job 及其 Pod
@@ -2304,7 +2304,7 @@ kubectl delete jobs --field-selector status.successful=1 -n my-namespace
 kubectl delete jobs --field-selector status.failed=1 -n my-namespace
 ```
 
-### 自动清理：TTL Controller
+### 6.5.2 自动清理：TTL Controller
 
 通过 `ttlSecondsAfterFinished` 自动清理：
 
@@ -2321,7 +2321,7 @@ TTL Controller 会定期扫描集群中已完成的 Job（status 中有 `complet
 3. Controller 每 30 秒扫描一次符合条件的 Job。
 4. 删除是级联的：删除 Job 会级联删除其创建的 Pod（通过 OwnerReference）。
 
-### 清理策略的最佳实践
+### 6.5.3 清理策略的最佳实践
 
 1. **始终为生产 Job 设置 ttlSecondsAfterFinished**，避免已完成 Job 的海量积累。
 2. **根据合规要求设置 TTL**：某些行业要求保留任务记录 7 天、30 天等。
@@ -2332,13 +2332,13 @@ TTL Controller 会定期扫描集群中已完成的 Job（status 中有 `complet
 
 ## 6.6 Indexed Job（Kubernetes 1.21+）
 
-### 问题背景
+### 6.6.1 问题背景
 
 传统的 Job 中，多个并行 Pod 之间没有区分。每个 Pod 不知道自己处理的是"第几个"任务。要实现数据分片处理，需要在应用层引入外部协调机制（如分布式队列或共享计数器）。
 
 Indexed Job 为每个 Pod 分配一个唯一的、从 0 开始的整数索引，使 Pod 能够基于索引执行分片处理。
 
-### YAML 配置
+### 6.6.2 YAML 配置
 
 ```yaml
 apiVersion: batch/v1
@@ -2370,14 +2370,14 @@ spec:
         - --total-shards=10
 ```
 
-### 索引的注入方式
+### 6.6.3 索引的注入方式
 
 Kubernetes 通过两种方式向 Pod 注入索引：
 
 1. **环境变量**：`JOB_COMPLETION_INDEX`（自动注入）。
 2. **注解**：`batch.kubernetes.io/job-completion-index: "5"`（在 Pod 的 metadata.annotations 中）。
 
-### 应用场景
+### 6.6.4 应用场景
 
 ```python
 # process_batch.py
@@ -2396,7 +2396,7 @@ for record in query("SELECT * FROM table WHERE id %% ? = ?", total_shards, shard
 
 每个 Pod 独立处理自己的数据分片，不需要向外部协调服务注册任务。这大幅简化了批量并行处理的实现。
 
-### 与 StatefulSet 序号的对比
+### 6.6.5 与 StatefulSet 序号的对比
 
 | 特性 | Indexed Job Pod | StatefulSet Pod |
 |------|----------------|-----------------|
@@ -2408,7 +2408,7 @@ for record in query("SELECT * FROM table WHERE id %% ? = ?", total_shards, shard
 
 ---
 
-# 7.CronJob
+# 7. CronJob
 
 ## 7.1 CronJob 设计目标
 
@@ -2477,13 +2477,13 @@ spec:
               claimName: backup-pvc
 ```
 
-### 关键字段详解
+### 7.2.1 关键字段详解
 
-#### schedule（必填）
+**schedule（必填）**
 
 Cron 表达式，定义了任务触发的时间规则。格式与 Unix Cron 相同：`分 时 日 月 星期`。
 
-#### timeZone（Kubernetes 1.24+）
+**timeZone（Kubernetes 1.24+）**
 
 ```yaml
 spec:
@@ -2494,7 +2494,7 @@ spec:
 
 **注意**：如果控制器管理器运行在 `Etc/UTC`，而 `schedule` 是 `"0 2 * * *"` 且 `timeZone` 是 `"Asia/Shanghai"`，任务会在北京时间凌晨 2 点触发（即 UTC 18:00）。
 
-#### startingDeadlineSeconds
+**startingDeadlineSeconds**
 
 如果 CronJob Controller 因故（如 Controller Manager 宕机、网络分区）错过了触发时间，它会检查从错过的时间到现在是否超过了 `startingDeadlineSeconds`。如果未超过，它仍然触发该 Job；如果超过，则跳过此次触发。
 
@@ -2507,7 +2507,7 @@ spec:
 **默认值**：如果不设置，没有 deadline 限制（永远不跳过）。
 **建议值**：设为 `schedule` 间隔的 2~3 倍，确保短期故障不会丢失任务，但长期故障不会堆积大量过期任务。
 
-#### concurrencyPolicy
+**concurrencyPolicy**
 
 控制同一个 CronJob 的多个 Job 实例是否可以并发运行：
 
@@ -2526,7 +2526,7 @@ concurrencyPolicy: Forbid
 - 任务不可同时执行（如数据库备份可能导致冲突）：Forbid。
 - 需要确保最新数据（如缓存刷新）：Replace。
 
-#### successfulJobsHistoryLimit / failedJobsHistoryLimit
+**successfulJobsHistoryLimit / failedJobsHistoryLimit**
 
 保留的已完成 Job 数量（成功和失败分开计算）。默认值都是 3。
 
@@ -2537,7 +2537,7 @@ failedJobsHistoryLimit: 10      # 保留更多失败的 Job 用于排查
 
 设为 0 时，Job 完成后立即被清理。但注意：如果 `ttlSecondsAfterFinished` 同时设置，TTL Controller 和 CronJob Controller 都可能在尝试清理 Job，不会产生错误但行为由先执行者决定。
 
-#### suspend
+**suspend**
 
 ```bash
 # 暂停 CronJob（不触发新 Job，但已运行的 Job 不受影响）
@@ -2563,7 +2563,7 @@ Kubernetes CronJob 的 `schedule` 字段使用标准的 Unix Cron 格式，包�
 * * * * *
 ```
 
-### 特殊字符
+### 7.3.1 特殊字符
 
 | 字符 | 含义 | 示例 | 解释 |
 |------|------|------|------|
@@ -2573,7 +2573,7 @@ Kubernetes CronJob 的 `schedule` 字段使用标准的 Unix Cron 格式，包�
 | `/` | 步长 | `*/15 * * * *` | 每 15 分钟 |
 | `?` | 不指定 | 用于日或星期字段 | |
 
-### 常见表达式
+### 7.3.2 常见表达式
 
 | 表达式 | 含义 |
 |--------|------|
@@ -2585,7 +2585,7 @@ Kubernetes CronJob 的 `schedule` 字段使用标准的 Unix Cron 格式，包�
 | `30 3 * * 1-5` | 工作日凌晨 3:30 |
 | `0 0 1 1 *` | 每年 1 月 1 日 |
 
-### 注意事项
+### 7.3.3 注意事项
 
 1. **Kubernetes 不支持 `L`、`W`、`#` 等非标准 Cron 扩展**（Quartz 或某些 Cron 实现支持）。
 2. **日 和 星期是 OR 关系**：如果同时指定了日（`*` 之外的特定值）和星期（`*` 之外的特定值），两者之一满足即触发。
@@ -2596,7 +2596,7 @@ Kubernetes CronJob 的 `schedule` 字段使用标准的 Unix Cron 格式，包�
 
 ## 7.4 并发策略
 
-### Allow（默认）
+### 7.4.1 Allow（默认）
 
 ```
 Timeline:
@@ -2617,7 +2617,7 @@ Timeline:
 - 并发过多可能超出集群容量。
 - 如果不注意幂等性，可能导致数据错误。
 
-### Forbid
+### 7.4.2 Forbid
 
 ```
 Timeline:
@@ -2636,7 +2636,7 @@ Timeline:
 - 如果任务执行时间波动大，可能导致多次触发被跳过。
 - 可以通过 `startingDeadlineSeconds` 控制是否可以"追赶"错过的触发。
 
-### Replace
+### 7.4.3 Replace
 
 ```
 Timeline:
@@ -2659,7 +2659,7 @@ Timeline:
 
 ## 7.5 CronJob 时区
 
-### Kubernetes 1.24 前的时区处理
+### 7.5.1 Kubernetes 1.24 前的时区处理
 
 在 K8s 1.24 之前，`schedule` 中的时间始终基于 kube-controller-manager 所在节点的系统时区（通常是 UTC）。这意味着：
 
@@ -2668,7 +2668,7 @@ Timeline:
 
 这种设计容易导致理解偏差，特别是在夏令时（DST）变更的时区。
 
-### Kubernetes 1.24+ 的 timeZone 字段
+### 7.5.2 Kubernetes 1.24+ 的 timeZone 字段
 
 ```yaml
 spec:
@@ -2687,19 +2687,19 @@ spec:
 | `Europe/London` | 英国时间 | +00:00（冬季）/ +01:00（夏季） |
 | `Asia/Tokyo` | 日本标准时间 | +09:00 |
 
-### 注意事项
+### 7.5.3 注意事项
 
 1. **控制器管理器版本要求**：`timeZone` 字段在 K8s 1.24 中为 Beta，需要 API Server 和 Controller Manager 都 >= 1.24。
 2. **夏令时**：如果时区观察夏令时（如 `America/New_York`），CronJob 在"回拨"（fall back）时可能会有重复触发（CronJob 不做特殊处理）。
 3. **迁移**：从老版本升级集群后，已有的 CronJob 默认按原 UTC 时区运行，不会自动切换。
 
-# 8.HPA (HorizontalPodAutoscaler)
+# 8. HPA (HorizontalPodAutoscaler)
 
 ## 8.1 HPA 工作原理
 
 HPA 是 Kubernetes 实现"弹性伸缩"的核心控制器。它根据 Pod 的资源使用情况（CPU、内存）或自定义指标，自动调整 Deployment、ReplicaSet 或 StatefulSet 的副本数。
 
-### 完整工作流程
+### 8.1.1 完整工作流程
 
 ```
                         ┌──────────────────┐
@@ -2723,14 +2723,14 @@ HPA 是 Kubernetes 实现"弹性伸缩"的核心控制器。它根据 Pod 的资
 └──────────────────┘
 ```
 
-### 时间窗口
+### 8.1.2 时间窗口
 
 - **指标采集间隔**：Metrics Server 默认每 15 秒采集一次。
 - **HPA 检查间隔**：HPA Controller 默认每 15 秒检查一次。
 - **缩容冷却期**：默认 5 分钟（300 秒），防止频繁的缩容和扩容。
 - **扩容冷却期**：默认 3 分钟（180 秒），但实际扩容无冷却期（为了快速响应负载）。
 
-### 为什么需要冷却期
+### 8.1.3 为什么需要冷却期
 
 HPA 通过冷却期（Stabilization Window）避免"震荡"（Thrashing）。如果没有冷却期，可能出现：
 
@@ -2796,20 +2796,20 @@ spec:
         averageValue: 512Mi          # 目标平均内存使用 512Mi
 ```
 
-### 关键字段详解
+### 8.2.1 关键字段详解
 
-#### scaleTargetRef
+**scaleTargetRef**
 
 HPA 可以作用于任何拥有 Scale 子资源（`/scale`）的资源类型：
 - `apps/v1` 的 Deployment、ReplicaSet、StatefulSet。
 - 自定义资源（Custom Resource）只要实现了 Scale 子资源接口。
 
-#### minReplicas / maxReplicas
+**minReplicas / maxReplicas**
 
 - `minReplicas`：确保最少运行的副本数。即使负载极低，HPA 也不会缩容到低于此值。对于高可用应用，建议至少为 2。
 - `maxReplicas`：最大的副本数限制。防止 HPA 无限扩容消耗集群资源，也起到"熔断"作用。
 
-#### behavior（Kubernetes 1.18+）
+**behavior（Kubernetes 1.18+）**
 
 `behavior` 字段提供了对扩缩容速率的精细控制：
 
@@ -2847,7 +2847,7 @@ HPA 可以作用于任何拥有 Scale 子资源（`/scale`）的资源类型：
 
 ## 8.3 支持的指标类型
 
-### Resource Metrics（资源指标）
+### 8.3.1 Resource Metrics（资源指标）
 
 ```yaml
 metrics:
@@ -2868,7 +2868,7 @@ metrics:
 - `AverageValue`：绝对值（如 `500m` 表示 0.5 核）。
 - `Value`：原始值（较少用，一般与对象指标配合）。
 
-### Pod Metrics（自定义 Pod 指标）
+### 8.3.2 Pod Metrics（自定义 Pod 指标）
 
 ```yaml
 metrics:
@@ -2883,7 +2883,7 @@ metrics:
 
 这需要部署 Prometheus Adapter 或类似的自定义指标适配器。指标来源于 Pod 级别的指标（通常通过 Prometheus 采集后暴露给 API Server）。
 
-### Object Metrics（对象指标）
+### 8.3.3 Object Metrics（对象指标）
 
 ```yaml
 metrics:
@@ -2902,7 +2902,7 @@ metrics:
 
 与某个集群对象（而非 Pod）关联的指标。例如，监控整个 Ingress 的总 QPS。
 
-### External Metrics（外部指标）
+### 8.3.4 External Metrics（外部指标）
 
 ```yaml
 metrics:
@@ -2920,7 +2920,7 @@ metrics:
 
 从集群外部的系统获取指标（如云服务的 Pub/Sub 队列长度、SQS 消息数、自定义的监控系统等）。
 
-### 多指标支持
+### 8.3.5 多指标支持
 
 HPA 可以配置多个指标，Controller 会**分别计算每个指标对应的目标副本数，然后取其中最大值**。
 
@@ -2947,7 +2947,7 @@ metrics:
 
 ## 8.4 副本数计算公式
 
-### 核心公式
+### 8.4.1 核心公式
 
 ```
 desiredReplicas = ceil[currentReplicas * (currentMetricValue / desiredMetricValue)]
@@ -2955,7 +2955,7 @@ desiredReplicas = ceil[currentReplicas * (currentMetricValue / desiredMetricValu
 
 其中 `ceil` 表示向上取整。
 
-### CPU 利用率计算示例
+### 8.4.2 CPU 利用率计算示例
 
 假设：
 - Deployment 有 3 个 Pod，每个 Pod 的 `resources.requests.cpu: 200m`（0.2 核）
@@ -2974,7 +2974,7 @@ desiredReplicas = ceil[3 * (70 / 50)] = ceil[3 * 1.4] = ceil[4.2] = 5
 
 HPA 将 replicas 调整为 5。
 
-### 内存使用量计算示例
+### 8.4.3 内存使用量计算示例
 
 假设：
 - HPA 目标：平均内存 256Mi
@@ -2984,7 +2984,7 @@ HPA 将 replicas 调整为 5。
 desiredReplicas = ceil[3 * (512 / 256)] = ceil[3 * 2] = 6
 ```
 
-### 数值为 0 的特殊处理
+### 8.4.4 数值为 0 的特殊处理
 
 如果当前指标值为 0 或接近 0：
 
@@ -3002,7 +3002,7 @@ desiredReplicas = ceil[3 * (70 / 0)] = ∞
 → 实际 replicas = 10
 ```
 
-### 精度和容差
+### 8.4.5 精度和容差
 
 HPA 内置了一个 10% 的容差（Tolerance）来避免过度敏感的伸缩：
 
@@ -3017,7 +3017,7 @@ HPA 内置了一个 10% 的容差（Tolerance）来避免过度敏感的伸缩�
 
 ## 8.5 HPA 配置最佳实践
 
-### 1. 为容器设置正确的 resources.requests
+### 8.5.1 为容器设置正确的 resources.requests
 
 HPA 的 `Utilization` 类型指标依赖 `resources.requests` 计算百分比。如果 Pod 没有设置 `requests`，HPA 无法计算利用率（会使用默认值或报错）。
 
@@ -3040,7 +3040,7 @@ containers:
       memory: 512Mi
 ```
 
-### 2. minReplicas 至少为 2
+### 8.5.2 minReplicas 至少为 2
 
 对于生产环境，`minReplicas` 建议至少设为 2，以确保：
 - 单个 Pod 故障时仍有服务可用。
@@ -3051,7 +3051,7 @@ containers:
 - 流量激增时，从 1 扩容到 N 需要时间，期间单 Pod 可能被压垮。
 - 唯一的 Pod 故障 = 服务完全不可用。
 
-### 3. 合理设置 maxReplicas
+### 8.5.3 合理设置 maxReplicas
 
 `maxReplicas` 不是越大越好：
 - 过大可能导致集群资源耗尽，影响其他服务。
@@ -3062,7 +3062,7 @@ containers:
 - 后端依赖的承受能力。
 - 成本预算。
 
-### 4. 使用 behavior 控制缩容速率
+### 8.5.4 使用 behavior 控制缩容速率
 
 默认缩容冷却期是 5 分钟，但某些场景下需要更精细的控制：
 
@@ -3076,7 +3076,7 @@ behavior:
       periodSeconds: 60
 ```
 
-### 5. CPU 还是 Memory 作为伸缩指标
+### 8.5.5 CPU 还是 Memory 作为伸缩指标
 
 | 指标 | 优点 | 缺点 |
 |------|------|------|
@@ -3088,13 +3088,13 @@ behavior:
 - **缓存服务（Redis/Memcached）**：以 Memory 为主指标。
 - **数据处理**：使用自定义指标（队列长度、请求延迟）。
 
-### 6. 自定义指标的延迟
+### 8.5.6 自定义指标的延迟
 
 Metrics Server 的数据有约 30~60 秒的延迟（采集间隔 + 聚合 + API 响应）。Prometheus Adapter 的延迟取决于 Prometheus 的采集间隔（通常 15~30 秒）加上 `rate()` 等查询的计算时间。
 
 因此 HPA 不应该期望"实时"响应，对于极端突发流量（秒级），可能需要预留足够的缓冲容量。
 
-### 7. 与其他控制器的交互
+### 8.5.7 与其他控制器的交互
 
 - 不要对同时被 VPA（VerticalPodAutoscaler）管理的资源使用 HPA——两者会冲突。
 - HPA 修改 Deployment 的 replicas 后，Deployment Controller 会执行滚动更新吗？不会——HPA 只修改 replicas 数字，不修改 template，所以不会触发滚动更新。
@@ -3103,7 +3103,7 @@ Metrics Server 的数据有约 30~60 秒的延迟（采集间隔 + 聚合 + API 
 
 ## 8.6 HPA 与 Cluster Autoscaler 的协同
 
-### 协同的场景
+### 8.6.1 协同的场景
 
 HPA 负责增加 Pod 副本数，但当集群节点资源不足时，新增的 Pod 会处于 Pending 状态无法调度。此时需要 Cluster Autoscaler（CA）介入，自动增加节点。
 
@@ -3121,7 +3121,7 @@ HPA 负责增加 Pod 副本数，但当集群节点资源不足时，新增的 P
   → 服务容量恢复
 ```
 
-### 协同的关键配置
+### 8.6.2 协同的关键配置
 
 **1. PodDisruptionBudget (PDB)**
 
@@ -3163,21 +3163,21 @@ CA 从检测到 Pending Pod 到新节点就绪，通常需要 2~5 分钟（取�
 
 CA 会在删除节点前等待至少 10 分钟（可配置），确保节点确实不再需要。这个等待时间避免了"HPA 缩容后立即再次扩容"导致的节点抖动。
 
-### 注意事项
+### 8.6.3 注意事项
 
 1. **DaemonSet Pod 的影响**：CA 在计算节点可缩容性时，会考虑 DaemonSet Pod——这些 Pod 无法迁移，如果节点上有 DaemonSet Pod 且有特定约束，节点可能无法缩容。
 2. **本地存储 PV**：使用 Local PV 的 Pod 绑定到特定节点，CA 不能迁移这些 Pod，因此对应的节点也不能被缩容。
 3. **自定义 Expander**：CA 支持自定义 Expander，可以根据价格、区域、实例类型等策略选择最优节点类型。
 
-# 9.其他控制器
+# 9. 其他控制器
 
 ## 9.1 TTL Controller
 
-### 设计目标
+### 9.1.1 设计目标
 
 TTL Controller（Time-To-Live Controller）是 kube-controller-manager 中的一个轻量级控制器，负责清理已完成或已过期的资源。它解决了一个实际问题：已完成 Job 不会自动删除，会不断消耗 etcd 存储空间，也可能影响 `kubectl get jobs` 的响应速度。
 
-### 工作原理
+### 9.1.2 工作原理
 
 TTL Controller 定期扫描集群中设置了 TTL 的资源：
 
@@ -3189,13 +3189,13 @@ TTL Controller 定期扫描集群中设置了 TTL 的资源：
 5. → 删除该 Job（级联删除关联的 Pod）
 ```
 
-### 支持的资源类型
+### 9.1.3 支持的资源类型
 
 目前 TTL Controller 主要支持：
 - **Job**：通过 `ttlSecondsAfterFinished` 设置。
 - 未来可能扩展到其他资源（如 Completed Pod）。
 
-### 配置示例
+### 9.1.4 配置示例
 
 ```yaml
 apiVersion: batch/v1
@@ -3213,7 +3213,7 @@ spec:
       restartPolicy: Never
 ```
 
-### 设计考量
+### 9.1.5 设计考量
 
 **为什么不在 Job Controller 中直接清理**：
 解耦设计——每个控制器只做一件事。Job Controller 专注于管理 Job 和 Pod 的生命周期（创建、重试、完成），而 TTL Controller 专注于"到期清理"。这种分离使得：
@@ -3225,7 +3225,7 @@ spec:
 
 **不保证精确删除时间**：TTL Controller 的删除是"尽力而为"的。如果 Controller Manager 在删除时间附近宕机，删除会推迟到 CM 恢复后。
 
-### 与 CronJob 历史保留的交互
+### 9.1.6 与 CronJob 历史保留的交互
 
 如果 Job 由 CronJob 创建，有两个清理机制在同时工作：
 1. CronJob 的 `successfulJobsHistoryLimit` / `failedJobsHistoryLimit`。
@@ -3249,7 +3249,7 @@ ttlSecondsAfterFinished: 3600
 
 ## 9.2 Garbage Collector（垃圾回收器）
 
-### 设计目标
+### 9.2.1 设计目标
 
 Garbage Collector（GC）是 Kubernetes 中负责级联删除的控制器。它基于 `OwnerReference` 机制，确保当父资源被删除时，其子资源也能被正确清理。
 
@@ -3267,7 +3267,7 @@ GC 通过级联删除解决此问题：
 删除 Deployment → GC 自动删除所有子 RS → GC 自动删除所有子 Pod
 ```
 
-### OwnerReference 机制
+### 9.2.2 OwnerReference 机制
 
 GC 的核心数据结构是 `OwnerReference`，它定义在子资源的 `metadata.ownerReferences` 中：
 
@@ -3287,9 +3287,9 @@ metadata:
 - **controller: true**：标记该 OwnerReference 是"管理控制器"。一个资源可以有多个 OwnerReference（多个父资源），但只有一个应该标记 `controller: true`。
 - **blockOwnerDeletion: true**：如果子资源不能被删除（例如因为 PDB 保护），则阻止父资源被删除。这保护了数据完整性。
 
-### 级联删除模式
+### 9.2.3 级联删除模式
 
-#### Foreground Deletion（前台删除）
+**Foreground Deletion（前台删除）**
 
 ```
 1. 用户删除父资源
@@ -3301,7 +3301,7 @@ metadata:
 
 前台模式下，父资源在子资源清理完毕前不会完全消失（通过 `foregroundDeletion` finalizer 阻止）。用户可以通过 `kubectl get` 看到父资源处于 `Terminating` 状态。
 
-#### Background Deletion（默认，后台删除）
+**Background Deletion（默认，后台删除）**
 
 ```
 1. 用户删除父资源
@@ -3311,7 +3311,7 @@ metadata:
 
 用户可以立即观察不到父资源，但子资源在后台被逐步清理。
 
-#### Orphan Deletion（孤立删除）
+**Orphan Deletion（孤立删除）**
 
 ```
 1. 用户使用 --cascade=orphan 删除父资源
@@ -3326,7 +3326,7 @@ kubectl delete deployment nginx --cascade=orphan
 # Deployment 被删除，但 RS 和 Pod 保留
 ```
 
-### 垃圾回收的实现
+### 9.2.4 垃圾回收的实现
 
 GC 的扫描周期是动态的，基于集群中资源的变更频率。大致流程：
 
@@ -3342,14 +3342,14 @@ GC 的扫描周期是动态的，基于集群中资源的变更频率。大致�
 4. 删除确认是孤儿且超过"孤儿容忍期"的资源
 ```
 
-### 孤儿容忍期
+### 9.2.5 孤儿容忍期
 
 GC 有一个"孤儿容忍期"（Orphan Tolerance Period），防止误删：
 - 父资源刚被删除时，GC 不会立即删除子资源。
 - 等待一段短暂时间（通常几秒），确认父资源不是暂时不可见（API Server 短暂不可用或网络分区）。
 - 超过容忍期后仍然找不到父资源 → 确认是孤儿 → 执行清理。
 
-### GC 的限制和注意事项
+### 9.2.6 GC 的限制和注意事项
 
 1. **不处理跨命名空间引用**：OwnerReference 要求父子资源在同一 Namespace。跨 Namespace 的 GC 不支持。如果需要跨 Namespace 的级联操作，需要使用 Admission Webhook 或自定义 Controller 实现。
 2. **循环引用**：如果 A 的 ownerReference 指向 B，B 的 ownerReference 指向 A，GC 不会进入死循环——它会检测到循环并中断（但设计上应该避免循环引用）。
@@ -3357,7 +3357,7 @@ GC 有一个"孤儿容忍期"（Orphan Tolerance Period），防止误删：
 4. **Finalizer 的影响**：如果子资源有 Finalizer（如 `kubernetes.io/pvc-protection`），GC 必须等待 Finalizer 被处理完毕才能删除。这可能导致级联删除被长时间阻塞。
 5. **不要手动修改 OwnerReference**：手动修改 OwnerReference 可能导致 GC 行为异常。始终通过控制器管理 OwnerReference。
 
-### 调试技巧
+### 9.2.7 调试技巧
 
 ```bash
 # 查看某个资源的 OwnerReference

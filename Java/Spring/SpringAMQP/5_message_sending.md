@@ -1,6 +1,6 @@
-# 1.消息发送概览
+# 1. 消息发送概览
 
-## 1.1两种发送模型
+## 1.1 两种发送模型
 Spring AMQP中的消息发送主要围绕`RabbitTemplate`展开，提供两种发送模型：
 
 | 发送模型 | 说明 | 常用方法 |
@@ -10,7 +10,7 @@ Spring AMQP中的消息发送主要围绕`RabbitTemplate`展开，提供两种�
 
 `convertAndSend`是实际项目中最常用的方法，因为它会自动调用`MessageConverter`将Java对象转换为`Message`。
 
-## 1.2RabbitTemplate的核心架构
+## 1.2 RabbitTemplate的核心架构
 ```
 RabbitTemplate
   ├── ConnectionFactory（获取连接和Channel）
@@ -22,9 +22,9 @@ RabbitTemplate
   └── 各种配置选项（mandatory、receiveTimeout等）
 ```
 
-# 2.convertAndSend详解
+# 2. convertAndSend详解
 
-## 2.1方法签名
+## 2.1 方法签名
 ```java
 // 最基本的：指定Exchange、RoutingKey、消息对象
 void convertAndSend(String exchange, String routingKey, Object message);
@@ -48,7 +48,7 @@ void convertAndSend(String exchange, String routingKey, Object message,
                     Type type);
 ```
 
-## 2.2基本使用示例
+## 2.2 基本使用示例
 ```java
 @Service
 public class OrderMessageService {
@@ -76,7 +76,7 @@ public class OrderMessageService {
 }
 ```
 
-## 2.3convertAndSend的内部流程
+## 2.3 convertAndSend的内部流程
 ```
 convertAndSend(exchange, routingKey, object)
   |
@@ -97,9 +97,9 @@ convertAndSend(exchange, routingKey, object)
   └── 4. 如果启用了事务，提交事务
 ```
 
-# 3.send详解
+# 3. send详解
 
-## 3.1方法签名
+## 3.1 方法签名
 ```java
 // 发送原始Message
 void send(String exchange, String routingKey, Message message);
@@ -111,14 +111,14 @@ void send(String exchange, String routingKey, Message message,
           CorrelationData correlationData);
 ```
 
-## 3.2send vs convertAndSend
+## 3.2 send vs convertAndSend
 | 对比维度 | send() | convertAndSend() |
 |---------|--------|------------------|
 | 参数类型 | Message对象 | Java对象 |
 | 序列化 | 需要自己构建Message | 自动通过MessageConverter |
 | 使用场景 | 需要精确控制Message属性 | 日常业务消息发送 |
 
-## 3.3send的使用示例
+## 3.3 send的使用示例
 ```java
 @Service
 public class CustomMessageService {
@@ -146,9 +146,9 @@ public class CustomMessageService {
 }
 ```
 
-# 4.同步接收消息
+# 4. 同步接收消息
 
-## 4.1拉模式（Pull）API
+## 4.1 拉模式（Pull）API
 RabbitTemplate也支持从Queue中主动拉取（Pull）消息：
 
 ```java
@@ -161,7 +161,7 @@ Object receiveAndConvert(String queueName);
 Object receiveAndConvert(String queueName, long timeoutMillis);
 ```
 
-## 4.2使用示例
+## 4.2 使用示例
 ```java
 @Service
 public class PullMessageService {
@@ -197,7 +197,7 @@ public class PullMessageService {
 }
 ```
 
-## 4.3Push vs Pull
+## 4.3 Push vs Pull
 | 维度 | Push模式（@RabbitListener） | Pull模式（RabbitTemplate.receive） |
 |------|---------------------------|-----------------------------------|
 | 消息获取方式 | Broker主动推送 | 应用主动拉取 |
@@ -209,9 +209,9 @@ public class PullMessageService {
 
 > 注意：Push模式是RabbitMQ和Spring AMQP的推荐使用方式，Pull模式主要适用于特殊场景。
 
-# 5.RPC模式
+# 5. RPC模式
 
-## 5.1什么是RPC模式
+## 5.1 什么是RPC模式
 RabbitMQ的RPC模式允许客户端发送请求消息后，等待服务端处理并返回响应消息。
 
 ```
@@ -223,7 +223,7 @@ Client                          Server
   |                                |
 ```
 
-## 5.2使用sendAndReceive
+## 5.2 使用sendAndReceive
 Spring AMQP通过`RabbitTemplate.sendAndReceive()`支持RPC模式：
 
 ```java
@@ -240,7 +240,7 @@ Object convertSendAndReceive(Object message);
                                    Object message, ParameterizedTypeReference<T> type);
 ```
 
-## 5.3RPC服务端实现
+## 5.3 RPC服务端实现
 ```java
 @Component
 public class RpcServer {
@@ -257,7 +257,7 @@ public class RpcServer {
 }
 ```
 
-## 5.4RPC客户端实现
+## 5.4 RPC客户端实现
 ```java
 @Service
 public class RpcClientService {
@@ -278,7 +278,7 @@ public class RpcClientService {
 }
 ```
 
-## 5.5RPC的底层机制
+## 5.5 RPC的底层机制
 当调用`convertSendAndReceive`时，Spring AMQP在底层做了以下事情：
 
 1. 创建一个临时的匿名排他队列作为回复队列（replyTo）
@@ -289,7 +289,7 @@ public class RpcClientService {
 6. 收到回复消息时，匹配`correlationId`确认是此请求的响应
 7. 删除临时回复队列
 
-## 5.6RPC配置
+## 5.6 RPC配置
 ```java
 @Bean
 public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
@@ -305,14 +305,14 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 }
 ```
 
-## 5.7RPC模式的适用场景
+## 5.7 RPC模式的适用场景
 - 需要同步响应的远程调用（但在微服务中已被HTTP/gRPC取代）
 - 遗留系统整合：需要异步传输但业务逻辑要求同步等待
 - 特殊网络环境：HTTP不可用但AMQP可用的情况
 
-# 6.MessagePostProcessor使用
+# 6. MessagePostProcessor使用
 
-## 6.1在发送时修改消息属性
+## 6.1 在发送时修改消息属性
 ```java
 rabbitTemplate.convertAndSend("order.exchange", "order.create", order,
     new MessagePostProcessor() {
@@ -334,7 +334,7 @@ rabbitTemplate.convertAndSend("order.exchange", "order.create", order, msg -> {
 });
 ```
 
-## 6.2全局MessagePostProcessor
+## 6.2 全局MessagePostProcessor
 可以通过配置全局的`beforePublishPostProcessors`对所有发送消息进行统一处理：
 
 ```java
@@ -355,16 +355,16 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 }
 ```
 
-# 7.消息持久化配置
+# 7. 消息持久化配置
 
-## 7.1消息持久化的三个条件
+## 7.1 消息持久化的三个条件
 消息要保证在Broker重启后不丢失，需要同时满足三个条件：
 
 1. **Exchange持久化**：`new DirectExchange(name, true, false)` - 第二个参数
 2. **Queue持久化**：`new Queue(name, true)` - 第二个参数
 3. **消息持久化**：设置`deliveryMode = MessageDeliveryMode.PERSISTENT`
 
-## 7.2配置消息持久化
+## 7.2 配置消息持久化
 ```java
 // 方式一：通过MessagePostProcessor
 rabbitTemplate.convertAndSend("order.exchange", "order.create", order, msg -> {
@@ -388,15 +388,15 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 }
 ```
 
-# 8.动态Exchange和Queue
+# 8. 动态Exchange和Queue
 
-## 8.1场景说明
+## 8.1 场景说明
 在某些场景下，需要在运行时动态创建Exchange、Queue、Binding，而不是在应用启动时通过@Bean声明。例如：
 - 多租户系统：每个租户需要独立的Exchange和Queue
 - 动态业务流程：业务规则引擎动态创建处理链路
 - 临时处理通道：为某些临时任务创建专用的消息通道
 
-## 8.2动态创建实现
+## 8.2 动态创建实现
 ```java
 @Service
 public class DynamicQueueService {
@@ -451,12 +451,12 @@ public class DynamicQueueService {
 }
 ```
 
-# 9.批量消息发送
+# 9. 批量消息发送
 
-## 9.1场景说明
+## 9.1 场景说明
 在某些场景下需要批量发送多条消息，如数据迁移、批量通知等。
 
-## 9.2BatchingRabbitTemplate
+## 9.2 BatchingRabbitTemplate
 Spring AMQP 2.2+提供了`BatchingRabbitTemplate`，可以将多条消息打包成一个批次发送：
 
 ```java
@@ -483,7 +483,7 @@ public BatchingRabbitTemplate batchingRabbitTemplate(
 }
 ```
 
-## 9.3批量发送的实际使用
+## 9.3 批量发送的实际使用
 BatchingRabbitTemplate的使用比较复杂，实际项目中更常见的做法是：
 - 批量发送场景使用Kafka代替RabbitMQ
 - 在应用层聚合消息，将多条消息打包成一条消息发送（如JSON数组）
@@ -497,9 +497,9 @@ public void batchNotify(List<Notification> notifications) {
 }
 ```
 
-# 10.线程安全与并发发送
+# 10. 线程安全与并发发送
 
-## 10.1RabbitTemplate的线程安全
+## 10.1 RabbitTemplate的线程安全
 `RabbitTemplate`是**线程安全**的，可以安全地在多个线程中并发使用同一个实例。
 
 线程安全的实现原理：
@@ -507,7 +507,7 @@ public void batchNotify(List<Notification> notifications) {
 - 每次`send()`/`convertAndSend()`操作都会通过`ConnectionFactory`获取独立的Channel
 - 多个线程各自使用独立的Channel，互不干扰
 
-## 10.2高并发发送的优化
+## 10.2 高并发发送的优化
 ```java
 @Bean
 public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {

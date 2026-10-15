@@ -1,4 +1,4 @@
-# 1.集群部署方式概览
+# 1. 集群部署方式概览
 
 Kubernetes 集群的部署是运维工作中的第一道门槛。由于 Kubernetes 控制面组件众多、依赖关系复杂，社区发展出了多种部署工具和方式以适配不同场景。理解每种方式的底层原理和设计取舍，是做好生产级集群管理的前提。
 
@@ -103,7 +103,7 @@ etcd 对磁盘延迟特别敏感，官方强烈建议使用 SSD。etcd 写入延
 - pause 镜像配置：kubelet 在每个 Pod 启动时会先启动一个 `pause` 容器作为 NetNS 的持有者。containerd 需要配置正确的 pause 镜像地址。
 - 镜像仓库认证：私有镜像仓库（如 Harbor）需要在 containerd 配置中添加认证信息。
 
-# 2.kubeadm部署详解
+# 2. kubeadm部署详解
 
 kubeadm 是目前 Kubernetes 官方唯一推荐的"通用生产环境引导工具"。理解 kubeadm 的每一步背后做了什么，是掌握生产级 K8s 部署的关键。
 
@@ -599,7 +599,7 @@ kubectl delete pvc test-pvc
 
 一个完整的 smoke test 应覆盖：节点注册、Pod 调度、跨节点网络通信、Service 负载均衡、DNS 解析。只有这五项全部通过，集群才被认为是健康可用的。
 
-# 3.HA高可用集群部署
+# 3. HA高可用集群部署
 
 生产环境的控制面必须高可用——单个 API Server 故障会导致整个集群无法接受请求。
 
@@ -813,7 +813,7 @@ kubeadm init \
   --external-etcd-keyfile /etc/kubernetes/pki/apiserver-etcd-client.key
 ```
 
-# 4.minikube本地开发环境
+# 4. minikube本地开发环境
 
 ## 4.1 安装与启动
 
@@ -928,7 +928,7 @@ minikube delete -p cluster-test
 
 多 profile 场景在开发中非常有用：可以同时运行不同 K8s 版本、测试升级路径、模拟多集群服务网格等。
 
-# 5.kind (Kubernetes in Docker)
+# 5. kind (Kubernetes in Docker)
 
 kind 通过 Docker 容器模拟 K8s 节点，是 CI/CD 集成测试的最优选择。
 
@@ -1020,7 +1020,7 @@ kind 不适合的场景：
 - 长期运行的服务
 - 需要 GPU 或特殊硬件的场景
 
-# 6.k3s轻量级K8s
+# 6. k3s轻量级K8s
 
 ## 6.1 架构特点
 
@@ -1113,7 +1113,7 @@ curl -sfL https://get.k3s.io | sh -s - server \
 
 HA 部署时，建议在 Server 节点前放置 TCP 负载均衡器（如 HAProxy/Nginx），将 6443 端口流量分发到所有 Server 节点。
 
-# 7.集群升级
+# 7. 集群升级
 
 ## 7.1 升级策略与版本偏差策略
 
@@ -1287,7 +1287,7 @@ systemctl restart kubelet
 
 由于 K8s 不允许 kubelet 版本高于 API Server，回滚时必须先将 kubelet 降级到与 API Server 兼容的版本。
 
-# 8.集群卸载与清理
+# 8. 集群卸载与清理
 
 ## 8.1 kubeadm reset流程
 

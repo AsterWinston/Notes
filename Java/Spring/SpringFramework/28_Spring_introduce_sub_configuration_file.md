@@ -22,7 +22,7 @@ spring配置文件有多个，并且可以在spring的核心配置文件中使�
 在实际开发中，配置可能会很多，service单独配置到一个文件中，dao单独配置到一个文件中，然后在核心配置文件中引入，养成好习惯。
 ```
 
-# 源码解析：<import> 标签的处理机制
+# 2. 源码解析：<import> 标签的处理机制
 
 ```
 <import resource="spring-dao.xml"/> 标签在 DefaultBeanDefinitionDocumentReader 中处理：

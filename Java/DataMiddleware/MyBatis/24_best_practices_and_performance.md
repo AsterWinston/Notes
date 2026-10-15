@@ -1,10 +1,10 @@
-# 1.MyBatis 最佳实践与性能调优
+# 1. MyBatis 最佳实践与性能调优
 
 ```
 以下是基于源码理解和实战经验总结的 MyBatis 最佳实践和常见问题解决方案。
 ```
 
-# 2.N+1 查询问题
+# 2. N+1 查询问题
 
 ## 2.1 问题描述
 
@@ -59,7 +59,7 @@ public interface ClazzMapper {
 </select>
 ```
 
-# 3.批量操作优化
+# 3. 批量操作优化
 
 ## 3.1 批量插入
 
@@ -144,7 +144,7 @@ public class MyBatisConfig {
 }
 ```
 
-# 4.大字段处理
+# 4. 大字段处理
 
 ```java
 // 问题：查询包含 BLOB/CLOB/TEXT 大字段的表时，即使不需要大字段也会加载
@@ -176,7 +176,7 @@ try (Cursor<Article> cursor = mapper.selectAllArticleCursor()) {
 }
 ```
 
-# 5.SQL 注入防范
+# 5. SQL 注入防范
 
 ```java
 // ====== 错误：${} 拼接导致 SQL 注入 ======
@@ -213,7 +213,7 @@ name like concat('%', #{name}, '%')
 name like "%"#{name}"%"
 ```
 
-# 6.连接池配置（以 Druid 为例）
+# 6. 连接池配置（以 Druid 为例）
 
 ```yaml
 # application.yml
@@ -249,7 +249,7 @@ spring:
           log-slow-sql: true
 ```
 
-# 7.常见坑点
+# 7. 常见坑点
 
 ## 7.1 insert 后自增主键获取不到
 
@@ -341,7 +341,7 @@ public List<Car> findByIds(List<Long> ids) {
 }
 ```
 
-# 8.性能调优清单
+# 8. 性能调优清单
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -380,7 +380,7 @@ public List<Car> findByIds(List<Long> ids) {
 └────────────────────────────────────────────────────────────────┘
 ```
 
-# 9.XML vs 注解选型
+# 9. XML vs 注解选型
 
 ```
 ┌──────────────────────────────┬──────────────────────────────────┐
@@ -401,7 +401,7 @@ public List<Car> findByIds(List<Long> ids) {
   3. 同一接口可混合使用（XML 优先，XML 中有的语句不再用注解）
 ```
 
-# 10.MyBatis 日志分析
+# 10. MyBatis 日志分析
 
 ```java
 // MyBatis 日志的输出格式很有帮助，可以用于调试和性能分析
@@ -436,7 +436,7 @@ public List<Car> findByIds(List<Long> ids) {
 //   - 定位慢 SQL
 ```
 
-# 11.线程安全的 SqlSession 封装
+# 11. 线程安全的 SqlSession 封装
 
 ```java
 /**
@@ -474,7 +474,7 @@ public class ThreadSafeSqlSessionManager {
 }
 ```
 
-# 12.总结：MyBatis 实战十大黄金法则
+# 12. 总结：MyBatis 实战十大黄金法则
 
 ```
 1.  SQL 写在 XML 中，保持 Java 代码纯粹

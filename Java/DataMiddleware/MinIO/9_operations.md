@@ -1,6 +1,6 @@
-# 1.mc 命令行工具详解
+# 1. mc 命令行工具详解
 
-## 1.1mc 别名管理
+## 1.1 mc 别名管理
 
 ```bash
 # 添加 MinIO 别名
@@ -14,7 +14,7 @@ mc alias list
 mc alias remove myminio
 ```
 
-## 1.2Bucket 管理
+## 1.2 Bucket 管理
 
 ```bash
 # 创建 Bucket
@@ -39,7 +39,7 @@ mc ilm ls myminio/mybucket
 mc ilm export myminio/mybucket --alias myminio
 ```
 
-## 1.3对象操作
+## 1.3 对象操作
 
 ```bash
 # 上传文件
@@ -75,7 +75,7 @@ mc find myminio/mybucket --newer-than 7d  # 最近7天的对象
 mc find myminio/mybucket --older-than 30d  # 30天前的对象
 ```
 
-## 1.4数据同步（mirror）
+## 1.4 数据同步（mirror）
 
 ```bash
 # 本地 → MinIO（单向镜像）
@@ -97,7 +97,7 @@ mc mirror myminio/source-bucket/ myminio-remote/target-bucket/
 mc mirror --watch /data/incoming/ myminio/mybucket/incoming/
 ```
 
-## 1.5集群管理（mc admin）
+## 1.5 集群管理（mc admin）
 
 ```bash
 # 查看集群信息
@@ -139,7 +139,7 @@ mc admin config get myminio        # 查看所有配置
 mc admin config set myminio api requests_max=0  # 修改配置
 ```
 
-## 1.6数据修复（mc admin heal）
+## 1.6 数据修复（mc admin heal）
 
 ```bash
 # 扫描并修复所有对象（递归）
@@ -155,7 +155,7 @@ mc admin heal --recursive --scan=deep myminio/mybucket
 mc admin heal --recursive --pending myminio
 ```
 
-## 1.7Bucket 配置管理
+## 1.7 Bucket 配置管理
 
 ```bash
 # 版本控制
@@ -186,9 +186,9 @@ mc event remove myminio/mybucket arn:minio:sqs::PRIMARY:webhook
 
 ---
 
-# 2.备份与恢复
+# 2. 备份与恢复
 
-## 2.1使用 mc mirror 备份
+## 2.1 使用 mc mirror 备份
 
 ```bash
 # 全量备份到另一个 MinIO 集群
@@ -202,7 +202,7 @@ mc replicate add myminio/prod-bucket --remote-bucket backup-bucket \
   --priority 1
 ```
 
-## 2.2使用 rclone 备份
+## 2.2 使用 rclone 备份
 
 rclone 支持多后端，适合将 MinIO 数据备份到其他云存储：
 
@@ -224,7 +224,7 @@ rclone sync minio:my-bucket /backup/minio --progress
 rclone copy minio:my-bucket /backup/minio --progress
 ```
 
-## 2.3灾难恢复
+## 2.3 灾难恢复
 
 ```text
 灾难恢复场景:
@@ -250,7 +250,7 @@ rclone copy minio:my-bucket /backup/minio --progress
   3. 如果以上都不满足: 只能从备份恢复
 ```
 
-## 2.4备份策略建议
+## 2.4 备份策略建议
 
 ```text
 备份层级:
@@ -278,9 +278,9 @@ L4 合规归档（年级）
 
 ---
 
-# 3.数据迁移
+# 3. 数据迁移
 
-## 3.1从其他 S3 存储迁移到 MinIO
+## 3.1 从其他 S3 存储迁移到 MinIO
 
 ```bash
 # 使用 mc mirror 从 AWS S3 迁移
@@ -294,7 +294,7 @@ mc mirror s3/source-bucket myminio/target-bucket --watch
 rclone sync s3:source-bucket minio:target-bucket --progress
 ```
 
-## 3.2从文件系统迁移到 MinIO
+## 3.2 从文件系统迁移到 MinIO
 
 ```bash
 # 上传本地 NAS/NFS 到 MinIO
@@ -307,7 +307,7 @@ mc mirror --recursive /mnt/nas/data/ myminio/mybucket/nas-data/
 mc mirror --recursive --overwrite=false /mnt/nas/data/ myminio/mybucket/
 ```
 
-## 3.3迁移后验证
+## 3.3 迁移后验证
 
 ```bash
 # 验证对象数量
@@ -326,9 +326,9 @@ mc stat myminio/target-bucket/important-file.pdf
 
 ---
 
-# 4.升级策略
+# 4. 升级策略
 
-## 4.1升级注意事项
+## 4.1 升级注意事项
 
 | 要点 | 说明 |
 |------|------|
@@ -338,7 +338,7 @@ mc stat myminio/target-bucket/important-file.pdf
 | 回退计划 | 准备旧版本二进制文件用于紧急回退 |
 | 时间窗口 | 选择低业务时段升级 |
 
-## 4.2滚动升级步骤
+## 4.2 滚动升级步骤
 
 ```bash
 # 1. 验证集群当前状态
@@ -373,7 +373,7 @@ mc admin info myminio
 # 所有节点在线，版本一致
 ```
 
-## 4.3使用 Docker 升级
+## 4.3 使用 Docker 升级
 
 ```bash
 # 更新镜像
@@ -387,9 +387,9 @@ docker compose up -d --no-deps minio1
 
 ---
 
-# 5.容量规划
+# 5. 容量规划
 
-## 5.1容量计算公式
+## 5.1 容量计算公式
 
 ```text
 有效存储容量 = 总物理磁盘容量 × (k/N) − 元数据开销
@@ -408,7 +408,7 @@ docker compose up -d --no-deps minio1
   如果平均对象大小为 10KB, 元数据开销可能超过 10%（存储放大严重）
 ```
 
-## 5.2容量增长预估
+## 5.2 容量增长预估
 
 ```text
 当前数据量: 10TB
@@ -421,7 +421,7 @@ docker compose up -d --no-deps minio1
 建议扩容时机: 使用率达到 60-70% 时开始规划
 ```
 
-## 5.3容量优化策略
+## 5.3 容量优化策略
 
 - **对象压缩**：对文本类数据使用 Gzip 压缩后上传
 - **生命周期管理**：自动清理过期数据
@@ -431,9 +431,9 @@ docker compose up -d --no-deps minio1
 
 ---
 
-# 6.常见故障排查
+# 6. 常见故障排查
 
-## 6.1节点无法加入集群
+## 6.1 节点无法加入集群
 
 ```bash
 # 症状: 新节点或重启后的节点长时间处于 Offline 状态
@@ -461,7 +461,7 @@ journalctl -u minio -f
 sudo firewall-cmd --list-all
 ```
 
-## 6.2磁盘空间不足
+## 6.2 磁盘空间不足
 
 ```bash
 # 检查各节点容量
@@ -484,7 +484,7 @@ mc admin config get myminio api
 # 设置生命周期规则清理 7 天前的未完成分片
 ```
 
-## 6.3访问被拒绝 (AccessDenied)
+## 6.3 访问被拒绝 (AccessDenied)
 
 ```bash
 # 检查用户凭证
@@ -504,7 +504,7 @@ mc legalhold info myminio/mybucket/object-key
 mc admin policy info myminio readonly
 ```
 
-## 6.4上传大文件失败
+## 6.4 上传大文件失败
 
 ```bash
 # 1. 检查网络超时设置
@@ -526,7 +526,7 @@ mc admin config get myminio api
 # 参见 4_java_sdk.md 第 10 节
 ```
 
-## 6.5集群性能下降
+## 6.5 集群性能下降
 
 ```bash
 # 1. 检查是否有磁盘故障
@@ -547,9 +547,9 @@ mc admin trace myminio --verbose
 
 ---
 
-# 7.生产环境检查清单
+# 7. 生产环境检查清单
 
-## 7.1部署前检查
+## 7.1 部署前检查
 
 ```text
 硬件:
@@ -589,7 +589,7 @@ MinIO 配置:
   □ 对关键 Bucket 启用版本控制
 ```
 
-## 7.2部署后验证
+## 7.2 部署后验证
 
 ```text
   □ 所有节点在线 (mc admin info)

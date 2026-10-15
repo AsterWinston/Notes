@@ -1,4 +1,4 @@
-# 1.准备工作
+# 1. 准备工作
 ```
 创建module（Maven的普通Java模块）：mybatis-002-crud
 pom.xml
@@ -14,7 +14,7 @@ logback.xml放在类的根路径下
 提供com.powernode.mybatis.utils.SqlSessionUtil工具类
 创建测试用例：com.powernode.mybatis.CarMapperTest
 ```
-# 2.insert
+# 2. insert
 ```
 分析以下SQL映射文件中SQL语句存在的问题
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -268,7 +268,7 @@ public void testInsertCarByPOJO(){
 实则就算parameterType="java.util.Map"，也可以可以使用某某bean类对象传入而成功执行，反过来parameterType="某某bean类"，也可以传入Map对象而成功执行，我真没招了，报错不好么
 ```
 
-# 3.delete
+# 3. delete
 ```
 需求：根据car_num进行删除。
 SQL语句这样写：
@@ -289,7 +289,7 @@ public void testDeleteByCarNum(){
 注意：当占位符只有一个的时候，${} 里面的内容可以随便写。无需与参数名字对应
 ```
 
-# 4.update
+# 4. update
 ```
 需求：修改id=34的Car信息，car_num为102，brand为比亚迪汉，guide_price为30.23，produce_time为2018-09-10，car_type为电车
 SQL语句如下：
@@ -322,9 +322,9 @@ Java代码如下：
 当然了，如果使用map传数据也是可以的。
 ```
 
-# 5.select
+# 5. select
 
-## 5.1select（查一个，返回结果是一个）
+## 5.1 select（查一个，返回结果是一个）
 ```
 <select id="selectById" resultType="com.ziv.mybatis.pojo.Car">
     select id,car_num as carNum, brand, guide_price as guidePrice,
@@ -345,7 +345,7 @@ mybatis执行了select语句之后，会返回一个ResultSet对象，然后从�
 
 注意：select语句中查询的列别名要和pojo类中的属性名一致，本质就是和setXXX方法中的XXX首字母小写一致就好
 ```
-## 5.2select（查所有）
+## 5.2 select（查所有）
 ```
 <select id="selectAll" resultType="com.ziv.mybatis.pojo.Car">
     select id,car_num as carNum, brand, guide_price as guidePrice,
@@ -363,7 +363,7 @@ public void testSelectAll(){
 }
 
 ```
-# 6.关于SQL Mapper 的namespace
+# 6. 关于SQL Mapper 的namespace
 ```
 在SQL Mapper配置⽂件中标签的namespace属性可以翻译为命名空间，这个命名空间主要是为了防⽌sqlId冲突的。
 

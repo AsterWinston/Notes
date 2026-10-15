@@ -1,4 +1,4 @@
-# 1.Cookie, document.cookie
+# 1. Cookie, document.cookie
 ```
 Cookie 是直接存储在浏览器中的一小串数据。它们是 HTTP 协议的一部分，由 RFC 6265 规范定义。
 
@@ -13,7 +13,7 @@ Cookie 通常是由 Web 服务器使用响应 Set-Cookie HTTP-header 设置的�
 
 关于 cookie 及其选项，有很多棘手的事情。在本章中，我们将详细介绍它们。
 ```
-## 1.1从document.cookie中读取
+## 1.1 从document.cookie中读取
 ```javascript
 你的浏览器是否存储了本网站的任何 cookie？让我们来看看：
 
@@ -26,7 +26,7 @@ document.cookie 的值由 name=value 对组成，以 ; 分隔。每一个都是�
 
 我们把这个留给读者当作练习。此外，在本章的最后，你可以找到一些操作 cookie 的辅助函数。
 ```
-## 1.2写入document.cookie
+## 1.2 写入document.cookie
 ```javascript
 我们可以写入 document.cookie。但这不是一个数据属性，它是一个 访问器（getter/setter）。对其的赋值操作会被特殊处理。
 
@@ -59,7 +59,7 @@ Cookie 有几个选项，其中很多都很重要，应该设置它。
 
 document.cookie = "user=John; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT"
 ```
-## 1.3path
+## 1.3 path
 ```javascript
 path=/mypath
 url 路径前缀必须是绝对路径。它使得该路径下的页面可以访问该 cookie。默认为当前路径。
@@ -68,7 +68,7 @@ url 路径前缀必须是绝对路径。它使得该路径下的页面可以访�
 
 通常，我们应该将 path 设置为根目录：path=/，以使 cookie 对此网站的所有页面可见。
 ```
-## 1.4domain
+## 1.4 domain
 ```javascript
 domain=site.com
 domain 控制了可访问 cookie 的域。但是在实际中，有一些限制。我们无法设置任何域。
@@ -104,7 +104,7 @@ alert(document.cookie); // 有 cookie user=John
 
 总结一下，通过 domain 选项的设置，可以实现允许在子域访问 cookie。
 ```
-## 1.5expires, max-age
+## 1.5 expires, max-age
 ```javascript
 默认情况下，如果一个 cookie 这两个参数都没有设置，那么在关闭浏览器之后，它就会消失。此类 cookie 被称为 "session cookie”。
 
@@ -132,7 +132,7 @@ document.cookie = "user=John; max-age=3600";
 // 删除 cookie（让它立即过期）
 document.cookie = "user=John; max-age=0";
 ```
-## 1.6secure
+## 1.6 secure
 ```javascript
 secure
 Cookie 应只能被通过 HTTPS 传输。
@@ -147,7 +147,7 @@ Cookie 应只能被通过 HTTPS 传输。
 // 设置 cookie secure（只在 HTTPS 环境下可访问）
 document.cookie = "user=John; secure";
 ```
-## 1.7samesite
+## 1.7 samesite
 ```javascript
 这是另外一个关于安全的特性。它旨在防止 XSRF（跨网站请求伪造）攻击。
 
@@ -217,7 +217,7 @@ samesite 会被到 2017 年左右的旧版本浏览器忽略（不兼容）。
 
 但是，我们肯定可以将 samesite 与其他保护措施一起使用，例如 XSRF token，这样可以多增加一层保护，将来，当旧版本的浏览器淘汰时，我们可能就可以删除 xsrf token 这种方式了。
 ```
-## 1.8httpOnly
+## 1.8 httpOnly
 ```javascript
 这个选项和 JavaScript 没有关系，但是我们必须为了完整性也提一下它。
 
@@ -231,7 +231,7 @@ Web 服务器使用 Set-Cookie header 来设置 cookie。并且，它可以设�
 
 但是，如果 cookie 设置了 httpOnly，那么 document.cookie 则看不到 cookie，所以它受到了保护。
 ```
-## 1.9附录：Cookie函数
+## 1.9 附录：Cookie函数
 ```javascript
 这里有一组有关 cookie 操作的函数，比手动修改 document.cookie 方便得多。
 
@@ -297,7 +297,7 @@ function deleteCookie(name) {
 
 代码放在：cookie.js。
 ```
-## 1.10附录：第三方Cookie
+## 1.10 附录：第三方Cookie
 ```javascript
 如果 cookie 是由用户所访问的页面的域以外的域放置的，则称其为第三方 cookie。
 
@@ -327,7 +327,7 @@ Firefox 浏览器附带了一个第三方域的黑名单，它阻止了来自名
 
 如果一个脚本设置了一个 cookie，那么无论脚本来自何处 —— 这个 cookie 都属于当前网页的域。
 ```
-## 1.11附录：GDPR
+## 1.11 附录：GDPR
 ```javascript
 本主题和 JavaScript 无关，只是设置 cookie 时的一些注意事项。
 
@@ -351,7 +351,7 @@ Firefox 浏览器附带了一个第三方域的黑名单，它阻止了来自名
 
 GDPR 不仅涉及 cookie，还涉及其他与隐私相关的问题，但这超出了我们的讨论范围。
 ```
-## 1.12总结
+## 1.12 总结
 ```javascript
 document.cookie 提供了对 cookie 的访问
 
@@ -371,7 +371,7 @@ samesite，如果请求来自外部网站，禁止浏览器发送 cookie。这�
 在为欧盟公民设置跟踪 cookie 时，GDPR 要求必须得到用户明确许可。
 ```
 
-# 2.LocalStorage, sessionStorage
+# 2. LocalStorage, sessionStorage
 ```
 Web 存储对象 localStorage 和 sessionStorage 允许我们在浏览器上保存键/值对。
 
@@ -394,7 +394,7 @@ length —— 存储的内容的长度。
 
 让我们看看它是如何工作的吧。
 ```
-## 2.1localStorage示例
+## 2.1 localStorage示例
 ```javascript
 localStorage 最主要的特点是：
 
@@ -410,7 +410,7 @@ alert( localStorage.getItem('test') ); // 1
 
 在所有同源的窗口之间，localStorage 数据可以共享。因此，如果我们在一个窗口中设置了数据，则在另一个窗口中也可以看到数据变化。
 ```
-## 2.2类对象形式访问
+## 2.2 类对象形式访问
 ```javascript
 我们还可以像使用一个普通对象那样，读取/设置键，像这样：
 
@@ -430,7 +430,7 @@ let key = 'length';
 localStorage[key] = 5; // Error，无法对 length 进行赋值
 有一个 storage 事件，在我们更改数据时会触发。但以类对象方式访问时，不会触发该事件。我们将在本章的后面看到。
 ```
-## 2.3遍历键
+## 2.3 遍历键
 ```javascript
 正如我们所看到的，这些方法提供了“按照键获取/设置/删除”的功能。但我们如何获取所有保存的值或键呢？
 
@@ -466,7 +466,7 @@ for(let key of keys) {
 }
 后者有效，因为 Object.keys 只返回属于对象的键，会忽略原型上的。
 ```
-## 2.4仅字符串
+## 2.4 仅字符串
 ```javascript
 请注意，键和值都必须是字符串。
 
@@ -486,7 +486,7 @@ alert( user.name ); // John
 // 为 JSON.stringify 增加了格式设置选项，以使对象看起来更美观
 alert( JSON.stringify(localStorage, null, 2) );
 ```
-## 2.5sessionStorage
+## 2.5 sessionStorage
 ```javascript
 sessionStorage 对象的使用频率比 localStorage 对象低得多。
 
@@ -508,7 +508,7 @@ alert( sessionStorage.getItem('test') ); // after refresh: 1
 
 这是因为 sessionStorage 不仅绑定到源，还绑定在同一浏览器标签页。因此，sessionStorage 很少被使用。
 ```
-## 2.6Storage事件
+## 2.6 Storage事件
 ```javascript
 当 localStorage 或 sessionStorage 中的数据更新后，storage 事件就会触发，它具有以下属性：
 
@@ -542,7 +542,7 @@ localStorage.setItem('now', Date.now());
 
 现代浏览器还支持 Broadcast channel API，这是用于同源窗口之间通信的特殊 API，它的功能更全，但被支持的情况不好。有一些库基于 localStorage 来 polyfill 该 API，使其可以用在任何地方。
 ```
-## 2.7总结
+## 2.7 总结
 ```javascript
 Web 存储对象 localStorage 和 sessionStorage 允许我们在浏览器中保存键/值对。
 
@@ -570,7 +570,7 @@ Storage 事件：
 在所有可访问到存储对象的 window 对象上触发，导致当前数据改变的 window 对象除外（对于 sessionStorage 是在当前标签页下，对于 localStorage 是在全局，即所有同源的窗口）。
 ```
 
-# 3.IndexedDB
+# 3. IndexedDB
 ```
 IndexedDB 是一个浏览器内建的数据库，它比 localStorage 强大得多。
 
@@ -589,7 +589,7 @@ IndexedDB 是一个浏览器内建的数据库，它比 localStorage 强大得�
 
 不同的浏览器和操作系统级别的用户都有各自独立的存储。
 ```
-## 3.1打开数据库
+## 3.1 打开数据库
 ```javascript
 要想使用 IndexedDB，首先需要 open（连接）一个数据库。
 
@@ -715,7 +715,7 @@ openRequest.onblocked 监听器通知我们相反的情况：在其他地方有�
 
 这种更新冲突很少发生，但我们至少应该有一些对其进行处理的程序，至少在 onblocked 处理程序中进行处理，以防程序默默卡死而影响用户体验。
 ```
-## 3.2对象库（object store）
+## 3.2 对象库（object store）
 ```javascript
 要在 IndexedDB 中存储某些内容，我们需要一个 对象库。
 
@@ -777,7 +777,7 @@ openRequest.onupgradeneeded = function() {
 
 db.deleteObjectStore('books')
 ```
-## 3.3事务（transaction）
+## 3.3 事务（transaction）
 ```javascript
 术语“事务（transaction）”是通用的，许多数据库中都有用到。
 
@@ -846,7 +846,7 @@ add(value, [key]) 与 put 相同，但是如果已经有一个值具有相同的
 add 的 request.result 是新对象的键。
 错误在 request.error（如果有的话）中。
 ```
-## 3.4事务的自动提交
+## 3.4 事务的自动提交
 ```javascript
 在上面的示例中，我们启动了事务并发出了 add 请求。但正如前面提到的，一个事务可能有多个相关的请求，这些请求必须全部成功或全部失败。那么我们如何将事务标记为已完成，并不再请求呢？
 
@@ -904,7 +904,7 @@ transaction.oncomplete = function() {
 transaction.abort();
 取消请求里所做的所有修改，并触发 transaction.onabort 事件。
 ```
-## 3.5错误处理
+## 3.5 错误处理
 ```javascript
 写入请求可能会失败。
 
@@ -967,7 +967,7 @@ request.onerror = function(event) {
   }
 };
 ```
-## 3.6搜索
+## 3.6 搜索
 ```javascript
 对象库有两种主要的搜索类型：
 
@@ -1071,7 +1071,7 @@ request.onsuccess = function() {
 let request = priceIndex.getAll(IDBKeyRange.upperBound(5));
 在我们的例子中，索引是按照被跟踪对象字段价格 price 进行内部排序的。所以当我们进行搜索时，搜索结果也会按照价格排序。
 ```
-## 3.7从存储中删除
+## 3.7 从存储中删除
 ```javascript
 delete 方法查找要由查询删除的值，调用格式类似于 getAll
 
@@ -1093,7 +1093,7 @@ request.onsuccess = function() {
 
 books.clear(); // 清除存储。
 ```
-## 3.8光标（Cursors）
+## 3.8 光标（Cursors）
 ```javascript
 像 getAll/getAllKeys 这样的方法，会返回一个 键/值 数组。
 
@@ -1167,7 +1167,7 @@ request.onsuccess = function() {
   }
 };
 ```
-## 3.9Promise包装器
+## 3.9 Promise包装器
 ```javascript
 将 onsuccess/onerror 添加到每个请求是一项相当麻烦的任务。我们可以通过使用事件委托（例如，在整个事务上设置处理程序）来简化我们的工作，但是 async/await 要方便的多。
 
@@ -1246,7 +1246,7 @@ let transaction = request.transaction; // 本地事务对象
 
 let result = await promise; // 如果仍然需要
 ```
-## 3.10总结
+## 3.10 总结
 ```javascript
 IndexedDB 可以被认为是“localStorage on steroids”。这是一个简单的键值对数据库，功能强大到足以支持离线应用，而且用起来比较简单。
 

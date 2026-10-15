@@ -11,9 +11,9 @@ mybatis缓存包括：
 缓存只针对于DQL语句，也就是说缓存机制只对应select语句。
 ```
 
-# 1.一级缓存
+# 1. 一级缓存
 
-## 1.1⼀级缓存默认是开启的。不需要做任何配置。
+## 1.1 ⼀级缓存默认是开启的。不需要做任何配置。
 ```
 原理：只要使⽤同⼀个SqlSession对象执⾏同⼀条SQL语句，就会⾛缓存。
 
@@ -32,17 +32,17 @@ public void testSelectByCollection(){
 
 执行结果，只执行了一次sql语句，第二次是直接从缓存中拿到数据输出
 ```
-## 1.2什么情况下不会⾛缓存？
+## 1.2 什么情况下不会⾛缓存？
 ```
 第⼀种：不同的SqlSession对象。
 第⼆种：查询条件变化了。
 ```
-## 1.3⼀级缓存失效情况包括两种
+## 1.3 ⼀级缓存失效情况包括两种
 ```
 第⼀种：第⼀次查询和第⼆次查询之间，⼿动清空了⼀级缓存。
 第⼆种：第⼀次查询和第⼆次查询之间，执⾏了增删改操作。【这个增删改和哪张表没有关系，只要有insert delete update操作，⼀级缓存就失效。】
 ```
-## 1.4关闭一级缓存
+## 1.4 关闭一级缓存
 ```
 方法 1：使用不同的 SqlSession（最彻底的方式）
 
@@ -71,11 +71,11 @@ sqlSession.selectOne(...); // 必然重新查库
 强制重新查库
 ```
 
-# 2.二级缓存
+# 2. 二级缓存
 ```
 ⼆级缓存的范围是SqlSessionFactory。
 ```
-## 2.1使⽤⼆级缓存需要具备以下⼏个条件：
+## 2.1 使⽤⼆级缓存需要具备以下⼏个条件：
 ```
 1.全局性地开启或关闭所有映射器配置⽂件中已配置的任何缓存。默认就是true，⽆需设置。
 <setting name="cacheEnabled" value="true">
@@ -86,11 +86,11 @@ sqlSession.selectOne(...); // 必然重新查库
 3.使⽤⼆级缓存的实体类对象必须是可序列化的，也就是必须实现java.io.Serializable接⼝
 4.SqlSession对象关闭或提交之后，⼀级缓存中的数据才会被写⼊到⼆级缓存当中。此时⼆级缓存才可⽤。
 ```
-## 2.2⼆级缓存的失效
+## 2.2 ⼆级缓存的失效
 ```
 只要两次查询之间出现了增删改操作。⼆级缓存就会失效。【⼀级缓存也会失效】
 ```
-## 2.3⼆级缓存的相关配置（<cache/>标签的属性）
+## 2.3 ⼆级缓存的相关配置（<cache/>标签的属性）
 ```
 1.eviction：指定从缓存中移除某个对象的淘汰算法。默认采⽤LRU策略。
 LRU：Least Recently Used。最近最少使⽤。优先淘汰在间隔时间内使⽤频率最低的对象。(其实还有⼀种淘汰算法LFU，最不常⽤。)
@@ -111,13 +111,13 @@ true：当多个线程同时访问同一个缓存 key 并且缓存未命中时�
 false：所有线程都会并发去数据库查询，容易造成“缓存击穿”
 ```
 
-# 3.MyBatis集成EhCache（二级缓存实现）
+# 3. MyBatis集成EhCache（二级缓存实现）
 ```
 集成EhCache是为了代替mybatis⾃带的⼆级缓存。⼀级缓存是⽆法替代的。
 mybatis对外提供了接⼝，也可以集成第三⽅的缓存组件。⽐如EhCache、Memcache等。都可以。
 EhCache是Java写的。Memcache是C语⾔写的。所以mybatis集成EhCache较为常⻅，按照以下步骤操作，就可以完成集成：
 ```
-## 3.1第⼀步：引⼊mybatis整合ehcache的依赖。
+## 3.1 第⼀步：引⼊mybatis整合ehcache的依赖。
 ```
 <!--mybatis集成ehcache的组件，本质上这就是一个适配器包，依靠依赖传递就可以将核心类库引入-->
 <dependency>
@@ -139,7 +139,7 @@ EhCache是Java写的。Memcache是C语⾔写的。所以mybatis集成EhCache较�
     <scope>test</scope>
 </dependency>
 ```
-## 3.2第⼆步：在类的根路径下新建ehcache.xml⽂件，并提供以下配置信息。
+## 3.2 第⼆步：在类的根路径下新建ehcache.xml⽂件，并提供以下配置信息。
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -164,20 +164,20 @@ EhCache是Java写的。Memcache是C语⾔写的。所以mybatis集成EhCache较�
 
 </ehcache>
 ```
-## 3.3第三步：修改SqlMapper.xml⽂件中的标签，添加type属性。
+## 3.3 第三步：修改SqlMapper.xml⽂件中的标签，添加type属性。
 ```
 <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
 ```
-## 3.4第四步：编写测试程序使⽤。
+## 3.4 第四步：编写测试程序使⽤。
 ```
 ```
 
-# 4.其他二级缓存实现
+# 4. 其他二级缓存实现
 ```
 如memcache也可以集成到mbyatis中
 ```
 
-# 5.Cache 接口源码分析
+# 5. Cache 接口源码分析
 
 ```java
 /**

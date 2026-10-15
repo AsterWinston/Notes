@@ -1,4 +1,4 @@
-# 1.消息接收概览
+# 1. 消息接收概览
 
 Spring AMQP为消息接收提供了两种主要方式：
 - **Push模式（推荐）**：通过`@RabbitListener`注解，Broker主动推送消息给消费者
@@ -6,9 +6,9 @@ Spring AMQP为消息接收提供了两种主要方式：
 
 本章重点介绍Push模式，因为这是Spring AMQP最推荐、最常用的消费方式。
 
-# 2.@RabbitListener详解
+# 2. @RabbitListener详解
 
-## 2.1基本用法
+## 2.1 基本用法
 ```java
 @Component
 public class OrderMessageListener {
@@ -25,7 +25,7 @@ public class OrderMessageListener {
 
 **工作原理**：应用启动后，`RabbitListenerAnnotationBeanPostProcessor`会扫描所有`@RabbitListener`注解的方法，为每个方法创建一个`MessageListenerContainer`，自动管理连接、线程、消息分发。
 
-## 2.2注解属性详解
+## 2.2 注解属性详解
 ```java
 @RabbitListener(
     id = "orderListener",                           // 监听器唯一ID（可选，默认自动生成）
@@ -50,7 +50,7 @@ public void handleMessage(Order order) {
 }
 ```
 
-## 2.3监听单个队列
+## 2.3 监听单个队列
 ```java
 @Component
 public class SingleQueueListener {
@@ -63,7 +63,7 @@ public class SingleQueueListener {
 }
 ```
 
-## 2.4监听多个队列
+## 2.4 监听多个队列
 ```java
 @Component
 public class MultiQueueListener {
@@ -83,7 +83,7 @@ public class MultiQueueListener {
 }
 ```
 
-## 2.5不同队列不同方法
+## 2.5 不同队列不同方法
 ```java
 @Component
 public class SeparateQueueListener {
@@ -105,9 +105,9 @@ public class SeparateQueueListener {
 }
 ```
 
-# 3.@RabbitListener与@QueueBinding
+# 3. @RabbitListener与@QueueBinding
 
-## 3.1动态声明绑定
+## 3.1 动态声明绑定
 使用`@QueueBinding`可以在方法上直接声明Queue、Exchange和Binding，无需在单独的配置类中定义：
 
 ```java
@@ -132,7 +132,7 @@ public class DeclarativeListener {
 }
 ```
 
-## 3.2@QueueBinding的优缺点
+## 3.2 @QueueBinding的优缺点
 优点：
 - 代码更紧凑，业务逻辑和队列声明在一起
 - 适合Demo和简单项目
@@ -147,9 +147,9 @@ public class DeclarativeListener {
 - `@RabbitListener`只使用`queues`属性引用已定义好的队列名称常量
 - `@QueueBinding`适用于Demo、原型项目
 
-# 4.消息参数绑定
+# 4. 消息参数绑定
 
-## 4.1支持的参数类型
+## 4.1 支持的参数类型
 `@RabbitListener`方法可以接收以下类型的参数：
 
 ```java
@@ -182,7 +182,7 @@ public void handleMessage(
 }
 ```
 
-## 4.2详细示例
+## 4.2 详细示例
 ```java
 @Component
 public class AdvancedParameterListener {
@@ -205,7 +205,7 @@ public class AdvancedParameterListener {
 }
 ```
 
-## 4.3@Header详解
+## 4.3 @Header详解
 ```java
 // 获取单个Header（默认值）
 @RabbitListener(queues = "order.queue")
@@ -223,7 +223,7 @@ public void handle(
 @Header(AmqpHeaders.REDELIVERED) boolean redelivered;
 ```
 
-## 4.4参数获取消息体类型
+## 4.4 参数获取消息体类型
 当方法的第一个参数类型与消息体转换后的类型不匹配时，`MessageConverter`会尝试进行类型转换。如果转换失败，将抛出`MessageConversionException`。
 
 ```java
@@ -246,9 +246,9 @@ public void handleBytes(byte[] bytes) {
 }
 ```
 
-# 5.手动确认（Manual Ack）
+# 5. 手动确认（Manual Ack）
 
-## 5.1确认模式概述
+## 5.1 确认模式概述
 AMQP协议定义了三种消费者确认模式：
 
 | 模式 | 说明 | Spring AMQP配置 |
@@ -257,7 +257,7 @@ AMQP协议定义了三种消费者确认模式：
 | auto | 自动Ack，方法正常返回则Ack，异常则Nack（可配置重新入队） | `AcknowledgeMode.AUTO`（默认） |
 | manual | 手动Ack，需要显式调用channel.basicAck/Nack | `AcknowledgeMode.MANUAL` |
 
-## 5.2auto模式（默认）
+## 5.2 auto模式（默认）
 ```yaml
 spring:
   rabbitmq:
@@ -271,7 +271,7 @@ spring:
 - 方法**正常返回** → 自动Ack，消息从队列中删除
 - 方法**抛出异常** → 自动Nack → 如果`default-requeue-rejected=true`则重新入队，否则丢弃或进入死信队列
 
-## 5.3manual模式（手动确认）
+## 5.3 manual模式（手动确认）
 当需要精确控制消息确认时机时，使用手动确认模式：
 
 ```yaml
@@ -282,7 +282,7 @@ spring:
         acknowledge-mode: manual
 ```
 
-### 5.3.1基本用法
+### 5.3.1 基本用法
 ```java
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
@@ -316,7 +316,7 @@ public class ManualAckListener {
 }
 ```
 
-### 5.3.2basicAck vs basicNack vs basicReject
+### 5.3.2 basicAck vs basicNack vs basicReject
 | 方法 | 说明 | 签名 |
 |------|------|------|
 | basicAck | 确认消息 | (deliveryTag, multiple) |
@@ -326,7 +326,7 @@ public class ManualAckListener {
 - `multiple=true`：确认/拒绝deliveryTag之前的所有消息（包括当前）
 - `requeue=true`：消息重新放回队首（可能导致无限循环）
 
-### 5.3.3手动确认的最佳实践
+### 5.3.3 手动确认的最佳实践
 ```java
 @RabbitListener(queues = "critical.order.queue")
 public void handleCriticalOrder(Order order, Message message, Channel channel) throws Exception {
@@ -359,7 +359,7 @@ public void handleCriticalOrder(Order order, Message message, Channel channel) t
 }
 ```
 
-## 5.4none模式
+## 5.4 none模式
 ```yaml
 spring:
   rabbitmq:
@@ -370,15 +370,15 @@ spring:
 
 `none`模式下，消息一旦发出即视为已消费，不管消费者是否处理成功。这是**不可靠的**，消息可能丢失，一般不推荐使用。
 
-# 6.消费重试机制
+# 6. 消费重试机制
 
-## 6.1消费者重试的两种实现
+## 6.1 消费者重试的两种实现
 Spring AMQP提供了两种消费重试机制：
 
 1. **Spring Retry（应用层重试）**：在消费者方法内部重试，对Broker无感知
 2. **RabbitMQ特性（Broker层重试）**：通过死信队列+延迟队列实现
 
-## 6.2Spring Retry（应用层重试）
+## 6.2 Spring Retry（应用层重试）
 ```yaml
 spring:
   rabbitmq:
@@ -399,12 +399,12 @@ spring:
 第3次重试 → 失败 → 抛出AmqpRejectAndDontRequeueException → 消息被丢弃或进入死信
 ```
 
-## 6.3重试的注意事项
+## 6.3 重试的注意事项
 1. **幂等性**：重试意味着同一消息可能被多次处理，业务逻辑必须保证幂等性
 2. **重试耗尽策略**：重试全部失败后，需要定义消息的最终去向
 3. **避免重新入队导致无限循环**：正确配置`default-requeue-rejected=false`
 
-## 6.4重试耗尽后的处理策略
+## 6.4 重试耗尽后的处理策略
 ```java
 @Configuration
 public class RetryConfig {
@@ -436,9 +436,9 @@ public RetryOperationsInterceptor retryOperationsInterceptor(
 }
 ```
 
-# 7.消费者并发控制
+# 7. 消费者并发控制
 
-## 7.1配置消费者线程数
+## 7.1 配置消费者线程数
 ```yaml
 spring:
   rabbitmq:
@@ -449,7 +449,7 @@ spring:
         prefetch: 100        # 每个消费者预取消息数
 ```
 
-## 7.2Preview
+## 7.2 Preview
 ```java
 @RabbitListener(queues = "high.throughput.queue", concurrency = "5-20")
 public void handleMessage(Message message) {
@@ -457,7 +457,7 @@ public void handleMessage(Message message) {
 }
 ```
 
-## 7.3并发配置建议
+## 7.3 并发配置建议
 | 场景 | concurrency | prefetch | 说明 |
 |------|------------|----------|------|
 | 低延迟、匀速场景 | 1-3 | 250 | 普通业务 |
@@ -466,9 +466,9 @@ public void handleMessage(Message message) {
 | 顺序处理场景 | 1 | 1 | 严格保证顺序 |
 | 削峰填谷 | 1-10 | 500 | 灵活伸缩 |
 
-# 8.消费者优先级
+# 8. 消费者优先级
 
-## 8.1消费者优先级机制
+## 8.1 消费者优先级机制
 RabbitMQ支持消费者优先级，具有更高优先级的消费者在消息分发时会被优先考虑。这在需要多个消费者一起工作，但希望某些消费者优先处理消息时很有用（如主备消费者模式）。
 
 ```java
@@ -483,7 +483,7 @@ public void normalPriorityConsumer(Order order) {
 }
 ```
 
-## 8.2排他消费者
+## 8.2 排他消费者
 ```java
 @RabbitListener(queues = "order.queue", exclusive = true)
 public void exclusiveConsumer(Order order) {
@@ -492,9 +492,9 @@ public void exclusiveConsumer(Order order) {
 }
 ```
 
-# 9.条件消费与消息过滤
+# 9. 条件消费与消息过滤
 
-## 9.1应用层过滤
+## 9.1 应用层过滤
 在Listener方法内部进行条件判断：
 
 ```java
@@ -509,7 +509,7 @@ public void handleOrder(Order order) {
 }
 ```
 
-## 9.2消息过滤
+## 9.2 消息过滤
 ```java
 // 在@RabbitListener中指定MessageConverter来做过滤
 // 或者使用CompositeMessageConverter
@@ -517,9 +517,9 @@ public void handleOrder(Order order) {
 
 实际上RabbitMQ推荐的做法是：**在发送端就通过Exchange/Binding将消息路由到正确的队列**，而不是在消费端做大量过滤。
 
-# 10.异常处理
+# 10. 异常处理
 
-## 10.1全局错误处理器
+## 10.1 全局错误处理器
 ```java
 @Component
 public class CustomErrorHandler implements RabbitListenerErrorHandler {
@@ -544,7 +544,7 @@ public void handleOrder(Order order) {
 }
 ```
 
-## 10.2@RabbitListener的异常返回
+## 10.2 @RabbitListener的异常返回
 ```java
 @RabbitListener(queues = "order.queue", returnExceptions = "true")
 public void handleOrder(Order order) {
@@ -553,7 +553,7 @@ public void handleOrder(Order order) {
 }
 ```
 
-## 10.3常见异常处理模式
+## 10.3 常见异常处理模式
 ```java
 @RabbitListener(queues = "order.queue")
 public void handleOrder(Order order, Message message, Channel channel) throws Exception {
@@ -572,9 +572,9 @@ public void handleOrder(Order order, Message message, Channel channel) throws Ex
 }
 ```
 
-# 11.消息生命周期监听
+# 11. 消息生命周期监听
 
-## 11.1RabbitListenerEndpointRegistry
+## 11.1 RabbitListenerEndpointRegistry
 可以通过`RabbitListenerEndpointRegistry`来管理监听器的生命周期：
 
 ```java
@@ -609,7 +609,7 @@ public class ListenerManager {
 
 > 注意：需要在`@RabbitListener`中指定`id`属性才能通过Registry获取特定的监听器容器。
 
-## 11.2启动和停止控制
+## 11.2 启动和停止控制
 ```java
 @RabbitListener(queues = "order.queue", id = "orderListener", autoStartup = "false")
 public void handleOrder(Order order) {

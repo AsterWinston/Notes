@@ -85,7 +85,7 @@ public class CustomerService {
 
 # 3. 源码解析：XML 自动装配的底层实现
 
-## 3.1. XML autowire 属性如何驱动自动装配
+## 3.1 XML autowire 属性如何驱动自动装配
 
 ```
 XML 中的 autowire="byName" 或 autowire="byType" 最终会被解析并存储在
@@ -106,7 +106,7 @@ getAutowireMode() 将字符串映射为 int 常量：
     "default"     → -1 → 去 <beans default-autowire="..."> 查找默认值
 ```
 
-## 3.2. populateBean() 中的自动装配触发
+## 3.2 populateBean() 中的自动装配触发
 
 ```
 在 doCreateBean() → populateBean() 中，会自动装配逻辑被触发：
@@ -141,7 +141,7 @@ protected void populateBean(String beanName, RootBeanDefinition mbd,
 }
 ```
 
-## 3.3. autowireByName() — 按名称自动装配源码
+## 3.3 autowireByName() — 按名称自动装配源码
 
 ```
 protected void autowireByName(
@@ -181,7 +181,7 @@ protected void autowireByName(
 // 5. 返回最终需要自动装配的属性名数组
 ```
 
-## 3.4. autowireByType() — 按类型自动装配源码
+## 3.4 autowireByType() — 按类型自动装配源码
 
 ```
 protected void autowireByType(
@@ -233,7 +233,7 @@ protected void autowireByType(
 }
 ```
 
-## 3.5. 自动装配与显式注入的执行顺序
+## 3.5 自动装配与显式注入的执行顺序
 
 ```
 在 populateBean() 中，执行顺序是：
@@ -259,7 +259,7 @@ protected void autowireByType(
    即：<property> 标签的显式配置优先级高于 autowire 自动装配！
 ```
 
-## 3.6. 设计思想总结
+## 3.6 设计思想总结
 
 1. 约定优于配置（Convention over Configuration）：
    autowire="byName" 体现了这个思想——只要 Bean 的 id 和 setter 方法名匹配，

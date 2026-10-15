@@ -1,4 +1,4 @@
-# 1 性能调优总览
+# 1. 性能调优总览
 
 ## 1.1 调优金字塔
 
@@ -17,7 +17,7 @@
                  └─────────────────────────────┘
 ```
 
-# 2 Broker 调优
+# 2. Broker 调优
 
 ## 2.1 线程模型调优
 
@@ -142,7 +142,7 @@ log.cleaner.min.cleanable.ratio=0.5  # 脏率超过50%才触发
 log.cleaner.delete.retention.ms=86400000  # tombstone保留
 ```
 
-# 3 Producer 调优
+# 3. Producer 调优
 
 ## 3.1 吞吐优先配置
 
@@ -199,7 +199,7 @@ props.put("max.in.flight.requests.per.connection", 1); // 严格有序
 | acks=0→1→all | ↓ | ↑↑ | → | → |
 | max.in.flight.requests | ↑ | → | → | ↑ |
 
-# 4 Consumer 调优
+# 4. Consumer 调优
 
 ## 4.1 通用配置
 
@@ -256,7 +256,7 @@ props.put("receive.buffer.bytes", 1048576);   // 1MB
 // 避免处理慢影响下次 poll，造成 max.poll.interval.ms 超时
 ```
 
-# 5 OS 调优
+# 5. OS 调优
 
 ## 5.1 文件系统与磁盘
 
@@ -323,7 +323,7 @@ net.ipv4.tcp_max_orphans=262144
 # nodiratime: 不记录目录访问时间
 ```
 
-# 6 JVM 调优
+# 6. JVM 调优
 
 ## 6.1 GC 策略
 
@@ -388,7 +388,7 @@ export KAFKA_JVM_PERFORMANCE_OPTS="\
 -XX:HeapDumpPath=/var/log/kafka/heap-dump.hprof
 ```
 
-# 7 压力测试
+# 7. 压力测试
 
 ## 7.1 kafka-producer-perf-test
 
@@ -441,7 +441,7 @@ kafka-producer-perf-test.sh \
         linger.ms=0
 ```
 
-# 8 性能基准参考
+# 8. 性能基准参考
 
 ## 8.1 典型硬件配置
 
@@ -471,7 +471,7 @@ kafka-producer-perf-test.sh \
 
 > 注：实际吞吐取决于硬件、网络、记录大小、分区数等多种因素。
 
-# 9 调优决策流程图
+# 9. 调优决策流程图
 
 ```
 性能瓶颈排查:

@@ -1,12 +1,12 @@
-# 1.整合持久层框架Mybatis
+# 1. 整合持久层框架Mybatis
 
-## 1.1准备数据库表及数据
+## 1.1 准备数据库表及数据
 创建数据库：springboot
 使用IDEA工具自带的mysql插件来完成表的创建和数据的准备
 <img src="images/28.png" width="100%">
 表创建成功后，为表准备数据
 
-## 1.2创建Spring Boot项目
+## 1.2 创建Spring Boot项目
 使用脚手架创建Spring Boot项目
 引入mysql驱动以及mybatis的启动器
 依赖如下：
@@ -36,7 +36,7 @@
 ● Spring Boot官方提供的启动器的名字规则：spring-boot-starter-xxx
 ● 第三方（非Spring Boot官方）提供的启动器的名字规则：xxx-spring-boot-starter
 
-## 1.3编写数据源配置
+## 1.3 编写数据源配置
 前面提到过，Spring Boot配置统一可以编写到application.properties中，配置如下：
 ```
 # Spring Boot脚手架自动生成的
@@ -51,7 +51,7 @@ spring.datasource.password=123456
 ```
 以上的配置属于连接池的配置，连接池使用的是Spring Boot默认的连接池：HikariCP
 
-## 1.4编写实体类Vip
+## 1.4 编写实体类Vip
 表t_vip中的字段分别是：
 ● id
 ● name
@@ -133,7 +133,7 @@ public class Vip {
 ```
 以上代码可以使用第三方库Lombok进行改造，后面再说。
 
-## 1.5编写Mapper接口
+## 1.5 编写Mapper接口
 创建repository包，在该包下新建VipMapper接口，代码如下：
 ```
 package com.powernode.sb305springbootmybatis.repository;
@@ -179,7 +179,7 @@ public interface VipMapper {
 }
 ```
 
-## 1.6编写Mapper接口的XML配置文件
+## 1.6 编写Mapper接口的XML配置文件
 在resources目录下新建mapper目录，将来的mapper.xml配置文件放在这个目录下。
 
 安装MyBatisX插件，该插件可以根据我们编写的VipMapper接口自动生成mapper的XML配置文件。
@@ -222,17 +222,17 @@ public interface VipMapper {
 
 ```
 
-## 1.7添加Mapper的扫描
+## 1.7 添加Mapper的扫描
 在Spring Boot的入口程序上添加如下的注解，来完成VipMapper接口的扫描：
 <img src="images/33.png" width="100%">
 
-## 1.8告诉Mybatis框架MapperXML文件的位置
+## 1.8 告诉Mybatis框架MapperXML文件的位置
 在application.properties配置文件中进行如下配置：
 ```
 mybatis.mapper-locations=classpath:mapper/*.xml
 ```
 
-## 1.9测试整合Mybatis是否成功
+## 1.9 测试整合Mybatis是否成功
 在Spring Boot主入口程序中获取Spring上下文对象ApplicationContext，从Spring容器中获取VipMapper对象，然后调用相关方法进行测试：
 ```
 package com.powernode.sb305springbootmybatis;
@@ -278,7 +278,7 @@ map-underscore-to-camel-case 这个配置项的作用就是在查询结果映射
 
 mapper的xml文件中的sql语句仍然使用*的方式：
 <img src="images/35.png" width="100%">
-## 1.10测试其他方法是否正常
+## 1.10 测试其他方法是否正常
 在主入口类中继续测试增删改操作：
 
 ```java
@@ -314,7 +314,7 @@ public class Sb305SpringbootMybatisApplication {
 }
 ```
 
-## 1.11纯注解版MyBatis（无XML）
+## 1.11 纯注解版MyBatis（无XML）
 
 如果不想写XML映射文件，可以使用注解方式直接在Mapper接口上编写SQL：
 
@@ -344,9 +344,9 @@ public interface VipMapper {
 
 注意：使用注解方式时，`mybatis.mapper-locations` 配置可以省略，不再需要XML映射文件。
 
-# 2.Lombok库
+# 2. Lombok库
 
-## 2.1Lombok的主要注解
+## 2.1 Lombok的主要注解
 @Data：
 ● 等价于 @ToString, @EqualsAndHashCode, @Getter，@Setter, @RequiredArgsConstructor.
 ● 用于生成：必要参数的构造方法、getter、setter、toString、equals 和 hashcode 方法。
@@ -364,9 +364,9 @@ public interface VipMapper {
 ● 用于生成 toString 和 equals/hashCode 方法。
 ● 这两个注解都有**<font style="color:#DF2A3F;">exclude</font>**属性，通过这个属性可以定制toString、hashCode、equals方法。
 
-## 2.2如何使用Lombok？
+## 2.2 如何使用Lombok？
 创建一个普通的Maven模块来快速测试一下Lombok库的使用
-### 2.2.1添加依赖
+### 2.2.1 添加依赖
 在 Maven 的 pom.xml 文件中添加 Lombok 依赖：
 ```
 <dependency>
@@ -381,7 +381,7 @@ public interface VipMapper {
 </dependency>
 
 ```
-### 2.2.2IDEA中安装Lombok插件
+### 2.2.2 IDEA中安装Lombok插件
 高版本的IntelliJ IDEA工具默认都是绑定Lombok插件的，不需要再额外安装：
 <img src="images/36.png" width="100%">
 Lombok插件不是必须要安装的，为了提高开发效率以及开发者的体验，安装Lombok插件是有必要的。
@@ -392,7 +392,7 @@ Lombok插件不是必须要安装的，为了提高开发效率以及开发者�
 但是程序可以正常执行
 如果在IDEA中安装了lombok插件：程序会有很好的提示功能。
 
-### 2.2.3使用Lombok注解
+### 2.2.3 使用Lombok注解
 在 Java 类中使用 Lombok 提供的注解。
 ```
 import lombok.Data;
@@ -432,13 +432,13 @@ public class Test {
 ● @RequiredArgsConstructor
 注：Lombok只能帮助我们生成无参数构造方法和全参数构造方法，其他定制参数的构造方法无法生成。
 
-## 2.3Lombok的其他常用注解
+## 2.3 Lombok的其他常用注解
 @Value
 @Builder
 @Singular
 @Slf4j
 ......
-### 2.3.1@Value
+### 2.3.1 @Value
 该注解会给所有属性添加final，给所有属性提供getter方法，自动生成toString、hashCode、equals
 通过这个注解可以创建不可变对象。
 ```
@@ -476,7 +476,7 @@ public class CustomerTest {
 
 可以查看一下字节码，你会发现，@Value注解的作用只会生成：全参数构造方法、getter方法、hashCode、equals、toString方法。（没有setter方法。）
 
-### 2.3.2@Builder
+### 2.3.2 @Builder
 GoF23种设计模式之一：建造模式
 建造模式（Builder Pattern）属于创建型设计模式。GoF23种设计模式之一。
 用于解决对象创建时参数过多的问题。它通过将对象的构造过程与其表示分离，使得构造过程可以逐步完成，而不是一次性提供所有参数。建造模式的主要目的是让对象的创建过程更加清晰、灵活和可控。
@@ -592,7 +592,7 @@ public class Person {
 }
 
 ```
-### 2.3.3@Singular
+### 2.3.3 @Singular
 @Singular注解是辅助@Builder注解的。
 当被建造的对象的属性是一个集合，这个集合属性使用@Singular注解进行标注的话，可以连续调用集合属性对应的方法完成多个元素的添加。如果没有这个注解，则无法连续调用方法完成多个元素的添加。代码如下：
 ```
@@ -630,7 +630,7 @@ public class Person {
 }
 
 ```
-### 2.3.4@Slf4j
+### 2.3.4 @Slf4j
 Lombok 支持多种日志框架的注解，可以根据你使用的日志框架选择合适的注解。以下是 Lombok 提供的部分日志注解及其对应的日志框架：
 1. @Log4j：
     ○ 自动生成一个 org.apache.log4j.Logger 对象。
@@ -695,23 +695,23 @@ public class UserService {
 
 ```
 通过这些日志注解，你可以方便地在类中使用日志记录功能，而无需手动创建日志对象。
-# 3.Mybatis逆向生成
+# 3. Mybatis逆向生成
 MyBatis逆向工程：使用IDEA插件可以根据数据库表的设计逆向生成MyBatis的Mapper接口 与 MapperXML文件。
-## 3.1安装插件free mybatis tools
+## 3.1 安装插件free mybatis tools
 <img src="images/38.png" width="100%">
 
-## 3.2在IDEA中配置数据源
+## 3.2 在IDEA中配置数据源
 <img src="images/39.png" width="100%">
 
-## 3.3创建数据库，创建表，准备数据
+## 3.3 创建数据库，创建表，准备数据
 <img src="images/40.png" width="100%">
 
-## 3.4使用脚手架创建Spring Boot项目
+## 3.4 使用脚手架创建Spring Boot项目
 <img src="images/41.png" width="100%">
 添加依赖：mybatis依赖、mysql驱动、Lombok库
 <img src="images/42.png" width="100%">
 
-## 3.5生成Mybatis代码放到SpringBoot项目中
+## 3.5 生成Mybatis代码放到SpringBoot项目中
 在表上右键：Mybatis-Generator
 <img src="images/43.png" width="100%">
 <img src="images/44.png" width="100%">
@@ -719,7 +719,7 @@ MyBatis逆向工程：使用IDEA插件可以根据数据库表的设计逆向生
 注意：生成的**<font style="color:#DF2A3F;">VipMapper</font>**接口上自动添加了**<font style="color:#DF2A3F;">@Repository</font>**注解，这个注解没用，删除即可。
 
 
-## 3.6编写mybatis相关配置
+## 3.6 编写mybatis相关配置
 application.properties属性文件的配置：
 ```
 spring.datasource.type=com.zaxxer.hikari.HikariDataSource
@@ -731,7 +731,7 @@ spring.datasource.password=123456
 mybatis.mapper-locations=classpath:com/powernode/springboot/repository/*.xml
 mybatis.configuration.map-underscore-to-camel-case=true
 ```
-## 3.7编写测试程序
+## 3.7 编写测试程序
 ```
 package com.powernode.springboot;
 
@@ -770,18 +770,18 @@ public class Sb306SpringbootMybatisGeneratorApplication {
 }
 ```
 到此，Spring Boot整合MyBatis结束！
-# 4.整合SpringMVC（SSM整合）
+# 4. 整合SpringMVC（SSM整合）
 SSM整合：Spring + SpringMVC + MyBatis
 Spring Boot项目本身就是基于Spring框架实现的。因此SSM整合时，只需要在整合MyBatis框架之后，引入web启动器即可完成SSM整合。
-## 4.1使用脚手架创建SpringBoot项目
+## 4.1 使用脚手架创建SpringBoot项目
 <img src="images/45.png" width="100%">
 添加依赖：web启动器、mybatis启动器、mysql驱动依赖、lombok依赖
 <img src="images/46.png" width="100%">
 
-## 4.2使用free mybatis tool插件逆向生成Mybatis代码
+## 4.2 使用free mybatis tool插件逆向生成Mybatis代码
 将springboot数据库中的t_vip表逆向生成mybatis代码。这里不再赘述。
 
-## 4.3整合Mybatis
+## 4.3 整合Mybatis
 编写数据源的配置
 ```
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
@@ -813,7 +813,7 @@ public class Sb307SsmApplication {
 
 }
 ```
-## 4.4编写Service
+## 4.4 编写Service
 编写VipService接口：
 ```
 package com.powernode.sb307ssm.service;
@@ -854,7 +854,7 @@ public class VipServiceImpl implements VipService {
 
 ```
 
-## 4.5编写Controller
+## 4.5 编写Controller
 编写VipController，代码如下：
 ```
 package com.powernode.sb307ssm.controller;
@@ -882,5 +882,5 @@ public class VipController {
 ```
 提示：这里使用了RESTFul编程风格，这个内容在SpringMVC课程中已经讲过。忘了的同学可以回头观看一下。
 
-## 4.6启动服务器测试
+## 4.6 启动服务器测试
 执行SpringBoot项目主入口的main方法，启动Tomcat服务器

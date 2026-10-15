@@ -43,7 +43,7 @@
 这些是你已经掌握的。接下来我们从这些基础知识出发，由浅入深地把Tomcat彻底讲透。
 ```
 
-# 2.Tomcat是什么？为什么需要它？
+# 2. Tomcat是什么？为什么需要它？
 
 ```
 要真正理解Tomcat，首先要回答一个根本问题：为什么浏览器不能直接调用你的Java类？
@@ -133,7 +133,7 @@ Tomcat作为Servlet容器，它的核心职责是：
 但对于绝大多数JavaWeb项目来说，Servlet+JSP+JDBC就足够了，Tomcat完全胜任。
 ```
 
-# 3.Tomcat的由来与版本演进
+# 3. Tomcat的由来与版本演进
 
 ```
 一、历史渊源
@@ -198,7 +198,7 @@ Tomcat的故事要从Apache基金会的James Duncan Davidson说起：
   - 新手建议直接用Tomcat 10+
 ```
 
-# 4.Tomcat整体架构概览
+# 4. Tomcat整体架构概览
 
 ```
 在深入每个细节之前，必须先在脑子里建立一个"顶层设计地图"。Tomcat的架构可以用一句话概括：
@@ -286,7 +286,7 @@ Tomcat不是铁板一块，而是三个独立子项目的组合：
   - Coyote和Catalina是两个独立模块，各自演进互不干扰
 ```
 
-# 5.Tomcat源码结构概览
+# 5. Tomcat源码结构概览
 
 ```
 阅读源码是深入理解Tomcat的最佳方式。这一节给你一个源码地图，让你知道从哪里入手。
@@ -380,7 +380,7 @@ org.apache.tomcat.util.scan.StandardJarScanner     // Jar扫描（Servlet 3.0+�
 看不懂没关系，接下来的每一节我们都会逐步剖析这些源码。你不需要一开始就读完。
 ```
 
-# 6.server.xml核心配置详解（上）
+# 6. server.xml核心配置详解（上）
 
 ```
 server.xml 是 Tomcat 最重要的配置文件，位于 $CATALINA_BASE/conf/server.xml。
@@ -463,7 +463,7 @@ Service 是一个"逻辑组合"——将一个 Container（处理请求）和若
 通常情况下，你只有一个 Service，名字叫 "Catalina"。
 ```
 
-# 7.server.xml核心配置详解（下）
+# 7. server.xml核心配置详解（下）
 
 ```
 六、Connector 元素（最重要！）
@@ -607,7 +607,7 @@ Valve（阀门）是Tomcat中的"拦截器"，可以插入到Engine/Host/Context
 </Server>
 ```
 
-# 8.Connector连接器深度解析（上）—— 架构与协议
+# 8. Connector连接器深度解析（上）—— 架构与协议
 
 ```
 前面我们讲了Connector是"门卫+邮差"，现在来看它内部到底长什么样。
@@ -726,7 +726,7 @@ LimitLatch 是 Endpoint 内部用来限制最大连接数的组件。
 这保证了Tomcat不会被海量连接撑爆。
 ```
 
-# 9.Connector连接器深度解析（下）—— 内部组件
+# 9. Connector连接器深度解析（下）—— 内部组件
 
 ```
 六、Adapter：CoyoteAdapter 桥接器
@@ -830,7 +830,7 @@ CoyoteAdapter.service(coyoteReq, coyoteRes)
       根据 keep-alive 决定：继续等下一个请求 / 关闭连接
 ```
 
-# 10.I/O模型对比：BIO / NIO / NIO2 / APR
+# 10. I/O模型对比：BIO / NIO / NIO2 / APR
 
 ```
 这是一个面试高频问题，也是性能调优的基础。
@@ -992,7 +992,7 @@ public TomcatServletWebServerFactory tomcatFactory() {
 }
 ```
 
-# 11.Catalina容器层次结构
+# 11. Catalina容器层次结构
 
 ```
 前面我们把Connector讲透了，现在来看"集装箱"的另一半——Catalina容器。
@@ -1136,7 +1136,7 @@ public interface Container extends Lifecycle {
 这就是"面向接口编程"的威力。
 ```
 
-# 12.Pipeline-Valve管道阀门机制
+# 12. Pipeline-Valve管道阀门机制
 
 ```
 Pipeline-Valve 是 Tomcat 内部实现请求处理的核心设计模式——责任链模式。
@@ -1327,7 +1327,7 @@ public class MyLoggingValve extends ValveBase {
   - 如果不调用 getNext().invoke()，请求就不会往下传递——相当于拦截了请求
 ```
 
-# 13.Tomcat的类加载机制（上）—— 为什么打破双亲委派
+# 13. Tomcat的类加载机制（上）—— 为什么打破双亲委派
 
 ```
 类加载机制是Tomcat设计中最精妙的部分之一，也是面试必问话题。
@@ -1397,7 +1397,7 @@ Java标准的双亲委派模型一个需求都满足不了！
 所以Tomcat必须自己设计一套定制的类加载机制。
 ```
 
-# 14.Tomcat的类加载机制（下）—— 类加载器层次与热部署
+# 14. Tomcat的类加载机制（下）—— 类加载器层次与热部署
 
 ```
 三、Tomcat的类加载器层次
@@ -1534,7 +1534,7 @@ protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundE
   同一个ClassLoader不能加载两个同名的类，但不同ClassLoader可以。
 ```
 
-# 15.Lifecycle接口与生命周期管理
+# 15. Lifecycle接口与生命周期管理
 
 ```
 一、什么是Lifecycle？
@@ -1726,7 +1726,7 @@ public void backgroundProcess();
   - Context的reload检测（检查web.xml是否变化）
 ```
 
-# 16.Mapper：请求路由映射机制
+# 16. Mapper：请求路由映射机制
 
 ```
 Connector把请求交给Container后，Container怎么知道该由哪个Servlet处理？
@@ -1834,7 +1834,7 @@ Mapper 将 Host/Context/Wrapper 组织成多层Map结构，可以 O(log n) 找�
 而不是 O(n) 遍历。
 ```
 
-# 17.Tomcat启动流程（上）—— Bootstrap到Server
+# 17. Tomcat启动流程（上）—— Bootstrap到Server
 
 ```
 Tomcat的启动看似简单（双击startup.bat），但背后的流程非常复杂。
@@ -2004,7 +2004,7 @@ digester.addSetNext("Server/Service/Connector", "addConnector");
 至此，Server → Service → Connector → Engine → Host 的 Java 对象树就建立起来了。
 ```
 
-# 18.Tomcat启动流程（下）—— Service到Context
+# 18. Tomcat启动流程（下）—— Service到Context
 
 ```
 六、Bootstrap.start() → Catalina.start() → Server.start()
@@ -2184,7 +2184,7 @@ protected synchronized void startInternal() throws LifecycleException {
    在 /etc/hosts 中确保 127.0.0.1 对应 localhost 和你的主机名。
 ```
 
-# 19.一个HTTP请求的完整旅程（上）—— 从Socket到Adapter
+# 19. 一个HTTP请求的完整旅程（上）—— 从Socket到Adapter
 
 ```
 把前面学的所有知识串起来，看一个HTTP请求从进来到出去的完整路径。
@@ -2302,7 +2302,7 @@ public void service(org.apache.coyote.Request req,
 接下来就要进入容器的Pipeline-Valve执行链。
 ```
 
-# 20.一个HTTP请求的完整旅程（下）—— 从Valve到Servlet
+# 20. 一个HTTP请求的完整旅程（下）—— 从Valve到Servlet
 
 ```
 五、阶段五：容器Pipeline执行
@@ -2469,7 +2469,7 @@ Acceptor 接收 ---- Poller 检测IO ---- Worker线程池
                                   逐层返回 → Processor写响应 → Socket发送 → 客户端收到
 ```
 
-# 21.Tomcat线程模型与线程池调优
+# 21. Tomcat线程模型与线程池调优
 
 ```
 一、Tomcat的线程池
@@ -2627,7 +2627,7 @@ public WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatCustomize
 "连接被拒绝"或"连接超时"，不是 HTTP 错误（因为还没到 HTTP 层）。
 ```
 
-# 22.Session管理机制
+# 22. Session管理机制
 
 ```
 一、Session的创建
@@ -2746,7 +2746,7 @@ Session的"过期"是一个后台线程定期检查的。流程：
 </session-config>
 ```
 
-# 23.Context配置与自动部署
+# 23. Context配置与自动部署
 
 ```
 一、Context的多种配置方式
@@ -2855,7 +2855,7 @@ reloadable="true" 时，Tomcat 会监听 WatchedResource 指定的文件变化�
    开发时方便，生产环境一定关掉
 ```
 
-# 24.WebSocket支持
+# 24. WebSocket支持
 
 ```
 Tomcat 7 开始支持 WebSocket（JSR 356），Tomcat 8+ 完美支持。
@@ -3020,7 +3020,7 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
 }
 ```
 
-# 25.Tomcat安全配置
+# 25. Tomcat安全配置
 
 ```
 安全问题在生产环境中是重中之重。Tomcat 虽然默认配置"能用"，但要"安全地用"，
@@ -3231,7 +3231,7 @@ web.xml 中可以配置细粒度的安全约束：
 <Connector maxPostSize="10485760" />  <!-- 限制POST最大10MB -->
 ```
 
-# 26.Tomcat日志系统（JULI）
+# 26. Tomcat日志系统（JULI）
 
 ```
 一、为什么Tomcat自创了JULI？
@@ -3374,7 +3374,7 @@ JULI 支持每个webapp有自己的 logging.properties，放在 /WEB-INF/classes
    同时设置 IDEA Console 的编码为 UTF-8
 ```
 
-# 27.性能调优实战
+# 27. 性能调优实战
 
 ```
 Tomcat 性能调优是一个系统工程，从JVM到Connector到应用代码，每层都能优化。
@@ -3521,7 +3521,7 @@ JAVA_OPTS="-server
    - 控制台日志关掉（ConsoleHandler.level = OFF）
 ```
 
-# 28.嵌入式Tomcat与Spring Boot
+# 28. 嵌入式Tomcat与Spring Boot
 
 ```
 一、传统部署 vs 嵌入式启动
@@ -3843,7 +3843,7 @@ server {
    不要让所有Tomcat同时不可用
 ```
 
-# 30.Tomcat 9→10 迁移：javax → jakarta
+# 30. Tomcat 9→10 迁移：javax → jakarta
 
 ```
 这是Tomcat历史上最大的一次不兼容变更。如果你在维护老项目，这一节必须看。
@@ -3948,7 +3948,7 @@ Apache 官方提供了迁移工具：
   - 如果只是一些小众库不兼容，可以考虑替换
 ```
 
-# 31.Tomcat设计模式分析
+# 31. Tomcat设计模式分析
 
 ```
 Tomcat 的设计质量在开源Java项目中属于顶级水平。它巧妙地运用了大量设计模式。
@@ -4107,7 +4107,7 @@ Tomcat 让你看到了设计模式在真实大型项目中的应用。下次学�
 可以打开 Tomcat 源码，对照着看，比看书本能学到更多。
 ```
 
-# 32.常见问题排查
+# 32. 常见问题排查
 
 ```
 一、端口占用（最最常见）
@@ -4249,7 +4249,7 @@ JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
   - 优化数据库查询、增加缓存
 ```
 
-# 33.Tomcat学习资源与进阶方向
+# 33. Tomcat学习资源与进阶方向
 
 ```
 一、官方资源

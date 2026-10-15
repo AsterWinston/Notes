@@ -1,4 +1,4 @@
-# 1 源码分析总览
+# 1. 源码分析总览
 
 ## 1.1 Broker 核心类图
 
@@ -35,7 +35,7 @@ KafkaServer
 └── KafkaZkClient / QuorumController (元数据存储)
 ```
 
-# 2 KafkaServer 启动流程
+# 2. KafkaServer 启动流程
 
 ## 2.1 主启动方法
 
@@ -138,7 +138,7 @@ class KafkaServer(val config: KafkaConfig, ...) {
 
 > 文件位置: `core/src/main/scala/kafka/server/KafkaServer.scala:184`
 
-# 3 SocketServer 网络架构
+# 3. SocketServer 网络架构
 
 ## 3.1 初始化
 
@@ -306,7 +306,7 @@ private[kafka] class Processor(val id: Int,
 
 > 文件位置: `core/src/main/scala/kafka/network/SocketServer.scala:756`
 
-# 4 KafkaApis 请求处理
+# 4. KafkaApis 请求处理
 
 ## 4.1 请求分发器
 
@@ -400,7 +400,7 @@ class KafkaRequestHandler(id: Int,
 
 > 文件位置: `core/src/main/scala/kafka/server/KafkaRequestHandler.scala:34`
 
-# 5 ReplicaManager 副本管理
+# 5. ReplicaManager 副本管理
 
 ```scala
 // ReplicaManager.scala
@@ -473,7 +473,7 @@ class ReplicaManager(val config: KafkaConfig,
 
 > 文件位置: `core/src/main/scala/kafka/server/ReplicaManager.scala:373`
 
-# 6 GroupCoordinator 消费者组协调
+# 6. GroupCoordinator 消费者组协调
 
 ```scala
 // GroupCoordinator.scala
@@ -522,7 +522,7 @@ class GroupCoordinator(val brokerId: Int,
 
 > 文件位置: `core/src/main/scala/kafka/coordinator/group/GroupCoordinator.scala:228`
 
-# 7 延迟操作与 Purgatory
+# 7. 延迟操作与 Purgatory
 
 ```scala
 // DelayedProduce.scala
@@ -571,7 +571,7 @@ class DelayedProduce(delayMs: Long,
 
 > 文件位置: `core/src/main/scala/kafka/server/DelayedProduce.scala:31`
 
-# 8 请求处理完整时序
+# 8. 请求处理完整时序
 
 ```
 Client Produce Request 的完整路径:

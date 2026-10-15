@@ -1,8 +1,8 @@
-# 1.SQL注入概述
+# 1. SQL注入概述
 
 SQL 注入（SQL Injection）是攻击者通过在应用程序的输入参数中**插入恶意的 SQL 代码**，从而欺骗数据库服务器执行非预期 SQL 命令的攻击方式。它是 Web 安全领域最常见的漏洞之一（OWASP Top 10）。
 
-## 1.1注入原理
+## 1.1 注入原理
 
 **不安全的代码**（拼接 SQL）：
 
@@ -24,7 +24,7 @@ PreparedStatement ps = conn.prepareStatement(sql);
 ps.setString(1, username);  // 参数绑定
 ```
 
-## 1.2常见注入方式
+## 1.2 常见注入方式
 
 | 注入方式 | 输入示例 | 效果 |
 |---------|---------|------|
@@ -36,9 +36,9 @@ ps.setString(1, username);  // 参数绑定
 | **盲注（时间/布尔）** | `' AND SLEEP(5) --` | 根据响应时间推断数据 |
 | **报错注入** | `' AND extractvalue(1, concat(0x7e, database())) --` | 通过错误信息泄露数据 |
 
-# 2.MySQL中的预编译（Prepared Statement）
+# 2. MySQL中的预编译（Prepared Statement）
 
-## 2.1原理
+## 2.1 原理
 
 预编译语句（Prepared Statement）将 SQL 语句的**结构**和**数据**分两次发送到 MySQL 服务器：
 
@@ -52,7 +52,7 @@ ps.setString(1, username);  // 参数绑定
 - 步骤 2 的参数值**仅被视为数据**，不会被当作 SQL 代码解析
 - 无论参数值中包含哪些特殊字符，都不会改变 SQL 的语义结构
 
-## 2.2MySQL 服务端预编译
+## 2.2 MySQL 服务端预编译
 
 ```sql
 -- 使用服务端预编译
@@ -62,7 +62,7 @@ EXECUTE stmt USING @id;
 DEALLOCATE PREPARE stmt;
 ```
 
-## 2.3JDBC中的PreparedStatement
+## 2.3 JDBC中的PreparedStatement
 
 ```java
 // 基础用法
@@ -83,7 +83,7 @@ for (User user : users) {
 ps.executeBatch();
 ```
 
-### JDBC 预编译的两面性
+### 2.3.1 JDBC 预编译的两面性
 
 JDBC 的 `PreparedStatement` 默认是**客户端模拟预编译**：
 - `useServerPrepStmts=false`（默认）：JDBC 驱动在客户端拼接参数值，发给数据库的是完整 SQL
@@ -94,7 +94,7 @@ JDBC 的 `PreparedStatement` 默认是**客户端模拟预编译**：
 spring.datasource.url: jdbc:mysql://localhost:3306/mydb?useServerPrepStmts=true&cachePrepStmts=true
 ```
 
-## 2.4MyBatis中的防注入
+## 2.4 MyBatis中的防注入
 
 MyBatis 使用 `#{}`（参数绑定）和 `${}`（字符串替换）区分安全和危险方式：
 
@@ -121,9 +121,9 @@ MyBatis 使用 `#{}`（参数绑定）和 `${}`（字符串替换）区分安全
 <!-- 如果必须用动态表名/字段名，务必在 Java 代码中白名单校验 -->
 ```
 
-# 3.其他防注入策略
+# 3. 其他防注入策略
 
-## 3.1输入校验与过滤
+## 3.1 输入校验与过滤
 
 ```java
 // 白名单校验（推荐：只允许合法的值）
@@ -137,7 +137,7 @@ public List<User> listByOrder(String orderBy) {
 }
 ```
 
-## 3.2最小权限原则
+## 3.2 最小权限原则
 
 数据库用户只授予**需要的最小权限**：
 
@@ -151,13 +151,13 @@ GRANT SELECT ON mydb.* TO 'readonly'@'%';
 
 > 即使 SQL 注入发生，受限于权限，攻击者无法 `DROP TABLE` 或读取其他库数据。
 
-## 3.3SQL防火墙 / WAF
+## 3.3 SQL防火墙 / WAF
 
 - **数据库防火墙**：MySQL Enterprise Firewall 记录白名单 SQL 模式，拒绝异常 SQL
 - **Web 防火墙（WAF）**：在 HTTP 层拦截注入类流量（如阿里云 WAF、Cloudflare）
 - **RASP**：运行时应用自我保护，检测并拦截 SQL 注入行为
 
-## 3.4代码审查清单
+## 3.4 代码审查清单
 
 | 检查项 | 说明 |
 |--------|------|
@@ -176,7 +176,7 @@ search = search.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_");
 String sql = "SELECT * FROM article WHERE title LIKE CONCAT('%', ?, '%') ESCAPE '\\'";
 ```
 
-# 4.总结
+# 4. 总结
 
 | 方法 | 防护程度 | 推荐度 |
 |------|---------|--------|

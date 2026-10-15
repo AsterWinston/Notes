@@ -27,7 +27,7 @@
 
 ## 1.2 Spring Boot 配置 CORS
 
-### 方式一：WebMvcConfigurer 全局配置
+### 1.2.1 方式一：WebMvcConfigurer 全局配置
 
 ```java
 @Configuration
@@ -47,7 +47,7 @@ public class CorsConfig implements WebMvcConfigurer {
 
 > **注意：** `WebMvcConfigurer` 方式配置的 CORS 在 Spring Security 过滤器链中**可能失效**，因为请求走到 CorsFilter 前就被 Security 拦截了。
 
-### 方式二：Spring Security 中配置（推荐）
+### 1.2.2 方式二：Spring Security 中配置（推荐）
 
 ```java
 @Configuration
@@ -85,7 +85,7 @@ public class SecurityConfig {
 }
 ```
 
-### 方式三：`@CrossOrigin` 注解（单个 Controller）
+### 1.2.3 方式三：`@CrossOrigin` 注解（单个 Controller）
 
 ```java
 @RestController

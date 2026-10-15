@@ -1,4 +1,4 @@
-# 1 监控概览
+# 1. 监控概览
 
 ## 1.1 监控层次
 
@@ -28,7 +28,7 @@
 └──────────────────────────────────────────────────────────────┘
 ```
 
-# 2 JMX 指标体系
+# 2. JMX 指标体系
 
 ## 2.1 关键 Broker 指标
 
@@ -151,7 +151,7 @@ kafka.producer:type=producer-metrics,client-id=*
 # record-error-rate, record-retry-rate
 ```
 
-# 3 常用命令行监控工具
+# 3. 常用命令行监控工具
 
 ## 3.1 kafka-consumer-groups（查看消费状况）
 
@@ -213,7 +213,7 @@ kafka-log-dirs.sh --bootstrap-server localhost:9092 \
 # topic:my-topic  partition:0  size:1073741824  offset-lag:0
 ```
 
-# 4 指标采集方案
+# 4. 指标采集方案
 
 ## 4.1 Prometheus + JMX Exporter
 
@@ -292,7 +292,7 @@ instances:
       - kafka_cluster:main
 ```
 
-# 5 外部监控工具
+# 5. 外部监控工具
 
 ## 5.1 Burrow（Consumer Lag 监控）
 
@@ -348,7 +348,7 @@ curl -X POST "http://localhost:9090/kafkacruisecontrol/rebalance?dryrun=false"
   - 集群级别的指标仪表盘
 ```
 
-# 6 告警规则
+# 6. 告警规则
 
 ## 6.1 关键告警（Prometheus AlertManager 示例）
 
@@ -435,7 +435,7 @@ groups:
 | OS CPU | < 70% | > 85% | 每 5 分钟 |
 | GC 暂停时间 | < 100ms | > 500ms | 每 5 分钟 |
 
-# 7 运维命令速查
+# 7. 运维命令速查
 
 ```bash
 ###############################

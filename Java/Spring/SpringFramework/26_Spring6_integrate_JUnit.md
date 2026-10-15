@@ -8,7 +8,7 @@ Spring提供的方便主要是这几个注解：
 在单元测试类上使用这两个注解之后，在单元测试类中的属性上可以使用@Autowired。比较方便。
 
 ```
-## 1.1依赖
+## 1.1 依赖
 ```
 <dependencies>
   <!-- spring核心依赖 -->
@@ -33,7 +33,7 @@ Spring提供的方便主要是这几个注解：
   </dependency>
 </dependencies>
 ```
-## 1.2实体类
+## 1.2 实体类
 ```
 package cw.study.spring.bean;
 
@@ -75,7 +75,7 @@ public class User {
 }
 
 ```
-## 1.3配置文件spring.xml
+## 1.3 配置文件spring.xml
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -90,7 +90,7 @@ public class User {
 </beans>
 
 ```
-## 1.4测试程序
+## 1.4 测试程序
 ```
 import cw.study.spring.bean.User;
 import org.junit.Test;
@@ -128,7 +128,7 @@ public class TestJUnit4 {
 ```
 
 # 2. Spring对Junit5的支持
-## 2.1依赖
+## 2.1 依赖
 ```
 引入JUnit5的依赖，Spring对JUnit支持的依赖还是：spring-test
 <dependencies>
@@ -155,7 +155,7 @@ public class TestJUnit4 {
 </dependencies>
 
 ```
-## 2.2实体类
+## 2.2 实体类
 ```
 package cw.study.spring.bean;
 
@@ -197,7 +197,7 @@ public class User {
 }
 
 ```
-## 2.3spring.xml配置文件
+## 2.3 spring.xml配置文件
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -212,7 +212,7 @@ public class User {
 </beans>
 
 ```
-## 2.4测试程序
+## 2.4 测试程序
 ```
 如果使用配置类代替配置文件，注解用这个@ContextConfiguration(classes = Spring6Config.class)
 
@@ -253,7 +253,7 @@ public class TestJUnit5 {
 
 # 3. 源码解析：Spring TestContext 框架机制
 
-## 3.1. SpringJUnit4ClassRunner — JUnit4 集成核心
+## 3.1 SpringJUnit4ClassRunner — JUnit4 集成核心
 
 ```
 @RunWith(SpringJUnit4ClassRunner.class) 替换了 JUnit 默认的 Runner：
@@ -289,7 +289,7 @@ TestContextManager.prepareTestInstance():
       利用 AutowiredAnnotationBeanPostProcessor 处理 @Autowired 注入
 ```
 
-## 3.2. SpringExtension — JUnit5 集成核心
+## 3.2 SpringExtension — JUnit5 集成核心
 
 ```
 @ExtendWith(SpringExtension.class) 是 JUnit5 的扩展机制：
@@ -313,7 +313,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback,
 }
 ```
 
-## 3.3. TestContextManager — 测试上下文管理器
+## 3.3 TestContextManager — 测试上下文管理器
 
 ```
 TestContextManager 是整个 Spring Test 框架的核心调度器：
@@ -355,7 +355,7 @@ public class TestContextManager {
 }
 ```
 
-## 3.4. @ContextConfiguration → ApplicationContext 的创建
+## 3.4 @ContextConfiguration → ApplicationContext 的创建
 
 ```
 @ContextConfiguration("classpath:spring.xml")
@@ -378,7 +378,7 @@ TestContext 创建时解析该注解：
    缓存键 = mergedConfig（locations + classes + activeProfiles + ...）
 ```
 
-## 3.5. DependencyInjectionTestExecutionListener — @Autowired 注入
+## 3.5 DependencyInjectionTestExecutionListener — @Autowired 注入
 
 ```
 DependencyInjectionTestExecutionListener 负责将 Spring Bean 注入到测试实例：
@@ -411,7 +411,7 @@ public class DependencyInjectionTestExecutionListener
 }
 ```
 
-## 3.6. TransactionalTestExecutionListener — 测试事务自动回滚
+## 3.6 TransactionalTestExecutionListener — 测试事务自动回滚
 
 ```
 @Transactional 在测试类上的行为和业务代码中不同：
@@ -446,7 +446,7 @@ public class TransactionalTestExecutionListener extends AbstractTestExecutionLis
    // ★ 方法执行完后自动回滚，数据库中不会留下测试数据！
 ```
 
-## 3.7. JUnit4 vs JUnit5 的 Spring 集成差异
+## 3.7 JUnit4 vs JUnit5 的 Spring 集成差异
 
 ```
 ┌──────────────────┬──────────────────────────┬──────────────────────────┐
@@ -476,7 +476,7 @@ public void test01(@Autowired User user) {
 }
 ```
 
-## 3.8. 设计思想总结
+## 3.8 设计思想总结
 
 1. 监听器模式（TestExecutionListener）：
    Spring Test 框架采用了监听器/观察者模式，每个 TestExecutionListener

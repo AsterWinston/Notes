@@ -42,7 +42,7 @@ jdbc.password=123
 
 # 1. 源码解析：属性占位符解析机制
 
-## 1.1. PropertySourcesPlaceholderConfigurer 的实现机制
+## 1.1 PropertySourcesPlaceholderConfigurer 的实现机制
 
 ```
 <context:property-placeholder location="jdbc.properties"/>
@@ -67,7 +67,7 @@ BeanFactoryPostProcessor（接口）
                 继承自 PlaceholderConfigurerSupport
 ```
 
-## 1.2. postProcessBeanFactory() — 占位符处理入口
+## 1.2 postProcessBeanFactory() — 占位符处理入口
 
 ```
 PropertySourcesPlaceholderConfigurer.postProcessBeanFactory()：
@@ -115,7 +115,7 @@ public class PropertySourcesPlaceholderConfigurer
 }
 ```
 
-## 1.3. 占位符解析的两条路径
+## 1.3 占位符解析的两条路径
 
 ```
 Spring 中有两条占位符解析路径：
@@ -172,7 +172,7 @@ protected void doProcessProperties(
 7. 反射设置到字段/setter 上
 ```
 
-## 1.4. PropertySources 的属性查找优先级
+## 1.4 PropertySources 的属性查找优先级
 
 ```
 PropertySources 是一个有序的属性源链，查找时按优先级从高到低依次搜索：
@@ -204,7 +204,7 @@ PropertySources 是一个有序的属性源链，查找时按优先级从高到�
     ignore-unresolvable="true"/> ← 找不到时保留原样
 ```
 
-## 1.5. 占位符嵌套与默认值语法
+## 1.5 占位符嵌套与默认值语法
 
 ```
 Spring 占位符支持以下高级语法：
@@ -261,7 +261,7 @@ class PropertyPlaceholderHelper {
 }
 ```
 
-## 1.6. 设计思想总结
+## 1.6 设计思想总结
 
 ```
 1. BeanFactoryPostProcessor 时机：

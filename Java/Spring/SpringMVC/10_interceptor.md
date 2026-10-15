@@ -1,4 +1,4 @@
-# 1.拦截器概述
+# 1. 拦截器概述
 ```
 拦截器（Interceptor）类似于过滤器（Filter）
 Spring MVC的拦截器作用是在请求到达控制器之前或之后进行拦截，可以对请求和响应进行一些特定的处理。
@@ -15,9 +15,9 @@ Filter、Servlet、Interceptor、Controller的执行顺序：
 
 <img src="images/11.png" width="100%">
 
-# 2.拦截器的创建与基本配置
+# 2. 拦截器的创建与基本配置
 
-## 2.1定义拦截器
+## 2.1 定义拦截器
 ```
 实现org.springframework.web.servlet.HandlerInterceptor 接口，共有三个方法可以进行选择性的实现：
 ● preHandle：处理器方法调用之前执行
@@ -25,7 +25,7 @@ Filter、Servlet、Interceptor、Controller的执行顺序：
 ● postHandle：处理器方法调用之后执行
 ● afterCompletion：渲染完成后执行
 ```
-## 2.2拦截器基本配置
+## 2.2 拦截器基本配置
 ```
 在springmvc.xml文件中进行如下配置：
 第一种方式：
@@ -41,9 +41,9 @@ Filter、Servlet、Interceptor、Controller的执行顺序：
 ● 前提2：使用 @Component 注解进行标注
 注意：对于这种基本配置来说，拦截器是拦截所有请求的。
 ```
-## 2.3拦截器部分源码分析
+## 2.3 拦截器部分源码分析
 
-### 2.3.1方法执行顺序的源码分析
+### 2.3.1 方法执行顺序的源码分析
 ```
 DispatcherServlet部分源码
 public class DispatcherServlet extends FrameworkServlet {
@@ -70,7 +70,7 @@ public class DispatcherServlet extends FrameworkServlet {
     }
 }
 ```
-### 2.3.2拦截与放行的源码分析
+### 2.3.2 拦截与放行的源码分析
 ```
 DispatcherServlet部分源码
 public class DispatcherServlet extends FrameworkServlet {
@@ -99,7 +99,7 @@ public class HandlerExecutionChain {
     }
 }
 ```
-# 3.拦截器的高级配置
+# 3. 拦截器的高级配置
 ```
 采用以上基本配置方式，拦截器是拦截所有请求路径的。如果要针对某些路径进行拦截，某些路径不拦截，可以采用高级配置：
 
@@ -115,9 +115,9 @@ public class HandlerExecutionChain {
 </mvc:interceptors>
 以上的配置表示，除 /test 请求路径之外，剩下的路径全部拦截。
 ```
-# 4.拦截器的执行顺序
-## 4.1执行顺序
-### 4.1.1如果所有拦截器preHandle都返回true
+# 4. 拦截器的执行顺序
+## 4.1 执行顺序
+### 4.1.1 如果所有拦截器preHandle都返回true
 ```
 按照springmvc.xml文件中配置的顺序，自上而下调用 preHandle：
 <mvc:interceptors>
@@ -129,7 +129,7 @@ public class HandlerExecutionChain {
 
 <img src="images/12.png" width="100%">
 
-### 4.1.2如果其中一个拦截器preHandle返回false
+### 4.1.2 如果其中一个拦截器preHandle返回false
 ```
 <mvc:interceptors>
     <ref bean="interceptor1"/>
@@ -142,7 +142,7 @@ public class HandlerExecutionChain {
 ```
 规则：只要有一个拦截器preHandle返回false，任何postHandle都不执行。但返回false的拦截器的前面的拦截器按照逆序执行afterCompletion。注意只有返回false的拦截器执行afterCompletion
 ```
-## 4.2DispatcherServlet和 HandlerExecutionChain的部分源码：
+## 4.2 DispatcherServlet和 HandlerExecutionChain的部分源码：
 ```
 public class DispatcherServlet extends FrameworkServlet {
     protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -205,14 +205,14 @@ public class HandlerExecutionChain {
     }
 }
 ```
-# 5.拦截器三个方法经典用法
+# 5. 拦截器三个方法经典用法
 | 方法              | 执行时机                | 经典作用               |
 | --------------- | ------------------- | ------------------ |
 | preHandle       | Controller 之前       | 权限校验 / 登录检查 / 放行控制 |
 | postHandle      | Controller 之后，视图渲染前 | 修改 Model 数据        |
 | afterCompletion | 整个请求完成后             | 资源释放 / 日志记录        |
 
-# 6.实战案例一：登录检查拦截器
+# 6. 实战案例一：登录检查拦截器
 ```
 这是一个最常见的拦截器应用场景：检查用户是否已登录，未登录则重定向到登录页。
 
@@ -244,7 +244,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 </mvc:interceptors>
 ```
 
-# 7.实战案例二：请求耗时统计拦截器
+# 7. 实战案例二：请求耗时统计拦截器
 ```
 记录每个请求的处理耗时，用于性能监控。
 
@@ -283,7 +283,7 @@ public class TimingInterceptor implements HandlerInterceptor {
 ● 在afterCompletion中操作是安全的（即使发生异常，afterCompletion也保证会被调用）
 ```
 
-# 8.ThreadLocal在拦截器中的典型使用模式
+# 8. ThreadLocal在拦截器中的典型使用模式
 ```
 ThreadLocal经常配合拦截器使用，用于在请求处理链中传递上下文信息。
 
@@ -334,7 +334,7 @@ public class OrderService {
 ● 配合拦截器的afterCompletion自动清理，防止内存泄漏
 ```
 
-# 9.拦截器对REST API的正确处理
+# 9. 拦截器对REST API的正确处理
 ```
 对于返回JSON的@RestController，拦截器中的重定向（sendRedirect）不起作用。
 前端Axios收到302重定向后，会跟随重定向并获取最终响应，但不会跳转页面。
@@ -373,7 +373,7 @@ axios.interceptors.response.use(
 );
 ```
 
-# 10.异步请求拦截器（AsyncHandlerInterceptor）
+# 10. 异步请求拦截器（AsyncHandlerInterceptor）
 ```
 当Controller使用Callable或DeferredResult异步处理时，
 标准的HandlerInterceptor行为会发生变化。
@@ -419,7 +419,7 @@ public class AsyncLoggingInterceptor implements AsyncHandlerInterceptor {
 * afterConcurrentHandlingStarted 是新增加的生命周期方法
 ```
 
-# 11.拦截器的Java Config配置
+# 11. 拦截器的Java Config配置
 ```
 除了XML配置，拦截器也可以通过Java Config方式注册。
 
@@ -459,7 +459,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 ● .excludePathPatterns("/static/**", "/error/**", "/favicon.ico")
 ```
 
-# 12.拦截器与过滤器的完整对比
+# 12. 拦截器与过滤器的完整对比
 ```
 | 对比维度 | 过滤器（Filter） | 拦截器（Interceptor） |
 |----------|-----------------|---------------------|

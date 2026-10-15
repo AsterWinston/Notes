@@ -216,7 +216,7 @@ kubectl get configmap my-config -n source-ns -o yaml |
 ```
 
 
-# 2.ConfigMap的创建方式
+# 2. ConfigMap的创建方式
 
 ## 2.1 YAML定义创建
 
@@ -570,7 +570,7 @@ replacements:
 
 
 
-# 3.ConfigMap的使用方式
+# 3. ConfigMap的使用方式
 
 ## 3.1 环境变量注入
 
@@ -912,7 +912,7 @@ spec:
 
 
 
-# 4.ConfigMap热更新
+# 4. ConfigMap热更新
 
 ## 4.1 文件挂载方式的热更新
 
@@ -1229,7 +1229,7 @@ spec:
 
 3. 使用专门的配置重载工具（如 Reloader）自动重启 Pod。
 
-# 5.不可变ConfigMap (Immutable ConfigMap)
+# 5. 不可变ConfigMap (Immutable ConfigMap)
 
 ## 5.1 为什么需要不可变性
 
@@ -1398,7 +1398,7 @@ volumes:
 
 
 
-# 6.Secret概述
+# 6. Secret概述
 
 ## 6.1 为什么需要Secret
 
@@ -1548,7 +1548,7 @@ kubectl exec -it my-pod -- cat /etc/secrets/db-password
 # 这就是为什么 Pod 创建权限需要严格控制
 ```
 
-# 7.Secret类型详解
+# 7. Secret类型详解
 
 ## 7.1 Opaque (通用Secret)
 
@@ -1888,7 +1888,7 @@ kubeadm token delete <token-id>
 
 
 
-# 8.Secret的创建与使用
+# 8. Secret的创建与使用
 
 ## 8.1 YAML定义创建
 
@@ -2286,7 +2286,7 @@ spec:
 
 
 
-# 9.Secret安全增强
+# 9. Secret安全增强
 
 ## 9.1 etcd静态加密
 
@@ -2930,7 +2930,7 @@ spec:
 
 
 
-# 10.Downward API
+# 10. Downward API
 
 ## 10.1 概念与用途
 
@@ -3241,7 +3241,7 @@ env:
       fieldPath: metadata.name
 ```
 
-# 11.Projected Volume
+# 11. Projected Volume
 
 ## 11.1 概念
 
@@ -3427,7 +3427,7 @@ spec:
 
 这一行简单的配置不仅减少了不必要的安全暴露面，还减少了 kubelet 的工作量。
 
-# 12.最佳实践
+# 12. 最佳实践
 
 ## 12.1 ConfigMap命名与组织
 

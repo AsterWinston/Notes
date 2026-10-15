@@ -1,8 +1,8 @@
-# 1.Spring Boot Actuator
+# 1. Spring Boot Actuator
 
 Spring Boot Actuator 提供了生产级别的应用监控和管理能力，通过HTTP端点或JMX来暴露应用的运行状况。
 
-## 1.1引入依赖
+## 1.1 引入依赖
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -10,7 +10,7 @@ Spring Boot Actuator 提供了生产级别的应用监控和管理能力，通�
 </dependency>
 ```
 
-## 1.2常用端点
+## 1.2 常用端点
 
 Actuator提供了很多内置端点，每个端点都有其特定的功能：
 
@@ -29,7 +29,7 @@ Actuator提供了很多内置端点，每个端点都有其特定的功能：
 | `/actuator/heapdump` | 堆转储文件 |
 | `/actuator/conditions` | 自动配置条件报告 |
 
-## 1.3端点暴露配置
+## 1.3 端点暴露配置
 
 默认情况下，只有 `/actuator/health` 端点是通过HTTP暴露的。其他端点需要配置：
 
@@ -47,7 +47,7 @@ management.endpoints.web.exposure.exclude=env,beans
 management.endpoint.shutdown.enabled=true
 ```
 
-## 1.4健康检查（Health）
+## 1.4 健康检查（Health）
 
 访问 `/actuator/health` 返回应用健康状态：
 
@@ -68,7 +68,7 @@ management.endpoint.health.show-details=always
 management.endpoint.health.show-components=always
 ```
 
-## 1.5自定义健康指示器
+## 1.5 自定义健康指示器
 
 实现 `HealthIndicator` 接口：
 
@@ -97,7 +97,7 @@ public class MyHealthIndicator implements HealthIndicator {
 }
 ```
 
-## 1.6自定义Info端点
+## 1.6 自定义Info端点
 
 在 `application.properties` 中定义：
 ```properties
@@ -120,7 +120,7 @@ public class MyInfoContributor implements InfoContributor {
 }
 ```
 
-## 1.7调整Actuator路径
+## 1.7 调整Actuator路径
 ```properties
 # 修改Actuator的基础路径
 management.endpoints.web.base-path=/monitor
@@ -130,11 +130,11 @@ management.endpoints.web.base-path=/monitor
 management.server.port=8081
 ```
 
-# 2.Spring Boot DevTools
+# 2. Spring Boot DevTools
 
 DevTools可以提升开发体验，提供自动重启、LiveReload等功能。
 
-## 2.1引入依赖
+## 2.1 引入依赖
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -146,7 +146,7 @@ DevTools可以提升开发体验，提供自动重启、LiveReload等功能。
 
 注意：`scope=runtime` 和 `optional=true` 确保DevTools不会传递到其他模块，且打包时不会包含。
 
-## 2.2自动重启
+## 2.2 自动重启
 
 当classpath下的文件发生变化时，DevTools会自动重启应用（比手动重启快，因为它使用两个ClassLoader，只重启开发类的ClassLoader）。
 
@@ -157,7 +157,7 @@ DevTools可以提升开发体验，提供自动重启、LiveReload等功能。
 spring.devtools.restart.exclude=static/**,public/**
 ```
 
-## 2.3LiveReload
+## 2.3 LiveReload
 
 DevTools内置了一个LiveReload服务器，浏览器安装LiveReload插件后，静态资源变化时浏览器会自动刷新。
 
@@ -166,7 +166,7 @@ DevTools内置了一个LiveReload服务器，浏览器安装LiveReload插件后�
 spring.devtools.livereload.enabled=false
 ```
 
-## 2.4全局配置
+## 2.4 全局配置
 
 在用户目录下创建 `~/.spring-boot-devtools.properties` 文件，所有Spring Boot项目共享该配置：
 
@@ -175,22 +175,22 @@ spring.devtools.livereload.enabled=false
 spring.devtools.restart.enabled=false
 ```
 
-## 2.5IDEA中配合使用
+## 2.5 IDEA中配合使用
 
 1. File → Settings → Build, Execution, Deployment → Compiler → 勾选 "Build project automatically"
 2. 按 `Ctrl+Shift+Alt+/` → Registry → 勾选 "compiler.automake.allow.when.app.running"
 
 这样修改代码后，IDEA自动编译，DevTools检测到变化后自动重启。
 
-# 3.Swagger/Knife4j接口文档
+# 3. Swagger/Knife4j接口文档
 
 接口文档（Swagger/OpenAPI、SpringDoc、Knife4j 增强 UI）的完整内容已独立成篇，请查阅 [10_swagger_knife4j.md](./10_swagger_knife4j.md)。
 
 > 本章聚焦 Actuator 监控与测试；接口文档的依赖引入、注解用法、分组、鉴权、Knife4j 配置与常见问题均见上述专门章节。
 
-# 4.测试进阶
+# 4. 测试进阶
 
-## 4.1MockMvc测试Controller
+## 4.1 MockMvc测试Controller
 
 MockMvc可以模拟HTTP请求，对Controller进行测试，无需启动真实服务器：
 
@@ -258,7 +258,7 @@ class UserControllerTest {
 }
 ```
 
-## 4.2@WebMvcTest 切片测试
+## 4.2 @WebMvcTest 切片测试
 
 只加载Web层相关的Bean，不加载Service和Repository，测试更快更轻量：
 
@@ -291,7 +291,7 @@ class UserControllerSliceTest {
 }
 ```
 
-## 4.3@DataJpaTest 切片测试
+## 4.3 @DataJpaTest 切片测试
 
 只加载JPA相关的Bean，使用内嵌数据库（默认H2）：
 
@@ -319,7 +319,7 @@ class UserRepositoryTest {
 }
 ```
 
-## 4.4@MockBean 和 @SpyBean
+## 4.4 @MockBean 和 @SpyBean
 
 | 注解 | 说明 |
 |------|------|
@@ -353,7 +353,7 @@ class OrderServiceTest {
 }
 ```
 
-## 4.5JsonPath 常用表达式
+## 4.5 JsonPath 常用表达式
 
 | 表达式 | 说明 |
 |--------|------|
@@ -371,7 +371,7 @@ class OrderServiceTest {
 .andExpect(jsonPath("$.data.items[0].name").value("商品A"))
 ```
 
-## 4.6测试事务回滚
+## 4.6 测试事务回滚
 
 Spring Boot测试中，默认会对测试方法进行事务回滚，避免测试数据污染数据库：
 

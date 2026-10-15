@@ -576,7 +576,7 @@ public class SMTest {
 
 # 14. 源码解析：MyBatis-Spring 集成机制
 
-## 14.1. SqlSessionFactoryBean — SqlSessionFactory 的 Spring 管理
+## 14.1 SqlSessionFactoryBean — SqlSessionFactory 的 Spring 管理
 
 ```
 SqlSessionFactoryBean 实现了 FactoryBean<SqlSessionFactory>，因此：
@@ -672,7 +672,7 @@ public class SqlSessionFactoryBean
 }
 ```
 
-## 14.2. SpringManagedTransactionFactory — 事务桥接
+## 14.2 SpringManagedTransactionFactory — 事务桥接
 
 ```
 SqlSessionFactoryBean 中设置的 SpringManagedTransactionFactory 是关键桥梁：
@@ -728,7 +728,7 @@ public void rollback() throws SQLException {
    - 当没有 Spring 事务时，MyBatis 自行管理事务
 ```
 
-## 14.3. SqlSessionTemplate — SqlSession 的线程安全封装
+## 14.3 SqlSessionTemplate — SqlSession 的线程安全封装
 
 ```
 SqlSessionTemplate 是 MyBatis-Spring 的核心类，封装了 SqlSession 的使用：
@@ -823,7 +823,7 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
    - 自动资源管理（自动关闭，自动提交/回滚）
 ```
 
-## 14.4. MapperScannerConfigurer — Mapper 接口自动代理
+## 14.4 MapperScannerConfigurer — Mapper 接口自动代理
 
 ```
 MapperScannerConfigurer 实现了 BeanDefinitionRegistryPostProcessor，
@@ -891,7 +891,7 @@ private void processBeanDefinitions(Set<BeanDefinitionHolder> beanDefinitions) {
 }
 ```
 
-### 14.5. MapperFactoryBean — 单个 Mapper 接口的 FactoryBean
+### 14.5 MapperFactoryBean — 单个 Mapper 接口的 FactoryBean
 
 ```
 每个 Mapper 接口最终由一个 MapperFactoryBean 来创建代理对象：
@@ -925,7 +925,7 @@ MapperFactoryBean 继承自 SqlSessionDaoSupport：
   → 达到事务感知 + 线程安全的效果 ★
 ```
 
-## 14.5. MyBatis-Spring 集成架构总图
+## 14.5 MyBatis-Spring 集成架构总图
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -1000,7 +1000,7 @@ MapperFactoryBean 继承自 SqlSessionDaoSupport：
   6. TransactionSynchronizationManager 清理绑定资源
 ```
 
-## 14.6. 设计思想总结
+## 14.6 设计思想总结
 
 ```
 1. FactoryBean 的"生产性"运用：

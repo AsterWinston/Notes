@@ -72,7 +72,7 @@ public class Husband {
 ```
 
 # 2. 单例模式+set注入
-## 2.1单例模式 + set 注入情况下的循环依赖
+## 2.1 单例模式 + set 注入情况下的循环依赖
 ```
 在单例模式 + set 注入的情况下，循环依赖是没有问题的，Spring 可以解决这个问题。
 <bean id="husband" class="cw.spring.bean.Husband" scope="singleton">
@@ -93,7 +93,7 @@ public void test01() {
     System.out.println(wife);
 }
 ```
-## 2.2分析单例模式 + set 注入情况下的循环依赖
+## 2.2 分析单例模式 + set 注入情况下的循环依赖
 在 set + singleton 模式下 Spring 对 Bean 的管理主要分为两个阶段：
 第一个阶段：在 Spring 容器加载的时候，实例化 Bean，只要其中任意一个 Bean 实例化之后，马上进行“曝光”，不等属性赋值就曝光
 提前曝光，不等属性赋值就可以使用，因为单例下就只会创建该类型的对象一个，早曝光和晚曝光一样，都是这个对象
@@ -248,7 +248,7 @@ Spring只能解决setter方法注入的单例bean之间的循环依赖。ClassA�
 
 # 6. 源码解析：三级缓存机制深入
 
-## 6.1. 三级缓存的数据结构
+## 6.1 三级缓存的数据结构
 
 ```
 Spring 的三级缓存定义在 DefaultSingletonBeanRegistry 中：
@@ -286,7 +286,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 }
 ```
 
-### 6.2. 为什么需要三级缓存而不是两级？
+### 6.2 为什么需要三级缓存而不是两级？
 
 关键问题：如果只有一级和二级缓存，直接存早期 Bean 对象即可，为什么还要加一层 ObjectFactory？
 
@@ -309,7 +309,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 这样保证了：B 中注入的 A 和最终暴露的 A 是同一个代理对象！
 
-## 6.2. 从缓存获取 Bean：getSingleton() 源码逐行解读
+## 6.2 从缓存获取 Bean：getSingleton() 源码逐行解读
 
 ```
 DefaultSingletonBeanRegistry.getSingleton(String beanName, boolean allowEarlyReference)：
@@ -368,7 +368,7 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 }
 ```
 
-### 6.3. 流程图：getSingleton 的三级缓存查询
+### 6.3 流程图：getSingleton 的三级缓存查询
 
 ```
                   getSingleton(beanName, true)
@@ -420,7 +420,7 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
                       └─────────────────┴──────────┘
 ```
 
-## 6.3. 加入缓存：addSingletonFactory() 和 addSingleton()
+## 6.3 加入缓存：addSingletonFactory() 和 addSingleton()
 
 ```
 // =========== addSingletonFactory: 将 Bean 的 ObjectFactory 放入三级缓存 ===========
@@ -458,7 +458,7 @@ protected void addSingleton(String beanName, Object singletonObject) {
 }
 ```
 
-## 6.4. 完整流程时序：Husband 和 Wife 循环依赖如何解决
+## 6.4 完整流程时序：Husband 和 Wife 循环依赖如何解决
 
 ```
 假设先创建 Husband，Husband 构造器注入 name，setter 注入 Wife：
@@ -526,7 +526,7 @@ doGetBean("husband")
   wife    → 完整 Wife{name='李四', husband=Husband{name='张三', wife=Wife{...}}}
 ```
 
-## 6.5. 为什么构造注入不能解决循环依赖
+## 6.5 为什么构造注入不能解决循环依赖
 
 ```
 构造注入无法解决的根本原因在于：实例化和属性赋值无法分离。
@@ -564,7 +564,7 @@ if (ctors != null || mbd.getResolvedAutowireMode() == AUTOWIRE_CONSTRUCTOR ||
 return instantiateBean(beanName, mbd);
 ```
 
-## 6.6. getEarlyBeanReference() — AOP 代理的提前曝光
+## 6.6 getEarlyBeanReference() — AOP 代理的提前曝光
 
 ```
 在 addSingletonFactory() 中传入的 ObjectFactory 实际上调用了 getEarlyBeanReference()：
@@ -590,7 +590,7 @@ AnnotationAwareAspectJAutoProxyCreator.getEarlyBeanReference() 的核心逻辑�
   后续 A 完成创建后，exposedObject 最终还是指向同一个代理对象
 ```
 
-## 6.7. 设计思想总结
+## 6.7 设计思想总结
 
 1. 三级缓存的设计模式：类似 CPU 的多级缓存
    一级(L1)：最快，完整 Bean

@@ -1,4 +1,4 @@
-# 1 Producer 总览
+# 1. Producer 总览
 
 ## 1.1 Producer 在 Kafka 生态中的角色
 
@@ -65,7 +65,7 @@ props.put("max.request.size", 1048576);             // 单次请求最大大小
 props.put("transactional.id", "my-tx-id");          // 事务 ID（开启事务时设置）
 ```
 
-# 2 消息发送流程详解
+# 2. 消息发送流程详解
 
 ## 2.1 send() 方法两种形式
 
@@ -132,7 +132,7 @@ private Future<RecordMetadata> doSend(ProducerRecord<K, V> record, Callback call
 }
 ```
 
-# 3 分区机制（Partitioner）
+# 3. 分区机制（Partitioner）
 
 ## 3.1 默认分区策略
 
@@ -203,7 +203,7 @@ props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG,
         "com.example.TenantPartitioner");
 ```
 
-# 4 序列化器（Serializer）
+# 4. 序列化器（Serializer）
 
 ## 4.1 内置序列化器
 
@@ -252,7 +252,7 @@ public class ProtobufSerializer<T extends Message>
 }
 ```
 
-# 5 拦截器（Interceptor）
+# 5. 拦截器（Interceptor）
 
 ## 5.1 ProducerInterceptor 接口
 
@@ -303,7 +303,7 @@ public class AuditInterceptor implements ProducerInterceptor<String, String> {
 }
 ```
 
-# 6 RecordAccumulator 缓冲区机制
+# 6. RecordAccumulator 缓冲区机制
 
 ## 6.1 数据结构
 
@@ -348,7 +348,7 @@ max.block.ms 超时 → 抛出 TimeoutException
 | 消息大小不均匀 | 基于消息大小估算 | 较小 | 足够大 |
 | 网络带宽有限 | 适中 | 适中 | 适中 |
 
-# 7 Sender 线程与网络模型
+# 7. Sender 线程与网络模型
 
 ## 7.1 Sender 线程工作流程
 
@@ -395,7 +395,7 @@ Sender Thread
 └── 发送缓冲 / 接收缓冲
 ```
 
-# 8 ACK 机制与消息可靠性
+# 8. ACK 机制与消息可靠性
 
 ## 8.1 ACK 三种级别
 
@@ -464,7 +464,7 @@ acks = all
 → 可容忍 1 个 Broker 故障而不会丢失消息或拒绝写入
 ```
 
-# 9 消息重试机制
+# 9. 消息重试机制
 
 ## 9.1 重试参数
 
@@ -520,7 +520,7 @@ props.put("max.in.flight.requests.per.connection", 1);
 // 同时只允许一个未确认请求 → 天然有序 → 但严重影响吞吐
 ```
 
-# 10 幂等生产者（Idempotent Producer）
+# 10. 幂等生产者（Idempotent Producer）
 
 ## 10.1 核心原理
 
@@ -575,7 +575,7 @@ public boolean validateSequence(int partition, long seqNum, long lastSeqNum) {
 }
 ```
 
-# 11 Producer 事务
+# 11. Producer 事务
 
 ## 11.1 事务 vs 幂等
 
@@ -641,7 +641,7 @@ try {
 └───────────────────────────────────────────────────────┘
 ```
 
-# 12 消息压缩
+# 12. 消息压缩
 
 ## 12.1 压缩算法对比
 
@@ -667,7 +667,7 @@ props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "lz4");
   消息到达 Broker 后也可以配置 Broker 端再压缩
 ```
 
-# 13 Producer 性能调优
+# 13. Producer 性能调优
 
 ## 13.1 核心参数速查
 

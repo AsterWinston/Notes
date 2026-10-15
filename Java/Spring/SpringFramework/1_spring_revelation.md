@@ -47,7 +47,7 @@ DI：依赖注入（控制反转思想的具体实现方式）
 
 # 6. 源码视角：设计原则在 Spring 中的体现
 
-## 6.1. OCP 开闭原则 — BeanPostProcessor 扩展点
+## 6.1 OCP 开闭原则 — BeanPostProcessor 扩展点
 
 ```
 Spring 中对扩展开放、对修改闭合的典型体现是 BeanPostProcessor 扩展点：
@@ -83,7 +83,7 @@ public class MyCustomProcessor implements BeanPostProcessor {
   - 对修改闭合：doCreateBean 的核心骨架不需要任何修改
 ```
 
-## 6.2. DIP 依赖倒置原则 — 面向接口编程
+## 6.2 DIP 依赖倒置原则 — 面向接口编程
 
 ```
 Spring 中所有的核心组件都通过接口定义契约，具体实现可以灵活切换：
@@ -111,7 +111,7 @@ public class OrderService {
   - 这就是"上下都依赖抽象"，完全符合 DIP
 ```
 
-## 6.3. IoC 控制反转 — 容器管理对象
+## 6.3 IoC 控制反转 — 容器管理对象
 
 ```
 传统方式（控制正转）：
@@ -141,7 +141,7 @@ private final Map<String, BeanDefinition> beanDefinitionMap;  // 创建规则
 // 4. 返回完整的 OrderService 实例
 ```
 
-## 6.4. DI 依赖注入 — 两种注入方式的源码实现
+## 6.4 DI 依赖注入 — 两种注入方式的源码实现
 
 ```
 // Setter 注入（BeanWrapperImpl.setPropertyValue）：
@@ -164,7 +164,7 @@ ReflectionUtils.makeAccessible(field);
 field.set(bean, value);                     // ★ 直接设置字段
 ```
 
-## 6.5. 设计原则关系图
+## 6.5 设计原则关系图
 
 ```
     OCP（开闭原则）

@@ -68,9 +68,9 @@ public class People {
 </project>
 ```
 
-# 源码解析：c-namespace 与构造注入的底层映射
+# 2. 源码解析：c-namespace 与构造注入的底层映射
 
-## 1. c-namespace 如何映射到构造方法参数
+## 2.1 c-namespace 如何映射到构造方法参数
 
 ```
 c-namespace 在 BeanDefinitionParserDelegate.decorateBeanDefinitionIfRequired() 中处理，
@@ -98,7 +98,7 @@ if (isCNamespace(nodeName)) {
 }
 ```
 
-## 2. JDK 17 -parameters 标志的源码原因
+## 2.2 JDK 17 -parameters 标志的源码原因
 
 ```
 为什么 Spring 6 + JDK 17 需要 -parameters 才能使用 c:name 方式？
@@ -138,7 +138,7 @@ Spring 6 官方推荐：
   </plugin>
 ```
 
-## 3. 构造注入参数解析：ConstructorResolver 源码片段
+## 2.3 构造注入参数解析：ConstructorResolver 源码片段
 
 ```
 ConstructorResolver.resolveConstructorArguments() — 解析构造参数的核心：

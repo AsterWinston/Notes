@@ -1,4 +1,4 @@
-# 1.GitOps 概述
+# 1. GitOps 概述
 
 ## 1.1 什么是 GitOps
 
@@ -37,7 +37,7 @@ GitOps 模式（Pull）:
         └────────────────┘
 ```
 
-### 核心原则
+### 1.1.1 核心原则
 
 1. **声明式（Declarative）**：用 YAML/JSON 描述期望状态，而非编写操作脚本
 2. **版本化与不可变（Versioned & Immutable）**：所有变更通过 Git 提交记录，可审计、可回滚
@@ -56,7 +56,7 @@ GitOps 模式（Pull）:
 | **多集群** | 每个集群需配置 CI | Agent 部署到每个集群即可 |
 | **灾难恢复** | 重建集群 + 恢复备份 + 重新部署 | bootstrap 集群 + 自动从 Git 同步所有资源 |
 
-# 2.ArgoCD
+# 2. ArgoCD
 
 ## 2.1 ArgoCD 架构
 
@@ -84,7 +84,7 @@ ArgoCD 是 CNCF 毕业的 GitOps 工具，使用 Go 语言开发。其架构设�
      └─────────────┘          └─────────────┘
 ```
 
-### Application CRD
+### 2.1.1 Application CRD
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -120,7 +120,7 @@ spec:
   revisionHistoryLimit: 10            # 保留的历史版本数
 ```
 
-### Application 的状态同步
+### 2.1.2 Application 的状态同步
 
 ArgoCD 每 3 分钟（可配置）检查一次 Git 仓库和集群状态的差异：
 
@@ -294,7 +294,7 @@ spec:
     - p, proj:team-a:read-only, applications, get, team-a/*, allow
 ```
 
-# 3.FluxCD
+# 3. FluxCD
 
 ## 3.1 FluxCD 架构
 
@@ -323,7 +323,7 @@ FluxCD 由 Weaveworks 创建（GitOps 概念的提出者），现已捐赠给 CN
 └──────────────────────────────────────────────────────────┘
 ```
 
-### FluxCD 的核心 CRD
+### 3.1.1 FluxCD 的核心 CRD
 
 ```yaml
 # GitRepository：定义 Git 源
@@ -489,7 +489,7 @@ spec:
 2. 提交一个包含版本变更的 commit
 3. 集群通过 Kustomization 自动同步新配置
 
-# 4.ArgoCD vs FluxCD
+# 4. ArgoCD vs FluxCD
 
 | 维度 | ArgoCD | FluxCD |
 |------|--------|--------|
@@ -503,7 +503,7 @@ spec:
 | **通知** | 内置 Webhook/Websocket | Notification Controller |
 | **哲学** | 一站式平台 | 模块化组件 |
 
-### 选择建议
+## 4.1 选择建议
 
 ```
 选择 ArgoCD：
@@ -519,11 +519,11 @@ spec:
 └── 希望最小化集群内安装的组件数量
 ```
 
-# 5.生产实践
+# 5. 生产实践
 
 ## 5.1 仓库组织策略
 
-### Monorepo（单仓）
+### 5.1.1 Monorepo（单仓）
 
 ```
 fleet-infra/
@@ -534,7 +534,7 @@ fleet-infra/
 
 多个集群/环境共享一个配置仓库。适合中小规模，配置复用方便。
 
-### Repo-per-App（每应用一仓）
+### 5.1.2 Repo-per-App（每应用一仓）
 
 ```
 my-app/
@@ -549,7 +549,7 @@ my-app/
 
 每个应用维护自己的 K8s 配置。适合微服务多团队协作，但管理多个仓库复杂。
 
-### 推荐：混合模式
+### 5.1.3 推荐：混合模式
 
 ```
 # 应用仓库（由开发团队管理）

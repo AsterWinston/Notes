@@ -1,6 +1,6 @@
-# 1.初始Redis
+# 1. 初始Redis
 
-## 1.1认识NoSQL
+## 1.1 认识NoSQL
 
 - 定义：Not Only SQL，用于高并发、高可用、海量数据场景的非关系型数据库。
 - 典型特征：
@@ -9,7 +9,7 @@
 	- 易扩展、读写吞吐高
 - 适用场景：缓存、会话、排行榜、计数器、消息队列、实时推荐等。
 
-### SQL vs NoSQL 对比
+### 1.1.1 SQL vs NoSQL 对比
 
 | 维度 | SQL (关系型数据库) | NoSQL (非关系型数据库) |
 |---|---|---|
@@ -21,7 +21,7 @@
 | 事务支持 | 完整事务 | 部分支持或不支持 |
 | 适用场景 | ERP、财务、订单等强一致场景 | 缓存、社交、IoT、实时分析等海量并发场景 |
 
-### CAP 定理
+### 1.1.2 CAP 定理
 
 CAP 定理指出：分布式系统最多只能同时满足以下三者中的两个：
 
@@ -38,7 +38,7 @@ Redis 在 CAP 中的定位：
 
 ---
 
-## 1.2认识Redis
+## 1.2 认识Redis
 
 - Redis 是内存型 Key-Value 数据库，支持持久化与多种数据结构。
 - 特性：
@@ -48,7 +48,7 @@ Redis 在 CAP 中的定位：
 	- 单线程模型 + I/O 多路复用
 - 常见场景：缓存、分布式锁、限流、计数、排行榜、消息队列（Stream/发布订阅）。
 
-### Redis 版本历史
+### 1.2.1 Redis 版本历史
 
 | 版本 | 发布时间 | 关键特性 |
 |---|---|---|
@@ -70,7 +70,7 @@ Redis 在 CAP 中的定位：
 
 > **重要变更**：Redis 从 7.4 开始采用 RSALv2 + SSPLv1 双协议许可，不再使用 BSD 许可。
 
-### Redis vs Memcached 对比
+### 1.2.2 Redis vs Memcached 对比
 
 | 对比维度 | Redis | Memcached |
 |---|---|---|
@@ -84,7 +84,7 @@ Redis 在 CAP 中的定位：
 | 性能参考 | 单机 10W+ QPS | 单机 10W+ QPS |
 | Value 上限 | 512MB | 1MB |
 
-### Redis 基准性能参考
+### 1.2.3 Redis 基准性能参考
 
 - **单机 QPS**：约 10万~15万（简单 SET/GET，无持久化）
 - **延迟**：微秒级（局域网 < 1ms）
@@ -93,7 +93,7 @@ Redis 在 CAP 中的定位：
 
 ---
 
-## 1.3安装Redis以及启动的三种方式
+## 1.3 安装Redis以及启动的三种方式
 
 - Windows 建议使用 WSL2 或 Docker。
 - Linux 常见安装方式：
@@ -105,7 +105,7 @@ Redis 在 CAP 中的定位：
 - 指定配置文件：`redis-server /etc/redis/redis.conf`
 - 守护进程启动：配置 `daemonize yes` 后 `redis-server /path/redis.conf`
 
-### Windows — Docker Desktop 安装
+### 1.3.1 Windows — Docker Desktop 安装
 
 **前置条件**：
 1. 在 Windows 中启用 Hyper-V 或 WSL2。
@@ -118,7 +118,7 @@ docker --version
 docker run hello-world
 ```
 
-### Windows — Docker 运行 Redis
+### 1.3.2 Windows — Docker 运行 Redis
 
 ```powershell
 # 拉取 Redis 镜像
@@ -134,7 +134,7 @@ docker ps
 docker exec -it redis redis-cli
 ```
 
-### 完整 docker-compose.yml（Redis + RedisInsight）
+### 1.3.3 完整 docker-compose.yml（Redis + RedisInsight）
 
 ```yaml
 version: "3.8"
@@ -177,7 +177,7 @@ networks:
 docker compose up -d
 ```
 
-### Linux — Ubuntu/Debian 通过 apt 安装
+### 1.3.4 Linux — Ubuntu/Debian 通过 apt 安装
 
 ```bash
 # 更新软件包索引
@@ -201,7 +201,7 @@ redis-cli ping
 
 **配置文件位置**：`/etc/redis/redis.conf`
 
-### Linux — CentOS/RHEL 通过 yum 安装
+### 1.3.5 Linux — CentOS/RHEL 通过 yum 安装
 
 ```bash
 # 安装 EPEL 仓库（CentOS 7）
@@ -223,7 +223,7 @@ sudo systemctl status redis
 redis-cli ping
 ```
 
-### macOS — 通过 Homebrew 安装
+### 1.3.6 macOS — 通过 Homebrew 安装
 
 ```bash
 # 安装 Homebrew（如果未安装）
@@ -245,7 +245,7 @@ brew services stop redis
 brew services list
 ```
 
-### Docker 容器常用命令
+### 1.3.7 Docker 容器常用命令
 
 ```bash
 # 启动容器
@@ -282,7 +282,7 @@ docker stats redis
 docker volume ls
 ```
 
-### redis.conf 关键配置参数解释
+### 1.3.8 redis.conf 关键配置参数解释
 
 | 配置项 | 默认值 | 说明 |
 |---|---|---|
@@ -320,7 +320,7 @@ logfile /var/log/redis/redis.log
 
 ---
 
-## 1.4Redis命令行客户端
+## 1.4 Redis命令行客户端
 
 - 连接：`redis-cli -h 127.0.0.1 -p 6379`
 - 常用命令：
@@ -329,7 +329,7 @@ logfile /var/log/redis/redis.log
 	- `auth <password>` 认证
 	- `quit` 退出
 
-### 认证流程
+### 1.4.1 认证流程
 
 ```bash
 # 连接 Redis（服务端已设置 requirepass）
@@ -351,7 +351,7 @@ redis-cli -h 127.0.0.1 -p 6379
 
 > **安全提示**：避免使用 `-a` 参数传递密码，该方式会将密码暴露在进程列表和 Shell 历史中。推荐进入 cli 后使用 `auth` 命令。
 
-### 数据库切换 SELECT
+### 1.4.2 数据库切换 SELECT
 
 ```bash
 # Redis 默认有 16 个数据库（0~15）
@@ -362,7 +362,7 @@ SELECT 15  # 切换到 15 号库
 # 注意：Redis Cluster 模式下不支持 SELECT，仅使用 db0
 ```
 
-### INFO 命令 — 获取服务器状态
+### 1.4.3 INFO 命令 — 获取服务器状态
 
 ```bash
 # 获取全部信息
@@ -386,7 +386,7 @@ INFO persistence # 持久化状态
 # mem_fragmentation_ratio:2.00
 ```
 
-### CONFIG GET / SET
+### 1.4.4 CONFIG GET / SET
 
 ```bash
 # 查看当前所有配置
@@ -407,7 +407,7 @@ CONFIG SET timeout 300
 CONFIG REWRITE
 ```
 
-### MONITOR 命令 — 实时监控
+### 1.4.5 MONITOR 命令 — 实时监控
 
 ```bash
 # 开启实时监控（在生产环境慎用，会消耗约 50% 性能）
@@ -420,7 +420,7 @@ MONITOR
 # 适用于调试问题，执行完后按 Ctrl+C 退出监控
 ```
 
-### CLIENT LIST 查看客户端连接
+### 1.4.6 CLIENT LIST 查看客户端连接
 
 ```bash
 # 查看所有已连接客户端
@@ -448,12 +448,12 @@ CLIENT GETNAME
 
 ---
 
-## 1.5Redis的图形化界面客户端
+## 1.5 Redis的图形化界面客户端
 
 - 推荐：RedisInsight、Another Redis Desktop Manager
 - 功能：可视化 Key 管理、命令执行、监控、慢查询分析。
 
-### RedisInsight — 通过 Docker 部署
+### 1.5.1 RedisInsight — 通过 Docker 部署
 
 RedisInsight 是 Redis 官方出品的免费图形化管理工具。如果使用了上面的 `docker-compose.yml`，RedisInsight 已经随 Redis 一起启动了。
 
@@ -464,7 +464,7 @@ RedisInsight 是 Redis 官方出品的免费图形化管理工具。如果使用
 docker run -d --name redis-insight -p 8001:8001 redislabs/redisinsight:latest
 ```
 
-### RedisInsight 基本使用
+### 1.5.2 RedisInsight 基本使用
 
 1. **连接 Redis**：
    - 打开 `http://localhost:8001`
@@ -491,7 +491,7 @@ docker run -d --name redis-insight -p 8001:8001 redislabs/redisinsight:latest
    - Slowlog 面板查看慢查询记录
    - 分析执行慢的命令并优化
 
-### Another Redis Desktop Manager
+### 1.5.3 Another Redis Desktop Manager
 
 另一款流行的开源 Redis 桌面管理工具：
 - 下载地址：https://github.com/qishibo/AnotherRedisDesktopManager
@@ -500,9 +500,9 @@ docker run -d --name redis-insight -p 8001:8001 redislabs/redisinsight:latest
 
 ---
 
-# 2.Redis命令
+# 2. Redis命令
 
-## 2.1通用命令
+## 2.1 通用命令
 
 - `keys *`：匹配所有 Key（线上慎用）
 - `scan 0 match user:* count 100`：增量扫描
@@ -512,7 +512,7 @@ docker run -d --name redis-insight -p 8001:8001 redislabs/redisinsight:latest
 - `expire key 60` / `ttl key`：过期设置与查看
 - `rename key newKey`：重命名
 
-### SCAN 命令详解
+### 2.1.1 SCAN 命令详解
 
 `KEYS *` 会阻塞 Redis，生产环境绝对禁止使用。`SCAN` 是安全的游标迭代方式。
 
@@ -536,7 +536,7 @@ SCAN 0 MATCH order:* COUNT 1000     # 游标返回 0 表示结束
 - 遍历过程中新添加的 Key 可能不会被返回，已删除的 Key 可能仍被返回（增量迭代无快照隔离）。
 - 游标值不确定，不要改游标为 0 强制结束循环。
 
-### EXISTS — 多 Key 存在性判断
+### 2.1.2 EXISTS — 多 Key 存在性判断
 
 ```bash
 # 单个 Key
@@ -548,7 +548,7 @@ EXISTS user:1 user:2 user:999
 # (integer) 2   -- user:1 和 user:2 存在，user:999 不存在
 ```
 
-### 过期时间相关命令
+### 2.1.3 过期时间相关命令
 
 ```bash
 # EXPIRE — 设置相对过期时间（秒）
@@ -570,7 +570,7 @@ PERSIST session:token123
 PTTL session:token123
 ```
 
-### TTL 返回值含义表
+### 2.1.4 TTL 返回值含义表
 
 | 返回值 | 含义 |
 |---|---|
@@ -589,7 +589,7 @@ DEL key3
 TTL key3              # -2（Key 不存在）
 ```
 
-### DUMP / RESTORE — Key 序列化与恢复
+### 2.1.5 DUMP / RESTORE — Key 序列化与恢复
 
 ```bash
 # DUMP — 将 Key 序列化为二进制数据
@@ -602,7 +602,7 @@ RESTORE user:backup 0 "\x00\x03tom\t\..."
 # ttl=0 表示无过期，REPLACE 覆盖已存在的 Key
 ```
 
-### OBJECT 命令 — 查看 Key 的底层信息
+### 2.1.6 OBJECT 命令 — 查看 Key 的底层信息
 
 ```bash
 # OBJECT ENCODING — 查看 Key 的底层编码
@@ -624,7 +624,7 @@ OBJECT IDLETIME name
 # (integer) 120  -- 已闲置 120 秒
 ```
 
-### 数据库管理命令
+### 2.1.7 数据库管理命令
 
 ```bash
 # DBSIZE — 查看当前数据库 Key 数量
@@ -646,7 +646,7 @@ FLUSHALL ASYNC
 
 ---
 
-## 2.2String类型
+## 2.2 String类型
 
 - 适用：缓存、计数、对象序列化。
 - 常用：
@@ -671,7 +671,7 @@ public class RedisStringDemo {
 }
 ```
 
-### 子串操作
+### 2.2.1 子串操作
 
 ```bash
 # GETRANGE — 获取字符串的子串（索引从 0 开始）
@@ -686,7 +686,7 @@ SETRANGE phone 4 "1234"    # 从索引 4 开始覆盖
 GET phone                   # "138-1234-0000"
 ```
 
-### 高级字符串命令
+### 2.2.2 高级字符串命令
 
 ```bash
 # GETEX — 获取值并设置过期时间（Redis 6.2+）
@@ -713,7 +713,7 @@ MSETNX lock:a val1 lock:b val2   # 返回 1（成功）
 MSETNX lock:a val3 lock:c val4   # 返回 0（失败，lock:a 已存在）
 ```
 
-### Spring Data Redis 操作 String
+### 2.2.3 Spring Data Redis 操作 String
 
 ```java
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -758,7 +758,7 @@ public class StringRedisService {
 }
 ```
 
-### 实战场景：分布式计数器
+### 2.2.4 实战场景：分布式计数器
 
 ```java
 @Service
@@ -791,7 +791,7 @@ public class DistributedCounterService {
 }
 ```
 
-### 实战场景：分布式锁
+### 2.2.5 实战场景：分布式锁
 
 ```java
 @Service
@@ -825,7 +825,7 @@ public class DistributedLockService {
 }
 ```
 
-### 实战场景：缓存模式
+### 2.2.6 实战场景：缓存模式
 
 ```java
 @Service
@@ -872,7 +872,7 @@ public class CacheService {
 
 ---
 
-## 2.3Key的层级格式
+## 2.3 Key的层级格式
 
 - 约定：业务:对象:主键:字段
 - 示例：
@@ -880,7 +880,7 @@ public class CacheService {
 	- `order:20240512:status`
 - 优点：避免冲突、便于批量扫描与治理。
 
-### 更多业务域示例
+### 2.3.1 更多业务域示例
 
 ```bash
 # 用户模块
@@ -913,7 +913,7 @@ ratelimit:api:/login:1001       # 登录接口限流（按用户）
 ratelimit:sms:phone:13800138000 # 短信验证码限流
 ```
 
-### Key 命名最佳实践
+### 2.3.2 Key 命名最佳实践
 
 1. **长度控制**：Key 不宜过长（占用内存），也不宜过短（可读性差），建议在 30-50 字符以内。
 2. **分隔符**：统一使用冒号 `:` 分隔层级（Redis 社区惯例），避免使用 `/`、`_` 等。
@@ -935,7 +935,7 @@ ratelimit:sms:phone:13800138000 # 短信验证码限流
 
 ---
 
-## 2.4Hash类型
+## 2.4 Hash类型
 
 - 适用：对象存储（字段-值）
 - 常用：
@@ -961,7 +961,7 @@ public class RedisHashDemo {
 }
 ```
 
-### Hash 高级命令
+### 2.4.1 Hash 高级命令
 
 ```bash
 # HSETNX — 仅当字段不存在时才设置
@@ -1001,7 +1001,7 @@ HSET large:hash f1 v1 f2 v2 f3 v3 ... f10000 v10000
 HSCAN large:hash 0 MATCH f1* COUNT 10
 ```
 
-### Hash 与 String 的选择
+### 2.4.2 Hash 与 String 的选择
 
 | 场景 | 推荐类型 | 原因 |
 |---|---|---|
@@ -1010,7 +1010,7 @@ HSCAN large:hash 0 MATCH f1* COUNT 10
 | 对象字段很多（> 500 个） | 拆分多个 Hash | 避免 HGETALL 阻塞 |
 | 需要设置过期时间 | String 或 Hash（Redis 7.4+ 支持 Hash 字段过期） | Hash 不支持整体 TTL 外独立字段 TTL（7.4 之前） |
 
-### Spring Data Redis 操作 Hash
+### 2.4.3 Spring Data Redis 操作 Hash
 
 ```java
 import org.springframework.data.redis.core.HashOperations;
@@ -1078,7 +1078,7 @@ public class RedisHashService {
 }
 ```
 
-### 实战场景：购物车
+### 2.4.4 实战场景：购物车
 
 ```java
 @Service
@@ -1127,7 +1127,7 @@ public class ShoppingCartService {
 }
 ```
 
-### 实战场景：用户资料缓存
+### 2.4.5 实战场景：用户资料缓存
 
 ```java
 @Service
@@ -1169,7 +1169,7 @@ public class UserProfileCache {
 
 ---
 
-## 2.5List类型
+## 2.5 List类型
 
 - 适用：消息队列、时间线
 - 常用：
@@ -1178,7 +1178,7 @@ public class UserProfileCache {
 	- `lpop list` / `rpop list`
 	- `lrange list 0 -1`
 
-### List 高级命令
+### 2.5.1 List 高级命令
 
 ```bash
 # LINSERT — 在指定元素之前/之后插入
@@ -1222,7 +1222,7 @@ BLPOP task_queue 30      # 从左侧弹出，最多等 30 秒
 BRPOP task_queue 0       # 从右侧弹出，0 表示永不超时
 ```
 
-### Jedis 操作 List
+### 2.5.2 Jedis 操作 List
 
 ```java
 import redis.clients.jedis.Jedis;
@@ -1257,7 +1257,7 @@ public class JedisListDemo {
 }
 ```
 
-### Spring Data Redis 操作 List
+### 2.5.3 Spring Data Redis 操作 List
 
 ```java
 @Service
@@ -1301,7 +1301,7 @@ public class ListRedisService {
 }
 ```
 
-### 实战场景：消息队列
+### 2.5.4 实战场景：消息队列
 
 ```java
 @Service
@@ -1331,7 +1331,7 @@ public class MessageQueueService {
 }
 ```
 
-### 实战场景：最新 N 条动态
+### 2.5.5 实战场景：最新 N 条动态
 
 ```java
 @Service
@@ -1367,7 +1367,7 @@ public class RecentItemsService {
 
 ---
 
-## 2.6Set类型
+## 2.6 Set类型
 
 - 适用：标签、去重、交并差
 - 常用：
@@ -1376,7 +1376,7 @@ public class RecentItemsService {
 	- `sismember tag:java a`
 	- `sinter s1 s2` / `sunion s1 s2` / `sdiff s1 s2`
 
-### Set 高级命令
+### 2.6.1 Set 高级命令
 
 ```bash
 # SRANDMEMBER — 随机返回元素（不删除）
@@ -1408,7 +1408,7 @@ SISMEMBER colors black    # 0（否）
 SMISMEMBER colors red black blue  # 1) 1  2) 0  3) 1
 ```
 
-### Jedis 操作 Set
+### 2.6.2 Jedis 操作 Set
 
 ```java
 import redis.clients.jedis.Jedis;
@@ -1449,7 +1449,7 @@ public class JedisSetDemo {
 }
 ```
 
-### Spring Data Redis 操作 Set
+### 2.6.3 Spring Data Redis 操作 Set
 
 ```java
 @Service
@@ -1508,7 +1508,7 @@ public class SetRedisService {
 }
 ```
 
-### 实战场景：用户标签系统
+### 2.6.4 实战场景：用户标签系统
 
 ```java
 @Service
@@ -1550,7 +1550,7 @@ public class UserTagService {
 }
 ```
 
-### 实战场景：共同好友
+### 2.6.5 实战场景：共同好友
 
 ```java
 @Service
@@ -1595,7 +1595,7 @@ public class CommonFriendService {
 
 ---
 
-## 2.7SortedSet类型
+## 2.7 SortedSet类型
 
 - 适用：排行榜、延迟队列
 - 常用：
@@ -1604,7 +1604,7 @@ public class CommonFriendService {
 	- `zrevrange rank 0 9 withscores`
 	- `zincrby rank 10 user1`
 
-### SortedSet 高级命令
+### 2.7.1 SortedSet 高级命令
 
 ```bash
 # ZADD — 支持 NX / XX / GT / LT / CH 等选项
@@ -1664,7 +1664,7 @@ ZREVRANGE rank 0 2 WITHSCORES
 # 1) "b" 2) "200"  3) "c" 4) "150"  5) "a" 6) "100"
 ```
 
-### Jedis 操作 SortedSet
+### 2.7.2 Jedis 操作 SortedSet
 
 ```java
 import redis.clients.jedis.Jedis;
@@ -1715,7 +1715,7 @@ public class JedisZSetDemo {
 }
 ```
 
-### Spring Data Redis 操作 SortedSet
+### 2.7.3 Spring Data Redis 操作 SortedSet
 
 ```java
 @Service
@@ -1780,7 +1780,7 @@ public class ZSetRedisService {
 }
 ```
 
-### 实战场景：排行榜
+### 2.7.4 实战场景：排行榜
 
 ```java
 @Service
@@ -1835,7 +1835,7 @@ public class LeaderboardService {
 }
 ```
 
-### 实战场景：延迟队列
+### 2.7.5 实战场景：延迟队列
 
 ```java
 @Service
@@ -1883,15 +1883,15 @@ public class DelayQueueService {
 
 ---
 
-# 3.Redis的Java客户端
+# 3. Redis的Java客户端
 
-## 3.1客户端对比
+## 3.1 客户端对比
 
 - Jedis：经典、轻量、API 直观
 - Lettuce：基于 Netty，支持异步/响应式
 - Spring Data Redis：对 Spring 生态友好，封装统一模板
 
-### 详细对比表
+### 3.1.1 详细对比表
 
 | 维度 | Jedis | Lettuce | Redisson | Spring Data Redis |
 |---|---|---|---|---|
@@ -1905,7 +1905,7 @@ public class DelayQueueService {
 | 序列化 | 手动 | 手动 | 内置多种编解码器 | 可配置 Serializer |
 | 适用场景 | 简单项目、学习 | 高并发 Web 应用 | 分布式场景、服务治理 | Spring Boot 项目 |
 
-### 如何选择
+### 3.1.2 如何选择
 
 - **Jedis**：传统项目、API 与 Redis 命令高度对齐、学习成本最低。适合小型项目或不依赖 Spring 的项目。
 - **Lettuce**：Spring Boot 2.0+ 的默认客户端、高并发场景、需要异步/响应式编程。
@@ -1914,7 +1914,7 @@ public class DelayQueueService {
 
 ---
 
-## 3.2Jedis快速入门
+## 3.2 Jedis快速入门
 
 依赖（Maven）：
 ```xml
@@ -1939,7 +1939,7 @@ public class JedisQuickStart {
 }
 ```
 
-### Jedis 带完整参数连接
+### 3.2.1 Jedis 带完整参数连接
 
 ```java
 import redis.clients.jedis.Jedis;
@@ -1971,7 +1971,7 @@ public class JedisWithParams {
 }
 ```
 
-### Jedis 错误处理
+### 3.2.2 Jedis 错误处理
 
 ```java
 import redis.clients.jedis.Jedis;
@@ -2004,7 +2004,7 @@ public class JedisErrorHandling {
 
 ---
 
-## 3.3Jedis的连接池
+## 3.3 Jedis的连接池
 
 ```java
 import redis.clients.jedis.Jedis;
@@ -2027,7 +2027,7 @@ public class JedisPoolDemo {
 }
 ```
 
-### 连接池参数详解
+### 3.3.1 连接池参数详解
 
 | 参数 | 默认值 | 说明 |
 |---|---|---|
@@ -2044,7 +2044,7 @@ public class JedisPoolDemo {
 | `blockWhenExhausted` | `true` | 连接耗尽时是否阻塞等待 |
 | `jmxEnabled` | `true` | 是否注册 JMX MBean 监控 |
 
-### 生产级连接池配置 + Shutdown Hook
+### 3.3.2 生产级连接池配置 + Shutdown Hook
 
 ```java
 import redis.clients.jedis.Jedis;
@@ -2105,12 +2105,12 @@ public class ProductionJedisPool {
 
 ---
 
-## 3.4认识SpringDataRedis
+## 3.4 认识SpringDataRedis
 
 - Spring Data Redis 封装了序列化、连接池、模板操作。
 - 常用入口：`RedisTemplate`、`StringRedisTemplate`。
 
-### Spring Boot 自动配置默认值
+### 3.4.1 Spring Boot 自动配置默认值
 
 | 属性 | 默认值 | 说明 |
 |---|---|---|
@@ -2125,7 +2125,7 @@ public class ProductionJedisPool {
 | `spring.data.redis.lettuce.pool.max-wait` | `-1ms` | 最大等待时间 |
 | `spring.data.redis.lettuce.shutdown-timeout` | `100ms` | 关闭超时 |
 
-### application.yml 配置示例
+### 3.4.2 application.yml 配置示例
 
 **单机模式**：
 ```yaml
@@ -2181,7 +2181,7 @@ spring:
           max-idle: 10
 ```
 
-### Lettuce 连接工厂默认行为
+### 3.4.3 Lettuce 连接工厂默认行为
 
 Spring Boot 2.x 开始默认使用 Lettuce 作为 Redis 客户端：
 
@@ -2197,7 +2197,7 @@ Spring Boot 2.x 开始默认使用 Lettuce 作为 Redis 客户端：
 
 ---
 
-## 3.5RedisTemplate快速入门
+## 3.5 RedisTemplate快速入门
 
 ```java
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -2219,7 +2219,7 @@ public class RedisTemplateService {
 }
 ```
 
-### opsForXxx 各类型操作速览
+### 3.5.1 opsForXxx 各类型操作速览
 
 ```java
 @Service
@@ -2277,7 +2277,7 @@ public class OpsOverview {
 
 ---
 
-## 3.6RedisTemplate的RedisSerializer
+## 3.6 RedisTemplate的RedisSerializer
 
 - 默认 JDK 序列化可读性差。
 - 常见替代：String、JSON（Jackson）。
@@ -2346,7 +2346,7 @@ public class RedisJsonSerializerConfig {
 - JSON 类型：定义 `RedisTemplate<String, Object>`，Key 用 `StringRedisSerializer`，Value/HashValue 用 `GenericJackson2JsonRedisSerializer`。
 - 放在 `@Configuration` 类中注册为 `@Bean`，Spring Boot 自动装配后即可注入使用。
 
-### 序列化方案对比
+### 3.6.1 序列化方案对比
 
 | 序列化器 | Key 可读性 | Value 可读性 | 跨语言 | 空间占用 | 反序列化要求 | 推荐场景 |
 |---|---|---|---|---|---|---|
@@ -2356,12 +2356,12 @@ public class RedisJsonSerializerConfig {
 | `Jackson2JsonRedisSerializer` | — | 高（不含类型信息） | 是 | 中 | 需指定 Class | 固定类型 JSON |
 | `ProtobufRedisSerializer` / `KryoRedisSerializer` | — | 差（二进制） | 否 | 小 | 需 Schema | 高性能场景 |
 
-### Jackson2JsonRedisSerializer vs GenericJackson2JsonRedisSerializer
+### 3.6.2 Jackson2JsonRedisSerializer vs GenericJackson2JsonRedisSerializer
 
 - **GenericJackson2JsonRedisSerializer**：JSON 中附带 `@class` 类型信息，反序列化时自动识别类型，无需手动指定 Class。缺点：额外存储类型信息，增大约 30% 体积。
 - **Jackson2JsonRedisSerializer**：纯 JSON，不存储类型信息，反序列化时需手动指定 Class（如 `new Jackson2JsonRedisSerializer<>(User.class)`）。优点：体积小，适合固定类型的缓存。
 
-### 自定义 ObjectMapper（支持 Java 8 时间）
+### 3.6.3 自定义 ObjectMapper（支持 Java 8 时间）
 
 ```java
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -2420,12 +2420,12 @@ public class RedisCustomJsonConfig {
 
 ---
 
-## 3.7StringRedisTemplate（SpringBoot提供，**其继承**RedisTemplate<String, String>）
+## 3.7 StringRedisTemplate（SpringBoot提供，**其继承**RedisTemplate<String, String>）
 
 - 仅处理 String 类型，默认 String 序列化。
 - 适合简单 KV 场景。
 
-### 更多使用示例
+### 3.7.1 更多使用示例
 
 ```java
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -2486,7 +2486,7 @@ public class StringRedisService {
 
 ---
 
-## 3.8RedisTemplate操作Hash类型
+## 3.8 RedisTemplate操作Hash类型
 
 ```java
 import org.springframework.data.redis.core.HashOperations;
@@ -2509,7 +2509,7 @@ public class RedisHashService {
 }
 ```
 
-### 更多 Hash 操作示例
+### 3.8.1 更多 Hash 操作示例
 
 ```java
 @Service

@@ -1,4 +1,4 @@
-# 1 Controller 源码总览
+# 1. Controller 源码总览
 
 ## 1.1 KafkaController 核心构建（ZK 模式）
 
@@ -45,7 +45,7 @@ class KafkaController(val config: KafkaConfig,
 
 > 文件位置: `core/src/main/scala/kafka/controller/KafkaController.scala:82`
 
-# 2 Controller 选举
+# 2. Controller 选举
 
 ## 2.1 ZK 模式选举
 
@@ -151,7 +151,7 @@ class ControllerChangeHandler extends IZkDataListener {
 }
 ```
 
-# 3 PartitionStateMachine 分区状态机
+# 3. PartitionStateMachine 分区状态机
 
 ## 3.1 状态转换
 
@@ -304,7 +304,7 @@ private def electLeaderForPartition(
 
 > 文件位置: `core/src/main/scala/kafka/controller/PartitionStateMachine.scala:170`
 
-# 4 ReplicaStateMachine 副本状态机
+# 4. ReplicaStateMachine 副本状态机
 
 ## 4.1 状态转换
 
@@ -363,7 +363,7 @@ class ReplicaStateMachine(controller: KafkaController) extends Logging {
 
 > 文件位置: `core/src/main/scala/kafka/controller/ReplicaStateMachine.scala:61`
 
-# 5 ControllerEventManager 事件处理
+# 5. ControllerEventManager 事件处理
 
 ## 5.1 单线程事件模型
 
@@ -435,7 +435,7 @@ class ControllerEventManager(controllerId: Int,
 
 > 文件位置: `core/src/main/scala/kafka/controller/ControllerEventManager.scala:40`
 
-# 6 Broker 变更事件处理
+# 6. Broker 变更事件处理
 
 ## 6.1 Broker 下线的完整流程
 
@@ -505,7 +505,7 @@ private def onBrokerStartup(newBrokers: Seq[Int]): Unit = {
 }
 ```
 
-# 7 LeaderAndIsr 请求处理
+# 7. LeaderAndIsr 请求处理
 
 ## 7.1 发送 LeaderAndIsr
 
@@ -550,7 +550,7 @@ private def sendLeaderAndIsrRequest(
 
 > 文件位置: `core/src/main/scala/kafka/controller/KafkaController.scala:1024`
 
-# 8 KRaft 模式下的 Controller
+# 8. KRaft 模式下的 Controller
 
 ## 8.1 QuorumController（Kafka 3.3+）
 
@@ -578,7 +578,7 @@ public class QuorumController implements Controller {
 
 > 文件位置: `metadata/src/main/java/org/apache/kafka/controller/QuorumController.java:156`
 
-# 9 Controller 源码中的关键路径
+# 9. Controller 源码中的关键路径
 
 ```
 Controller 某个Broker下线 → 完整处理流程:

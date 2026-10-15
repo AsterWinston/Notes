@@ -1,4 +1,4 @@
-# 1.事务概述
+# 1. 事务概述
 
 事务（Transaction）是一组操作的集合，它是一个**不可分割的工作单位**。事务会把所有操作作为一个整体一起向系统提交或撤销操作请求，即这些操作要么**全部成功**，要么**全部失败**。
 
@@ -8,15 +8,15 @@
 
 如果步骤 1 成功但步骤 2 失败，A 的钱被扣了但 B 没收到——这在金融系统中是不能接受的。事务机制确保两步要么都成功（COMMIT），要么都回滚（ROLLBACK）。
 
-## 1.1为什么需要事务
+## 1.1 为什么需要事务
 
 - **保证数据一致性**：防止中间状态（部分成功、部分失败）被持久化
 - **并发控制**：多个用户同时操作同一数据时，保证隔离性
 - **故障恢复**：系统崩溃后能恢复到一致状态
 
-# 2.事务操作
+# 2. 事务操作
 
-## 2.1自动提交模式
+## 2.1 自动提交模式
 
 MySQL 默认是自动提交模式——每条 SQL 语句都是一个独立的事务，执行后自动提交：
 
@@ -33,9 +33,9 @@ SET @@autocommit = 1;
 
 > **JDBC / Spring 事务**：当使用 Spring 的 `@Transactional` 时，框架会自动将 autocommit 设为 false，并在方法结束时根据是否抛出异常决定 COMMIT 或 ROLLBACK。这与手动管理事务是同一机制。
 
-## 2.2显式事务控制
+## 2.2 显式事务控制
 
-### 方式一：修改 autocommit 模式
+### 2.2.1 方式一：修改 autocommit 模式
 
 ```sql
 SET @@autocommit = 0;   -- 关闭自动提交
@@ -50,7 +50,7 @@ ROLLBACK;   -- 回滚：所有修改撤销
 SET @@autocommit = 1;   -- 恢复
 ```
 
-### 方式二：显式开启事务（推荐）
+### 2.2.2 方式二：显式开启事务（推荐）
 
 ```sql
 START TRANSACTION;  -- 或 BEGIN;
@@ -63,7 +63,7 @@ COMMIT;   -- 或 ROLLBACK;
 
 > 两种方式的区别：`START TRANSACTION` 可以在 autocommit=1 的模式下显式控制事务，而不需要改变全局/会话的 autocommit 设置。**推荐使用此方式**。
 
-## 2.3保存点（SAVEPOINT）
+## 2.3 保存点（SAVEPOINT）
 
 保存点允许在事务中创建回滚标记，实现**部分回滚**：
 
@@ -82,7 +82,7 @@ COMMIT;
 
 > 保存点常用于复杂的存储过程中：多个步骤中某个步骤失败时，回滚到上一个保存点而非整个事务。
 
-## 2.4事务自动提交的触发条件
+## 2.4 事务自动提交的触发条件
 
 以下操作会**隐式提交**当前事务（即使你没有显式 COMMIT）：
 
@@ -95,7 +95,7 @@ COMMIT;
 
 > **特别注意**：`TRUNCATE` 在 MySQL 8.0 之前会隐式提交，8.0 的原子 DDL 特性下 TRUNCATE 遵循事务语义。但为兼容性考虑，不建议在事务中混用 DDL 和 DML。
 
-# 3.事务四大特性（ACID）
+# 3. 事务四大特性（ACID）
 
 ACID 是衡量事务正确性的四个基本要素：
 
@@ -112,7 +112,7 @@ ACID 是衡量事务正确性的四个基本要素：
 - 持久性是保障：提交后的数据不丢失
 - 一致性是最终目标：A + I + D 共同保证 C
 
-# 4.并发事务带来的问题
+# 4. 并发事务带来的问题
 
 当多个事务同时运行且操作同一数据时，可能引发以下问题：
 
@@ -126,7 +126,7 @@ ACID 是衡量事务正确性的四个基本要素：
 - 不可重复读：关注的是**同一行的内容被修改**（UPDATE）
 - 幻读：关注的是**多了或少了几行**（INSERT / DELETE）
 
-# 5.事务隔离级别
+# 5. 事务隔离级别
 
 隔离级别由上到下依次增强，但性能也依次降低（并发能力下降）：
 
@@ -140,7 +140,7 @@ ACID 是衡量事务正确性的四个基本要素：
 > **为什么 InnoDB 的 REPEATABLE READ 能部分解决幻读？**
 > InnoDB 在 RR 级别下使用**临键锁（Next-Key Lock）**，不仅锁定匹配的行，还锁定行之间的间隙（Gap Lock），防止其他事务插入符合条件的行。但对于 `SELECT ... FOR UPDATE` 的当前读，仍需小心幻读。
 
-## 5.1查看和设置隔离级别
+## 5.1 查看和设置隔离级别
 
 ```sql
 -- 查看当前会话隔离级别
@@ -160,9 +160,9 @@ SET GLOBAL TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 -- transaction_isolation = READ-COMMITTED
 ```
 
-## 5.2各隔离级别实战演示
+## 5.2 各隔离级别实战演示
 
-### READ-UNCOMMITTED（读未提交）
+### 5.2.1 READ-UNCOMMITTED（读未提交）
 
 ```sql
 -- 会话 A                   -- 会话 B
@@ -176,7 +176,7 @@ SELECT balance FROM account WHERE id=1;  -- 1000（又变了）
 COMMIT;
 ```
 
-### READ-COMMITTED（读已提交）
+### 5.2.2 READ-COMMITTED（读已提交）
 
 ```sql
 -- 会话 A                   -- 会话 B
@@ -189,7 +189,7 @@ SELECT balance FROM account WHERE id=1;  -- 1500（不可重复读！）
 COMMIT;
 ```
 
-### REPEATABLE-READ（可重复读）
+### 5.2.3 REPEATABLE-READ（可重复读）
 
 ```sql
 -- 会话 A                   -- 会话 B
@@ -203,7 +203,7 @@ COMMIT;
 SELECT balance FROM account WHERE id=1;  -- 2000（提交后可看到最新值）
 ```
 
-## 5.3隔离级别的工程选择
+## 5.3 隔离级别的工程选择
 
 | 隔离级别 | 适用场景 |
 |---------|---------|
@@ -217,7 +217,7 @@ SELECT balance FROM account WHERE id=1;  -- 2000（提交后可看到最新值�
 > 3. RR 的 Gap Lock 可能带来死锁风险，排查更困难
 > 4. 互联网业务的最终一致性通常通过补偿机制（MQ、对账）保证，不依赖数据库的事务隔离
 
-# 6.事务日志简介
+# 6. 事务日志简介
 
 事务的 ACID 特性依赖于 InnoDB 的两种日志：
 
@@ -231,7 +231,7 @@ SELECT balance FROM account WHERE id=1;  -- 2000（提交后可看到最新值�
 
 > 详细原理参考：[12_InnoDB_engine.md](12_InnoDB_engine.md) 和 [1_log.md](Operation&Maintenance/1_log.md)。
 
-# 7.MVCC简介
+# 7. MVCC简介
 
 **MVCC（Multi-Version Concurrency Control，多版本并发控制）**是 InnoDB 实现非锁定读（快照读）的核心机制，使得读操作不阻塞写操作，写操作不阻塞读操作。
 
@@ -252,7 +252,7 @@ SELECT balance FROM account WHERE id=1;  -- 2000（提交后可看到最新值�
 
 > 详细 MVCC 原理参考：[12_InnoDB_engine.md](12_InnoDB_engine.md)。
 
-# 8.事务最佳实践
+# 8. 事务最佳实践
 
 - **事务尽量短**：事务开启后尽快提交，避免长事务锁表、undo log 膨胀
 - **避免事务中的用户交互**：不要在事务中等待用户输入、RPC 调用、发邮件等

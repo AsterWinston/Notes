@@ -1,4 +1,4 @@
-# 1.条件构造器
+# 1. 条件构造器
 
 <img src="images/02.png" width="100%">
 
@@ -216,7 +216,7 @@ userMapper.deleteByMap(map);
 
 ---
 
-# 2.自定义 SQL
+# 2. 自定义 SQL
 
 我们可以使用 Mybatis-Plus 的 Wrapper 来构建复杂的 Where 条件，然后自定义 SQL 语句的剩下部分。
 
@@ -305,7 +305,7 @@ void testCustomSQLWithPage() {
 
 ---
 
-# 3.Service 接口
+# 3. Service 接口
 
 ## 3.1 使用步骤
 
@@ -526,7 +526,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 ---
 
-# 4.Db 静态工具类（补充）
+# 4. Db 静态工具类（补充）
 
 `Db` 是 Mybatis-Plus 3.5.1+ 提供的通用数据库操作工具类，可在非 Service 层直接使用，无需注入 Mapper。
 

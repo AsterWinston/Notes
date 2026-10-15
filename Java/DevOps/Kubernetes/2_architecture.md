@@ -1,4 +1,4 @@
-# 1.Kubernetes 整体架构
+# 1. Kubernetes 整体架构
 
 ## 1.1 架构设计原则
 

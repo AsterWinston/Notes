@@ -211,8 +211,9 @@ public TokenResponse passwordGrant(
 - CLI 工具 (如 GitHub CLI)
 - 游戏主机
 """
+```
 
-### 1.6.2. 流程详解
+## 6.2 流程详解
 
 ```
 设备                     授权服务器                用户手机上浏览器
@@ -262,7 +263,7 @@ public TokenResponse passwordGrant(
  │◄──────────────────────────│                           │
 ```
 
-### 1.6.3. Java 实现
+## 6.3 Java 实现
 
 ```java
 public class DeviceCodeFlow {
@@ -344,7 +345,7 @@ class DeviceCodeResponse {
 }
 ```
 
-### 1.6.4. 错误响应
+## 6.4 错误响应
 
 ```json
 // 用户尚未授权
@@ -372,9 +373,9 @@ class DeviceCodeResponse {
 }
 ```
 
-## 1.7. 刷新令牌模式（Refresh Token Grant）
+# 7. 刷新令牌模式（Refresh Token Grant）
 
-### 1.7.1. 流程
+## 7.1 流程
 
 ```
 POST /token
@@ -391,7 +392,7 @@ POST /token
 }
 ```
 
-### 1.7.2. 自动刷新实现（Spring）
+## 7.2 自动刷新实现（Spring）
 
 ```java
 @Component
@@ -439,9 +440,9 @@ public class TokenRefresher {
 }
 ```
 
-## 1.8. Bearer Token 与 DPoP
+# 8. Bearer Token 与 DPoP
 
-### 1.8.1. Bearer Token 的问题
+## 8.1 Bearer Token 的问题
 
 ```
 Bearer Token = "持有即可以使用"
@@ -458,7 +459,7 @@ Bearer Token = "持有即可以使用"
 4. 第三方 Script 窃取（如广告 SDK）
 ```
 
-### 1.8.2. DPoP（Demonstration of Proof-of-Possession）
+## 8.2 DPoP（Demonstration of Proof-of-Possession）
 
 ```java
 // DPoP = 证明 Token 持有者确实是合法客户端
@@ -490,7 +491,7 @@ DPoP: eyJhbGciOi...（DPoP Proof JWT）
 // → 即使 Access Token 泄露，攻击者无法创建有效的 DPoP 证明
 ```
 
-## 1.9. 授权模式选择决策
+# 9. 授权模式选择决策
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -519,7 +520,7 @@ DPoP: eyJhbGciOi...（DPoP Proof JWT）
 └──────────────────────────────────────────────────────────────┘
 ```
 
-## 1.10. 总结
+# 10. 总结
 
 | 模式 | 核心风险 | 替代方案 |
 |------|---------|---------|

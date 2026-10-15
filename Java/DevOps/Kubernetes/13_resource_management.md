@@ -1,4 +1,4 @@
-# 1.资源管理概述
+# 1. 资源管理概述
 
 ## 1.1 为什么需要资源管理
 
@@ -30,7 +30,7 @@ Kubernetes 通过三层资源管理机制解决上述问题：
 └──────────────────────────────────────────────────────┘
 ```
 
-# 2.容器级资源管理：Requests 和 Limits
+# 2. 容器级资源管理：Requests 和 Limits
 
 ## 2.1 核心概念
 
@@ -47,19 +47,19 @@ containers:
       memory: "512Mi"
 ```
 
-### Requests（请求）
+### 2.1.1 Requests（请求）
 
 - **意义**：容器启动所需的最小资源保证。调度器根据所有容器的 requests 总和来决定 Pod 应该调度到哪个节点
 - **CPU requests**：决定了容器在 CPU 时间片分配中的权重。即使节点有剩余的 CPU 空闲，低 requests 的容器在高竞争时会获得较少的 CPU 时间
 - **Memory requests**：决定了调度时的内存预留。节点可分配内存 ≥ 所有 Pod 的 memory requests 总和
 
-### Limits（限制）
+### 2.1.2 Limits（限制）
 
 - **意义**：容器允许使用的最大资源上限
 - **CPU limits**：容器超过 limits 时，CPU 被限流（throttle），容器**不会被杀死**
 - **Memory limits**：容器超过 limits 时，容器被 **OOMKilled**（进程收到 SIGKILL，退出码 137）
 
-### CPU 与内存的本质区别
+### 2.1.3 CPU 与内存的本质区别
 
 ```
 CPU（可压缩资源）：
@@ -77,7 +77,7 @@ Memory（不可压缩资源）：
 
 ## 2.2 资源单位详解
 
-### CPU 单位
+### 2.2.1 CPU 单位
 
 | 表示方式 | 含义 |
 |---------|------|
@@ -91,7 +91,7 @@ Memory（不可压缩资源）：
 - GCP: 1 vCPU = 1 个超线程
 - Azure: 1 vCPU = 1 个超线程
 
-### 内存单位
+### 2.2.2 内存单位
 
 | 单位 | 字节数 | 使用示例 |
 |------|--------|---------|
@@ -105,7 +105,7 @@ Memory（不可压缩资源）：
 
 始终使用二进制单位（Ki/Mi/Gi）以避免混淆。
 
-### 巨页（Huge Pages）和扩展资源
+### 2.2.3 巨页（Huge Pages）和扩展资源
 
 ```yaml
 resources:
@@ -122,7 +122,7 @@ resources:
 
 ## 2.3 Requests 和 Limits 的关系与最佳实践
 
-### 四种配置策略
+### 2.3.1 四种配置策略
 
 | 配置策略 | CPU | Memory | 使用场景 |
 |---------|-----|--------|---------|
@@ -131,7 +131,7 @@ resources:
 | **设 Requests 不设 Limits** | 可以超用 | 可以超用 | 允许突发流量，但可能被驱逐 |
 | **Requests < Limits** | 保证 + 可超用 | 保证 + 超用危险 | 平衡性能和利用率（推荐） |
 
-### 生产环境推荐配置
+### 2.3.2 生产环境推荐配置
 
 ```yaml
 # 关键服务：Requests = Limits，保证稳定性
@@ -159,7 +159,7 @@ resources:
 
 ## 2.4 资源使用的底层机制
 
-### CPU 的 CFS 调度器实现
+### 2.4.1 CPU 的 CFS 调度器实现
 
 Linux 使用 CFS（Completely Fair Scheduler）的 cgroup 子系统实现 CPU 限制：
 
@@ -173,7 +173,7 @@ Linux 使用 CFS（Completely Fair Scheduler）的 cgroup 子系统实现 CPU �
   → 每 100ms 周期内最多使用 50ms 的 CPU 时间
 ```
 
-### Memory 的 OOM 机制
+### 2.4.2 Memory 的 OOM 机制
 
 ```
 容器 Memory limit = 512Mi：
@@ -186,17 +186,17 @@ Linux 使用 CFS（Completely Fair Scheduler）的 cgroup 子系统实现 CPU �
   4. kubelet 根据 restartPolicy 重启容器
 ```
 
-### 为什么内存是"不可压缩"的
+### 2.4.3 为什么内存是"不可压缩"的
 
 CPU 时间可以"排队"——进程等待 CPU 时间片即可，系统不会崩溃。但内存不能"排队"——进程请求的内存必须立即分配。当节点物理内存耗尽时，必须杀死进程来释放内存。
 
-# 3.Quality of Service (QoS) 等级
+# 3. Quality of Service (QoS) 等级
 
 ## 3.1 三种 QoS 等级
 
 Kubernetes 根据 Pod 中容器的 resources 配置自动为 Pod 分配 QoS 等级：
 
-### Guaranteed（有保证）
+### 3.1.1 Guaranteed（有保证）
 
 **条件**：Pod 中所有容器的 `memory requests == memory limits` 且 `cpu requests == cpu limits`
 
@@ -214,7 +214,7 @@ containers:
 
 这类 Pod 具有最高优先级，在资源紧张时**最不可能被驱逐**。
 
-### Burstable（可突发）
+### 3.1.2 Burstable（可突发）
 
 **条件**：Pod 不符合 Guaranteed 的条件，但至少有一个容器设置了 `memory requests` 或 `cpu requests`
 
@@ -241,7 +241,7 @@ containers:
 
 这类 Pod 具有一定保证，但在资源紧张时可能被驱逐。
 
-### BestEffort（尽力而为）
+### 3.1.3 BestEffort（尽力而为）
 
 **条件**：Pod 中没有任何容器设置 `resources.requests` 或 `resources.limits`
 
@@ -256,7 +256,7 @@ containers:
 
 ## 3.2 QoS 等级的影响
 
-### 对 OOM Score 的影响
+### 3.2.1 对 OOM Score 的影响
 
 ```bash
 # OOM Killer 根据 oom_score_adj 决定杀死哪个进程
@@ -267,7 +267,7 @@ containers:
 
 OOM Score 越高，越容易被 OOM Killer 选中。BestEffort Pod 的 OOM Score 最高，总是第一个被杀死。
 
-### 对 Eviction 的影响
+### 3.2.2 对 Eviction 的影响
 
 kubelet 在节点资源紧张时驱逐 Pod，按照以下优先级：
 
@@ -278,7 +278,7 @@ kubelet 在节点资源紧张时驱逐 Pod，按照以下优先级：
 4. Guaranteed 的 Pod（最后驱逐）
 ```
 
-### 对调度的影响
+### 3.2.3 对调度的影响
 
 - Guaranteed Pod 的资源被节点 100% 预留
 - Burstable Pod 只有 requests 部分被预留
@@ -294,7 +294,7 @@ kubectl describe pod <pod-name> | grep "QoS Class"
 # QoS Class: Burstable
 ```
 
-# 4.ResourceQuota（资源配额）
+# 4. ResourceQuota（资源配额）
 
 ## 4.1 概念与作用
 
@@ -351,7 +351,7 @@ API Server 准入控制器检查 ResourceQuota
 
 ## 4.3 多 ResourceQuota 和 PriorityClass 配额
 
-### 多配额叠加
+### 4.3.1 多配额叠加
 
 一个 Namespace 可以有多个 ResourceQuota，它们的效果叠加：
 
@@ -377,7 +377,7 @@ spec:
     services: "20"
 ```
 
-### 基于 PriorityClass 的配额
+### 4.3.2 基于 PriorityClass 的配额
 
 ```yaml
 apiVersion: v1
@@ -402,7 +402,7 @@ spec:
 - `BestEffort`：QoS 为 BestEffort 的 Pod
 - `NotBestEffort`：QoS 非 BestEffort 的 Pod
 
-# 5.LimitRange（范围限制）
+# 5. LimitRange（范围限制）
 
 ## 5.1 概念与作用
 
@@ -462,13 +462,13 @@ spec:
 # 因此 LimitRange 和 ResourceQuota 通常配合使用
 ```
 
-# 6.Pod 驱逐 (Eviction)
+# 6. Pod 驱逐 (Eviction)
 
 ## 6.1 kubelet 驱逐机制
 
 kubelet 在节点资源紧张时主动驱逐 Pod，以保护节点不被完全耗尽。
 
-### 触发条件
+### 6.1.1 触发条件
 
 kubelet 监控节点的以下指标，超过阈值时触发驱逐：
 
@@ -480,7 +480,7 @@ kubelet 监控节点的以下指标，超过阈值时触发驱逐：
 | `imagefs.available` | 镜像文件系统可用空间过低 | `< 15%` |
 | `imagefs.inodesFree` | 镜像文件系统 inode 剩余过低 | — |
 
-### 软驱逐 vs 硬驱逐
+### 6.1.2 软驱逐 vs 硬驱逐
 
 ```yaml
 # kubelet 配置
@@ -496,7 +496,7 @@ evictionSoftGracePeriod:             # 软驱逐宽限期
   nodefs.available: "2m"
 ```
 
-### 驱逐顺序
+### 6.1.3 驱逐顺序
 
 kubelet 按照以下优先级选择要驱逐的 Pod：
 
@@ -554,7 +554,7 @@ Eviction API 驱逐低优先级 Pod
 高优先级 Pod 被调度
 ```
 
-# 7.生产实践
+# 7. 生产实践
 
 ## 7.1 资源规划的黄金法则
 
@@ -599,7 +599,7 @@ kubectl describe limitrange resource-limits -n team-a
 
 ## 7.3 常见问题诊断
 
-### "exceeded quota" 错误
+### 7.3.1 "exceeded quota" 错误
 
 ```bash
 # Pod 创建失败，错误信息包含 "exceeded quota"
@@ -612,7 +612,7 @@ kubectl describe resourcequota -n <namespace>
 # 3. 优化现有 Pod 的 requests（减少不必要的预留）
 ```
 
-### Pod 频繁 OOMKilled
+### 7.3.2 Pod 频繁 OOMKilled
 
 ```bash
 kubectl describe pod <pod-name> | grep OOMKilled
@@ -624,7 +624,7 @@ kubectl describe pod <pod-name> | grep OOMKilled
 # 3. 增加 JVM/应用的内存限制参数（-Xmx）
 ```
 
-### 节点资源不足导致 Pending
+### 7.3.3 节点资源不足导致 Pending
 
 ```bash
 kubectl describe pod <pod-name> | grep Events

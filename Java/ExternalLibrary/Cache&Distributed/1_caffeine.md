@@ -909,12 +909,12 @@ public class CacheMonitorController {
 
 ## 7.7 常见误区
 
-### 误区 1：混淆 expireAfterWrite 和 refreshAfterWrite
+### 7.7.1 误区 1：混淆 expireAfterWrite 和 refreshAfterWrite
 
 - `expireAfterWrite`：过期后彻底移除，下次访问同步阻塞加载。
 - `refreshAfterWrite`：过期后异步加载新值，加载期间返回旧值（如果旧值已过期则阻塞加载）。
 
-### 误区 2：弱引用键的使用
+### 7.7.2 误区 2：弱引用键的使用
 
 ```java
 // 错误：weakKeys 后使用 String 类型的 key
@@ -928,7 +928,7 @@ cache.getIfPresent(new String("key1"));  // → null，因为不是同一个引�
 // 或者使用 Integer/Long 等享元模式的对象
 ```
 
-### 误区 3：在大对象场景下设置过大的 maximumSize
+### 7.7.3 误区 3：在大对象场景下设置过大的 maximumSize
 
 ```java
 // 错误：不考虑内存
@@ -1017,7 +1017,7 @@ public class TwoLevelCache<K, V> {
 
 ## 9.1 高频面试题
 
-### Q1：Caffeine 为什么比 Guava Cache 快？
+### 9.1.1 Q1：Caffeine 为什么比 Guava Cache 快？
 
 **核心要点**：
 1. W-TinyLFU 替代 LRU，有更高的命中率，减少回源次数。
@@ -1025,34 +1025,34 @@ public class TwoLevelCache<K, V> {
 3. 惰性淘汰机制避免后台线程的竞争开销。
 4. 异步加载支持 CompletableFuture，更好地利用多核。
 
-### Q2：W-TinyLFU 算法原理是什么？
+### 9.1.2 Q2：W-TinyLFU 算法原理是什么？
 
 1. **准入窗口**：1% 的 LRU 窗口，新数据先进来积累频率。
 2. **主空间**：99% 的 SLRU 分 Probation 和 Protected 区。
 3. **频率草图**：CountMin Sketch 以极低内存开销估算访问频率。
 4. **淘汰决策**：窗口驱逐 + 主空间尾部竞争，频率高者存活。
 
-### Q3：Caffeine 过期机制是如何实现的？
+### 9.1.3 Q3：Caffeine 过期机制是如何实现的？
 
 1. 默认没有后台打扫线程（可配置 Scheduler）。
 2. 读写操作时惰性检测并删除过期数据。
 3. 使用 O(1) 时间复杂度的哈希访问 + 双链表维护时间顺序。
 4. 过期时间存储在 Node 节点的 writeTime / accessTime 字段。
 
-### Q4：Caffeine 如何防止缓存击穿？
+### 9.1.4 Q4：Caffeine 如何防止缓存击穿？
 
 1. Cache.get(key, Function) 内部对同一 key 的并发加载做了同互斥（类似 Map.computeIfAbsent）。
 2. LoadingCache 的 get 方法会同步阻塞直到值加载完成。
 3. AsyncCache 返回 CompletableFuture，重复请求复用同一个 Future。
 
-### Q5：Caffeine 支持的淘汰策略有哪些？
+### 9.1.5 Q5：Caffeine 支持的淘汰策略有哪些？
 
 1. **大小淘汰**：maximumSize / maximumWeight
 2. **时间淘汰**：expireAfterWrite / expireAfterAccess / 自定义 Expiry
 3. **引用淘汰**：weakKeys / weakValues / softValues
 4. **手动淘汰**：invalidate / invalidateAll
 
-### Q6：Caffeine 的 recordStats 有哪些指标？
+### 9.1.6 Q6：Caffeine 的 recordStats 有哪些指标？
 
 - hitRate / missRate
 - loadCount / loadSuccessCount / loadFailureCount
@@ -1060,13 +1060,13 @@ public class TwoLevelCache<K, V> {
 - evictionCount / evictionWeight
 - requestCount
 
-### Q7：Caffeine 的 refreshAfterWrite 和 expireAfterWrite 的区别？
+### 9.1.7 Q7：Caffeine 的 refreshAfterWrite 和 expireAfterWrite 的区别？
 
 - refreshAfterWrite：到期后异步刷新，返回旧值（不会阻塞），但若数据已被 expireAfterWrite 淘汰则阻塞加载。
 - expireAfterWrite：到期后彻底删除，所有请求同步等待加载。
 - 推荐组合使用：expireAfterWrite 更长作为兜底，refreshAfterWrite 更短作为热刷新。
 
-### Q8：如何在 Spring Boot 中配置 Caffeine 缓存？
+### 9.1.8 Q8：如何在 Spring Boot 中配置 Caffeine 缓存？
 
 ```
 // Maven:
@@ -1077,14 +1077,14 @@ spring.cache.caffeine.spec=maximumSize=10000,expireAfterWrite=10m
 // @EnableCaching + @Cacheable
 ```
 
-### Q9：Caffeine 的软引用（softValues）使用场景？
+### 9.1.9 Q9：Caffeine 的软引用（softValues）使用场景？
 
 适用于堆内存较大且愿意以性能换内存的场景：
 - 允许 GC 回收不常用的缓存值以释放内存。
 - 适合缓存结果较大的对象（如大图片、大文件内容）。
 - 缺点是与垃圾回收器的交互增加了延迟。
 
-### Q10：Caffeine 和 Redis 如何配合使用？
+### 9.1.10 Q10：Caffeine 和 Redis 如何配合使用？
 
 两级缓存架构：
 - L1：Caffeine 本地缓存（微秒级，存储热点数据）。

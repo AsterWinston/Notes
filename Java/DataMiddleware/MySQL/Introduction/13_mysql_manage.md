@@ -1,8 +1,8 @@
-# 1.系统数据库
+# 1. 系统数据库
 
 MySQL 安装完成后内置了四个系统数据库：
 
-## 1.1mysql库
+## 1.1 mysql库
 
 存储 MySQL 服务器正常运行所需的**元数据**：
 
@@ -14,7 +14,7 @@ MySQL 安装完成后内置了四个系统数据库：
 | 事件调度器 | `event` |
 | 复制信息 | `slave_master_info`、`slave_relay_log_info`（主从复制） |
 
-## 1.2information_schema库
+## 1.2 information_schema库
 
 提供对数据库**元数据**的只读访问（符合 SQL 标准），包含数据库、表、字段、索引、权限等所有对象的定义信息：
 
@@ -42,7 +42,7 @@ GROUP BY table_schema;
 
 > **注意**：InnoDB 的 `information_schema` 统计信息可能是估算值（采样计算），不是精确值。执行 `ANALYZE TABLE` 可更新统计信息。
 
-## 1.3performance_schema库
+## 1.3 performance_schema库
 
 用于收集数据库**运行时性能数据**，提供底层监控能力。MySQL 5.7 后默认开启。
 
@@ -66,7 +66,7 @@ SELECT * FROM performance_schema.threads;
 
 > `performance_schema` 会消耗额外内存（约 1-2 GB 用于大实例），但相比其提供的诊断能力，这代价完全值得。
 
-## 1.4sys库（MySQL 5.7+）
+## 1.4 sys库（MySQL 5.7+）
 
 基于 `performance_schema` 和 `information_schema` 的**视图集合**，提供更易读的性能诊断信息：
 
@@ -90,9 +90,9 @@ SELECT * FROM sys.innodb_lock_waits;
 SELECT * FROM sys.processlist;
 ```
 
-# 2.常用管理工具
+# 2. 常用管理工具
 
-## 2.1mysql——命令行客户端
+## 2.1 mysql——命令行客户端
 
 ```bash
 # 连接数据库
@@ -114,7 +114,7 @@ mysql -u root -p -e "SELECT * FROM user" -E  # 垂直显示
 mysql -u root -p -e "SELECT * FROM user" -t  # 表格显示
 ```
 
-## 2.2mysqladmin——管理工具
+## 2.2 mysqladmin——管理工具
 
 ```bash
 # 查看服务器状态
@@ -139,7 +139,7 @@ mysqladmin -u root -p flush-logs
 mysqladmin -u root -p ping
 ```
 
-## 2.3mysqlbinlog——二进制日志工具
+## 2.3 mysqlbinlog——二进制日志工具
 
 ```bash
 # 查看 binlog 内容
@@ -160,7 +160,7 @@ mysqlbinlog --start-position=1000 --stop-position=2000 /var/lib/mysql/binlog.000
 mysqlbinlog /var/lib/mysql/binlog.000001 | mysql -u root -p
 ```
 
-## 2.4mysqlshow——显示数据库对象
+## 2.4 mysqlshow——显示数据库对象
 
 ```bash
 # 查看所有数据库
@@ -176,7 +176,7 @@ mysqlshow -u root -p mydb user
 mysqlshow -u root -p --status mydb user
 ```
 
-## 2.5mysqldump——逻辑备份工具
+## 2.5 mysqldump——逻辑备份工具
 
 mysqldump 是 MySQL 最常用的逻辑备份工具，将数据库导出为 SQL 文本文件。
 
@@ -219,7 +219,7 @@ mysql -u root -p mydb < mydb_backup.sql
 
 > **大表备份**：对于 TB 级别的数据库，mysqldump 速度慢且影响性能，应使用物理备份工具（**Percona XtraBackup**、MySQL Enterprise Backup）。
 
-## 2.6mysqlimport / LOAD DATA——数据导入
+## 2.6 mysqlimport / LOAD DATA——数据导入
 
 ```sql
 -- mysqlimport 命令行工具
@@ -236,9 +236,9 @@ IGNORE 1 ROWS                        -- 跳过 CSV 表头
 SET age = IF(@age = '', 0, @age);    -- 处理空值
 ```
 
-# 3.用户与权限管理
+# 3. 用户与权限管理
 
-## 3.1用户管理
+## 3.1 用户管理
 
 ```sql
 -- 创建用户（MySQL 8.0 必须显式 CREATE USER）
@@ -263,7 +263,7 @@ ALTER USER 'app_user'@'%' PASSWORD EXPIRE INTERVAL 90 DAY;  -- 每 90 天过期
 ALTER USER 'app_user'@'%' PASSWORD EXPIRE NEVER;             -- 永不过期
 ```
 
-## 3.2权限管理
+## 3.2 权限管理
 
 ```sql
 -- 授予权限
@@ -291,7 +291,7 @@ REVOKE ALL PRIVILEGES ON mydb.* FROM 'app_user'@'%';
 | 列 | `GRANT SELECT(id, name) ON mydb.user TO ...` | 指定表的具体列 |
 | 存储过程 | `GRANT EXECUTE ON PROCEDURE mydb.proc TO ...` | 指定存储过程 |
 
-## 3.3角色管理（MySQL 8.0）
+## 3.3 角色管理（MySQL 8.0）
 
 MySQL 8.0 引入了**角色（Role）**，类似用户组的权限集合，可简化权限管理：
 
@@ -315,9 +315,9 @@ SET DEFAULT ROLE ALL TO 'app_user'@'%';
 SELECT * FROM mysql.role_edges;
 ```
 
-# 4.日常监控与维护
+# 4. 日常监控与维护
 
-## 4.1关键监控指标
+## 4.1 关键监控指标
 
 ```sql
 -- 连接数
@@ -347,7 +347,7 @@ SHOW FULL PROCESSLIST;
 SELECT * FROM information_schema.PROCESSLIST;
 ```
 
-## 4.2查看数据库大小
+## 4.2 查看数据库大小
 
 ```sql
 -- 所有数据库大小
@@ -369,7 +369,7 @@ WHERE table_schema = 'mydb'
 ORDER BY data_length DESC;
 ```
 
-## 4.3查看连接状态
+## 4.3 查看连接状态
 
 ```sql
 -- 按状态分组统计连接
@@ -389,7 +389,7 @@ KILL CONNECTION 123;    -- 断开连接
 KILL QUERY 123;         -- 仅终止当前查询，保留连接
 ```
 
-## 4.4表维护
+## 4.4 表维护
 
 ```sql
 -- 分析表（更新索引统计信息，优化器决策依据）
@@ -411,7 +411,7 @@ REPAIR TABLE user;
 > - 每周 `ANALYZE TABLE` 更新统计信息，保证优化器决策准确
 > - `OPTIMIZE TABLE` 会锁表，大表请用 `pt-online-schema-change`
 
-## 4.5InnoDB状态查询
+## 4.5 InnoDB状态查询
 
 ```sql
 -- 查看 InnoDB 引擎详细信息
@@ -425,7 +425,7 @@ SHOW ENGINE INNODB STATUS\G;
 -- LATEST DETECTED DEADLOCK：最近一次死锁信息
 ```
 
-## 4.6日志管理
+## 4.6 日志管理
 
 ```sql
 -- 刷新日志（关闭当前日志文件，创建新文件）

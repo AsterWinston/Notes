@@ -1,4 +1,4 @@
-# 1.约束概述
+# 1. 约束概述
 
 约束（Constraint）是作用于表中字段上的**规则**，用于限制存储在表中的数据，保证数据库中数据的**正确性、有效性和完整性**。
 
@@ -11,7 +11,7 @@
 
 > **设计争议**：是否应该在数据库层使用外键约束？互联网高并发场景下，往往**不使用物理外键**，而是由应用层保证数据一致性，原因：外键带来额外的锁开销和级联复杂性，在分库分表场景下更是无法使用。但在金融、ERP 等数据一致性要求极高的系统中，物理外键仍被广泛采用。
 
-# 2.非空约束（NOT NULL）
+# 2. 非空约束（NOT NULL）
 
 限制该字段的数据不能为 NULL。
 
@@ -28,7 +28,7 @@ CREATE TABLE user (
 - **ID 类字段必须 NOT NULL**：主键、外键、索引字段不应允许 NULL
 - **可选字段**：如 `email` 允许 NULL 表示"未填写"，但也可以使用空字符串 `''` 替代（需权衡：`''` 无法区分"未填写"和"填写了空字符串"）
 
-# 3.唯一约束（UNIQUE）
+# 3. 唯一约束（UNIQUE）
 
 保证该字段所有数据都是唯一、不重复的（允许 NULL，且多个 NULL 互不相同）。
 
@@ -48,7 +48,7 @@ ALTER TABLE user ADD UNIQUE INDEX uk_email_phone (email, phone);  -- 联合唯�
 
 **唯一约束与 NULL**：MySQL 中 UNIQUE 约束允许插入多个 NULL 值（认为 NULL 彼此不相等）。
 
-# 4.主键约束（PRIMARY KEY）
+# 4. 主键约束（PRIMARY KEY）
 
 主键是一行数据的**唯一标识**，要求非空且唯一。每张表有且仅有一个主键。
 
@@ -103,7 +103,7 @@ SELECT AUTO_INCREMENT FROM information_schema.tables
 WHERE table_schema = 'mydb' AND table_name = 'user';
 ```
 
-# 5.默认约束（DEFAULT）
+# 5. 默认约束（DEFAULT）
 
 保存数据时，如果未指定该字段的值，则采用默认值。
 
@@ -121,7 +121,7 @@ CREATE TABLE user (
 > - `ON UPDATE CURRENT_TIMESTAMP` 使字段在行更新时自动刷新为当前时间（非常适合 `update_time`）
 > - MySQL 5.6.5 之前一张表只能有一个 `CURRENT_TIMESTAMP` 列，之后无此限制
 
-# 6.检查约束（CHECK，8.0.16+）
+# 6. 检查约束（CHECK，8.0.16+）
 
 保证字段值满足指定条件。MySQL 8.0.16 开始真正支持 CHECK 约束（之前版本语法通过但被忽略）。
 
@@ -142,13 +142,13 @@ CREATE TABLE user (
 - 复杂业务规则（如"状态为已发货的订单不允许修改金额"）建议在应用层或触发器中处理
 - 生产环境避免过于复杂的正则表达式 CHECK，影响写入性能
 
-# 7.外键约束（FOREIGN KEY）
+# 7. 外键约束（FOREIGN KEY）
 
 外键用来让两张表的数据之间建立连接，保证数据的**一致性和完整性**。
 
-## 7.1添加外键
+## 7.1 添加外键
 
-### 建表时添加
+### 7.1.1 建表时添加
 
 ```sql
 CREATE TABLE department (
@@ -165,7 +165,7 @@ CREATE TABLE employee (
 ) ENGINE=InnoDB;
 ```
 
-### 后期添加
+### 7.1.2 后期添加
 
 ```sql
 ALTER TABLE employee
@@ -173,13 +173,13 @@ ADD CONSTRAINT fk_emp_dept
 FOREIGN KEY (dept_id) REFERENCES department(id);
 ```
 
-### 删除外键
+### 7.1.3 删除外键
 
 ```sql
 ALTER TABLE employee DROP FOREIGN KEY fk_emp_dept;
 ```
 
-## 7.2删除/更新行为（级联策略）
+## 7.2 删除/更新行为（级联策略）
 
 当父表（被引用表）的记录发生删除或更新时，子表的外键数据如何处理：
 
@@ -205,7 +205,7 @@ FOREIGN KEY (dept_id) REFERENCES department(id)
 ON DELETE SET NULL ON UPDATE CASCADE;
 ```
 
-## 7.3外键的使用建议
+## 7.3 外键的使用建议
 
 **使用外键的场景**：
 - 数据一致性要求极高的系统（金融、ERP）
@@ -220,7 +220,7 @@ ON DELETE SET NULL ON UPDATE CASCADE;
 
 > **行业实践**：大多数互联网公司不使用物理外键，而是通过**应用层代码**维护数据一致性。外键关系通过数据字典/ER 图记录，代码 review 时关注关联数据的操作完整性。DBA 也会定期扫描"孤儿数据"（orphan data）来发现 BUG。
 
-# 8.约束管理
+# 8. 约束管理
 
 ```sql
 -- 查看表的约束信息

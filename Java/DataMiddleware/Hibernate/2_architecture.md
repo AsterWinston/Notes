@@ -42,7 +42,7 @@ Hibernate 采用了经典的分层架构设计，从上到下依次划分为五�
 
 ## 1.2 核心架构图
 
-### 组件关系总览
+### 1.2.1 组件关系总览
 
 ```
                      ┌──────────────┐
@@ -70,7 +70,7 @@ Hibernate 采用了经典的分层架构设计，从上到下依次划分为五�
           └──────────────┘  └───────────────┘
 ```
 
-### 数据流
+### 1.2.2 数据流
 
 应用代码通过 Session API 发起持久化操作，经过拦截器/事件系统拦截后，进入映射层将实体状态变更转换为 SQL 语句，再经 Dialect 方言适配后，通过 JDBC 驱动执行 SQL 并返回结果：
 
@@ -79,7 +79,7 @@ Hibernate 采用了经典的分层架构设计，从上到下依次划分为五�
 → SQL Generation (Dialect) → JDBC → Database
 ```
 
-### 请求处理完整链路
+### 1.2.3 请求处理完整链路
 
 以 `session.persist(entity)` 为例，一条持久化请求在 Hibernate 内部的完整处理链路如下：
 
@@ -102,13 +102,13 @@ Hibernate 采用了经典的分层架构设计，从上到下依次划分为五�
 
 ## 2.1 Configuration
 
-### 职责
+### 2.1.1 职责
 
 `Configuration` 是 Hibernate 传统的配置引导类（Hibernate 5 及之前版本的主入口），负责加载和解析映射配置（`hibernate.cfg.xml`、`*.hbm.xml` 或注解类），并最终构建 `SessionFactory`。
 
 从 Hibernate 5 开始，推荐使用 `MetadataSources` 替代 `Configuration`，但 `Configuration` 仍然可用。
 
-### configure() 方法
+### 2.1.2 configure() 方法
 
 ```java
 // 加载类路径下的 hibernate.cfg.xml
@@ -126,7 +126,7 @@ Configuration cfg = new Configuration()
     .setProperty("hibernate.show_sql", "true");
 ```
 
-### addAnnotatedClass() / addPackage()
+### 2.1.3 addAnnotatedClass() / addPackage()
 
 ```java
 Configuration cfg = new Configuration()
@@ -136,7 +136,7 @@ Configuration cfg = new Configuration()
     .configure();
 ```
 
-### 从 XML 加载配置的流程
+### 2.1.4 从 XML 加载配置的流程
 
 1. 解析 `hibernate.cfg.xml` 中的 `<session-factory>` 节点
 2. 提取所有 `<property>` 属性键值对
@@ -144,7 +144,7 @@ Configuration cfg = new Configuration()
 4. 解析每个 `*.hbm.xml` 映射文件，构建 `PersistentClass` 模型
 5. 合并编程方式设置的属性
 
-### 属性合并策略
+### 2.1.5 属性合并策略
 
 属性优先级从高到低：
 
@@ -155,7 +155,7 @@ Configuration cfg = new Configuration()
 | 3 | `hibernate.cfg.xml` | XML 配置文件 |
 | 4 (最低) | Hibernate 默认值 | 框架内置默认值 |
 
-### 配置验证阶段
+### 2.1.6 配置验证阶段
 
 在 `buildSessionFactory()` 调用时，`Configuration` 会执行以下验证：
 
@@ -167,11 +167,11 @@ Configuration cfg = new Configuration()
 
 ## 2.2 StandardServiceRegistry / ServiceRegistry
 
-### 服务注册中心概念
+### 2.2.1 服务注册中心概念
 
 `ServiceRegistry` 是 Hibernate 的服务定位器（Service Locator），负责管理和发现框架内部的各种服务组件（如连接提供者、事务工厂、JDBC 服务、方言解析器等）。它替代了早期版本中直接依赖具体实现类的硬编码方式，实现了松耦合和可扩展性。
 
-### 层次结构
+### 2.2.2 层次结构
 
 ```
 BootstrapServiceRegistry（引导服务注册中心）
@@ -193,7 +193,7 @@ BootstrapServiceRegistry（引导服务注册中心）
                     └── ...
 ```
 
-### StandardServiceRegistryBuilder 用法
+### 2.2.3 StandardServiceRegistryBuilder 用法
 
 ```java
 StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -204,7 +204,7 @@ StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
     .build();
 ```
 
-### 服务发现机制
+### 2.2.4 服务发现机制
 
 Hibernate 使用 Java 标准 `java.util.ServiceLoader` 机制发现扩展服务实现：
 
@@ -223,7 +223,7 @@ for (Integrator integrator : loader) {
 }
 ```
 
-### 关键内置服务
+### 2.2.5 关键内置服务
 
 | 服务接口 | 默认实现 | 职责 |
 |----------|----------|------|
@@ -234,7 +234,7 @@ for (Integrator integrator : loader) {
 | `CachingService` | `CachingServiceImpl` | 二级缓存管理 |
 | `BatchBuilder` | `BatchBuilderImpl` | JDBC 批处理 |
 
-### 自定义服务注册
+### 2.2.6 自定义服务注册
 
 ```java
 public class MyCustomService implements Service {
@@ -247,7 +247,7 @@ StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
     .build();
 ```
 
-### 服务的延迟初始化与生命周期管理
+### 2.2.7 服务的延迟初始化与生命周期管理
 
 Hibernate 中的服务采用延迟初始化策略（Lazy Init）。`ServiceRegistry` 不会在构建时立刻初始化所有服务，而是在首次使用时才创建服务实例。服务实现接口 `org.hibernate.service.Service`，其生命周期方法包括：
 
@@ -259,7 +259,7 @@ Hibernate 中的服务采用延迟初始化策略（Lazy Init）。`ServiceRegis
 
 ## 2.3 Metadata / MetadataSources
 
-### MetadataSources 替代 Configuration 的原因
+### 2.3.1 MetadataSources 替代 Configuration 的原因
 
 `MetadataSources` 是 Hibernate 5 引入的引导 API，相比传统的 `Configuration` 有显著改进：
 
@@ -268,7 +268,7 @@ Hibernate 中的服务采用延迟初始化策略（Lazy Init）。`ServiceRegis
 - **扩展性**：通过 `MetadataBuilder` 可以更细粒度控制元数据构建过程
 - **解耦**：`Metadata` 的构建独立于 `SessionFactory` 的创建
 
-### Metadata 包含的信息
+### 2.3.2 Metadata 包含的信息
 
 | 信息类别 | 说明 |
 |----------|------|
@@ -281,7 +281,7 @@ Hibernate 中的服务采用延迟初始化策略（Lazy Init）。`ServiceRegis
 | 继承策略 | `@Inheritance(strategy = ...)` 配置 |
 | 命名策略结果 | 应用 `ImplicitNamingStrategy` 和 `PhysicalNamingStrategy` 后的最终名称 |
 
-### MetadataImplementor 内部实现
+### 2.3.3 MetadataImplementor 内部实现
 
 `MetadataImplementor` 是 `Metadata` 的内部扩展接口，增加了运行时所需的方法：
 
@@ -297,7 +297,7 @@ public interface MetadataImplementor extends Metadata {
 }
 ```
 
-### InFlightMetadataCollector - 元数据收集过程
+### 2.3.4 InFlightMetadataCollector - 元数据收集过程
 
 在 `MetadataBuilder.build()` 阶段，Hibernate 使用 `InFlightMetadataCollector` 逐步收集元数据：
 
@@ -306,7 +306,7 @@ public interface MetadataImplementor extends Metadata {
 3. **验证阶段**：检查实体映射的完整性（必须有主键、关联类型匹配等）
 4. **完成阶段**：`InFlightMetadataCollector` 被冻结为不可变的 `Metadata`
 
-### MetadataBuilder 配置选项
+### 2.3.5 MetadataBuilder 配置选项
 
 ```java
 Metadata metadata = new MetadataSources(serviceRegistry)
@@ -321,7 +321,7 @@ Metadata metadata = new MetadataSources(serviceRegistry)
     .build();
 ```
 
-### 启动流程（Hibernate 5+）
+### 2.3.6 启动流程（Hibernate 5+）
 
 ```
 MetadataSources → MetadataBuilder → Metadata → SessionFactoryBuilder → SessionFactory
@@ -352,7 +352,7 @@ SessionFactory sessionFactory = metadata
 
 ## 2.4 SessionFactory
 
-### 线程安全与不可变性
+### 2.4.1 线程安全与不可变性
 
 `SessionFactory` 是 Hibernate 中最重要的对象之一，具有以下特征：
 
@@ -361,7 +361,7 @@ SessionFactory sessionFactory = metadata
 - **创建成本高**：构建过程需要解析所有映射、初始化缓存、建立连接池等，耗时较长
 - **通常为单例**：一个应用通常只为每个数据库创建一个 `SessionFactory` 实例
 
-### 内部结构
+### 2.4.2 内部结构
 
 ```
 SessionFactory
@@ -382,7 +382,7 @@ SessionFactory
 └── SessionFactoryServiceRegistry
 ```
 
-### SessionFactoryImplementor 内部接口
+### 2.4.3 SessionFactoryImplementor 内部接口
 
 ```java
 public interface SessionFactoryImplementor 
@@ -396,7 +396,7 @@ public interface SessionFactoryImplementor
 }
 ```
 
-### getCurrentSession() vs openSession()
+### 2.4.4 getCurrentSession() vs openSession()
 
 | 特性 | `getCurrentSession()` | `openSession()` |
 |------|----------------------|-----------------|
@@ -423,7 +423,7 @@ try {
 }
 ```
 
-### 获取统计信息
+### 2.4.5 获取统计信息
 
 ```java
 SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
@@ -436,13 +436,13 @@ long hitCount = statistics.getSecondLevelCacheHitCount();
 long missCount = statistics.getSecondLevelCacheMissCount();
 ```
 
-### SessionFactory 销毁与资源释放
+### 2.4.6 SessionFactory 销毁与资源释放
 
 ```java
 sessionFactory.close();  // 释放所有资源、关闭连接池、清理缓存
 ```
 
-### SessionFactory 与 JPA EntityManagerFactory 的关系
+### 2.4.7 SessionFactory 与 JPA EntityManagerFactory 的关系
 
 Hibernate 的 `SessionFactory` 实现了 JPA 的 `EntityManagerFactory` 接口（通过 `SessionFactoryImplementor`）。因此 Hibernate 可以同时作为 Hibernate Native API 和 JPA 标准的实现提供者：
 
@@ -462,11 +462,11 @@ Session session = ((SessionFactory) emf).openSession();
 
 ## 2.5 Session
 
-### Session 不是线程安全的（绑定到线程）
+### 2.5.1 Session 不是线程安全的（绑定到线程）
 
 `Session` 是非线程安全的，设计上应绑定到当前线程使用（通常通过 `ThreadLocal` 或事务上下文绑定）。多个线程不能同时操作同一个 `Session` 实例，否则会导致数据错乱或并发异常。
 
-### Session 作为一级缓存（持久化上下文）
+### 2.5.2 Session 作为一级缓存（持久化上下文）
 
 `Session` 维护了一个持久化上下文（PersistenceContext），作为一级缓存：
 
@@ -481,7 +481,7 @@ User user2 = session.get(User.class, 1L);  // 不发送 SQL，直接从一级缓
 System.out.println(user1 == user2);         // true，同一引用
 ```
 
-### Session 内部结构
+### 2.5.3 Session 内部结构
 
 ```
 SessionImpl (SessionImplementor)
@@ -503,7 +503,7 @@ SessionImpl (SessionImplementor)
     └── LogicalConnection  —— 逻辑连接句柄
 ```
 
-### SessionImplementor 内部接口
+### 2.5.4 SessionImplementor 内部接口
 
 ```java
 public interface SessionImplementor extends Session {
@@ -516,7 +516,7 @@ public interface SessionImplementor extends Session {
 }
 ```
 
-### openSession() 内部流程详解
+### 2.5.5 openSession() 内部流程详解
 
 ```
 SessionFactoryImpl.openSession()
@@ -531,7 +531,7 @@ SessionFactoryImpl.openSession()
     └── 8. 返回 Session
 ```
 
-### Session 关闭后的状态
+### 2.5.6 Session 关闭后的状态
 
 调用 `session.close()` 后，Session 进入不可用状态：
 
@@ -540,7 +540,7 @@ SessionFactoryImpl.openSession()
 - 所有持久化对象变为脱管（detached）状态
 - 任何后续操作都会抛出 `SessionException("Session is closed!")`
 
-### Session 与数据库连接的关系（延迟获取连接）
+### 2.5.7 Session 与数据库连接的关系（延迟获取连接）
 
 Hibernate 不会在 `openSession()` 时立即从连接池获取 JDBC 连接，而是采用延迟获取策略：
 
@@ -551,7 +551,7 @@ Hibernate 不会在 `openSession()` 时立即从连接池获取 JDBC 连接，�
 
 ## 2.6 Transaction
 
-### 抽象事务接口
+### 2.6.1 抽象事务接口
 
 Hibernate 的 `Transaction` 接口（`org.hibernate.Transaction`）提供了统一的事务抽象，屏蔽底层 JDBC 本地事务与 JTA 分布式事务的差异。
 
@@ -571,7 +571,7 @@ public interface Transaction {
 }
 ```
 
-### JdbcResourceLocalTransactionCoordinator（JDBC 本地事务）
+### 2.6.2 JdbcResourceLocalTransactionCoordinator（JDBC 本地事务）
 
 `JdbcResourceLocalTransactionCoordinator` 封装了 JDBC 原生的 `Connection.commit()` / `Connection.rollback()`，适用于单数据库场景：
 
@@ -593,7 +593,7 @@ try {
 }
 ```
 
-### JtaTransactionCoordinator（JTA 分布式事务）
+### 2.6.3 JtaTransactionCoordinator（JTA 分布式事务）
 
 `JtaTransactionCoordinator` 集成了 JTA 事务管理器（如 JBoss、WebLogic、Atomikos、Bitronix），适用于跨多个数据源/消息队列的分布式事务场景：
 
@@ -612,7 +612,7 @@ session.persist(new User("张三"));
 // 事务边界由 EJB/JTA 容器决定
 ```
 
-### Transaction 的生命周期
+### 2.6.4 Transaction 的生命周期
 
 ```
 NOT_ACTIVE ──begin()──► ACTIVE ──commit()/rollback()──► NOT_ACTIVE
@@ -622,14 +622,14 @@ NOT_ACTIVE ──begin()──► ACTIVE ──commit()/rollback()──► NOT_
 - `commit()` - 触发 flush，提交 JDBC 连接，释放资源
 - `rollback()` - 回滚 JDBC 连接上的所有变更，释放资源
 
-### 事务超时控制
+### 2.6.5 事务超时控制
 
 ```java
 Transaction tx = session.beginTransaction();
 tx.setTimeout(30);  // 30 秒超时，超过则自动回滚
 ```
 
-### 回滚标记
+### 2.6.6 回滚标记
 
 ```java
 try {
@@ -645,7 +645,7 @@ try {
 }
 ```
 
-### 保存点（Savepoint）支持
+### 2.6.7 保存点（Savepoint）支持
 
 Hibernate 支持 JDBC 3.0 规范中的保存点特性，允许在事务内设置回滚断点：
 
@@ -670,7 +670,7 @@ session.close();
 
 ## 2.7 Query / TypedQuery
 
-### org.hibernate.query.Query 接口体系
+### 2.7.1 org.hibernate.query.Query 接口体系
 
 ```
 Query<R>（Hibernate 原生接口，继承 JPA TypedQuery & Query）
@@ -682,7 +682,7 @@ Query<R>（Hibernate 原生接口，继承 JPA TypedQuery & Query）
 └── ScrollableResults<R>  —— 可滚动结果集
 ```
 
-### Query 创建方式
+### 2.7.2 Query 创建方式
 
 ```java
 // 1. HQL/JPQL 查询
@@ -705,7 +705,7 @@ NativeQuery<User> namedNativeQuery = session.createNamedNativeQuery(
     "User.findByAgeNative", User.class);
 ```
 
-### TypedQuery 泛型支持（JPA）
+### 2.7.3 TypedQuery 泛型支持（JPA）
 
 ```java
 TypedQuery<User> typedQuery = session.createQuery(
@@ -717,7 +717,7 @@ Query legacyQuery = session.createQuery("from User where age > :age");
 List rawList = legacyQuery.list();   // 无类型安全，需手动转型
 ```
 
-### Query 接口常用方法
+### 2.7.4 Query 接口常用方法
 
 ```java
 Query<User> query = session.createQuery("from User where age > :minAge", User.class);
@@ -745,7 +745,7 @@ query.setFlushMode(FlushModeType.AUTO);
 query.setHint("javax.persistence.query.timeout", 5000); // 5秒
 ```
 
-### QueryProducer 接口
+### 2.7.5 QueryProducer 接口
 
 `Session` 实现了 `QueryProducer` 接口，提供了统一的查询创建入口：
 
@@ -758,7 +758,7 @@ public interface QueryProducer {
 }
 ```
 
-### ScrollableResults（可滚动结果集）
+### 2.7.6 ScrollableResults（可滚动结果集）
 
 ```java
 ScrollableResults<User> scroll = session.createQuery(
@@ -774,7 +774,7 @@ while (scroll.next()) {
 scroll.close();
 ```
 
-### Query 的流式处理
+### 2.7.7 Query 的流式处理
 
 ```java
 // Java 8 Stream 流式处理
@@ -787,7 +787,7 @@ try (Stream<User> stream = session.createQuery(
 }
 ```
 
-### MutationQuery 批量操作接口（Hibernate 6）
+### 2.7.8 MutationQuery 批量操作接口（Hibernate 6）
 
 Hibernate 6 将更新/删除操作独立为 `MutationQuery` 接口：
 
@@ -808,7 +808,7 @@ int deleted = session.createMutationQuery(
 
 ## 2.8 CriteriaBuilder / CriteriaQuery（JPA Criteria API）
 
-### 类型安全的查询构建
+### 2.8.1 类型安全的查询构建
 
 JPA Criteria API 提供了一种纯面向对象、编译期类型安全的查询构建方式，避免了字符串拼接 HQL 容易出错的问题。
 
@@ -833,7 +833,7 @@ TypedQuery<User> query = em.createQuery(cq);
 List<User> result = query.getResultList();
 ```
 
-### 与 Hibernate Criteria（已废弃）的区别
+### 2.8.2 与 Hibernate Criteria（已废弃）的区别
 
 | 特性 | JPA Criteria API | Hibernate Criteria (deprecated) |
 |------|-------------------|--------------------------------|
@@ -843,7 +843,7 @@ List<User> result = query.getResultList();
 | 状态 | 当前推荐 | Hibernate 5 废弃，6 移除 |
 | 关联获取 | `root.fetch("orders", JoinType.LEFT)` | `criteria.setFetchMode("orders", FetchMode.JOIN)` |
 
-### 静态元模型（Static Metamodel）配合使用
+### 2.8.3 静态元模型（Static Metamodel）配合使用
 
 通过 Hibernate JPA 元模型生成器（`hibernate-jpamodelgen`）生成静态元模型类，实现完全类型安全的查询：
 
@@ -871,7 +871,7 @@ cq.where(cb.gt(root.get(User_.age), 18));   // ✅ 编译通过
 
 ## 3.1 工厂模式
 
-### SessionFactory 作为 Session 的工厂（Abstract Factory）
+### 3.1.1 SessionFactory 作为 Session 的工厂（Abstract Factory）
 
 `SessionFactory` 是典型的抽象工厂模式实现——它为创建一系列相关的 `Session` 对象提供了统一接口，而不需要指定具体的实现类。客户端只需要使用 `SessionFactory` 接口，底层返回的是 `SessionImpl` 实现。
 
@@ -888,7 +888,7 @@ Session session3 = factory.withOptions()
     .openSession();                                // 带选项的 Session
 ```
 
-### SessionFactoryBuilder 作为 SessionFactory 的 Builder
+### 3.1.2 SessionFactoryBuilder 作为 SessionFactory 的 Builder
 
 `SessionFactoryBuilder` 实现了 Builder 模式，逐步构建复杂的 `SessionFactory` 对象：
 
@@ -909,7 +909,7 @@ Builder 模式的优势：
 
 ## 3.2 代理模式
 
-### 懒加载代理对象（Javassist/ByteBuddy 生成）
+### 3.2.1 懒加载代理对象（Javassist/ByteBuddy 生成）
 
 Hibernate 通过字节码增强库（早期 Javassist，Hibernate 5.3+ 默认 ByteBuddy）在运行时生成实体类的代理子类，实现懒加载：
 
@@ -939,7 +939,7 @@ public class User$HibernateProxy$xyz extends User implements HibernateProxy {
 }
 ```
 
-### 代理拦截原理
+### 3.2.2 代理拦截原理
 
 ```
 应用代码: user.getOrders()
@@ -960,7 +960,7 @@ public class User$HibernateProxy$xyz extends User implements HibernateProxy {
     └── 返回 orders 值
 ```
 
-### HibernateProxy 接口
+### 3.2.3 HibernateProxy 接口
 
 ```java
 public interface HibernateProxy {
@@ -977,7 +977,7 @@ public interface LazyInitializer {
 }
 ```
 
-### 代理与继承关系
+### 3.2.4 代理与继承关系
 
 Hibernate 代理要求实体类满足以下条件：
 
@@ -1004,7 +1004,7 @@ public class Order {  // ✅ 非 final，可以被继承
 
 ## 3.3 拦截器/观察者模式
 
-### Interceptor 接口
+### 3.3.1 Interceptor 接口
 
 `org.hibernate.Interceptor` 允许在 CRUD 操作前后插入自定义逻辑（如审计日志、权限检查、数据加密等）：
 
@@ -1058,7 +1058,7 @@ public class AuditInterceptor implements Interceptor {
 }
 ```
 
-### Event/Listener 系统架构
+### 3.3.2 Event/Listener 系统架构
 
 相比 `Interceptor`，Event/Listener 系统更细粒度、更灵活，是 Hibernate 内部使用的主要扩展机制：
 
@@ -1076,7 +1076,7 @@ public class AuditInterceptor implements Interceptor {
  Group 1    Group 2    Group 3
 ```
 
-### 事件类型枚举与对应监听器接口
+### 3.3.3 事件类型枚举与对应监听器接口
 
 | 事件类型 | 监听器接口 | 触发时机 |
 |----------|------------|----------|
@@ -1093,7 +1093,7 @@ public class AuditInterceptor implements Interceptor {
 | `PostCommitUpdateEvent` | `PostUpdateEventListener` | 事务提交后 |
 | `PostCommitDeleteEvent` | `PostDeleteEventListener` | 事务提交后 |
 
-### 事件注册与分发流程
+### 3.3.4 事件注册与分发流程
 
 ```java
 // 自定义事件监听器
@@ -1132,7 +1132,7 @@ public class MyIntegrator implements Integrator {
 
 策略模式在 Hibernate 中广泛应用，允许在运行时替换具体行为，实现可插拔架构。
 
-### Dialect（数据库方言）
+### 3.4.1 Dialect（数据库方言）
 
 不同数据库的 SQL 语法、分页方式、序列获取等各不相同，`Dialect` 将这些差异封装为可替换的策略：
 
@@ -1145,7 +1145,7 @@ StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
 // Hibernate 根据 JDBC 元数据自动选择匹配的 Dialect
 ```
 
-### IdentifierGenerator（主键生成策略）
+### 3.4.2 IdentifierGenerator（主键生成策略）
 
 不同实体可以使用不同的主键生成策略：
 
@@ -1174,7 +1174,7 @@ public class AuditLog {
 }
 ```
 
-### CacheProvider（缓存提供者）
+### 3.4.3 CacheProvider（缓存提供者）
 
 ```java
 // EHCache 策略
@@ -1190,7 +1190,7 @@ hibernate.cache.region.factory_class=org.hibernate.cache.infinispan.InfinispanRe
 hibernate.cache.region.factory_class=org.hibernate.cache.hazelcast.HazelcastCacheRegionFactory
 ```
 
-### ConnectionProvider（连接提供者）
+### 3.4.4 ConnectionProvider（连接提供者）
 
 ```java
 // HikariCP 连接池策略
@@ -1203,7 +1203,7 @@ hibernate.connection.provider_class=org.hibernate.c3p0.internal.C3P0ConnectionPr
 hibernate.connection.datasource=java:comp/env/jdbc/MyDS
 ```
 
-### BatchBuilder（批处理策略）
+### 3.4.5 BatchBuilder（批处理策略）
 
 ```java
 // 启用 JDBC 批处理
@@ -1215,7 +1215,7 @@ hibernate.order_updates=true
 
 ## 3.5 装饰器模式
 
-### Session 的装饰器链
+### 3.5.1 Session 的装饰器链
 
 Hibernate 允许通过装饰器模式在 Session 上动态附加行为（如拦截器、统计收集等）：
 
@@ -1223,7 +1223,7 @@ Hibernate 允许通过装饰器模式在 Session 上动态附加行为（如拦�
 调用链: Client → SessionWrapper → SessionWrapper → SessionImpl → JDBC
 ```
 
-### SessionWrapper / SessionDelegatorBaseImpl
+### 3.5.2 SessionWrapper / SessionDelegatorBaseImpl
 
 `org.hibernate.Session` 被设计为可以包装的接口，`SessionDelegatorBaseImpl` 提供了默认的委托实现：
 
@@ -1249,7 +1249,7 @@ Session rawSession = sessionFactory.openSession();
 Session decoratedSession = new CustomSession((SessionImplementor) rawSession);
 ```
 
-### 拦截器如何包装 Session
+### 3.5.3 拦截器如何包装 Session
 
 当通过 `SessionFactory.withOptions().interceptor(interceptor).openSession()` 创建 Session 时，Hibernate 内部将拦截器织入 Session 的事件处理链：
 
@@ -1266,7 +1266,7 @@ Session session = sessionFactory.withOptions()
 
 ## 3.6 享元模式
 
-### 查询计划缓存（QueryPlanCache）
+### 3.6.1 查询计划缓存（QueryPlanCache）
 
 HQL/JPQL 查询的解析和 SQL 生成是计算密集型操作。通过享元模式，Hibernate 将查询计划（QueryPlan）缓存并共享：
 
@@ -1296,7 +1296,7 @@ public class QueryPlanCache {
 }
 ```
 
-### 类型元数据共享
+### 3.6.2 类型元数据共享
 
 实体类型的映射元数据（`EntityPersister`、`Type`）在 `SessionFactory` 级别共享，所有 `Session` 共享同一份，避免重复解析：
 
@@ -1317,7 +1317,7 @@ Session_B ──── 引用 ──► EntityPersister[User]  （同一对象�
 
 Hibernate 的启动过程是一个多阶段的初始化流水线，每一阶段完成特定的初始化任务：
 
-### 完整启动时序
+### 4.1.1 完整启动时序
 
 ```
 1. 引导阶段
@@ -1384,7 +1384,7 @@ Hibernate 的启动过程是一个多阶段的初始化流水线，每一阶段�
    │   └── 返回 SessionFactoryImpl（单例持有）
 ```
 
-### 命名策略示例
+### 4.1.2 命名策略示例
 
 ```java
 // 隐式命名策略：当未显式指定表名、列名时，如何生成默认名称
@@ -1408,7 +1408,7 @@ public class CustomPhysicalNamingStrategy extends PhysicalNamingStrategyStandard
 }
 ```
 
-### 映射验证示例
+### 4.1.3 映射验证示例
 
 启动时 Hibernate 会执行以下验证（如果 `hibernate.hbm2ddl.auto` 不为 `none`，可能创建或验证表结构）：
 
@@ -1427,7 +1427,7 @@ public class CustomPhysicalNamingStrategy extends PhysicalNamingStrategyStandard
 
 以 `session.persist(entity)` 为例，描述完整的请求处理流程：
 
-### 完整流程图
+### 4.2.1 完整流程图
 
 ```
 Client Code: session.persist(user)
@@ -1501,7 +1501,7 @@ SessionImpl.persist(...)
     └── 标记 Session 为已关闭
 ```
 
-### 关键环节代码示例
+### 4.2.2 关键环节代码示例
 
 ```java
 // 1. 获取 Session
@@ -1532,7 +1532,7 @@ session.close();
 
 ## 4.3 Flush 机制
 
-### FlushMode 枚举值
+### 4.3.1 FlushMode 枚举值
 
 | 模式 | 说明 |
 |------|------|
@@ -1541,7 +1541,7 @@ session.close();
 | `ALWAYS` | 每次查询前都强制 flush |
 | `MANUAL` | 完全手动控制，只在显式调用 `flush()` 时执行 |
 
-### 各模式下 Flush 触发时机
+### 4.3.2 各模式下 Flush 触发时机
 
 ```java
 // FlushMode.AUTO（默认）
@@ -1569,9 +1569,9 @@ for (int i = 0; i < 100; i++) {
 }
 ```
 
-### Flush 的内部步骤
+### 4.3.3 Flush 的内部步骤
 
-#### 步骤 1：收集脏实体
+**步骤 1：收集脏实体**
 
 ```java
 // 伪代码
@@ -1587,7 +1587,7 @@ for (EntityEntry entry : persistenceContext.reentrantSafeEntityEntries()) {
 }
 ```
 
-#### 步骤 2：确定 SQL 执行顺序
+**步骤 2：确定 SQL 执行顺序**
 
 ```
 1. EntityInsertAction         ← 最先执行（插入）
@@ -1603,7 +1603,7 @@ for (EntityEntry entry : persistenceContext.reentrantSafeEntityEntries()) {
 - 先 DELETE 子实体，再 DELETE 父实体（解除外键引用）
 - 集合操作在 DELETE 之前，避免了约束冲突
 
-#### 步骤 3：按外键依赖排序
+**步骤 3：按外键依赖排序**
 
 Hibernate 内部使用 `ActionSorter` 对 `ActionQueue` 中的操作按外键依赖关系进行拓扑排序：
 
@@ -1616,7 +1616,7 @@ public interface ActionSorter {
 }
 ```
 
-#### 步骤 4：预执行（Pre-insert）生成 ID
+**步骤 4：预执行（Pre-insert）生成 ID**
 
 在执行 INSERT SQL 之前，需要先生成主键值：
 
@@ -1627,7 +1627,7 @@ public interface ActionSorter {
 // ASSIGNED 策略 → 由应用代码赋值，Hibernate 不做处理
 ```
 
-#### 步骤 5：执行 SQL
+**步骤 5：执行 SQL**
 
 通过 JDBC 批处理（如果启用）执行 SQL：
 
@@ -1640,13 +1640,13 @@ for (EntityInsertAction action : sortedInsertions) {
 jdbcCoordinator.executeBatch();  // 一次性提交所有 INSERT
 ```
 
-#### 步骤 6：后处理（Post-commit 事件、清理）
+**步骤 6：后处理（Post-commit 事件、清理）**
 
 - 更新 `PersistenceContext` 中的快照（更新后的属性值变为新的 loaded state）
 - 触发 `PostFlushEvent` 和各 `PostCommitEvent`
 - 清理不再需要的 Action
 
-### ActionQueue 的结构与排序算法
+### 4.3.4 ActionQueue 的结构与排序算法
 
 ```
 ActionQueue
@@ -1664,7 +1664,7 @@ ActionQueue
 
 ## 5.1 JdbcServices
 
-### JdbcServices 接口职责
+### 5.1.1 JdbcServices 接口职责
 
 `JdbcServices` 是 Hibernate 与 JDBC 之间的核心抽象层，封装了所有与 JDBC 驱动直接交互的操作：
 
@@ -1677,7 +1677,7 @@ public interface JdbcServices extends Service {
 }
 ```
 
-### JdbcEnvironment（方言、SQL 类型映射）
+### 5.1.2 JdbcEnvironment（方言、SQL 类型映射）
 
 ```java
 public interface JdbcEnvironment {
@@ -1688,7 +1688,7 @@ public interface JdbcEnvironment {
 }
 ```
 
-### SqlStatementLogger
+### 5.1.3 SqlStatementLogger
 
 `SqlStatementLogger` 负责 SQL 日志的输出（由 `hibernate.show_sql` 控制）：
 
@@ -1709,7 +1709,7 @@ hibernate.use_sql_comments=true
         (?, ?, ?, ?)
 ```
 
-### JdbcCoordinator（逻辑连接管理）
+### 5.1.4 JdbcCoordinator（逻辑连接管理）
 
 `JdbcCoordinator` 管理逻辑连接（`LogicalConnection`），封装物理连接的获取与释放策略：
 
@@ -1726,7 +1726,7 @@ public interface JdbcCoordinator {
 
 ## 5.2 ConnectionProvider
 
-### 连接获取策略
+### 5.2.1 连接获取策略
 
 | 策略 | 实现类 | 说明 |
 |------|--------|------|
@@ -1736,7 +1736,7 @@ public interface JdbcCoordinator {
 | C3P0 | `C3P0ConnectionProvider` | 集成 C3P0 连接池 |
 | HikariCP | `HikariCPConnectionProvider` | 集成 HikariCP 连接池（推荐） |
 
-### DatasourceConnectionProvider（推荐）
+### 5.2.2 DatasourceConnectionProvider（推荐）
 
 ```java
 // hibernate.cfg.xml
@@ -1748,7 +1748,7 @@ StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
     .build();
 ```
 
-### 自定义 ConnectionProvider 实现
+### 5.2.3 自定义 ConnectionProvider 实现
 
 ```java
 public class MyConnectionProvider implements ConnectionProvider, Configurable {
@@ -1791,7 +1791,7 @@ public class MyConnectionProvider implements ConnectionProvider, Configurable {
 }
 ```
 
-### 连接释放与连接池配合
+### 5.2.4 连接释放与连接池配合
 
 Hibernate 的连接释放模式通过 `hibernate.connection.release_mode` 配置：
 
@@ -1807,7 +1807,7 @@ Hibernate 的连接释放模式通过 `hibernate.connection.release_mode` 配置
 
 ## 5.3 Dialect（方言）
 
-### Dialect 核心职责
+### 5.3.1 Dialect 核心职责
 
 | 职责 | 说明 |
 |------|------|
@@ -1818,7 +1818,7 @@ Hibernate 的连接释放模式通过 `hibernate.connection.release_mode` 配置
 | 函数注册 | `registerFunction(String name, SQLFunction function)` |
 | 锁策略 | `getForUpdateString()`, `getReadLockString()` |
 
-### 分页 SQL 方言差异
+### 5.3.2 分页 SQL 方言差异
 
 ```sql
 -- MySQL / PostgreSQL
@@ -1845,7 +1845,7 @@ SELECT TOP 20 * FROM t_user WHERE id NOT IN (
 SELECT * FROM t_user ORDER BY id OFFSET 0 ROWS FETCH NEXT 20 ROWS ONLY;
 ```
 
-### DialectResolver 自动检测机制
+### 5.3.3 DialectResolver 自动检测机制
 
 Hibernate 通过 `DialectResolver` 自动检测数据库类型，无需手工指定：
 
@@ -1862,7 +1862,7 @@ public class StandardDialectResolver implements DialectResolver {
 }
 ```
 
-### 常用方言列表
+### 5.3.4 常用方言列表
 
 | 数据库 | Hibernate 5 方言 | Hibernate 6 方言 |
 |--------|------------------|------------------|
@@ -1875,7 +1875,7 @@ public class StandardDialectResolver implements DialectResolver {
 | DB2 | `DB2Dialect` | `DB2Dialect` |
 | MariaDB 10.3+ | `MariaDB103Dialect` | `MariaDBDialect(10)` |
 
-### 自定义 Dialect
+### 5.3.5 自定义 Dialect
 
 ```java
 public class CustomMySQL8Dialect extends MySQL8Dialect {
@@ -1907,12 +1907,12 @@ public class CustomMySQL8Dialect extends MySQL8Dialect {
 }
 ```
 
-### Hibernate 5 vs 6 Dialect 变化
+### 5.3.6 Hibernate 5 vs 6 Dialect 变化
 
 - **Hibernate 5**：每个数据库大版本有独立的类，如 `MySQL5Dialect`, `MySQL55Dialect`, `MySQL57Dialect`, `MySQL8Dialect`
 - **Hibernate 6**：统一为一个类，通过构造函数传入版本号，如 `new MySQLDialect(8)`, `new MySQLDialect(5)`，减少了类爆炸
 
-### 多数据库适配时的 Dialect 自动选择原理
+### 5.3.7 多数据库适配时的 Dialect 自动选择原理
 
 ```
 Hibernate 启动
@@ -1934,7 +1934,7 @@ Hibernate 启动
 
 ## 6.1 Type 接口体系
 
-### org.hibernate.type.Type 顶层接口
+### 6.1.1 org.hibernate.type.Type 顶层接口
 
 ```java
 public interface Type extends Serializable {
@@ -1950,7 +1950,7 @@ public interface Type extends Serializable {
 }
 ```
 
-### Type 实现体系
+### 6.1.2 Type 实现体系
 
 ```
 Type（顶层接口）
@@ -1969,7 +1969,7 @@ Type（顶层接口）
 └── AnyType（多态类型 / @Any / @ManyToAny）
 ```
 
-### JavaTypeDescriptor + SqlTypeDescriptor 分离（Hibernate 6 重构）
+### 6.1.3 JavaTypeDescriptor + SqlTypeDescriptor 分离（Hibernate 6 重构）
 
 Hibernate 6 将 Type 拆分为两个独立维度，实现了更清晰的关注点分离：
 
@@ -1998,7 +1998,7 @@ public interface SqlTypeDescriptor {
 
 ## 6.2 类型解析流程
 
-### 注解扫描 → TypeResolver → Dialect → SQL
+### 6.2.1 注解扫描 → TypeResolver → Dialect → SQL
 
 ```
 实体属性 int age;
@@ -2018,7 +2018,7 @@ SQL 绑定: PreparedStatement.setInt(?, age)
 SQL 读取: ResultSet.getInt("age")
 ```
 
-### @Type 显式指定
+### 6.2.2 @Type 显式指定
 
 ```java
 // 使用已注册的类型名
@@ -2036,7 +2036,7 @@ private Map<String, Object> attributes;
 private Map<String, Object> attributes;
 ```
 
-### @Basic 对类型的影响
+### 6.2.3 @Basic 对类型的影响
 
 ```java
 @Basic(fetch = FetchType.LAZY)   // 属性懒加载（按需从数据库获取该列）
@@ -2053,7 +2053,7 @@ private String name;
 
 ## 6.3 自定义类型
 
-### UserType 接口（完全自定义）
+### 6.3.1 UserType 接口（完全自定义）
 
 实现 `UserType` 可以将任意 Java 类型映射到一个或多个 JDBC 列：
 
@@ -2143,7 +2143,7 @@ public class JsonType implements UserType<Map<String, Object>> {
 }
 ```
 
-### CompositeUserType（复合自定义类型）
+### 6.3.2 CompositeUserType（复合自定义类型）
 
 当一个 Java 类型需要映射到**多个数据库列**时，使用 `CompositeUserType`：
 
@@ -2227,7 +2227,7 @@ public class MoneyType implements CompositeUserType<Money> {
 }
 ```
 
-### EnhancedUserType（扩展 UserType，支持 XML 序列化）
+### 6.3.3 EnhancedUserType（扩展 UserType，支持 XML 序列化）
 
 `EnhancedUserType` 扩展了 `UserType`，额外支持在 `hbm.xml` 文件中以字符串形式配置值：
 
@@ -2239,7 +2239,7 @@ public interface EnhancedUserType<J> extends UserType<J> {
 }
 ```
 
-### ParameterizedType（支持参数化配置）
+### 6.3.4 ParameterizedType（支持参数化配置）
 
 `ParameterizedType` 允许在使用 `@Type` 时传递参数：
 
@@ -2262,7 +2262,7 @@ public class EncryptedStringType implements UserType<String>, ParameterizedType 
 }
 ```
 
-### 注册自定义类型
+### 6.3.5 注册自定义类型
 
 ```java
 // 方式一：通过 @TypeDef 在实体上注册

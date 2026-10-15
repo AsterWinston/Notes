@@ -352,7 +352,7 @@ public void test01() {
 
 # 4. 源码视角：Spring 内部如何应用工厂模式
 
-## 4.1. BeanFactory — 简单工厂模式的 Spring 实现
+## 4.1 BeanFactory — 简单工厂模式的 Spring 实现
 
 ```
 // BeanFactory 是最典型的简单工厂：
@@ -375,7 +375,7 @@ public interface BeanFactory {
 // 产品族：所有注册的 Bean 都是产品
 ```
 
-## 4.2. FactoryBean — 工厂方法模式的 Spring 实现
+## 4.2 FactoryBean — 工厂方法模式的 Spring 实现
 
 ```
 // FactoryBean 定义了 getObject() 工厂方法
@@ -401,7 +401,7 @@ PropertiesFactoryBean    → 工厂方法 getObject() → Properties
 // 具体产品：DefaultSqlSessionFactory（由 getObject() 内部创建）
 ```
 
-## 4.3. Spring 中 BeanFactory 和 FactoryBean 的协作
+## 4.3 Spring 中 BeanFactory 和 FactoryBean 的协作
 
 ```
 getBean("sqlSessionFactory") 的执行流程：
@@ -429,7 +429,7 @@ getBean("sqlSessionFactory") 的执行流程：
   - "&" 前缀告诉 Spring 不要调用 getObject()，直接返回工厂对象
 ```
 
-## 4.4. 抽象工厂模式在 Spring 中的体现
+## 4.4 抽象工厂模式在 Spring 中的体现
 
 ```
 Spring 中没有显式的抽象工厂接口，但 ApplicationContext 相关的工厂体系

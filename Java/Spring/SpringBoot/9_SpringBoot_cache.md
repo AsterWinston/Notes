@@ -1,8 +1,8 @@
-# 1.Spring Cache抽象
+# 1. Spring Cache抽象
 
 Spring Cache是Spring框架提供的一套缓存抽象，通过注解的方式简化缓存操作，无需关心底层缓存实现。
 
-## 1.1启用缓存
+## 1.1 启用缓存
 在启动类上添加 `@EnableCaching` 注解：
 
 ```java
@@ -15,7 +15,7 @@ public class Application {
 }
 ```
 
-## 1.2核心注解
+## 1.2 核心注解
 
 | 注解 | 说明 |
 |------|------|
@@ -25,7 +25,7 @@ public class Application {
 | @Caching | 组合多个缓存操作 |
 | @CacheConfig | 类级别共享缓存配置 |
 
-## 1.3@Cacheable
+## 1.3 @Cacheable
 
 ```java
 @Service
@@ -58,7 +58,7 @@ public class UserService {
 2. 第二次调用 `getById(1L)`：不执行方法体，直接从缓存返回
 3. 第三次调用 `getById(2L)`：缓存中没有key为2的数据，执行方法体
 
-## 1.4@CacheEvict
+## 1.4 @CacheEvict
 
 ```java
 @Service
@@ -85,7 +85,7 @@ public class UserService {
 }
 ```
 
-## 1.5@CachePut
+## 1.5 @CachePut
 
 ```java
 @Service
@@ -104,7 +104,7 @@ public class UserService {
 - @Cacheable：缓存中有就直接返回，**不执行**方法
 - @CachePut：**总是执行**方法，并用返回值更新缓存
 
-## 1.6@Caching 组合操作
+## 1.6 @Caching 组合操作
 
 ```java
 @Caching(
@@ -121,7 +121,7 @@ public User getById(Long id, String username) {
 }
 ```
 
-## 1.7@CacheConfig 类级别配置
+## 1.7 @CacheConfig 类级别配置
 
 ```java
 @Service
@@ -140,7 +140,7 @@ public class UserService {
 }
 ```
 
-## 1.8默认缓存实现
+## 1.8 默认缓存实现
 
 Spring Boot默认使用 `ConcurrentMapCacheManager` 作为缓存管理器，数据存储在JVM内存中，适合单机开发和简单场景。
 
@@ -154,11 +154,11 @@ spring.cache.cache-names=user,product,order
 - 不支持分布式环境
 - 没有过期策略
 
-# 2.整合Redis实现缓存
+# 2. 整合Redis实现缓存
 
 生产环境中通常使用Redis作为缓存中间件，支持分布式、持久化和丰富的过期策略。
 
-## 2.1引入依赖
+## 2.1 引入依赖
 ```xml
 <!-- Redis依赖 -->
 <dependency>
@@ -173,7 +173,7 @@ spring.cache.cache-names=user,product,order
 </dependency>
 ```
 
-## 2.2Redis连接配置
+## 2.2 Redis连接配置
 ```yaml
 spring:
   data:
@@ -202,7 +202,7 @@ spring.data.redis.lettuce.pool.max-active=8
 spring.data.redis.lettuce.pool.min-idle=2
 ```
 
-## 2.3配置Redis缓存管理器
+## 2.3 配置Redis缓存管理器
 ```java
 @Configuration
 @EnableCaching
@@ -240,7 +240,7 @@ public class RedisCacheConfig {
 
 配置Redis缓存管理器后，`@Cacheable`、`@CacheEvict`、`@CachePut` 等注解会自动使用Redis作为缓存后端，无需修改业务代码。
 
-## 2.4Redis序列化配置说明
+## 2.4 Redis序列化配置说明
 
 常用的序列化方案：
 
@@ -253,11 +253,11 @@ public class RedisCacheConfig {
 
 推荐配置：Key用String序列化，Value用JSON序列化。
 
-# 3.RedisTemplate 操作Redis
+# 3. RedisTemplate 操作Redis
 
 除了使用注解方式，也可以直接使用 `RedisTemplate` 编程式操作Redis。
 
-## 3.1自定义RedisTemplate
+## 3.1 自定义RedisTemplate
 
 ```java
 @Configuration
@@ -291,7 +291,7 @@ public class RedisConfig {
 }
 ```
 
-## 3.2String类型操作
+## 3.2 String类型操作
 
 ```java
 @Component
@@ -318,7 +318,7 @@ public class RedisService {
 }
 ```
 
-## 3.3Hash类型操作
+## 3.3 Hash类型操作
 
 ```java
 public void hashOps() {
@@ -339,7 +339,7 @@ public void hashOps() {
 }
 ```
 
-## 3.4List类型操作
+## 3.4 List类型操作
 
 ```java
 public void listOps() {
@@ -355,7 +355,7 @@ public void listOps() {
 }
 ```
 
-## 3.5Set类型操作
+## 3.5 Set类型操作
 
 ```java
 public void setOps() {
@@ -369,7 +369,7 @@ public void setOps() {
 }
 ```
 
-## 3.6ZSet类型操作
+## 3.6 ZSet类型操作
 
 ```java
 public void zsetOps() {
@@ -386,9 +386,9 @@ public void zsetOps() {
 }
 ```
 
-# 4.缓存常见问题与解决方案
+# 4. 缓存常见问题与解决方案
 
-## 4.1缓存穿透
+## 4.1 缓存穿透
 
 **问题**：查询一个不存在的数据，缓存没有命中，请求直接打到数据库。
 
@@ -405,7 +405,7 @@ public User getById(Long id) {
 // 如果想要缓存空值防止穿透，去掉 unless 即可
 ```
 
-## 4.2缓存击穿
+## 4.2 缓存击穿
 
 **问题**：一个热点key在过期瞬间，大量请求同时打到数据库。
 
@@ -421,7 +421,7 @@ public User getById(Long id) {
 }
 ```
 
-## 4.3缓存雪崩
+## 4.3 缓存雪崩
 
 **问题**：大量key在同一时间过期，导致大量请求打到数据库。
 

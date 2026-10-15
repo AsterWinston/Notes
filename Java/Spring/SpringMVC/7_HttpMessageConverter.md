@@ -1,12 +1,12 @@
-# 1.HttpMessageConverter
+# 1. HttpMessageConverter
 ```
 HttpMessageConverter是Spring MVC中非常重要的一个接口，翻译为：HTTP消息转换器，该接口提供了很多实现类，不同实现类有不同的转换方式。
 ```
-## 1.1什么是HTTP消息
+## 1.1 什么是HTTP消息
 ```
 HTTP消息其实就是HTTP协议。HTTP协议包括请求协议和响应协议。
 ```
-## 1.2转换器转换的是什么
+## 1.2 转换器转换的是什么
 ```
 转换的是HTTP协议与Java程序中的对象之间的互相转换。请看下图：
 ```
@@ -36,7 +36,7 @@ HttpMessageConverter是接口，SpringMVC帮我们提供了非常多而丰富的
 ● ResponseEntity
 ● RequestEntity
 ```
-# 2.Spring MVC中的AJAX请求
+# 2. Spring MVC中的AJAX请求
 ```
 SpringMVC+Vue3+Thymeleaf+Axios发送一个简单的AJAX请求。
 引入Vue和Axios的js文件：
@@ -170,9 +170,9 @@ public class HelloController {
 我们可以使用 @ResponseBody 注解来启用对应的消息转换器。而这种消息转换器只负责将Controller返回的信息以响应体的形式写入响应协议。
 ```
 
-# 3.@ResponseBody
+# 3. @ResponseBody
 
-## 3.1StringHttpMessageConverter
+## 3.1 StringHttpMessageConverter
 ```
 上面的AJAX案例，Controller的代码可以修改为：
 package com.powernode.springmvc.controller;
@@ -218,7 +218,7 @@ public class HelloController {
 ● 第二种方式：启用MappingJackson2HttpMessageConverter消息转换器。
 
 ```
-## 3.2MappingJackson2HttpMessageConverter
+## 3.2 MappingJackson2HttpMessageConverter
 ```
 启用MappingJackson2HttpMessageConverter消息转换器的步骤如下：
 第一步：引入jackson依赖，可以将java对象转换为json格式字符串
@@ -283,7 +283,7 @@ public class HelloController {
 他的功能很强大，可以将POJO对象转换成JSON格式的字符串，响应给前端。
 其实这个消息转换器MappingJackson2HttpMessageConverter本质上只是比StringHttpMessageConverter多了一个json字符串的转换，其他的还是一样。
 ```
-# 4.RestController
+# 4. RestController
 ```
 因为我们现代的开发方式都是基于AJAX方式的，因此 @ResponseBody 注解非常重要，很常用。
 为了方便，Spring MVC中提供了一个注解 @RestController。这一个注解代表了：@Controller + @ResponseBody。
@@ -305,9 +305,9 @@ public class HelloController {
 }
 
 ```
-# 5.RequestBody
+# 5. RequestBody
 
-## 5.1FromHttpMessageConverter
+## 5.1 FromHttpMessageConverter
 ```
 这个注解的作用是直接将请求体传递给Java程序，在Java程序中可以直接使用一个String类型的变量接收这个请求体的内容。
 在没有使用这个注解的时候：
@@ -329,7 +329,7 @@ public String save(@RequestBody String requestBodyStr){
 }
 Spring MVC仍然会使用 FormHttpMessageConverter消息转换器，将请求体直接以字符串形式传递给 requestBodyStr 变量。
 ```
-## 5.2MappingJackson2HttpMessageConverter
+## 5.2 MappingJackson2HttpMessageConverter
 ```
 另外，如果在请求体中提交的是一个JSON格式的字符串，这个JSON字符串传递给Spring MVC之后，能不能将JSON字符串转换成POJO对象呢？答案是可以的。
 此时必须使用@RequestBody 注解来完成 。并且底层使用的消息转换器是：MappingJackson2HttpMessageConverter。实现步骤如下：
@@ -390,7 +390,7 @@ public String send(@RequestBody User user){
   </body>
 </html>
 ```
-# 6.RequestEntity
+# 6. RequestEntity
 ```
 RequestEntity不是一个注解，是一个普通的类。这个类的实例封装了整个请求协议：包括请求行、请求头、请求体所有信息。
 出现在控制器方法的参数上：
@@ -457,7 +457,7 @@ public String send(RequestEntity<User> requestEntity){
 
 在实际的开发中，如果你需要获取更详细的请求协议中的信息。可以使用RequestEntity
 ```
-# 7.ResponseEntity
+# 7. ResponseEntity
 ```
 ResponseEntity不是注解，是一个类。用该类的实例可以封装响应协议，包括：状态行、响应头、响应体。也就是说：如果你想定制属于自己的响应协议，可以使用该类。
 假如我要完成这样一个需求：前端提交一个id，后端根据id进行查询，如果返回null，请在前端显示404错误。如果返回不是null，则输出返回的user。

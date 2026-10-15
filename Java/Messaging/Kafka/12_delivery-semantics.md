@@ -1,4 +1,4 @@
-# 1 消息投递语义概述
+# 1. 消息投递语义概述
 
 ## 1.1 分布式系统的经典"三元组"
 
@@ -32,7 +32,7 @@
 └──────────────────────────────────────────────────────────────┘
 ```
 
-# 2 Producer 端语义实现
+# 2. Producer 端语义实现
 
 ## 2.1 At-Most-Once（最多一次）
 
@@ -114,7 +114,7 @@ producer.initTransactions();
 // 保证跨多个 Partition 和跨 Producer Session 的 Exactly-Once
 ```
 
-# 3 Consumer 端语义实现
+# 3. Consumer 端语义实现
 
 ## 3.1 At-Most-Once（最多一次）
 
@@ -275,7 +275,7 @@ public void consume(ConsumerRecord<String, String> record) {
 // 即使提交不精确（提交少了 → At-Least-Once, 靠去重补偿）
 ```
 
-# 4 各语义对比总结
+# 4. 各语义对比总结
 
 ## 4.1 实现复杂度与适用场景
 
@@ -338,7 +338,7 @@ Exactly-Once → 复杂
                           └──────────────────────────────▶ 性能/吞吐
 ```
 
-# 5 实现 Exactly-Once 的外部系统方案
+# 5. 实现 Exactly-Once 的外部系统方案
 
 ## 5.1 Kafka + 数据库（使用数据库事务）
 
@@ -387,7 +387,7 @@ env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
 ```
 
-# 6 幂等性设计模式
+# 6. 幂等性设计模式
 
 ## 6.1 业务幂等常用方法
 

@@ -4,9 +4,9 @@
 在SpringMVC中又应该如何获取请求头信息呢？
 在SpringMVC中又应该如何获取客户端提交的Cookie数据呢？
 ```
-# 1.准备
+# 1. 准备
 
-## 1.1创建模块，添加依赖
+## 1.1 创建模块，添加依赖
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -55,10 +55,10 @@
 
 </project>
 ```
-## 1.2添加web支持
+## 1.2 添加web支持
 ```
 ```
-## 1.3编写web.xml文件
+## 1.3 编写web.xml文件
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
@@ -85,7 +85,7 @@
 
 </web-app>
 ```
-## 1.4创建UserController
+## 1.4 创建UserController
 ```
 package com.powernode.springmvc.controller;
 
@@ -107,7 +107,7 @@ public class UserController {
     }
 }
 ```
-## 1.5编写springmvc.xml
+## 1.5 编写springmvc.xml
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -149,7 +149,7 @@ public class UserController {
 
 </beans>
 ```
-## 1.6编写register.html文件（放到WEB-INF/templates/下）
+## 1.6 编写register.html文件（放到WEB-INF/templates/下）
 ```
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
@@ -163,10 +163,10 @@ public class UserController {
 </body>
 </html>
 ```
-## 1.7部署测试
+## 1.7 部署测试
 ```
 ```
-# 2.使用原生的Servlet API获取
+# 2. 使用原生的Servlet API获取
 ```
 原生的Servlet API指的是：HttpServletRequest
 在SpringMVC当中，一个Controller类中的方法参数上如果有HttpServletRequest，SpringMVC会自动将当前请求对象传递给这个参数，因此我们可以通过这个参数来获取请求提交的数据。测试一下。
@@ -230,11 +230,11 @@ public String register(HttpServletRequest request){
 
 这样通过Servlet原生的API获取到提交的数据。但是这种方式不建议使用，因为方法的参数依赖Servlet原生API，Controller的测试将不能单独测试，必须依赖WEB服务器才能测试。另外，换句话说，如果在SpringMVC中使用了原生的Servlet，你为什么还要用SpringMVC框架呢！！！！！
 ```
-# 3.使用RequestParam注解标注
+# 3. 使用RequestParam注解标注
 ```
 ```
 
-## 3.1RequestParam注解的基本使用
+## 3.1 RequestParam注解的基本使用
 ```
 RequestParam注解作用：将请求参数与方法上的形参映射。
 @PostMapping(value = "/register")
@@ -277,7 +277,7 @@ public @interface RequestParam {
 一定要注意： @RequestParam(value="name2") 中value一定不要写错，写错就会出现以下问题：
 404：Required parameter 'ida' is not present.
 ```
-## 3.2RequestParam注解的required属性
+## 3.2 RequestParam注解的required属性
 ```
 required属性用来设置该方法参数是否为必须的。
 默认情况下，这个参数为 true，表示方法参数是必需的。如果请求中缺少对应的参数，则会抛出异常。
@@ -291,11 +291,11 @@ required属性用来设置该方法参数是否为必须的。
 通过测试得知，如果一个参数被设置为不是必需的，当没有提交对应的请求参数时，形参默认值null。
 当然，如果请求参数中提供了age，则age为真实提交的数据
 ```
-## 3.3RequestParam注解的defaultValue属性
+## 3.3 RequestParam注解的defaultValue属性
 ```
 defaultValue属性用来设置形参的默认值，当没有提供对应的请求参数或者请求参数的值是空字符串""的时候，方法的形参会采用默认值。
 ```
-# 4.依靠控制器方法上的形参名来接收
+# 4. 依靠控制器方法上的形参名来接收
 ```
 @RequestParam 这个注解是可以省略的，如果方法形参的名字和提交数据时的name相同，则 @RequestParam 可以省略。
 但有一个前提：如果你采用的是Spring6+版本，你需要在pom.xml文件中指定编译参数'-parameter'，配置如下：
@@ -335,7 +335,7 @@ public String register(String username, String password, String sex, String hobb
 根据输出结果可以看到多个hobby是采用“,”进行连接的。
 
 ```
-# 5.使用POJO类/JavaBean接收请求参数
+# 5. 使用POJO类/JavaBean接收请求参数
 ```
 以上方式大家可以看到，当提交的数据非常多时，方法的形参个数会非常多，这不是很好的设计。在SpringMVC中也可以使用POJO类/JavaBean来接收请求参数。不过有一个非常重要的要求：POJO类的属性名必须和请求参数的参数名保持一致。提供以下的JavaBean：
 package com.powernode.springmvc.pojo;
@@ -535,7 +535,7 @@ public class User {
 ...
 通过测试可以看到：username属性没有赋上值。可见请求参数是否可以赋值到JavaBean对应的属性上，不是取决于属性名，而是setter方法名。
 ```
-# 6.RequestHeader注解
+# 6. RequestHeader注解
 ```
 该注解的作用是：将请求头信息映射到方法的形参上。
 和RequestParam注解功能相似，RequestParam注解的作用：将请求参数映射到方法的形参上。
@@ -550,7 +550,7 @@ public String register(User user,
     return "success";
 }
 ```
-# 7.CookieValue注解
+# 7. CookieValue注解
 ```
 该注解的作用：将请求提交的Cookie数据映射到方法形参上
 同样是有三个属性：value、required、defaultValue
@@ -577,11 +577,11 @@ public String register(User user,
 }
 ```
 
-# 8.请求的中文乱码
+# 8. 请求的中文乱码
 ```
 ```
 
-## 8.1get请求乱码
+## 8.1 get请求乱码
 ```
 get请求数据在URI后面提交，这个乱码问题怎么解决呢？解决办法是找到 CATALINA_HOME/config/server.xml文件，找到其中配置端口号的标签<Connector>，在该标签中添加  URIEncoding="UTF-8"。但是对于高版本的Tomcat服务器来说，是不需要设置的，例如Tomcat10，Tomcat9，有如下的默认配置，在默认情况下URIEncoding使用的就是UTF-8的编码方式。
 
@@ -589,7 +589,7 @@ get请求数据在URI后面提交，这个乱码问题怎么解决呢？解决�
 ```
 <img src="images/04.png" width="100%">
 
-## 8.2post请求乱码
+## 8.2 post请求乱码
 ```
 post请求是解决请求体的中文乱码问题。解决办法大家都知道：
 request.setCharacterEncoding("UTF-8");
@@ -921,7 +921,7 @@ throws ServletException, IOException {
 如果缺少它，仍然是会存在乱码问题的。自行测试一下！！！！
 ```
 
-# 8.日期和数字格式化（@DateTimeFormat / @NumberFormat）
+# 8. 日期和数字格式化（@DateTimeFormat / @NumberFormat）
 ```
 SpringMVC提供了数据格式化注解，可以将字符串类型的请求参数自动转换为日期、数字等类型。
 
@@ -989,7 +989,7 @@ public class GlobalExceptionHandler {
 }
 ```
 
-# 9.枚举类型绑定
+# 9. 枚举类型绑定
 ```
 SpringMVC可以自动将字符串参数绑定到Java枚举类型。
 
@@ -1036,7 +1036,7 @@ public class StringToGenderConverter implements Converter<String, Gender> {
 注意：自定义Converter需要在SpringMVC配置中注册（见@InitBinder章节）。
 ```
 
-# 10.嵌套POJO绑定
+# 10. 嵌套POJO绑定
 ```
 当POJO中包含另一个POJO作为属性时，前端使用"点号表示法"传递参数。
 
@@ -1084,7 +1084,7 @@ public class Address {
 嵌套对象也不会为null（但属性值都是null/默认值）。
 ```
 
-# 11.集合类型绑定
+# 11. 集合类型绑定
 ```
 SpringMVC支持将请求参数绑定到List、Set、Map等集合类型。
 
@@ -1151,7 +1151,7 @@ public String deleteBatch(@RequestParam("ids") Long[] ids) {
 // 前端同名参数：ids=1&ids=2&ids=3
 ```
 
-# 12.@InitBinder与WebDataBinder
+# 12. @InitBinder与WebDataBinder
 ```
 @InitBinder用于自定义数据绑定规则，在Controller级别生效。
 
@@ -1201,7 +1201,7 @@ public void initBinder(WebDataBinder binder) {
 如果没有限制，该参数会被自动绑定到User对象的role属性，导致权限提升。
 ```
 
-# 13.@ModelAttribute标注在方法上
+# 13. @ModelAttribute标注在方法上
 ```
 @ModelAttribute除了用于方法参数外，还可以标注在方法上。
 这通常用于在多个处理器方法之间共享公共数据。

@@ -97,7 +97,7 @@ public class Employee {
 // 布尔类型：isActive() 而非 getActive()
 ```
 
-### Getter/Setter 命名规则
+### 2.1.1 Getter/Setter 命名规则
 
 | 字段类型 | 字段名 | 生成的 getter | 生成的 setter |
 |---------|--------|---------------|---------------|
@@ -198,7 +198,7 @@ public class User {
 // @RequiredArgsConstructor
 ```
 
-### 注意：@Data 的默认行为
+### 2.4.1 注意：@Data 的默认行为
 
 ```java
 @Data
@@ -553,7 +553,7 @@ public class StringUtils {
 
 ## 3.1 @Builder 的深入用法
 
-### 构建器继承
+### 3.1.1 构建器继承
 
 ```java
 import lombok.Builder;
@@ -578,7 +578,7 @@ Dog dog = Dog.builder()
         .build();
 ```
 
-### 自定义 Builder 方法
+### 3.1.2 自定义 Builder 方法
 
 ```java
 @Builder
@@ -726,7 +726,7 @@ lombok.accessors.chain=true
 lombok.log.fieldName=log
 ```
 
-### 配置文件查找顺序
+### 3.6.1 配置文件查找顺序
 
 ```
 1. lombok.config（当前目录）
@@ -750,7 +750,7 @@ Lombok 使用 Java 的"可插拔注解处理 API"（JSR 269）在编译时修改
 4. javac 根据修改后的 AST 生成字节码
 ```
 
-### 关键源码类
+### 4.1.1 关键源码类
 
 | 类名 | 作用 |
 |------|------|
@@ -839,7 +839,7 @@ public class HandleGetter {
 
 ## 5.2 与 IDE 配合
 
-### IntelliJ IDEA
+### 5.2.1 IntelliJ IDEA
 
 ```java
 // 需要安装 Lombok 插件：
@@ -854,7 +854,7 @@ public class HandleGetter {
 // 3. 重启 IDE
 ```
 
-### Eclipse / VS Code
+### 5.2.2 Eclipse / VS Code
 
 ```java
 // Eclipse：运行 lombok.jar 安装
@@ -884,7 +884,7 @@ public class HandleGetter {
 
 ## 6.1 最佳实践
 
-### 1. 使用 @Data + @Builder 的模式
+### 6.1.1 使用 @Data + @Builder 的模式
 
 ```java
 @Data
@@ -897,7 +897,7 @@ public class Entity {
 }
 ```
 
-### 2. @Builder.Default 为集合设置默认值
+### 6.1.2 @Builder.Default 为集合设置默认值
 
 ```java
 @Builder
@@ -907,7 +907,7 @@ public class Order {
 }
 ```
 
-### 3. 使用 @Slf4j 统一日志
+### 6.1.3 使用 @Slf4j 统一日志
 
 ```java
 @Slf4j
@@ -917,7 +917,7 @@ public class UserController {
 }
 ```
 
-### 4. 不可变对象使用 @Value + @With
+### 6.1.4 不可变对象使用 @Value + @With
 
 ```java
 @Value
@@ -929,7 +929,7 @@ public class ImmutableConfig {
 }
 ```
 
-### 5. @Accessors(chain = true) 配合 Builder
+### 6.1.5 @Accessors(chain = true) 配合 Builder
 
 ```java
 @Setter
@@ -947,7 +947,7 @@ QueryParams params = new QueryParams()
         .setSize(10);
 ```
 
-### 6. 工具类使用 @UtilityClass
+### 6.1.6 工具类使用 @UtilityClass
 
 ```java
 @UtilityClass
@@ -958,7 +958,7 @@ public class DateUtils {
 }
 ```
 
-### 7. 合理使用 @EqualsAndHashCode
+### 6.1.7 合理使用 @EqualsAndHashCode
 
 ```java
 // JPA 实体建议 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -976,7 +976,7 @@ public class User {
 
 ## 6.2 常见坑
 
-### 坑 1：@EqualsAndHashCode 与继承
+### 6.2.1 坑 1：@EqualsAndHashCode 与继承
 
 ```java
 // 父类和子类混合使用时可能违反 equals 的对称性
@@ -1002,7 +1002,7 @@ public class Dog extends Animal {
 // 解决方案：组合优先于继承，或避免在这种场景使用 @EqualsAndHashCode
 ```
 
-### 坑 2：@Data 和 @Builder 同时使用时无参构造器缺失
+### 6.2.2 坑 2：@Data 和 @Builder 同时使用时无参构造器缺失
 
 ```java
 @Data
@@ -1025,7 +1025,7 @@ public class User {
 }
 ```
 
-### 坑 3：@Builder 中的默认值丢失
+### 6.2.3 坑 3：@Builder 中的默认值丢失
 
 ```java
 @Builder
@@ -1049,7 +1049,7 @@ Order order = Order.builder().build();
 System.out.println(order.status);  // null（不是 "PENDING"！）
 ```
 
-### 坑 4：@Value 与 JPA/Hibernate
+### 6.2.4 坑 4：@Value 与 JPA/Hibernate
 
 ```java
 // @Value 生成 final 类和 final 字段
@@ -1065,7 +1065,7 @@ public class JpaEntity {
 }
 ```
 
-### 坑 5：@Slf4j 字段名冲突
+### 6.2.5 坑 5：@Slf4j 字段名冲突
 
 ```java
 @Slf4j
@@ -1078,7 +1078,7 @@ public class LogService {
 }
 ```
 
-### 坑 6：Lombok 与 MapStruct / RecordBuilder 等冲突
+### 6.2.6 坑 6：Lombok 与 MapStruct / RecordBuilder 等冲突
 
 ```java
 // 多个注解处理器可能对相同字段生成冲突代码
@@ -1106,7 +1106,7 @@ public class LogService {
 // </plugin>
 ```
 
-### 坑 7：@AllArgsConstructor 导致 Jackson 反序列化失败
+### 6.2.7 坑 7：@AllArgsConstructor 导致 Jackson 反序列化失败
 
 ```java
 @AllArgsConstructor  // 生成全参构造器
@@ -1118,7 +1118,7 @@ public class User {
 // 如果没有 @NoArgsConstructor，Jackson 反序列化会失败
 ```
 
-### 坑 8：链式 setter + 继承的碰撞
+### 6.2.8 坑 8：链式 setter + 继承的碰撞
 
 ```java
 @Setter

@@ -114,7 +114,7 @@ public class MyScope implements Scope {
 
 # 4. 源码解析：Scope 机制与 Bean 生命周期管理
 
-## 4.1. Scope 接口定义
+## 4.1 Scope 接口定义
 
 ```
 public interface Scope {
@@ -152,7 +152,7 @@ public interface Scope {
 }
 ```
 
-## 4.2. Spring 内置的 Scope 实现
+## 4.2 Spring 内置的 Scope 实现
 
 ```
 Singleton Scope — 单例（DefaultSingletonBeanRegistry 内部管理，不实现 Scope 接口）
@@ -185,7 +185,7 @@ SimpleThreadScope — 线程级别（Spring 内置的自定义 scope 示例）
   存储位置：ThreadLocal<Map<String, Object>>
 ```
 
-## 4.3. doGetBean() 中的 Scope 处理分支
+## 4.3 doGetBean() 中的 Scope 处理分支
 
 ```
 AbstractBeanFactory.doGetBean() 中的 Scope 分支：
@@ -242,7 +242,7 @@ else {
 }
 ```
 
-## 4.4. SimpleThreadScope 源码
+## 4.4 SimpleThreadScope 源码
 
 ```
 Spring 内置的 SimpleThreadScope 是自定义 Scope 的参考实现：
@@ -297,7 +297,7 @@ public class SimpleThreadScope implements Scope {
 }
 ```
 
-## 4.5. Scope 注册机制
+## 4.5 Scope 注册机制
 
 ```
 <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
@@ -345,7 +345,7 @@ public class CustomScopeConfigurer implements BeanFactoryPostProcessor {
   Object scopedInstance = scope.get(beanName, objectFactory);
 ```
 
-## 4.6. Bean 作用域选择策略与生命周期对比
+## 4.6 Bean 作用域选择策略与生命周期对比
 
 ```
 ┌─────────────┬──────────────┬──────────────┬──────────────┬────────────────────┐
@@ -368,7 +368,7 @@ public class CustomScopeConfigurer implements BeanFactoryPostProcessor {
 └─────────────┴──────────────┴──────────────┴──────────────┴────────────────────┘
 ```
 
-## 4.7. 设计思想总结
+## 4.7 设计思想总结
 
 1. 策略模式（Scope 接口）：
    不同的 Scope 实现对应不同的 Bean 生命周期管理策略。

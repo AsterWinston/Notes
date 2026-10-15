@@ -1,4 +1,4 @@
-# 1.Service Mesh 概述
+# 1. Service Mesh 概述
 
 ## 1.1 微服务架构中的通信挑战
 
@@ -47,7 +47,7 @@ Service Mesh 的核心理念是：**将这些通信关注点从应用代码中�
   Envoy 自动处理: 重试、超时、mTLS、指标上报、追踪
 ```
 
-### 数据面 (Data Plane) vs 控制面 (Control Plane)
+### 1.2.1 数据面 (Data Plane) vs 控制面 (Control Plane)
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -75,7 +75,7 @@ Service Mesh 的核心理念是：**将这些通信关注点从应用代码中�
 
 **控制面**：负责配置管理、服务发现、证书管理。将路由规则、安全策略等配置推送给数据面。
 
-# 2.Istio
+# 2. Istio
 
 ## 2.1 Istio 架构
 
@@ -102,7 +102,7 @@ Istio 是目前使用最广泛的 Service Mesh 实现，CNCF 毕业项目。其�
               └────────────────────┘
 ```
 
-### Envoy 的核心能力
+### 2.1.1 Envoy 的核心能力
 
 - **L4/L7 代理**：TCP/HTTP/gRPC 协议的全功能代理
 - **服务发现**：通过 xDS 动态获取后端服务列表
@@ -135,7 +135,7 @@ kubectl get pods -n istio-system
 # istio-egressgateway-xxxxxxxx-xxxxx      1/1     Running
 ```
 
-### Sidecar 注入原理
+### 2.2.1 Sidecar 注入原理
 
 Istio 通过 Mutating Admission Webhook 自动在 Pod 中注入 Envoy Sidecar：
 
@@ -179,7 +179,7 @@ spec:
 
 ## 2.3 VirtualService 与 DestinationRule
 
-### VirtualService：路由规则
+### 2.3.1 VirtualService：路由规则
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -244,7 +244,7 @@ spec:
         subset: v1
 ```
 
-### DestinationRule：后端策略
+### 2.3.2 DestinationRule：后端策略
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -316,7 +316,7 @@ Istio Gateway 是 Ingress 的升级替代品。它不仅支持 HTTP/HTTPS，还�
 
 ## 2.5 安全：mTLS 与 AuthorizationPolicy
 
-### 自动 mTLS
+### 2.5.1 自动 mTLS
 
 ```yaml
 # 启用全 Mesh 范围的 mTLS（严格模式）
@@ -330,7 +330,7 @@ spec:
     mode: STRICT                     # STRICT / PERMISSIVE / DISABLE
 ```
 
-### 细粒度授权策略
+### 2.5.2 细粒度授权策略
 
 ```yaml
 apiVersion: security.istio.io/v1beta1
@@ -372,7 +372,7 @@ spec:
 
 ## 2.6 Istio 可观测性
 
-### Kiali：服务拓扑可视化
+### 2.6.1 Kiali：服务拓扑可视化
 
 ```bash
 # 打开 Kiali Dashboard
@@ -380,11 +380,11 @@ istioctl dashboard kiali
 # 显示服务拓扑图、流量速率、错误率、延迟分布
 ```
 
-### Jaeger：分布式追踪
+### 2.6.2 Jaeger：分布式追踪
 
 Istio 自动为所有 HTTP/gRPC 请求注入 Trace Headers（`x-b3-traceid` 等），无需应用代码改动即可获得调用链追踪。
 
-### Grafana + Prometheus
+### 2.6.3 Grafana + Prometheus
 
 Istio 自动暴露 Envoy 指标，可通过 Prometheus 抓取并导入 Grafana Dashboard：
 
@@ -398,7 +398,7 @@ istio_tcp_received_bytes_total          # TCP 接收字节
 istio_tcp_sent_bytes_total              # TCP 发送字节
 ```
 
-# 3.Linkerd
+# 3. Linkerd
 
 ## 3.1 Linkerd vs Istio
 
@@ -414,7 +414,7 @@ Linkerd 是 CNCF 的另一个毕业级 Service Mesh，设计哲学与 Istio 截�
 | **适用场景** | 大型企业、多集群 | 中小规模、简洁优先 |
 | **学习曲线** | 陡峭 | 平缓 |
 
-### Linkerd 核心特性
+### 3.1.1 Linkerd 核心特性
 
 - **零配置 mTLS**：默认启用，自动轮换 24 小时证书
 - **轻量级代理**：用 Rust 编写的 micro-proxy，~10MB 内存，< 1ms P99 延迟增量
@@ -441,7 +441,7 @@ linkerd inject deployment.yaml | kubectl apply -f -
 kubectl annotate namespace default linkerd.io/inject=enabled
 ```
 
-### Linkerd 特有的调试工具
+### 3.2.1 Linkerd 特有的调试工具
 
 ```bash
 # 实时查看请求流
@@ -458,7 +458,7 @@ linkerd viz edges deployment -n default
 linkerd viz profile deployment/my-app --tap deploy/my-app
 ```
 
-# 4.生产实践与选型
+# 4. 生产实践与选型
 
 ## 4.1 何时使用 Service Mesh
 

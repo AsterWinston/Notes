@@ -1,4 +1,4 @@
-# 1.environment
+# 1. environment
 ```
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
@@ -46,7 +46,7 @@ public void configTest() throws IOException {
 }
 ```
 
-# 2.transactionManager
+# 2. transactionManager
 ```
 <environment id="development">
     <!--
@@ -74,7 +74,7 @@ public void configTest() throws IOException {
     </dataSource>
 </environment>
 ```
-# 3.dataSource
+# 3. dataSource
 ```
 <environment id="development">
     <transactionManager type="JDBC"/>
@@ -107,7 +107,7 @@ public void configTest() throws IOException {
 </environment>
 ```
 
-# 4.properties
+# 4. properties
 ```
 mybatis提供了更加灵活的配置，连接数据库的信息可以单独写到⼀个属性资源⽂件中，假设在类的根路
 径下创建jdbc.properties⽂件，配置如下：
@@ -137,7 +137,7 @@ resource：这个属性从类的根路径下开始加载。【常⽤的。】
 url：从指定的url加载，假设⽂件放在d:/jdbc.properties，这个url可以写成：file:///d:/jdbc.properties。注意是三个斜杠哦。?
 ```
 
-# 5.mapper
+# 5. mapper
 ```
 mapper标签⽤来指定SQL映射⽂件的路径，包含多种指定⽅式，这⾥先主要看其中两种：
 
@@ -232,7 +232,7 @@ mapper还有其他的指定⽅式，后⾯再看！！！
 </mappers>
 </configuration>
 ```
-# 6.order of all kinds of config
+# 6. order of all kinds of config
 ```
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration

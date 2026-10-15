@@ -55,11 +55,11 @@ Hibernate 性能优化是一个系统工程，涉及从架构设计到基础设�
 
 ## 2.1 N+1 问题详解
 
-### 什么是 N+1 问题？
+### 2.1.1 什么是 N+1 问题？
 
 N+1 问题是指：执行 1 条查询获取 N 个父实体，然后对每个父实体再执行 1 条查询加载其关联实体，总计 **1 + N** 条 SQL。这是 ORM 中最常见也最具破坏性的性能问题。
 
-### SQL 日志演示
+### 2.1.2 SQL 日志演示
 
 ```java
 // 实体定义
@@ -105,15 +105,15 @@ SELECT * FROM book WHERE author_id = 3;
 -- ... 生成了 N 条
 ```
 
-### 产生原因
+### 2.1.3 产生原因
 
 1. 关联字段设置了 `FetchType.LAZY`（懒加载）
 2. 业务代码在循环中访问了懒加载的关联属性
 3. 每次访问触发一个新的 SQL 查询
 
-### 如何发现 N+1 问题
+### 2.1.4 如何发现 N+1 问题
 
-#### Hibernate Statistics
+**Hibernate Statistics**
 
 ```java
 // 启用统计
@@ -129,7 +129,7 @@ System.out.println("SQL 执行次数: " + queryCount);
 // 如果发现 11 条，说明存在 N+1 问题
 ```
 
-#### SQL 日志分析
+**SQL 日志分析**
 
 ```yaml
 # application.yml
@@ -145,7 +145,7 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # 显示参数绑定
 ```
 
-#### 集成测试中断言 SQL 查询次数
+**集成测试中断言 SQL 查询次数**
 
 ```java
 // 使用 datasource-proxy 或自定义 DataSource 代理
@@ -165,7 +165,7 @@ void shouldNotTriggerNPlusOneSelectOnFindAll() {
 }
 ```
 
-#### Hypersistence Optimizer / JPlusOne
+**Hypersistence Optimizer / JPlusOne**
 
 ```xml
 <!-- Hypersistence Optimizer -->
@@ -193,7 +193,7 @@ public HypersistenceOptimizer hypersistenceOptimizer(EntityManagerFactory emf) {
 
 ## 2.2 JOIN FETCH
 
-### JPQL/HQL 中使用 JOIN FETCH
+### 2.2.1 JPQL/HQL 中使用 JOIN FETCH
 
 `JOIN FETCH` 在一条 SQL 中通过 JOIN 将关联实体一起加载，从根源上解决 N+1 问题：
 
@@ -222,7 +222,7 @@ FROM author a
 INNER JOIN book b ON a.id = b.author_id;
 ```
 
-### LEFT JOIN FETCH vs JOIN FETCH
+### 2.2.2 LEFT JOIN FETCH vs JOIN FETCH
 
 | 类型 | 行为 | 使用场景 |
 |------|------|---------|
@@ -237,7 +237,7 @@ List<Author> authors = session.createQuery(
 ).getResultList();
 ```
 
-### 多个集合 FETCH → MultipleBagFetchException
+### 2.2.3 多个集合 FETCH → MultipleBagFetchException
 
 当同时 JOIN FETCH 多个 `List`（Bag）类型的集合时，Hibernate 无法正确处理笛卡尔积：
 
@@ -293,7 +293,7 @@ List<Author> authorsWithArticles = session.createQuery(
  .getResultList();
 ```
 
-### JOIN FETCH + 分页冲突
+### 2.2.4 JOIN FETCH + 分页冲突
 
 在 JPQL/HQL 中使用 `JOIN FETCH` 同时设置分页时，Hibernate 会在**内存中**进行分页，而非在 SQL 层面：
 
@@ -348,7 +348,7 @@ String sql = """
     """;
 ```
 
-### @NamedEntityGraph 作为 JOIN FETCH 的替代
+### 2.2.5 @NamedEntityGraph 作为 JOIN FETCH 的替代
 
 将抓取策略声明在实体上，查询时按需选择（详见 2.3 节）：
 
@@ -371,7 +371,7 @@ List<Author> authors = session.createQuery("FROM Author", Author.class)
 
 ## 2.3 EntityGraph（JPA 2.1+）
 
-### @NamedEntityGraph 声明
+### 2.3.1 @NamedEntityGraph 声明
 
 `@NamedEntityGraph` 允许在实体上声明多种抓取策略，由查询时按名称选择：
 
@@ -403,7 +403,7 @@ public class Author {
 }
 ```
 
-### @NamedAttributeNode 指定属性
+### 2.3.2 @NamedAttributeNode 指定属性
 
 ```java
 @NamedEntityGraph(
@@ -415,7 +415,7 @@ public class Author {
 )
 ```
 
-### @NamedSubgraph 嵌套图
+### 2.3.3 @NamedSubgraph 嵌套图
 
 当需要加载关联实体的关联实体（三层及以上）时使用：
 
@@ -443,7 +443,7 @@ public class Book {
 }
 ```
 
-### EntityManager.find() 使用 EntityGraph
+### 2.3.4 EntityManager.find() 使用 EntityGraph
 
 ```java
 // 方式一：find() + EntityGraph
@@ -455,7 +455,7 @@ Author author = session.find(Author.class, 1L, hints);
 // author.getBooks() 已被加载（LAZY 属性实际已 EAGER）
 ```
 
-### Query Hint 使用 EntityGraph
+### 2.3.5 Query Hint 使用 EntityGraph
 
 ```java
 // 方式二：JPQL/Criteria + EntityGraph
@@ -467,7 +467,7 @@ List<Author> authors = session.createQuery("FROM Author a WHERE a.name LIKE :nam
     .getResultList();
 ```
 
-### 编程方式动态创建 EntityGraph
+### 2.3.6 编程方式动态创建 EntityGraph
 
 ```java
 // 方式三：动态创建 EntityGraph（无需注解）
@@ -481,7 +481,7 @@ List<Author> authors = session.createQuery("FROM Author", Author.class)
     .getResultList();
 ```
 
-### fetchgraph vs loadgraph 的区别
+### 2.3.7 fetchgraph vs loadgraph 的区别
 
 | 属性 | `fetchgraph` | `loadgraph` |
 |------|-------------|-------------|
@@ -497,7 +497,7 @@ hints.put("jakarta.persistence.fetchgraph", graph);
 hints.put("jakarta.persistence.loadgraph", graph);
 ```
 
-### EntityGraph 与 JOIN FETCH 对比
+### 2.3.8 EntityGraph 与 JOIN FETCH 对比
 
 | 维度 | JOIN FETCH | EntityGraph |
 |------|-----------|-------------|
@@ -513,7 +513,7 @@ hints.put("jakarta.persistence.loadgraph", graph);
 
 ## 2.4 @BatchSize
 
-### 批量懒加载原理
+### 2.4.1 批量懒加载原理
 
 `@BatchSize` 优化的是**懒加载触发时**的查询效率。不改变懒加载的时机，但将 N 条单独的 SQL 合并为少量多条 IN 查询。
 
@@ -529,7 +529,7 @@ public class Author {
 }
 ```
 
-### @BatchSize 注解位置
+### 2.4.2 @BatchSize 注解位置
 
 ```java
 // 1. 标注在实体类上（影响该实体的所有懒加载）
@@ -555,7 +555,7 @@ public class Author {
 }
 ```
 
-### 全局配置
+### 2.4.3 全局配置
 
 ```yaml
 spring:
@@ -565,7 +565,7 @@ spring:
         default_batch_fetch_size: 30  # 全局默认批量大小
 ```
 
-### 工作方式与 SQL 示例
+### 2.4.4 工作方式与 SQL 示例
 
 假设有 25 个 Author，`@BatchSize(size = 10)`，访问每个 Author 的 books：
 
@@ -589,7 +589,7 @@ SELECT * FROM book WHERE author_id IN (21, 22, 23, 24, 25);
 - @BatchSize(10)：1 + 3 = 4 条 SQL
 - @BatchSize(25+)：1 + 1 = 2 条 SQL
 
-### size 设置建议
+### 2.4.5 size 设置建议
 
 | size | 优缺点 |
 |------|--------|
@@ -599,7 +599,7 @@ SELECT * FROM book WHERE author_id IN (21, 22, 23, 24, 25);
 
 **最佳实践**：全局 `default_batch_fetch_size = 30`，特殊场景通过 `@BatchSize` 覆盖。
 
-### @BatchSize 与 @Fetch(FetchMode.SUBSELECT) 对比
+### 2.4.6 @BatchSize 与 @Fetch(FetchMode.SUBSELECT) 对比
 
 | 特性 | @BatchSize | @Fetch(SUBSELECT) |
 |------|-----------|-------------------|
@@ -611,7 +611,7 @@ SELECT * FROM book WHERE author_id IN (21, 22, 23, 24, 25);
 
 ## 2.5 @Fetch(FetchMode.SUBSELECT)
 
-### 子查询抓取原理
+### 2.5.1 子查询抓取原理
 
 将原始查询作为子查询，一次性加载所有关联数据：
 
@@ -624,7 +624,7 @@ public class Author {
 }
 ```
 
-### SQL 示例
+### 2.5.2 SQL 示例
 
 ```java
 // 查询 name 包含"张"的 Author
@@ -649,13 +649,13 @@ WHERE author_id IN (
 );
 ```
 
-### 适用场景
+### 2.5.3 适用场景
 
 - **查询大量父实体**时（如列表页面），`@BatchSize` 仍会产生多条 SQL，`SUBSELECT` 仅 2 条
 - 原始查询条件**有过滤**（WHERE 子句），子查询能复用该条件
 - 关注**SQL 数量最小化**而非每批 SQL 开销
 
-### 与 @BatchSize 的决策表
+### 2.5.4 与 @BatchSize 的决策表
 
 | 场景 | 推荐策略 |
 |------|---------|
@@ -664,7 +664,7 @@ WHERE author_id IN (
 | 每次访问 50+ 父实体且原始查询有复杂过滤条件 | `@Fetch(SUBSELECT)` |
 | 父实体数量不确定（如搜索结果） | `@Fetch(SUBSELECT)` 或 `JOIN FETCH` |
 
-### 配置示例
+### 2.5.5 配置示例
 
 ```java
 @Entity
@@ -686,7 +686,7 @@ public class Order {
 
 ## 2.6 各抓取策略对比与决策表
 
-### 完整对比
+### 2.6.1 完整对比
 
 | 策略 | SQL 条数（10 父实体） | 实现方式 | 优点 | 缺点 |
 |------|---------------------|---------|------|------|
@@ -697,7 +697,7 @@ public class Order {
 | **EAGER** | 1 条 | 映射配置 | 简单直接 | 每次查询都加载；无法按需选择 |
 | **LAZY（无优化）** | 1+10=11 条 | 映射配置 | 按需加载 | N+1 问题 |
 
-### 场景选择决策表
+### 2.6.2 场景选择决策表
 
 ```
 场景：用户列表页，每页 20 条，显示用户名、文章数、粉丝数
@@ -717,7 +717,7 @@ public class Order {
       → DTO 投影 + 批量查询，或 StatelessSession
 ```
 
-### 组合使用策略
+### 2.6.3 组合使用策略
 
 ```java
 @Entity
@@ -757,7 +757,7 @@ List<User> users = entityManager.createQuery("FROM User", User.class)
 
 ## 3.1 DTO 投影
 
-### 概述
+### 3.1.1 概述
 
 实体查询加载完整实体对象（纳入持久化上下文管理），而 DTO 投影只加载所需字段，性能优势显著：
 
@@ -769,7 +769,7 @@ List<User> users = entityManager.createQuery("FROM User", User.class)
 | 可控字段 | 否（默认 SELECT *） | 是（仅 SELECT 所需列） |
 | 后续更新 | 支持 | 不支持（只读） |
 
-### SELECT NEW 构造器表达式
+### 3.1.2 SELECT NEW 构造器表达式
 
 ```java
 // 定义 DTO
@@ -803,7 +803,7 @@ FROM author a INNER JOIN book b ON a.id = b.author_id
 GROUP BY a.name, b.title;
 ```
 
-### Hibernate 6+ TupleTransformer
+### 3.1.3 Hibernate 6+ TupleTransformer
 
 Hibernate 6 增强了 `TupleTransformer` 支持，可以将 `Object[]` 直接转换为 DTO：
 
@@ -825,7 +825,7 @@ List<AuthorBookDTO> dtos = session.createQuery(
 )).getResultList();
 ```
 
-### Tuple 查询
+### 3.1.4 Tuple 查询
 
 ```java
 // 使用 jakarta.persistence.Tuple 获取类型安全的结果
@@ -841,7 +841,7 @@ for (Tuple tuple : tuples) {
 }
 ```
 
-### Object[] 投影
+### 3.1.5 Object[] 投影
 
 ```java
 // 最简单方式：返回 Object 数组
@@ -855,7 +855,7 @@ for (Object[] row : results) {
 }
 ```
 
-### DTO 投影的性能优势
+### 3.1.6 DTO 投影的性能优势
 
 ```java
 // 场景：查询 10000 条 Author 的 name + bookCount
@@ -885,7 +885,7 @@ List<AuthorStatDTO> dtos = session.createQuery(
 
 ## 3.2 只读查询优化
 
-### @QueryHint(name = "org.hibernate.readOnly", value = "true")
+### 3.2.1 @QueryHint(name = "org.hibernate.readOnly", value = "true")
 
 ```java
 // Spring Data JPA
@@ -899,7 +899,7 @@ List<Author> authors = session.createQuery("FROM Author", Author.class)
     .getResultList();
 ```
 
-### Session.setDefaultReadOnly(true)
+### 3.2.2 Session.setDefaultReadOnly(true)
 
 ```java
 Session session = sessionFactory.openSession();
@@ -915,7 +915,7 @@ author.setName("New Name");
 session.flush();  // 不会产生 UPDATE 语句
 ```
 
-### @Immutable 实体
+### 3.2.3 @Immutable 实体
 
 ```java
 @Entity
@@ -936,7 +936,7 @@ public class Country {
 3. `session.flush()` 时忽略此实体
 4. 适用于字典表、历史记录表等一旦插入就不修改的数据
 
-### 只读优化效果总结
+### 3.2.4 只读优化效果总结
 
 | 机制 | 快照保存 | 脏检查 | UPDATE 生成 | 适用场景 |
 |------|---------|--------|------------|---------|
@@ -950,7 +950,7 @@ public class Country {
 
 ## 3.3 分页优化
 
-### 传统分页（OFFSET/LIMIT）的性能问题
+### 3.3.1 传统分页（OFFSET/LIMIT）的性能问题
 
 ```java
 // 传统分页
@@ -968,7 +968,7 @@ SELECT * FROM author ORDER BY id LIMIT 20 OFFSET 100000;
 
 **问题**：数据库必须扫描并跳过前 100000 行才能返回结果。OFFSET 越大，性能越差。
 
-### 游标分页（Keyset Pagination / Seek Method）
+### 3.3.2 游标分页（Keyset Pagination / Seek Method）
 
 ```java
 // 游标分页：基于上一页最后一条记录的排序字段
@@ -996,7 +996,7 @@ SELECT * FROM author WHERE id > 100000 ORDER BY id LIMIT 20;
 - 排序字段必须唯一（否则可能漏数据）
 - 多字段排序时，WHERE 条件较复杂
 
-### 游标分页的完整实现
+### 3.3.3 游标分页的完整实现
 
 ```java
 // 封装游标分页工具
@@ -1031,7 +1031,7 @@ List<Order> orders = session.createQuery(
  .getResultList();
 ```
 
-### 大数据量分页统计优化
+### 3.3.4 大数据量分页统计优化
 
 传统 COUNT 查询在大数据量下也很慢：
 
@@ -1071,7 +1071,7 @@ public Long countActiveAuthors() {
 
 ## 3.4 查询计划缓存
 
-### 概念
+### 3.4.1 概念
 
 Hibernate 在执行 HQL/JPQL/Criteria 查询时，需要将查询字符串编译为 SQL（查询计划）。这个编译过程有开销，因此 Hibernate 缓存编译结果。
 
@@ -1084,7 +1084,7 @@ session.createQuery("FROM Author WHERE name = :name")
     .setParameter("name", "李四").getResultList();  // 命中缓存
 ```
 
-### 查询计划缓存大小配置
+### 3.4.2 查询计划缓存大小配置
 
 ```yaml
 spring:
@@ -1096,7 +1096,7 @@ spring:
           plan_parameter_metadata_max_size: 128  # 参数元数据缓存大小
 ```
 
-### 参数化查询的重要性
+### 3.4.3 参数化查询的重要性
 
 ```java
 // 好：参数化查询，共享查询计划
@@ -1112,7 +1112,7 @@ String hql = "FROM Author WHERE id IN (" +
 // ids 的元素数量不同 = 不同的查询计划
 ```
 
-### IN 子句参数填充优化
+### 3.4.4 IN 子句参数填充优化
 
 ```yaml
 spring:
@@ -1141,7 +1141,7 @@ WHERE id IN (?, ?, ?, ?, ?, ?, ?, ?)-- 填充到 8
 
 **效果**：IN 子句的查询计划从 O(N) 降低到 O(log N)。
 
-### 查询计划缓存内存占用
+### 3.4.5 查询计划缓存内存占用
 
 每个查询计划占用内存约 **1~2 KB**。假设 2048 个缓存条目：
 - 内存占用：约 2~4 MB
@@ -1160,7 +1160,7 @@ System.out.printf("查询计划缓存命中率: %.2f%%%n", hitRatio * 100);
 
 ## 3.5 统计信息
 
-### Hibernate Statistics 启用
+### 3.5.1 Hibernate Statistics 启用
 
 ```yaml
 spring:
@@ -1176,7 +1176,7 @@ Statistics stats = sessionFactory.getStatistics();
 stats.setStatisticsEnabled(true);
 ```
 
-### 关键指标
+### 3.5.2 关键指标
 
 ```java
 Statistics stats = sessionFactory.getStatistics();
@@ -1217,7 +1217,7 @@ long sessionCloseCount = stats.getSessionCloseCount();
 stats.logSummary();  // 输出统计摘要到日志
 ```
 
-### 监控方式
+### 3.5.3 监控方式
 
 **JMX 导出**：
 
@@ -1259,7 +1259,7 @@ management:
 
 ## 4.1 JDBC 批处理
 
-### 核心配置
+### 4.1.1 核心配置
 
 ```yaml
 spring:
@@ -1273,7 +1273,7 @@ spring:
         batch_versioned_data: true        # 版本化实体也参与批处理
 ```
 
-### 批处理原理
+### 4.1.2 批处理原理
 
 ```java
 // 无批处理：每次 persist 立即执行 INSERT
@@ -1306,7 +1306,7 @@ INSERT INTO book VALUES (?, ?);   -- 合并到同一批
 INSERT INTO book VALUES (?, ?);   -- ✓ 合并
 ```
 
-### IDENTITY 主键的限制
+### 4.1.3 IDENTITY 主键的限制
 
 ```java
 // 问题：IDENTITY 主键生成策略无法批处理
@@ -1334,7 +1334,7 @@ public class Product {
 
 `allocationSize = 50` 表示每次从数据库获取 50 个 ID 缓存在内存中，显著减少数据库交互。
 
-### 批处理性能对比
+### 4.1.4 批处理性能对比
 
 ```
 环境：本地 MySQL，插入 10000 条记录
@@ -1351,7 +1351,7 @@ public class Product {
 
 ## 4.2 批量持久化
 
-### 循环 persist + 定期 flush + clear 模式
+### 4.2.1 循环 persist + 定期 flush + clear 模式
 
 ```java
 @Transactional
@@ -1376,7 +1376,7 @@ public void batchImport(List<BookDTO> bookDTOs) {
 }
 ```
 
-### 关键点解释
+### 4.2.2 关键点解释
 
 | 操作 | 作用 |
 |------|------|
@@ -1385,7 +1385,7 @@ public void batchImport(List<BookDTO> bookDTOs) {
 | `@Transactional` | 确保整个导入在同一个事务中，享受 JDBC 批处理优化 |
 | `batchSize=50` | 根据内存和业务设定。太小 flush 频繁，太大内存压力大 |
 
-### 内存释放原理
+### 4.2.3 内存释放原理
 
 ```
 无 flush+clear：
@@ -1401,7 +1401,7 @@ public void batchImport(List<BookDTO> bookDTOs) {
 
 ## 4.3 StatelessSession
 
-### 概念与特点
+### 4.3.1 概念与特点
 
 `StatelessSession` 是 Hibernate 提供的**无持久化上下文**的轻量级 Session，专为大批量操作设计：
 
@@ -1416,13 +1416,13 @@ public void batchImport(List<BookDTO> bookDTOs) {
 | 集合处理 | 托管 | **需手动处理** |
 | 速度 | 基准 | **更快**（省略大量 ORM 开销） |
 
-### 适用场景
+### 4.3.2 适用场景
 
 - **大批量数据导入**（ETL、数据迁移）
 - **批量导出**（导出数百万行到文件）
 - **纯 JDBC 替代**（仍享受映射配置的便利）
 
-### 完整代码示例
+### 4.3.3 完整代码示例
 
 ```java
 public void bulkImportUsingStatelessSession(List<Author> authors, List<Book> books) {
@@ -1476,7 +1476,7 @@ public void bulkImportWithBatch(List<Author> authors) {
 }
 ```
 
-### 使用限制
+### 4.3.4 使用限制
 
 ```java
 // 限制 1：insert() 后不返回生成的 ID
@@ -1505,7 +1505,7 @@ author.setName("李四");
 
 ## 4.4 HQL 批量操作
 
-### HQL UPDATE / DELETE
+### 4.4.1 HQL UPDATE / DELETE
 
 ```java
 // 批量更新
@@ -1521,7 +1521,7 @@ int deletedCount = session.createMutationQuery(
  .executeUpdate();
 ```
 
-### 绕过 PersistenceContext 的问题
+### 4.4.2 绕过 PersistenceContext 的问题
 
 HQL 批量操作**直接作用于数据库**，不经过持久化上下文：
 
@@ -1544,7 +1544,7 @@ session.clear();
 session.createMutationQuery("UPDATE ...").executeUpdate();
 ```
 
-### 批量操作 + Session.clear() 的完整模式
+### 4.4.3 批量操作 + Session.clear() 的完整模式
 
 ```java
 @Transactional
@@ -1570,7 +1570,7 @@ public int batchUpdateBookPrices(int year, double multiplier) {
 }
 ```
 
-### MutationQuery（Hibernate 6+）
+### 4.4.4 MutationQuery（Hibernate 6+）
 
 Hibernate 6 将 INSERT/UPDATE/DELETE 查询统一为 `MutationQuery`：
 
@@ -1598,7 +1598,7 @@ int bulkUpdatePrices(@Param("multiplier") double multiplier, @Param("year") int 
 
 ## 5.1 连接池配置
 
-### HikariCP 推荐配置
+### 5.1.1 HikariCP 推荐配置
 
 HikariCP 是目前 Java 生态中性能最优的连接池，Spring Boot 2.x+ 默认使用 HikariCP：
 
@@ -1622,7 +1622,7 @@ spring:
       initialization-fail-timeout: 1      # 连接池初始化失败快速失败
 ```
 
-### 连接池大小设置原则
+### 5.1.2 连接池大小设置原则
 
 公式：
 
@@ -1646,7 +1646,7 @@ spring:
 - 高并发 Web 应用：20~30
 - 超过 50 需要审视：是否存在连接泄漏、事务边界过大
 
-### 连接超时与泄漏检测
+### 5.1.3 连接超时与泄漏检测
 
 ```yaml
 spring:
@@ -1666,7 +1666,7 @@ for conn45995719 on thread http-nio-8080-exec-3 during 65021ms,
 stack trace follows...
 ```
 
-### 配置示例（完整）
+### 5.1.4 配置示例（完整）
 
 ```java
 @Configuration
@@ -1705,7 +1705,7 @@ public class DataSourceConfig {
 
 ## 5.2 事务优化
 
-### 事务边界尽量短
+### 5.2.1 事务边界尽量短
 
 ```java
 // 差的实践：事务覆盖整个 HTTP 请求
@@ -1741,7 +1741,7 @@ public class OrderService {
 }
 ```
 
-### 读写分离：只读事务
+### 5.2.2 读写分离：只读事务
 
 ```java
 // Spring 声明式只读事务
@@ -1786,7 +1786,7 @@ public DataSource routingDataSource(
 }
 ```
 
-### FlushMode 设置
+### 5.2.3 FlushMode 设置
 
 ```java
 // 方式 1：通过 Session 设置
@@ -1808,7 +1808,7 @@ public void bulkInsert(List<Order> orders) {
 }
 ```
 
-### 事务超时设置
+### 5.2.4 事务超时设置
 
 ```java
 // 方式 1：@Transactional 超时（秒）
@@ -1832,7 +1832,7 @@ spring:
 
 ## 5.3 Open Session in View 的取舍
 
-### OSIV 开启的行为
+### 5.3.1 OSIV 开启的行为
 
 ```yaml
 spring:
@@ -1852,7 +1852,7 @@ spring:
 连接占用时间 = 请求总时间
 ```
 
-### OSIV 关闭的行为
+### 5.3.2 OSIV 关闭的行为
 
 ```yaml
 spring:
@@ -1867,7 +1867,7 @@ spring:
 3. → Controller → View 渲染（无法触发懒加载 → LazyInitializationException）
 ```
 
-### 懒加载异常与解决方案
+### 5.3.3 懒加载异常与解决方案
 
 OSIV 关闭后的常见异常：
 
@@ -1920,7 +1920,7 @@ public Order getOrderDetail(Long orderId) {
 }
 ```
 
-### 现代最佳实践
+### 5.3.4 现代最佳实践
 
 ```
 推荐：关闭 OSIV
@@ -1943,7 +1943,7 @@ public Order getOrderDetail(Long orderId) {
 
 ## 6.1 懒加载策略
 
-### @ManyToOne 必须设为 LAZY
+### 6.1.1 @ManyToOne 必须设为 LAZY
 
 JPA 规范中 `@ManyToOne` 和 `@OneToOne` **默认是 EAGER**！这是最常见的性能陷阱。
 
@@ -1975,7 +1975,7 @@ spring:
 
 注意：JPA/Hibernate 没有"全局默认 LAZY"的配置项，**必须逐个**设置 `fetch = FetchType.LAZY`。
 
-### @OneToOne 懒加载的局限性
+### 6.1.2 @OneToOne 懒加载的局限性
 
 ```java
 @Entity
@@ -2004,7 +2004,7 @@ public class UserProfile {
 
 **解决方案**：字节码增强（`@LazyToOne(NO_PROXY)`）+ 构建时增强。
 
-### @Basic(fetch = LAZY)
+### 6.1.3 @Basic(fetch = LAZY)
 
 ```java
 @Entity
@@ -2039,7 +2039,7 @@ public class Article {
 </plugin>
 ```
 
-### 不能使用 LAZY 的场景
+### 6.1.4 不能使用 LAZY 的场景
 
 ```java
 // 1. final class → 无法创建代理
@@ -2067,7 +2067,7 @@ public class Entity {
 
 ## 6.2 @DynamicUpdate / @DynamicInsert
 
-### 概念与配置
+### 6.2.1 概念与配置
 
 ```java
 @Entity
@@ -2089,7 +2089,7 @@ public class Product {
 }
 ```
 
-### 生成的 SQL 差异
+### 6.2.2 生成的 SQL 差异
 
 ```sql
 -- 无 @DynamicUpdate：更新所有列
@@ -2112,7 +2112,7 @@ UPDATE product SET
 WHERE id = ?;                          -- 仅 3 个 SET 参数
 ```
 
-### 优缺点分析
+### 6.2.3 优缺点分析
 
 | 优点 | 缺点 |
 |------|------|
@@ -2121,7 +2121,7 @@ WHERE id = ?;                          -- 仅 3 个 SET 参数
 | 减少索引更新开销 | 更新语句编译次数增加 |
 | 减少 binlog/redolog 大小 | 内存占用可能反增（计划缓存膨胀） |
 
-### 适用场景
+### 6.2.4 适用场景
 
 ```
 适合 @DynamicUpdate：
@@ -2137,7 +2137,7 @@ WHERE id = ?;                          -- 仅 3 个 SET 参数
 
 ## 6.3 集合选择
 
-### Set vs List（Bag）深度对比
+### 6.3.1 Set vs List（Bag）深度对比
 
 ```java
 // 方式 1：Set
@@ -2160,7 +2160,7 @@ private List<Book> books = new ArrayList<>();
 // 缺点：不支持多个集合同时 FETCH、重加载顺序不确定
 ```
 
-### List + @OrderColumn 的性能陷阱
+### 6.3.2 List + @OrderColumn 的性能陷阱
 
 ```java
 // 假设已有 [A, B, C, D, E] 五个元素
@@ -2176,7 +2176,7 @@ books.add(1, newBook);
 // → 1 次 INSERT + 4 次 UPDATE！
 ```
 
-### 选择决策表
+### 6.3.3 选择决策表
 
 | 场景 | 推荐集合 | 原因 |
 |------|---------|------|
@@ -2186,7 +2186,7 @@ books.add(1, newBook);
 | 顺序重要，元素数量小（<50） | `List` + `@OrderColumn` | 索引更新开销可接受 |
 | 顺序重要，元素数量大 | `List` + `@OrderBy`（基于字段排序） | 不维护索引列，基于自然顺序 |
 
-### @OrderBy 替代 @OrderColumn
+### 6.3.4 @OrderBy 替代 @OrderColumn
 
 ```java
 // 基于实体字段排序，不维护索引列
@@ -2223,7 +2223,7 @@ Hibernate 字节码增强是在编译或类加载阶段修改实体类的字节�
 
 ## 7.2 增强方式
 
-### 构建时增强（Maven）
+### 7.2.1 构建时增强（Maven）
 
 ```xml
 <build>
@@ -2254,7 +2254,7 @@ Hibernate 字节码增强是在编译或类加载阶段修改实体类的字节�
 </build>
 ```
 
-### Gradle 配置
+### 7.2.2 Gradle 配置
 
 ```groovy
 buildscript {
@@ -2274,7 +2274,7 @@ hibernate {
 }
 ```
 
-### 运行时增强（Java Agent）
+### 7.2.3 运行时增强（Java Agent）
 
 ```bash
 java -javaagent:path/to/hibernate-enhancer-${version}.jar \
@@ -2283,7 +2283,7 @@ java -javaagent:path/to/hibernate-enhancer-${version}.jar \
 
 运行时增强适用于不能修改构建流程的场景，但会增加启动时间。
 
-### 增强效果验证
+### 7.2.4 增强效果验证
 
 ```java
 // 验证脏检查增强
@@ -2305,7 +2305,7 @@ public class VerificationTest {
 }
 ```
 
-### 配置项
+### 7.2.5 配置项
 
 ```yaml
 spring:
@@ -2320,7 +2320,7 @@ spring:
 
 ## 7.3 脏检查优化原理
 
-### 默认方式：全字段快照比较
+### 7.3.1 默认方式：全字段快照比较
 
 ```
 1. 从数据库加载实体时 → 保存所有字段的快照（Object[]）
@@ -2338,7 +2338,7 @@ spring:
 - flush 时需要遍历所有实体的所有字段
 - 对于宽实体（很多列）和大量实体（10000+），开销很大
 
-### 增强方式：属性级脏跟踪
+### 7.3.2 增强方式：属性级脏跟踪
 
 ```
 1. 增强后，每个 setter 自动记录变化的字段：
@@ -2358,7 +2358,7 @@ spring:
 - flush 时无需遍历所有字段
 - 配合 `@DynamicUpdate` 效果最佳
 
-### @OptimisticLocking 配合优化
+### 7.3.3 @OptimisticLocking 配合优化
 
 ```java
 @Entity
@@ -2395,7 +2395,7 @@ WHERE id = ? AND version = ? AND price = ?;
 
 ## 8.1 索引策略
 
-### Hibernate 自动索引
+### 8.1.1 Hibernate 自动索引
 
 Hibernate 默认为主键列自动创建索引。外键列需要手动创建索引：
 
@@ -2424,7 +2424,7 @@ public class Order {
 }
 ```
 
-### 外键列必须创建索引
+### 8.1.2 外键列必须创建索引
 
 ```java
 // 差：外键列没有索引
@@ -2449,7 +2449,7 @@ private Author author;
 public class Book { ... }
 ```
 
-### 复合索引
+### 8.1.3 复合索引
 
 ```java
 @Entity
@@ -2482,7 +2482,7 @@ ORDER BY created_at;
 SELECT * FROM orders WHERE status = 'PENDING';
 ```
 
-### 索引对查询性能的影响
+### 8.1.4 索引对查询性能的影响
 
 | 场景 | 无索引 | 有索引 |
 |------|--------|--------|
@@ -2494,7 +2494,7 @@ SELECT * FROM orders WHERE status = 'PENDING';
 
 ## 8.2 DDL 优化
 
-### 使用 Flyway/Liquibase 管理 Schema
+### 8.2.1 使用 Flyway/Liquibase 管理 Schema
 
 **生产环境严禁使用 `hbm2ddl.auto`**：
 
@@ -2539,7 +2539,7 @@ PARTITION BY RANGE (YEAR(created_at)) (
 );
 ```
 
-### 分区表
+### 8.2.2 分区表
 
 ```java
 @Entity
@@ -2576,7 +2576,7 @@ List<Order> orders = session.createQuery(
     .getResultList();
 ```
 
-### 物化视图
+### 8.2.3 物化视图
 
 ```java
 // 定义一个只读实体映射到物化视图
@@ -2616,7 +2616,7 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY mv_author_stats;
 
 ## 8.3 数据库连接参数优化
 
-### MySQL 连接参数
+### 8.3.1 MySQL 连接参数
 
 ```yaml
 spring:
@@ -2649,7 +2649,7 @@ spring:
 | `rewriteBatchedStatements` | 将多条 INSERT 重写为单条多 VALUES 语句 | true |
 | `useServerPrepStmts` | 使用服务端预编译 | true（减少 SQL 注入风险） |
 
-### PostgreSQL 连接参数
+### 8.3.2 PostgreSQL 连接参数
 
 ```yaml
 spring:
@@ -2664,7 +2664,7 @@ spring:
       reWriteBatchedInserts=true
 ```
 
-### rewriteBatchedStatements 的重要作用
+### 8.3.3 rewriteBatchedStatements 的重要作用
 
 ```sql
 -- rewriteBatchedStatements = false（逐条 INSERT）
@@ -2687,7 +2687,7 @@ INSERT INTO book (title, author_id) VALUES
 
 ## 9.1 性能测试方法
 
-### JMH（Java Microbenchmark Harness）
+### 9.1.1 JMH（Java Microbenchmark Harness）
 
 ```java
 @BenchmarkMode(Mode.Throughput)
@@ -2754,7 +2754,7 @@ public class FetchStrategyBenchmark {
 }
 ```
 
-### 集成测试中的 SQL 断言
+### 9.1.2 集成测试中的 SQL 断言
 
 ```java
 @SpringBootTest
@@ -2802,7 +2802,7 @@ class AuthorRepositoryPerformanceTest {
 }
 ```
 
-### datasource-proxy 配置
+### 9.1.3 datasource-proxy 配置
 
 ```java
 @Configuration
@@ -2822,7 +2822,7 @@ public class DataSourceProxyConfig {
 }
 ```
 
-### p6spy 工具
+### 9.1.4 p6spy 工具
 
 ```xml
 <dependency>
@@ -2855,7 +2855,7 @@ public class P6SpyConfig {
 
 ## 9.2 生产环境监控
 
-### Hibernate Statistics + JMX
+### 9.2.1 Hibernate Statistics + JMX
 
 ```yaml
 spring:
@@ -2879,7 +2879,7 @@ spring:
 | `ConnectCount` | 获取连接次数 | 与 Session 数对比 |
 | `OptimisticFailureCount` | 乐观锁冲突次数 | > 0 需关注 |
 
-### Spring Boot Actuator + Micrometer
+### 9.2.2 Spring Boot Actuator + Micrometer
 
 ```xml
 <dependency>
@@ -2927,7 +2927,7 @@ rate(hibernate_query_cache_hit_total[5m])
 / (rate(hibernate_query_cache_hit_total[5m]) + rate(hibernate_query_cache_miss_total[5m]))
 ```
 
-### Hibernate 内置 Micrometer 集成（Hibernate 5.4+）
+### 9.2.3 Hibernate 内置 Micrometer 集成（Hibernate 5.4+）
 
 ```java
 // Hibernate 6 原生支持 Micrometer
@@ -2951,7 +2951,7 @@ public class HibernateMetricsConfig {
 }
 ```
 
-### 慢查询检测（Hibernate 6+）
+### 9.2.4 慢查询检测（Hibernate 6+）
 
 ```yaml
 spring:

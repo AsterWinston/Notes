@@ -1,8 +1,8 @@
 ﻿# 1.分布式缓存
 
-## 1.1Redis持久化
+## 1.1 Redis持久化
 
-### 1.1.1RDB演示
+### 1.1.1 RDB演示
 
 - 触发方式：`save`/`bgsave`，或配置 `save 900 1`。
 - 生成文件：`dump.rdb`（默认在 `dir` 配置目录）。
@@ -15,7 +15,7 @@ save 300 10
 save 60 10000
 ```
 
-#### bgsave 内部流程详解
+**bgsave 内部流程详解**
 
 `bgsave` 命令执行后，Redis 内部完成以下步骤：
 
@@ -32,7 +32,7 @@ save 60 10000
 redis-cli INFO persistence | grep rdb
 ```
 
-#### RDB 配置参数完整表
+**RDB 配置参数完整表**
 
 | 参数 | 默认值 | 说明 |
 |---|---|---|
@@ -47,7 +47,7 @@ redis-cli INFO persistence | grep rdb
 | `stop-writes-on-bgsave-error yes` | `yes` | bgsave 失败时是否拒绝写入（生产建议 yes） |
 | `rdb-del-sync-files no` | `no` | 主从全量同步后是否删除主节点上的 RDB 文件 |
 
-#### RDB COW 内存使用分析
+**RDB COW 内存使用分析**
 
 `fork()` 使用的是 Copy On Write 机制：
 
@@ -61,7 +61,7 @@ redis-cli INFO persistence | grep rdb
   - 关闭 THP（Transparent Huge Pages）：`echo never > /sys/kernel/mm/transparent_hugepage/enabled`。
   - 设置 `vm.overcommit_memory = 1`：`sysctl vm.overcommit_memory=1`。
 
-#### RDB 文件恢复步骤
+**RDB 文件恢复步骤**
 
 ```bash
 # 1. 确认 RDB 文件位置
@@ -90,7 +90,7 @@ redis-cli INFO persistence | grep rdb_last_load_time
 tail -f /var/log/redis/redis.log
 ```
 
-#### RDB 故障排查：bgsave 失败怎么办
+**RDB 故障排查：bgsave 失败怎么办**
 
 ```bash
 # 1. 查看错误信息
@@ -109,13 +109,13 @@ redis-cli BGSAVE
 
 ---
 
-### 1.1.2RDB的fork原理
+### 1.1.2 RDB的fork原理
 
 - `bgsave` 会 fork 子进程写 RDB。
 - 基于 Copy On Write（COW），主进程继续处理请求。
 - 数据量大时 fork 可能导致短暂阻塞。
 
-#### 深入理解 fork 阻塞
+**深入理解 fork 阻塞**
 
 - `fork()` 调用会复制父进程的页表（Page Table），页表大小 = 内存大小 / 4KB x 页表项大小。
 - 10GB 内存的 Redis，页表约 2.5GB / 4KB = 约 640K 个页表项，fork 时间约 50~150ms。
@@ -124,7 +124,7 @@ redis-cli BGSAVE
 
 ---
 
-### 1.1.3AOF演示
+### 1.1.3 AOF演示
 
 - 开启 AOF：`appendonly yes`。
 - 同步策略：`appendfsync everysec`（推荐）。
@@ -136,7 +136,7 @@ appendonly yes
 appendfsync everysec
 ```
 
-#### AOF Rewrite 流程详解
+**AOF Rewrite 流程详解**
 
 AOF 重写是把内存中的数据等效转换为写入命令，生成一个新的 AOF 文件，替代旧的大文件。
 
@@ -150,7 +150,7 @@ AOF 重写是把内存中的数据等效转换为写入命令，生成一个新�
 
 整个重写过程不阻塞主进程的读写请求。
 
-#### AOF 配置参数完整表
+**AOF 配置参数完整表**
 
 | 参数 | 默认值 | 说明 |
 |---|---|---|
@@ -165,7 +165,7 @@ AOF 重写是把内存中的数据等效转换为写入命令，生成一个新�
 | `aof-use-rdb-preamble yes` | `yes` | 是否开启 RDB+AOF 混合持久化（Redis 4.0+） |
 | `aof-timestamp-enabled no` | `no` | AOF 是否记录时间戳（Redis 7.0+） |
 
-#### AOF fsync 三种模式对比
+**AOF fsync 三种模式对比**
 
 | 模式 | 性能 | 数据安全 | 工作原理 |
 |---|---|---|---|
@@ -180,13 +180,13 @@ AOF 重写是把内存中的数据等效转换为写入命令，生成一个新�
 
 生产环境推荐 `appendfsync everysec`。
 
-#### AOF 文件大小估算
+**AOF 文件大小估算**
 
 - 估算公式：AOF 大小 ≈ 平均命令长度 x 写入次数 x (1 + rewrite percentage 阈值)
 - 每秒 1000 次 SET（平均 50 字节），每小时 AOF 增长约 180MB
 - 开启 rewrite 后，最终 AOF 文件约等于 RDB 大小的 1.1~1.3 倍
 
-#### AOF 损坏修复步骤
+**AOF 损坏修复步骤**
 
 ```bash
 # 1. 备份当前 AOF
@@ -206,13 +206,13 @@ redis-check-rdb appendonly.aof
 
 ---
 
-### 1.1.4RDB和AOF的对比
+### 1.1.4 RDB和AOF的对比
 
 - RDB：恢复快、文件小，可能丢数据。
 - AOF：数据更安全，恢复较慢，文件可能更大。
 - 生产常用：RDB + AOF 混合。
 
-#### 详细对比表
+**详细对比表**
 
 | 维度 | RDB | AOF |
 |---|---|---|
@@ -226,7 +226,7 @@ redis-check-rdb appendonly.aof
 
 ---
 
-### 1.1.5RDB+AOF混合持久化 (Redis 4.0+)
+### 1.1.5 RDB+AOF混合持久化 (Redis 4.0+)
 
 混合持久化结合了两者优势：
 - **AOF 文件结构**：前半部分是 RDB 格式的当前数据快照，后半部分是 RDB 之后追加的 AOF 命令。
@@ -246,7 +246,7 @@ aof-use-rdb-preamble yes
 
 ---
 
-### 1.1.6持久化选型决策树
+### 1.1.6 持久化选型决策树
 
 ```
 需要持久化吗？
@@ -268,20 +268,20 @@ aof-use-rdb-preamble yes
 
 ---
 
-## 1.2Redis主从
+## 1.2 Redis主从
 
-### 1.2.1主从集群结构
+### 1.2.1 主从集群结构
 
 - 一主多从。
 - 主节点写入，从节点只读复制。
 - 读写分离提高读性能。
 
-### 1.2.2搭建主从集群
+### 1.2.2 搭建主从集群
 
 - 从节点执行：`replicaof <master-ip> <port>`。
 - 主节点可设置密码：`requirepass`，从节点使用 `masterauth`。
 
-#### Docker-Compose 完整搭建（1 主 2 从）
+**Docker-Compose 完整搭建（1 主 2 从）**
 
 ```yaml
 version: '3.8'
@@ -328,7 +328,7 @@ networks:
     driver: bridge
 ```
 
-#### 验证主从搭建
+**验证主从搭建**
 
 ```bash
 # 1. 启动
@@ -354,7 +354,7 @@ redis-cli -a redis123 -p 6380 SET test:key2 "from-slave"
 # 报错: (error) READONLY You can't write against a read only replica.
 ```
 
-#### 读写分离测试（Spring Boot Lettuce）
+**读写分离测试（Spring Boot Lettuce）**
 
 ```java
 @Configuration
@@ -379,13 +379,13 @@ public class RedisReplicaConfig {
 
 ---
 
-### 1.2.3主从的全量同步原理
+### 1.2.3 主从的全量同步原理
 
 - 从节点发送 `psync`。
 - 主节点 `bgsave` 生成 RDB 并发送给从节点。
 - 同步过程中主节点会记录增量命令到复制缓冲区。
 
-#### 全量同步详细流程（replid + offset 机制）
+**全量同步详细流程（replid + offset 机制）**
 
 每个 Redis 实例有两个关键标识：
 - **replid（Replication ID）**：一个 40 字节的伪随机字符串，标识当前数据集。主节点每次重启或成为新主时会生成新的 replid。
@@ -411,7 +411,7 @@ public class RedisReplicaConfig {
 12. 主节点将复制缓冲区中累积的增量命令发送给从节点。
 13. 从节点逐条执行，直到 offset 追上主节点。
 
-#### 复制缓冲区与复制积压缓冲区
+**复制缓冲区与复制积压缓冲区**
 
 - **replication buffer（复制缓冲区）**：每个从节点独立分配，用于存储 RDB 生成期间的写命令，大小由 `client-output-buffer-limit replica 256mb 64mb 60` 决定。
 - **repl-backlog（复制积压缓冲区）**：环形缓冲区，主节点只有一个，所有从节点共享，用于支持部分重同步。大小由 `repl-backlog-size` 决定（默认 1MB），生产建议至少 32mb ~ 128mb。
@@ -421,7 +421,7 @@ repl-backlog-size 128mb
 repl-backlog-ttl 3600
 ```
 
-#### repl-backlog size 计算指南
+**repl-backlog size 计算指南**
 
 估算公式：
 ```
@@ -436,12 +436,12 @@ backlog_size = 5000 x 100 x 60 = 30,000,000 字节 ~ 30MB
 
 ---
 
-### 1.2.4增量同步原理
+### 1.2.4 增量同步原理
 
 - 依赖 `replid` 与 `offset`。
 - 网络抖动后从节点携带 offset，主节点发送 backlog 中的增量命令。
 
-#### 增量同步（部分重同步）详细流程
+**增量同步（部分重同步）详细流程**
 
 1. 从节点与主节点网络断开后重新连接。
 2. 从节点发送 `PSYNC <replid> <offset>` 请求增量同步。
@@ -449,7 +449,7 @@ backlog_size = 5000 x 100 x 60 = 30,000,000 字节 ~ 30MB
 4. 如果满足条件，主节点返回 `CONTINUE`，并将 backlog 中 offset 之后的命令发送给从节点。
 5. 如果 backlog 中已经找不到该 offset（说明断线太长，backlog 被覆盖了），则只能进行全量同步。
 
-#### 常见复制问题与解决方案
+**常见复制问题与解决方案**
 
 **问题 1：复制超时**
 - 现象：`master_link_status:down`，`repl_backlog_active:0`
@@ -469,7 +469,7 @@ client-output-buffer-limit replica 512mb 256mb 120
 
 ---
 
-#### 主从复制监控
+**主从复制监控**
 
 **INFO replication 输出字段详解**
 
@@ -515,15 +515,15 @@ watch -n 1 'redis-cli INFO replication | grep -E "role|connected_slaves|master_r
 
 ---
 
-## 1.3Redis哨兵
+## 1.3 Redis哨兵
 
-### 1.3.1哨兵的作用和工作原理
+### 1.3.1 哨兵的作用和工作原理
 
 - 监控主从节点健康。
 - 自动故障转移，选举新主。
 - 通知客户端新的主节点地址。
 
-#### 哨兵组件核心功能拆解
+**哨兵组件核心功能拆解**
 
 1. **监控（Monitoring）**：每隔 1 秒，每个哨兵对所有主从节点发送 PING，检测是否可达。
 2. **通知（Notification）**：节点状态变更时，哨兵通过 API 或脚本通知运维人员。
@@ -532,7 +532,7 @@ watch -n 1 'redis-cli INFO replication | grep -E "role|connected_slaves|master_r
 
 ---
 
-### 1.3.2搭建哨兵集群
+### 1.3.2 搭建哨兵集群
 
 哨兵配置示例：
 ```conf
@@ -543,7 +543,7 @@ sentinel failover-timeout mymaster 10000
 
 - 建议 3 个哨兵节点以上。
 
-#### Docker-Compose 完整搭建（1 主 2 从 + 3 哨兵）
+**Docker-Compose 完整搭建（1 主 2 从 + 3 哨兵）**
 
 ```yaml
 services:
@@ -709,7 +709,7 @@ sentinel failover-timeout cluster-master 60000
 sentinel parallel-syncs cluster-master 1
 ```
 
-#### sentinel.conf 参数完整说明表
+**sentinel.conf 参数完整说明表**
 
 | 参数 | 说明 | 建议值 |
 |---|---|---|
@@ -721,7 +721,7 @@ sentinel parallel-syncs cluster-master 1
 | `sentinel notification-script` | 故障转移通知脚本 | 可选 |
 | `sentinel client-reconfig-script` | 客户端重新配置通知脚本 | 可选 |
 
-#### 测试故障转移和节点恢复
+**测试故障转移和节点恢复**
 
 使用docker的pause/unpause命令而不是stop/start，否则会导致域名解析问题
 
@@ -730,7 +730,8 @@ docker pause <container_id> // 模拟节点故障
 doker unpause <container_id> // 模拟节点恢复
 docker kill <container_id>
 ```
-#### 详细故障转移选举流程
+
+**详细故障转移选举流程**
 
 **第一阶段：主观下线（SDOWN）**
 
@@ -758,14 +759,14 @@ docker kill <container_id>
 11. 哨兵向其他从节点发送 `SLAVEOF <new-master-ip> <new-master-port>`。
 12. 哨兵持续监控旧主节点，旧主恢复后降级为从节点。
 
-#### sentinel quorum vs odown 参数辨析
+**sentinel quorum vs odown 参数辨析**
 
 - **quorum**：客观下线所需的最少哨兵确认数。
 - quorum 值建议：3 个哨兵 -> quorum = 2，5 个哨兵 -> quorum = 3
 - quorum 不能小于等于 N/2，否则可能脑裂。
 - **生产建议 quorum >= N/2 + 1**。
 
-#### TILT 模式说明
+**TILT 模式说明**
 
 - **TILT 模式**：哨兵检测到系统时钟发生异常跳变时进入的特殊保护模式。
 - 触发条件：两次取时间的差值 < 0 或 > 2 秒。
@@ -774,7 +775,7 @@ docker kill <container_id>
 
 ---
 
-#### 哨兵通知与脚本
+**哨兵通知与脚本**
 
 **通知脚本配置**：
 
@@ -808,7 +809,7 @@ sentinel client-reconfig-script mymaster /etc/redis/scripts/reconfig.sh
 echo "[$(date)] Master: $3:$4 -> $5:$6" >> /var/log/redis/master_switch.log
 ```
 
-#### Spring Boot 哨兵事件监听
+**Spring Boot 哨兵事件监听**
 
 ```java
 @Component
@@ -835,7 +836,7 @@ public class RedisSwitchListener {
 
 ---
 
-### 1.3.3RedisTemplate连接哨兵
+### 1.3.3 RedisTemplate连接哨兵
 
 Spring Boot 配置：
 ```yaml
@@ -846,7 +847,7 @@ spring:
       nodes: 127.0.0.1:26379,127.0.0.1:26380,127.0.0.1:26381
 ```
 
-#### Sentinel 模式完整配置
+**Sentinel 模式完整配置**
 
 ```yaml
 spring:
@@ -870,14 +871,14 @@ spring:
 
 ---
 
-## 1.4Redis分片集群
+## 1.4 Redis分片集群
 
-### 1.4.1搭建分片集群
+### 1.4.1 搭建分片集群
 
 - Redis Cluster 采用 16384 个槽位。
 - 通过 `redis-cli --cluster create` 创建集群。
 
-#### Docker-Compose 完整搭建（6 节点：3 主 3 从）
+**Docker-Compose 完整搭建（6 节点：3 主 3 从）**
 
 ```yaml
 services:
@@ -978,7 +979,7 @@ networks:
     driver: bridge
 ```
 
-#### 创建集群命令
+**创建集群命令**
 
 ```bash
 # 启动所有节点
@@ -997,7 +998,7 @@ redis-slave-3:7006 \
 --cluster-replicas 1
 ```
 
-#### 集群健康验证
+**集群健康验证**
 
 ```bash
 # 查看集群状态
@@ -1020,12 +1021,12 @@ redis-cli -p 7001 CLUSTER KEYSLOT user:1:name
 
 ---
 
-### 1.4.2散列插槽
+### 1.4.2 散列插槽
 
 - `key` 通过 CRC16 映射到槽。
 - 节点负责部分槽位。
 
-#### Hash Tag 机制
+**Hash Tag 机制**
 
 Hash Tag 允许将多个 key 分配到同一个槽位：
 
@@ -1058,7 +1059,7 @@ redisTemplate.execute(
 );
 ```
 
-#### Resharding 步骤详解（槽位迁移）
+**Resharding 步骤详解（槽位迁移）**
 
 ```bash
 # 1. 查看当前集群状态
@@ -1079,7 +1080,7 @@ redis-cli --cluster reshard 127.0.0.1:7001 \
 redis-cli --cluster check 127.0.0.1:7001
 ```
 
-#### 槽位迁移性能注意事项
+**槽位迁移性能注意事项**
 
 - 槽位迁移过程中，源节点和目标节点均不阻塞读写。
 - 迁移过程：IMPORTING -> MIGRATING -> SETSLOT NODE。
@@ -1089,12 +1090,12 @@ redis-cli --cluster check 127.0.0.1:7001
 
 ---
 
-### 1.4.3集群伸缩
+### 1.4.3 集群伸缩
 
 - `--cluster add-node` 添加节点。
 - `--cluster reshard` 迁移槽位。
 
-#### 集群扩容完整步骤
+**集群扩容完整步骤**
 
 ```bash
 # 1. 启动新节点
@@ -1116,7 +1117,7 @@ redis-cli --cluster add-node <slave-ip>:7008 <master-ip>:7007 \
   --cluster-slave --cluster-master-id <new-master-node-id>
 ```
 
-#### 集群缩容完整步骤
+**集群缩容完整步骤**
 
 ```bash
 # 1. 移除从节点
@@ -1133,7 +1134,7 @@ redis-cli --cluster reshard <existing-node-ip>:7001 \
 redis-cli --cluster del-node <existing-node-ip>:7001 <node-to-remove-id>
 ```
 
-#### 集群节点替换流程（主从替换）
+**集群节点替换流程（主从替换）**
 
 ```bash
 # 1. 如果是主节点，先做手动故障转移
@@ -1152,12 +1153,12 @@ redis-cli --cluster add-node <new-node-ip>:<port> 127.0.0.1:7001 \
 
 ---
 
-### 1.4.4故障转移
+### 1.4.4 故障转移
 
 - 主节点宕机，自动切换为从节点。
 - 客户端通过重定向 `MOVED` 获取新地址。
 
-#### 自动故障转移流程
+**自动故障转移流程**
 
 1. 每个 Redis Cluster 节点通过 Gossip 协议互相通信。
 2. 节点 A 超过 `cluster-node-timeout` 未收到节点 B 的 PONG 回复，将节点 B 标记为 PFAIL（可能故障）。
@@ -1165,7 +1166,7 @@ redis-cli --cluster add-node <new-node-ip>:<port> 127.0.0.1:7001 \
 4. 节点 B 的从节点发起故障转移选举。
 5. 获得多数票的从节点成为新主节点，接管故障主节点的所有槽位。
 
-#### 手动故障转移
+**手动故障转移**
 
 ```bash
 # 将当前连接的从节点提升为主节点
@@ -1178,7 +1179,7 @@ redis-cli -p 7004 CLUSTER FAILOVER FORCE
 redis-cli -p 7004 CLUSTER FAILOVER TAKEOVER
 ```
 
-#### Gossip 协议详解
+**Gossip 协议详解**
 
 Redis Cluster 节点之间使用 Gossip 协议交换信息：
 
@@ -1188,7 +1189,7 @@ Redis Cluster 节点之间使用 Gossip 协议交换信息：
 - **FAIL 消息**：广播通知某个节点故障。
 - **PUBLISH 消息**：跨节点广播。
 
-#### Cluster BUS 端口
+**Cluster BUS 端口**
 
 每个 Redis Cluster 节点除了客户端通信端口（如 7001），还有一个集群总线端口，默认为 `端口 + 10000`（如 17001）。
 
@@ -1197,7 +1198,7 @@ Redis Cluster 节点之间使用 Gossip 协议交换信息：
 
 ---
 
-### 1.4.5RedisTemplate访问分片集群
+### 1.4.5 RedisTemplate访问分片集群
 
 Spring Boot 配置：
 ```yaml
@@ -1210,7 +1211,7 @@ spring:
         - 127.0.0.1:7003
 ```
 
-#### Cluster 模式完整配置
+**Cluster 模式完整配置**
 
 ```yaml
 spring:
@@ -1240,9 +1241,9 @@ spring:
 
 ---
 
-#### 集群运维
+**集群运维**
 
-#### 集群扩容缩容最佳实践
+**集群扩容缩容最佳实践**
 
 1. **扩容时机**：内存使用率 > 70%，CPU 使用率 > 60%，网卡接近带宽上限。
 2. **扩容步骤**：先扩从节点，再扩主节点并迁移槽位。
@@ -1251,7 +1252,7 @@ spring:
 5. **回滚预案**：保留被移除节点的数据文件至少 24 小时。
 6. **监控重点**：迁移期间监控 cluster_slots_ok、cluster_slots_pfail 以及节点延迟。
 
-#### 集群常见问题排查
+**集群常见问题排查**
 
 | 问题 | 排查命令 | 常见原因 |
 |---|---|---|
@@ -1271,7 +1272,7 @@ redis-cli -p 7001 CLUSTER FORGET <node-id>
 
 ---
 
-#### 1.4.6 Codis 与 Redis Cluster 对比
+**Codis 与 Redis Cluster 对比**
 
 | 维度 | Redis Cluster | Codis |
 |---|---|---|
@@ -1291,9 +1292,9 @@ redis-cli -p 7001 CLUSTER FORGET <node-id>
 
 ---
 
-# 2.多级缓存
+# 2. 多级缓存
 
-## 2.1什么是多级缓存
+## 2.1 什么是多级缓存
 
 - JVM 进程缓存 + Redis + DB。
 - 本地缓存命中快，Redis 兜底，DB 最后。
@@ -1305,17 +1306,17 @@ redis-cli -p 7001 CLUSTER FORGET <node-id>
 
 每一层都拦截掉大部分请求，流量逐层递减，最终只有极少数请求到达数据库。
 
-## 2.2JVM进程缓存
+## 2.2 JVM进程缓存
 
-### 2.2.1导入Demo数据
+### 2.2.1 导入Demo数据
 
 - 准备 shop 数据与坐标数据。
 
-### 2.2.2导入Demo工程
+### 2.2.2 导入Demo工程
 
 - Maven 工程包含 Caffeine + Redis + Nginx/OpenResty。
 
-### 2.2.3初识Caffeine
+### 2.2.3 初识Caffeine
 
 - 本地高性能缓存，支持 LRU/LFU。
 
@@ -1326,7 +1327,7 @@ Cache<Long, Shop> cache = Caffeine.newBuilder()
 		.build();
 ```
 
-#### Caffeine 完整配置详解
+**Caffeine 完整配置详解**
 
 ```java
 Cache<Long, Shop> cache = Caffeine.newBuilder()
@@ -1364,7 +1365,7 @@ Cache<Long, Shop> cache = Caffeine.newBuilder()
         .build();
 ```
 
-#### Caffeine 刷新与 Loading Cache
+**Caffeine 刷新与 Loading Cache**
 
 ```java
 LoadingCache<Long, Shop> cache = Caffeine.newBuilder()
@@ -1378,7 +1379,7 @@ cache.refresh(shopId);
 Map<Long, Shop> shops = cache.getAll(Arrays.asList(1L, 2L, 3L));
 ```
 
-#### Caffeine vs Guava Cache vs Ehcache 对比
+**Caffeine vs Guava Cache vs Ehcache 对比**
 
 | 特性 | Caffeine | Guava Cache | Ehcache 3 |
 |---|---|---|---|
@@ -1392,7 +1393,7 @@ Map<Long, Shop> shops = cache.getAll(Arrays.asList(1L, 2L, 3L));
 
 **推荐**：大多数场景选 Caffeine，命中率最高。Ehcache 适合需要 off-heap 或磁盘持久化的场景。
 
-#### Caffeine Stats 统计监控
+**Caffeine Stats 统计监控**
 
 ```java
 Cache<Long, Shop> cache = Caffeine.newBuilder()
@@ -1418,7 +1419,7 @@ scheduler.scheduleAtFixedRate(() -> {
 
 ---
 
-### 2.2.4实现进程缓存
+### 2.2.4 实现进程缓存
 
 - 查询流程：先 Caffeine，未命中再查 Redis/DB。
 
@@ -1427,7 +1428,7 @@ Shop shop = cache.getIfPresent(id);
 if (shop == null) { shop = queryRedisOrDb(id); cache.put(id, shop); }
 ```
 
-#### 完整的三层查询实现
+**完整的三层查询实现**
 
 ```java
 @Service
@@ -1473,14 +1474,14 @@ public class ShopService {
 
 ---
 
-## 2.3Lua语法
+## 2.3 Lua语法
 
-### 2.3.1初始Lua
+### 2.3.1 初始Lua
 
 - 变量定义：`local a = 1`。
 - `redis.call` 调用 Redis 命令。
 
-### 2.3.2变量和循环
+### 2.3.2 变量和循环
 
 ```lua
 for i = 1, 3 do
@@ -1488,7 +1489,7 @@ for i = 1, 3 do
 end
 ```
 
-### 2.3.3函数和条件控制
+### 2.3.3 函数和条件控制
 
 ```lua
 if tonumber(ARGV[1]) > 0 then
@@ -1498,7 +1499,7 @@ else
 end
 ```
 
-#### Lua 数据类型详解
+**Lua 数据类型详解**
 
 ```lua
 -- 1. nil
@@ -1527,7 +1528,7 @@ local mixed = {1, 2, name = "test"}
 local fn = function(x) return x * 2 end
 ```
 
-#### Lua Tables 深入
+**Lua Tables 深入**
 
 ```lua
 -- 数组遍历
@@ -1551,7 +1552,7 @@ table.sort(fruits)
 local len = #fruits
 ```
 
-#### Lua 字符串函数
+**Lua 字符串函数**
 
 ```lua
 local s = "hello world"
@@ -1566,7 +1567,7 @@ local full = "hello" .. " " .. "redis"
 local num = tonumber("123")
 ```
 
-#### cjson 使用（Redis Lua 内置）
+**cjson 使用（Redis Lua 内置）**
 
 ```lua
 local data = {id = 100, name = "phone", price = 2999}
@@ -1583,7 +1584,7 @@ cjson.encode({})          -- "[]"
 cjson.encode(cjson.empty_array)  -- "[]"
 ```
 
-#### 常见 Redis Lua 脚本模式
+**常见 Redis Lua 脚本模式**
 
 **1. CAS（Compare and Swap）原子更新**
 
@@ -1639,7 +1640,7 @@ else
 end
 ```
 
-#### Lua 脚本调试技巧
+**Lua 脚本调试技巧**
 
 ```bash
 # 使用 redis-cli --ldb 进入调试模式
@@ -1661,14 +1662,14 @@ end
 
 ---
 
-## 2.4多级缓存
+## 2.4 多级缓存
 
-### 2.4.1安装OpenResty
+### 2.4.1 安装OpenResty
 
 - OpenResty = Nginx + Lua。
 - 常用目录：`conf/nginx.conf`。
 
-#### OpenResty 完整安装指南
+**OpenResty 完整安装指南**
 
 **CentOS**：
 ```bash
@@ -1697,7 +1698,7 @@ apt update && apt install -y openresty
 
 ---
 
-### 2.4.2OpenResty快速入门
+### 2.4.2 OpenResty快速入门
 
 ```nginx
 server {
@@ -1712,14 +1713,14 @@ server {
 
 ---
 
-### 2.4.3OpenResty获取请求参数
+### 2.4.3 OpenResty获取请求参数
 
 ```lua
 local args = ngx.req.get_uri_args()
 local id = args["id"]
 ```
 
-#### OpenResty 请求处理完整 API
+**OpenResty 请求处理完整 API**
 
 ```lua
 -- URI 参数: GET /shop?id=123
@@ -1747,7 +1748,7 @@ ngx.exit(200)
 
 ---
 
-### 2.4.4封装Http请求工具
+### 2.4.4 封装Http请求工具
 
 ```lua
 local http = require("resty.http")
@@ -1755,7 +1756,7 @@ local client = http.new()
 local res = client:request_uri("http://127.0.0.1:8080/shop/" .. id)
 ```
 
-#### resty.http 完整使用
+**resty.http 完整使用**
 
 ```lua
 local http = require("resty.http")
@@ -1789,14 +1790,14 @@ httpc:set_keepalive()
 
 ---
 
-### 2.4.5向tomcat发送http请求
+### 2.4.5 向tomcat发送http请求
 
 - OpenResty 作为边缘层，查询本地缓存或 Redis。
 - 未命中则回源 Tomcat。
 
 ---
 
-### 2.4.6根据商品id对tomcat集群负载均衡
+### 2.4.6 根据商品id对tomcat集群负载均衡
 
 - 通过 `hash` 或一致性算法选择后端。
 
@@ -1805,7 +1806,7 @@ local index = id % #backend_list + 1
 local backend = backend_list[index]
 ```
 
-#### 完整的 Nginx 多级缓存配置文件
+**完整的 Nginx 多级缓存配置文件**
 
 ```nginx
 # nginx.conf - OpenResty 多级缓存
@@ -1920,12 +1921,12 @@ http {
 
 ---
 
-### 2.4.7Redis缓存预热
+### 2.4.7 Redis缓存预热
 
 - 启动时提前写入热点数据。
 - 避免上线瞬时击穿。
 
-#### 预热脚本示例
+**预热脚本示例**
 
 ```lua
 -- warmup.lua (在 init_worker_by_lua_file 中调用)
@@ -1952,7 +1953,7 @@ ngx.log(ngx.INFO, "Warmup: loaded ", cached, " items from Redis")
 
 ---
 
-### 2.4.8查询Redis
+### 2.4.8 查询Redis
 
 ```lua
 local redis = require("resty.redis")
@@ -1961,7 +1962,7 @@ r:connect("127.0.0.1", 6379)
 local val = r:get(key)
 ```
 
-#### lua-resty-redis 完整操作 API
+**lua-resty-redis 完整操作 API**
 
 ```lua
 local redis = require("resty.redis")
@@ -1995,7 +1996,7 @@ red:set_keepalive(10000, 100)
 
 ---
 
-### 2.4.9nginx本地缓存
+### 2.4.9 nginx本地缓存
 
 - 使用 `lua_shared_dict` 作为 OpenResty 本地缓存。
 
@@ -2003,7 +2004,7 @@ red:set_keepalive(10000, 100)
 lua_shared_dict shop_cache 50m;
 ```
 
-#### lua_shared_dict 完整操作
+**lua_shared_dict 完整操作**
 
 ```lua
 local cache = ngx.shared.shop_cache
@@ -2026,14 +2027,14 @@ local free = cache:free_space()
 
 ---
 
-## 2.5缓存同步
+## 2.5 缓存同步
 
-### 2.5.1数据同步策略
+### 2.5.1 数据同步策略
 
 - 订阅 binlog 变化，及时更新缓存。
 - 避免业务层遗漏更新。
 
-#### 三种缓存同步策略对比
+**三种缓存同步策略对比**
 
 | 策略 | 实现方式 | 优点 | 缺点 |
 |---|---|---|---|
@@ -2045,12 +2046,12 @@ local free = cache:free_space()
 
 ---
 
-### 2.5.2安装Canal
+### 2.5.2 安装Canal
 
 - Canal 监听 MySQL binlog。
 - 配置 `canal.instance.master.address`。
 
-#### Canal + Docker 完整搭建
+**Canal + Docker 完整搭建**
 
 ```yaml
 version: '3.8'
@@ -2093,12 +2094,12 @@ FLUSH PRIVILEGES;
 
 ---
 
-### 2.5.3监听canal实现缓存同步
+### 2.5.3 监听canal实现缓存同步
 
 - 监听到 update/delete 时，删除缓存。
 - 支持消息队列或直接回调。
 
-#### Canal Java 客户端完整代码
+**Canal Java 客户端完整代码**
 
 ```java
 @Component
@@ -2189,7 +2190,7 @@ public class CanalCacheSync {
 }
 ```
 
-#### 缓存更新通知机制（Redis Pub/Sub 通知 Nginx）
+**缓存更新通知机制（Redis Pub/Sub 通知 Nginx）**
 
 应用层通过 Redis Pub/Sub 通知 Nginx 清除本地缓存：
 
@@ -2204,7 +2205,7 @@ location /invalidate {
 }
 ```
 
-#### 替代方案：Debezium 对比
+**替代方案：Debezium 对比**
 
 | 特性 | Canal | Debezium |
 |---|---|---|
@@ -2288,21 +2289,21 @@ shop:
 
 ---
 
-## 2.6课程总结
+## 2.6 课程总结
 
 - 多级缓存提升读性能，降低 DB 压力。
 - OpenResty 适合作为边缘层缓存与路由。
 
 
-# 3.Redis最佳实践
+# 3. Redis最佳实践
 
-## 3.1课程介绍
+## 3.1 课程介绍
 
 - 关注 Key 设计、数据结构、批处理、性能配置。
 
-## 3.2键值设计
+## 3.2 键值设计
 
-### 3.2.1如何设计优雅的Key
+### 3.2.1 如何设计优雅的Key
 
 - `业务:对象:主键:字段`。
 - 统一前缀，便于管理。
@@ -2322,7 +2323,7 @@ shop:
 
 ---
 
-### 3.2.2BigKey问题
+### 3.2.2 BigKey问题
 
 - 大 key 影响内存与网络传输。
 - 避免超大 Hash/List/ZSet。
@@ -2331,7 +2332,7 @@ shop:
 - 拆分 key 或分页存储。
 - 压缩或使用更合适的数据结构。
 
-#### BigKey 检测命令
+**BigKey 检测命令**
 
 ```bash
 # 扫描大 key（建议在从节点执行）
@@ -2350,7 +2351,7 @@ redis-cli --scan --pattern '*' | while read key; do
 done
 ```
 
-#### BigKey 的危害
+**BigKey 的危害**
 
 - **内存不均**：Cluster 模式下大 key 导致槽位数据倾斜。
 - **阻塞风险**：删除大 key（DEL）是 O(N) 阻塞操作。
@@ -2358,7 +2359,7 @@ done
 - **主从同步**：全量同步时可能导致从节点超时。
 - **过期问题**：大 key 过期也触发阻塞（4.0+ lazyfree 缓解）。
 
-#### BigKey 拆分策略
+**BigKey 拆分策略**
 
 **策略 1：Hash 分片拆分**
 ```java
@@ -2401,7 +2402,7 @@ while (cursor.hasNext()) {
 redis-cli --scan --pattern 'user:sessions:*' | xargs -L 1 redis-cli UNLINK
 ```
 
-#### Hot Key 检测与解决方案
+**Hot Key 检测与解决方案**
 
 **检测方法**：
 - 客户端收集：Jedis/Lettuce 连接层统计 key 访问次数。
@@ -2429,14 +2430,14 @@ public String getHotValue(String key) {
 
 ---
 
-### 3.2.3选择合适的数据结构
+### 3.2.3 选择合适的数据结构
 
 - 计数：String。
 - 对象：Hash。
 - 排行榜：ZSet。
 - 关注关系：Set。
 
-#### 数据结构选型决策表
+**数据结构选型决策表**
 
 | 需求 | 推荐结构 | 示例 | 复杂度 |
 |---|---|---|---|
@@ -2460,14 +2461,14 @@ public String getHotValue(String key) {
 
 ---
 
-## 3.3批处理优化
+## 3.3 批处理优化
 
-### 3.3.1pipline和mset
+### 3.3.1 pipline和mset
 
 - Pipeline 减少 RTT。
 - `MSET/MGET` 批量操作。
 
-#### Pipeline vs 逐条操作性能对比
+**Pipeline vs 逐条操作性能对比**
 
 ```java
 // 逐条操作（1000 次 RTT）
@@ -2502,7 +2503,7 @@ public void pipelineSet(List<KeyValue> kvList) {
 | Pipeline batch=1000 | ~50ms | ~60ms | ~150ms |
 | MSET (1000 key) | ~10ms | ~15ms | ~30ms |
 
-#### Cluster Hash Tag 批量方案
+**Cluster Hash Tag 批量方案**
 
 ```java
 // 使用 Hash Tag 确保同用户 key 在同一槽位
@@ -2526,7 +2527,7 @@ redisTemplate.execute(
 );
 ```
 
-#### Lua 脚本批量处理
+**Lua 脚本批量处理**
 
 ```lua
 -- 批量设置并设置过期时间
@@ -2545,12 +2546,12 @@ return count
 
 ---
 
-### 3.3.2集群模式下的批处理问题
+### 3.3.2 集群模式下的批处理问题
 
 - 不同槽位无法批量。
 - 使用 hash tag：`user:{1}:name`。
 
-#### 跨槽位批处理解决方案汇总
+**跨槽位批处理解决方案汇总**
 
 | 方案 | 原理 | 适用场景 |
 |---|---|---|
@@ -2561,14 +2562,14 @@ return count
 
 ---
 
-## 3.4服务端优化
+## 3.4 服务端优化
 
-### 3.4.1持久化配置
+### 3.4.1 持久化配置
 
 - 大量写入场景可降低频率或关闭 AOF。
 - 读多写少场景可开启 RDB。
 
-#### 持久化配置场景推荐
+**持久化配置场景推荐**
 
 | 场景 | RDB | AOF | 混合 | 备注 |
 |---|---|---|---|---|
@@ -2580,12 +2581,12 @@ return count
 
 ---
 
-### 3.4.2慢查询问题
+### 3.4.2 慢查询问题
 
 - `slowlog-log-slower-than` 配置慢查询阈值。
 - `SLOWLOG GET` 排查热点命令。
 
-#### Slowlog 完整配置与分析
+**Slowlog 完整配置与分析**
 
 ```bash
 redis-cli CONFIG SET slowlog-log-slower-than 10000
@@ -2622,12 +2623,12 @@ latency-monitor-threshold 100
 
 ---
 
-### 3.4.3命令及安全配置
+### 3.4.3 命令及安全配置
 
 - 关闭危险命令：`rename-command FLUSHALL ""`。
 - 设置访问密码与 IP 白名单。
 
-#### rename-command 安全加固
+**rename-command 安全加固**
 
 ```conf
 rename-command FLUSHALL ""
@@ -2644,12 +2645,12 @@ rename-command KEYS    "KEYS_93462ac9"
 
 ---
 
-### 3.4.4内存安全和配置
+### 3.4.4 内存安全和配置
 
 - `maxmemory` + 淘汰策略。
 - 监控 `used_memory` 与 key 数量。
 
-#### maxmemory-policy 选型指南
+**maxmemory-policy 选型指南**
 
 | 淘汰策略 | 行为 | 适用场景 |
 |---|---|---|
@@ -2663,7 +2664,7 @@ rename-command KEYS    "KEYS_93462ac9"
 
 推荐：纯缓存用 `allkeys-lru`，混合持久化用 `volatile-lru`。
 
-#### 完整性能调优 Checklist
+**完整性能调优 Checklist**
 
 ```conf
 # === 内存 ===
@@ -2721,12 +2722,12 @@ io-threads-do-reads yes
 
 ---
 
-## 3.5Redis优化-集群还是主从
+## 3.5 Redis优化-集群还是主从
 
 - 读多写少、容量不大：主从即可。
 - 数据量大、写入高：集群分片。
 
-#### 容量规划指南
+**容量规划指南**
 
 | 指标 | 主从 | 集群 |
 |---|---|---|
@@ -2751,7 +2752,7 @@ io-threads-do-reads yes
 
 Redis 6.0 引入了访问控制列表（ACL），支持多用户和权限精细管理。
 
-#### ACL 用户创建与管理
+**ACL 用户创建与管理**
 
 ```bash
 # 创建只读用户
@@ -2776,7 +2777,7 @@ redis-cli ACL DELUSER readonly
 redis-cli ACL SAVE
 ```
 
-#### ACL 用户/角色体系
+**ACL 用户/角色体系**
 
 ```
 ACL 命令格式: ACL SETUSER <username> [rule [rule ...]]
@@ -2792,7 +2793,7 @@ ACL 命令格式: ACL SETUSER <username> [rule [rule ...]]
   resetpass        - 重置密码
 ```
 
-#### ACL 配置文件
+**ACL 配置文件**
 
 ```conf
 # users.acl
@@ -2810,7 +2811,7 @@ user admin on >admin123 ~* +@all +@admin
 aclfile /etc/redis/users.acl
 ```
 
-#### 命令分类
+**命令分类**
 
 | 类别 | 说明 |
 |---|---|
@@ -2914,7 +2915,7 @@ iptables -A INPUT -p tcp --dport 6379 -j DROP
 redis-cli INFO
 ```
 
-#### Server 区块
+**Server 区块**
 
 | 指标 | 含义 |
 |---|---|
@@ -2922,14 +2923,14 @@ redis-cli INFO
 | `uptime_in_seconds` | 运行时长 |
 | `uptime_in_days` | 运行天数 |
 
-#### Clients 区块
+**Clients 区块**
 
 | 指标 | 含义 | 告警阈值 |
 |---|---|---|
 | `connected_clients` | 当前连接数 | > maxclients * 0.8 |
 | `blocked_clients` | 阻塞等待的客户端 | > 0 需关注 |
 
-#### Memory 区块
+**Memory 区块**
 
 | 指标 | 含义 | 告警阈值 |
 |---|---|---|
@@ -2938,7 +2939,7 @@ redis-cli INFO
 | `mem_fragmentation_ratio` | 内存碎片率 | > 1.5 |
 | `maxmemory` | 最大内存配置 | - |
 
-#### Stats 区块
+**Stats 区块**
 
 | 指标 | 含义 |
 |---|---|
@@ -2951,7 +2952,7 @@ redis-cli INFO
 | `evicted_keys` | 被淘汰 key 数 |
 | `latest_fork_usec` | 最近 fork 耗时（微秒） |
 
-#### Replication 区块
+**Replication 区块**
 
 | 指标 | 含义 |
 |---|---|
@@ -2961,7 +2962,7 @@ redis-cli INFO
 | `slave_repl_offset` | 从节点偏移量 |
 | `master_link_status` | 复制链路状态 |
 
-#### CPU 区块
+**CPU 区块**
 
 | 指标 | 含义 |
 |---|---|
@@ -2972,7 +2973,7 @@ redis-cli INFO
 
 ## 5.2 Prometheus + Redis Exporter + Grafana
 
-#### Docker Compose 部署
+**Docker Compose 部署**
 
 ```yaml
 version: '3.8'
@@ -3018,7 +3019,7 @@ volumes:
   grafana-data:
 ```
 
-#### prometheus.yml
+**prometheus.yml**
 
 ```yaml
 scrape_configs:
@@ -3032,7 +3033,7 @@ scrape_configs:
         replacement: 'redis-${1}'
 ```
 
-#### 导入 Grafana Dashboard
+**导入 Grafana Dashboard**
 
 - 推荐 Dashboard ID：763（Redis Dashboard for Prometheus Redis Exporter）
 - 进入 Grafana > Import > 输入 763 > 选择 Prometheus 数据源 > Import
@@ -3129,7 +3130,7 @@ redis-cli MEMORY USAGE key
 
 ## 5.5 备份策略
 
-#### crontab + bgsave 自动备份
+**crontab + bgsave 自动备份**
 
 ```bash
 # 添加 crontab 任务
@@ -3141,7 +3142,7 @@ redis-cli MEMORY USAGE key
 0 4 * * * root find /backup/redis/ -name "*.rdb" -mtime +7 -delete
 ```
 
-#### 备份脚本
+**备份脚本**
 
 ```bash
 #!/bin/bash
@@ -3205,7 +3206,7 @@ redis-benchmark -h 127.0.0.1 -p 6379 -a redis123 \
 # --cluster         集群模式
 ```
 
-#### 关键参数详解
+**关键参数详解**
 
 | 参数 | 说明 | 典型值 |
 |---|---|---|
@@ -3219,7 +3220,7 @@ redis-benchmark -h 127.0.0.1 -p 6379 -a redis123 \
 | `--threads` | 多线程（Redis 6.0+） | 2, 4 |
 | `--cluster` | 集群模式 | - |
 
-#### 典型压测用例
+**典型压测用例**
 
 ```bash
 # 1. 基础 SET 性能
@@ -3241,7 +3242,7 @@ redis-benchmark -h 127.0.0.1 -p 7001 --cluster -c 200 -n 1000000 -t set,get -q
 redis-benchmark -h 127.0.0.1 -p 6379 -c 100 -n 100000 -t set,get,lpush,lpop --csv
 ```
 
-#### 解读压测结果
+**解读压测结果**
 
 ```
 ====== SET ======
@@ -3365,7 +3366,7 @@ redis-cli MIGRATE 192.168.1.200 6379 "user:1001" 0 5000 COPY
 redis-cli MIGRATE 192.168.1.200 6379 "user:1001" 0 5000 REPLACE
 ```
 
-#### 批量迁移脚本
+**批量迁移脚本**
 
 ```bash
 #!/bin/bash
@@ -3403,7 +3404,7 @@ redis-cli -h target-host -p 6379 DBSIZE
 
 ## 7.4 迁移检查清单与回滚计划
 
-#### 迁移前检查
+**迁移前检查**
 
 ```
 [x] 源端和目标端 Redis 版本兼容性确认
@@ -3416,7 +3417,7 @@ redis-cli -h target-host -p 6379 DBSIZE
 [x] 监控和告警已就绪
 ```
 
-#### 回滚计划
+**回滚计划**
 
 ```
 [x] 迁移前备份源端 RDB（cp dump.rdb backup.rdb）
@@ -3458,7 +3459,7 @@ helm install redis-cluster bitnami/redis-cluster \
   --namespace redis --create-namespace
 ```
 
-#### 自定义 values.yaml
+**自定义 values.yaml**
 
 ```yaml
 architecture: replication
@@ -3522,7 +3523,7 @@ spec:
 
 ## 8.3 PVC 和持久化配置
 
-#### StorageClass（SSD 推荐）
+**StorageClass（SSD 推荐）**
 
 ```yaml
 apiVersion: storage.k8s.io/v1
@@ -3536,7 +3537,7 @@ reclaimPolicy: Retain               # 保留 PVC，防止误删
 volumeBindingMode: WaitForFirstConsumer
 ```
 
-#### 持久化注意事项
+**持久化注意事项**
 
 1. RDB 和 AOF 数据必须持久化到 PVC。
 2. Redis Cluster 的 nodes.conf 也需要持久化。
@@ -3554,7 +3555,7 @@ volumeBindingMode: WaitForFirstConsumer
 | Cluster 节点失联 | DNS 解析失败 | 确保 StatefulSet 网络策略正确 |
 | 内存不足 | maxmemory 设置过大 | 设置合理 maxmemory，预留 30% 给系统 |
 
-#### Redis on K8s 最佳实践（注意）
+**Redis on K8s 最佳实践（注意）**
 
 - use StatefulSet, not Deployment
 - use Anti-Affinity 保证节点分布在不同物理机

@@ -1,4 +1,4 @@
-# 1.TypeHandler 概述
+# 1. TypeHandler 概述
 
 ```
 TypeHandler 是 MyBatis 中负责 Java 类型与 JDBC 类型之间相互转换的组件。
@@ -15,7 +15,7 @@ TypeHandler 的调用链路：
     → typeHandler.getResult(rs, columnName)                ← 读出结果
 ```
 
-# 2.TypeHandler 接口
+# 2. TypeHandler 接口
 
 ```java
 /**
@@ -50,7 +50,7 @@ public interface TypeHandler<T> {
 }
 ```
 
-# 3.BaseTypeHandler — TypeHandler 的抽象基类
+# 3. BaseTypeHandler — TypeHandler 的抽象基类
 
 ```java
 /**
@@ -92,7 +92,7 @@ public abstract class BaseTypeHandler<T> extends TypeReference<T> implements Typ
 }
 ```
 
-# 4.内置 TypeHandler
+# 4. 内置 TypeHandler
 
 ```
 MyBatis 内置了大量的 TypeHandler，覆盖了常见类型：
@@ -140,7 +140,7 @@ MyBatis 内置了大量的 TypeHandler，覆盖了常见类型：
 └────────────────────────┴──────────────────────────────────────┘
 ```
 
-# 5.TypeHandlerRegistry — 类型处理器注册中心
+# 5. TypeHandlerRegistry — 类型处理器注册中心
 
 ```java
 /**
@@ -246,7 +246,7 @@ public class TypeHandlerRegistry {
 }
 ```
 
-# 6.自定义 TypeHandler
+# 6. 自定义 TypeHandler
 
 ## 6.1 示例：JSON 字段 TypeHandler
 
@@ -406,7 +406,7 @@ public class EncryptTypeHandler extends BaseTypeHandler<String> {
 }
 ```
 
-# 7.TypeHandler 的配置方式
+# 7. TypeHandler 的配置方式
 
 ## 7.1 在 mybatis-config.xml 中配置
 
@@ -461,7 +461,7 @@ mybatis:
 User selectById(Long id);
 ```
 
-# 8.TypeHandler 的执行时机
+# 8. TypeHandler 的执行时机
 
 ```
 写操作（INSERT/UPDATE）：
@@ -480,7 +480,7 @@ User selectById(Long id);
     → 通过 MetaObject.setValue() 设置到结果对象
 ```
 
-# 9.默认枚举处理器选择
+# 9. 默认枚举处理器选择
 
 ```java
 /**

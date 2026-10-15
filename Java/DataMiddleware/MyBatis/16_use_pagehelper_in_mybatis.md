@@ -1,4 +1,4 @@
-# 1.limit分页
+# 1. limit分页
 ```
 mysql的limit后⾯两个数字：
 
@@ -12,7 +12,7 @@ select * from tableName ...
 limit (pageNum - 1) * pageSize, pageSize
 
 ```
-# 2.使用mybatis分页
+# 2. 使用mybatis分页
 ```
 CarMapper接口
 List<Car> selectAllByPage(@Param("startIndex") Integer startIndex, @Param("pageSize") Integer pageSize);
@@ -22,7 +22,7 @@ CarMapper.xml
 </select>
 
 ```
-# 3.PageHelper插件
+# 3. PageHelper插件
 ```
 第一步：引入依赖
 <dependency>

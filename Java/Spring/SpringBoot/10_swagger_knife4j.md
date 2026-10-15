@@ -1,6 +1,6 @@
-# 1.Swagger/OpenAPI 简介
+# 1. Swagger/OpenAPI 简介
 
-## 1.1什么是 Swagger
+## 1.1 什么是 Swagger
 
 Swagger 是一套围绕 OpenAPI 规范构建的开源工具，用于设计、构建、记录和使用 REST API。主要包含三大组件：
 
@@ -10,7 +10,7 @@ Swagger 是一套围绕 OpenAPI 规范构建的开源工具，用于设计、构
 
 SpringBoot 项目中，我们通常不直接使用 Swagger 官方工具，而是引入社区集成库（SpringDoc、Knife4j）让框架自动扫描代码生成 OpenAPI 文档。
 
-## 1.2Swagger 2 vs OpenAPI 3
+## 1.2 Swagger 2 vs OpenAPI 3
 
 | 对比项 | Swagger 2 | OpenAPI 3 |
 |--------|-----------|-----------|
@@ -24,7 +24,7 @@ SpringBoot 项目中，我们通常不直接使用 Swagger 官方工具，而是
 
 > **规范与实现的关系**：OpenAPI 是规范（Spec），Swagger 是早期工具集；SpringFox 是 Swagger 2 的 Spring 实现，SpringDoc 是 OpenAPI 3 的 Spring 实现，Knife4j 是基于 SpringDoc 的增强 UI。
 
-## 1.3SpringBoot 中 API 文档库的演进
+## 1.3 SpringBoot 中 API 文档库的演进
 
 | 库 | 适配规范 | 底层 | 状态 | 说明 |
 |----|----------|------|------|------|
@@ -33,7 +33,7 @@ SpringBoot 项目中，我们通常不直接使用 Swagger 官方工具，而是
 | Knife4j | OpenAPI 3（v4） | 基于 SpringDoc | 活跃维护 | 增强 UI + 增强功能，国内使用广泛 |
 | Knife4j | Swagger 2（v3） | 基于 SpringFox | 仅维护 | 老项目兼容用，新项目不推荐 |
 
-## 1.4技术选型建议
+## 1.4 技术选型建议
 
 ```
 新项目（Spring Boot 3.x）  →  SpringDoc OpenAPI 3 + Knife4j 4.x（jakarta）
@@ -43,9 +43,9 @@ SpringBoot 项目中，我们通常不直接使用 Swagger 官方工具，而是
 文档生成用 SpringDoc，文档 UI 用 Knife4j——二者互补，不是替代关系。
 ```
 
-# 2.SpringDoc OpenAPI 3 快速入门
+# 2. SpringDoc OpenAPI 3 快速入门
 
-## 2.1引入依赖
+## 2.1 引入依赖
 
 ```xml
 <!-- SpringDoc OpenAPI 3 -->
@@ -59,9 +59,9 @@ SpringBoot 项目中，我们通常不直接使用 Swagger 官方工具，而是
 > Spring Boot 3.x 项目需使用 `springdoc-openapi-starter-webmvc-ui`（jakarta 版本）。
 > Spring Boot 2.x 项目需使用 `springdoc-openapi-ui`（javax 版本）。
 
-## 2.2基础配置
+## 2.2 基础配置
 
-### 2.2.1配置类方式
+### 2.2.1 配置类方式
 
 ```java
 import io.swagger.v3.oas.models.OpenAPI;
@@ -96,7 +96,7 @@ public class OpenApiConfig {
 }
 ```
 
-### 2.2.2application.yml 配置
+### 2.2.2 application.yml 配置
 
 ```yaml
 springdoc:
@@ -115,7 +115,7 @@ springdoc:
   paths-to-match: /api/**                 # 指定匹配的路径
 ```
 
-## 2.3验证和访问
+## 2.3 验证和访问
 
 启动应用后访问以下地址：
 
@@ -125,9 +125,9 @@ springdoc:
 | `http://localhost:8080/v3/api-docs` | OpenAPI JSON 文档 |
 | `http://localhost:8080/v3/api-docs.yaml` | OpenAPI YAML 文档 |
 
-# 3.Controller 接口文档注解
+# 3. Controller 接口文档注解
 
-## 3.1@Tag — 接口分类标签
+## 3.1 @Tag — 接口分类标签
 
 注解在 Controller 类上，用于给接口分组：
 
@@ -154,7 +154,7 @@ public class UserController {
 }
 ```
 
-## 3.2@Operation — 接口说明
+## 3.2 @Operation — 接口说明
 
 注解在 Controller 方法上，描述单个接口：
 
@@ -192,7 +192,7 @@ public R<String> oldApi() {
 }
 ```
 
-## 3.3@Parameter — 参数说明
+## 3.3 @Parameter — 参数说明
 
 注解在方法参数上，描述请求参数：
 
@@ -252,7 +252,7 @@ public R<List<User>> search(@RequestBody Map<String, Object> params) {
 }
 ```
 
-## 3.4@ApiResponses / @ApiResponse — 响应描述
+## 3.4 @ApiResponses / @ApiResponse — 响应描述
 
 描述接口的各种响应状态码和返回内容：
 
@@ -289,7 +289,7 @@ public R<User> getById(@PathVariable Long id) {
 }
 ```
 
-## 3.5@Hidden — 隐藏接口
+## 3.5 @Hidden — 隐藏接口
 
 隐藏某个接口或整个 Controller，使其不出现在文档中：
 
@@ -311,9 +311,9 @@ public class AdminController {
 }
 ```
 
-# 4.实体类文档注解
+# 4. 实体类文档注解
 
-## 4.1@Schema 基本使用
+## 4.1 @Schema 基本使用
 
 注解在实体类和属性上，描述请求/响应的数据结构：
 
@@ -345,7 +345,7 @@ public class User {
 }
 ```
 
-## 4.2@Schema 常用属性详解
+## 4.2 @Schema 常用属性详解
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
@@ -385,7 +385,7 @@ public class User {
 }
 ```
 
-## 4.3嵌套对象与泛型
+## 4.3 嵌套对象与泛型
 
 ```java
 @Data
@@ -447,9 +447,9 @@ public class Role {
 }
 ```
 
-# 5.全局参数配置
+# 5. 全局参数配置
 
-## 5.1添加全局请求头（如 Token）
+## 5.1 添加全局请求头（如 Token）
 
 在配置类中使用 `OperationCustomizer` 或全局 `Parameter`：
 
@@ -484,7 +484,7 @@ public class OpenApiConfig {
 
 > 若使用 Knife4j，全局参数的输入值会**持久化缓存**在浏览器，无需每次重新输入（见 8.4 `enable-request-cache`）。
 
-## 5.2添加全局响应状态码
+## 5.2 添加全局响应状态码
 
 ```java
 @Bean
@@ -501,9 +501,9 @@ public OpenAPI customOpenAPI() {
 }
 ```
 
-# 6.认证与鉴权集成
+# 6. 认证与鉴权集成
 
-## 6.1JWT Bearer Token 配置
+## 6.1 JWT Bearer Token 配置
 
 ```java
 @Configuration
@@ -541,7 +541,7 @@ public R<User> profile() {
 }
 ```
 
-## 6.2Basic Auth 配置
+## 6.2 Basic Auth 配置
 
 ```java
 @Bean
@@ -560,7 +560,7 @@ public OpenAPI customOpenAPI() {
 }
 ```
 
-## 6.3OAuth2 配置
+## 6.3 OAuth2 配置
 
 ```java
 @Bean
@@ -586,9 +586,9 @@ public OpenAPI customOpenAPI() {
 }
 ```
 
-# 7.API 分组
+# 7. API 分组
 
-## 7.1GroupedOpenApi 分组配置
+## 7.1 GroupedOpenApi 分组配置
 
 当项目接口较多时，可以按模块分组生成多个文档：
 
@@ -648,7 +648,7 @@ public class OpenApiGroupConfig {
 
 配置后 Swagger UI / Knife4j 右上角会出现下拉框切换不同分组的文档。
 
-## 7.2分组配置项说明
+## 7.2 分组配置项说明
 
 | 配置方法 | 说明 |
 |----------|------|
@@ -660,9 +660,9 @@ public class OpenApiGroupConfig {
 | `packagesToExclude(String)` | 排除的包路径 |
 | `addOpenApiCustomizer()` | 添加自定义配置 |
 
-# 8.Knife4j 增强文档 UI
+# 8. Knife4j 增强文档 UI
 
-## 8.1Knife4j 简介与定位
+## 8.1 Knife4j 简介与定位
 
 Knife4j（发音同"奈夫4j"，原 swagger-bootstrap-ui）是国人 xiaoymin 开发的一套 **Swagger/OpenAPI 增强文档 UI**。
 
@@ -691,9 +691,9 @@ Knife4j 只做两件事：
 | 多文件上传 | 不友好 | 原生支持 |
 | 调试增强 | 基础 | 复制 cURL、AfterScript 等 |
 
-## 8.2版本选型与依赖
+## 8.2 版本选型与依赖
 
-### 8.2.1版本对照
+### 8.2.1 版本对照
 
 | Knife4j 版本 | 底层实现 | Spring Boot | 规范 | 依赖 artifact |
 |--------------|----------|-------------|------|---------------|
@@ -703,7 +703,7 @@ Knife4j 只做两件事：
 
 > **选型**：新项目（Spring Boot 3.x）用第一行。仔细区分 **jakarta**——Spring Boot 3 使用 Jakarta EE 9+（`jakarta.*` 包名），依赖也带 `jakarta` 后缀，用错会出现类找不到或文档空白。
 
-### 8.2.2依赖引入
+### 8.2.2 依赖引入
 
 ```xml
 <!-- Spring Boot 3.x：jakarta 版本 -->
@@ -723,7 +723,7 @@ Knife4j 只做两件事：
 
 > Knife4j 4.x 的 starter 内部已经传递引入了 `springdoc-openapi-starter-webmvc-ui`，通常**无需再单独声明 springdoc 依赖**；若项目已单独引入，注意版本兼容。
 
-## 8.3快速集成与访问
+## 8.3 快速集成与访问
 
 引入依赖后**零配置即可使用**，原有的 `OpenApiConfig` 与接口注解无需改动：
 
@@ -750,7 +750,7 @@ public class OpenApiConfig {
 
 > `/doc.html` 是 Knife4j 的核心入口。它读取的仍是 `/v3/api-docs` 的 JSON，只是渲染层替换成了增强 UI。
 
-## 8.4knife4j.setting 配置项全表
+## 8.4 knife4j.setting 配置项全表
 
 ```yaml
 knife4j:
@@ -792,9 +792,9 @@ knife4j:
 | `enable-home-custom` | `false` | 自定义首页 |
 | `enable-debug` | `true` | 在线调试开关（生产应关闭） |
 
-## 8.5接口与 Tag 排序
+## 8.5 接口与 Tag 排序
 
-### 8.5.1接口排序 @ApiOperationSupport(order)
+### 8.5.1 接口排序 @ApiOperationSupport(order)
 
 `@ApiOperationSupport` 来自 `com.github.xiaoymin.knife4j.annotations`，`order` 越小越靠前：
 
@@ -832,7 +832,7 @@ public class UserController {
 public R<Void> save(@RequestBody UserDTO dto) { ... }
 ```
 
-### 8.5.2Tag 排序 @ApiSort
+### 8.5.2 Tag 排序 @ApiSort
 
 `@ApiSort` 标注在 Controller 类上，控制分组（Tag）的排序，数字越小越靠前：
 
@@ -846,7 +846,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiSort;
 public class UserController { ... }
 ```
 
-## 8.6离线文档导出
+## 8.6 离线文档导出
 
 **方式一：UI 导出（推荐）**
 
@@ -868,7 +868,7 @@ curl http://localhost:8080/v3/api-docs -o openapi.json
 
 > 导出的 Markdown/Word 文档适合交付给前端或作为离线接口手册；OpenAPI JSON 适合接入 CI 做代码生成、契约测试。
 
-## 8.7全局参数与鉴权
+## 8.7 全局参数与鉴权
 
 - **全局参数**：沿用第 5 章的 `OperationCustomizer` 给所有接口加公共头；Knife4j 会把用户填写的参数值**缓存在本地**（`enable-request-cache: true`），调试时无需反复输入 Token。
 - **鉴权**：沿用第 6 章的 `SecurityScheme`（JWT/Basic/OAuth2）。Knife4j 界面会在顶部显示「Authorize」区域，输入后自动附加到请求。
@@ -886,9 +886,9 @@ public GroupedOpenApi userApiGroup() {
 }
 ```
 
-## 8.8访问权限控制
+## 8.8 访问权限控制
 
-### 8.8.1生产环境屏蔽调试（production）
+### 8.8.1 生产环境屏蔽调试（production）
 
 ```yaml
 knife4j:
@@ -905,7 +905,7 @@ knife4j:
 - OpenAPI 原始文档的编辑能力
 ```
 
-### 8.8.2登录密码保护（basic）
+### 8.8.2 登录密码保护（basic）
 
 ```yaml
 knife4j:
@@ -917,9 +917,9 @@ knife4j:
 
 > ⚠ Knife4j 自带的 basic 密码保护强度有限（会话级），生产环境建议**叠加 Spring Security**（见 8.10）对 `/doc.html`、`/v3/api-docs/**` 做统一鉴权，或直接用 profile 关闭文档端点。
 
-## 8.9UI 个性化
+## 8.9 UI 个性化
 
-### 8.9.1自定义 Footer
+### 8.9.1 自定义 Footer
 
 ```yaml
 knife4j:
@@ -929,7 +929,7 @@ knife4j:
     footer-custom-content: "Copyright © 2024 某某公司 | 内部文档"
 ```
 
-### 8.9.2自定义首页
+### 8.9.2 自定义首页
 
 准备一份 Markdown 放到 `resources/markdown/home.md`：
 
@@ -946,11 +946,11 @@ knife4j:
     home-custom-path: classpath:markdown/home.md
 ```
 
-### 8.9.3其他 UI 开关
+### 8.9.3 其他 UI 开关
 
 通过 8.4 的 `knife4j.setting.*` 控制显示/隐藏各模块（模型、分组、OpenAPI 原始 JSON、版本号等）。若需要更深度定制（自定义 JS/CSS），可通过覆盖静态资源或使用 `WebMvcConfigurer` 注册自定义资源处理器实现。
 
-## 8.10与 Spring Security 集成
+## 8.10 与 Spring Security 集成
 
 引入 Spring Security 后，`/doc.html`、`/webjars/**`、`/v3/api-docs/**` 等默认会被拦截，需放行：
 
@@ -980,7 +980,7 @@ public class SecurityConfig {
 
 > 若还配置了自定义 `HandlerInterceptor`，也要在 `excludePathPatterns` 中排除上述路径（见 11.1）。
 
-## 8.11注解说明与纠错
+## 8.11 注解说明与纠错
 
 **关键澄清**：Knife4j **4.x 没有自己的注解体系**——它复用 springdoc 的 OpenAPI 3 注解（`@Tag`/`@Operation`/`@Parameter`/`@Schema`），只额外提供了**排序相关**的 `@ApiOperationSupport`、`@ApiSort`。而在 Knife4j **3.x（基于 SpringFox）** 中，才使用 `@Api`/`@ApiOperation`/`@ApiModelProperty` 这类注解。
 
@@ -999,7 +999,7 @@ public class SecurityConfig {
 | 响应 | `@ApiResponses` / `@ApiResponse` | `@ApiResponses` / `@ApiResponse` |
 | Knife4j 排序（独有） | `@ApiOperationSupport(order)` / `@ApiSort` | `@ApiOperationSupport(order)` / `@ApiSort` |
 
-## 8.12常见问题
+## 8.12 常见问题
 
 | 问题 | 原因 | 解决方案 |
 |------|------|----------|
@@ -1011,13 +1011,13 @@ public class SecurityConfig {
 | 生产环境暴露调试入口 | 未做权限控制 | `knife4j.production=true` + Spring Security / profile 关闭 |
 | 全局参数每次都要重填 | 未开启缓存 | 设置 `knife4j.setting.enable-request-cache: true` |
 
-# 9.SpringFox (Swagger 2) 兼容与迁移
+# 9. SpringFox (Swagger 2) 兼容与迁移
 
-## 9.1SpringFox 简介
+## 9.1 SpringFox 简介
 
 SpringFox 是 SpringBoot 早期的 Swagger 2 实现，已于 2020 年停止维护，且不兼容 Spring Boot 3.x。若项目仍在使用 SpringFox，建议迁移到 SpringDoc（+ 可选 Knife4j）。
 
-## 9.2SpringFox → SpringDoc 注解对照表
+## 9.2 SpringFox → SpringDoc 注解对照表
 
 | SpringFox (Swagger 2) | SpringDoc / Knife4j 4.x (OpenAPI 3) | 说明 |
 |------------------------|-------------------------------------|------|
@@ -1033,7 +1033,7 @@ SpringFox 是 SpringBoot 早期的 Swagger 2 实现，已于 2020 年停止维�
 | `@ApiResponse` | `@ApiResponse` | 一致 |
 | `Docket` | `GroupedOpenApi` | 分组配置 |
 
-## 9.3依赖替换
+## 9.3 依赖替换
 
 ```xml
 <!-- SpringFox (旧) - 移除 -->
@@ -1051,7 +1051,7 @@ SpringFox 是 SpringBoot 早期的 Swagger 2 实现，已于 2020 年停止维�
 </dependency>
 ```
 
-## 9.4配置迁移示例
+## 9.4 配置迁移示例
 
 **SpringFox 的 Docket 配置**：
 
@@ -1111,9 +1111,9 @@ public class OpenApiConfig {
 | 文档 UI | `/swagger-ui.html` | `/swagger-ui/index.html` 或 `/doc.html` |
 | JSON | `/v2/api-docs` | `/v3/api-docs` |
 
-# 10.常用配置项汇总
+# 10. 常用配置项汇总
 
-## 10.1springdoc 完整配置项
+## 10.1 springdoc 完整配置项
 
 ```yaml
 springdoc:
@@ -1173,7 +1173,7 @@ springdoc:
         - com.example.controller.order
 ```
 
-## 10.2knife4j 完整配置项
+## 10.2 knife4j 完整配置项
 
 ```yaml
 knife4j:
@@ -1203,7 +1203,7 @@ knife4j:
     enable-debug: true
 ```
 
-## 10.3按环境隔离文档
+## 10.3 按环境隔离文档
 
 ```yaml
 # application-dev.yml (开发环境 - 开启文档)
@@ -1243,9 +1243,9 @@ public class OpenApiConfig {
 
 > 生产环境若仍想保留只读文档，可保留 `knife4j.enable=true` 并设置 `production=true`、同时关闭 springdoc 的调试能力；若完全不需要，则用 profile 直接关闭文档端点。
 
-# 11.常见问题与注意事项
+# 11. 常见问题与注意事项
 
-## 11.1静态资源被拦截导致 404
+## 11.1 静态资源被拦截导致 404
 
 如果项目自定义了拦截器或 Spring Security 配置，Swagger/Knife4j 的静态资源可能被拦截。
 
@@ -1295,7 +1295,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-## 11.2与 Spring Security OAuth2 资源服务器集成
+## 11.2 与 Spring Security OAuth2 资源服务器集成
 
 ```java
 @Configuration
@@ -1326,7 +1326,7 @@ public class OpenApiConfig {
 }
 ```
 
-## 11.3文件上传接口文档化
+## 11.3 文件上传接口文档化
 
 ```java
 @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -1352,7 +1352,7 @@ public R<String> uploadMulti(
 
 > Knife4j 对多文件上传界面做了增强，可直接选择多个文件调试。
 
-## 11.4@RequestParam 与 @PathVariable 注意事项
+## 11.4 @RequestParam 与 @PathVariable 注意事项
 
 SpringDoc 能自动识别 `@RequestParam` 和 `@PathVariable`，无需显式添加 `@Parameter` 注解即可生成文档。但显式添加 `@Parameter` 可以提供更详细的中文说明：
 
@@ -1369,7 +1369,7 @@ public R<User> getById(
         @PathVariable Long id) { ... }
 ```
 
-## 11.5使用 @ParameterObject 简化分页参数
+## 11.5 使用 @ParameterObject 简化分页参数
 
 对于分页查询中参数较多的情况，可以封装为一个对象并用 `@ParameterObject` 注解：
 
@@ -1398,7 +1398,7 @@ public R<PageResult<User>> page(@ParameterObject UserPageQuery query) {
 }
 ```
 
-## 11.6分组后访问文档 404
+## 11.6 分组后访问文档 404
 
 使用 `GroupedOpenApi` 分组后，Swagger UI 默认访问的是 `default` 分组。如果没定义 `default` 分组，需要手动切换右上角下拉框，或者在 URL 上指定分组参数：
 
@@ -1411,7 +1411,7 @@ http://localhost:8080/doc.html#/用户管理
 springdoc.swagger-ui.urls-primary-name=用户管理
 ```
 
-## 11.7Knife4j 相关常见问题
+## 11.7 Knife4j 相关常见问题
 
 | 问题 | 原因 | 解决方案 |
 |------|------|----------|
@@ -1422,7 +1422,7 @@ springdoc.swagger-ui.urls-primary-name=用户管理
 | 排序注解无效 | 误用 SpringFox 注解 | 用 `@ApiOperationSupport` / `@ApiSort` |
 | 中文乱码 / 界面英文 | 未设置语言 | `knife4j.setting.language: zh_cn` |
 
-## 11.8常见注意事项总结
+## 11.8 常见注意事项总结
 
 | 问题 | 原因 | 解决方案 |
 |------|------|----------|

@@ -1,4 +1,4 @@
-# 1.多表关系
+# 1. 多表关系
 
 表与表之间存在三种基本关系：
 
@@ -8,7 +8,7 @@
 | **多对多（M:N）** | 创建中间表，含两个外键分别指向两张表 | 学生 ↔ 课程：通过"选课表"关联 |
 | **一对一（1:1）** | 在任意一方添加外键并设为 UNIQUE | 用户 ↔ 用户详情（表拆分） |
 
-## 1.1一对多
+## 1.1 一对多
 
 ```sql
 CREATE TABLE dept (
@@ -24,7 +24,7 @@ CREATE TABLE emp (
 );
 ```
 
-## 1.2多对多
+## 1.2 多对多
 
 ```sql
 CREATE TABLE student (
@@ -48,7 +48,7 @@ CREATE TABLE student_course (
 );
 ```
 
-## 1.3一对一
+## 1.3 一对一
 
 ```sql
 CREATE TABLE user (
@@ -70,7 +70,7 @@ CREATE TABLE user_profile (
 > - **敏感数据隔离**：如将手机号、身份证号存到独立表，单独做权限控制
 > - **扩展性**：不同业务模块扩展自己的属性表，避免基础表字段膨胀
 
-# 2.多表查询概述
+# 2. 多表查询概述
 
 多表查询（JOIN）是从多张表中获取数据的手段。当查询涉及多张表时，如果不指定连接条件，会产生**笛卡尔积**：
 
@@ -84,9 +84,9 @@ SELECT * FROM emp, dept WHERE emp.dept_id = dept.id;
 
 **多表查询的性能核心**：JOIN 的本质是表之间的匹配运算。MySQL 优化器会选择驱动表（小表驱动大表原则）和被驱动表，在被驱动表上通过索引快速匹配。
 
-# 3.连接查询（JOIN）
+# 3. 连接查询（JOIN）
 
-## 3.1内连接（INNER JOIN）
+## 3.1 内连接（INNER JOIN）
 
 内连接查询的是两张表的**交集**——只返回两个表中匹配的行。
 
@@ -115,11 +115,11 @@ INNER JOIN course c ON sc.course_id = c.id
 WHERE sc.score >= 60;
 ```
 
-## 3.2外连接（OUTER JOIN）
+## 3.2 外连接（OUTER JOIN）
 
 外连接除了返回匹配的行，还会保留**左表或右表中不匹配的行**（不匹配的部分用 NULL 填充）。
 
-### 左外连接（LEFT JOIN）
+### 3.2.1 左外连接（LEFT JOIN）
 
 ```sql
 -- 查询所有员工及其部门（包括没有部门的员工）
@@ -129,7 +129,7 @@ LEFT JOIN dept d ON e.dept_id = d.id;
 -- 结果：有部门的员工正常显示，没有部门的员工 dept_name 为 NULL
 ```
 
-### 右外连接（RIGHT JOIN）
+### 3.2.2 右外连接（RIGHT JOIN）
 
 ```sql
 -- 查询所有部门及其员工（包括没有员工的部门）
@@ -144,7 +144,7 @@ LEFT JOIN emp e ON e.dept_id = d.id;
 
 > **最佳实践**：绝大多数场景使用 LEFT JOIN 即可，RIGHT JOIN 可以通过交换表顺序转为 LEFT JOIN。统一使用 LEFT JOIN 有助于代码可读性和维护。
 
-### 全外连接（FULL OUTER JOIN）
+### 3.2.3 全外连接（FULL OUTER JOIN）
 
 MySQL 不直接支持 FULL OUTER JOIN，可通过 **LEFT JOIN + UNION + RIGHT JOIN** 模拟：
 
@@ -154,7 +154,7 @@ UNION
 SELECT e.name, d.name FROM emp e RIGHT JOIN dept d ON e.dept_id = d.id;
 ```
 
-## 3.3自连接（SELF JOIN）
+## 3.3 自连接（SELF JOIN）
 
 自连接是指自己连接自己，用于处理**表中数据存在层级关系**的场景。
 
@@ -173,7 +173,7 @@ LEFT JOIN employee m ON e.manager_id = m.id;
 > - 树形结构（菜单 → 父菜单）
 > - 地域层级（省 → 市 → 区）
 
-## 3.4交叉连接（CROSS JOIN）
+## 3.4 交叉连接（CROSS JOIN）
 
 返回笛卡尔积：
 
@@ -181,13 +181,13 @@ LEFT JOIN employee m ON e.manager_id = m.id;
 SELECT * FROM emp CROSS JOIN dept;  -- 等价于 SELECT * FROM emp, dept;
 ```
 
-# 4.子查询（Subquery）
+# 4. 子查询（Subquery）
 
 子查询是指嵌套在另一个 SQL 语句（SELECT、INSERT、UPDATE、DELETE）内部的 SELECT 查询。子查询的结果作为外层查询的条件或数据源。
 
-## 4.1按结果分类
+## 4.1 按结果分类
 
-### 4.1.1标量子查询（结果为一格——单个值）
+### 4.1.1 标量子查询（结果为一格——单个值）
 
 ```sql
 -- 查询工资高于平均工资的员工
@@ -195,7 +195,7 @@ SELECT name, salary FROM emp
 WHERE salary > (SELECT AVG(salary) FROM emp);
 ```
 
-### 4.1.2列子查询（结果为一列，可能多行）
+### 4.1.2 列子查询（结果为一列，可能多行）
 
 配合 `IN`、`NOT IN`、`ANY`、`SOME`、`ALL` 使用：
 
@@ -213,7 +213,7 @@ SELECT name FROM emp
 WHERE salary > ANY (SELECT salary FROM emp WHERE dept_id = 1);
 ```
 
-### 4.1.3行子查询（结果为一行多列）
+### 4.1.3 行子查询（结果为一行多列）
 
 ```sql
 -- 查询与"张三"同部门且同职级的员工
@@ -222,7 +222,7 @@ WHERE (dept_id, level) = (SELECT dept_id, level FROM emp WHERE name = '张三')
   AND name != '张三';
 ```
 
-### 4.1.4表子查询（结果为多行多列）
+### 4.1.4 表子查询（结果为多行多列）
 
 ```sql
 -- 子查询作为虚拟表（必须取别名）
@@ -234,7 +234,7 @@ SELECT t.* FROM (
 WHERE t.cnt > 5;
 ```
 
-## 4.2按位置分类
+## 4.2 按位置分类
 
 | 位置 | 示例 | 注意 |
 |------|------|------|
@@ -244,7 +244,7 @@ WHERE t.cnt > 5;
 | HAVING 之后 | `HAVING AVG(salary) > (SELECT ...)` | 必须是标量子查询 |
 | INSERT ... SELECT | `INSERT INTO t SELECT ...` | 表子查询 |
 
-# 5.联合查询（UNION）
+# 5. 联合查询（UNION）
 
 联合查询将多个 SELECT 的结果合并为一个结果集。
 
@@ -270,7 +270,7 @@ SELECT name FROM supplier;
 
 > **使用 UNION 的场景**：多张同构表（如按年份分表 `order_2024`、`order_2025`）的数据汇总查询。
 
-# 6.多表查询优化要点
+# 6. 多表查询优化要点
 
 - **用小表驱动大表**：LEFT JOIN 时，左表（驱动表）应尽量小；INNER JOIN 时，优化器会自动选择
 - **连接字段必须有索引**：被驱动表的连接字段（ON 后面的字段）必须有索引，否则每次匹配都做全表扫描

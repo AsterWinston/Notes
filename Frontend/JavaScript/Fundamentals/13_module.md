@@ -1,4 +1,4 @@
-# 1.模块 (Module) 简介
+# 1. 模块 (Module) 简介
 ```javascript
 随着我们的应用越来越大，我们想要将其拆分成多个文件，即所谓的“模块（module）”。一个模块可以包含用于特定目的的类或函数库。
 
@@ -15,7 +15,7 @@ UMD —— 另外一个模块系统，建议作为通用的模块系统，它与
 
 语言级的模块系统在 2015 年的时候出现在了标准（ES6）中，此后逐渐发展，现在已经得到了所有主流浏览器和 Node.js 的支持。因此，我们将从现在开始学习现代 JavaScript 模块（module）。
 ```
-## 1.1什么是模块
+## 1.1 什么是模块
 ```
 一个模块（module）就是一个文件。一个脚本就是一个模块。就这么简单。
 
@@ -56,7 +56,7 @@ import 指令通过相对于当前文件的路径 ./sayHi.js 加载模块，并�
 模块只通过 HTTP(s) 工作，而非本地
 如果你尝试通过 file:// 协议在本地打开一个网页，你会发现 import/export 指令不起作用。你可以使用本地 Web 服务器，例如 static-server，或者使用编辑器的“实时服务器”功能，例如 VS Code 的 Live Server Extension 来测试模块。
 ```
-## 1.2模块核心功能
+## 1.2 模块核心功能
 ```
 与“常规”脚本相比，模块有什么不同呢？
 
@@ -212,7 +212,7 @@ import.meta 对象包含关于当前模块的信息。
   alert(this); // undefined
 </script>
 ```
-## 1.3浏览器特定功能
+## 1.3 浏览器特定功能
 ```
 与常规脚本相比，拥有 type="module" 标识的脚本有一些特定于浏览器的差异。
 
@@ -303,7 +303,7 @@ import {sayHi} from 'sayHi'; // Error，“裸”模块
   alert("Old browsers ignore script with unknown type=module, but execute this.");
 </script>
 ```
-## 1.4构建工具
+## 1.4 构建工具
 ```
 在实际开发中，浏览器模块很少被以“原始”形式进行使用。通常，我们会使用一些特殊工具，例如 Webpack，将它们打包在一起，然后部署到生产环境的服务器。
 
@@ -327,13 +327,13 @@ import {sayHi} from 'sayHi'; // Error，“裸”模块
 关于构建工具说了这么多，但其实原生模块也是可以用的。所以，我们在这儿将不会使用 Webpack：你可以稍后再配置它。
 ```
 
-# 2.导出和导入
+# 2. 导出和导入
 ```javascript
 导出（export）和导入（import）指令有几种语法变体。
 
 在上一节，我们看到了一个简单的用法，现在让我们来探索更多示例吧。
 ```
-## 2.1在声明前导出
+## 2.1 在声明前导出
 ```
 我们可以通过在声明之前放置 export 来标记任意声明为导出，无论声明的是变量，函数还是类都可以。
 
@@ -362,7 +362,7 @@ export function sayHi(user) {
   alert(`Hello, ${user}!`);
 }  // 在这里没有分号 ;
 ```
-## 2.2导出和声明分开
+## 2.2 导出和声明分开
 ```
 另外，我们还可以将 export 分开放置。
 
@@ -380,7 +380,7 @@ function sayBye(user) {
 export {sayHi, sayBye}; // 导出变量列表
 ……从技术上讲，我们也可以把 export 放在函数上面。
 ```
-## 2.3import *
+## 2.3 import *
 ```
 通常，我们把要导入的东西列在花括号 import {...} 中，就像这样：
 
@@ -418,7 +418,7 @@ import {sayHi} from './say.js';
 
 导入的显式列表可以更好地概述代码结构：使用的内容和位置。它使得代码支持重构，并且重构起来更容易。
 ```
-## 2.4import "as"
+## 2.4 import "as"
 ```
 我们也可以使用 as 让导入具有不同的名字。
 
@@ -430,7 +430,7 @@ import {sayHi as hi, sayBye as bye} from './say.js';
 hi('John'); // Hello, John!
 bye('John'); // Bye, John!
 ```
-## 2.5export "as"
+## 2.5 export "as"
 ```
 导出也具有类似的语法。
 
@@ -447,7 +447,7 @@ import * as say from './say.js';
 say.hi('John'); // Hello, John!
 say.bye('John'); // Bye, John!
 ```
-## 2.6export default
+## 2.6 export default
 ```
 在实际中，主要有两种模块。
 
@@ -561,7 +561,7 @@ import func from '/path/to/func.js';
 
 这也使得重新导出（见下文）更容易。
 ```
-## 2.7重新导出
+## 2.7 重新导出
 ```
 “重新导出（Re-export）”语法 export ... from ... 允许导入内容，并立即将其导出（可能是用的是其他的名字），就像这样：
 
@@ -644,7 +644,7 @@ export {default} from './user.js'; // 重新导出默认的导出
 重新导出一个默认导出的这种奇怪现象，是某些开发者不喜欢默认导出，而是喜欢命名的导出的原因之一。
 ```
 
-# 3.动态导入
+# 3. 动态导入
 ```javascript
 我们在前面章节中介绍的导出和导入语句称为“静态”导入。语法非常简单且严格。
 
@@ -666,7 +666,7 @@ if(...) {
 
 但是，我们如何才能动态地按需导入模块呢？
 ```
-## 3.1import()表达式
+## 3.1 import()表达式
 ```
 import(module) 表达式加载模块并返回一个 promise，该 promise resolve 为一个包含其所有导出的模块对象。我们可以在代码中的任意位置调用这个表达式。
 

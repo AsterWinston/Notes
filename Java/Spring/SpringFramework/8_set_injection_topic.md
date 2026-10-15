@@ -396,7 +396,7 @@ public class Student {
 ```
 # 5. 注入数组
 
-## 5.1数组中的元素是简单类型
+## 5.1 数组中的元素是简单类型
 ```
 public class QianDaYe {
     private String[] aiHaos;
@@ -425,7 +425,7 @@ public class QianDaYe {
 
 </bean>
 ```
-## 5.2数组中的元素是非简单类型
+## 5.2 数组中的元素是非简单类型
 ```
 public class Woman {
     private String name;
@@ -498,7 +498,7 @@ public class QianDaYe {
 
 </bean>
 ```
-## 5.3注入数组小结
+## 5.3 注入数组小结
 如果数组中是简单类型，使用value标签。
 如果数组中是非简单类型，使用ref标签。
 # 6. 注入List集合与Set集合
@@ -721,7 +721,7 @@ public class MathBean {
 
 # 10. 源码解析：属性注入的底层实现
 
-## 10.1. populateBean() — 属性赋值入口
+## 10.1 populateBean() — 属性赋值入口
 
 ```
 在 doCreateBean() 中，createBeanInstance() 完成实例化后，紧接着调用 populateBean()：
@@ -766,7 +766,7 @@ protected void populateBean(String beanName, RootBeanDefinition mbd,
 }
 ```
 
-## 10.2. applyPropertyValues() — 属性值解析与应用
+## 10.2 applyPropertyValues() — 属性值解析与应用
 
 ```
 这是真正将 XML <property> 或自动装配产生的 PropertyValue 设置到 Bean 上的方法：
@@ -861,7 +861,7 @@ protected void applyPropertyValues(String beanName, BeanDefinition mbd,
 }
 ```
 
-## 10.3. BeanWrapperImpl.setPropertyValues() — 反射设置属性
+## 10.3 BeanWrapperImpl.setPropertyValues() — 反射设置属性
 
 ```
 BeanWrapperImpl 是 Spring 中 BeanWrapper 接口的默认实现，
@@ -912,7 +912,7 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor
 }
 ```
 
-### 10.4. BeanWrapperImpl.setPropertyValue() 单属性设置
+### 10.4 BeanWrapperImpl.setPropertyValue() 单属性设置
 
 ```
 @SuppressWarnings("unchecked")
@@ -964,7 +964,7 @@ public void setValue(@Nullable Object value) throws Exception {
 }
 ```
 
-## 10.4. TypedStringValue 的值解析流程
+## 10.4 TypedStringValue 的值解析流程
 
 ```
 XML 中的 <property name="age" value="20"/> 会产生一个 TypedStringValue("20")：
@@ -989,7 +989,7 @@ XML 中的 <property name="age" value="20"/> 会产生一个 TypedStringValue("2
   String → URI / URL（Spring 6 中 URL 会验证有效性）
 ```
 
-## 10.5. RuntimeBeanReference 解析源码
+## 10.5 RuntimeBeanReference 解析源码
 
 ```
 XML 中的 <property name="orderDao" ref="orderDaoBean"/>
@@ -1010,7 +1010,7 @@ protected Object resolveBeanReference(String beanName, RuntimeBeanReference ref)
 }
 ```
 
-## 10.6. 嵌套属性设置源码
+## 10.6 嵌套属性设置源码
 
 ```
 级联赋值如 <property name="clazz.name" value="高三二班"/>：
@@ -1048,7 +1048,7 @@ protected AbstractNestablePropertyAccessor getPropertyAccessorForPropertyPath(
 }
 ```
 
-## 10.7. 集合属性注入源码
+## 10.7 集合属性注入源码
 
 ```
 XML 中的 <list>/<set>/<map>/<array>/<props> 标签被解析为对应的 Managed 类型：
@@ -1075,7 +1075,7 @@ for (Object element : managedCollection) {
 // 最终通过反射调用 setter 方法注入集合对象
 ```
 
-## 10.8. 设计思想总结
+## 10.8 设计思想总结
 
 1. BeanWrapper / PropertyAccessor 抽象层：
    Spring 没有直接使用反射设置属性，而是通过 BeanWrapper 包装，

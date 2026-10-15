@@ -1,4 +1,4 @@
-# 1.Helm 概述
+# 1. Helm 概述
 
 ## 1.1 为什么需要 Helm
 
@@ -34,7 +34,7 @@ Revision（版本）
       用于回滚和历史记录
 ```
 
-### Helm 架构（v3 简化）
+### 1.2.1 Helm 架构（v3 简化）
 
 ```
 ┌─────────────┐
@@ -52,7 +52,7 @@ Revision（版本）
 
 Helm v3 相比 v2 最大的变化是**移除了 Tiller**——不再需要在集群中部署服务端组件，helm CLI 直接通过 kubeconfig 与 API Server 交互，使用与 kubectl 相同的认证和授权机制。
 
-# 2.Helm Chart 结构
+# 2. Helm Chart 结构
 
 ## 2.1 脚手架创建
 
@@ -213,7 +213,7 @@ spec:
         {{- end }}
 ```
 
-### 关键模板语法
+### 2.4.1 关键模板语法
 
 | 语法 | 说明 |
 |------|------|
@@ -230,7 +230,7 @@ spec:
 | `{{- if ... }}...{{- end }}` | 条件判断 |
 | `{{- range ... }}...{{- end }}` | 循环遍历 |
 
-### _helpers.tpl 中的命名模板
+### 2.4.2 _helpers.tpl 中的命名模板
 
 ```yaml
 # templates/_helpers.tpl
@@ -294,7 +294,7 @@ nodeSelector:
 {{ .Values.image.pullPolicy | default "IfNotPresent" }}
 ```
 
-# 3.安装和管理 Release
+# 3. 安装和管理 Release
 
 ## 3.1 基础命令
 
@@ -369,7 +369,7 @@ helm install my-release ./my-chart \
   --set config.logLevel=debug
 ```
 
-# 4.Chart 仓库与依赖
+# 4. Chart 仓库与依赖
 
 ## 4.1 Helm Repository
 
@@ -440,7 +440,7 @@ redis:
     password: redis-secret
 ```
 
-# 5.Helm Hooks
+# 5. Helm Hooks
 
 ## 5.1 生命周期钩子
 
@@ -464,7 +464,7 @@ spec:
         image: myapp-migration:v1.0
 ```
 
-### 钩子类型
+### 5.1.1 钩子类型
 
 | Hook | 触发时机 |
 |------|---------|
@@ -478,7 +478,7 @@ spec:
 | `post-rollback` | 所有资源回滚之后 |
 | `test` | `helm test` 命令执行时 |
 
-### 删除策略
+### 5.1.2 删除策略
 
 | 策略 | 行为 |
 |------|------|
@@ -486,7 +486,7 @@ spec:
 | `hook-succeeded` | 钩子成功后删除 |
 | `hook-failed` | 钩子失败后删除 |
 
-# 6.Helm 测试
+# 6. Helm 测试
 
 ```yaml
 # templates/tests/test-connection.yaml
@@ -517,7 +517,7 @@ helm test my-release -n production
 kubectl logs my-release-test-connection -n production
 ```
 
-# 7.Library Chart（库 Chart）
+# 7. Library Chart（库 Chart）
 
 Library Chart 不包含实际资源模板，只提供可复用的命名模板：
 
@@ -547,7 +547,7 @@ dependencies:
   repository: file://../my-library
 ```
 
-# 8.OCI Registry 支持
+# 8. OCI Registry 支持
 
 Helm v3.8+ 支持将 Chart 推送到 OCI 兼容的容器镜像仓库（如 Docker Hub、Harbor、AWS ECR）：
 
@@ -568,7 +568,7 @@ helm pull oci://harbor.example.com/charts/my-chart --version 1.2.3
 helm install my-release oci://harbor.example.com/charts/my-chart --version 1.2.3
 ```
 
-# 9.生产实践
+# 9. 生产实践
 
 ## 9.1 Chart 设计最佳实践
 

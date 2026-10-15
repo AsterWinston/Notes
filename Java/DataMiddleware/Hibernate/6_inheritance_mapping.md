@@ -121,7 +121,7 @@ CREATE TABLE vehicle (
 
 ## 2.3 完整示例
 
-### 注解配置
+### 2.3.1 注解配置
 
 ```java
 import javax.persistence.*;
@@ -212,7 +212,7 @@ public class Truck extends Vehicle {
 }
 ```
 
-### 插入操作生成的 SQL
+### 2.3.2 插入操作生成的 SQL
 
 ```java
 // 测试代码
@@ -244,7 +244,7 @@ VALUES ('Volvo', 89999.0, 18.5, 3, 'TRUCK');
 | 1  | CAR         | Tesla       | 29999 | 5          | ELECTRIC  | NULL          | NULL       |
 | 2  | TRUCK       | Volvo       | 89999 | NULL       | NULL      | 18.5          | 3          |
 
-### 查询操作生成的 SQL
+### 2.3.3 查询操作生成的 SQL
 
 ```java
 // 按 ID 查询具体子类
@@ -271,7 +271,7 @@ WHERE v.id = 2;
 
 多态查询是单表策略的核心优势——查询父类实例时，Hibernate 自动扫描所有子类。
 
-### 查询父类 → 自动包含所有子类
+### 2.4.1 查询父类 → 自动包含所有子类
 
 ```java
 // JPQL 查询所有 Vehicle（多态查询）
@@ -293,7 +293,7 @@ Hibernate 读取 `vehicle_type` 列，根据 `@DiscriminatorValue` 将每行数�
 - `vehicle_type = 'CAR'` → 实例化为 `Car` 对象
 - `vehicle_type = 'TRUCK'` → 实例化为 `Truck` 对象
 
-### 查询具体子类 → 自动添加 DTYPE 过滤
+### 2.4.2 查询具体子类 → 自动添加 DTYPE 过滤
 
 ```java
 // 查询所有 Car 实例
@@ -308,7 +308,7 @@ FROM vehicle c
 WHERE c.vehicle_type = 'CAR';
 ```
 
-### JPQL 中的 TYPE() 表达式
+### 2.4.3 JPQL 中的 TYPE() 表达式
 
 JPQL 提供 `TYPE()` 函数，用于在多态查询中基于类型进行过滤：
 
@@ -336,7 +336,7 @@ SELECT ... FROM vehicle v WHERE v.vehicle_type IN ('CAR', 'TRUCK');
 
 ## 2.5 特殊注解
 
-### @DiscriminatorFormula
+### 2.5.1 @DiscriminatorFormula
 
 `@DiscriminatorFormula` 允许使用 SQL 表达式来动态计算鉴别器值，而非直接存储固定字符串。适用于鉴别逻辑复杂的场景，例如根据某列的值范围来区分类型。
 
@@ -362,7 +362,7 @@ public abstract class Vehicle {
 
 > **注意**：`@DiscriminatorFormula` 与 `@DiscriminatorColumn` 是互斥的，二者不能同时使用。
 
-### @DiscriminatorOptions
+### 2.5.2 @DiscriminatorOptions
 
 `@DiscriminatorOptions` 用于微调鉴别器列的行为，有两个属性：
 
@@ -410,7 +410,7 @@ VALUES ('Tesla', 29999.0, 5, 'ELECTRIC');
 
 ## 2.6 优缺点
 
-### 优点
+### 2.6.1 优点
 
 | 优点 | 说明 |
 |------|------|
@@ -419,7 +419,7 @@ VALUES ('Tesla', 29999.0, 5, 'ELECTRIC');
 | **简单直观** | 表结构简单，只需一张表，易于理解和维护 |
 | **插入高效** | 插入操作只需一条 INSERT 语句，不需要跨表操作 |
 
-### 缺点
+### 2.6.2 缺点
 
 | 缺点 | 说明 |
 |------|------|
@@ -429,7 +429,7 @@ VALUES ('Tesla', 29999.0, 5, 'ELECTRIC');
 | **宽表问题** | 子类越多、字段越多，表越宽，可能超过数据库单表列数限制（如 MySQL 最多 4096 列） |
 | **索引效率下降** | 大量 NULL 值可能影响索引性能（特别是复合索引中包含子类特有字段时） |
 
-### 适用场景
+### 2.6.3 适用场景
 
 - 子类之间字段差异较小（2~5 个特有字段）
 - 需要频繁进行多态查询
@@ -527,7 +527,7 @@ CREATE TABLE truck (
 
 ## 3.3 完整示例
 
-### 注解配置
+### 3.3.1 注解配置
 
 ```java
 import javax.persistence.*;
@@ -622,7 +622,7 @@ public class Truck extends Vehicle {
 }
 ```
 
-### 插入操作生成的 SQL
+### 3.3.2 插入操作生成的 SQL
 
 ```java
 Vehicle car = new Car("Tesla", 29999.0, 5, "ELECTRIC");
@@ -676,7 +676,7 @@ VALUES (2, 18.5, 3);
 |-------------------|---------------|------------|
 | 2                 | 18.5          | 3          |
 
-### 查询操作
+### 3.3.3 查询操作
 
 **查询具体子类**（Car）：
 
@@ -780,7 +780,7 @@ public class Car extends Vehicle { }
 
 ## 3.5 优缺点
 
-### 优点
+### 3.5.1 优点
 
 | 优点 | 说明 |
 |------|------|
@@ -790,7 +790,7 @@ public class Car extends Vehicle { }
 | **表结构易扩展** | 新增子类只需新建一张表，不影响已有的父子类表结构 |
 | **适合列数极多的场景** | 避免单表列数超限的问题 |
 
-### 缺点
+### 3.5.2 缺点
 
 | 缺点 | 说明 |
 |------|------|
@@ -800,7 +800,7 @@ public class Car extends Vehicle { }
 | **深层继承性能差** | 三层继承（孙类）需要 JOIN 三张表才能读取完整数据 |
 | **外键约束开销** | 外键约束在插入/删除时有一定性能开销 |
 
-### 适用场景
+### 3.5.3 适用场景
 
 - 子类之间字段差异大（10 个以上特有字段）
 - 数据完整性和规范化要求高，必须满足第三范式
@@ -894,7 +894,7 @@ CREATE TABLE truck (
 
 ## 4.3 完整示例
 
-### 注解配置
+### 4.3.1 注解配置
 
 ```java
 import javax.persistence.*;
@@ -986,7 +986,7 @@ public class Truck extends Vehicle {
 }
 ```
 
-### 插入操作生成的 SQL
+### 4.3.2 插入操作生成的 SQL
 
 ```java
 Vehicle car = new Car("Tesla", 29999.0, 5, "ELECTRIC");
@@ -1010,7 +1010,7 @@ INSERT INTO truck (id, manufacturer, price, load_capacity, axle_count)
 VALUES (2, 'Volvo', 89999.0, 18.5, 3);
 ```
 
-### 查询操作
+### 4.3.3 查询操作
 
 **查询具体类（Car）→ 单表查询，效率最高**：
 
@@ -1117,7 +1117,7 @@ private Long id;
 
 ## 4.5 优缺点
 
-### 优点
+### 4.5.1 优点
 
 | 优点 | 说明 |
 |------|------|
@@ -1126,7 +1126,7 @@ private Long id;
 | **表结构独立** | 每个子类表完全独立，可独立优化（索引、分区等） |
 | **插入高效** | 插入只需一条 INSERT 语句，无跨表操作 |
 
-### 缺点
+### 4.5.2 缺点
 
 | 缺点 | 说明 |
 |------|------|
@@ -1137,7 +1137,7 @@ private Long id;
 | **修改公共字段成本高** | 增加父类公共字段需要 ALTER 所有子类表 |
 | **无法做跨类外键** | 其他表无法通过外键引用"所有 Vehicle"，只能引用具体子类表 |
 
-### 适用场景
+### 4.5.3 适用场景
 
 - 几乎不需要多态查询（绝大多数操作都是对具体子类的查询）
 - 子类之间结构差异巨大（字段无交集，各自独立）
@@ -1618,7 +1618,7 @@ public class Mammal extends Animal { ... }
 
 ## 7.2 选型建议
 
-### 决策流程图
+### 7.2.1 决策流程图
 
 ```
                            ┌──────────────────────────────┐
@@ -1644,7 +1644,7 @@ public class Mammal extends Animal { ... }
                               └──────────────┘  └──────────────────┘
 ```
 
-### 具体建议
+### 7.2.2 具体建议
 
 **1. 大多数场景推荐 SINGLE_TABLE（性能最佳）**
 
@@ -1682,7 +1682,7 @@ public class Mammal extends Animal { ... }
 
 ## 7.3 Hibernate 实现细节
 
-### 继承策略对应的 Persister 实现
+### 7.3.1 继承策略对应的 Persister 实现
 
 Hibernate 内部为每种继承策略提供了不同的 `EntityPersister` 实现，负责实体的持久化操作：
 
@@ -1692,7 +1692,7 @@ Hibernate 内部为每种继承策略提供了不同的 `EntityPersister` 实现
 | JOINED | `JoinedSubclassEntityPersister` | 处理多表映射，负责父类表与子类表的 JOIN 查询和多表插入 |
 | TABLE_PER_CLASS | `UnionSubclassEntityPersister` | 处理多表独立映射，负责 UNION ALL 查询和分表插入 |
 
-### 各策略的加载方式
+### 7.3.2 各策略的加载方式
 
 **SINGLE_TABLE 加载**：
 
@@ -1741,7 +1741,7 @@ Session.get(Vehicle.class, id)  -- 父类多态加载
     -- Hibernate 逐个子类表查询，直到找到匹配的记录
 ```
 
-### 鉴别器列的默认命名
+### 7.3.3 鉴别器列的默认命名
 
 Hibernate 鉴别器列的默认规则：
 
@@ -1757,7 +1757,7 @@ Hibernate 6.x 变更（如果使用）：
 - Hibernate 6 中鉴别器列的长度由 `@DiscriminatorColumn(length = ...)` 指定，默认值与 Hibernate 5 相同
 - Hibernate 6 改进了鉴别器列的优化，在不需要时不生成额外的 SELECT
 
-### 查询时的鉴别器处理
+### 7.3.4 查询时的鉴别器处理
 
 ```java
 // Hibernate 查询引擎处理步骤
@@ -1869,7 +1869,7 @@ SELECT c.* FROM car c WHERE c.seat_count = 5;
 
 ## 8.3 汇总查询与多态
 
-### 按子类分组统计
+### 8.3.1 按子类分组统计
 
 ```java
 // 方案 1：使用 TYPE() 分组（推荐）
@@ -1911,7 +1911,7 @@ UNION ALL
 SELECT 'Truck' AS type, COUNT(*), AVG(price) FROM truck;
 ```
 
-### 多态关联的查询行为
+### 8.3.2 多态关联的查询行为
 
 当实体与其他实体存在多态关联时，查询行为取决于关联目标使用的继承策略：
 
@@ -1972,7 +1972,7 @@ TABLE_PER_CLASS 策略下：
 
 ---
 
-# 附录：常见问题与陷阱
+# 9. 附录：常见问题与陷阱
 
 ### Q1: 为什么 @MappedSuperclass 不能作为 @OneToMany 的目标？
 

@@ -1,4 +1,4 @@
-# 1 ReplicaManager 副本管理核心
+# 1. ReplicaManager 副本管理核心
 
 ## 1.1 架构总览
 
@@ -20,7 +20,7 @@ ReplicaManager
     └── Scheduler (定期 ISR 过期检查)
 ```
 
-# 2 Partition 副本对象
+# 2. Partition 副本对象
 
 ## 2.1 核心结构
 
@@ -139,7 +139,7 @@ private def appendRecordsToFollower(records: MemoryRecords,
 
 > 文件位置: `core/src/main/scala/kafka/cluster/Partition.scala:427`
 
-# 3 Leader 同步流程
+# 3. Leader 同步流程
 
 ## 3.1 ReplicaFetcherManager 初始化
 
@@ -266,7 +266,7 @@ class ReplicaFetcherThread(name: String,
 
 > 文件位置: `core/src/main/scala/kafka/server/ReplicaFetcherThread.scala:73`
 
-# 4 HW 推进机制
+# 4. HW 推进机制
 
 ## 4.1 Leader 端 HW 计算
 
@@ -314,7 +314,7 @@ def updateHighWatermark(followerFetchOffsetMetadata: LogOffsetMetadata,
 
 > 文件位置: `core/src/main/scala/kafka/cluster/Partition.scala:613`
 
-# 5 ISR 管理
+# 5. ISR 管理
 
 ## 5.1 ISR 过期检查
 
@@ -376,7 +376,7 @@ Partition.maybeShrinkIsr / maybeExpandIsr
         → Producer/Consumer 的 Metadata Refresh 获知新 ISR
 ```
 
-# 6 Follower 的异常恢复
+# 6. Follower 的异常恢复
 
 ## 6.1 Truncate 逻辑（Follower 截断）
 
@@ -427,7 +427,7 @@ class Replica(val brokerId: Int,
 
 > 文件位置: `core/src/main/scala/kafka/cluster/Replica.scala:30`
 
-# 7 复制相关的时序
+# 7. 复制相关的时序
 
 ```
 完整 Leader → Follower 同步时序:
@@ -484,7 +484,7 @@ Leader (Broker 0)                  Follower (Broker 1)
      │                                 防护数据安全) │
 ```
 
-# 8 复制相关关键参数源码映射
+# 8. 复制相关关键参数源码映射
 
 ```scala
 // KafkaConfig.scala

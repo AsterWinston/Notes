@@ -1,4 +1,4 @@
-# 1.Listener监听器
+# 1. Listener监听器
 
 ```
 什么是监听器？
@@ -11,7 +11,7 @@
 特殊的时刻如果想执行这段代码，你需要想到使用对应的监听器。
 ```
 
-# 2.Servlet规范中提供了哪些监听器？
+# 2. Servlet规范中提供了哪些监听器？
 
 ```
 jakarta.servlet 包下：
@@ -36,7 +36,7 @@ HttpSessionActivationListener
 活化：从硬盘文件把 session 恢复到内存。
 ```
 
-# 3.实现一个监听器的步骤：以 ServletContextListener 为例。
+# 3. 实现一个监听器的步骤：以 ServletContextListener 为例。
 
 ```
 第一步：编写一个类实现 ServletContextListener 接口。并且实现里面的方法。
@@ -71,7 +71,7 @@ session.removeAttribute(“user”); User 类型的对象从 session 域中移�
 或者有可能是 session 销毁了。（session 超时）
 ```
 
-# 4.各监听器实战示例
+# 4. 各监听器实战示例
 
 ```
 示例1：ServletContextListener —— 初始化全局资源
@@ -258,7 +258,7 @@ public class Customer implements Serializable, HttpSessionActivationListener {
 // </Manager>
 ```
 
-# 5.监听器总结
+# 5. 监听器总结
 
 ```
 监听器总共有 8 种（6+2）：

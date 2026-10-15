@@ -39,7 +39,7 @@ hbm.xml 映射文件（Hibernate 2/3）
 
 XML 配置文件是 Hibernate 最传统、最完整的配置方式。文件默认放置于 classpath 根目录（通常是 `src/main/resources/`）。
 
-### 基本结构
+### 2.1.1 基本结构
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -70,7 +70,7 @@ XML 配置文件是 Hibernate 最传统、最完整的配置方式。文件默�
 </hibernate-configuration>
 ```
 
-### 属性命名规范
+### 2.1.2 属性命名规范
 
 所有 Hibernate 核心属性前缀为 `hibernate.`：
 - `hibernate.connection.*` — 数据库连接
@@ -117,7 +117,7 @@ XML 配置文件是 Hibernate 最传统、最完整的配置方式。文件默�
 
 Hibernate 内置连接池非常简单，**严禁生产环境使用**。生产环境必须集成第三方连接池。
 
-#### C3P0 连接池
+**C3P0 连接池**
 
 ```xml
 <property name="hibernate.c3p0.min_size">5</property>
@@ -129,7 +129,7 @@ Hibernate 内置连接池非常简单，**严禁生产环境使用**。生产环
 <property name="hibernate.c3p0.validate">true</property>
 ```
 
-#### HikariCP 连接池（推荐）
+**HikariCP 连接池（推荐）**
 
 ```xml
 <property name="hibernate.connection.provider_class">
@@ -287,7 +287,7 @@ Hibernate 5+ 将命名策略拆分为**隐式命名**和**物理命名**两个�
 Java 实体字段名 → ImplicitNamingStrategy → 逻辑列名 → PhysicalNamingStrategy → 数据库物理列名
 ```
 
-#### ImplicitNamingStrategy（隐式命名策略）
+**ImplicitNamingStrategy（隐式命名策略）**
 
 决定未显式指定 `@Column(name=...)` 时，如何推导逻辑列名。
 
@@ -310,7 +310,7 @@ Java 实体字段名 → ImplicitNamingStrategy → 逻辑列名 → PhysicalNam
 | 连接表 | `User_Group` | 使用 identifier1 / identifier2 |
 | 外键列 | `user_id` | `user` |
 
-#### PhysicalNamingStrategy（物理命名策略）
+**PhysicalNamingStrategy（物理命名策略）**
 
 将逻辑列名转换为数据库物理名称：
 
@@ -548,7 +548,7 @@ JPA 标准注解（`@Entity`、`@Table`、`@Id`、`@GeneratedValue` 等）是注
 
 在配置层面，JPA 有自身的配置文件体系：
 
-### persistence.xml
+### 3.1.1 persistence.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -586,7 +586,7 @@ JPA 标准注解（`@Entity`、`@Table`、`@Id`、`@GeneratedValue` 等）是注
 </persistence>
 ```
 
-### orm.xml — XML 覆盖/补充注解
+### 3.1.2 orm.xml — XML 覆盖/补充注解
 
 `orm.xml` 可以覆盖或补充实体注解中的映射信息（高优先级）：
 
@@ -610,7 +610,7 @@ JPA 注解扫描机制：
 
 以下为 Hibernate 专有注解（`org.hibernate.annotations.*`），提供 JPA 标准之外的扩展能力。
 
-### 过滤器注解
+### 3.2.1 过滤器注解
 
 ```java
 // 定义过滤器
@@ -630,7 +630,7 @@ session.enableFilter("activeFilter")
        .setParameter("status", "ACTIVE");
 ```
 
-### 抓取策略注解
+### 3.2.2 抓取策略注解
 
 ```java
 @Entity
@@ -642,7 +642,7 @@ public class Order {
 }
 ```
 
-### 自定义加载器
+### 3.2.3 自定义加载器
 
 ```java
 @Entity
@@ -653,7 +653,7 @@ public class Order {
 public class User { ... }
 ```
 
-### 自定义 DML SQL
+### 3.2.4 自定义 DML SQL
 
 ```java
 @Entity
@@ -676,7 +676,7 @@ public class User {
 
 > `@SQLDelete` 常用于实现软删除：`UPDATE users SET deleted = true WHERE id = ?`。
 
-### 扩展表注解
+### 3.2.5 扩展表注解
 
 ```java
 @Entity
@@ -698,7 +698,7 @@ public class User { ... }
 
 > 注意区分 `@jakarta.persistence.Table` 与 `@org.hibernate.annotations.Table`。
 
-### 公式计算列
+### 3.2.6 公式计算列
 
 ```java
 @Entity
@@ -711,7 +711,7 @@ public class Product {
 }
 ```
 
-### 类型映射
+### 3.2.7 类型映射
 
 ```java
 @Entity
@@ -730,7 +730,7 @@ public class Order {
 }
 ```
 
-### 子查询映射（视图实体）
+### 3.2.8 子查询映射（视图实体）
 
 ```java
 @Entity
@@ -749,7 +749,7 @@ public class UserOrderSummary {
 
 `@Synchronize` 告诉 Hibernate 该视图表依赖于哪些基表，以便在 DML 后刷新相关缓存。
 
-### 乐观锁注解
+### 3.2.9 乐观锁注解
 
 ```java
 @Entity
@@ -769,7 +769,7 @@ public class Document {
 - `OptimisticLockType.DIRTY`：仅比较修改过的字段
 - `OptimisticLockType.ALL`：比较所有字段
 
-### 动态 SQL 注解
+### 3.2.10 动态 SQL 注解
 
 ```java
 @Entity
@@ -783,7 +783,7 @@ public class User {
 
 `@DynamicInsert` / `@DynamicUpdate` 适合包含大量可空字段的表，减少 SQL 长度，提高性能。但在字段数少时可能降低效率（需动态分析）。
 
-### 约束与条件过滤
+### 3.2.11 约束与条件过滤
 
 ```java
 @Entity
@@ -803,7 +803,7 @@ public class User {
 - `@Where`：默认给所有查询加 WHERE 条件
 - `@ColumnTransformer`：读写时对列值做转换（如加解密）
 
-### 集合与映射类型
+### 3.2.12 集合与映射类型
 
 ```java
 @Entity
@@ -820,7 +820,7 @@ public class ShoppingCart {
 }
 ```
 
-### Any 类型引用
+### 3.2.13 Any 类型引用
 
 ```java
 @Entity
@@ -837,7 +837,7 @@ public class Comment {
 }
 ```
 
-### 代理与延迟加载
+### 3.2.14 代理与延迟加载
 
 ```java
 @Entity
@@ -848,7 +848,7 @@ public class User implements UserProxy {
 }
 ```
 
-### 多态注解
+### 3.2.15 多态注解
 
 ```java
 @Entity
@@ -859,7 +859,7 @@ public class AuditLog {
 }
 ```
 
-### 缓存注解
+### 3.2.16 缓存注解
 
 ```java
 import org.hibernate.annotations.Cache;
@@ -876,7 +876,7 @@ public class User { ... }
 - `READ_WRITE`：读多写少，需保证数据一致性（须启用事务）
 - `TRANSACTIONAL`：全事务隔离（需 JTA + 事务缓存实现）
 
-### 自然 ID
+### 3.2.17 自然 ID
 
 ```java
 @Entity
@@ -897,7 +897,7 @@ User user = session.byNaturalId(User.class)
                    .load();
 ```
 
-### 不可变注解
+### 3.2.18 不可变注解
 
 ```java
 @Entity
@@ -910,7 +910,7 @@ public class Country {
 }
 ```
 
-### @NotFound 注解
+### 3.2.19 @NotFound 注解
 
 ```java
 @Entity
@@ -1013,7 +1013,7 @@ public class HibernateBootstrap {
 - 无需外部文件：适合嵌入式或测试场景
 - 灵活条件配置
 
-### 从属性文件加载后覆盖
+### 4.1.1 从属性文件加载后覆盖
 
 ```java
 StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -1052,7 +1052,7 @@ public class JpaBootstrap {
 }
 ```
 
-### PersistenceUnitInfo 编程式配置
+### 4.2.1 PersistenceUnitInfo 编程式配置
 
 ```java
 import org.hibernate.jpa.HibernatePersistenceProvider;
@@ -1088,7 +1088,7 @@ public class ProgrammaticJpaConfig {
 
 Spring Boot 通过 `HibernateJpaAutoConfiguration` 自动配置 Hibernate。
 
-### 依赖
+### 4.3.1 依赖
 
 ```xml
 <dependency>
@@ -1102,7 +1102,7 @@ Spring Boot 通过 `HibernateJpaAutoConfiguration` 自动配置 Hibernate。
 </dependency>
 ```
 
-### application.properties / application.yml 配置
+### 4.3.2 application.properties / application.yml 配置
 
 ```properties
 # ---- JPA / Hibernate 核心配置 ----
@@ -1167,7 +1167,7 @@ spring:
       minimum-idle: 5
 ```
 
-### 自动配置原理
+### 4.3.3 自动配置原理
 
 `HibernateJpaAutoConfiguration` 流程：
 1. 检测 `DataSource` bean 的存在
@@ -1176,7 +1176,7 @@ spring:
 4. 构建 `EntityManagerFactoryBuilder` → `LocalContainerEntityManagerFactoryBean`
 5. `hibernate.properties.*` 通过 `spring.jpa.properties.*` 透传
 
-### 自定义 HibernatePropertiesCustomizer
+### 4.3.4 自定义 HibernatePropertiesCustomizer
 
 ```java
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
@@ -1196,7 +1196,7 @@ public class CustomHibernateProperties implements HibernatePropertiesCustomizer 
 }
 ```
 
-### 覆盖自动配置
+### 4.3.5 覆盖自动配置
 
 方式一：通过 `application.properties` 覆盖（最常用）
 
@@ -1241,7 +1241,7 @@ public class MyApplication {
 }
 ```
 
-### 多数据源下的 Hibernate 配置
+### 4.3.6 多数据源下的 Hibernate 配置
 
 ```java
 @Configuration
@@ -1318,7 +1318,7 @@ Hibernate 5+ 内置支持三种多租户策略：
 
 ## 5.2 多租户配置属性与实现
 
-### 配置属性
+### 5.2.1 配置属性
 
 ```xml
 <!-- 多租户策略 -->
@@ -1333,7 +1333,7 @@ Hibernate 5+ 内置支持三种多租户策略：
 </property>
 ```
 
-### CurrentTenantIdentifierResolver 实现
+### 5.2.2 CurrentTenantIdentifierResolver 实现
 
 ```java
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
@@ -1364,7 +1364,7 @@ public class CurrentTenantIdentifierResolverImpl
 }
 ```
 
-### MultiTenantConnectionProvider 实现
+### 5.2.3 MultiTenantConnectionProvider 实现
 
 按 Schema 策略的实现：
 
@@ -1509,7 +1509,7 @@ public class DatabaseMultiTenantConnectionProvider
 }
 ```
 
-### Spring Boot 中的多租户集成
+### 5.2.4 Spring Boot 中的多租户集成
 
 ```java
 @Configuration
@@ -1579,7 +1579,7 @@ spring.jpa.properties.hibernate.generate_statistics=true
 
 **禁止在配置文件中明文写密码**，推荐方案：
 
-### 方式 1：Jasypt 加密
+### 6.2.1 方式 1：Jasypt 加密
 
 ```properties
 # application.properties
@@ -1589,13 +1589,13 @@ spring.datasource.password=ENC(encrypted_password)
 jasypt.encryptor.password=${JASYPT_ENCRYPTOR_PASSWORD}
 ```
 
-### 方式 2：环境变量
+### 6.2.2 方式 2：环境变量
 
 ```properties
 spring.datasource.password=${DB_PASSWORD}
 ```
 
-### 方式 3：外部密钥管理（HashiCorp Vault）
+### 6.2.3 方式 3：外部密钥管理（HashiCorp Vault）
 
 ```properties
 spring.config.import=vault://
@@ -1633,7 +1633,7 @@ public class HibernateConfigValidator {
 
 ## 6.4 推荐配置组合
 
-### 开发环境（功能导向）
+### 6.4.1 开发环境（功能导向）
 
 ```properties
 spring.jpa.show-sql=true
@@ -1647,7 +1647,7 @@ logging.level.org.hibernate.SQL=DEBUG
 logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
 ```
 
-### 测试环境（快速 + 可靠）
+### 6.4.2 测试环境（快速 + 可靠）
 
 ```properties
 spring.jpa.show-sql=false
@@ -1658,7 +1658,7 @@ spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
 spring.datasource.driver-class-name=org.h2.Driver
 ```
 
-### 生产环境（性能优先）
+### 6.4.3 生产环境（性能优先）
 
 ```properties
 # SQL 不输出
@@ -1702,7 +1702,7 @@ spring.jpa.properties.hibernate.discriminator.ignore_explicit_for_joined=true
 spring.jpa.properties.hibernate.max_fetch_depth=3
 ```
 
-### 配置排查清单
+### 6.4.4 配置排查清单
 
 配置出问题时按以下顺序排查：
 

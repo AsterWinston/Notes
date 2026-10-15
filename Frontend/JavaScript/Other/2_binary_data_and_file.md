@@ -1,4 +1,4 @@
-# 1.ArrayBuffer，二进制数组
+# 1. ArrayBuffer，二进制数组
 ```
 在 Web 开发中，当我们处理文件时（创建，上传，下载），经常会遇到二进制数据。另一个典型的应用场景是图像处理。
 
@@ -59,7 +59,7 @@ for(let num of view) {
   alert(num); // 123456，然后 0，0，0（一共 4 个值）
 }
 ```
-## 1.1TypedArray
+## 1.1 TypedArray
 ```javascript
 所有这些视图（Uint8Array，Uint32Array 等）的通用术语是 TypedArray。它们共享同一方法和属性集。
 
@@ -154,7 +154,7 @@ alert(uint8array[0]); // 0
 alert(uint8array[1]); // 1
 Uint8ClampedArray 在这方面比较特殊，它的表现不太一样。对于大于 255 的任何数字，它将保存为 255，对于任何负数，它将保存为 0。此行为对于图像处理很有用。
 ```
-## 1.2TypedArray方法
+## 1.2 TypedArray方法
 ```javascript
 TypedArray 具有常规的 Array 方法，但有个明显的例外。
 
@@ -170,7 +170,7 @@ arr.set(fromArr, [offset]) 从 offset（默认为 0）开始，将 fromArr 中�
 arr.subarray([begin, end]) 创建一个从 begin 到 end（不包括）相同类型的新视图。这类似于 slice 方法（同样也支持），但不复制任何内容 —— 只是创建一个新视图，以对给定片段的数据进行操作。
 有了这些方法，我们可以复制、混合类型化数组，从现有数组创建新数组等。
 ```
-## 1.3DataView
+## 1.3 DataView
 ```javascript
 DataView 是在 ArrayBuffer 上的一种特殊的超灵活“未类型化”视图。它允许以任何格式访问任何偏移量（offset）的数据。
 
@@ -201,7 +201,7 @@ alert( dataView.getUint32(0) ); // 4294967295（最大的 32 位无符号整数�
 dataView.setUint32(0, 0); // 将 4 个字节的数字设为 0，即将所有字节都设为 0
 当我们将混合格式的数据存储在同一缓冲区（buffer）中时，DataView 非常有用。例如，当我们存储一个成对序列（16 位整数，32 位浮点数）时，用 DataView 可以轻松访问它们。
 ```
-## 1.4总结
+## 1.4 总结
 ```javascript
 ArrayBuffer 是核心对象，是对固定长度的连续内存区域的引用。
 
@@ -224,7 +224,7 @@ BufferSource 是 ArrayBuffer 或 ArrayBufferView 的总称。
 这是一份备忘单：
 ```
 
-# 2.TextDecoder和TextEncoder
+# 2. TextDecoder和TextEncoder
 ```
 如果二进制数据实际上是一个字符串怎么办？例如，我们收到了一个包含文本数据的文件。
 
@@ -261,7 +261,7 @@ let binaryString = uint8Array.subarray(1, -1);
 
 alert( new TextDecoder().decode(binaryString) ); // Hello
 ```
-## 2.1TextEncoder
+## 2.1 TextEncoder
 ```javascript
 TextEncoder 做相反的事情 —— 将字符串转换为字节。
 
@@ -279,7 +279,7 @@ let encoder = new TextEncoder();
 let uint8Array = encoder.encode("Hello");
 alert(uint8Array); // 72,101,108,108,111
 ```
-# 3.Blob
+# 3. Blob
 ```
 arrayBuffer 和视图（view）都是 ECMA 标准的一部分，是 JavaScript 的一部分。
 
@@ -317,7 +317,7 @@ Blob 对象是不可改变的
 
 这种行为类似于 JavaScript 字符串：我们无法更改字符串中的字符，但可以生成一个新的改动过的字符串。
 ```
-## 3.1Blob用作URL
+## 3.1 Blob用作URL
 ```javascript
 Blob 可以很容易用作 <a>、<img> 或其他标签的 URL，来显示它们的内容。
 
@@ -368,7 +368,7 @@ URL.revokeObjectURL(url) 从内部映射中移除引用，因此允许 Blob 被�
 
 而在前一个带有可点击的 HTML 链接的示例中，我们不调用 URL.revokeObjectURL(link.href)，因为那样会使 Blob URL 无效。在调用该方法后，由于映射被删除了，因此该 URL 也就不再起作用了。
 ```
-## 3.2Blob抓换为base64
+## 3.2 Blob抓换为base64
 ```javascript
 URL.createObjectURL 的一个替代方法是，将 Blob 转换为 base64-编码的字符串。
 
@@ -406,7 +406,7 @@ Blob 转换为 data url
 无需撤销（revoke）任何操作。
 对大的 Blob 进行编码时，性能和内存会有损耗。
 ```
-## 3.3Image转换为blob
+## 3.3 Image转换为blob
 ```javascript
 我们可以创建一个图像（image）的、图像的一部分、或者甚至创建一个页面截图的 Blob。这样方便将其上传至其他地方。
 
@@ -447,7 +447,7 @@ canvas.toBlob(function(blob) {
 let blob = await new Promise(resolve => canvasElem.toBlob(resolve, 'image/png'));
 对于页面截屏，我们可以使用诸如 https://github.com/niklasvh/html2canvas 之类的库。它所做的只是扫一遍浏览器页面，并将其绘制在 <canvas> 上。然后，我们就可以像上面一样获取一个它的 Blob。
 ```
-## 3.4Blob转换为ArrayBuffer
+## 3.4 Blob转换为ArrayBuffer
 ```javascript
 Blob 构造器允许从几乎任何东西创建 blob，包括任何 BufferSource。
 
@@ -459,7 +459,7 @@ const bufferPromise = await blob.arrayBuffer();
 // 或
 blob.arrayBuffer().then(buffer => /* 处理 ArrayBuffer */);
 ```
-## 3.5Blob转换为Stream
+## 3.5 Blob转换为Stream
 ```javascript
 当我们读取和写入超过 2 GB 的 blob 时，将其转换为 arrayBuffer 的使用对我们来说会更加占用内存。这种情况下，我们可以直接将 blob 转换为 stream 进行处理。
 
@@ -486,7 +486,7 @@ while (true) {
   console.log(value);
 }
 ```
-## 3.6总结
+## 3.6 总结
 ```javascript
 arrayBuffer，Uint8Array 及其他 BufferSource 是“二进制数据”，而 Blob 则表示“具有类型的二进制数据”。
 
@@ -503,7 +503,7 @@ XMLHttpRequest，fetch 等进行 Web 请求的方法可以自然地使用 Blob�
 评论
 ```
 
-# 4.File和FileReader
+# 4. File和FileReader
 ```
 File 对象继承自 Blob，并扩展了与文件系统相关的功能。
 
@@ -537,7 +537,7 @@ function showFile(input) {
 请注意：
 输入（input）可以选择多个文件，因此 input.files 是一个类数组对象。这里我们只有一个文件，所以我们只取 input.files[0]。
 ```
-## 4.1FileReader
+## 4.1 FileReader
 ```javascript
 FileReader 是一个对象，其唯一目的是从 Blob（因此也从 File）对象中读取数据。
 
@@ -608,7 +608,7 @@ readAsDataURL(blob) —— 转换为 base64 的 data url。
 
 不过，这仅在 Web Worker 中可用，因为在读取文件的时候，同步调用会有延迟，而在 Web Worker 中，这种延迟并不是很重要。它不会影响页面。
 ```
-## 4.2总结
+## 4.2 总结
 ```javascript
 File 对象继承自 Blob。
 

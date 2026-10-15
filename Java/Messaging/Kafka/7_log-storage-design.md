@@ -1,4 +1,4 @@
-# 1 Kafka 日志存储核心概念
+# 1. Kafka 日志存储核心概念
 
 ## 1.1 从 Topic 到文件
 
@@ -26,7 +26,7 @@ Topic "orders" (3 Partitions, 2 Replicas)
     └── /data/kafka-logs/orders-2/...
 ```
 
-# 2 Segment（日志分段）
+# 2. Segment（日志分段）
 
 ## 2.1 Segment 命名合约
 
@@ -81,7 +81,7 @@ Magic 2 的 RecordBatch 关键变化：
 - BaseTimestamp + TimestampDelta 替代绝对 Timestamp
 - 支持压缩（整个 Batch 一起压缩）
 
-# 3 索引文件详解
+# 3. 索引文件详解
 
 ## 3.1 稀疏索引设计
 
@@ -150,7 +150,7 @@ entry 2: Timestamp=1700000010000, RelativeOffset=20
 → 再通过 Offset 查找消息
 ```
 
-# 4 日志清理策略
+# 4. 日志清理策略
 
 ## 4.1 清理策略对比
 
@@ -266,7 +266,7 @@ min.cleanable.dirty.ratio=0.5
 log.cleaner.backoff.ms=15000
 ```
 
-# 5 零拷贝（Zero-Copy）
+# 5. 零拷贝（Zero-Copy）
 
 ## 5.1 传统 I/O vs sendfile
 
@@ -315,7 +315,7 @@ SocketChannel socketChannel = SocketChannel.open(); // 已连接到 client
 fileChannel.transferTo(position, count, socketChannel);
 ```
 
-# 6 日志管理（LogManager）
+# 6. 日志管理（LogManager）
 
 ## 6.1 LogManager 核心结构
 
@@ -367,7 +367,7 @@ log.dir.failure.timeout.ms=30000
 
 Kafka 会检测目录的 I/O 错误，并将故障 Partition 标记为 offline，迁移到其他目录或 Broker。
 
-# 7 时间戳与 Offset 关系
+# 7. 时间戳与 Offset 关系
 
 ## 7.1 三种时间戳类型
 
@@ -404,7 +404,7 @@ long timestamp = result.timestamp(); // 实际的时间戳
 2. 找到 Timestamp ≥ 目标时间的第一个条目
 3. 返回对应的 Offset
 
-# 8 日志异常恢复
+# 8. 日志异常恢复
 
 ## 8.1 不完整的 Batch 处理
 
@@ -438,7 +438,7 @@ long timestamp = result.timestamp(); // 实际的时间戳
 
 截断时的 `LeaderEpochCache` 用于安全地判断哪些数据需要截断。
 
-# 9 存储参数速查
+# 9. 存储参数速查
 
 ```properties
 ########################

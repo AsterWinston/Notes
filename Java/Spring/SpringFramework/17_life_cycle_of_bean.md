@@ -310,7 +310,7 @@ public void testRegisterBean() {
 
 # 8. 源码解析：Bean 创建完整调用链路
 
-## 8.1. 容器刷新入口：AbstractApplicationContext.refresh()
+## 8.1 容器刷新入口：AbstractApplicationContext.refresh()
 
 ```
 Spring 容器创建 Bean 并非在 new ClassPathXmlApplicationContext() 时立即执行，而是在容器刷新 (refresh) 过程中完成的。
@@ -376,7 +376,7 @@ public void refresh() throws BeansException, IllegalStateException {
 }
 ```
 
-### 8.2. finishBeanFactoryInitialization() → preInstantiateSingletons()
+### 8.2 finishBeanFactoryInitialization() → preInstantiateSingletons()
 
 ```
 finishBeanFactoryInitialization() 的核心逻辑是调用 beanFactory.preInstantiateSingletons()：
@@ -413,7 +413,7 @@ public void preInstantiateSingletons() throws BeansException {
 }
 ```
 
-## 8.2. Bean 获取核心：AbstractBeanFactory.doGetBean()
+## 8.2 Bean 获取核心：AbstractBeanFactory.doGetBean()
 
 ```
 getBean(beanName) 经过层层调用最终进入 doGetBean()，这是 Bean 获取/创建的总调度方法。
@@ -542,7 +542,7 @@ protected <T> T doGetBean(
 }
 ```
 
-## 8.3. Bean 创建三大步：AbstractAutowireCapableBeanFactory.doCreateBean()
+## 8.3 Bean 创建三大步：AbstractAutowireCapableBeanFactory.doCreateBean()
 
 ```
 这是 Bean 创建最核心的方法，位于：
@@ -655,7 +655,7 @@ protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable
 }
 ```
 
-## 8.4. 初始化方法 initializeBean() 完整源码
+## 8.4 初始化方法 initializeBean() 完整源码
 
 ```
 initializeBean() 是生命周期中初始化阶段的总入口，位于 AbstractAutowireCapableBeanFactory：
@@ -700,7 +700,7 @@ protected Object initializeBean(String beanName, Object bean, @Nullable RootBean
 }
 ```
 
-### 8.5. invokeAwareMethods() 源码
+### 8.5 invokeAwareMethods() 源码
 
 ```
 private void invokeAwareMethods(String beanName, Object bean) {
@@ -729,7 +729,7 @@ private void invokeAwareMethods(String beanName, Object bean) {
 它在 applyBeanPostProcessorsBeforeInitialization() 阶段被调用，通过 instanceof 检查并注入。
 ```
 
-### 8.6. invokeInitMethods() 源码
+### 8.6 invokeInitMethods() 源码
 
 ```
 protected void invokeInitMethods(String beanName, Object bean, @Nullable RootBeanDefinition mbd)
@@ -753,7 +753,7 @@ protected void invokeInitMethods(String beanName, Object bean, @Nullable RootBea
 }
 ```
 
-## 8.5. 完整的 Bean 生命周期流程图（15 步）
+## 8.5 完整的 Bean 生命周期流程图（15 步）
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -807,7 +807,7 @@ protected void invokeInitMethods(String beanName, Object bean, @Nullable RootBea
 └──────────────────────────────────────────────────────────────┘
 ```
 
-## 8.6. Spring 6 中内置的核心 BeanPostProcessor
+## 8.6 Spring 6 中内置的核心 BeanPostProcessor
 
 ```
 Spring 6 内置了大量 BeanPostProcessor，各有不同的触发时机和职责。
@@ -885,7 +885,7 @@ Spring 6 内置了大量 BeanPostProcessor，各有不同的触发时机和职�
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 8.7. Bean 销毁流程源码
+## 8.7 Bean 销毁流程源码
 
 ```
 容器关闭时调用 AbstractApplicationContext.close() → doClose() → destroyBeans()：
@@ -919,7 +919,7 @@ public void destroy() {
 销毁顺序： @PreDestroy → DisposableBean.destroy() → destroy-method
 ```
 
-## 8.8. 设计思想总结
+## 8.8 设计思想总结
 
 1. 模板方法模式：
    doCreateBean() 是模板方法，其中的 createBeanInstance()、populateBean()、

@@ -1,4 +1,4 @@
-# 1 Controller 概述
+# 1. Controller 概述
 
 ## 1.1 Controller 是什么
 
@@ -31,7 +31,7 @@ Controller 是 Kafka 集群中的**大脑**，负责管理所有 Partition 和�
 └──────────────────────────────────────────────────────────────┘
 ```
 
-# 2 Controller 选举
+# 2. Controller 选举
 
 ## 2.1 ZooKeeper 模式下的选举
 
@@ -90,7 +90,7 @@ KRaft 模式下 Controller 不再依赖 ZooKeeper，而是通过 Raft 共识协�
 └───────────────────────────────────────────────────┘
 ```
 
-# 3 Controller 核心状态机
+# 3. Controller 核心状态机
 
 ## 3.1 Partition 状态机
 
@@ -147,7 +147,7 @@ OnlineReplica 子状态:
   └── Follower  (从 Leader 同步)
 ```
 
-# 4 Leader 选举算法
+# 4. Leader 选举算法
 
 ## 4.1 选举优先策略
 
@@ -213,7 +213,7 @@ Broker 收到 LeaderAndIsr 请求:
 ③ 完成 → 响应 Controller
 ```
 
-# 5 元数据传播
+# 5. 元数据传播
 
 ## 5.1 UpdateMetadata 请求
 
@@ -273,7 +273,7 @@ props.put("metadata.max.age.ms", 300000); // 默认 5 分钟刷新一次
 // ③ 发送消息时发现 Leader 不可用
 ```
 
-# 6 ZK 路径结构（Controller 相关）
+# 6. ZK 路径结构（Controller 相关）
 
 ## 6.1 关键 ZK 节点
 
@@ -343,7 +343,7 @@ class KafkaController {
 }
 ```
 
-# 7 KRaft 模式详解（Kafka 3.3+）
+# 7. KRaft 模式详解（Kafka 3.3+）
 
 ## 7.1 为什么从 ZooKeeper 迁移到 KRaft
 
@@ -419,7 +419,7 @@ __cluster_metadata Topic:
     - ...
 ```
 
-# 8 Controller 故障处理
+# 8. Controller 故障处理
 
 ## 8.1 Controller 切换
 
@@ -459,7 +459,7 @@ Controller Epoch 机制:
        避免脑裂导致的数据不一致
 ```
 
-# 9 常见问题
+# 9. 常见问题
 
 ## 9.1 Controller 选举慢（ZooKeeper 模式）
 

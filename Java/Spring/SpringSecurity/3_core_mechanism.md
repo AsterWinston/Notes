@@ -56,7 +56,7 @@ public class UsernamePasswordAuthenticationFilter
 4. 调用 `AuthenticationSuccessHandler`
 5. 发布 `AuthenticationSuccessEvent`
 
-### 1.2 BasicAuthenticationFilter
+## 1.2 BasicAuthenticationFilter
 
 处理 **HTTP Basic 认证**，从请求头 `Authorization: Basic base64(user:pass)` 提取用户名密码：
 
@@ -71,7 +71,7 @@ fetch('/api/users', {
 })
 ```
 
-### 1.3 CsrfFilter
+## 1.3 CsrfFilter
 
 防止**跨站请求伪造**（Cross-Site Request Forgery）攻击。
 
@@ -87,7 +87,7 @@ fetch('/api/users', {
 <meta name="_csrf_header" content="{{_csrf.headerName}}">
 ```
 
-### 1.4 其他重要过滤器
+## 1.4 其他重要过滤器
 
 **ExceptionTranslationFilter：**
 ```java

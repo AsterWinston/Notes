@@ -1,11 +1,11 @@
 
-# 1.Proxy 和 Reflect
+# 1. Proxy 和 Reflect
 ```javascript
 一个 Proxy 对象包装另一个对象并拦截诸如读取/写入属性和其他操作，可以选择自行处理它们，或者透明地允许该对象处理它们。
 
 Proxy 被用于了许多库和某些浏览器框架。在本文中，我们将看到许多实际应用。
 ```
-## 1.1Proxy
+## 1.1 Proxy
 ```
 语法：
 
@@ -76,7 +76,7 @@ JavaScript 强制执行某些不变量 —— 内部方法和捕捉器必须满�
 
 让我们来看看它们是如何在实际示例中工作的。
 ```
-## 1.2带有"get"捕捉器的默认值
+## 1.2 带有"get"捕捉器的默认值
 ```
 最常见的捕捉器是用于读取/写入的属性。
 
@@ -150,7 +150,7 @@ alert( dictionary['Welcome to Proxy']); // Welcome to Proxy（没有被翻译）
 dictionary = new Proxy(dictionary, ...);
 代理应该在所有地方都完全替代目标对象。目标对象被代理后，任何人都不应该再引用目标对象。否则很容易搞砸。
 ```
-## 1.3使用"set"捕捉器进行验证
+## 1.3 使用"set"捕捉器进行验证
 ```
 假设我们想要一个专门用于数字的数组。如果添加了其他类型的值，则应该抛出一个错误。
 
@@ -199,7 +199,7 @@ alert("This line is never reached (error in the line above)");
 
 如果我们忘记这样做，或返回任何假（falsy）值，则该操作将触发 TypeError。
 ```
-## 1.4使用"ownKeys"和"getOwnPropertyDescriptor"进行迭代
+## 1.4 使用"ownKeys"和"getOwnPropertyDescriptor"进行迭代
 ```
 Object.keys，for..in 循环和大多数其他遍历对象属性的方法都使用内部方法 [[OwnPropertyKeys]]（由 ownKeys 捕捉器拦截) 来获取属性列表。
 
@@ -270,7 +270,7 @@ user = new Proxy(user, {
 alert( Object.keys(user) ); // a, b, c
 让我们再次注意：如果该属性在对象中不存在，那么我们只需要拦截 [[GetOwnProperty]]。
 ```
-## 1.5具有"deleteProperty"和其他捕捉器的受保护属性
+## 1.5 具有"deleteProperty"和其他捕捉器的受保护属性
 ```
 有一个普遍的约定，即以下划线 _ 开头的属性和方法是内部的。不应从对象外部访问它们。
 
@@ -376,7 +376,7 @@ user = {
 
 但是，此类属性有其自身的问题。特别是，它们是不可继承的。
 ```
-## 1.6带有"has"捕捉器的"in range"
+## 1.6 带有"has"捕捉器的"in range"
 ```
 让我们来看更多示例。
 
@@ -411,7 +411,7 @@ alert(5 in range); // true
 alert(50 in range); // false
 漂亮的语法糖，不是吗？而且实现起来非常简单。
 ```
-## 1.7包装函数："apply"
+## 1.7 包装函数："apply"
 ```
 我们也可以将代理（proxy）包装在函数周围。
 
@@ -487,7 +487,7 @@ sayHi("John"); // Hello, John!（3 秒后）
 
 还存在其他捕捉器：完整列表在本文的开头。它们的使用模式与上述类似。
 ```
-## 1.8Reflect
+## 1.8 Reflect
 ```
 Reflect 是一个内建对象，可简化 Proxy 的创建。
 
@@ -645,7 +645,7 @@ Reflect 调用的命名与捕捉器的命名完全相同，并且接受相同的
 
 因此，return Reflect... 提供了一个安全的方式，可以轻松地转发操作，并确保我们不会忘记与此相关的任何内容。
 ```
-## 1.9Proxy的局限性
+## 1.9 Proxy的局限性
 ```
 代理提供了一种独特的方法，可以在最底层更改或调整现有对象的行为。但是，它并不完美。有局限性。
 
@@ -763,7 +763,7 @@ Proxy 可以拦截许多操作符，例如 new（使用 construct），in（使�
 
 因此，比较对象是否相等的所有操作和内建类都会区分对象和代理。这里没有透明的替代品。
 ```
-## 1.10可撤销Proxy
+## 1.10 可撤销Proxy
 ```
 一个 可撤销 的代理是可以被禁用的代理。
 
@@ -817,14 +817,14 @@ revoke();
 alert(proxy.data); // Error（revoked）
 此处我们使用 WeakMap 而不是 Map，因为它不会阻止垃圾回收。如果一个代理对象变得“不可访问”（例如，没有变量再引用它），则 WeakMap 允许将其与它的 revoke 一起从内存中清除，因为我们不再需要它了。
 ```
-## 1.11参考资料
+## 1.11 参考资料
 ```
 规范：Proxy。
 MDN：Proxy。
 ```
 
 
-# 2.Eval：执行代码字符串
+# 2. Eval：执行代码字符串
 ```javascript
 内建函数 eval 允许执行一个代码字符串。
 
@@ -871,7 +871,7 @@ alert(typeof x); // undefined（没有这个变量）
 // 函数 f 也不可从外部进行访问
 如果不启用严格模式，eval 没有属于自己的词法环境，因此我们可以从外部访问变量 x 和函数 f。
 ```
-## 2.1使用"eval"
+## 2.1 使用"eval"
 ```
 现代编程中，已经很少使用 eval 了。人们经常说“eval 是魔鬼”。
 
@@ -905,7 +905,7 @@ f(5); // 5
 ```
 
 
-# 3.柯里化（Currying）
+# 3. 柯里化（Currying）
 ```javascript
 柯里化（Currying）是一种关于函数的高阶技术。它不仅被用于 JavaScript，还被用于其他编程语言。
 
@@ -949,7 +949,7 @@ let curriedSum = _.curry(sum); // 使用来自 lodash 库的 _.curry
 alert( curriedSum(1, 2) ); // 3，仍可正常调用
 alert( curriedSum(1)(2) ); // 3，以部分应用函数的方式调用
 ```
-## 3.1柯里化？目的是什么？
+## 3.1 柯里化？目的是什么？
 ```
 要了解它的好处，我们需要一个实际中的例子。
 
@@ -986,7 +986,7 @@ debugNow("message"); // [HH:mm] DEBUG message
 柯里化之后，我们没有丢失任何东西：log 依然可以被正常调用。
 我们可以轻松地生成部分应用函数，例如用于生成今天的日志的部分应用函数。
 ```
-## 3.2高级柯里化实现
+## 3.2 高级柯里化实现
 ```
 如果你想了解更多细节，下面是用于多参数函数的“高级”柯里化实现，我们也可以把它用于上面的示例。
 
@@ -1047,7 +1047,7 @@ function curried(...args) {
 但是，如前所述，JavaScript 中大多数的柯里化实现都是高级版的：它们使得函数可以被多参数变体调用。
 ```
 
-# 4.Reference Type
+# 4. Reference Type
 ```javascript
 深入的语言特性
 本文所讲的是一个高阶主题，能帮你更好地理解一些边缘情况。
@@ -1082,7 +1082,7 @@ user.hi();
 (user.name == "John" ? user.hi : user.bye)(); // Error!
 为什么呢？欲知缘何，且让我们深入 obj.method() 调用运行的本质。
 ```
-## 4.1Reference type解读
+## 4.1 Reference type解读
 ```
 仔细看的话，我们可能注意到 obj.method() 语句中的两个操作：
 
@@ -1124,7 +1124,7 @@ Reference Type 是一个特殊的“中间人”内部类型，目的是从 . �
 因此，this 的值仅在函数直接被通过点符号 obj.method() 或方括号 obj['method']() 语法（此处它们作用相同）调用时才被正确传递。还有很多种解决这个问题的方式，例如 func.bind()。
 ```
 
-# 5.BigInt
+# 5. BigInt
 ```javascript
 最近新增的特性
 这是一个最近添加到 JavaScript 的特性。 你能在 https://caniuse.com/#feat=bigint 找到当前支持状态。
@@ -1138,7 +1138,7 @@ const sameBigint = BigInt("1234567890123456789012345678901234567890");
 
 const bigintFromNumber = BigInt(10); // 与 10n 相同
 ```
-## 5.1数学运算符
+## 5.1 数学运算符
 ```
 BigInt 大多数情况下可以像常规数字类型一样使用，例如：
 
@@ -1172,7 +1172,7 @@ let bigint = 1n;
 alert( +bigint ); // error
 所以我们应该用 Number() 来将一个 bigint 转换成一个数字类型。
 ```
-## 5.2比较运算符
+## 5.2 比较运算符
 ```
 比较运算符，例如 < 和 >，使用它们来对 bigint 和 number 类型的数字进行比较没有问题：
 
@@ -1185,7 +1185,7 @@ alert( 1 == 1n ); // true
 
 alert( 1 === 1n ); // false
 ```
-## 5.3布尔运算
+## 5.3 布尔运算
 ```
 当在 if 或其他布尔运算中时，bigint 的行为类似于 number。
 
@@ -1200,7 +1200,7 @@ alert( 1n || 2 ); // 1（1n 被认为是真）
 
 alert( 0n || 2 ); // 2（0n 被认为是假）
 ```
-## 5.4Polyfill
+## 5.4 Polyfill
 ```
 Polyfilling bigint 比较棘手。原因是许多 JavaScript 运算符，比如 + 和 - 等，在对待 bigint 的行为上与常规 number 相比有所不同。
 
@@ -1225,13 +1225,13 @@ Polyfilling bigint 比较棘手。原因是许多 JavaScript 运算符，比如 
 
 对于不支持 bigint 的引擎，我们可以“按原样”使用此类 JSBI 代码，对于那些支持 bigint 的引擎 —— polyfill 会将调用转换为原生的 bigint。
 ```
-## 5.5参考
+## 5.5 参考
 ```
 MDN 文档对 BigInt 的介绍。
 ECMA262 规范。
 ```
 
-# 6.Unicode-字符串内幕
+# 6. Unicode-字符串内幕
 ```javascript
 进阶知识
 本节将更深入地介绍字符串的内部原理。如果你打算处理表情符号（emoji）、罕见的数学或象形文字字符，或其他罕见字符，这些知识将对你很有用。
@@ -1264,7 +1264,7 @@ X…XXXXXX 必须是介于 0 和 10FFFF（Unicode 定义的最高码位）之间
 alert( "\u{20331}" ); // 佫, 一个不常见的中文字符（长 Unicode）
 alert( "\u{1F60D}" ); // 😍, 一个微笑符号（另一个长 Unicode）
 ```
-## 6.1代理对
+## 6.1 代理对
 ```
 所有常用字符都有对应的 2 字节长度的编码（4 位十六进制数）。大多数欧洲语言的字母、数字、以及基本统一的 CJK 表意文字集（CJK —— 来自中文、日文和韩文书写系统）中的字母，均有对应的 2 字节长度的 Unicode 编码。
 
@@ -1318,7 +1318,7 @@ alert( 'hi 😂'.slice(0, 4) ); //  hi [?]
 
 如果你期望可靠地使用代理对，请注意这一点。这可能并不是什么大问题，但至少你应该知道发生了什么。
 ```
-## 6.2变音符号和规范化
+## 6.2 变音符号和规范化
 ```
 很多语言都有由基础字符及其上方/下方的标记所组成的符号。
 

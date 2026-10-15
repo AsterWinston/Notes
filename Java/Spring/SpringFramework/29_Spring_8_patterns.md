@@ -34,7 +34,7 @@ HttpServlet中的service方法中已经编写请求的核心处理流程，相�
 
 # 9. 源码实例：各设计模式在 Spring 中的代码体现
 
-## 9.1. 简单工厂模式 — BeanFactory.getBean()
+## 9.1 简单工厂模式 — BeanFactory.getBean()
 
 ```
 // BeanFactory 根据 beanName 返回不同的 Bean 实例
@@ -48,7 +48,7 @@ private final Map<String, BeanDefinition> beanDefinitionMap =
 // 通过 String key 获取 BeanDefinition → createBean() → 返回具体产品
 ```
 
-## 9.2. 工厂方法模式 — FactoryBean
+## 9.2 工厂方法模式 — FactoryBean
 
 ```
 // FactoryBean 接口定义了工厂方法 getObject()
@@ -70,7 +70,7 @@ if (beanInstance instanceof FactoryBean<?> factoryBean) {
 }
 ```
 
-## 9.3. 单例模式 — 双重检查锁定
+## 9.3 单例模式 — 双重检查锁定
 
 ```
 // DefaultSingletonBeanRegistry.getSingleton()：
@@ -101,7 +101,7 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 }
 ```
 
-## 9.4. 代理模式 — JdkDynamicAopProxy
+## 9.4 代理模式 — JdkDynamicAopProxy
 
 ```
 // JDK 动态代理的核心：InvocationHandler.invoke()
@@ -123,7 +123,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
 }
 ```
 
-## 9.5. 装饰器模式 — TransactionAwareDataSourceProxy
+## 9.5 装饰器模式 — TransactionAwareDataSourceProxy
 
 ```
 // 类名带 Decorator/Wrapper 的都是装饰器模式
@@ -144,7 +144,7 @@ public class TransactionAwareDataSourceProxy extends DelegatingDataSource {
 // 增强：事务感知 + 智能关闭 → 对外接口不变
 ```
 
-## 9.6. 观察者模式 — ApplicationEvent 机制
+## 9.6 观察者模式 — ApplicationEvent 机制
 
 ```
 // 1. 自定义事件
@@ -178,7 +178,7 @@ public class OrderEventListener
 // ContextClosedEvent — 容器关闭
 ```
 
-## 9.7. 策略模式 — 接口切换
+## 9.7 策略模式 — 接口切换
 
 ```
 // 数据访问层策略
@@ -200,7 +200,7 @@ public class AccountService {
 // 3. Propagation: 7 种事务传播行为
 ```
 
-## 9.8. 模板方法模式 — JdbcTemplate.execute()
+## 9.8 模板方法模式 — JdbcTemplate.execute()
 
 ```
 // 模板方法：定义"获取连接→创建语句→执行→释放资源"的骨架

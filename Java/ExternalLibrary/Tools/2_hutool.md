@@ -751,7 +751,7 @@ public class IdUtilExample {
 }
 ```
 
-### Snowflake 算法原理
+### 2.12.1 Snowflake 算法原理
 
 Snowflake 生成的 ID 是一个 64 位的 long，结构如下：
 
@@ -910,11 +910,11 @@ public class ExtraExample {
 
 ## 4.2 Hutool 的核心设计模式
 
-### 工厂模式
+### 4.2.1 工厂模式
 
 Hutool 大量使用静态工厂方法，例如 `SecureUtil.aes()`、`IdUtil.getSnowflake()` 等，简化对象创建。
 
-### 建造者模式
+### 4.2.2 建造者模式
 
 ```java
 HttpRequest.post(url)
@@ -924,7 +924,7 @@ HttpRequest.post(url)
     .execute();
 ```
 
-### 适配器模式
+### 4.2.3 适配器模式
 
 日志模块适配了多种日志框架（Log4j、Logback、SLF4J、JDK Logging）。
 
@@ -995,7 +995,7 @@ FileUtil.readLines(file, CharsetUtil.CHARSET_UTF_8, (line, index) -> {
 
 ## 6.1 最佳实践
 
-### 1. 按需引入模块
+### 6.1.1 按需引入模块
 
 不要引入 `hutool-all` 过大依赖，按需引入子模块：
 
@@ -1011,7 +1011,7 @@ FileUtil.readLines(file, CharsetUtil.CHARSET_UTF_8, (line, index) -> {
 </dependency>
 ```
 
-### 2. 使用 BeanUtil 的注意事项
+### 6.1.2 使用 BeanUtil 的注意事项
 
 ```java
 // BeanUtil.copyProperties 是浅拷贝
@@ -1031,7 +1031,7 @@ BeanUtil.copyProperties(src, dst);
 // dst.getUsers() == src.getUsers()  // true（同一个引用）
 ```
 
-### 3. 日期格式统一
+### 6.1.3 日期格式统一
 
 ```java
 // 全局日期格式常量
@@ -1040,7 +1040,7 @@ public class DatePattern {
 }
 ```
 
-### 4. 链式调用使用技巧
+### 6.1.4 链式调用使用技巧
 
 ```java
 HttpRequest.post("https://api.example.com/data")
@@ -1052,7 +1052,7 @@ HttpRequest.post("https://api.example.com/data")
     .body();
 ```
 
-### 5. 安全编码
+### 6.1.5 安全编码
 
 ```java
 // 使用 SecureUtil 处理敏感信息
@@ -1062,7 +1062,7 @@ String hashed = SecureUtil.sha256(password);  // 不要明文存储
 
 ## 6.2 常见坑
 
-### 坑 1：JSONUtil 对 null 的处理
+### 6.2.1 坑 1：JSONUtil 对 null 的处理
 
 ```java
 // JSONUtil.toJsonStr 默认不忽略 null 值
@@ -1075,7 +1075,7 @@ JSONUtil.toJsonStr(new User("张三", null, "北京"), config);
 // 输出: {"name":"张三","city":"北京"}
 ```
 
-### 坑 2：FileUtil 写文件覆盖
+### 6.2.2 坑 2：FileUtil 写文件覆盖
 
 ```java
 // FileUtil.writeXXX 系列方法会覆盖已有文件
@@ -1086,7 +1086,7 @@ FileUtil.writeUtf8String("内容2", file);  // 覆盖为"内容2"
 FileUtil.appendString("内容3", file);   // 文件内容变为 "内容2内容3"
 ```
 
-### 坑 3：DateUtil 不同版本兼容性
+### 6.2.3 坑 3：DateUtil 不同版本兼容性
 
 ```java
 // Hutool 5.x 对 DateUtil 做了较大改动
@@ -1096,7 +1096,7 @@ FileUtil.appendString("内容3", file);   // 文件内容变为 "内容2内容3"
 // 5.x 推荐使用 DateUtil.toLocalDateTime() 替代部分旧 API
 ```
 
-### 坑 4：HttpUtil 默认超时
+### 6.2.4 坑 4：HttpUtil 默认超时
 
 ```java
 // HttpUtil 默认无超时限制！
@@ -1107,7 +1107,7 @@ String result = HttpRequest.get("https://api.example.com")
         .body();
 ```
 
-### 坑 5：类型转换异常
+### 6.2.5 坑 5：类型转换异常
 
 ```java
 // Convert.toInt 转换失败返回 null（对象类型）或 0（基本类型）
@@ -1118,7 +1118,7 @@ int val2 = Convert.toInt("abc");    // 0（自动拆箱）
 // 如果希望转换失败抛异常，使用 Integer.parseInt
 ```
 
-### 坑 6：雪花算法 ID 重复
+### 6.2.6 坑 6：雪花算法 ID 重复
 
 ```java
 // 同一个 workerId + datacenterId 组合在高并发下

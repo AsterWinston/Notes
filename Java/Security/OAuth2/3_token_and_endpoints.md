@@ -127,7 +127,7 @@ JWT Token（自包含 Token）：
 
 ## 2.3 Access Token 的传输方式
 
-### Bearer Token（RFC 6750）
+### 2.3.1 Bearer Token（RFC 6750）
 
 ```http
 # 方式一：Authorization Header（推荐）
@@ -150,7 +150,7 @@ GET /resource?access_token=mF_9.B5f-4.1JqM
 | Form Body | 中等 | 仅限 POST | 仅在 Authorization Header 不可用时使用 |
 | Query String | 最低 | 禁止 | 记录在服务器日志、浏览器历史、Referer Header |
 
-### DPoP (Demonstration of Proof-of-Possession)
+### 2.3.2 DPoP (Demonstration of Proof-of-Possession)
 
 DPoP（RFC 9449）是 Bearer Token 的安全增强，防止 Token 被窃取后直接使用：
 
@@ -304,7 +304,7 @@ Refresh Token 轮换是 OAuth 2.1 的强制要求：
 
 授权端点是 OAuth2 流程中**唯一在浏览器中执行的步骤**（Front Channel）。
 
-### 请求参数完整列表
+### 4.2.1 请求参数完整列表
 
 | 参数 | 必填 | 格式 | 说明 |
 |------|------|------|------|
@@ -324,7 +324,7 @@ Refresh Token 轮换是 OAuth 2.1 的强制要求：
 | ui_locales | 可选 | BCP47 语言标签 | 授权页面语言 |
 | id_token_hint | 可选 | JWT | 已登录用户的 ID Token 提示 |
 
-### prompt 参数详解
+### 4.2.2 prompt 参数详解
 
 | prompt 值 | 行为 |
 |-----------|------|
@@ -336,7 +336,7 @@ Refresh Token 轮换是 OAuth 2.1 的强制要求：
 
 > `prompt=none` 与 `id_token_hint` 的组合是**静默刷新**的标准做法。
 
-### 授权端点响应
+### 4.2.3 授权端点响应
 
 ```
 成功响应（用户同意授权）：
@@ -364,7 +364,7 @@ Location: https://client.example.com/callback?error=access_denied&state=xcoiv98w
 
 Token Endpoint 是**后端通信**（Back Channel），所有请求必须通过 HTTPS POST 发送。
 
-### 客户端认证（Client Authentication）
+### 4.3.1 客户端认证（Client Authentication）
 
 授权服务器必须先认证客户端身份，再颁发 Token。
 
@@ -386,7 +386,7 @@ client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer
 &client_assertion=eyJhbGciOiJSUzI1NiIs...
 ```
 
-### grant_type 参数汇总
+### 4.3.2 grant_type 参数汇总
 
 | grant_type | 使用场景 | 相关 RFC |
 |-----------|----------|----------|
@@ -399,7 +399,7 @@ client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer
 | urn:ietf:params:oauth:grant-type:token-exchange | Token 交换 | RFC 8693 |
 | urn:openid:params:grant-type:ciba | CIBA（后端发起认证） | OpenID CIBA |
 
-### Refresh Token 续期请求
+### 4.3.3 Refresh Token 续期请求
 
 ```http
 POST /token HTTP/1.1
@@ -414,7 +414,7 @@ grant_type=refresh_token
 > Refresh Token 续期时的 scope 必须 ≤ 原始 scope。
 > 如果 Refresh Token 轮换启用，响应中会返回新的 Refresh Token。
 
-### 令牌响应中的 JSON 字段
+### 4.3.4 令牌响应中的 JSON 字段
 
 ```json
 {
@@ -526,7 +526,7 @@ GET /.well-known/oauth-authorization-server
 
 ## 5.1 redirect_uri 安全
 
-### 严格匹配 vs 模糊匹配
+### 5.1.1 严格匹配 vs 模糊匹配
 
 ```
 授权服务器必须实现严格字符串匹配：
@@ -543,7 +543,7 @@ GET /.well-known/oauth-authorization-server
   严格匹配结果:     "不匹配" → 攻击失败
 ```
 
-### redirect_uri 的开放重定向攻击
+### 5.1.2 redirect_uri 的开放重定向攻击
 
 ```
 # 攻击链条：

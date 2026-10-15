@@ -17,7 +17,7 @@ Hibernate 同时也是 **JPA（Jakarta Persistence API，原 Java Persistence AP
 
 Hibernate 提供了一套完整的持久化解决方案，其核心能力包括：
 
-### 对象持久化与 CRUD 自动化
+### 1.2.1 对象持久化与 CRUD 自动化
 
 ```java
 // 保存
@@ -33,7 +33,7 @@ user.setName("New Name");
 session.remove(user);
 ```
 
-### 关联管理
+### 1.2.2 关联管理
 
 支持实体之间的一对一（@OneToOne）、一对多/多对一（@OneToMany / @ManyToOne）、多对多（@ManyToMany）关联映射，并能自动处理级联操作。
 
@@ -49,7 +49,7 @@ public class Order {
 }
 ```
 
-### 继承映射
+### 1.2.3 继承映射
 
 支持单表继承（SINGLE_TABLE）、连接表继承（JOINED）、每个具体类一张表（TABLE_PER_CLASS）三种策略：
 
@@ -73,7 +73,7 @@ public class AlipayPayment extends Payment {
 }
 ```
 
-### 查询能力
+### 1.2.4 查询能力
 
 - **HQL（Hibernate Query Language）**：面向对象的查询语言，操作的是实体而非表。
 
@@ -104,13 +104,13 @@ List<User> users = session.createNativeQuery(
     .getResultList();
 ```
 
-### 缓存管理
+### 1.2.5 缓存管理
 
 - **一级缓存（Session 级别）**：与 Session 生命周期绑定，默认开启。
 - **二级缓存（SessionFactory 级别）**：跨 Session 共享，需显式配置（如 Ehcache、Hazelcast、Infinispan）。
 - **查询缓存**：缓存 HQL / Criteria 查询结果集的标识符。
 
-### 事务管理
+### 1.2.6 事务管理
 
 通过 `session.getTransaction()` 或集成 JTA 实现本地事务和分布式事务管理。
 
@@ -125,7 +125,7 @@ try {
 }
 ```
 
-### 锁机制
+### 1.2.7 锁机制
 
 - **乐观锁**：通过 `@Version` 注解实现，使用版本号或时间戳检测并发冲突。
 - **悲观锁**：使用 `LockModeType.PESSIMISTIC_READ` / `PESSIMISTIC_WRITE` 在数据库层面加锁。
@@ -142,7 +142,7 @@ Product product = session.find(Product.class, id,
     LockModeType.PESSIMISTIC_WRITE);
 ```
 
-### 模式生成（SchemaExport）
+### 1.2.8 模式生成（SchemaExport）
 
 Hibernate 可以根据映射元数据自动生成 DDL 语句，支持 `validate`、`update`、`create`、`create-drop` 等策略：
 
@@ -150,7 +150,7 @@ Hibernate 可以根据映射元数据自动生成 DDL 语句，支持 `validate`
 <property name="hibernate.hbm2ddl.auto" value="validate" />
 ```
 
-### 懒加载与代理
+### 1.2.9 懒加载与代理
 
 关联属性和集合默认使用懒加载（Lazy Loading），通过字节码增强或代理对象延迟初始化，避免不必要的数据查询。
 
@@ -161,7 +161,7 @@ private List<Order> orders; // 仅在访问时加载
 
 ## 1.3 为什么选择 Hibernate
 
-### 数据库无关性（Dialect 机制）
+### 1.3.1 数据库无关性（Dialect 机制）
 
 Hibernate 通过 Dialect 接口抽象了不同数据库的 SQL 方言差异，切换数据库只需修改配置文件中的 Dialect 类名和驱动信息，无需修改业务代码：
 
@@ -172,7 +172,7 @@ Hibernate 通过 Dialect 接口抽象了不同数据库的 SQL 方言差异，�
 <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 ```
 
-### 减少样板代码
+### 1.3.2 减少样板代码
 
 对比原始 JDBC 编程，Hibernate 消除了大量的 `try-catch-finally`、资源管理、`ResultSet` 遍历和手动映射代码。一个 JDBC 插入需要 15+ 行代码，Hibernate 仅需 1 行。
 
@@ -191,15 +191,15 @@ try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 session.persist(user);
 ```
 
-### 性能优化手段丰富
+### 1.3.3 性能优化手段丰富
 
 Hibernate 提供了丰富的性能调优手段，详见本书性能优化章节。
 
-### 生态成熟
+### 1.3.4 生态成熟
 
 Hibernate 与 Spring Framework 深度集成（Spring Data JPA / Spring Boot Starter Data JPA），是目前 Java 企业级开发的事实标准。几乎所有面试和招聘要求中，JPA / Hibernate 都是必备技能。
 
-### 社区活跃
+### 1.3.5 社区活跃
 
 拥有庞大的用户群、完善的文档、众多的第三方扩展和活跃的维护团队。Hibernate 6.x 版本仍在持续演进。
 
@@ -412,7 +412,7 @@ session.enableFilter("activeFilter").setParameter("status", "ACTIVE");
 
 **对象-关系阻抗不匹配（Object-Relational Impedance Mismatch）** 是 ORM 要解决的核心问题。以下是不匹配的五个主要维度：
 
-### 粒度问题（Granularity）
+### 4.1.1 粒度问题（Granularity）
 
 Java 模型可以有细粒度的类型（如 Address 是一个 Embeddable 独立类型），但数据库中地址信息通常与用户同表。Hibernate 通过 `@Embeddable` / `@Embedded` 或 `@ElementCollection` 来解决：
 
@@ -431,11 +431,11 @@ public class User {
 }
 ```
 
-### 继承问题（Subtypes / Inheritance）
+### 4.1.2 继承问题（Subtypes / Inheritance）
 
 Java 支持继承，关系数据库不支持。Hibernate 提供三种继承映射策略（单表、连接表、每个具体类一张表）。
 
-### 同一性问题（Identity）
+### 4.1.3 同一性问题（Identity）
 
 Java 中通过 `==` 判断对象同一性（内存地址），通过 `equals()` 判断等价性；数据库中通过主键值判断同一性。Hibernate 在持久化上下文中保证了同一个数据库行在同一个 Session 中只对应一个 Java 对象实例（Identity Map 模式）：
 
@@ -445,11 +445,11 @@ User u2 = session.get(User.class, 1L);
 System.out.println(u1 == u2); // true
 ```
 
-### 关联问题（Associations）
+### 4.1.4 关联问题（Associations）
 
 Java 对象通过引用表示关联（`user.getOrders()` 返回集合引用），数据库通过外键表示关联。ORM 需要将二者相互转换，并处理级联操作、外键约束、关联方向、集合类型（Set vs List）等细节。
 
-### 导航问题（Navigation）
+### 4.1.5 导航问题（Navigation）
 
 Java 中通过对象图导航访问关联数据（`user.getOrders().get(0).getItems()` 链式调用），数据库中需要 JOIN 查询。Hibernate 的 Fetch 策略（Eager / Lazy / Batch / Subselect）决定了何时以何种方式加载关联数据。
 
@@ -482,7 +482,7 @@ session.getTransaction().commit();
 
 实体在 Hibernate 中的生命周期分为四种状态（Six States in Extended Model）：
 
-### Transient（瞬时态）
+### 4.3.1 Transient（瞬时态）
 
 - 通过 `new` 关键字创建、尚未与任何 Session 关联的实体。
 - **无数据库对应行**，无持久化标识（ID 为 null 或默认值）。
@@ -495,7 +495,7 @@ user.setName("Alice");
 // user 当前为 Transient 状态
 ```
 
-### Persistent / Managed（持久态 / 托管态）
+### 4.3.2 Persistent / Managed（持久态 / 托管态）
 
 - 已经通过 `persist()` / `save()` / `merge()` / `find()` 等方法与 Session 建立关联的实体。
 - **有数据库对应行**（或即将有，由 ID 生成策略决定）。
@@ -508,7 +508,7 @@ loaded.setName("Bob"); // 脏检查将追踪此修改
 // transaction.commit() 时自动执行 UPDATE
 ```
 
-### Detached（游离态）
+### 4.3.3 Detached（游离态）
 
 - Session 关闭后，原先的托管实体变为游离态。
 - **有数据库对应行**，但不再受任何 Session 管理。
@@ -521,7 +521,7 @@ Session session2 = sf.openSession();
 session2.merge(loaded); // Detached → Managed，变更同步
 ```
 
-### Removed（删除态）
+### 4.3.4 Removed（删除态）
 
 - 通过 `remove()` / `delete()` 标记为待删除的实体。
 - 在 flush 时生成 DELETE 语句。
@@ -532,7 +532,7 @@ session.remove(user); // Managed → Removed
 // flush 时生成 DELETE FROM t_user WHERE id = ?
 ```
 
-### 状态转换图
+### 4.3.5 状态转换图
 
 ```
     new / close
@@ -553,7 +553,7 @@ session.remove(user); // Managed → Removed
          └────────────────────────────┘
 ```
 
-### 各状态下的行为特征
+### 4.3.6 各状态下的行为特征
 
 | 特征 | Transient | Managed | Detached | Removed |
 | --- | :---: | :---: | :---: | :---: |
@@ -657,7 +657,7 @@ Hibernate 底层仍然使用 JDBC 与数据库通信。每次 Session 操作最�
 
 ## 6.3 常见误解
 
-### "Hibernate 很慢"
+### 6.3.1 "Hibernate 很慢"
 
 **事实**：Hibernate 本身不会让应用变慢。变慢的原因通常是不当使用：
 
@@ -668,14 +668,14 @@ Hibernate 底层仍然使用 JDBC 与数据库通信。每次 Session 操作最�
 
 一个经过良好调优的 Hibernate 应用，性能可以与手写 JDBC 相差在 5-10% 以内，而开发效率提升数倍。
 
-### "Hibernate 不适合大项目"
+### 6.3.2 "Hibernate 不适合大项目"
 
 **事实**：全球众多大型企业在关键系统中使用 Hibernate（Red Hat、Atlassian、Liferay 等）。问题不在框架规模适用性，而在于团队是否理解 ORM 原理并遵循最佳实践。
 
 - 核心策略：分层架构明确（Service 层不泄露 Session）、合理的事务边界、严格的 Fetch 策略控制、禁用自动 DDL。
 - 对于非常复杂的查询，可以在 Hibernate 项目中使用 Native SQL 或 JOOQ 作为补充，而非全盘否定。
 
-### "使用 Hibernate 不需要懂 SQL"
+### 6.3.3 "使用 Hibernate 不需要懂 SQL"
 
 **事实**：这是错误的。使用 Hibernate 更需要深入理解 SQL，因为：
 
@@ -746,7 +746,7 @@ Hibernate 底层仍然使用 JDBC 与数据库通信。每次 Session 操作最�
 
 ## 7.2 第一个 Hibernate 程序
 
-### 实体类编写
+### 7.2.1 实体类编写
 
 ```java
 package com.example.entity;
@@ -795,7 +795,7 @@ public class User {
 }
 ```
 
-### Hibernate 配置 - hibernate.cfg.xml
+### 7.2.2 Hibernate 配置 - hibernate.cfg.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -831,7 +831,7 @@ public class User {
 </hibernate-configuration>
 ```
 
-### 创建 SessionFactory（工具类）
+### 7.2.3 创建 SessionFactory（工具类）
 
 ```java
 package com.example.util;
@@ -864,7 +864,7 @@ public class HibernateUtil {
 }
 ```
 
-### 增删改查完整示例
+### 7.2.4 增删改查完整示例
 
 ```java
 package com.example;
@@ -970,7 +970,7 @@ SELECT * FROM t_user
 
 Hibernate 使用 JBoss Logging 作为底层日志门面，可以桥接到 SLF4J 再输出到 Logback、Log4j2 等日志框架。
 
-### 核心日志分类
+### 7.3.1 核心日志分类
 
 | 日志类别 | 说明 |
 | --- | --- |
@@ -981,7 +981,7 @@ Hibernate 使用 JBoss Logging 作为底层日志门面，可以桥接到 SLF4J 
 | `org.hibernate.cache` | 输出缓存命中/未命中日志 |
 | `org.hibernate.engine.transaction` | 事务相关的调试信息 |
 
-### Logback 完整配置示例
+### 7.3.2 Logback 完整配置示例
 
 **pom.xml 中引入依赖**：
 
@@ -1036,7 +1036,7 @@ Hibernate 使用 JBoss Logging 作为底层日志门面，可以桥接到 SLF4J 
 </configuration>
 ```
 
-### Hibernate 配置中开启 SQL 格式化与统计
+### 7.3.3 Hibernate 配置中开启 SQL 格式化与统计
 
 在 `hibernate.cfg.xml` 中补充：
 
@@ -1051,7 +1051,7 @@ Hibernate 使用 JBoss Logging 作为底层日志门面，可以桥接到 SLF4J 
 <property name="hibernate.generate_statistics">true</property>
 ```
 
-### 日志输出示例
+### 7.3.4 日志输出示例
 
 ```
 16:23:45.123 [main] DEBUG org.hibernate.SQL -
@@ -1070,7 +1070,7 @@ Hibernate 使用 JBoss Logging 作为底层日志门面，可以桥接到 SLF4J 
     binding parameter [3] as [INTEGER] - [25]
 ```
 
-### 生产环境日志建议
+### 7.3.5 生产环境日志建议
 
 - **开发环境**：开启 `show_sql`、`format_sql`、BasicBinder TRACE，方便调试。
 - **测试环境**：开启统计信息（`generate_statistics`），分析 N+1 和缓存命中率。
@@ -1083,7 +1083,7 @@ Hibernate 使用 JBoss Logging 作为底层日志门面，可以桥接到 SLF4J 
 <property name="hibernate.generate_statistics">false</property>
 ```
 
-### 使用 DataSource 方式替代自建连接（推荐）
+### 7.3.6 使用 DataSource 方式替代自建连接（推荐）
 
 生产环境推荐使用连接池（如 HikariCP），并通过 `hibernate.connection.datasource` 指定 JNDI 名称或直接注入 DataSource：
 

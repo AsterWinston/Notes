@@ -53,7 +53,7 @@ OAuth2 客户端（Client）是代表资源拥有者请求受保护资源的应�
 
 ## 2.2 核心实现流程
 
-### 步骤一：发起授权请求
+### 2.2.1 步骤一：发起授权请求
 
 ```java
 // 生成 state 和 code_verifier，存储到 session
@@ -82,7 +82,7 @@ public String initiateOAuth2(HttpSession session) {
 }
 ```
 
-### 步骤二：处理回调
+### 2.2.2 步骤二：处理回调
 
 ```java
 @GetMapping("/callback")
@@ -122,7 +122,7 @@ public String handleCallback(
 }
 ```
 
-### 步骤三：用 code 换 Token
+### 2.2.3 步骤三：用 code 换 Token
 
 ```java
 private TokenResponse exchangeCodeForToken(String code, String codeVerifier) {
@@ -192,7 +192,7 @@ private TokenResponse refreshAccessToken(String refreshToken) {
 }
 ```
 
-### Token 存储表设计
+### 2.3.1 Token 存储表设计
 
 ```sql
 CREATE TABLE oauth2_tokens (
@@ -369,7 +369,7 @@ class OAuth2Client {
    - App 永远不碰用户密码
 ```
 
-### AppAuth 回调方式
+### 4.1.1 AppAuth 回调方式
 
 ```
 方式一：Custom URL Scheme（不推荐）

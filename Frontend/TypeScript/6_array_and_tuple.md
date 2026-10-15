@@ -195,7 +195,7 @@ const cleaned2 = raw.filter(isNonNullable);   // string[]
 
 ★ **关键认知**：`filter` 的签名本质是**谓词重载**：传 `x is T` 谓词时返回 `T[]`，传普通布尔函数时返回原 `T[]`——"类型不过滤"是**签名设计使然**：普通谓词只返回 `boolean`，与元素类型毫无关联，编译器无从删减成员。⚠ `filter(Boolean)` 里 `Boolean` 只是个布尔转换函数、**不是类型守卫**，结果里 `null` 成员纹丝不动，后续 `filtered[0].length` 照样报错——这个坑在 JS→TS 迁移代码里出现频率极高。对比另外两门语言：Java 的 `Stream.filter()` 同样不改写泛型参数（类型擦除，`List<String>` 进 `List<String>` 出），Go 干脆没有泛型 filter 方法、只能手写循环逐个收窄；TS 的谓词重载是三者中唯一能做到"过滤即改类型"的，前提是把守卫写成 `x is T`。
 
-### 4.3 其他常用方法的签名速读
+## 4.3 其他常用方法的签名速读
 
 ```typescript
 // find：找不到返回 undefined，类型层如实表达"可能落空"

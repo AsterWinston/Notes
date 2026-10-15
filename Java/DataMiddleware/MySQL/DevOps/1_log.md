@@ -1,14 +1,14 @@
-# 1.错误日志（Error Log）
+# 1. 错误日志（Error Log）
 
 错误日志记录了 MySQL 启动和停止时以及运行过程中发生的错误信息。当数据库出现故障导致无法正常使用时，**应首先查看此日志**。
 
-## 1.1基本特性
+## 1.1 基本特性
 
 - **默认开启**，无法关闭
 - 默认文件名：`mysqld.log`（Linux `/var/log/mysqld.log`，Ubuntu `/var/log/mysql/error.log`）
 - 记录内容：启动/关闭事件、运行错误、未处理的异常、复制错误等
 
-## 1.2查看与配置
+## 1.2 查看与配置
 
 ```sql
 -- 查看错误日志位置
@@ -29,7 +29,7 @@ log_error_verbosity = 3
 
 > `log_error_verbosity = 3` 在生产环境推荐，提供最完整的诊断信息，方便排查问题。
 
-## 1.3关键错误类型
+## 1.3 关键错误类型
 
 | 错误类型 | 示例 | 解决思路 |
 |---------|------|---------|
@@ -38,11 +38,11 @@ log_error_verbosity = 3
 | 连接数满 | `Too many connections` | 增加 max_connections 或检查连接泄露 |
 | 表损坏 | `Incorrect key file for table 'xxx'` | `REPAIR TABLE`（MyISAM）或从备份恢复 |
 
-# 2.二进制日志（Binary Log / Binlog）
+# 2. 二进制日志（Binary Log / Binlog）
 
 Binlog 记录了所有 DDL 和 DML 操作（但不包括 SELECT 和 SHOW），是 MySQL 中**最重要**的日志之一。
 
-## 2.1作用
+## 2.1 作用
 
 | 作用 | 说明 |
 |------|------|
@@ -51,7 +51,7 @@ Binlog 记录了所有 DDL 和 DML 操作（但不包括 SELECT 和 SHOW），�
 | **数据审计** | 配合 binlog 解析工具，追溯数据变更历史 |
 | **数据同步** | Canal、Maxwell 等工具监听 binlog 实现 MySQL → Kafka/ES 同步 |
 
-## 2.2配置
+## 2.2 配置
 
 MySQL 8.0 默认开启 binlog（`log_bin = ON`）。生产环境务必确认已开启。
 
@@ -76,7 +76,7 @@ sync_binlog = 1
 binlog_row_image = FULL
 ```
 
-## 2.3三种格式对比
+## 2.3 三种格式对比
 
 | 格式 | 记录内容 | 优点 | 缺点 | 使用场景 |
 |------|---------|------|------|---------|
@@ -86,9 +86,9 @@ binlog_row_image = FULL
 
 > **推荐一律使用 ROW 格式**。虽然 ROW 日志量大，但磁盘廉价 + 配合 `binlog_row_image = MINIMAL` 可显著减少日志量（仅记录变更列的前后值）。ROW 格式是安全可靠的基础。
 
-## 2.4查看Binlog
+## 2.4 查看Binlog
 
-### 命令行查看
+### 2.4.1 命令行查看
 
 ```bash
 # 查看 binlog 文件列表
@@ -113,7 +113,7 @@ mysqlbinlog --start-position=1234 --stop-position=5678 \
             /var/lib/mysql/binlog/mysql-bin.000001
 ```
 
-### SQL中查看
+### 2.4.2 SQL中查看
 
 ```sql
 -- 查看 binlog 文件列表
@@ -127,7 +127,7 @@ SHOW BINLOG EVENTS IN 'mysql-bin.000001';
 SHOW BINLOG EVENTS IN 'mysql-bin.000001' FROM 1234 LIMIT 10;
 ```
 
-## 2.5基于Binlog的数据恢复
+## 2.5 基于Binlog的数据恢复
 
 ```bash
 # 全量恢复 + binlog 增量恢复
@@ -146,7 +146,7 @@ mysqlbinlog --stop-datetime='2026-05-17 13:59:59' \
 
 > **恢复前务必先备份当前状态**，防止恢复操作覆盖有用数据。
 
-## 2.6Binlog管理
+## 2.6 Binlog管理
 
 ```sql
 -- 删除 binlog：删除指定编号之前的
@@ -164,7 +164,7 @@ FLUSH LOGS;
 
 > **不要手动 `rm` binlog 文件**，必须使用 `PURGE BINARY LOGS` 安全删除。
 
-# 3.查询日志（General Query Log）
+# 3. 查询日志（General Query Log）
 
 查询日志记录客户端的**所有操作语句**（包括 SELECT），是 binlog 的补集。但日志量极大，默认关闭。
 
@@ -182,11 +182,11 @@ SET GLOBAL general_log = 1;
 
 > **使用建议**：查询日志体积增长极快，仅在**短期调试**时开启，用完立即关闭。生产环境不要长期开启。
 
-# 4.慢查询日志（Slow Query Log）
+# 4. 慢查询日志（Slow Query Log）
 
 慢查询日志记录所有执行时间超过阈值的 SQL，是**性能优化最常用的日志**。
 
-## 4.1配置
+## 4.1 配置
 
 ```sql
 -- 查看状态
@@ -216,9 +216,9 @@ slow_query_log_file = /var/lib/mysql/mysql-slow.log
 min_examined_row_limit = 1000
 ```
 
-## 4.2慢查询分析工具
+## 4.2 慢查询分析工具
 
-### mysqldumpslow
+### 4.2.1 mysqldumpslow
 
 ```bash
 # 获取访问次数最多的 10 条 SQL
@@ -239,7 +239,7 @@ mysqldumpslow -s t -t 10 -g 'user' /var/lib/mysql/mysql-slow.log
 
 > mysqldumpslow 是 MySQL 自带的慢查询分析工具。更适合生产级分析的是 **pt-query-digest**（Percona Toolkit）。
 
-### pt-query-digest
+### 4.2.2 pt-query-digest
 
 ```bash
 # 分析慢查询日志
@@ -254,7 +254,7 @@ pt-query-digest --type tcpdump /path/to/tcpdump.out
 
 > `pt-query-digest` 会输出：各 SQL 的执行次数、总耗时、平均耗时、锁时间、行扫描数等详细统计，按耗时排序。
 
-## 4.3日志分析流程
+## 4.3 日志分析流程
 
 ```
 1. 开启慢查询日志
@@ -272,7 +272,7 @@ pt-query-digest --type tcpdump /path/to/tcpdump.out
 7. 优化后关闭或调高 long_query_time
 ```
 
-# 5.Redo Log vs Undo Log vs Binlog
+# 5. Redo Log vs Undo Log vs Binlog
 
 | 日志 | 层面 | 记录内容 | 作用 |
 |------|------|---------|------|

@@ -1,4 +1,4 @@
-# 1.整个完整系统的参与者
+# 1. 整个完整系统的参与者
 ```
 对于一个完整的web项目参与者包括：
 ● Servlet规范的制定者（已有）
@@ -6,10 +6,10 @@
 ● Spring MVC框架的开发者（手写Spring MVC框架）
 ● 编写webapp的开发者（用Spring MVC框架的人）
 ```
-# 2.基本结构搭建
+# 2. 基本结构搭建
 
-## 2.1创建Maven模块
-## 2.2引入Servlet依赖
+## 2.1 创建Maven模块
+## 2.2 引入Servlet依赖
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -40,8 +40,8 @@
 
 </project>
 ```
-## 2.3配置Tomcat服务器
-## 2.4添加web支持
+## 2.3 配置Tomcat服务器
+## 2.4 添加web支持
 ```
 web.xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -51,14 +51,14 @@ web.xml
          version="6.0">
 </web-app>
 ```
-## 2.4创建基本类和接口
+## 2.4 创建基本类和接口
 ```
 根据Spring MVC执行流程，目前先创建出以下的类和接口，后期如果需要其他的再添加：
 ```
 
 <img src="images/23.png" width="100%"/>
-# 3.部分类和接口的完善
-## 3.1@Controller注解
+# 3. 部分类和接口的完善
+## 3.1 @Controller注解
 ```
 package org.myspringmvc.stereotype;
 
@@ -80,7 +80,7 @@ public @interface Controller {
 }
 
 ```
-## 3.2RequestMethod枚举（新建）
+## 3.2 RequestMethod枚举（新建）
 ```
 package org.myspringmvc.web.bind.annotation;
 
@@ -96,7 +96,7 @@ public enum RequestMethod {
 }
 
 ```
-## 3.3@RequestMapping注解
+## 3.3 @RequestMapping注解
 ```
 package org.myspringmvc.web.bind.annotation;
 
@@ -129,7 +129,7 @@ public @interface RequestMapping {
 }
 
 ```
-## 3.4HandlerMethod
+## 3.4 HandlerMethod
 ```
 package org.myspringmvc.web.method;
 
@@ -178,7 +178,7 @@ public class HandlerMethod {
 }
 
 ```
-## 3.5HandlerMapping接口
+## 3.5 HandlerMapping接口
 ```
 package org.myspringmvc.web.servlet;
 
@@ -202,7 +202,7 @@ public interface HandlerMapping {
 }
 
 ```
-## 3.6RequestMappingHandlerMapping
+## 3.6 RequestMappingHandlerMapping
 ```
 package org.myspringmvc.web.servlet.mvc.method.annotation;
 
@@ -225,7 +225,7 @@ public class RequestMappingHandlerMapping implements HandlerMapping {
 }
 
 ```
-## 3.7HandlerAdapter接口
+## 3.7 HandlerAdapter接口
 ```
 package org.myspringmvc.web.servlet;
 
@@ -252,7 +252,7 @@ public interface HandlerAdapter {
 }
 
 ```
-## 3.8RequestMappingHandlerAdapter
+## 3.8 RequestMappingHandlerAdapter
 ```
 package org.myspringmvc.web.servlet.mvc.method.annotation;
 
@@ -276,7 +276,7 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter {
 }
 
 ```
-## 3.9View接口
+## 3.9 View接口
 ```
 package org.myspringmvc.web.servlet;
 
@@ -311,7 +311,7 @@ public interface View {
 }
 
 ```
-## 3.10InternalResourceView
+## 3.10 InternalResourceView
 ```
 package org.myspringmvc.web.servlet.view;
 
@@ -340,7 +340,7 @@ public class InternalResourceView implements View {
 }
 
 ```
-## 3.11ViewResolver接口
+## 3.11 ViewResolver接口
 ```
 package org.myspringmvc.web.servlet;
 
@@ -365,7 +365,7 @@ public interface ViewResolver {
 }
 
 ```
-## 3.12InternalResourceViewResolver
+## 3.12 InternalResourceViewResolver
 ```
 package org.myspringmvc.web.servlet.view;
 
@@ -389,7 +389,7 @@ public class InternalResourceViewResolver implements ViewResolver {
 }
 
 ```
-## 3.13DispatcherServlet
+## 3.13 DispatcherServlet
 ```
 package org.myspringmvc.web.servlet;
 
@@ -430,7 +430,7 @@ public class DispatcherServlet extends HttpServlet {
 }
 
 ```
-## 3.14HandlerExecutionChain
+## 3.14 HandlerExecutionChain
 ```
 package org.myspringmvc.web.servlet;
 
@@ -482,7 +482,7 @@ public class HandlerExecutionChain {
 }
 
 ```
-## 3.15HandlerInterceptor拦截器接口
+## 3.15 HandlerInterceptor拦截器接口
 ```
 package org.myspringmvc.web.servlet;
 
@@ -511,7 +511,7 @@ public interface HandlerInterceptor {
 }
 
 ```
-## 3.16ModelMap类（新建）
+## 3.16 ModelMap类（新建）
 ```
 package org.myspringmvc.ui;
 
@@ -535,7 +535,7 @@ public class ModelMap extends LinkedHashMap<String, Object> {
 }
 
 ```
-## 3.17ModelAndView
+## 3.17 ModelAndView
 ```
 package org.myspringmvc.web.servlet;
 
@@ -586,9 +586,9 @@ public class ModelAndView {
 }
 
 ```
-# 4.webapp开发者写应用
+# 4. webapp开发者写应用
 
-## 4.1web.xml
+## 4.1 web.xml
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
@@ -648,7 +648,7 @@ public class Constant {
 }
 
 ```
-## 4.2编写处理器Controller
+## 4.2 编写处理器Controller
 ```
 package com.powernode.springmvc.controller;
 
@@ -672,7 +672,7 @@ public class UserController {
 }
 
 ```
-## 4.3编写拦截器
+## 4.3 编写拦截器
 ```
 package com.powernode.springmvc.interceptors;
 
@@ -743,7 +743,7 @@ public class Interceptor2 implements HandlerInterceptor {
 }
 
 ```
-## 4.4springmvc.xml
+## 4.4 springmvc.xml
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
@@ -803,7 +803,7 @@ public class InternalResourceViewResolver implements ViewResolver {
 }
 
 ```
-## 4.5提供视图
+## 4.5 提供视图
 ```
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -815,8 +815,8 @@ public class InternalResourceViewResolver implements ViewResolver {
 </body>
 </html>
 ```
-# 5.服务器启动阶段的处理
-## 5.1分析服务器启动阶段都需要初始化什么
+# 5. 服务器启动阶段的处理
+## 5.1 分析服务器启动阶段都需要初始化什么
 ```
 1. 初始化Spring容器
   a. 组件扫描包下的类纳入IoC容器的管理。
@@ -832,7 +832,7 @@ public class InternalResourceViewResolver implements ViewResolver {
 Spring容器：ApplicationContext
 Spring Web容器：WebApplicationContext
 ```
-### 5.2.1组件扫描
+### 5.2.1 组件扫描
 ```
 添加解析xml文件的依赖
 <!--dom4j-->
@@ -944,7 +944,7 @@ public class WebApplicationContext extends ApplicationContext{
 
 <img src="images/25.png" width="100%"/>
 
-### 5.2.2创建视图解析器对象
+### 5.2.2 创建视图解析器对象
 ```
 InternalResourceViewResolver类代码改动，添加prefix和suffix属性：
 package org.myspringmvc.web.servlet.view;
@@ -1009,7 +1009,7 @@ if(viewResolverObj instanceof InternalResourceViewResolver internalResourceViewR
 beanMap.put(Constant.VIEW_RESOLVER, viewResolverObj);
 System.out.println("Spring Web容器当下状态：" + beanMap);
 ```
-### 5.2.3. 创建所有的拦截器对象
+### 5.2.3 创建所有的拦截器对象
 
 ```
 在ApplicationContext构造方法中继续添加如下代码：
@@ -1031,7 +1031,7 @@ for(Element interceptorBean : interceptorBeans){
 beanMap.put(Constant.INTERCEPTORS, interceptors);
 System.out.println("Spring Web容器当下状态：" + beanMap);
 ```
-### 5.2.4初始化annotation包下所有类的实例
+### 5.2.4 初始化annotation包下所有类的实例
 
 <img src="images/28.png" width="100%"/>
 
@@ -1061,7 +1061,7 @@ if(file.isDirectory()){
 }
 System.out.println("Spring Web容器当下状态：" + beanMap);
 ```
-## 5.3初始化HandlerMapping
+## 5.3 初始化HandlerMapping
 ```
 ```
 
@@ -1071,14 +1071,14 @@ System.out.println("Spring Web容器当下状态：" + beanMap);
 
 <img src="images/30.png" width="100%"/>
 
-## 5.5初始化ViewResolver
+## 5.5 初始化ViewResolver
 ```
 ```
 
 <img src="images/31.png" width="100%"/>
 
-# 6.根据请求流程补充代码
-## 6.1根据请求获取处理器执行链
+# 6. 根据请求流程补充代码
+## 6.1 根据请求获取处理器执行链
 ```
 DispatcherServlet中doDispatch方法：
 private void doDispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -1246,7 +1246,7 @@ public class RequestMappingInfo {
 }
 
 ```
-## 6.2执行拦截器的preHandle
+## 6.2 执行拦截器的preHandle
 ```
 添加以下代码：
 ```
@@ -1267,7 +1267,7 @@ public boolean applyPreHandle(HttpServletRequest request, HttpServletResponse re
     return true;
 }
 ```
-## 6.3执行处理器方法
+## 6.3 执行处理器方法
 ```
 DispatcherServlet中的doDispatch方法：
 ```
@@ -1279,7 +1279,7 @@ DispatcherServlet中的doDispatch方法：
 ```
 
 <img src="images/35.png" width="100%"/>
-## 6.4执行拦截器的postHandle
+## 6.4 执行拦截器的postHandle
 ```
 DispatcherServlet的doDispatch方法中：
 ```
@@ -1289,7 +1289,7 @@ HandlerExecutionChain的方法：
 ```
 <img src="images/37.png" width="100%"/>
 
-## 6.5处理响应
+## 6.5 处理响应
 ```
 在DispatcherServlet的 doDispatch方法中：
 ```
@@ -1392,7 +1392,7 @@ public class InternalResourceView implements View {
 }
 
 ```
-## 6.6执行拦截器的afterCompletion
+## 6.6 执行拦截器的afterCompletion
 ```
 在DispatcherServlet类的doDispatch方法中：
 ```
@@ -1404,10 +1404,10 @@ public class InternalResourceView implements View {
 <img src="images/40.png" width="100%"/>
 
 <img src="images/41.png" width="100%"/>
-## 6.7初步测试
+## 6.7 初步测试
 
-# 7.调用处理器方法
-## 7.0新增注解定义
+# 7. 调用处理器方法
+## 7.0 新增注解定义
 ```
 在调用处理器方法时需要通过反射获取方法的参数信息，因此需要新增两个注解：
 @RequestParam 用于标注普通请求参数
@@ -1448,7 +1448,7 @@ public @interface PathVariable {
     String value() default "";
 }
 ```
-## 7.1参数解析器设计
+## 7.1 参数解析器设计
 ```
 在调用处理器方法之前，需要将HTTP请求中的参数解析为Java方法的参数。
 SpringMVC中大量使用了策略模式，每种参数类型对应一种解析器。
@@ -1520,7 +1520,7 @@ public class MethodParameter {
     }
 }
 ```
-## 7.2实现各种参数解析器
+## 7.2 实现各种参数解析器
 ```
 1. HttpServletRequest参数解析器（直接将原生的request对象注入）：
 package org.myspringmvc.web.method.support;
@@ -1634,7 +1634,7 @@ public class PathVariableArgumentResolver implements HandlerMethodArgumentResolv
     }
 }
 ```
-## 7.3编写参数解析器组合器
+## 7.3 编写参数解析器组合器
 ```
 将所有参数解析器组合在一起，按顺序尝试解析：
 
@@ -1689,7 +1689,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
     }
 }
 ```
-## 7.4完善请求路径匹配（支持@PathVariable）
+## 7.4 完善请求路径匹配（支持@PathVariable）
 ```
 在第六章中，HandlerMapping.getHandler是将请求URI和RequestMappingInfo中的requestURI直接equals比较的。
 但RESTful风格的路径包含变量（如 /user/{id}），不能直接equals比较。
@@ -1758,7 +1758,7 @@ public class PathMatcher {
 
 然后修改RequestMappingHandlerMapping中的getHandler方法，支持路径模式匹配：
 ```
-## 7.5完善HandlerAdapter.handle方法
+## 7.5 完善HandlerAdapter.handle方法
 ```
 现在可以完成RequestMappingHandlerAdapter.handle方法的完整实现了：
 
@@ -1839,7 +1839,7 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter {
     }
 }
 ```
-## 7.6完善DispatcherServlet.doDispatch方法（整合路径变量）
+## 7.6 完善DispatcherServlet.doDispatch方法（整合路径变量）
 ```
 在doDispatch方法中，通过getHandler获取HandlerMethod之后，
 需要将路径变量保存到request属性中，供PathVariable参数解析器使用。
@@ -1864,7 +1864,7 @@ for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMappingMap.entr
 这样，当Controller方法中使用@PathVariable获取路径变量时，
 PathVariableArgumentResolver就能从request属性中拿到对应的值。
 ```
-## 7.7测试验证
+## 7.7 测试验证
 ```
 创建一个测试Controller，验证参数解析和方法调用：
 

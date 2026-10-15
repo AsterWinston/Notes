@@ -1,4 +1,4 @@
-# 1.属性标志和属性描述符
+# 1. 属性标志和属性描述符
 ```javascript
 我们知道，对象可以存储属性。
 
@@ -6,7 +6,7 @@
 
 在本章中，我们将学习其他配置选项，在下一章中，我们将学习如何将它们无形地转换为 getter/setter 函数。
 ```
-## 1.1属性标志
+## 1.1 属性标志
 ```
 对象属性（properties），除 value 外，还有三个特殊的特性（attributes），也就是所谓的“标志”：
 
@@ -79,7 +79,7 @@ alert( JSON.stringify(descriptor, null, 2 ) );
 
 现在让我们通过示例来看看标志的影响。
 ```
-## 1.2只读
+## 1.2 只读
 ```
 让我们通过更改 writable 标志来把 user.name 设置为只读（user.name 不能被重新赋值）：
 
@@ -111,7 +111,7 @@ Object.defineProperty(user, "name", {
 alert(user.name); // John
 user.name = "Pete"; // Error
 ```
-## 1.3不可枚举
+## 1.3 不可枚举
 ```
 现在让我们向 user 添加一个自定义的 toString。
 
@@ -145,7 +145,7 @@ for (let key in user) alert(key); // name
 
 alert(Object.keys(user)); // name
 ```
-## 1.4不可配置
+## 1.4 不可配置
 ```
 不可配置标志（configurable:false）有时会预设在内建对象和属性中。
 
@@ -212,7 +212,7 @@ Object.defineProperty(user, "name", { value: "Pete" });
 
 对于不可配置的属性，我们可以将 writable: true 更改为 false，从而防止其值被修改（以添加另一层保护）。但无法反向行之。
 ```
-## 1.5Object.defineProperties
+## 1.5 Object.defineProperties
 ```
 有一个方法 Object.defineProperties(obj, descriptors)，允许一次定义多个属性。
 
@@ -232,7 +232,7 @@ Object.defineProperties(user, {
 });
 所以，我们可以一次性设置多个属性。
 ```
-## 1.6Object.getOwnPropertyDescriptiors
+## 1.6 Object.getOwnPropertyDescriptiors
 ```
 要一次获取所有属性描述符，我们可以使用 Object.getOwnPropertyDescriptors(obj) 方法。
 
@@ -248,7 +248,7 @@ for (let key in user) {
 
 另一个区别是 for..in 会忽略 symbol 类型的和不可枚举的属性，但是 Object.getOwnPropertyDescriptors 返回包含 symbol 类型的和不可枚举的属性在内的 所有 属性描述符。
 ```
-## 1.7设定一个全局的密封对象
+## 1.7 设定一个全局的密封对象
 ```
 属性描述符在单个属性的级别上工作。
 
@@ -271,7 +271,7 @@ Object.isFrozen(obj)
 这些方法在实际中很少使用。
 ```
 
-# 2.属性的 getter 和 setter
+# 2. 属性的 getter 和 setter
 ```javascript
 有两种类型的对象属性。
 
@@ -279,7 +279,7 @@ Object.isFrozen(obj)
 
 第二种类型的属性是新东西。它是 访问器属性（accessor property）。它们本质上是用于获取和设置值的函数，但从外部代码来看就像常规属性。
 ```
-## 2.1getter和setter
+## 2.1 getter和setter
 ```
 访问器属性由 “getter” 和 “setter” 方法表示。在对象字面量中，它们用 get 和 set 表示：
 
@@ -345,7 +345,7 @@ alert(user.name); // Alice
 alert(user.surname); // Cooper
 现在，我们就有一个“虚拟”属性。它是可读且可写的。
 ```
-## 2.2访问器和描述符
+## 2.2 访问器和描述符
 ```
 访问器属性的描述符与数据属性的不同。
 
@@ -390,7 +390,7 @@ Object.defineProperty({}, 'prop', {
   value: 2
 });
 ```
-## 2.3更聪明的getter/setter
+## 2.3 更聪明的getter/setter
 ```
 getter/setter 可以用作“真实”属性值的包装器，以便对它们进行更多的控制。
 
@@ -418,7 +418,7 @@ user.name = ""; // Name 太短了……
 
 从技术上讲，外部代码可以使用 user._name 直接访问 name。但是，这儿有一个众所周知的约定，即以下划线 "_" 开头的属性是内部属性，不应该从对象外部进行访问。
 ```
-## 2.4兼容性
+## 2.4 兼容性
 ```
 访问器的一大用途是，它们允许随时通过使用 getter 和 setter 替换“正常的”数据属性，来控制和调整这些属性的行为。
 

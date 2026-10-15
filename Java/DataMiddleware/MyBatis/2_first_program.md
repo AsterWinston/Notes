@@ -1,4 +1,4 @@
-# 1.版本
+# 1. 版本
 ```
 软件版本：
 IntelliJ IDEA：2022.1.4
@@ -12,7 +12,7 @@ JUnit：4.13.2
 Logback：1.2.11
 ```
 
-# 2.MyBatis下载
+# 2. MyBatis下载
 ```
 从github上下载，地址：https://github.com/mybatis/mybatis-3
 maven就不用这么麻烦了
@@ -25,7 +25,7 @@ maven导入依赖
 ```
 
 
-# 3.MyBatis入门程序开发步骤
+# 3. MyBatis入门程序开发步骤
 ```
 写代码前准备：
 准备数据库表：汽车表t_car，字段包括：
@@ -39,14 +39,14 @@ car_type：汽车类型（燃油车、电车、氢能源）【varchar】
 使用navicat for mysql工具向t_car表中插入两条数据
 创建Project：建议创建Empty Project，设置Java版本以及编译版本等。
 ```
-## 3.1步骤1：打包方式：jar（不需要war，因为mybatis封装的是jdbc。）
+## 3.1 步骤1：打包方式：jar（不需要war，因为mybatis封装的是jdbc。）
 ```
 <groupId>com.powernode</groupId>
 <artifactId>mybatis-001-introduction</artifactId>
 <version>1.0-SNAPSHOT</version>
 <packaging>jar</packaging>
 ```
-## 3.2步骤2：引入依赖（mybatis依赖 + mysql驱动依赖）
+## 3.2 步骤2：引入依赖（mybatis依赖 + mysql驱动依赖）
 ```
 <!--mybatis核心依赖-->
 <dependency>
@@ -61,7 +61,7 @@ car_type：汽车类型（燃油车、电车、氢能源）【varchar】
   <version>8.0.30</version>
 </dependency>
 ```
-## 3.3步骤3：在resources根目录下新建mybatis-config.xml配置文件（可以参考mybatis手册拷贝）
+## 3.3 步骤3：在resources根目录下新建mybatis-config.xml配置文件（可以参考mybatis手册拷贝）
 ```
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
@@ -87,7 +87,7 @@ car_type：汽车类型（燃油车、电车、氢能源）【varchar】
 注意1：mybatis核心配置文件的文件名不一定是mybatis-config.xml，可以是其它名字。
 注意2：mybatis核心配置文件存放的位置也可以随意。这里选择放在resources根下，相当于放到了类的根路径下。
 ```
-## 3.4步骤4：在resources根目录下新建CarMapper.xml配置文件（可以参考mybatis手册拷贝）
+## 3.4 步骤4：在resources根目录下新建CarMapper.xml配置文件（可以参考mybatis手册拷贝）
 ```
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
@@ -109,7 +109,7 @@ car_type：汽车类型（燃油车、电车、氢能源）【varchar】
 注意4：将CarMapper.xml文件路径配置到mybatis-config.xml：
 <mapper resource="CarMapper.xml"/>
 ```
-## 3.5步骤5：编写MyBatisIntroductionTest代码
+## 3.5 步骤5：编写MyBatisIntroductionTest代码
 ```
 package com.powernode.mybatis;
 
@@ -145,11 +145,11 @@ public class MyBatisIntroductionTest {
 }
 注意1：默认采用的事务管理器是：JDBC。JDBC事务默认是不提交的，需要手动提交。
 ```
-## 3.6步骤6：运行程序，查看运行结果，以及数据库表中的数据
+## 3.6 步骤6：运行程序，查看运行结果，以及数据库表中的数据
 ```
 ```
 
-# 4.关于Mybatis核心配置文件的名字和路径
+# 4. 关于Mybatis核心配置文件的名字和路径
 ```
 
 核心配置文件的名字是随意的，因为以下的代码：
@@ -201,7 +201,7 @@ import java.io.InputStream;
 InputStream is = Resources.getResourceAsStream("mybatis-config.xml");
 ```
 
-# 5.Mybatis第一个比较完整的代码写法
+# 5. Mybatis第一个比较完整的代码写法
 ```
 package com.powernode.mybatis;
 
@@ -250,7 +250,7 @@ import java.io.IOException;
 
 ```
 
-# 6.引入JUnit
+# 6. 引入JUnit
 ```
 JUnit是专门做单元测试的组件。
 在实际开发中，单元测试一般是由我们Java程序员来完成的。
@@ -330,7 +330,7 @@ public class CarMapperTest {
 
 ```
 
-# 7.引入日志框架logback
+# 7. 引入日志框架logback
 ```
 引入日志框架的目的是为了看清楚mybatis执行的具体sql。
 启用标准日志组件，只需要在mybatis-config.xml文件中添加以下配置：【可参考mybatis手册】
@@ -411,7 +411,7 @@ STDOUT_LOGGING：MyBatis 内置专用实现，仅支持控制台输出，无额�
 
 ```
 
-# 8.MyBatis工具类SqlSessionUtil的封装
+# 8. MyBatis工具类SqlSessionUtil的封装
 ```
 每一次获取SqlSession对象代码太繁琐，封装一个工具类
 package com.powernode.mybatis.utils;
@@ -464,7 +464,7 @@ public void testInsertCar(){
 }
 ```
 
-# 9.启动流程源码追踪
+# 9. 启动流程源码追踪
 
 ```
 下面追踪 SqlSessionFactoryBuilder.build() 到执行 SQL 的完整源码链路。

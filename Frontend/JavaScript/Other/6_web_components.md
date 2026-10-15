@@ -1,10 +1,10 @@
-# 1.从星球轨道的高度讲起
+# 1. 从星球轨道的高度讲起
 ```
 这一部分我们将会讲述关于「Web Components」的一系列现代标准。
 
 到目前为止，这些标准仍然在制定中。其中一些特性已经被很好地支持并集成到了现代 HTML/DOM 标准中，但是还有部分特性仍然处在草案阶段。你可以在任何浏览器中尝试一些例子，Google Chrome 可能是对这些新特性支持得最好的浏览器。猜测可能是因为 Google 公司的人本身就是很多相关标准的支持者。
 ```
-## 1.1共同之处在于...
+## 1.1 共同之处在于...
 ```javascript
 整个组件化的概念并不是最新才提出的。很多框架和其他地方已经广泛地应用了组件化的设计。
 
@@ -28,7 +28,7 @@
 
 我们可以从中借鉴哪些原则，让我们的开发项目同样的可靠并且可大规模化呢？或者至少让我们可以接近这些目标。
 ```
-## 1.2组件化架构
+## 1.2 组件化架构
 ```javascript
 众所周知，开发复杂软件的原则是：不要让软件复杂。
 
@@ -71,7 +71,7 @@ Event retargeting 以及更多的小东西，让自定义组件更适用于开�
 在下一篇中我们将会更细致地讲述「Custom Elements」 —— 一个已经被很广泛支持的 Web Components 重要组成部分。
 ```
 
-# 2.Custom elements
+# 2. Custom elements
 ```
 我们可以通过描述带有自己的方法、属性和事件等的类来创建自定义 HTML 元素。
 
@@ -135,7 +135,7 @@ Custom element 名称必须包括一个短横线 -, 比如 my-element 和 super-
 
 这是为了确保 custom element 和内建 HTML 元素之间不会发生命名冲突。
 ```
-## 2.1例子："time-formatted"
+## 2.1 例子："time-formatted"
 ```javascript
 举个例子，HTML 里面已经有 <time> 元素了，用于显示日期／时间。但是这个标签本身并不会对时间进行任何格式化处理。
 
@@ -195,7 +195,7 @@ customElements.whenDefined(name) – 返回一个 promise，将会在这个具�
 
 在元素被添加到文档的时候，它的 connectedCallback 方法会被调用。这个元素不仅仅是被添加为了另一个元素的子元素，同样也成为了页面的一部分。因此我们可以构建分离的 DOM，创建元素并且让它们为之后的使用准备好。它们只有在插入页面的时候才会真的被渲染。
 ```
-## 2.2监视顺序
+## 2.2 监视顺序
 ```javascript
 我们目前的 <time-formatted> 实现中，在元素渲染以后，后续的属性变化并不会带来任何影响。这对于 HTML 元素来说有点奇怪。通常当我们改变一个属性的时候，比如 a.href，我们会预期立即看到变化。我们将会在下面修正这一点。
 
@@ -252,7 +252,7 @@ attributeChangedCallback 在 observedAttributes() 里的属性改变的时候被
 …… 然后重渲染元素。
 最终，一个计时器就这样被我们轻松地实现了。
 ```
-## 2.3渲染顺序
+## 2.3 渲染顺序
 ```javascript
 在 HTML 解析器构建 DOM 的时候，会按照先后顺序处理元素，先处理父级元素再处理子元素。例如，如果我们有 <outer><inner></inner></outer>，那么 <outer> 元素会首先被创建并接入到 DOM，然后才是 <inner>。
 
@@ -322,7 +322,7 @@ inner 初始化完成。
 
 并没有任何内建的回调方法可以在嵌套元素渲染好之后通知我们。但我们可以自己实现这样的回调。比如，内层元素可以分派像 initialized 这样的事件，同时外层的元素监听这样的事件并做出响应。
 ```
-## 2.4Customized built-in elements
+## 2.4 Customized built-in elements
 ```javascript
 我们创建的 <time-formatted> 这些新元素，并没有任何相关的语义。搜索引擎并不知晓它们的存在，同时无障碍设备也无法处理它们。
 
@@ -363,12 +363,12 @@ customElements.define('hello-button', HelloButton, {extends: 'button'});
 
 我们新定义的按钮继承了内建按钮，所以它拥有和内建按钮相同的样式和标准特性，比如 disabled 属性。
 ```
-## 2.5引用参考
+## 2.5 引用参考
 ```javascript
 HTML 现行标准： https://html.spec.whatwg.org/#custom-elements。
 兼容性： https://caniuse.com/#feat=custom-elements。
 ```
-## 2.6总结
+## 2.6 总结
 ```javascript
 有两种 custom element：
 
@@ -396,11 +396,11 @@ customElements.define('my-button', MyElement, {extends: 'button'});
 Custom element 在各浏览器中的兼容性已经非常好了。Edge 支持地相对较差，但是我们可以使用 polyfill https://github.com/webcomponents/webcomponentsjs。
 ```
 
-# 3.影子DOM（Shadow DOM）
+# 3. 影子DOM（Shadow DOM）
 ```
 Shadow DOM 为封装而生。它可以让一个组件拥有自己的「影子」DOM 树，这个 DOM 树不能在主文档中被任意访问，可能拥有局部样式规则，还有其他特性。
 ```
-## 3.1内建shadow DOM
+## 3.1 内建shadow DOM
 ```javascript
 你是否曾经思考过复杂的浏览器控件是如何被创建和添加样式的？
 
@@ -432,7 +432,7 @@ input::-webkit-slider-runnable-track {
 
 接下来，我们将要使用现代 shadow DOM 标准，它在 DOM spec 和其他相关标准中可以被找到。
 ```
-## 3.2Shadow tree
+## 3.2 Shadow tree
 ```javascript
 一个 DOM 元素可以有以下两类 DOM 子树：
 
@@ -483,7 +483,7 @@ attachShadow 返回的 shadow root，和任何元素一样：我们可以使用 
 // 假设 {mode: "open"}，否则 elem.shadowRoot 是 null
 alert(elem.shadowRoot.host === elem); // true
 ```
-## 3.3封装
+## 3.3 封装
 ```javascript
 Shadow DOM 被非常明显地和主文档分开：
 
@@ -514,13 +514,13 @@ Shadow DOM 有自己的样式。外部样式规则在 shadow DOM 中不产生作
 ……但是内部的样式是有效的。
 为了获取 shadow tree 内部的元素，我们可以从树的内部查询。
 ```
-## 3.4参考
+## 3.4 参考
 ```javascript
 DOM：https://dom.spec.whatwg.org/#shadow-trees
 兼容性：https://caniuse.com/#feat=shadowdomv1
 Shadow DOM 在很多其他标准中被提到，比如：DOM Parsing 指定了 shadow root 有 innerHTML。
 ```
-## 3.5总结
+## 3.5 总结
 ```javascript
 Shadow DOM 是创建组件级别 DOM 的一种方法。
 
@@ -534,7 +534,7 @@ Shadow DOM 元素：
 Shadow DOM，如果存在的话，会被浏览器渲染而不是所谓的 「light DOM」（普通子元素）。在 Shadow DOM 插槽，组成 章节中我们将会看到如何组织它们。
 ```
 
-# 4.模板元素
+# 4. 模板元素
 ```
 内建的 <template> 元素用来存储 HTML 模板。浏览器将忽略它的内容，仅检查语法的有效性，但是我们可以在 JavaScript 中访问和使用它来创建其他元素。
 
@@ -565,7 +565,7 @@ Shadow DOM，如果存在的话，会被浏览器渲染而不是所谓的 「lig
 
 当我们将内容插入文档时，该内容将变为活动状态（应用样式，运行脚本等）。
 ```
-## 4.1插入模板
+## 4.1 插入模板
 ```javascript
 模板的 content 属性可看作DocumentFragment —— 一种特殊的 DOM 节点。
 
@@ -618,7 +618,7 @@ Shadow DOM，如果存在的话，会被浏览器渲染而不是所谓的 「lig
     <p id="message"></p>
 </div>
 ```
-## 4.2总结
+## 4.2 总结
 ```javascript
 总结一下：
 
@@ -634,7 +634,7 @@ Shadow DOM，如果存在的话，会被浏览器渲染而不是所谓的 「lig
 ```
 
 
-# 5.Shadow DOM插槽，组成
+# 5. Shadow DOM插槽，组成
 ```
 许多类型的组件，例如标签、菜单、照片库等等，需要内容去渲染。
 
@@ -656,7 +656,7 @@ Shadow DOM，如果存在的话，会被浏览器渲染而不是所谓的 「lig
 
 幸运的是我们不需要去做。Shadow DOM 支持 <slot> 元素，由 light DOM 中的内容自动填充。
 ```
-## 5.1具名插槽
+## 5.1 具名插槽
 ```javascript
 让我们通过一个简单的例子看下插槽是如何工作的。
 
@@ -764,7 +764,7 @@ slot="..." 属性仅仅对 shadow host 的直接子代 (在我们的例子中的
     </div>
 </user-card>
 ```
-## 5.2插槽后备内容
+## 5.2 插槽后备内容
 ```javascript
 如果我们在一个 <slot> 内部放点什么，它将成为后备内容。如果 light DOM 中没有相应填充物的话浏览器就展示它。
 
@@ -774,7 +774,7 @@ slot="..." 属性仅仅对 shadow host 的直接子代 (在我们的例子中的
   <slot name="username">Anonymous</slot>
 </div>
 ```
-## 5.3默认插槽：第一个不具名的插槽
+## 5.3 默认插槽：第一个不具名的插槽
 ```javascript
 shadow DOM 中第一个没有名字的 <slot> 是一个默认插槽。它从 light DOM 中获取没有放置在其他位置的所有节点。
 
@@ -834,7 +834,7 @@ customElements.define('user-card', class extends HTMLElement {
     </fieldset>
 </user-card>
 ```
-## 5.4Menu example
+## 5.4 Menu example
 ```javascript
 现在让我们回到在本章开头提到的 <custom-menu> 。
 
@@ -900,7 +900,7 @@ customElements.define('custom-menu', class extends HTMLElement {
 
 当然我们可以为它添加更多的功能：事件、方法等。
 ```
-## 5.5更新插槽
+## 5.5 更新插槽
 ```javascript
 如果外部代码想动态 添加/移除 菜单项怎么办？
 
@@ -956,7 +956,7 @@ slotchange: item 触发, 当一个新的 <li slot="item"> 被添加。
 
 如果我们想通过 JavaScript 跟踪 light DOM 的内部修改，也可以使用更通用的机制: MutationObserver。
 ```
-## 5.6插槽API
+## 5.6 插槽API
 ```javascript
 最后让我们来谈谈与插槽相关的 JavaScript 方法。
 
@@ -1003,7 +1003,7 @@ setTimeout(() => {
 }, 1000);
 </script>
 ```
-## 5.7小结
+## 5.7 小结
 ```javascript
 通常，如果一个元素含有 shadow DOM，那么其 light DOM 就不会被展示出来。插槽允许在 shadow DOM 中显示 light DOM 子元素。
 
@@ -1030,13 +1030,13 @@ slotchange 事件 – 在插槽第一次填充时触发，并且在插槽元素�
 我们将在下一章中看到详细内容。
 ```
 
-# 6.给Shadow DOM添加样式
+# 6. 给Shadow DOM添加样式
 ```
 shadow DOM 可以包含 <style> 和 <link rel="stylesheet" href="…"> 标签。在后一种情况下，样式表是 HTTP 缓存的，因此不会为使用同一模板的多个组件重新下载样式表。
 
 一般来说，局部样式只在 shadow 树内起作用，文档样式在 shadow 树外起作用。但也有少数例外。
 ```
-## 6.1:host
+## 6.1 :host
 ```javascript
 :host 选择器允许选择 shadow 宿主（包含 shadow 树的元素）。
 
@@ -1072,7 +1072,7 @@ customElements.define('custom-dialog', class extends HTMLElement {
   Hello!
 </custom-dialog>
 ```
-## 6.2级联
+## 6.2 级联
 ```javascript
 shadow 宿主（ <custom-dialog> 本身）驻留在 light DOM 中，因此它受到文档 CSS 规则的影响。
 
@@ -1091,7 +1091,7 @@ custom-dialog {
 
 唯一的例外是当局部属性被标记 !important 时，对于这样的属性，局部样式优先。
 ```
-## 6.3:host(selector)
+## 6.3 :host(selector)
 ```javascript
 与 :host 相同，但仅在 shadow 宿主与 selector 匹配时才应用样式。
 
@@ -1135,7 +1135,7 @@ customElements.define('custom-dialog', class extends HTMLElement {
 
 现在附加的居中样式只应用于第一个对话框：<custom-dialog centered>。
 ```
-## 6.4:host-context(selector)
+## 6.4 :host-context(selector)
 ```javascript
 与 :host 相同，但仅当外部文档中的 shadow 宿主或它的任何祖先节点与 selector 匹配时才应用样式。
 
@@ -1149,7 +1149,7 @@ customElements.define('custom-dialog', class extends HTMLElement {
 </body>
 总之，我们可以使用 :host-family 系列的选择器来对组件的主元素进行样式设置，具体取决于上下文。这些样式（除 !important 外）可以被文档样式覆盖。
 ```
-## 6.5给占槽(slotted)内容添加样式
+## 6.5 给占槽(slotted)内容添加样式
 ```javascript
 现在让我们考虑有插槽的情况。
 
@@ -1242,7 +1242,7 @@ customElements.define('user-card', class extends HTMLElement {
 }
 此外，::sloated 只能在 CSS 中使用，不能在 querySelector 中使用。
 ```
-## 6.6给自定义CSS属性作为勾子
+## 6.6 给自定义CSS属性作为勾子
 ```javascript
 如何在主文档中设置组件的内建元素的样式?
 
@@ -1302,7 +1302,7 @@ customElements.define('user-card', class extends HTMLElement {
   <span slot="birthday">01.01.2001</span>
 </user-card>
 ```
-## 6.7小结
+## 6.7 小结
 ```javascript
 shadow DOM 可以引入样式，如 <style> 或 <link rel="stylesheet">。
 
@@ -1325,7 +1325,7 @@ CSS 自定义属性穿透 shadow DOM。它们被用作 “勾子” 来设计组
 奥力给！
 ```
 
-# 7.Shadow DOM和事件（events）
+# 7. Shadow DOM和事件（events）
 ```
 Shadow tree 背后的思想是封装组件的内部实现细节。
 
@@ -1389,7 +1389,7 @@ userCard.onclick = e => alert(`Outer target: ${e.target.tagName}`);
 
 另一方面，如果单击事件发生在源自 shadow DOM 的元素上，例如，在 <b>Name</b> 上，然后当它冒泡出 shadow DOM 后，其 event.target 将重置为 <user-card>。
 ```
-## 7.1冒泡(bubbling), event.composedPath()
+## 7.1 冒泡(bubbling), event.composedPath()
 ```javascript
 出于事件冒泡的目的，使用扁平 DOM（flattened DOM）。
 
@@ -1415,7 +1415,7 @@ Shadow 树详细信息仅提供给 {mode:'open'} 树
 
 这与使用 shadow DOM 的其他方法的原理类似。closed 树内部是完全隐藏的。
 ```
-## 7.2event.composed
+## 7.2 event.composed
 ```javascript
 大多数事件能成功冒泡到 shadow DOM 边界。很少有事件不能冒泡到 shadow DOM 边界。
 
@@ -1438,7 +1438,7 @@ select，
 slotchange。
 这些事件仅能在事件目标所在的同一 DOM 中的元素上捕获
 ```
-## 7.3自定义事件（Custom events）
+## 7.3 自定义事件（Custom events）
 ```javascript
 当我们发送（dispatch）自定义事件，我们需要设置 bubbles 和 composed 属性都为 true 以使其冒泡并从组件中冒泡出来。
 
@@ -1473,7 +1473,7 @@ inner.dispatchEvent(new CustomEvent('test', {
 }));
 </script>
 ```
-## 7.4总结
+## 7.4 总结
 ```javascript
 事件仅仅是在它们的 composed 标志设置为 true 的时候才能通过 shadow DOM 边界。
 

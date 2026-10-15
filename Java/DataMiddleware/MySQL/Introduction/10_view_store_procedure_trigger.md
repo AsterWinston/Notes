@@ -1,6 +1,6 @@
-# 1.视图（View）
+# 1. 视图（View）
 
-## 1.1概念与应用场景
+## 1.1 概念与应用场景
 
 视图是一种**虚拟存在的表**，视图中的数据并不在数据库中实际存在，行和列数据来自定义视图的查询中使用的表（基表），并且是在使用视图时**动态生成**的。
 
@@ -13,7 +13,7 @@
 | **数据独立** | 视图提供稳定的接口，基表结构变更只需修改视图定义，应用层无感 |
 | **权限控制** | 可对视图授权，精确到行和列级别的权限控制 |
 
-## 1.2创建视图
+## 1.2 创建视图
 
 ```sql
 -- 基本创建
@@ -36,7 +36,7 @@ CREATE VIEW v_user(id, 姓名, 邮箱) AS
 SELECT id, username, email FROM user;
 ```
 
-## 1.3查询视图
+## 1.3 查询视图
 
 ```sql
 -- 查询视图（就像操作普通表一样）
@@ -50,7 +50,7 @@ SELECT TABLE_NAME FROM information_schema.VIEWS
 WHERE TABLE_SCHEMA = 'mydb';
 ```
 
-## 1.4修改视图
+## 1.4 修改视图
 
 ```sql
 -- 方式一：CREATE OR REPLACE（推荐，简洁）
@@ -62,13 +62,13 @@ ALTER VIEW v_user_basic AS
 SELECT id, username, email, phone, create_time FROM user;
 ```
 
-## 1.5删除视图
+## 1.5 删除视图
 
 ```sql
 DROP VIEW IF EXISTS v_user_basic, v_order_summary;
 ```
 
-## 1.6CHECK OPTION
+## 1.6 CHECK OPTION
 
 WITH CHECK OPTION 用于约束对视图的插入/更新操作，防止插入超出视图范围的数据：
 
@@ -86,7 +86,7 @@ INSERT INTO v_active_user (username, status) VALUES ('李四', 2);
 -- Error: CHECK OPTION failed 'mydb.v_active_user'
 ```
 
-### CASCADED vs LOCAL
+### 1.6.1 CASCADED vs LOCAL
 
 当视图基于另一个视图时：
 
@@ -107,7 +107,7 @@ WITH LOCAL CHECK OPTION;  -- 仅检查 v2 的条件
 -- 等价于必须满足 id < 20（因为 v1 没有 CHECK OPTION）
 ```
 
-## 1.7视图的更新条件
+## 1.7 视图的更新条件
 
 视图可以进行 INSERT / UPDATE / DELETE，但有严格限制。要使视图可更新，视图中的行与基表中的行必须存在**一对一关系**。
 
@@ -122,9 +122,9 @@ WITH LOCAL CHECK OPTION;  -- 仅检查 v2 的条件
 - 使用了多张表的 JOIN（某些情况可通过触发器实现）
 - FROM 子句中有不可更新的视图
 
-# 2.存储过程（Stored Procedure）
+# 2. 存储过程（Stored Procedure）
 
-## 2.1概念与优缺点
+## 2.1 概念与优缺点
 
 存储过程是**事先经过编译并存储在数据库中的一段 SQL 语句集合**。调用存储过程可以简化应用开发，减少数据在数据库和应用服务器之间的传输。
 
@@ -143,9 +143,9 @@ WITH LOCAL CHECK OPTION;  -- 仅检查 v2 的条件
 
 > **工程实践**：现代互联网架构中，存储过程的使用逐渐减少。推荐将业务逻辑放在应用层（Java、Go），数据库只做存储和基础查询。存储过程适合金融、ERP 等传统系统中需要保持数据一致性的复杂计算。
 
-## 2.2基本语法
+## 2.2 基本语法
 
-### 创建存储过程
+### 2.2.1 创建存储过程
 
 ```sql
 -- 注意：命令行中需要用 DELIMITER 修改语句结束符
@@ -161,7 +161,7 @@ DELIMITER ;
 
 > **DELIMITER 的作用**：存储过程体中包含多条 SQL（以分号结尾），命令行默认以分号为语句结束符，会导致存储过程定义被截断。使用 `DELIMITER //` 将结束符改为 `//`，定义完成后再改回 `;`。**Navicat / DataGrip 等 GUI 工具通常不需要手动设置 DELIMITER**。
 
-### 调用存储过程
+### 2.2.2 调用存储过程
 
 ```sql
 -- 调用有 OUT 参数的存储过程
@@ -169,9 +169,9 @@ CALL get_user_count(1, @total);
 SELECT @total;
 ```
 
-## 2.3变量
+## 2.3 变量
 
-### 系统变量
+### 2.3.1 系统变量
 
 MySQL 内置的全局或会话级变量：
 
@@ -187,7 +187,7 @@ SET SESSION autocommit = 0;
 SET GLOBAL max_connections = 500;
 ```
 
-### 用户自定义变量
+### 2.3.2 用户自定义变量
 
 作用域为当前连接，无需声明，直接 `@` 使用：
 
@@ -201,7 +201,7 @@ SELECT COUNT(*) INTO @total FROM user;
 SELECT @name, @total;
 ```
 
-### 局部变量
+### 2.3.3 局部变量
 
 在存储过程内部使用，需要 DECLARE 声明：
 
@@ -218,7 +218,7 @@ BEGIN
 END;
 ```
 
-## 2.4参数
+## 2.4 参数
 
 存储过程的参数有三种模式：
 
@@ -240,9 +240,9 @@ CALL update_salary(1, 10, @new_sal);
 SELECT @new_sal;
 ```
 
-## 2.5分支结构
+## 2.5 分支结构
 
-### IF ... ELSEIF ... ELSE
+### 2.5.1 IF ... ELSEIF ... ELSE
 
 ```sql
 CREATE PROCEDURE grade_score(IN score INT, OUT result VARCHAR(10))
@@ -255,7 +255,7 @@ BEGIN
 END;
 ```
 
-### CASE
+### 2.5.2 CASE
 
 两种写法：
 
@@ -287,9 +287,9 @@ BEGIN
 END;
 ```
 
-## 2.6循环结构
+## 2.6 循环结构
 
-### WHILE（条件满足时循环）
+### 2.6.1 WHILE（条件满足时循环）
 
 ```sql
 -- 累加 1 到 n
@@ -305,7 +305,7 @@ BEGIN
 END;
 ```
 
-### REPEAT（满足条件退出循环）
+### 2.6.2 REPEAT（满足条件退出循环）
 
 ```sql
 CREATE PROCEDURE repeat_demo(IN n INT)
@@ -320,7 +320,7 @@ BEGIN
 END;
 ```
 
-### LOOP（无限循环，需配合 LEAVE 退出）
+### 2.6.3 LOOP（无限循环，需配合 LEAVE 退出）
 
 ```sql
 CREATE PROCEDURE loop_demo()
@@ -339,7 +339,7 @@ END;
 > **LEAVE**：退出指定标签的循环，类似 Java 的 `break`。
 > **ITERATE**：跳过本次循环，进入下一次，类似 Java 的 `continue`。
 
-## 2.7游标（Cursor）
+## 2.7 游标（Cursor）
 
 游标用于逐行处理 SELECT 结果集：
 
@@ -372,7 +372,7 @@ END;
 
 > **必须配合条件处理程序**：游标遍历完所有行后，继续 FETCH 会导致 NOT FOUND 异常，必须用 Handler 捕获。
 
-## 2.8条件处理程序（Handler）
+## 2.8 条件处理程序（Handler）
 
 用于捕获和处理存储过程中的异常：
 
@@ -404,7 +404,7 @@ BEGIN
 END;
 ```
 
-## 2.9管理操作
+## 2.9 管理操作
 
 ```sql
 -- 查看存储过程列表
@@ -421,9 +421,9 @@ WHERE routine_schema = 'mydb' AND routine_type = 'PROCEDURE';
 DROP PROCEDURE IF EXISTS get_user_count;
 ```
 
-# 3.存储函数（Stored Function）
+# 3. 存储函数（Stored Function）
 
-## 3.1概念
+## 3.1 概念
 
 存储函数是有**返回值**的存储过程，参数只能是 IN 类型（隐式）。
 
@@ -435,7 +435,7 @@ DROP PROCEDURE IF EXISTS get_user_count;
 | 调用方式 | `CALL proc(params)` | 在 SQL 中直接调用 `func(params)` |
 | 使用场景 | 封装复杂业务逻辑 | 计算并返回值，可用于 SELECT 列 |
 
-## 3.2语法
+## 3.2 语法
 
 ```sql
 CREATE FUNCTION calc_tax(salary DECIMAL(10,2))
@@ -458,7 +458,7 @@ END;
 SELECT username, salary, calc_tax(salary) AS tax FROM emp;
 ```
 
-### 必须指定的特性
+### 3.2.1 必须指定的特性
 
 | 特性 | 说明 |
 |------|------|
@@ -469,7 +469,7 @@ SELECT username, salary, calc_tax(salary) AS tax FROM emp;
 
 > MySQL 8.0 默认开启 `log_bin_trust_function_creators`，要求必须有至少一个特性。生产环境主从复制时需确保函数是确定性的。
 
-## 3.3管理操作
+## 3.3 管理操作
 
 ```sql
 SHOW FUNCTION STATUS WHERE db = 'mydb';
@@ -477,9 +477,9 @@ SHOW CREATE FUNCTION calc_tax;
 DROP FUNCTION IF EXISTS calc_tax;
 ```
 
-# 4.触发器（Trigger）
+# 4. 触发器（Trigger）
 
-## 4.1概念
+## 4.1 概念
 
 触发器是与表有关的数据库对象，在 **INSERT / UPDATE / DELETE 之前或之后**，触发并执行触发器中定义的 SQL 语句集合。
 
@@ -492,7 +492,7 @@ DROP FUNCTION IF EXISTS calc_tax;
 
 > **MySQL 当前仅支持行级触发**（FOR EACH ROW），不支持语句级触发。Oracle 和 PostgreSQL 支持语句级触发。
 
-## 4.2创建触发器
+## 4.2 创建触发器
 
 ```sql
 CREATE TRIGGER trigger_name
@@ -503,7 +503,7 @@ BEGIN
 END;
 ```
 
-### NEW 和 OLD 引用
+### 4.2.1 NEW 和 OLD 引用
 
 | 操作 | OLD | NEW |
 |------|-----|-----|
@@ -511,9 +511,9 @@ END;
 | UPDATE | 修改前的行 | 修改后的行 |
 | DELETE | 被删除的行 | 无 |
 
-## 4.3实战案例
+## 4.3 实战案例
 
-### 日志记录触发器
+### 4.3.1 日志记录触发器
 
 ```sql
 -- 操作日志表
@@ -549,7 +549,7 @@ BEGIN
 END;
 ```
 
-### 数据校验触发器
+### 4.3.2 数据校验触发器
 
 ```sql
 -- 插入前检查年龄是否合法
@@ -565,7 +565,7 @@ END;
 
 > `SIGNAL` 是 MySQL 5.5+ 提供的自定义异常抛出机制，`SQLSTATE '45000'` 是用户自定义异常的通用状态码。
 
-## 4.4管理操作
+## 4.4 管理操作
 
 ```sql
 -- 查看触发器
@@ -576,7 +576,7 @@ SELECT * FROM information_schema.triggers WHERE trigger_schema = 'mydb';
 DROP TRIGGER IF EXISTS tr_user_insert;
 ```
 
-## 4.5触发器的注意事项
+## 4.5 触发器的注意事项
 
 - **触发器过于复杂会影响主操作性能**，因为触发器与主操作在同一事务中同步执行
 - **避免循环触发**：A 表触发器修改 B 表，B 表触发器又修改 A 表

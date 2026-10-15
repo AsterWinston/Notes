@@ -85,7 +85,7 @@ Authorization Code 模式是整个 OAuth2 的基石，理解其流程等于掌�
 
 ## 2.2 步骤拆解与分析
 
-### 第 1-4 步：发起授权请求
+### 2.2.1 第 1-4 步：发起授权请求
 
 ```http
 GET /authorize?response_type=code
@@ -112,7 +112,7 @@ Host: auth-server.example.com
 
 > **重要**：所有参数必须放在 URL Query String 中（不能放在 POST Body），因为这是浏览器 302 重定向。
 
-### 第 5-8 步：用户认证并授权
+### 2.2.2 第 5-8 步：用户认证并授权
 
 ```
 授权服务器内部处理流程：
@@ -134,7 +134,7 @@ Host: auth-server.example.com
 5. 如果拒绝：重定向回 redirect_uri，错误参数 error=access_denied
 ```
 
-### 第 9-10 步：颁发授权码并重定向
+### 2.2.3 第 9-10 步：颁发授权码并重定向
 
 ```
 授权服务器生成 Authorization Code：
@@ -151,7 +151,7 @@ code 的特征：
 Location: https://client.example.com/callback?code=SplxlOBeZQQYbYS6WxSbIA&state=xcoiv98wsefkj
 ```
 
-### 第 11-13 步：用 Code 换取 Token（Token Endpoint）
+### 2.2.4 第 11-13 步：用 Code 换取 Token（Token Endpoint）
 
 **这是 Authorization Code 模式最关键的步骤**——Front Channel 和 Back Channel 的切换点。
 
@@ -221,7 +221,7 @@ grant_type=authorization_code
 
 ## 2.3 Authorization Code 的安全特性分析
 
-### 为什么 Authorization Code 比 Implicit 更安全？
+### 2.3.1 为什么 Authorization Code 比 Implicit 更安全？
 
 ```
 安全核心：Access Token 不经过浏览器（User-Agent）传递
@@ -238,7 +238,7 @@ Authorization Code 模式的保障：
   3. code 只能使用一次且短期有效
 ```
 
-### 授权码被拦截的风险与防御
+### 2.3.2 授权码被拦截的风险与防御
 
 **攻击场景**：恶意应用注册了相同的自定义 URL Scheme，截获回调 URL：
 
@@ -277,7 +277,7 @@ Native App (公开客户端)：
 
 ## 3.2 PKCE 完整参数与算法
 
-### code_verifier
+### 3.2.1 code_verifier
 
 ```
 定义：高熵随机字符串，由客户端生成
@@ -292,7 +292,7 @@ String code_verifier = Base64.getUrlEncoder().withoutPadding().encodeToString(co
 // 结果示例：dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 ```
 
-### code_challenge
+### 3.2.2 code_challenge
 
 ```
 两种计算方式：
@@ -309,7 +309,7 @@ byte[] digest = md.digest(code_verifier.getBytes(StandardCharsets.US_ASCII));
 String code_challenge = Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
 ```
 
-### 参数传递流程
+### 3.2.3 参数传递流程
 
 ```
 请求 /authorize：
@@ -579,7 +579,7 @@ SPA 的 OAuth2 最佳实践：
               │<──────────────────────│                         │
 ```
 
-### 请求 Device Code
+### 7.2.1 请求 Device Code
 
 ```http
 POST /device_authorization HTTP/1.1
@@ -603,7 +603,7 @@ client_id=s6BhdRkqt3
 }
 ```
 
-### 轮询 Token
+### 7.2.2 轮询 Token
 
 ```http
 POST /token HTTP/1.1
@@ -712,7 +712,7 @@ POST /token
     │                 (必须)
 ```
 
-### 总结原则
+## 9.1 总结原则
 
 1. **有用户参与 → 总是用 Authorization Code + PKCE**
 2. **纯 M2M → Client Credentials**

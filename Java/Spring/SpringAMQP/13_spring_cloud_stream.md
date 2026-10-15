@@ -1,11 +1,11 @@
-# 1.Spring Cloud Stream概述
+# 1. Spring Cloud Stream概述
 
-## 1.1什么是Spring Cloud Stream
+## 1.1 什么是Spring Cloud Stream
 Spring Cloud Stream是Spring Cloud生态中用于构建**消息驱动微服务**的框架。它在Spring AMQP等消息中间件之上提供了更高层次的抽象，使开发者可以用统一的编程模型来操作不同的消息中间件。
 
 核心设计理念：**开发者只需要关注业务逻辑，消息中间件的细节由框架处理**。
 
-## 1.2与Spring AMQP的关系
+## 1.2 与Spring AMQP的关系
 ```
 Spring Cloud Stream（高层抽象，统一的编程模型）
           ↓
@@ -21,7 +21,7 @@ Spring AMQP和Spring Cloud Stream的关系：
 - Spring Cloud Stream集成RabbitMQ时，底层仍然使用Spring AMQP
 - Spring Cloud Stream屏蔽了不同MQ的差异，但损失了一些特定MQ的高级特性
 
-## 1.3适用场景
+## 1.3 适用场景
 | 场景 | 推荐 | 原因 |
 |------|------|------|
 | 只使用RabbitMQ | Spring AMQP | 更灵活，功能更完整 |
@@ -31,9 +31,9 @@ Spring AMQP和Spring Cloud Stream的关系：
 
 **建议**：大多数项目中，如果确定了使用RabbitMQ且不需要切换，直接使用Spring AMQP更简单直接。
 
-# 2.Spring Cloud Stream核心概念
+# 2. Spring Cloud Stream核心概念
 
-## 2.1Binder（绑定器）
+## 2.1 Binder（绑定器）
 Binder是Spring Cloud Stream最核心的概念，它是与具体消息中间件集成的适配器。
 
 ```xml
@@ -50,7 +50,7 @@ Binder是Spring Cloud Stream最核心的概念，它是与具体消息中间件�
 </dependency>
 ```
 
-## 2.2Binding（绑定）
+## 2.2 Binding（绑定）
 Binding是应用程序和Binder之间的桥梁：
 
 ```
@@ -59,7 +59,7 @@ Application
   └── @Output (Source) → Binding → Binder → [Broker Topic/Queue]
 ```
 
-## 2.3核心编程模型（函数式）
+## 2.3 核心编程模型（函数式）
 Spring Cloud Stream 3.x推荐使用函数式编程模型（`java.util.function`）：
 
 ```java
@@ -97,7 +97,7 @@ public class OrderStreamApplication {
 }
 ```
 
-## 2.4配置
+## 2.4 配置
 ```yaml
 spring:
   cloud:
@@ -132,9 +132,9 @@ spring:
               prefetch: 100
 ```
 
-# 3.从Spring AMQP迁移到Spring Cloud Stream
+# 3. 从Spring AMQP迁移到Spring Cloud Stream
 
-## 3.1发送消息对比
+## 3.1 发送消息对比
 Spring AMQP:
 ```java
 @Autowired
@@ -151,7 +151,7 @@ private StreamBridge streamBridge;
 streamBridge.send("orderCreateSupplier-out-0", order);
 ```
 
-## 3.2接收消息对比
+## 3.2 接收消息对比
 Spring AMQP:
 ```java
 @RabbitListener(queues = "order.create.queue")
@@ -170,9 +170,9 @@ public Consumer<Order> orderConsumer() {
 }
 ```
 
-# 4.Spring Cloud Stream的高级特性
+# 4. Spring Cloud Stream的高级特性
 
-## 4.1分区支持
+## 4.1 分区支持
 ```yaml
 spring:
   cloud:
@@ -191,7 +191,7 @@ spring:
             partition-count: 3
 ```
 
-## 4.2死信队列（DLQ）
+## 4.2 死信队列（DLQ）
 ```yaml
 spring:
   cloud:
@@ -207,7 +207,7 @@ spring:
               max-attempts: 3               # 最大重试次数
 ```
 
-## 4.3消费者重试
+## 4.3 消费者重试
 ```yaml
 spring:
   cloud:
@@ -221,22 +221,22 @@ spring:
             back-off-multiplier: 2.0         # 退避乘数
 ```
 
-# 5.何时使用Spring Cloud Stream vs Spring AMQP
+# 5. 何时使用Spring Cloud Stream vs Spring AMQP
 
-## 5.1选择Spring AMQP的场景
+## 5.1 选择Spring AMQP的场景
 - 只需要使用RabbitMQ一种消息中间件
 - 需要RabbitMQ的高级特性（死信队列、延迟队列、事务消息等）
 - 需要精确控制消息属性（TTL、优先级、Headers等）
 - 需要`@RabbitListener`的动态监听
 - 团队对RabbitMQ和Spring AMQP已很熟悉
 
-## 5.2选择Spring Cloud Stream的场景
+## 5.2 选择Spring Cloud Stream的场景
 - 未来可能切换消息中间件（RabbitMQ → Kafka等）
 - 需要同时支持多种消息中间件的统一抽象
 - 项目中已大量使用Spring Cloud其他组件
 - 消息需求比较简单（发送/接收），不需要MQ的高级特性
 
-## 5.3总结
+## 5.3 总结
 对于大多数基于RabbitMQ的项目，**Spring AMQP是更好的选择**：
 - 功能更完整
 - 配置更直观

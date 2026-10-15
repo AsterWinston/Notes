@@ -1,4 +1,4 @@
-# 1.#{}和${}
+# 1. #{}和${}
 ```
 #{}：先编译sql语句，再给占位符传值，底层是PreparedStatement实现。可以防⽌sql注⼊，⽐较常⽤。
 ${}：先进⾏sql语句拼接，然后再编译sql语句，底层是Statement实现。存在sql注⼊现象。只有在需要进⾏sql语句关键字拼接的情况下才会⽤到。
@@ -23,7 +23,7 @@ name like "%"#{name}"%"
 
 ```
 
-# 2.typeAliases
+# 2. typeAliases
 ```
 在mybatis-config.xml中指定（settings之后，environments之前）
 <!--起别名-->
@@ -53,7 +53,7 @@ name like "%"#{name}"%"
 </select>
 ```
 
-# 3.mappers
+# 3. mappers
 ```
 <!--
     mapper的三个属性：
@@ -73,7 +73,7 @@ name like "%"#{name}"%"
 
 ```
 
-# 4.idea配置文件模板
+# 4. idea配置文件模板
 ```
 File->Settings->Editor->File and Code Templates
 
@@ -113,7 +113,7 @@ File->Settings->Editor->File and Code Templates
 
 ```
 
-# 5.插入数据时获取自动生成的主键
+# 5. 插入数据时获取自动生成的主键
 ```
 <!--
     useGeneratedKeys="true" 使用自动生成的主键值

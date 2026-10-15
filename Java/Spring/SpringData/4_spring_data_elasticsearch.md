@@ -1,4 +1,4 @@
-# 1.Spring Data Elasticsearch 概述
+# 1. Spring Data Elasticsearch 概述
 
 ## 1.1 Elasticsearch 简介
 
@@ -35,7 +35,7 @@ Spring Data Elasticsearch 是 Spring Data 家族中用于访问 Elasticsearch �
 
 **重要**：Spring Data Elasticsearch 版本必须与 ES 服务端版本兼容！查看官方兼容性矩阵。
 
-# 2.快速入门
+# 2. 快速入门
 
 ## 2.1 Maven 依赖
 
@@ -176,7 +176,7 @@ public class ProductService {
 }
 ```
 
-# 3.实体映射详解
+# 3. 实体映射详解
 
 ## 3.1 @Document 注解
 
@@ -356,7 +356,7 @@ public class Comment {
 // Object 类型会错误匹配（跨对象匹配），Nested 类型正确匹配
 ```
 
-# 4.Repository 编程模型
+# 4. Repository 编程模型
 
 ## 4.1 Repository 接口层级
 
@@ -467,7 +467,7 @@ public interface ProductRepository extends ElasticsearchRepository<Product, Stri
 | `findBy*In` | `terms` | 多值精确匹配 |
 | `deleteBy*` | 上述查询 + `delete_by_query` | 批量删除 |
 
-# 5.高级查询
+# 5. 高级查询
 
 ## 5.1 @Query 注解
 
@@ -651,7 +651,7 @@ public class StringQueryService {
 }
 ```
 
-# 6.聚合（Aggregation）
+# 6. 聚合（Aggregation）
 
 ## 6.1 基本聚合
 
@@ -755,7 +755,7 @@ public class AggregationService {
 | `nested` | 嵌套聚合 | 对 Nested 类型字段聚合 |
 | `topHits` | 顶部匹配 | 每组内取 top N 文档 |
 
-# 7.高亮（Highlight）
+# 7. 高亮（Highlight）
 
 ## 7.1 基础高亮
 
@@ -821,7 +821,7 @@ public SearchHits<Article> multiFieldHighlight(String keyword) {
 }
 ```
 
-# 8.批量操作与性能
+# 8. 批量操作与性能
 
 ## 8.1 批量索引
 
@@ -921,7 +921,7 @@ public void searchAfter() {
 }
 ```
 
-# 9.索引管理
+# 9. 索引管理
 
 ## 9.1 编程方式管理索引
 
@@ -1008,7 +1008,7 @@ public class DynamicIndexService {
 }
 ```
 
-# 10.响应式 Elasticsearch
+# 10. 响应式 Elasticsearch
 
 ```java
 // 依赖
@@ -1055,7 +1055,7 @@ public class ReactiveProductService {
 }
 ```
 
-# 11.性能优化
+# 11. 性能优化
 
 ## 11.1 索引设计优化
 
@@ -1137,7 +1137,7 @@ spring:
     # 注意：底层 HTTP 连接池由 ElasticsearchClient 自动管理
 ```
 
-# 12.常见问题与面试题
+# 12. 常见问题与面试题
 
 ## 12.1 写入后查询不到数据
 
@@ -1199,7 +1199,7 @@ ES 默认 from + size 分页限制最多 10000 条（index.max_result_window）
 - Object：扁平化存储，跨对象字段匹配可能导致假阳性
 - Nested：独立文档存储，保证嵌套对象的查询准确性
 
-# 13.最佳实践总结
+# 13. 最佳实践总结
 
 ```
 1. Mapping 设计

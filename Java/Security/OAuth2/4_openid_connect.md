@@ -282,7 +282,7 @@ access_token=eyJhbGciOiJSUzI1NiIs...
 
 UserInfo 端点支持两种响应格式，由客户端在注册时指定：
 
-### JSON 格式（默认）
+### 5.2.1 JSON 格式（默认）
 
 ```json
 {
@@ -298,7 +298,7 @@ UserInfo 端点支持两种响应格式，由客户端在注册时指定：
 }
 ```
 
-### JWT 格式（签名/加密的 UserInfo 响应）
+### 5.2.2 JWT 格式（签名/加密的 UserInfo 响应）
 
 ```
 Header: Content-Type: application/jwt
@@ -467,7 +467,7 @@ Content-Type: application/json
 □ 10. 验证 acr（如果请求了特定的认证强度）
 ```
 
-### JWT 签名验证（Java 示例）
+## 8.1 JWT 签名验证（Java 示例）
 
 ```java
 // 1. 从 JWKS 端点获取公钥

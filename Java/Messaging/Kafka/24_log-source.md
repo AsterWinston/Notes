@@ -1,4 +1,4 @@
-# 1 LogManager 日志管理器
+# 1. LogManager 日志管理器
 
 ## 1.1 初始化与加载
 
@@ -72,7 +72,7 @@ class LogManager(logDirs: Seq[File],
 
 > 文件位置: `core/src/main/scala/kafka/log/LogManager.scala:69`
 
-# 2 UnifiedLog 核心实现
+# 2. UnifiedLog 核心实现
 
 ## 2.1 追加日志 append()
 
@@ -184,7 +184,7 @@ def read(startOffset: Long,
 
 > 文件位置: `core/src/main/scala/kafka/log/UnifiedLog.scala:1001`
 
-# 3 LogSegment 实现
+# 3. LogSegment 实现
 
 ## 3.1 追加写入
 
@@ -320,7 +320,7 @@ class OffsetIndex(@volatile var file: File,
 
 > 文件位置: `core/src/main/scala/kafka/log/OffsetIndex.scala:63`
 
-# 4 LogCleaner 日志清理器
+# 4. LogCleaner 日志清理器
 
 ## 4.1 Compact 清理流程
 
@@ -381,7 +381,7 @@ class LogCleaner(initialConfig: CleanerConfig,
 
 > 文件位置: `core/src/main/scala/kafka/log/LogCleaner.scala:91`
 
-# 5 LogSegments 分段管理
+# 5. LogSegments 分段管理
 
 ```scala
 // LogSegments.scala
@@ -416,7 +416,7 @@ class LogSegments(val baseDir: File) {
 
 > 文件位置: `core/src/main/scala/kafka/log/LogSegments.scala:30`
 
-# 6 日志恢复流程
+# 6. 日志恢复流程
 
 ## 6.1 Broker 启动恢复
 
@@ -455,7 +455,7 @@ private def recoverLog(): Unit = {
 }
 ```
 
-# 7 内存映射（MappedByteBuffer）
+# 7. 内存映射（MappedByteBuffer）
 
 ```scala
 // AbstractIndex.scala (OffsetIndex / TimeIndex 的父类)
@@ -485,7 +485,7 @@ abstract class AbstractIndex(@volatile var file: File,
 }
 ```
 
-# 8 Log 恢复与副本截断
+# 8. Log 恢复与副本截断
 
 ```scala
 // Partition.scala → 副本同步后的截断

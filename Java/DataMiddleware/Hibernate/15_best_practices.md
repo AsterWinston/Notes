@@ -2,7 +2,7 @@
 
 ## 1.1 实体设计原则
 
-### 包装类型优于基本类型
+### 1.1.1 包装类型优于基本类型
 
 实体属性应使用包装类型（`Long`、`Integer`、`Boolean`）而非基本类型（`long`、`int`、`boolean`）。包装类型可以表达 `null`，在以下场景至关重要：
 
@@ -32,7 +32,7 @@ public class Product {
 }
 ```
 
-### 实现 Serializable 接口
+### 1.1.2 实现 Serializable 接口
 
 实体类应实现 `java.io.Serializable` 接口，原因包括：
 
@@ -58,7 +58,7 @@ public class User implements Serializable {
 
 > **注意**：`serialVersionUID` 应在实体结构稳定后明确设定，避免默认生成的 UID 因微小改动而改变。
 
-### 非 final 类 + 非 final 方法
+### 1.1.3 非 final 类 + 非 final 方法
 
 Hibernate 通过运行时代理（CGLIB/ByteBuddy）实现懒加载，因此：
 
@@ -102,7 +102,7 @@ public class Order {
 }
 ```
 
-### equals/hashCode 实现规范
+### 1.1.4 equals/hashCode 实现规范
 
 实体中 `equals`/`hashCode` 的实现是 Hibernate 中最容易出错的地方之一。核心原则：
 
@@ -173,7 +173,7 @@ public class BadEntity {
 }
 ```
 
-### toString() 避免懒加载关联
+### 1.1.5 toString() 避免懒加载关联
 
 在 `toString()` 中引用懒加载的关联属性会导致意外的数据库查询，甚至在日志输出中触发 `LazyInitializationException`。
 
@@ -208,7 +208,7 @@ public class Employee {
 }
 ```
 
-### equals/hashCode 避免包含关联实体
+### 1.1.6 equals/hashCode 避免包含关联实体
 
 在 `equals`/`hashCode` 中包含 `@ManyToOne` 或 `@OneToOne` 关联可能导致：
 - 递归调用（A contains B, B contains A）
@@ -252,7 +252,7 @@ public class OrderItem {
 }
 ```
 
-### Lombok @Data 的陷阱
+### 1.1.7 Lombok @Data 的陷阱
 
 `@Data` 注解自动生成 `equals`、`hashCode`、`toString`、getter/setter，但在 JPA 实体中使用时存在严重问题：
 
@@ -311,7 +311,7 @@ public class User {
 }
 ```
 
-### 实体作为 DTO 的利弊讨论
+### 1.1.8 实体作为 DTO 的利弊讨论
 
 | 维度 | 实体直接作为 DTO | 独立 DTO |
 |------|----------------|---------|
@@ -325,7 +325,7 @@ public class User {
 
 ## 1.2 主键设计
 
-### SEQUENCE vs IDENTITY
+### 1.2.1 SEQUENCE vs IDENTITY
 
 | 特性 | SEQUENCE | IDENTITY |
 |------|----------|----------|
@@ -365,7 +365,7 @@ public class Order {
 }
 ```
 
-### UUID 作为业务主键
+### 1.2.2 UUID 作为业务主键
 
 在分布式系统中，UUID 作为主键的优势：
 
@@ -412,7 +412,7 @@ public class BetterDistributedEntity {
 }
 ```
 
-### 自然键 vs 代理键
+### 1.2.3 自然键 vs 代理键
 
 | 维度 | 自然键 | 代理键（自增/序列） |
 |------|--------|---------------------|
@@ -424,7 +424,7 @@ public class BetterDistributedEntity {
 
 **建议**：代理键作为主键，自然键加唯一约束。在实体 `equals/hashCode` 中使用自然键。
 
-### 主键类型选择
+### 1.2.4 主键类型选择
 
 ```java
 // ✅ 推荐顺序：Long > Integer > String > UUID
@@ -435,7 +435,7 @@ public class BetterDistributedEntity {
 private Long id;  // 最佳选择
 ```
 
-### 雪花算法 / 分布式 ID 生成器集成
+### 1.2.5 雪花算法 / 分布式 ID 生成器集成
 
 ```java
 // 集成雪花算法（Snowflake）ID 生成器
@@ -489,7 +489,7 @@ public class SnowflakeIdGenerator {
 
 ## 1.3 审计字段设计
 
-### 基类模式（@MappedSuperclass）
+### 1.3.1 基类模式（@MappedSuperclass）
 
 将审计字段抽取到基类中，所有实体通过继承复用，减少重复代码：
 
@@ -539,7 +539,7 @@ public class Customer extends BaseEntity {
 }
 ```
 
-### Spring Data JPA 审计功能配置
+### 1.3.2 Spring Data JPA 审计功能配置
 
 ```java
 @Configuration
@@ -560,7 +560,7 @@ public class JpaConfig {
 }
 ```
 
-### Hibernate Envers 完整审计追踪
+### 1.3.3 Hibernate Envers 完整审计追踪
 
 ```java
 // 引入 Hibernate Envers 依赖后，只需标注 @Audited
@@ -607,7 +607,7 @@ public class AuditQueryExample {
 
 ## 2.1 关联方向选择
 
-### 优先使用单向关联
+### 2.1.1 优先使用单向关联
 
 每个双向关联都是一笔"技术债务"：需要维护两边一致性，增加代码复杂度。
 
@@ -640,7 +640,7 @@ public class Customer {
 }
 ```
 
-### 双向关联以 @ManyToOne 方为拥有方
+### 2.1.2 双向关联以 @ManyToOne 方为拥有方
 
 ```java
 // ✅ 标准双向关联模式
@@ -666,7 +666,7 @@ public class Customer {
 
 ## 2.2 FetchType 使用规范
 
-### @ManyToOne / @OneToOne 必须设为 LAZY
+### 2.2.1 @ManyToOne / @OneToOne 必须设为 LAZY
 
 JPA 规范规定 `@ManyToOne` 和 `@OneToOne` 默认 `FetchType.EAGER`，这是性能问题的头号来源。
 
@@ -696,7 +696,7 @@ public class OrderItem {
 
 > **绝对规则**：项目中所有 `@ManyToOne` 和 `@OneToOne` 必须显式标注 `fetch = FetchType.LAZY`。
 
-### @OneToMany / @ManyToMany 保持 LAZY
+### 2.2.2 @OneToMany / @ManyToMany 保持 LAZY
 
 这两个注解默认就是 `LAZY`，保持默认即可。**绝不要改为 EAGER**。
 
@@ -712,7 +712,7 @@ public class Department {
 }
 ```
 
-### 避免 FetchType.EAGER
+### 2.2.3 避免 FetchType.EAGER
 
 EAGER 的问题清单：
 1. 即使不需要关联数据也会加载 — 浪费资源
@@ -722,7 +722,7 @@ EAGER 的问题清单：
 
 ## 2.3 级联操作规范
 
-### CascadeType 使用矩阵
+### 2.3.1 CascadeType 使用矩阵
 
 | 关联类型 | 推荐级联 | orphanRemoval | 说明 |
 |---------|---------|---------------|------|
@@ -773,7 +773,7 @@ public class BadStudent {
 }
 ```
 
-### 多对多拆分为中间实体
+### 2.3.2 多对多拆分为中间实体
 
 多对多关系往往携带额外属性（加入时间、状态等），拆分中间实体是更好的实践：
 
@@ -866,7 +866,7 @@ public class Customer {
 
 ## 2.5 集合选择指南
 
-### 场景决策矩阵
+### 2.5.1 场景决策矩阵
 
 | 场景 | 推荐集合 | 原因 |
 |------|---------|------|
@@ -908,7 +908,7 @@ public class Configuration {
 }
 ```
 
-### Bag 的问题
+### 2.5.2 Bag 的问题
 
 当 `List` 没有 `@OrderColumn` 时，Hibernate 视为 **Bag**（无序、允许重复）：
 
@@ -935,7 +935,7 @@ private Set<Employee> employees = new HashSet<>();
 private List<Employee> employees = new ArrayList<>();
 ```
 
-### 关联量大时的分页策略
+### 2.5.3 关联量大时的分页策略
 
 ```java
 // ✅ 使用 @BatchSize 限制一次加载数量
@@ -1013,7 +1013,7 @@ public class UserSpecification {
 
 ## 3.2 避免 N+1 问题的系统方法
 
-### 识别 N+1 问题
+### 3.2.1 识别 N+1 问题
 
 ```java
 // 日志配置（application.yml）
@@ -1043,7 +1043,7 @@ public void testNoNPlusOne() {
 }
 ```
 
-### 解决方案工具包
+### 3.2.2 解决方案工具包
 
 ```java
 // 方案一：JOIN FETCH — 单条 JOIN 查询
@@ -1089,7 +1089,7 @@ spring:
         default_batch_fetch_size: 50  # 全局兜底，所有 LAZY 关联默认批量加载
 ```
 
-### 场景选择决策流程
+### 3.2.3 场景选择决策流程
 
 ```
 查询是否总是需要关联数据？
@@ -1104,7 +1104,7 @@ spring:
 
 ## 3.3 分页查询注意事项
 
-### 基本分页
+### 3.3.1 基本分页
 
 ```java
 // Spring Data JPA 标准分页
@@ -1119,7 +1119,7 @@ long totalElements = orderPage.getTotalElements();  // 总记录数
 int totalPages = orderPage.getTotalPages();          // 总页数
 ```
 
-### JOIN FETCH + 分页的两步查询法
+### 3.3.2 JOIN FETCH + 分页的两步查询法
 
 ```java
 // ❌ 问题：JOIN FETCH + 分页会全量加载到内存再分页
@@ -1170,7 +1170,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
 }
 ```
 
-### COUNT 查询优化
+### 3.3.3 COUNT 查询优化
 
 ```java
 // ❌ 问题：大表 COUNT 极慢
@@ -1191,7 +1191,7 @@ long countSince(@Param("since") LocalDate since);
 
 ## 3.4 DTO 使用策略
 
-### SELECT NEW 构造器表达式
+### 3.4.1 SELECT NEW 构造器表达式
 
 ```java
 // DTO 定义
@@ -1217,7 +1217,7 @@ public class OrderSummary {
 List<OrderSummary> findOrderSummaries(@Param("status") OrderStatus status);
 ```
 
-### MapStruct 实体-DTO 转换
+### 3.4.2 MapStruct 实体-DTO 转换
 
 ```java
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -1248,7 +1248,7 @@ public class OrderService {
 }
 ```
 
-### DTO 投影的性能优势
+### 3.4.3 DTO 投影的性能优势
 
 ```java
 // ❌ 查询全字段实体
@@ -1264,7 +1264,7 @@ List<OrderSummary> summaries = em.createQuery(
 
 ## 3.5 查询日志与性能监控
 
-### 开发环境日志配置
+### 3.5.1 开发环境日志配置
 
 ```yaml
 # application-dev.yml
@@ -1284,7 +1284,7 @@ logging:
     org.hibernate.stat: DEBUG                         # 统计摘要
 ```
 
-### 慢查询检测
+### 3.5.2 慢查询检测
 
 ```java
 // 方案一：Hibernate 拦截器记录慢查询
@@ -1313,7 +1313,7 @@ public class SlowQueryInterceptor extends EmptyInterceptor {
 // PostgreSQL: ALTER SYSTEM SET log_min_duration_statement = 1000;
 ```
 
-### 连接池监控
+### 3.5.3 连接池监控
 
 ```yaml
 # HikariCP 连接池监控配置
@@ -1371,7 +1371,7 @@ public class HikariMonitor implements HealthIndicator {
 
 ## 4.1 事务边界设计
 
-### @Transactional 标注位置
+### 4.1.1 @Transactional 标注位置
 
 ```java
 // ❌ 错误：Controller 层标注事务
@@ -1400,7 +1400,7 @@ public class OrderService {
 }
 ```
 
-### 事务尽量短小
+### 4.1.2 事务尽量短小
 
 ```java
 // ❌ 错误：事务中包含外部调用和文件 IO
@@ -1437,7 +1437,7 @@ public void processOrderFull(Long orderId) {
 }
 ```
 
-### 读写分离
+### 4.1.3 读写分离
 
 ```java
 @Service
@@ -1454,7 +1454,7 @@ public class OrderQueryService {
 }
 ```
 
-### 长事务的替代方案
+### 4.1.4 长事务的替代方案
 
 ```java
 // ❌ 避免：长时间事务
@@ -1569,7 +1569,7 @@ public class Inventory {
 }
 ```
 
-### 乐观锁冲突处理策略
+### 4.3.1 乐观锁冲突处理策略
 
 ```java
 // 策略一：自动重试（Spring Retry）
@@ -1649,7 +1649,7 @@ public class OrderCreationException extends RuntimeException {
 
 ## 5.1 缓存适用场景判断
 
-### 优先考虑不做缓存
+### 5.1.1 优先考虑不做缓存
 
 在引入缓存之前，依次确认：
 1. 是否优化了 SQL 和索引？（这是最大的性能杠杆）
@@ -1657,7 +1657,7 @@ public class OrderCreationException extends RuntimeException {
 3. 是否使用了连接池和批处理？
 4. 以上都做了，性能仍不满足要求？
 
-### 缓存适合/不适合的数据
+### 5.1.2 缓存适合/不适合的数据
 
 | 适合缓存 | 不适合缓存 |
 |---------|-----------|
@@ -1716,7 +1716,7 @@ public class Product {
 }
 ```
 
-### 查询缓存策略
+### 5.2.1 查询缓存策略
 
 ```java
 // 查询缓存 — 仅适用于条件和结果都极其稳定的查询
@@ -1800,7 +1800,7 @@ config:
 
 ## 6.1 大批量数据处理
 
-### flush + clear 模式
+### 6.1.1 flush + clear 模式
 
 ```java
 // ✅ 标准批量处理：定期 flush + clear
@@ -1821,7 +1821,7 @@ public void batchImportUsers(List<UserDTO> userDTOs) {
 }
 ```
 
-### JDBC 批处理配置
+### 6.1.2 JDBC 批处理配置
 
 ```yaml
 spring:
@@ -1843,7 +1843,7 @@ spring:
 // Hibernate 必须每条 INSERT 后立即获取 ID，批处理被禁用
 ```
 
-### StatelessSession 的使用
+### 6.1.3 StatelessSession 的使用
 
 ```java
 // StatelessSession：无一级缓存、无脏检查、无级联、无拦截器
@@ -1873,7 +1873,7 @@ public void statelessBatchImport(List<UserDTO> userDTOs) {
 }
 ```
 
-### 批量处理策略选择
+### 6.1.4 批量处理策略选择
 
 | 数据量 | 策略 | 理由 |
 |-------|------|------|
@@ -1948,7 +1948,7 @@ public class DataImportService {
 
 ## 7.1 SQL 注入防范
 
-### 参数化查询
+### 7.1.1 参数化查询
 
 ```java
 // ❌ 危险：字符串拼接
@@ -1975,7 +1975,7 @@ query.setParameter("username", username);
 Optional<User> findByUsername(@Param("username") String username);
 ```
 
-### 动态排序字段的白名单校验
+### 7.1.2 动态排序字段的白名单校验
 
 ```java
 // ❌ 危险：ORDER BY 参数无法通过 setParameter 绑定
@@ -2016,7 +2016,7 @@ public List<Product> findAllSortedSafe(String sortField, String sortDirection) {
 }
 ```
 
-### 动态查询使用 Criteria API
+### 7.1.3 动态查询使用 Criteria API
 
 ```java
 // ✅ Criteria API — 无字符串拼接
@@ -2044,7 +2044,7 @@ public List<User> searchUsers(UserSearchCriteria criteria) {
 
 ## 7.2 敏感数据保护
 
-### 数据库密码加密
+### 7.2.1 数据库密码加密
 
 ```java
 // Jasypt 配置文件加密
@@ -2070,7 +2070,7 @@ public class JasyptConfig {
 }
 ```
 
-### 用户密码不可逆加密
+### 7.2.2 用户密码不可逆加密
 
 ```java
 // ✅ BCrypt — 不可逆哈希
@@ -2092,7 +2092,7 @@ public class UserService {
 }
 ```
 
-### 实体序列化排除敏感字段
+### 7.2.3 实体序列化排除敏感字段
 
 ```java
 @Entity
@@ -2116,7 +2116,7 @@ public class User {
 }
 ```
 
-### 日志脱敏
+### 7.2.4 日志脱敏
 
 ```java
 @Component
@@ -2159,7 +2159,7 @@ public class PaymentService {
 
 ## 8.1 十大常见错误
 
-### 错误 1：@ManyToOne/@OneToOne 未设 LAZY
+### 8.1.1 错误 1：@ManyToOne/@OneToOne 未设 LAZY
 
 ```java
 // ❌ N+1 查询爆炸
@@ -2178,7 +2178,7 @@ public class OrderItem {
 }
 ```
 
-### 错误 2：双向关联只更新一方
+### 8.1.2 错误 2：双向关联只更新一方
 
 ```java
 // ❌ 导致内存与数据库数据不一致
@@ -2192,7 +2192,7 @@ customer.addOrder(order);
 orderRepository.save(order);
 ```
 
-### 错误 3：Set/Map 中实体未实现 equals/hashCode
+### 8.1.3 错误 3：Set/Map 中实体未实现 equals/hashCode
 
 ```java
 // ❌ 重复数据
@@ -2205,7 +2205,7 @@ private Set<OrderItem> items = new HashSet<>();
 // ✅ 必须在 OrderItem 中实现 equals/hashCode（基于业务键或 id）
 ```
 
-### 错误 4：session.save/update 替代 persist/merge
+### 8.1.4 错误 4：session.save/update 替代 persist/merge
 
 ```java
 // ❌ Hibernate 专有 API，迁移困难
@@ -2218,7 +2218,7 @@ entityManager.persist(entity);  // 插入
 entityManager.merge(entity);    // 更新/保存
 ```
 
-### 错误 5：事务外部访问懒加载属性
+### 8.1.5 错误 5：事务外部访问懒加载属性
 
 ```java
 // ❌ LazyInitializationException
@@ -2242,7 +2242,7 @@ public UserDTO getUser(Long id) {
 Optional<User> findByIdWithOrders(@Param("id") Long id);
 ```
 
-### 错误 6：merge() 返回值不使用
+### 8.1.6 错误 6：merge() 返回值不使用
 
 ```java
 // ❌ merge() 返回新托管对象，但错误地继续使用旧的游离对象
@@ -2262,7 +2262,7 @@ public User updateUser(User detachedUser) {
 }
 ```
 
-### 错误 7：JOIN FETCH 与分页同时使用
+### 8.1.7 错误 7：JOIN FETCH 与分页同时使用
 
 ```java
 // ❌ HHH000104 警告 + 全量加载内存分页
@@ -2272,7 +2272,7 @@ Page<Order> findAllWithItems(Pageable pageable);
 // ✅ 两步查询法（参见 3.3 节）
 ```
 
-### 错误 8：多个 List（Bag）同时 JOIN FETCH
+### 8.1.8 错误 8：多个 List（Bag）同时 JOIN FETCH
 
 ```java
 // ❌ MultipleBagFetchException
@@ -2302,7 +2302,7 @@ List<Department> findAllWithEmployees();
 // 通过 @BatchSize(size = 50) 在 departments.projects 上批量加载
 ```
 
-### 错误 9：HQL 批量更新/删除后不清除 Session 缓存
+### 8.1.9 错误 9：HQL 批量更新/删除后不清除 Session 缓存
 
 ```java
 // ❌ 脏数据问题
@@ -2332,7 +2332,7 @@ public void deactivateExpiredUsers(LocalDateTime threshold) {
 }
 ```
 
-### 错误 10：生产环境使用 ddl-auto=update
+### 8.1.10 错误 10：生产环境使用 ddl-auto=update
 
 ```yaml
 # ❌ 生产环境危险配置
@@ -2353,7 +2353,7 @@ spring:
 
 ## 8.2 反模式列表
 
-### 反模式 1：DAO 层直接暴露实体给 Controller
+### 8.2.1 反模式 1：DAO 层直接暴露实体给 Controller
 
 ```java
 // ❌ 反模式
@@ -2374,7 +2374,7 @@ public class UserController {
 }
 ```
 
-### 反模式 2：实体中写业务逻辑（务实讨论）
+### 8.2.2 反模式 2：实体中写业务逻辑（务实讨论）
 
 ```java
 // ❌ 过度"充血模型"的问题
@@ -2421,7 +2421,7 @@ public class OrderCancellationService {
 }
 ```
 
-### 反模式 3：过度使用 CascadeType.ALL
+### 8.2.3 反模式 3：过度使用 CascadeType.ALL
 
 ```java
 // ❌ 危险级联
@@ -2441,7 +2441,7 @@ public class User {
 }
 ```
 
-### 反模式 4：IDENTITY + 批处理
+### 8.2.4 反模式 4：IDENTITY + 批处理
 
 ```java
 // ❌ IDENTITY 禁用 JDBC 批处理
@@ -2465,11 +2465,11 @@ public class LogEntry {
 // 批量 INSERT = INSERT INTO ... VALUES (...), (...), (...) ...
 ```
 
-### 反模式 5：所有 @OneToMany 都用 List（Bag）
+### 8.2.5 反模式 5：所有 @OneToMany 都用 List（Bag）
 
 参见 2.5 节 Bag 问题。
 
-### 反模式 6：不设置 hibernate.jdbc.batch_size
+### 8.2.6 反模式 6：不设置 hibernate.jdbc.batch_size
 
 ```yaml
 # ❌ 默认 batch_size = 0（禁用批处理）
@@ -2492,7 +2492,7 @@ spring:
 
 ## 9.1 ORM 行为测试
 
-### 使用 @DataJpaTest 隔离数据库层
+### 9.1.1 使用 @DataJpaTest 隔离数据库层
 
 ```java
 @DataJpaTest
@@ -2524,7 +2524,7 @@ class OrderRepositoryTest {
 }
 ```
 
-### 测试 N+1 问题
+### 9.1.2 测试 N+1 问题
 
 ```java
 // 使用 hypersistence-utils 断言 SQL 执行次数
@@ -2554,7 +2554,7 @@ public void testFindAllWithBooks_noNPlusOne() {
 }
 ```
 
-### 测试懒加载行为
+### 9.1.3 测试懒加载行为
 
 ```java
 @Test
@@ -2584,7 +2584,7 @@ public void testOrderItemProductLazyLoading() {
 }
 ```
 
-### 测试级联操作
+### 9.1.4 测试级联操作
 
 ```java
 @Test
@@ -2629,7 +2629,7 @@ public void testOrphanRemoval() {
 
 ## 9.2 集成测试模式
 
-### 测试独立性
+### 9.2.1 测试独立性
 
 ```java
 @SpringBootTest
@@ -2658,7 +2658,7 @@ class OrderServiceIntegrationTest {
 }
 ```
 
-### @Sql 注入测试数据
+### 9.2.2 @Sql 注入测试数据
 
 ```java
 @SpringBootTest
@@ -2682,7 +2682,7 @@ class ProductServiceTest {
 // INSERT INTO product (id, name, price, active) VALUES (2, 'Test Product B', 29.99, false);
 ```
 
-### 避免测试间数据污染
+### 9.2.3 避免测试间数据污染
 
 ```java
 // ✅ 方案一：@Transactional + 自动回滚（推荐）
@@ -2974,7 +2974,7 @@ public class Order {
 
 ---
 
-## 参考资源
+## 10.4 参考资源
 
 | 资源 | 说明 |
 |------|------|

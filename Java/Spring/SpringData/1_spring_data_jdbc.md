@@ -1,4 +1,4 @@
-# 1.Spring Data JDBC 概述
+# 1. Spring Data JDBC 概述
 
 ## 1.1 什么是 Spring Data JDBC
 
@@ -42,7 +42,7 @@ Spring Data JDBC 的设计目标是：
 - JPA 通过脏检查自动发现变更并生成 UPDATE 语句
 - Spring Data JDBC 比较聚合中所有实体来判断是否需要写入——如果你更新了聚合根中的某个字段，整个聚合可能需要重新写入
 
-# 2.核心概念
+# 2. 核心概念
 
 ## 2.1 聚合（Aggregate）
 
@@ -109,7 +109,7 @@ public class Order {
 }
 ```
 
-# 3.快速入门
+# 3. 快速入门
 
 ## 3.1 Maven 依赖
 
@@ -227,7 +227,7 @@ public class UserService {
 }
 ```
 
-# 4.实体映射详解
+# 4. 实体映射详解
 
 ## 4.1 主键策略
 
@@ -401,7 +401,7 @@ public class CustomNamingStrategy implements NamingStrategy {
 }
 ```
 
-# 5.数据操作详解
+# 5. 数据操作详解
 
 ## 5.1 Save 的内部机制
 
@@ -502,7 +502,7 @@ public class ProductService {
 }
 ```
 
-# 6.派生查询方法详解
+# 6. 派生查询方法详解
 
 ## 6.1 方法命名规则
 
@@ -608,7 +608,7 @@ List<User> findByAddressProvinceAndAddressCity(String province, String city);
 
 注意：嵌套属性查询仅适用于 `@Embedded` 的嵌入对象（即映射到同一张表）。对于 `@MappedCollection` 的一对多关系，Spring Data JDBC 不支持通过聚合根的直接嵌套属性查询（需要自行编写 @Query）。
 
-# 7.事务管理
+# 7. 事务管理
 
 ## 7.1 声明式事务
 
@@ -700,7 +700,7 @@ public void doSomething() throws Exception {
 public void doSomething() throws Exception { }
 ```
 
-# 8.生命周期事件
+# 8. 生命周期事件
 
 ## 8.1 支持的聚合根事件
 
@@ -789,7 +789,7 @@ public class User implements BeforeConvertCallback<User>, BeforeSaveCallback<Use
 }
 ```
 
-# 9.源码与底层机制解析
+# 9. 源码与底层机制解析
 
 ## 9.1 整体架构
 
@@ -946,7 +946,7 @@ public String getUpdate(RelationalPersistentEntity<?> entity) {
 }
 ```
 
-# 10.MyBatis 整合
+# 10. MyBatis 整合
 
 ## 10.1 场景说明
 
@@ -992,7 +992,7 @@ public interface OrderQueryMapper {
 }
 ```
 
-# 11.最佳实践
+# 11. 最佳实践
 
 ## 11.1 聚合设计原则
 
@@ -1073,7 +1073,7 @@ List<Order> findOrders(@Param("customerId") Long customerId,
    - 使用 `@Query` 手写 SQL
    - 或整合 MyBatis 处理复杂查询场景
 
-# 12.版本演进与新特性
+# 12. 版本演进与新特性
 
 | 版本 | Spring Boot 版本 | 主要特性 |
 |------|-----------------|---------|
@@ -1089,7 +1089,7 @@ List<Order> findOrders(@Param("customerId") Long customerId,
 | 3.2 | 3.2 | 查询增强，返回集合参数绑定 |
 | 3.3 | 3.3 | 当前最新版本 |
 
-# 13.H2/HSQLDB 集成测试
+# 13. H2/HSQLDB 集成测试
 
 ## 13.1 测试依赖
 

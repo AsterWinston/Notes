@@ -1,4 +1,4 @@
-# 1.Fetch
+# 1. Fetch
 ```
 JavaScript 可以将网络请求发送到服务器，并在需要时加载新信息。
 
@@ -103,7 +103,7 @@ setTimeout(() => { // 3 秒后将其隐藏
 let text = await response.text(); // response body 被处理了
 let parsed = await response.json(); // 失败（已经被处理过了）
 ```
-## 1.1Response header
+## 1.1 Response header
 ```javascript
 Response header 位于 response.headers 中的一个类似于 Map 的 header 对象。
 
@@ -119,7 +119,7 @@ for (let [key, value] of response.headers) {
   alert(`${key} = ${value}`);
 }
 ```
-## 1.2Request header
+## 1.2 Request header
 ```javascript
 要在 fetch 中设置 request header，我们可以使用 headers 选项。它有一个带有输出 header 的对象，如下所示：
 
@@ -152,7 +152,7 @@ Proxy-*
 Sec-*
 这些 header 保证了 HTTP 的正确性和安全性，所以它们仅由浏览器控制。
 ```
-## 1.3POST请求
+## 1.3 POST请求
 ```javascript
 要创建一个 POST 请求，或者其他方法的请求，我们需要使用 fetch 选项：
 
@@ -185,7 +185,7 @@ alert(result.message);
 
 但是，当我们要发送 JSON 时，我们会使用 headers 选项来发送 application/json，这是 JSON 编码的数据的正确的 Content-Type。
 ```
-## 1.4发送图片
+## 1.4 发送图片
 ```javascript
 我们同样可以使用 Blob 或 BufferSource 对象通过 fetch 提交二进制数据。
 
@@ -233,7 +233,7 @@ function submit() {
   }, 'image/png');
 }
 ```
-## 1.5总结
+## 1.5 总结
 ```javascript
 典型的 fetch 请求由两个 await 调用组成：
 
@@ -264,7 +264,7 @@ body —— 要以 string，FormData，BufferSource，Blob 或 UrlSearchParams �
 在下一章，我们将会看到更多 fetch 的选项和用例。
 ```
 
-# 2.FormData
+# 2. FormData
 ```
 这一章是关于发送 HTML 表单的：带有或不带文件，带有其他字段等。
 
@@ -279,7 +279,7 @@ FormData 的特殊之处在于网络方法（network methods），例如 fetch �
 
 从服务器角度来看，它就像是一个普通的表单提交。
 ```
-## 2.1发送一个简单的表单
+## 2.1 发送一个简单的表单
 ```javascript
 我们先来发送一个简单的表单。
 
@@ -308,7 +308,7 @@ FormData 的特殊之处在于网络方法（network methods），例如 fetch �
 
 在这个示例中，没有将服务器代码展示出来，因为它超出了我们当前的学习范围。服务器接受 POST 请求并回应 “User saved”。
 ```
-## 2.2FormData方法
+## 2.2 FormData方法
 ```javascript
 我们可以使用以下方法修改 FormData 中的字段：
 
@@ -334,7 +334,7 @@ for(let [name, value] of formData) {
   alert(`${name} = ${value}`); // key1 = value1，然后是 key2 = value2
 }
 ```
-## 2.3发送带有文件的表单
+## 2.3 发送带有文件的表单
 ```javascript
 表单始终以 Content-Type: multipart/form-data 来发送数据，这个编码允许发送文件。因此 <input type="file"> 字段也能被发送，类似于普通的表单提交。
 
@@ -361,7 +361,7 @@ for(let [name, value] of formData) {
   };
 </script>
 ```
-## 2.4发送具有Blob数据的表单
+## 2.4 发送具有Blob数据的表单
 ```javascript
 正如我们在 Fetch 一章中所看到的，以 Blob 发送一个动态生成的二进制数据，例如图片，是很简单的。我们可以直接将其作为 fetch 参数的 body。
 
@@ -408,7 +408,7 @@ formData.append("image", imageBlob, "image.png");
 
 服务器读取表单数据和文件，就好像它是常规的表单提交一样。
 ```
-## 2.5总结
+## 2.5 总结
 ```javascript
 FormData 对象用于捕获 HTML 表单，并使用 fetch 或其他网络方法提交。
 
@@ -430,7 +430,7 @@ formData.has(name)
 这就是它的全貌！
 ```
 
-# 3.Fetch：下载进度
+# 3. Fetch：下载进度
 ```
 fetch 方法允许去跟踪 下载 进度。
 
@@ -540,7 +540,7 @@ let blob = new Blob(chunks);
 另外，如果大小未知，我们应该检查循环中的 receivedLength，一旦达到一定的限制就将其中断。这样 chunks 就不会溢出内存了。
 ```
 
-# 4.Fetch：中止（Abort）
+# 4. Fetch：中止（Abort）
 ```
 正如我们所知道的，fetch 返回一个 promise。JavaScript 通常并没有“中止” promise 的概念。那么我们怎样才能取消一个正在执行的 fetch 呢？例如，如果用户在我们网站上的操作表明不再需要某个执行中的 fetch。
 
@@ -548,7 +548,7 @@ let blob = new Blob(chunks);
 
 用法非常简单。
 ```
-## 4.1AbortController对象
+## 4.1 AbortController对象
 ```javascript
 创建一个控制器（controller）：
 
@@ -586,7 +586,7 @@ alert(signal.aborted); // true
 
 但是有价值的是，fetch 知道如何与 AbortController 对象一起工作。它们是集成在一起的。
 ```
-## 4.2与fetch一起使用
+## 4.2 与fetch一起使用
 ```javascript
 为了能够取消 fetch，请将 AbortController 的 signal 属性作为 fetch 的一个可选参数（option）进行传递：
 
@@ -621,7 +621,7 @@ try {
   }
 }
 ```
-## 4.3AbortController是可伸缩的
+## 4.3 AbortController是可伸缩的
 ```javascript
 AbortController 是可伸缩的。它允许一次取消多个 fetch。
 
@@ -662,14 +662,14 @@ let results = await Promise.all([...fetchJobs, ourJob]);
 // controller.abort() 被从任何地方调用，
 // 它都将中止所有 fetch 和 ourJob
 ```
-## 4.4总结
+## 4.4 总结
 ```javascript
 AbortController 是一个简单的对象，当 abort() 方法被调用时，会在自身的 signal 属性上生成 abort 事件（并将 signal.aborted 设置为 true）。
 fetch 与之集成：我们将 signal 属性作为可选参数（option）进行传递，之后 fetch 会监听它，因此它能够中止 fetch。
 我们可以在我们的代码中使用 AbortController。“调用 abort()” → “监听 abort 事件”交互简单且通用。即使没有 fetch，我们也可以使用它。
 ```
 
-# 5.Fetch：跨源请求
+# 5. Fetch：跨源请求
 ```
 如果我们向另一个网站发送 fetch 请求，则该请求可能会失败。
 
@@ -688,7 +688,7 @@ try {
 
 这个策略被称为 “CORS”：跨源资源共享（Cross-Origin Resource Sharing）。
 ```
-## 5.1为什么需要CORS？跨域请求简史
+## 5.1 为什么需要CORS？跨域请求简史
 ```javascript
 CORS 的存在是为了保护互联网免受黑客攻击。
 
@@ -751,7 +751,7 @@ gotWeather({
 
 起初，跨源请求是被禁止的。但是，经过长时间的讨论，跨源请求被允许了，但是任何新功能都需要服务器明确允许，以特殊的 header 表述。
 ```
-## 5.2安全请求
+## 5.2 安全请求
 ```javascript
 有两种类型的跨源请求：
 
@@ -781,7 +781,7 @@ Content-Type 的值为 application/x-www-form-urlencoded，multipart/form-data �
 
 现在，我们来详细介绍它们。
 ```
-## 5.3用于安全请求的CORS
+## 5.3 用于安全请求的CORS
 ```javascript
 如果一个请求是跨源的，浏览器始终会向其添加 Origin header。
 
@@ -806,7 +806,7 @@ Origin: https://javascript.info
 Content-Type:text/html; charset=UTF-8
 Access-Control-Allow-Origin: https://javascript.info
 ```
-## 5.4Response header
+## 5.4 Response header
 ```javascript
 对于跨源请求，默认情况下，JavaScript 只能访问“安全的” response header：
 
@@ -835,7 +835,7 @@ Access-Control-Allow-Origin: https://javascript.info
 Access-Control-Expose-Headers: Content-Length,API-Key
 有了这种 Access-Control-Expose-Headers header，此脚本就被允许读取响应的 Content-Length 和 API-Key header。
 ```
-## 5.5“非安全”请求
+## 5.5 “非安全”请求
 ```javascript
 我们可以使用任何 HTTP 方法：不仅仅是 GET/POST，也可以是 PATCH，DELETE 及其他。
 
@@ -925,7 +925,7 @@ Access-Control-Allow-Origin: https://javascript.info
 
 JavaScript 仅获取对主请求的响应，如果没有服务器许可，则获得一个 error。
 ```
-## 5.6凭据（Credentials）
+## 5.6 凭据（Credentials）
 ```javascript
 默认情况下，由 JavaScript 代码发起的跨源请求不会带来任何凭据（cookies 或者 HTTP 认证（HTTP authentication））。
 
@@ -955,7 +955,7 @@ Access-Control-Allow-Origin: https://javascript.info
 Access-Control-Allow-Credentials: true
 请注意：对于具有凭据的请求，禁止 Access-Control-Allow-Origin 使用星号 *。如上所示，它必须有一个确切的源。这是另一项安全措施，以确保服务器真的知道它信任的发出此请求的是谁。
 ```
-## 5.7总结
+## 5.7 总结
 ```javascript
 从浏览器角度来看，有两种跨源请求：“安全”请求和其他请求。
 
@@ -993,7 +993,7 @@ Access-Control-Max-Age 带有指定缓存权限的秒数。
 然后，发送实际的请求，并应用之前的“安全”方案。
 ```
 
-# 6.Fetch API
+# 6. Fetch API
 ```
 到目前为止，我们已经对 fetch 相当了解了。
 
@@ -1034,7 +1034,7 @@ let promise = fetch(url, {
 
 现在让我们一起探索其余的功能。
 ```
-## 6.1referrer, referrerPolicy
+## 6.1 referrer, referrerPolicy
 ```javascript
 这些选项决定了 fetch 如何设置 HTTP 的 Referer header。
 
@@ -1105,7 +1105,7 @@ Referrer policy 不仅适用于 fetch
 
 特别是，可以使用 Referrer-Policy HTTP header，或者为每个链接设置 <a rel="noreferrer">，来为整个页面设置默认策略（policy）。
 ```
-## 6.2mode
+## 6.2 mode
 ```javascript
 mode 选项是一种安全措施，可以防止偶发的跨源请求：
 
@@ -1114,7 +1114,7 @@ mode 选项是一种安全措施，可以防止偶发的跨源请求：
 "no-cors" —— 只允许安全的跨源请求。
 当 fetch 的 URL 来自于第三方，并且我们想要一个“断电开关”来限制跨源能力时，此选项可能很有用。
 ```
-## 6.3credentials
+## 6.3 credentials
 ```javascript
 credentials 选项指定 fetch 是否应该随请求发送 cookie 和 HTTP-Authorization header。
 
@@ -1122,7 +1122,7 @@ credentials 选项指定 fetch 是否应该随请求发送 cookie 和 HTTP-Autho
 "include" —— 总是发送，需要来自跨源服务器的 Access-Control-Allow-Credentials，才能使 JavaScript 能够访问响应，详细内容在 Fetch：跨源请求 一章有详细介绍，
 "omit" —— 不发送，即使对于同源请求。
 ```
-## 6.4cache
+## 6.4 cache
 ```javascript
 默认情况下，fetch 请求使用标准的 HTTP 缓存。就是说，它遵从 Expires，Cache-Control header，发送 If-Modified-Since，等。就像常规的 HTTP 请求那样。
 
@@ -1135,7 +1135,7 @@ credentials 选项指定 fetch 是否应该随请求发送 cookie 和 HTTP-Autho
 "force-cache" —— 使用来自 HTTP 缓存的响应，即使该响应已过时（stale）。如果 HTTP 缓存中没有响应，则创建一个常规的 HTTP 请求，行为像正常那样，
 "only-if-cached" —— 使用来自 HTTP 缓存的响应，即使该响应已过时（stale）。如果 HTTP 缓存中没有响应，则报错。只有当 mode 为 same-origin 时生效。
 ```
-## 6.5redirect
+## 6.5 redirect
 ```javascript
 通常来说，fetch 透明地遵循 HTTP 重定向，例如 301，302 等。
 
@@ -1145,7 +1145,7 @@ redirect 选项允许对此进行更改：
 "error" —— HTTP 重定向时报错，
 "manual" —— 允许手动处理 HTTP 重定向。在重定向的情况下，我们将获得一个特殊的响应对象，其中包含 response.type="opaqueredirect" 和归零/空状态以及大多数其他属性。
 ```
-## 6.6integrity
+## 6.6 integrity
 ```javascript
 integrity 选项允许检查响应是否与已知的预先校验和相匹配。
 
@@ -1162,7 +1162,7 @@ fetch('http://site.com/file', {
 
 
 ```
-## 6.7keepalive
+## 6.7 keepalive
 ```javascript
 keepalive 选项表示该请求可能会在网页关闭后继续存在。
 
@@ -1190,13 +1190,13 @@ window.onunload = function() {
 在大多数情况下，例如发送统计信息，这不是问题，因为服务器只接收数据，并通常向此类请求发送空的响应。
 ```
 
-# 7.URL对象
+# 7. URL对象
 ```
 内建的 URL 类提供了用于创建和解析 URL 的便捷接口。
 
 没有任何一个网络方法一定需要使用 URL 对象，字符串就足够了。所以从技术上讲，我们并不是必须使用 URL。但是有些时候 URL 对象真的很有用。
 ```
-## 7.1创建URL对象
+## 7.1 创建URL对象
 ```javascript
 创建一个新 URL 对象的语法：
 
@@ -1239,7 +1239,7 @@ hash 以哈希字符 # 开头
 
 通常，URL 对象可以替代字符串传递给任何方法，因为大多数方法都会执行字符串转换，这会将 URL 对象转换为具有完整 URL 的字符串。
 ```
-## 7.2SearchParams"?..."
+## 7.2 SearchParams"?..."
 ```javascript
 假设，我们想要创建一个具有给定搜索参数的 url，例如：https://google.com/search?query=JavaScript。
 
@@ -1278,7 +1278,7 @@ for(let [name, value] of url.searchParams) {
   alert(`${name}=${value}`); // q=test me!，然后是 tbs=qdr:y
 }
 ```
-## 7.3编码（encoding）
+## 7.3 编码（encoding）
 ```javascript
 RFC3986 标准定义了 URL 中允许哪些字符，不允许哪些字符。
 
@@ -1359,7 +1359,7 @@ alert(new URL(url)); // http://[2607:f8b0:4005:802::1007]/
 这种情况很少见，encode* 函数在大多数情况下都能正常工作。
 ```
 
-# 8.XMLHttpRequest
+# 8. XMLHttpRequest
 ```
 XMLHttpRequest 是一个内建的浏览器对象，它允许使用 JavaScript 发送 HTTP 请求。
 
@@ -1374,7 +1374,7 @@ XMLHttpRequest 是一个内建的浏览器对象，它允许使用 JavaScript �
 我们需要做一些 fetch 目前无法做到的事情，例如跟踪上传进度。
 这些话听起来熟悉吗？如果是，那么请继续阅读下面的 XMLHttpRequest 相关内容吧。如果还不是很熟悉的话，那么请先阅读 Fetch 一章的内容。
 ```
-## 8.1XMLHttpRequest基础
+## 8.1 XMLHttpRequest基础
 ```javascript
 XMLHttpRequest 有两种执行模式：同步（synchronous）和异步（asynchronous）。
 
@@ -1480,7 +1480,7 @@ url.searchParams.set('q', 'test me!');
 // 参数 'q' 被编码
 xhr.open('GET', url); // https://google.com/search?q=test+me%21
 ```
-## 8.2响应类型
+## 8.2 响应类型
 ```javascript
 我们可以使用 xhr.responseType 属性来设置响应格式：
 
@@ -1510,7 +1510,7 @@ xhr.onload = function() {
 
 它们是由于历史原因而存在的，以获取字符串或 XML 文档。如今，我们应该在 xhr.responseType 中设置格式，然后就能获取如上所示的 xhr.response 了。
 ```
-## 8.3readyState
+## 8.3 readyState
 ```javascript
 XMLHttpRequest 的状态（state）会随着它的处理进度变化而变化。可以通过 xhr.readyState 来了解当前状态。
 
@@ -1535,14 +1535,14 @@ xhr.onreadystatechange = function() {
 };
 你可能在非常老的代码中找到 readystatechange 这样的事件监听器，它的存在是有历史原因的，因为曾经有很长一段时间都没有 load 以及其他事件。如今，它已被 load/error/progress 事件处理程序所替代。
 ```
-## 8.4中止请求（Aborting）
+## 8.4 中止请求（Aborting）
 ```javascript
 我们可以随时终止请求。调用 xhr.abort() 即可：
 
 xhr.abort(); // 终止请求
 它会触发 abort 事件，且 xhr.status 变为 0。
 ```
-## 8.5同步请求
+## 8.5 同步请求
 ```javascript
 如果在 open 方法中将第三个参数 async 设置为 false，那么请求就会以同步的方式进行。
 
@@ -1570,7 +1570,7 @@ XMLHttpRequest 的很多高级功能在同步请求中都不可用，例如向�
 
 基于这些原因，同步请求使用的非常少，几乎从不使用。在这我们就不再讨论它了。
 ```
-## 8.6HTTP-header
+## 8.6 HTTP-header
 ```javascript
 XMLHttpRequest 允许发送自定义 header，并且可以从响应中读取 header。
 
@@ -1631,7 +1631,7 @@ let headers = xhr
 
 // headers['Content-Type'] = 'image/png'
 ```
-## 8.7POST, FormData
+## 8.7 POST, FormData
 ```javascript
 要建立一个 POST 请求，我们可以使用内建的 FormData 对象。
 
@@ -1683,7 +1683,7 @@ xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 xhr.send(json);
 .send(body) 方法就像一个非常杂食性的动物。它几乎可以发送任何 body，包括 Blob 和 BufferSource 对象。
 ```
-## 8.8上传进度
+## 8.8 上传进度
 ```javascript
 progress 事件仅在下载阶段触发。
 
@@ -1742,7 +1742,7 @@ function upload(file) {
 }
 </script>
 ```
-## 8.9跨源请求
+## 8.9 跨源请求
 ```javascript
 XMLHttpRequest 可以使用和 fetch 相同的 CORS 策略进行跨源请求。
 
@@ -1755,7 +1755,7 @@ xhr.open('POST', 'http://anywhere.com/request');
 ...
 有关跨源 header 的详细信息，请见 Fetch：跨源请求 一章。
 ```
-## 8.10总结
+## 8.10 总结
 ```javascript
 使用 XMLHttpRequest 的 GET 请求的典型代码：
 
@@ -1801,7 +1801,7 @@ error，abort，timeout 和 load 事件是互斥的。其中只有一种可能�
 如果我们需要专门跟踪上传，那么我们应该在 xhr.upload 对象上监听相同的事件。
 ```
 
-# 9.可恢复的文件上传
+# 9. 可恢复的文件上传
 ```
 使用 fetch 方法来上传文件相当容易。
 
@@ -1809,7 +1809,7 @@ error，abort，timeout 和 load 事件是互斥的。其中只有一种可能�
 
 对于大文件（如果我们可能需要恢复），可恢复的上传应该带有上传进度提示。由于 fetch 不允许跟踪上传进度，我们将会使用 XMLHttpRequest。
 ```
-## 9.1不太实用的进度事件
+## 9.1 不太实用的进度事件
 ```javascript
 要恢复上传，我们需要知道在连接断开前已经上传了多少。
 
@@ -1823,7 +1823,7 @@ error，abort，timeout 和 load 事件是互斥的。其中只有一种可能�
 
 要恢复上传，我们需要 确切地 知道服务器接收的字节数。而且只有服务器能告诉我们，因此，我们将发出一个额外的请求。
 ```
-## 9.2算法
+## 9.2 算法
 ```javascript
 首先，创建一个文件 id，以唯一地标识我们要上传的文件：
 
@@ -1879,14 +1879,14 @@ xhr.send(file.slice(startByte));
 我们可以实现可恢复的上传等。
 ```
 
-# 10.长轮询（Long polling）
+# 10. 长轮询（Long polling）
 ```
 长轮询是与服务器保持持久连接的最简单的方式，它不使用任何特定的协议，例如 WebSocket 或者 Server Sent Event。
 
 它很容易实现，在很多场景下也很好用。
 
 ```
-## 10.1常规轮询
+## 10.1 常规轮询
 ```javascript
 从服务器获取新信息的最简单的方式是定期轮询。也就是说，定期向服务器发出请求：“你好，我在这儿，你有关于我的任何信息吗？”例如，每 10 秒一次。
 
@@ -1898,7 +1898,7 @@ xhr.send(file.slice(startByte));
 即使没有消息，服务器也会每隔 10 秒被请求轰炸一次，即使用户切换到其他地方或者处于休眠状态，也是如此。就性能而言，这是一个很大的负担。
 因此，如果我们讨论的是一个非常小的服务，那么这种方式可能可行，但总的来说，它需要改进。
 ```
-## 10.2长轮询
+## 10.2 长轮询
 ```javascript
 所谓“长轮询”是轮询服务器的一种更好的方式。
 
@@ -1955,7 +1955,7 @@ subscribe();
 
 也就是说，这不是编程语言的问题。大多数现代编程语言，包括 PHP 和 Ruby，都允许实现更适当的后端程序。只是请确保你的服务器架构在同时有很多连接的情况下能够正常工作。
 ```
-## 10.3示例：聊天
+## 10.3 示例：聊天
 ```javascript
 这是一个聊天演示，你可以下载它并在本地运行（如果你熟悉 Node.js 并且可以安装模块）：
 
@@ -1963,7 +1963,7 @@ subscribe();
 
 浏览器代码在 browser.js 中。
 ```
-## 10.4使用场景
+## 10.4 使用场景
 ```javascript
 在消息很少的情况下，长轮询很有效。
 
@@ -1975,13 +1975,13 @@ subscribe();
 
 ```
 
-# 11.WebSocket
+# 11. WebSocket
 ```
 在 RFC 6455 规范中描述的 WebSocket 协议，提供了一种在浏览器和服务器之间建立持久连接来交换数据的方法。数据可以作为“数据包”在两个方向上传递，而无需中断连接也无需额外的 HTTP 请求。
 
 对于需要连续数据交换的服务，例如网络游戏，实时交易系统等，WebSocket 尤其有用。
 ```
-## 11.1一个简单的例子
+## 11.1 一个简单的例子
 ```javascript
 要打开一个 WebSocket 连接，我们需要在 url 中使用特殊的协议 ws 创建 new WebSocket：
 
@@ -2038,7 +2038,7 @@ socket.onerror = function(error) {
 
 现在让我们更深入地学习它。
 ```
-## 11.2建立Websocket
+## 11.2 建立Websocket
 ```javascript
 当 new WebSocket(url) 被创建后，它将立即开始连接。
 
@@ -2107,7 +2107,7 @@ Sec-WebSocket-Extensions: deflate-frame
 Sec-WebSocket-Protocol: soap
 在这里服务器响应 —— 它支持扩展 “deflate-frame”，并且仅支持所请求的子协议中的 SOAP。
 ```
-## 11.3数据传输
+## 11.3 数据传输
 ```javascript
 WebSocket 通信由 “frames”（即数据片段）组成，可以从任何一方发送，并且有以下几种类型：
 
@@ -2132,7 +2132,7 @@ socket.onmessage = (event) => {
   // event.data 可以是文本（如果是文本），也可以是 arraybuffer（如果是二进制数据）
 };
 ```
-## 11.4限速
+## 11.4 限速
 ```javascript
 想象一下：我们的应用程序正在生成大量要发送的数据。但是用户的网速却很慢，可能是在乡下的移动设备上。
 
@@ -2150,7 +2150,7 @@ setInterval(() => {
   }
 }, 100);
 ```
-## 11.5连接关闭
+## 11.5 连接关闭
 ```javascript
 通常，当一方想要关闭连接时（浏览器和服务器都具有相同的权限），它们会发送一个带有数字码（numeric code）和文本形式的原因的 “connection close frame”。
 
@@ -2191,7 +2191,7 @@ socket.onclose = event => {
   // event.wasClean === false（未关闭 frame）
 };
 ```
-## 11.6连接状态
+## 11.6 连接状态
 ```javascript
 要获取连接状态，可以通过带有值的 socket.readyState 属性：
 
@@ -2200,7 +2200,7 @@ socket.onclose = event => {
 2 —— “CLOSING”：连接关闭中，
 3 —— “CLOSED”：连接已关闭。
 ```
-## 11.7聊天示例
+## 11.7 聊天示例
 ```javascript
 让我们来看一个使用浏览器 WebSocket API 和 Node.js 的 WebSocket 模块 https://github.com/websockets/ws 的聊天示例。我们将主要精力放在客户端上，但是服务端也很简单。
 
@@ -2278,7 +2278,7 @@ function onSocketConnect(ws) {
 
 你也可以下载它（点击 iframe 右上角的按钮）然后在本地运行。运行之前请记得安装 Node.js 和 npm install ws。
 ```
-## 11.8总结
+## 11.8 总结
 ```javascript
 WebSocket 是一种在浏览器和服务器之间建立持久连接的现代方式。
 
@@ -2303,7 +2303,7 @@ WebSocket 自身并不包含重新连接（reconnection），身份验证（auth
 
 当然，其他集成方式也是可行的。
 ```
-# 12.Server Sent Events
+# 12. Server Sent Events
 ```
 Server-Sent Events 规范描述了一个内建的类 EventSource，它能保持与服务器的连接，并允许从中接收事件。
 
@@ -2323,7 +2323,7 @@ WebSocket 协议	常规 HTTP 协议
 
 我们需要从服务器接收一个数据流：可能是聊天消息或者市场价格等。这正是 EventSource 所擅长的。它还支持自动重新连接，而在 WebSocket 中这个功能需要我们手动实现。此外，它是一个普通的旧的 HTTP，不是一个新协议。
 ```
-## 12.1获取消息
+## 12.1 获取消息
 ```javascript
 要开始接收消息，我们只需要创建 new EventSource(url) 即可。
 
@@ -2370,7 +2370,7 @@ let source = new EventSource("https://another-site.com/events", {
 });
 更多关于跨源 header 的详细内容，请参见 Fetch：跨源请求。
 ```
-## 12.2重新连接
+## 12.2 重新连接
 ```javascript
 创建之后，new EventSource 连接到服务器，如果连接断开 —— 则重新连接。
 
@@ -2396,7 +2396,7 @@ eventSource.close();
 请注意：
 当连接最终被关闭时，就无法“重新打开”它。如果我们想要再次连接，只需要创建一个新的 EventSource。
 ```
-## 12.3消息ID
+## 12.3 消息ID
 ```javascript
 当一个连接由于网络问题而中断时，客户端和服务器都无法确定哪些消息已经收到哪些没有收到。
 
@@ -2418,7 +2418,7 @@ id: 3
 把 id: 放在 data: 后
 请注意：id 被服务器附加到 data 消息后，以确保在收到消息后 lastEventId 会被更新。
 ```
-## 12.4连接状态：readyState
+## 12.4 连接状态：readyState
 ```javascript
 EventSource 对象有 readyState 属性，该属性具有下列值之一：
 
@@ -2429,7 +2429,7 @@ EventSource.CLOSED = 2;     // 连接已关闭
 
 我们可以查询该属性以了解 EventSource 的状态。
 ```
-## 12.5Event类型
+## 12.5 Event类型
 ```javascript
 默认情况下 EventSource 对象生成三个事件：
 
@@ -2461,7 +2461,7 @@ eventSource.addEventListener('leave', event => {
   alert(`Left ${event.data}`);
 });
 ```
-## 12.6完整示例
+## 12.6 完整示例
 ```javascript
 服务器依次发送 1，2，3，最后发送 bye 并断开连接。
 
@@ -2470,7 +2470,7 @@ eventSource.addEventListener('leave', event => {
 结果server.jsindex.html
 
 ```
-## 12.7总结
+## 12.7 总结
 ```javascript
 EventSource 对象自动建立一个持久的连接，并允许服务器通过这个连接发送消息。
 

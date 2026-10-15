@@ -288,11 +288,11 @@ public void test1() {
 相比于通过构造方法进行bean的实例化，采用工厂方法进行bean的实例，我们可以在bean对象创建出来到将创建出来的对象交给Spring容器进行管理这一段时间内，我们可以对bean对象进行加工处理。
 
 # 6. BeanFactory和FactoryBean的区别
-## 6.1BeanFactory
+## 6.1 BeanFactory
 BeanFactory Spring 容器的顶级父接口
 Spring IoC容器的顶级对象，BeanFactory被翻译为“Bean工厂”，在Spring的IoC容器中，“Bean工厂”负责创建Bean对象，即BeanFactory是一个创建bean对象的工厂。
 BeanFactory是工厂。
-## 6.2FactoryBean
+## 6.2 FactoryBean
 FactoryBean：它是一个Bean，是一个能够辅助Spring实例化其它Bean对象的一个Bean。
 在Spring中，Bean可以分为两类：
 第一类：普通Bean
@@ -327,7 +327,7 @@ public class Student {
 }
 
 ```
-## 7.1以简单类型的方式注入 Date
+## 7.1 以简单类型的方式注入 Date
 ```
 <bean id="student" class="cw.spring.study.bean.Student">
   <property name="birth" value="Mon Oct 10 14:30:26 CST 2022"/>
@@ -344,7 +344,7 @@ public void test2() {
 
 ```
 
-## 7.2以非简单类型的方式通过 FactoryBean 接口实例化
+## 7.2 以非简单类型的方式通过 FactoryBean 接口实例化
 ```
 采用工厂方法模式以非简单类型的方式通过 FactoryBean 接口实例化，我们可以在工厂方法中创建Date对象，同时还可以对Date对象进行加工，从而创建我们需要格式的日期对象
 /**
@@ -390,7 +390,7 @@ public class DateFactoryBean implements FactoryBean<Date> {
 
 # 8. 源码解析：Bean 实例化策略与 FactoryBean 机制
 
-## 8.1. createBeanInstance() — Bean 实例化的决策树
+## 8.1 createBeanInstance() — Bean 实例化的决策树
 
 ```
 AbstractAutowireCapableBeanFactory.createBeanInstance() 是实例化的核心入口：
@@ -459,7 +459,7 @@ protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd
 }
 ```
 
-## 8.2. InstantiationStrategy — 实例化策略接口
+## 8.2 InstantiationStrategy — 实例化策略接口
 
 ```
 Spring 提供了两个 InstantiationStrategy 实现，负责实际的反射调用：
@@ -487,7 +487,7 @@ public interface InstantiationStrategy {
    - 使用 CGLIB Enhancer 创建运行时子类
 ```
 
-### 8.3. SimpleInstantiationStrategy.instantiate() 源码
+### 8.3 SimpleInstantiationStrategy.instantiate() 源码
 
 ```
 public Object instantiate(RootBeanDefinition bd, @Nullable String beanName,
@@ -518,7 +518,7 @@ public static <T> T instantiateClass(Constructor<T> ctor, Object... args)
 }
 ```
 
-### 8.4. CglibSubclassingInstantiationStrategy.instantiate() 源码
+### 8.4 CglibSubclassingInstantiationStrategy.instantiate() 源码
 
 ```
 public Object instantiate(@Nullable Constructor<?> ctor, Object... args) {
@@ -550,7 +550,7 @@ public Object instantiate(@Nullable Constructor<?> ctor, Object... args) {
 }
 ```
 
-## 8.3. FactoryBean 机制源码：getObjectForBeanInstance()
+## 8.3 FactoryBean 机制源码：getObjectForBeanInstance()
 
 ```
 FactoryBean 的处理在 getBean() 流程中有一个专门的步骤：getObjectForBeanInstance()
@@ -602,7 +602,7 @@ protected Object getObjectForBeanInstance(
 }
 ```
 
-### 8.4. FactoryBeanRegistrySupport.getObjectFromFactoryBean()
+### 8.4 FactoryBeanRegistrySupport.getObjectFromFactoryBean()
 
 ```
 // 位于 FactoryBeanRegistrySupport（AbstractBeanFactory 的父类）
@@ -694,7 +694,7 @@ protected Object doGetObjectFromFactoryBean(FactoryBean<?> factory, String beanN
 }
 ```
 
-## 8.4. FactoryBean 单例/原型 与 Bean 的单例/原型 的关系
+## 8.4 FactoryBean 单例/原型 与 Bean 的单例/原型 的关系
 
 ```
 两个概念容易混淆，但作用层级不同：
@@ -733,7 +733,7 @@ protected Object doGetObjectFromFactoryBean(FactoryBean<?> factory, String beanN
 └─────────────────────────────────────────────────────┘
 ```
 
-## 8.5. autowireConstructor() — 构造注入决策源码
+## 8.5 autowireConstructor() — 构造注入决策源码
 
 ```
 protected BeanWrapper autowireConstructor(
@@ -769,7 +769,7 @@ ConstructorResolver.autowireConstructor() 的主要逻辑：
    - constructorArgumentsResolved ← 参数解析结果
 ```
 
-## 8.6. 设计思想总结
+## 8.6 设计思想总结
 
 ```
 1. 策略模式（InstantiationStrategy）：

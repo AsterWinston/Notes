@@ -1,4 +1,4 @@
-# 1.dom4j解析XML文件
+# 1. dom4j解析XML文件
 
 ```
 dom4j 是一个高性能的 Java XML 解析库。在 MyBatis 中，核心配置文件 mybatis-config.xml 
@@ -97,7 +97,7 @@ private static void parseMapperXml(String resource) {
 }
 ```
 
-# 2.GodBatis 手写框架
+# 2. GodBatis 手写框架
 
 ```
 目标：手写一个极简版 MyBatis 框架，命名为 GodBatis，核心实现以下功能：
@@ -1369,7 +1369,7 @@ public class Resources {
 }
 ```
 
-# 3.GodBatis 使用 Maven 打包
+# 3. GodBatis 使用 Maven 打包
 
 ```xml
 <!-- pom.xml -->
@@ -1402,7 +1402,7 @@ public class Resources {
 </project>
 ```
 
-# 4.使用 GodBatis
+# 4. 使用 GodBatis
 
 ## 4.1 配置文件 mybatis-config.xml
 
@@ -1478,7 +1478,7 @@ public class GodBatisTest {
 }
 ```
 
-# 5.总结 MyBatis 框架的重要实现原理
+# 5. 总结 MyBatis 框架的重要实现原理
 
 ```
 ┌────────────────────────────────────────────────────────────────────┐
@@ -1534,7 +1534,7 @@ public class GodBatisTest {
 └────────────────────────────────────────────────────────────────────┘
 ```
 
-### 5.1 关键扩展点
+## 5.1 关键扩展点
 
 ```
 MyBatis 提供了多个扩展点，允许用户自定义行为：
@@ -1558,7 +1558,7 @@ MyBatis 提供了多个扩展点，允许用户自定义行为：
    - 默认是 XMLLanguageDriver，可以自定义注解式 SQL 解析
 ```
 
-### 5.2 与真正 MyBatis 的差距
+## 5.2 与真正 MyBatis 的差距
 
 ```
 我们的 GodBatis 是一个极简版，与真正的 MyBatis 相比，缺少以下核心特性：
@@ -1600,7 +1600,7 @@ MyBatis 提供了多个扩展点，允许用户自定义行为：
    → 事务管理器整合
 ```
 
-### 5.3 推荐阅读源码的入口
+## 5.3 推荐阅读源码的入口
 
 ```
 如果你想深入阅读 MyBatis 源码，建议按以下顺序：

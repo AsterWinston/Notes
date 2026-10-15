@@ -1,6 +1,6 @@
-# 1.数值类型
+# 1. 数值类型
 
-## 1.1整数类型
+## 1.1 整数类型
 
 | 类型 | 字节 | 有符号范围 | 无符号范围 |
 |------|------|-----------|-----------|
@@ -10,7 +10,7 @@
 | INT / INTEGER | 4 | -2147483648 ~ 2147483647 | 0 ~ 4294967295 |
 | BIGINT | 8 | -2^63 ~ 2^63-1 | 0 ~ 2^64-1 |
 
-### 设计建议
+### 1.1.1 设计建议
 
 - **主键用 BIGINT UNSIGNED**：`BIGINT UNSIGNED AUTO_INCREMENT`，INT 最大值 21 亿在很多业务中不够用（电商订单表极易突破）
 - **状态字段用 TINYINT**：如 `status TINYINT NOT NULL DEFAULT 1`
@@ -18,7 +18,7 @@
 - **布尔用 TINYINT(1)**：MySQL 不原生支持 BOOLEAN，`BOOLEAN` 底层映射为 `TINYINT(1)`
 - **选择能满足需求的最小类型**：更小的类型 = 更紧凑的索引 = 更高的 Buffer Pool 命中率
 
-### ZEROFILL（不推荐）
+### 1.1.2 ZEROFILL（不推荐）
 
 ```sql
 -- ZEROFILL 会自动添加 UNSIGNED，不足位数前面补 0
@@ -29,7 +29,7 @@ INSERT INTO t VALUES (42);  -- 存储 00042
 -- 只保留功能含义，不再影响显示
 ```
 
-## 1.2浮点数与定点数
+## 1.2 浮点数与定点数
 
 | 类型 | 字节 | 精度 | 适用场景 |
 |------|------|------|---------|
@@ -37,7 +37,7 @@ INSERT INTO t VALUES (42);  -- 存储 00042
 | DOUBLE | 8 | 双精度（约 15 位有效数字） | 同上 |
 | DECIMAL(M, D) | 可变 | **精确**（定点数，字符串存储） | **金额、财务计算（必须！）** |
 
-### 金额为什么不能用 FLOAT/DOUBLE
+### 1.2.1 金额为什么不能用 FLOAT/DOUBLE
 
 ```sql
 -- 浮点数的精度丢失问题
@@ -50,15 +50,15 @@ SELECT CAST(0.1 AS DECIMAL(10,2)) + CAST(0.2 AS DECIMAL(10,2));  -- 0.30
 
 > **金融铁律**：涉及金额的字段**必须**使用 DECIMAL（或用 BIGINT 存储分为单位的整数）。
 
-### DECIMAL 存储特点
+### 1.2.2 DECIMAL 存储特点
 
 - 每 9 个十进制数字占 4 字节
 - DECIMAL(18, 2)：18 位数字，2 位小数 → 约 9 字节
 - `balance DECIMAL(10, 2) COMMENT '余额（元）'` 可存储 -99,999,999.99 ~ 99,999,999.99
 
-# 2.字符串类型
+# 2. 字符串类型
 
-## 2.1CHAR vs VARCHAR
+## 2.1 CHAR vs VARCHAR
 
 | 特性 | CHAR(N) | VARCHAR(N) |
 |------|---------|-----------|
@@ -81,7 +81,7 @@ email VARCHAR(100),
 bio VARCHAR(500);
 ```
 
-## 2.2TEXT 和 BLOB 类型
+## 2.2 TEXT 和 BLOB 类型
 
 | 类型 | 最大长度 | 说明 |
 |------|---------|------|
@@ -91,7 +91,7 @@ bio VARCHAR(500);
 | LONGTEXT | 4GB | 极少用 |
 | BLOB 系列 | 同上 | 二进制大对象（图片、文件） |
 
-### TEXT/BLOB 的问题
+### 2.2.1 TEXT/BLOB 的问题
 
 - **不能有默认值**
 - **索引受限**：只能前缀索引（`TEXT(100)`）
@@ -103,7 +103,7 @@ bio VARCHAR(500);
 > - 图片/文件不存数据库，存 OSS，数据库只存 URL
 > - 大 JSON 考虑 MongoDB 等文档数据库
 
-## 2.3ENUM和SET
+## 2.3 ENUM和SET
 
 ```sql
 -- ENUM：单选（最多 65535 个值）
@@ -127,7 +127,7 @@ CREATE TABLE user (
 
 > **建议**：少用 ENUM/SET。状态字段用 `TINYINT` + 代码枚举（Java Enum），扩展更灵活。
 
-# 3.日期时间类型
+# 3. 日期时间类型
 
 | 类型 | 字节 | 范围 | 时区感知 | 精度 |
 |------|------|------|---------|------|
@@ -137,7 +137,7 @@ CREATE TABLE user (
 | TIMESTAMP | 4~7 | 1970-01-01 00:00:01 ~ 2038-01-19 03:14:07 | ✓ | 秒(默认)/微秒 |
 | YEAR | 1 | 1901 ~ 2155 | ✗ | 年 |
 
-## 3.1DATETIME vs TIMESTAMP
+## 3.1 DATETIME vs TIMESTAMP
 
 | 特性 | DATETIME | TIMESTAMP |
 |------|---------|-----------|
@@ -158,13 +158,13 @@ update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMEST
 > 2. 时区语义清晰（存储的是"实际时间"，而非"UTC 的时间戳"）
 > 3. 如果业务跨时区，由应用层处理时区转换
 
-## 3.2关于 2038 年问题
+## 3.2 关于 2038 年问题
 
 TIMESTAMP 使用 32 位有符号整数存储 Unix 时间戳，最大值 `2147483647` → **2038-01-19 03:14:07 UTC**，超过此时间点会溢出。
 
 > MySQL 8.0 尚未解决此问题。保险起见，所有新表统一使用 DATETIME。
 
-# 4.JSON类型（5.7.8+）
+# 4. JSON类型（5.7.8+）
 
 MySQL 5.7 引入原生的 JSON 类型，提供 JSON 校验、高效存储和索引支持。
 
@@ -191,7 +191,7 @@ ALTER TABLE user ADD INDEX idx_tags ((CAST(attrs->'$.tags' AS CHAR(50) ARRAY)));
 - 不适合大 JSON（MySQL 限制 JSON 最大 1GB，按经验几百 KB 以内）
 - JSON 列不能有默认值（除了 NULL）
 
-# 5.空间数据类型（GIS）
+# 5. 空间数据类型（GIS）
 
 ```sql
 -- 地理坐标
@@ -211,7 +211,7 @@ FROM store
 WHERE ST_Distance_Sphere(location, ST_GeomFromText('POINT(116.40 39.90)', 4326)) < 5000;
 ```
 
-# 6.类型选择总结
+# 6. 类型选择总结
 
 | 场景 | 推荐类型 | 反例 |
 |------|---------|------|

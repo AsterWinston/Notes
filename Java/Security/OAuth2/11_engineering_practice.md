@@ -2,7 +2,7 @@
 
 ## 1.1 Token 验证性能优化
 
-### 资源服务器端 Token 验证优化
+### 1.1.1 资源服务器端 Token 验证优化
 
 ```java
 /**
@@ -55,7 +55,7 @@ public class HighPerformanceJwtValidator {
 }
 ```
 
-### 授权服务器端 Token 生成优化
+### 1.1.2 授权服务器端 Token 生成优化
 
 ```java
 /**
@@ -107,7 +107,7 @@ public class OptimizedTokenService {
 
 ## 1.2 网络开销优化
 
-### Introspection 调用优化
+### 1.2.1 Introspection 调用优化
 
 ```java
 @Service
@@ -198,7 +198,7 @@ public class OptimizedIntrospectionService {
 5. 签名密钥统一由 KMS 管理（所有 AS 实例共享）
 ```
 
-### 一致性考量
+### 2.1.1 一致性考量
 
 ```
 OAuth2 状态存储的一致性要求：

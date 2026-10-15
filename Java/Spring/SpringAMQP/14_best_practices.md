@@ -1,6 +1,6 @@
-# 1.设计模式与架构最佳实践
+# 1. 设计模式与架构最佳实践
 
-## 1.1消息格式规范
+## 1.1 消息格式规范
 统一消息格式可以减少解析成本和错误：
 
 ```java
@@ -30,7 +30,7 @@ public void handleMessage(BaseMessage<Order> baseMessage) {
 }
 ```
 
-## 1.2服务间消息目录
+## 1.2 服务间消息目录
 建议在项目中建立统一的消息目录（Message Catalog），管理所有消息的定义：
 
 ```java
@@ -66,7 +66,7 @@ rabbitTemplate.convertAndSend(
     order);
 ```
 
-## 1.3配置集中管理
+## 1.3 配置集中管理
 ```java
 @Configuration
 public class RabbitMQGlobalConfig {
@@ -124,9 +124,9 @@ public class RabbitMQGlobalConfig {
 }
 ```
 
-# 2.幂等性实践
+# 2. 幂等性实践
 
-## 2.1为什么需要幂等性
+## 2.1 为什么需要幂等性
 在消息队列中，消息可能会被**重复投递**：
 - 消费者处理成功但Ack网络超时，Broker重发
 - 生产者因超时重试，发送重复消息
@@ -134,9 +134,9 @@ public class RabbitMQGlobalConfig {
 
 因此，**消费者必须保证幂等性**：同一消息无论消费多少次，最终结果与消费一次相同。
 
-## 2.2实现方案
+## 2.2 实现方案
 
-### 2.2.1基于数据库唯一约束
+### 2.2.1 基于数据库唯一约束
 ```java
 @RabbitListener(queues = "order.create.queue")
 public void handleOrderCreate(OrderMessage msg) {
@@ -150,7 +150,7 @@ public void handleOrderCreate(OrderMessage msg) {
 }
 ```
 
-### 2.2.2基于Redis去重
+### 2.2.2 基于Redis去重
 ```java
 @RabbitListener(queues = "order.create.queue")
 public void handleOrderCreate(OrderMessage msg) {
@@ -170,7 +170,7 @@ public void handleOrderCreate(OrderMessage msg) {
 }
 ```
 
-### 2.2.3基于数据库去重表
+### 2.2.3 基于数据库去重表
 ```java
 CREATE TABLE message_dedup (
     message_id VARCHAR(64) PRIMARY KEY,
@@ -200,24 +200,24 @@ public void handleOrderCreate(OrderMessage msg) {
 }
 ```
 
-## 2.3幂等性方案对比
+## 2.3 幂等性方案对比
 | 方案 | 性能 | 可靠性 | 实现复杂度 | 适用场景 |
 |------|------|--------|-----------|---------|
 | 数据库唯一约束 | 中 | 高 | 低 | 操作本身有自然唯一ID |
 | Redis | 高 | 中 | 中 | 高并发、可容忍少量丢失 |
 | 去重表 | 中 | 高 | 中 | 需要完整记录的消息去重 |
 
-# 3.消息顺序性
+# 3. 消息顺序性
 
-## 3.1RabbitMQ中的消息顺序
+## 3.1 RabbitMQ中的消息顺序
 RabbitMQ在默认配置下**不保证消息的全局顺序**，原因：
 - 多个消费者并发消费时，处理速度不同导致乱序
 - 消息重试时可能打乱顺序
 - 网络延迟导致到达顺序不确定
 
-## 3.2保证消息顺序的方案
+## 3.2 保证消息顺序的方案
 
-### 3.2.1单消费者 + prefetch=1
+### 3.2.1 单消费者 + prefetch=1
 ```yaml
 spring:
   rabbitmq:
@@ -235,7 +235,7 @@ public void handleSequentialOrder(Order order) {
 }
 ```
 
-### 3.2.2按业务Key分区
+### 3.2.2 按业务Key分区
 如果只需要相关消息有序（如同一订单的消息），可以将同一业务Key的消息发送到同一队列：
 
 ```java
@@ -245,9 +245,9 @@ String queueName = "order.partition.queue." + index;
 rabbitTemplate.convertAndSend(queueName, orderMessage);
 ```
 
-# 4.性能优化
+# 4. 性能优化
 
-## 4.1生产者端优化
+## 4.1 生产者端优化
 ```java
 @Bean
 public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
@@ -266,7 +266,7 @@ public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 }
 ```
 
-## 4.2消费者端优化
+## 4.2 消费者端优化
 ```yaml
 spring:
   rabbitmq:
@@ -290,7 +290,7 @@ public CompletableFuture<Void> handleAsync(Message message) {
 }
 ```
 
-## 4.3Broker端优化
+## 4.3 Broker端优化
 ```bash
 # 1. 消息持久化优化：批量确认
 # 配置 broker.conf
@@ -303,7 +303,7 @@ vm_memory_high_watermark.relative = 0.4
 # 4. 网络优化：增大TCP缓冲区
 ```
 
-## 4.4性能基准参考
+## 4.4 性能基准参考
 | 指标 | 参考值（单节点） |
 |------|----------------|
 | 简单消息吞吐（非持久化） | 5-10万 msg/s |
@@ -311,9 +311,9 @@ vm_memory_high_watermark.relative = 0.4
 | 带确认的持久化消息 | 5000-10000 msg/s |
 | 事务消息 | 200-1000 msg/s |
 
-# 5.常见问题排查
+# 5. 常见问题排查
 
-## 5.1消息丢失
+## 5.1 消息丢失
 ```
 现象：消息发送了但消费者没收到
 排查步骤：
@@ -326,7 +326,7 @@ vm_memory_high_watermark.relative = 0.4
 7. 检查消费者是否正确处理了Ack
 ```
 
-## 5.2消息重复消费
+## 5.2 消息重复消费
 ```
 现象：同一条消息被消费多次
 排查步骤：
@@ -337,7 +337,7 @@ vm_memory_high_watermark.relative = 0.4
 解决方案：消费端实现幂等性
 ```
 
-## 5.3消费者不消费
+## 5.3 消费者不消费
 ```
 现象：队列中有消息但消费者不消费
 排查步骤：
@@ -349,7 +349,7 @@ vm_memory_high_watermark.relative = 0.4
 6. 检查autoStartup配置是否为false
 ```
 
-## 5.4消息堆积
+## 5.4 消息堆积
 ```
 现象：队列中消息数量持续增长
 排查步骤：
@@ -360,7 +360,7 @@ vm_memory_high_watermark.relative = 0.4
 5. 临时方案：增加消费者数量，提高prefetch
 ```
 
-## 5.5连接断开
+## 5.5 连接断开
 ```
 现象：应用日志中出现Connection reset
 排查步骤：
@@ -371,9 +371,9 @@ vm_memory_high_watermark.relative = 0.4
 5. 检查Broker的连接数限制是否达到上限
 ```
 
-# 6.开发调试技巧
+# 6. 开发调试技巧
 
-## 6.1本地开发环境
+## 6.1 本地开发环境
 ```java
 // 使用TestRabbitTemplate进行测试
 @SpringBootTest
@@ -397,7 +397,7 @@ class MessageTest {
 }
 ```
 
-## 6.2RabbitListenerTestHarness
+## 6.2 RabbitListenerTestHarness
 ```java
 @SpringBootTest
 class ListenerTest {
@@ -414,7 +414,7 @@ class ListenerTest {
 }
 ```
 
-## 6.3日志配置
+## 6.3 日志配置
 ```yaml
 logging:
   level:
@@ -423,7 +423,7 @@ logging:
     com.rabbitmq.client: DEBUG
 ```
 
-## 6.4Mock测试
+## 6.4 Mock测试
 不使用真实RabbitMQ的单元测试：
 
 ```java
@@ -449,9 +449,9 @@ class OrderMessageServiceTest {
 }
 ```
 
-# 7.安全最佳实践
+# 7. 安全最佳实践
 
-## 7.1最小权限原则
+## 7.1 最小权限原则
 ```bash
 # 为不同服务创建独立的用户，分配最小权限
 rabbitmqctl add_user order_service password
@@ -459,7 +459,7 @@ rabbitmqctl set_permissions -p / order_service "^order\." "^order\." "^order\."
 # 只允许 order_service 用户访问以 "order." 开头的Exchange/Queue
 ```
 
-## 7.2使用TLS加密
+## 7.2 使用TLS加密
 ```yaml
 spring:
   rabbitmq:
@@ -471,7 +471,7 @@ spring:
       trust-store: classpath:truststore.p12
 ```
 
-## 7.3消息体敏感信息处理
+## 7.3 消息体敏感信息处理
 ```java
 // 发送前脱敏
 @RabbitListener(queues = "user.queue")
@@ -487,9 +487,9 @@ private String maskPhone(String phone) {
 }
 ```
 
-# 8.面试高频知识点
+# 8. 面试高频知识点
 
-## 8.1消息队列常见面试题
+## 8.1 消息队列常见面试题
 以下是用Spring AMQP知识可以回答的高频面试题：
 
 **Q1: RabbitMQ如何保证消息不丢失？**
@@ -516,7 +516,7 @@ A: Direct(精确路由)、Topic(模式匹配)、Fanout(广播)、Headers(头部�
 **Q8: 如何保证DB和MQ的数据一致性？**
 A: 本地消息表 + 定时补偿，或使用支持事务消息的MQ（RocketMQ）。
 
-## 8.2常见配置清单（面试笔试）
+## 8.2 常见配置清单（面试笔试）
 ```yaml
 spring:
   rabbitmq:
@@ -541,7 +541,7 @@ spring:
           initial-interval: 1000
 ```
 
-# 9.学习资源推荐
+# 9. 学习资源推荐
 - RabbitMQ官方文档：https://www.rabbitmq.com/documentation.html
 - Spring AMQP官方文档：https://spring.io/projects/spring-amqp
 - Spring AMQP Reference：https://docs.spring.io/spring-amqp/reference/

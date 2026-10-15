@@ -1,4 +1,4 @@
-# 1.MyBatis 插件/拦截器机制概述
+# 1. MyBatis 插件/拦截器机制概述
 
 ```
 MyBatis 的插件（Plugin）机制基于 JDK 动态代理和责任链模式，
@@ -25,7 +25,7 @@ MyBatis 的插件（Plugin）机制基于 JDK 动态代理和责任链模式，
   └──────────────────────────────────────────────────────────────┘
 ```
 
-# 2.Interceptor 接口
+# 2. Interceptor 接口
 
 ```java
 /**
@@ -68,7 +68,7 @@ public interface Interceptor {
 }
 ```
 
-# 3.Invocation — 方法调用封装
+# 3. Invocation — 方法调用封装
 
 ```java
 /**
@@ -100,7 +100,7 @@ public class Invocation {
 }
 ```
 
-# 4.Plugin — 动态代理包装器
+# 4. Plugin — 动态代理包装器
 
 ```java
 /**
@@ -205,7 +205,7 @@ public class Plugin implements InvocationHandler {
 }
 ```
 
-# 5.@Intercepts 和 @Signature 注解
+# 5. @Intercepts 和 @Signature 注解
 
 ```java
 /**
@@ -245,7 +245,7 @@ public class MultiInterceptor implements Interceptor {
 }
 ```
 
-# 6.InterceptorChain — 拦截器链
+# 6. InterceptorChain — 拦截器链
 
 ```java
 /**
@@ -294,7 +294,7 @@ public class InterceptorChain {
 }
 ```
 
-# 7.四大对象的拦截时机
+# 7. 四大对象的拦截时机
 
 ```java
 /**
@@ -323,7 +323,7 @@ public class InterceptorChain {
  */
 ```
 
-# 8.自定义插件完整示例
+# 8. 自定义插件完整示例
 
 ## 8.1 SQL 执行时间统计插件
 
@@ -498,7 +498,7 @@ public class EncryptInterceptor implements Interceptor {
 }
 ```
 
-# 9.插件在 mybatis-config.xml 中的配置
+# 9. 插件在 mybatis-config.xml 中的配置
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -526,7 +526,7 @@ public class EncryptInterceptor implements Interceptor {
 </configuration>
 ```
 
-# 10.MetaObject — MyBatis 的反射工具
+# 10. MetaObject — MyBatis 的反射工具
 
 ```java
 /**
@@ -571,7 +571,7 @@ public class MetaObject {
 }
 ```
 
-# 11.插件开发注意事项
+# 11. 插件开发注意事项
 
 ```
   1. 插件会对所有符合条件的对象生效
@@ -602,7 +602,7 @@ public class MetaObject {
        （因为这些信息在 StatementHandler 中，而不是 ParameterHandler 的方法参数中）
 ```
 
-# 12.插件 vs 拦截器 vs AOP
+# 12. 插件 vs 拦截器 vs AOP
 
 ```
 ┌─────────────────┬─────────────────────┬──────────────────────┬────────────────────┐

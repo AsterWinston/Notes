@@ -1,4 +1,4 @@
-# 1 环境要求
+# 1. 环境要求
 
 ## 1.1 基础环境
 
@@ -17,7 +17,7 @@
 | 2.8 - 3.2 | 推荐（可 KRaft 预览） | 预览 |
 | 3.3+ | 可选（KRaft 推荐） | 生产可用 |
 
-# 2 单机安装（ZooKeeper 模式）
+# 2. 单机安装（ZooKeeper 模式）
 
 ## 2.1 下载与解压
 
@@ -114,7 +114,7 @@ bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 \
     --describe --group my-group
 ```
 
-# 3 单机安装（KRaft 模式，Kafka 3.3+）
+# 3. 单机安装（KRaft 模式，Kafka 3.3+）
 
 KRaft 模式不需要 ZooKeeper，Kafka 使用自身的 Raft 共识协议管理元数据。
 
@@ -161,7 +161,7 @@ metadata.log.dir=/tmp/kraft-metadata-logs
 bin/kafka-server-start.sh -daemon config/kraft/server.properties
 ```
 
-# 4 集群安装
+# 4. 集群安装
 
 ## 4.1 ZooKeeper 集群模式拓扑
 
@@ -239,7 +239,7 @@ bin/kafka-topics.sh --bootstrap-server localhost:9092 \
     --config retention.ms=604800000
 ```
 
-# 5 Java 客户端快速入门
+# 5. Java 客户端快速入门
 
 ## 5.1 Maven 依赖
 
@@ -339,7 +339,7 @@ public class QuickStartConsumer {
 }
 ```
 
-# 6 Admin Client 操作
+# 6. Admin Client 操作
 
 ```java
 import org.apache.kafka.clients.admin.*;
@@ -379,7 +379,7 @@ public class QuickStartAdmin {
 }
 ```
 
-# 7 Kafka 脚本工具速查
+# 7. Kafka 脚本工具速查
 
 ```bash
 ###############################
@@ -467,7 +467,7 @@ kafka-dump-log.sh --files /tmp/kafka-logs/my-topic-0/00000000000000000000.log \
 kafka-dump-log.sh --files /tmp/kafka-logs/my-topic-0/00000000000000000000.index
 ```
 
-# 8 Docker 部署
+# 8. Docker 部署
 
 ## 8.1 docker-compose.yml（ZooKeeper 模式）
 

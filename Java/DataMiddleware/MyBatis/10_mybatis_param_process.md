@@ -1,4 +1,4 @@
-# 1.单个简单类型参数
+# 1. 单个简单类型参数
 
 ```
 简单类型包括：
@@ -128,17 +128,17 @@ jdbcType：可以省略
 parameterType：可以省略
 ```
 
-# 2.map参数
+# 2. map参数
 ```
 这种⽅式是⼿动封装Map集合，将每个条件以key和value的形式存放到集合中。然后在使⽤的时候通过#{map集合的key}来取值。
 ```
 
-# 3.实体类参数
+# 3. 实体类参数
 ```
 这⾥需要注意的是：#{} ⾥⾯写的是属性名字。这个属性名其本质上是：set/get⽅法名去掉set/get之后的名字。
 ```
 
-# 4.多参数
+# 4. 多参数
 ```
 对于多个参数，mybatis底层会创建⼀个map集合，以arg0/param1为key，传入的参数为 value
 例如：
@@ -157,7 +157,7 @@ map.put("param2", sex);
 
 ```
 
-# 5.@Param注解（命名参数）
+# 5. @Param注解（命名参数）
 ```
 mybatis提供的key可读性太差，可以使用@Param注解自己指定key的名字
 
@@ -170,7 +170,7 @@ List<Student> selectByNameAndAge(@Param(value="name") String name, @Param("age")
 注意：@Param替换的是map集合中arg0，arg1… 另外的param1，param2…还是可以继续使用的。
 ```
 
-# 6.@Param源码分析
+# 6. @Param源码分析
 ```
 反射机制可以做到获取方法的形参名字，但是为何Mybatis使用注解标注形参的原因：MyBatis 早期版本发布时，Java 8 的 -parameters 编译选项还不存在，所以它必须依赖于其他机制。即使在 Java 8 普及之后，MyBatis 仍然选择继续使用注解和约定（例如 param1, param2），主要是出于以下原因
 
@@ -187,7 +187,7 @@ List<Student> selectByNameAndAge(@Param(value="name") String name, @Param("age")
 
 ```
 
-# 7.ParamNameResolver 源码分析
+# 7. ParamNameResolver 源码分析
 
 ```java
 /**

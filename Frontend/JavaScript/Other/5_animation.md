@@ -1,10 +1,10 @@
-# 1.贝塞尔曲线
+# 1. 贝塞尔曲线
 ```
 贝塞尔曲线用于计算机图形绘制形状，CSS 动画和许多其他地方。
 
 它们其实非常简单，值得学习一次并且在矢量图形和高级动画的世界里非常受用。
 ```
-## 1.1控制点
+## 1.1 控制点
 ```javascript
 贝塞尔曲线由控制点定义。
 
@@ -44,7 +44,7 @@
 
 
 ```
-## 1.2数学
+## 1.2 数学
 ```javascript
 贝塞尔曲线可以使用数学方程式来描述。
 
@@ -82,7 +82,7 @@ y = (1−t)2 * 0 + 2(1−t)t * 1 + t2 * 0 = 2(1-t)t = –t2 + 2t
 
 所以绘制算法可能更容易理解。
 ```
-## 1.3德卡斯特里奥算法
+## 1.3 德卡斯特里奥算法
 ```javascript
 德卡斯特里奥算法与曲线的数学定义相同，但直观地显示了曲线是如何被建立的。
 
@@ -160,7 +160,7 @@ y = (1−t)2 * 0 + 2(1−t)t * 1 + t2 * 0 = 2(1-t)t = –t2 + 2t
 
 在计算机图形中样条插值通常用于构建连接多个点的平滑曲线。
 ```
-## 1.4总结
+## 1.4 总结
 ```javascript
 贝塞尔曲线由其控制点定义。
 
@@ -179,13 +179,13 @@ y = (1−t)2 * 0 + 2(1−t)t * 1 + t2 * 0 = 2(1-t)t = –t2 + 2t
 在 CSS 动画中描述动画的路径和速度。
 ```
 
-# 2.CSS动画
+# 2. CSS动画
 ```
 CSS 动画可以在不借助 Javascript 的情况下做出一些简单的动画效果。
 
 你也可以通过 Javascript 控制 CSS 动画，使用少量的代码，就能让动画表现更加出色。
 ```
-## 2.1CSS过度（transition）[#css-transition]
+## 2.1 CSS过度（transition）[#css-transition]
 ```javascript
 CSS 过渡的理念非常简单，我们只需要定义某一个属性以及如何动态地表现其变化。当属性变化时，浏览器将会绘制出相应的过渡动画。
 
@@ -243,18 +243,18 @@ growing.onclick = function() {
 
 现在让我们一个一个展开看这些属性。
 ```
-## 2.2transition-property
+## 2.2 transition-property
 ```javascript
 在 transition-property 中我们可以列举要设置动画的所有属性，如：left、margin-left、height 和 color。
 
 不是所有的 CSS 属性都可以使用过渡动画，但是它们中的大多数都是可以的。all 表示应用在所有属性上。
 ```
-## 2.3transition-duration
+## 2.3 transition-duration
 ```javascript
 transition-duration 允许我们指定动画持续的时间。时间的格式参照 CSS 时间格式：单位为秒 s 或者毫秒 ms。
 
 ```
-## 2.4transition-delay
+## 2.4 transition-delay
 ```javascript
 transition-delay 允许我们设定动画开始前的延迟时间。例如，对于 transition-delay: 1s，动画将会在属性变化发生 1 秒后开始渲染。
 
@@ -289,7 +289,7 @@ stripe.onclick = function() {
   stripe.classList.add('animate');
 };
 ```
-## 2.5transition-timing-function
+## 2.5 transition-timing-function
 ```javascript
 时间函数描述了动画进程在时间上的分布。它是先慢后快还是先快后慢？
 
@@ -450,7 +450,7 @@ step-start —— 等同于 steps(1, start)。即：动画立刻开始，并且�
 step-end —— 等同于 steps(1, end)。即：在 transition-duration 结束时生成一段动画。
 这些值很少会被用到，因为它们并不算是真正的动画，而是单步的变化。
 ```
-## 2.6transitionend事件
+## 2.6 transitionend事件
 ```javascript
 CSS 动画完成后，会触发 transitionend 事件。
 
@@ -491,7 +491,7 @@ event.propertyName ：当前完成动画的属性，这在我们同时为多个�
 
 event.elapsedTime ：动画完成的时间（按秒计算），不包括 transition-delay。
 ```
-## 2.7关键动画（Keyframes）
+## 2.7 关键动画（Keyframes）
 ```javascript
 我们可以通过 CSS 提供的 @keyframes 规则整合多个简单的动画。
 
@@ -527,7 +527,7 @@ event.elapsedTime ：动画完成的时间（按秒计算），不包括 transit
 
 很可能你并不需要经常用到 @keyframes，除非你的网站上有一直在运动的元素。
 ```
-## 2.8总结
+## 2.8 总结
 ```javascript
 CSS 动画允许你为一个或者多个属性的变化创建丝滑流畅（也可能不是）的过渡动画。
 
@@ -546,13 +546,13 @@ JavaScript 动画更加灵活。它们可以实现任何动画逻辑，比如某
 但是在下一节，我们将会学习一些 JavaScript 动画来实现更加复杂的效果。
 ```
 
-# 3.JavaScript动画
+# 3. JavaScript动画
 ```
 JavaScript 动画可以处理 CSS 无法处理的事情。
 
 例如，沿着具有与 Bezier 曲线不同的时序函数的复杂路径移动，或者实现画布上的动画。
 ```
-## 3.1使用setInterval
+## 3.1 使用setInterval
 ```javascript
 从 HTML/CSS 的角度来看，动画是 style 属性的逐渐变化。例如，将 style.left 从 0px 变化到 100px 可以移动元素。
 
@@ -592,7 +592,7 @@ function draw(timePassed) {
 
 
 ```
-## 3.2使用requestAnimationFrame
+## 3.2 使用requestAnimationFrame
 ```javascript
 假设我们有几个同时运行的动画。
 
@@ -649,7 +649,7 @@ callback 得到一个参数 —— 从页面加载开始经过的毫秒数。这
   });
 </script>
 ```
-## 3.3结构化动画
+## 3.3 结构化动画
 ```javascript
 现在我们可以在 requestAnimationFrame 基础上创建一个更通用的动画函数：
 
@@ -722,7 +722,7 @@ animate({
 });
 与 CSS 动画不同，我们可以在这里设计任何时序函数和任何绘图函数。时序函数不受 Bezier 曲线的限制。并且 draw 不局限于操作 CSS 属性，还可以为类似烟花动画或其他动画创建新元素。
 ```
-## 3.4时序函数
+## 3.4 时序函数
 ```javascript
 上文我们看到了最简单的线性时序函数。
 
@@ -803,7 +803,7 @@ x=1.5 时的演示
 
 
 ```
-## 3.5逆转：ease*
+## 3.5 逆转：ease*
 ```javascript
 我们有一组时序函数。它们的直接应用称为“easeIn”。
 
@@ -873,13 +873,13 @@ bounceEaseInOut 演示如下:
 蓝色 —— easeInOut。
 正如我们所看到的，动画前半部分的图形是缩小的“easeIn”，后半部分是缩小的“easeOut”。结果是动画以相同的效果开始和结束。
 ```
-## 3.6更有趣的"draw"
+## 3.6 更有趣的"draw"
 ```javascript
 除了移动元素，我们还可以做其他事情。我们所需要的只是写出合适的 draw。
 
 这是动画形式的“弹跳”文字输入：
 ```
-## 3.7总结
+## 3.7 总结
 ```javascript
 JavaScript 动画应该通过 requestAnimationFrame 实现。该内建方法允许设置回调函数，以便在浏览器准备重绘时运行。那通常很快，但确切的时间取决于浏览器。
 

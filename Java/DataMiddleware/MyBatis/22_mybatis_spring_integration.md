@@ -1,4 +1,4 @@
-# 1.MyBatis-Spring 整合概述
+# 1. MyBatis-Spring 整合概述
 
 ```
 MyBatis-Spring 是将 MyBatis 无缝集成到 Spring 框架中的桥梁模块。
@@ -16,7 +16,7 @@ MyBatis-Spring 是将 MyBatis 无缝集成到 Spring 框架中的桥梁模块。
   mybatis-spring-boot-starter → Spring Boot 自动配置
 ```
 
-# 2.核心组件
+# 2. 核心组件
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -43,7 +43,7 @@ MyBatis-Spring 是将 MyBatis 无缝集成到 Spring 框架中的桥梁模块。
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-# 3.SqlSessionFactoryBean — 工厂 Bean
+# 3. SqlSessionFactoryBean — 工厂 Bean
 
 ## 3.1 源码分析
 
@@ -277,7 +277,7 @@ mybatis:
     some-key: some-value
 ```
 
-# 4.SqlSessionTemplate — 线程安全的 SqlSession
+# 4. SqlSessionTemplate — 线程安全的 SqlSession
 
 ```java
 /**
@@ -422,7 +422,7 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
 }
 ```
 
-# 5.MapperFactoryBean — Mapper 接口的工厂 Bean
+# 5. MapperFactoryBean — Mapper 接口的工厂 Bean
 
 ```java
 /**
@@ -466,7 +466,7 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
 }
 ```
 
-# 6.MapperScannerConfigurer — 自动扫描 Mapper
+# 6. MapperScannerConfigurer — 自动扫描 Mapper
 
 ```java
 /**
@@ -542,7 +542,7 @@ class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 }
 ```
 
-# 7.Spring Boot 中使用 @MapperScan
+# 7. Spring Boot 中使用 @MapperScan
 
 ```java
 /**
@@ -591,7 +591,7 @@ public class CarService {
 }
 ```
 
-# 8.Spring 事务管理整合原理
+# 8. Spring 事务管理整合原理
 
 ```java
 /**
@@ -642,7 +642,7 @@ public class CarService {
  */
 ```
 
-# 9.整合后的完整数据流
+# 9. 整合后的完整数据流
 
 ```
   @Service
@@ -688,7 +688,7 @@ public class CarService {
   └─────────────────────────────────────────────────────────────────┘
 ```
 
-# 10.常见问题与解决
+# 10. 常见问题与解决
 
 ```
 问题 1：Mapper 接口注入失败（NoSuchBeanDefinitionException）
@@ -732,7 +732,7 @@ public class CarService {
   解决：建议在 Spring Boot 中只用 mybatis.mapper-locations 配置
 ```
 
-# 11.MyBatis-Spring Boot Starter 自动配置原理
+# 11. MyBatis-Spring Boot Starter 自动配置原理
 
 ```java
 /**
@@ -792,7 +792,7 @@ public class MybatisAutoConfiguration implements InitializingBean {
 }
 ```
 
-# 12.手动配置 vs Spring Boot 自动配置
+# 12. 手动配置 vs Spring Boot 自动配置
 
 ```
 ┌──────────────────────┬─────────────────────────┬───────────────────────────────┐

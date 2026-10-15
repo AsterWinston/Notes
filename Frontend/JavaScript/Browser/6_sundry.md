@@ -1,10 +1,10 @@
-# 1.DOM变动观察器（Mutation observer）
+# 1. DOM变动观察器（Mutation observer）
 ```
 MutationObserver 是一个内建对象，它观察 DOM 元素，并在检测到更改时触发回调。
 
 我们将首先看一下语法，然后探究一个实际的用例，以了解它在什么地方有用。
 ```
-## 1.1语法
+## 1.1 语法
 ```javascript
 MutationObserver 使用简单。
 
@@ -80,7 +80,7 @@ mutationRecords = [{
 }];
 因此，MutationObserver 允许对 DOM 子树中的任何更改作出反应。
 ```
-## 1.2用于集成
+## 1.2 用于集成
 ```javascript
 在什么时候可能有用？
 
@@ -94,7 +94,7 @@ mutationRecords = [{
 
 MutationObserver 使我们能够实现这种需求。
 ```
-## 1.3用于架构
+## 1.3 用于架构
 ```javascript
 从架构的角度来看，在某些情况下，MutationObserver 有不错的作用。
 
@@ -192,7 +192,7 @@ demoElem.innerHTML = `下面是一个代码段：
 `;
 现在我们有了 MutationObserver，它可以跟踪观察到的元素中的，或者整个 document 中的所有高亮显示。我们可以在 HTML 中添加/删除代码段，而无需考虑高亮问题。
 ```
-## 1.4其他方法
+## 1.4 其他方法
 ```javascript
 有一个方法可以停止观察节点：
 
@@ -217,7 +217,7 @@ observer.takeRecords() 返回的记录被从处理队列中移除
 
 观察到 DOM 节点这一事实并不能阻止垃圾回收。
 ```
-## 1.5总结
+## 1.5 总结
 ```javascript
 MutationObserver 可以对 DOM 的变化作出反应 —— 特性（attribute），文本内容，添加/删除元素。
 
@@ -226,7 +226,7 @@ MutationObserver 可以对 DOM 的变化作出反应 —— 特性（attribute�
 MutationObserver 可以跟踪任何更改。config “要观察的内容”选项用于优化，避免不必要的回调调用以节省资源。
 ```
 
-# 2.选择（Selection）和范围（Range）
+# 2. 选择（Selection）和范围（Range）
 ```
 在本章中，我们将介绍文档中的选择以及在表单字段（如 <input>）中的选择。
 
@@ -236,7 +236,7 @@ JavaScript 可以访问现有的选择，选择/取消全部或部分 DOM 节点
 
 底层的（underlying）Range 和 Selection 对象很容易掌握，因此，你不需要任何诀窍便可以使用它们做你想要做的事儿。
 ```
-## 2.1范围
+## 2.1 范围
 ```javascript
 选择的基本概念是 Range：本质上是一对“边界点”：范围起点和范围终点。
 
@@ -368,7 +368,7 @@ From <input id="start" type="number" value=1> – To <input id="end" type="numbe
 
 如果我们想将节点作为一个整体，我们可以将元素传入 setStart/setEnd。否则，我们可以在文本层级上进行操作。
 ```
-## 2.2range属性
+## 2.2 range属性
 ```javascript
 我们在上面的示例中创建的 range 对象具有以下属性：
 
@@ -382,7 +382,7 @@ collapsed —— 布尔值，如果范围在同一点上开始和结束（所以
 commonAncestorContainer —— 在范围内的所有节点中最近的共同祖先节点，
 在上例中：<p>
 ```
-## 2.3选择范围的方法
+## 2.3 选择范围的方法
 ```javascript
 有许多便利的方法可以操纵范围。
 
@@ -409,7 +409,7 @@ selectNodeContents(node) 设置范围以选择整个 node 的内容
 collapse(toStart) 如果 toStart=true 则设置 end=start，否则设置 start=end，从而折叠范围
 cloneRange() 创建一个具有相同起点/终点的新范围
 ```
-## 2.4编辑范围的方法
+## 2.4 编辑范围的方法
 ```javascript
 创建范围后，我们可以使用以下方法操作其内容：
 
@@ -477,7 +477,7 @@ surroundContents(node) —— 使用 node 将所选范围中的内容包裹起�
 
 还有比较范围的方法，但是很少使用。当你需要它们时，请参考 规范 或 MDN 手册。
 ```
-## 2.5选择
+## 2.5 选择
 ```javascript
 Range 是用于管理选择范围的通用对象。尽管创建一个 Range 并不意味着我们可以在屏幕上看到一个内容选择。
 
@@ -494,7 +494,7 @@ Range 是用于管理选择范围的通用对象。尽管创建一个 Range 并�
 
 alert(document.getSelection())
 ```
-## 2.6选择属性
+## 2.6 选择属性
 ```javascript
 如前所述，理论上一个选择可能包含多个范围。我们可以使用下面这个方法获取这些范围对象：
 
@@ -527,7 +527,7 @@ rangeCount —— 选择中的范围数，除 Firefox 外，其他浏览器最�
 
 但是，我们也可以从前向后进行相同的选择：从 “italic” 到 “Example”（从前向后），这样它结束的位置（焦点）将在它开始的位置（锚点）之前。
 ```
-## 2.7选择事件
+## 2.7 选择事件
 ```javascript
 有一些事件可以跟踪选择：
 
@@ -581,7 +581,7 @@ As text: <span id="astext"></span>
   };
 </script>
 ```
-## 2.8选择方法
+## 2.8 选择方法
 ```javascript
 我们可以通过添加/移除范围来处理选择：
 
@@ -627,7 +627,7 @@ containsNode(node, allowPartialContainment = false) —— 检查选择中是否
 
 某些选择方法例外，它们会替换现有的选择，例如 setBaseAndExtent。
 ```
-## 2.9表单控件中的选择
+## 2.9 表单控件中的选择
 ```javascript
 诸如 input 和 textarea 等表单元素提供了 专用的选择 API，没有 Selection 或 Range 对象。由于输入值是纯文本而不是 HTML，因此不需要此类对象，一切都变得更加简单。
 
@@ -756,7 +756,7 @@ button.onclick = () => {
   };
 </script>
 ```
-## 2.10使不可选
+## 2.10 使不可选
 ```javascript
 要使某些内容不可选，有三种方式：
 
@@ -785,13 +785,13 @@ button.onclick = () => {
 
 我们还可以使用 document.getSelection().empty() 来在选择发生后清除选择。很少使用这种方法，因为这会在选择项消失时导致不必要的闪烁。
 ```
-## 2.11参考
+## 2.11 参考
 ```javascript
 DOM 规范：范围（Range）
 选择（Selection）API
 HTML 规范：用于文本控件选择的 API
 ```
-## 2.12总结
+## 2.12 总结
 ```javascript
 我们介绍了用于选择的两种不同的 API：
 
@@ -823,7 +823,7 @@ selection.addRange(range);
 最后，关于光标。在诸如 <textarea> 之类的可编辑元素中，光标的位置始终位于选择的起点或终点。我们可以通过设置 elem.selectionStart 和 elem.selectionEnd 来获取光标位置或移动光标。
 ```
 
-# 3.事件循环：微任务和宏任务
+# 3. 事件循环：微任务和宏任务
 ```
 浏览器中 JavaScript 的执行流程和 Node.js 中的流程都是基于 事件循环 的。
 
@@ -831,7 +831,7 @@ selection.addRange(range);
 
 在本章中，我们首先介绍事件循环工作方式的理论细节，然后介绍该知识的实际应用。
 ```
-## 3.1事件循环
+## 3.1 事件循环
 ```javascript
 事件循环 的概念非常简单。它是一个在 JavaScript 引擎等待任务，执行任务和进入休眠状态等待更多任务这几个状态之间转换的无限循环。
 
@@ -867,7 +867,7 @@ selection.addRange(range);
 如果一项任务执行花费的时间过长，浏览器将无法执行其他任务，例如处理用户事件。因此，在一定时间后，浏览器会抛出一个如“页面未响应”之类的警报，建议你终止这个任务。这种情况常发生在有大量复杂的计算或导致死循环的程序错误时。
 以上是理论知识。现在，让我们来看看如何应用这些知识。
 ```
-## 3.2用例1：拆分CPU过载任务
+## 3.2 用例1：拆分CPU过载任务
 ```javascript
 假设我们有一个 CPU 过载任务。
 
@@ -967,7 +967,7 @@ count();
 
 最后，我们将一个繁重的任务拆分成了几部分，现在它不会阻塞用户界面了。而且其总耗时并不会长很多。
 ```
-## 3.3用例2：进度条指示
+## 3.3 用例2：进度条指示
 ```javascript
 对浏览器脚本中的过载型任务进行拆分的另一个好处是，我们可以显示进度指示。
 
@@ -1019,7 +1019,7 @@ count();
 </script>
 现在 div 显示了 i 的值的增长，这就是进度条的一种。
 ```
-## 3.4用例3：在事件之后做一些事情
+## 3.4 用例3：在事件之后做一些事情
 ```javascript
 在事件处理程序中，我们可能会决定推迟某些行为，直到事件冒泡并在所有级别上得到处理后。我们可以通过将该代码包装到零延迟的 setTimeout 中来做到这一点。
 
@@ -1037,7 +1037,7 @@ menu.onclick = function() {
   setTimeout(() => menu.dispatchEvent(customEvent));
 };
 ```
-## 3.5宏任务和微任务
+## 3.5 宏任务和微任务
 ```javascript
 除了本章中所讲的 宏任务（macrotask） 外，还有在 微任务（Microtask） 一章中提到的 微任务（microtask）。
 
@@ -1093,7 +1093,7 @@ timeout 最后显示，因为它是一个宏任务。
   count();
 </script>
 ```
-## 3.6总结
+## 3.6 总结
 ```javascript
 更详细的事件循环算法（尽管与 规范 相比仍然是简化过的）：
 

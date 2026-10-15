@@ -1,4 +1,4 @@
-# 1.文件上传
+# 1. 文件上传
 ```
 使用SpringMVC6版本，不需要添加以下依赖：
 <dependency>
@@ -107,7 +107,7 @@ public class FileController {
 }
 
 ```
-# 2.文件下载
+# 2. 文件下载
 ```
 <!--文件下载-->
 <a th:href="@{/download}">文件下载</a>

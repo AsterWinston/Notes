@@ -1,10 +1,10 @@
-# 1.logo设置
+# 1. logo设置
 
-## 1.1关闭logo图标
+## 1.1 关闭logo图标
 
-### 1.1.1配置方式
+### 1.1.1 配置方式
 spring.main.banner-mode=off
-### 1.1.2代码方式
+### 1.1.2 代码方式
 第一种代码：
 ```
 @SpringBootApplication
@@ -23,7 +23,7 @@ new SpringApplicationBuilder()
                 .bannerMode(Banner.Mode.OFF)
                 .run(args);
 ```
-## 1.2修改logo图标
+## 1.2 修改logo图标
 在src/main/resources目录下存放一个banner.txt文件。文件名固定。
 利用一些网站生成图标：
 https://www.bootschool.net/ascii （支持中文、英文）
@@ -31,10 +31,10 @@ http://patorjk.com/software/taag/ （只支持英文）
 https://www.degraeve.com/img2txt.php （只支持图片）
 获取图标粘贴到banner.txt文件中运行程序即可。
 
-# 2.PageHelper整合
+# 2. PageHelper整合
 官网地址：https://pagehelper.github.io/
 
-## 2.1引入依赖
+## 2.1 引入依赖
 ```
 <dependency>
     <groupId>com.github.pagehelper</groupId>
@@ -46,7 +46,7 @@ https://www.degraeve.com/img2txt.php （只支持图片）
 </dependency>
 
 ```
-## 2.2编写代码
+## 2.2 编写代码
 ```
 @RestController
 public class VipController {
@@ -66,11 +66,11 @@ public class VipController {
 }
 ```
 
-# 3.web层响应结果封装
+# 3. web层响应结果封装
 
 对于前后端分离的系统来说，为了降低沟通成本，我们有必要给前端系统开发人员返回统一格式的JSON数据。多数开发团队一般都会封装一个`R`对象来解决统一响应格式的问题。
 
-## 3.1封装R对象
+## 3.1 封装R对象
 ```
 @NoArgsConstructor
 @AllArgsConstructor
@@ -135,7 +135,7 @@ public class R<T> {
 
 ```
 
-## 3.2改进R对象
+## 3.2 改进R对象
 以上R对象存在的问题是，难以维护，项目中可能会出现很多这样的代码：R.FAIL(400, "修改失败")。
 
 引入枚举类型进行改进：
@@ -210,7 +210,7 @@ public class R<T> {
 
 ```
 
-# 4.事务管理
+# 4. 事务管理
 SpringBoot中的事务管理仍然使用的Spring框架中的事务管理机制，在代码实现上更为简单了。不需要手动配置事务管理器，SpringBoot自动配置完成了。我们只需要使用@Transactional注解标注需要控制事务的方法即可。另外事务的特性等仍然延用Spring框架。大家可以在老杜发布的Spring视频教程中详细学习事务管理机制。以下代码是在SpringBoot框架中进行的事务控制：
 ```
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
@@ -243,7 +243,7 @@ public class AccountServiceImpl implements AccountService {
 我们只需要在需要控制事务的方法上，或者类上，使用@Transactional注解进行标注即可。然后事务的特性和之前Spring中是完全相同的。最重要的是其他的配置我们一律是不需要的。
 
 
-# 5.SpringBoot打war包
+# 5. SpringBoot打war包
 第一步：将打包方式设置为war
 ```
 <packaging>war</packaging>
@@ -303,9 +303,9 @@ public class Springboot324TransactionApplication extends SpringBootServletInitia
 第五步：执行package命令打war包
 第六步：配置tomcat环境，将war包放入到webapps目录下，启动tomcat服务器，并访问。
 
-# 6.SpringBoot的日志处理
+# 6. SpringBoot的日志处理
 
-## 6.1日志概述
+## 6.1 日志概述
 日志记录是一种关键的技术实践，用于捕捉软件运行时的信息、警告、错误以及其他重要数据。通过分析日志文件，开发人员、测试工程师和运维团队可以深入了解应用程序的行为，快速定位并解决出现的问题，同时对系统性能进行监控与优化。
 虽然在开发初期或简单的应用场景下，使用 System.out.println("记录日志...") 这样的方式来输出信息非常直接且易于实现，但在生产环境中的大型或复杂应用中，这种方式存在诸多不足：
 1. 性能问题：频繁地调用 System.out.println() 会占用额外的 CPU 资源，尤其是在高并发场景下，可能会影响应用程序的性能。
@@ -320,11 +320,11 @@ public class Springboot324TransactionApplication extends SpringBootServletInitia
 - 提供异步日志功能，减少日志记录对应用性能的影响。
 - 能够与各种监控系统集成，支持实时告警和问题追踪。
 
-## 6.2Java中的日志框架
+## 6.2 Java中的日志框架
 
 java语言中存在多种日志框架，每种框架都有其特点和适用场景
 
-### 6.2.1抽象的日志框架
+### 6.2.1 抽象的日志框架
 什么是抽象的日志框架？编译阶段可以使用这些抽象的日志框架，能够正常编译通过，但运行阶段必须提供具体的日志框架，这样做的目的是：具体的日志框架可灵活切换。
 1. SLF4J (Simple Logging Facade for Java)
 - 简介：SLF4J 不是一个具体的日志实现，而是一个简单的抽象层，允许开发者在应用程序中使用统一的日志 API，而实际的日志实现可以在部署时决定。
@@ -335,7 +335,7 @@ java语言中存在多种日志框架，每种框架都有其特点和适用场�
 - 特点：允许在运行时动态选择日志实现，但因类加载机制的问题，有时会导致难以预料的行为，因此不如 SLF4J 受欢迎。
 - 运行时可绑定的具体日志框架：Log4j、Log4j2、Logback、JUL。
 
-### 6.2.2具体的日志框架
+### 6.2.2 具体的日志框架
 1. Log4j（太老，没人用了）
 - 简介：Log4j 是 Apache 软件基金会的一个开源项目，它提供了强大的日志记录功能，支持多种日志级别（如 DEBUG, INFO, WARN, ERROR, FATAL）、灵活的日志输出格式和目的地配置。
 - 特点：易于配置和使用，支持日志滚动策略，适用于中小规模的应用。
@@ -351,7 +351,7 @@ java语言中存在多种日志框架，每种框架都有其特点和适用场�
 这些日志框架各有优势，选择哪一种取决于项目的具体需求、团队的偏好以及现有的技术栈。例如，对于需要高性能和灵活配置的应用，Logback 或 Log4j 2 可能是更好的选择；而对于希望减少对外部库依赖的小型项目，JUL 可能更为合适。
 **SpringBoot 框架默认使用的日志框架是：Logback。**
 
-## 6.3日志级别概述
+## 6.3 日志级别概述
 在 Java 的日志框架中，日志级别（Log Level）是用来指定日志记录的严重程度的一个标准。不同的日志级别代表了不同的重要性和紧急程度，这有助于开发者根据实际需要来过滤和关注特定类型的日志信息。
 常见的日志级别从低到高通常包括以下几种：
 1. TRACE：这是最低级别的日志信息，用于记录最详细的信息，通常是在调试应用时使用。
@@ -371,10 +371,10 @@ java语言中存在多种日志框架，每种框架都有其特点和适用场�
 - 生产环境下要严格控制，因为日志级别越低，磁盘空间受不了。
 SpringBoot 默认将日志打印到控制台。（通过配置可以改变打印到日志文件）
 
-## 6.4更改日志级别
+## 6.4 更改日志级别
 配置文件中：logging.level.root=...配置级别（全局生效）
 
-## 6.5丰富启动日志
+## 6.5 丰富启动日志
 ```
 trace=true
 debug=true
@@ -384,7 +384,7 @@ debug=true
 - trace=true：启用 Spring Boot 的启动跟踪，生成包含启动信息的详细跟踪文件，内容是包含debug=true输出的内容的。
 并且以上两个配置在 SpringBoot 框架启动完成之后，不再有任何作用。
 
-## 6.6日志的粗细粒度
+## 6.6 日志的粗细粒度
 
 ```
 # 设置根日志级别为 INFO
@@ -397,7 +397,7 @@ logging.level.com.powernode=DEBUG
 logging.level.com.powernode.MyService=TRACE
 ```
 
-## 6.7日志输出到文件
+## 6.7 日志输出到文件
 如果日志要输出文件，可以进行如下配置：
 ```
 logging.file.path=./log/
@@ -409,7 +409,7 @@ logging.file.name=my.log
 以上的配置表示在工程的根目录下直接生成 my.log 文件，并且路径不可设置。
 注意：以上两个配置同时存在时，只有 logging.file.name 生效，本质上两个配置不可共存，这是 Spring Boot 框架的一个小 bug。
 
-## 6.8滚动日志
+## 6.8 滚动日志
 滚动日志是一种日志管理机制，用于防止日志文件无限增长，通过将日志文件分割成多个文件，每个文件只包含一定时间段或大小的日志记录。滚动日志可以帮助你更好地管理和维护日志文件，避免单个日志文件过大导致难以处理。
 ```
 # 日志文件达到多大时进行归档
@@ -428,7 +428,7 @@ logging.logback.rollingpolicy.clean-history-on-start=false
 logging.logback.rollingpolicy.file-name-pattern=${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
 ```
 
-## 6.9日志框架切换
+## 6.9 日志框架切换
 在实际开发中也可能会切换日志框架，按照如下配置进行切换：先排除掉，再添加
 ```
 <dependency>
@@ -452,11 +452,11 @@ logging.logback.rollingpolicy.file-name-pattern=${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
 
 注意：一旦切换到 Log4j2 的日志框架，对于之前的配置来说，只有 logback 的滚动日志不再生效，其他配置仍然生效。如果要在 log4j2 中进行滚动日志，需要编写 log4j2 相关的 xml 配置文件，比较麻烦。
 
-# 7.CommandLineRunner 与 ApplicationRunner
+# 7. CommandLineRunner 与 ApplicationRunner
 
 Spring Boot 提供了两种方式在应用启动后执行初始化代码。
 
-## 7.1CommandLineRunner
+## 7.1 CommandLineRunner
 ```java
 @Component
 @Order(1)  // 数字越小越优先执行
@@ -474,7 +474,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
 }
 ```
 
-## 7.2ApplicationRunner
+## 7.2 ApplicationRunner
 ```java
 @Component
 @Order(2)
@@ -494,7 +494,7 @@ public class MyApplicationRunner implements ApplicationRunner {
 }
 ```
 
-## 7.3两者的区别
+## 7.3 两者的区别
 
 | 对比项 | CommandLineRunner | ApplicationRunner |
 |--------|------------------|-------------------|
@@ -516,11 +516,11 @@ optionValues: {"server.port": ["9090"], "env": ["dev"]}
 nonOptionArgs: ["hello", "world"]
 ```
 
-# 8.应用事件与监听器
+# 8. 应用事件与监听器
 
 Spring Boot在启动过程中会发布一系列事件，可以监听这些事件来执行自定义逻辑。
 
-## 8.1常用应用事件
+## 8.1 常用应用事件
 | 事件 | 触发时机 |
 |------|---------|
 | ApplicationStartingEvent | 应用刚开始启动时（最早，此时Spring容器尚未创建） |
@@ -531,7 +531,7 @@ Spring Boot在启动过程中会发布一系列事件，可以监听这些事件
 | ApplicationReadyEvent | **应用完全启动后**（CommandLineRunner执行完毕） |
 | ApplicationFailedEvent | 启动过程中发生异常时 |
 
-## 8.2监听事件
+## 8.2 监听事件
 ```java
 @Component
 public class MyApplicationListener {
@@ -551,12 +551,12 @@ public class MyApplicationListener {
 }
 ```
 
-## 8.3事件监听的应用场景
+## 8.3 事件监听的应用场景
 - **ApplicationReadyEvent**：应用启动后预加载数据、检查第三方服务状态
 - **ApplicationFailedEvent**：启动失败时发送告警通知
 - **ApplicationEnvironmentPreparedEvent**：根据环境变量动态调整配置
 
-# 9.优雅关机（Graceful Shutdown）
+# 9. 优雅关机（Graceful Shutdown）
 
 Spring Boot 3.x 默认支持优雅关机，当收到关闭信号时，会先拒绝新请求，等待正在处理的请求完成后再关闭。
 
@@ -567,11 +567,11 @@ server.shutdown=graceful
 spring.lifecycle.timeout-per-shutdown-phase=30s
 ```
 
-# 10.邮件发送
+# 10. 邮件发送
 
 Spring Boot 对邮件发送提供了自动配置。
 
-## 10.1引入依赖
+## 10.1 引入依赖
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -579,7 +579,7 @@ Spring Boot 对邮件发送提供了自动配置。
 </dependency>
 ```
 
-## 10.2配置邮箱
+## 10.2 配置邮箱
 ```properties
 # QQ邮箱示例
 spring.mail.host=smtp.qq.com
@@ -590,7 +590,7 @@ spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 ```
 
-## 10.3发送邮件
+## 10.3 发送邮件
 ```java
 @Service
 public class EmailService {
