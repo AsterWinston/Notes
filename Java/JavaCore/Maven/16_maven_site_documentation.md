@@ -172,7 +172,6 @@ mvn site-deploy
 ```bash
 mvn clean package
 ```
-```
 
 需配置 `maven-site-plugin` 支持 Markdown 渲染（通过 Doxia 模块）。
 

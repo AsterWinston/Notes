@@ -376,7 +376,7 @@ public void refresh() throws BeansException, IllegalStateException {
 }
 ```
 
-### 8.2 finishBeanFactoryInitialization() → preInstantiateSingletons()
+### 8.1.1 finishBeanFactoryInitialization() → preInstantiateSingletons()
 
 ```
 finishBeanFactoryInitialization() 的核心逻辑是调用 beanFactory.preInstantiateSingletons()：
@@ -700,7 +700,7 @@ protected Object initializeBean(String beanName, Object bean, @Nullable RootBean
 }
 ```
 
-### 8.5 invokeAwareMethods() 源码
+### 8.4.1 invokeAwareMethods() 源码
 
 ```
 private void invokeAwareMethods(String beanName, Object bean) {
@@ -729,7 +729,7 @@ private void invokeAwareMethods(String beanName, Object bean) {
 它在 applyBeanPostProcessorsBeforeInitialization() 阶段被调用，通过 instanceof 检查并注入。
 ```
 
-### 8.6 invokeInitMethods() 源码
+### 8.4.2 invokeInitMethods() 源码
 
 ```
 protected void invokeInitMethods(String beanName, Object bean, @Nullable RootBeanDefinition mbd)

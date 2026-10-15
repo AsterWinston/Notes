@@ -1,4 +1,4 @@
-﻿# 1.回顾：Servlet阶段已学的Tomcat知识
+﻿# 1. 回顾：Servlet阶段已学的Tomcat知识
 
 ```
 在学Servlet的时候，你已经接触过Tomcat了。我们先快速复习一下你已经知道的东西，避免重复：
@@ -3670,9 +3670,9 @@ public TomcatServletWebServerFactory tomcatFactory() {
 3. 管理界面缺失：没有 manager 这种可在线管理war包的界面
    - 解决方案：用 Spring Boot Actuator 监控
 
-# 29.Tomcat集群与负载均衡
-
 ```
+# 29. Tomcat集群与负载均衡
+
 当单台Tomcat扛不住流量时，就需要横向扩展——用多台Tomcat组成集群。
 
 一、集群拓扑

@@ -2,7 +2,7 @@
 
 ## 1.1 授权流程问题
 
-### Q1: redirect_uri 不匹配错误
+### 1.1.1 Q1: redirect_uri 不匹配错误
 
 ```
 错误信息：error=redirect_uri_mismatch
@@ -21,7 +21,7 @@
 □ 确认使用 RFC 3986 编码
 ```
 
-### Q2: invalid_grant 错误（Token 端点）
+### 1.1.2 Q2: invalid_grant 错误（Token 端点）
 
 ```
 错误信息：error=invalid_grant
@@ -38,7 +38,7 @@
 排查：查看授权服务器日志中的具体验证失败点
 ```
 
-### Q3: CORS 错误（SPA 直接请求 Token 端点）
+### 1.1.3 Q3: CORS 错误（SPA 直接请求 Token 端点）
 
 ```
 错误：Access to fetch at 'https://auth.example.com/token' blocked by CORS policy
@@ -56,9 +56,9 @@
    - 不存在跨域问题
 ```
 
-## 1.4 Token 相关问题
+## 1.2 Token 相关问题
 
-### Q4: Access Token 总是过期，用户需要频繁登录
+### 1.2.1 Q4: Access Token 总是过期，用户需要频繁登录
 
 ```
 根本原因：没有正确使用 Refresh Token 自动续期
@@ -77,7 +77,7 @@
    - 前端使用长期 Session Cookie
 ```
 
-### Q5: JWT 签名验证失败
+### 1.2.2 Q5: JWT 签名验证失败
 
 ```
 错误：JWT signature verification failed
@@ -131,7 +131,7 @@ public void debugJwtValidation(String token) {
 }
 ```
 
-### Q6: Refresh Token 轮换导致的问题
+### 1.2.3 Q6: Refresh Token 轮换导致的问题
 
 ```
 问题：开启 Refresh Token 轮换后，某些请求失败

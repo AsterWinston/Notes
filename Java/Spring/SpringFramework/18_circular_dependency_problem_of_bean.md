@@ -286,7 +286,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 }
 ```
 
-### 6.2 为什么需要三级缓存而不是两级？
+### 6.1.1 为什么需要三级缓存而不是两级？
 
 关键问题：如果只有一级和二级缓存，直接存早期 Bean 对象即可，为什么还要加一层 ObjectFactory？
 
@@ -368,7 +368,7 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 }
 ```
 
-### 6.3 流程图：getSingleton 的三级缓存查询
+### 6.2.1 流程图：getSingleton 的三级缓存查询
 
 ```
                   getSingleton(beanName, true)

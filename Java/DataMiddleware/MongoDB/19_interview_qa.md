@@ -1,7 +1,7 @@
 
 # 1. 基础概念
 
-## Q1: 什么是MongoDB？与传统关系型数据库有何区别？
+## 1.1 Q1: 什么是MongoDB？与传统关系型数据库有何区别？
 
 MongoDB是一个面向文档的NoSQL数据库，使用类JSON的BSON格式存储数据。
 
@@ -12,7 +12,7 @@ MongoDB是一个面向文档的NoSQL数据库，使用类JSON的BSON格式存储
 - **JOIN**：MongoDB通过嵌入式文档和$lookup实现关联，RDBMS有成熟的JOIN机制
 - **适用场景**：MongoDB适合非结构化/半结构化数据、快速迭代，RDBMS适合强一致事务场景
 
-## Q2: 解释BSON是什么？与JSON的区别？
+## 1.2 Q2: 解释BSON是什么？与JSON的区别？
 
 BSON（Binary JSON）是二进制序列化格式：
 - JSON是文本格式，BSON是二进制格式 → 解析更快
@@ -20,14 +20,14 @@ BSON（Binary JSON）是二进制序列化格式：
 - BSON有空间开销（字段名重复），但有更好的遍历性
 - BSON设计目标是轻量、可遍历、高效编解码
 
-## Q3: MongoDB中的集合（Collection）和文档（Document）是什么？
+## 1.3 Q3: MongoDB中的集合（Collection）和文档（Document）是什么？
 
 - **文档（Document）**：MongoDB的基本数据单元，相当于RDBMS中的一行
 - **集合（Collection）**：文档的分组，相当于RDBMS中的表
 - 集合中的文档可以有不同结构（Schema-free）
 - 集合在插入第一个文档时隐式创建
 
-## Q4: ObjectId的结构是什么？为什么用它作为默认主键？
+## 1.4 Q4: ObjectId的结构是什么？为什么用它作为默认主键？
 
 ObjectId是12字节的BSON类型：
 
@@ -41,7 +41,7 @@ ObjectId是12字节的BSON类型：
 
 # 2. 索引相关
 
-## Q5: MongoDB支持哪些索引类型？
+## 2.1 Q5: MongoDB支持哪些索引类型？
 
 - 单字段索引、复合索引、多键索引（数组）
 - 文本索引、地理空间索引（2dsphere/2d）
@@ -49,7 +49,7 @@ ObjectId是12字节的BSON类型：
 - 唯一索引、稀疏索引、部分索引、通配符索引
 - 隐藏索引（4.4+）
 
-## Q6: 什么是ESR规则？
+## 2.2 Q6: 什么是ESR规则？
 
 设计复合索引的黄金法则：
 1. **Equality**（等值查询字段）放在最前面
@@ -62,14 +62,14 @@ ObjectId是12字节的BSON类型：
            ↑EQ      ↑Sort          ↑Range
 ```
 
-## Q7: explain()输出的COLLSCAN和IXSCAN的含义？
+## 2.3 Q7: explain()输出的COLLSCAN和IXSCAN的含义？
 
 - **COLLSCAN**：全集合扫描，未使用索引或索引效率极低，需要优化
 - **IXSCAN**：索引扫描，使用了索引
 - **FETCH**：通过索引获取完整文档
 - **PROJECTION_COVERED**：覆盖查询（最优），全部从索引获取
 
-## Q8: 覆盖查询是什么？有什么优势？
+## 2.4 Q8: 覆盖查询是什么？有什么优势？
 
 覆盖查询（Covered Query）是指查询所需字段全部在索引中，无需读取实际文档。
 
@@ -84,7 +84,7 @@ db.users.find({name: "张三"}, {name: 1, age: 1, _id: 0})
 
 # 3. 聚合框架
 
-## Q9: MongoDB聚合管道（Aggregation Pipeline）是什么？
+## 3.1 Q9: MongoDB聚合管道（Aggregation Pipeline）是什么？
 
 聚合管道是一组数据处理阶段（Stage），文档流经管道逐步处理：
 
@@ -94,7 +94,7 @@ db.users.find({name: "张三"}, {name: 1, age: 1, _id: 0})
 
 常用阶段：$match, $group, $sort, $project, $unwind, $lookup, $limit, $skip, $facet, $bucket, $addFields, $replaceRoot, $out, $merge
 
-## Q10: $lookup与SQL JOIN的区别？
+## 3.2 Q10: $lookup与SQL JOIN的区别？
 
 `$lookup`是MongoDB的左外连接（LEFT OUTER JOIN）：
 
@@ -115,7 +115,7 @@ db.orders.aggregate([{
 - $lookup在分片集群中有限制
 - 推荐使用嵌入式文档避免$lookup
 
-## Q11: $facet的用途？
+## 3.3 Q11: $facet的用途？
 
 `$facet`在同一组文档上并行执行多个聚合管道，适合多维度分析报表：
 
@@ -128,7 +128,7 @@ db.orders.aggregate([{
 
 # 4. 副本集与高可用
 
-## Q12: 副本集（Replica Set）的工作原理？
+## 4.1 Q12: 副本集（Replica Set）的工作原理？
 
 副本集是维护相同数据集的多个MongoDB进程：
 - 1个Primary：接收所有写操作
@@ -137,7 +137,7 @@ db.orders.aggregate([{
 - 通过Heartbeat维持心跳（2秒一次）
 - 主节点宕机10秒内自动选举新主
 
-## Q13: Oplog是什么？有什么作用？
+## 4.2 Q13: Oplog是什么？有什么作用？
 
 Oplog（Operations Log）是一个固定集合（Capped Collection），记录所有修改数据的操作：
 
@@ -147,7 +147,7 @@ Oplog（Operations Log）是一个固定集合（Capped Collection），记录�
 - Oplog窗口 = 最早~最新oplog的时间跨度
 - 如果从节点离线超过oplog窗口，需要全量同步
 
-## Q14: 选举是什么？什么条件下触发？
+## 4.3 Q14: 选举是什么？什么条件下触发？
 
 基于Raft协议的选举机制：
 - **触发条件**：主节点10秒无心跳、手动stepDown、主节点降级
@@ -155,7 +155,7 @@ Oplog（Operations Log）是一个固定集合（Capped Collection），记录�
 - **成功条件**：获得N/2+1票（N=投票节点数）
 - 使用奇数个投票节点防止脑裂
 
-## Q15: Read Preference有哪些类型？
+## 4.4 Q15: Read Preference有哪些类型？
 
 | 类型 | 说明 |
 |------|------|
@@ -167,7 +167,7 @@ Oplog（Operations Log）是一个固定集合（Capped Collection），记录�
 
 # 5. 分片
 
-## Q16: 分片（Sharding）是什么？什么时候需要？
+## 5.1 Q16: 分片（Sharding）是什么？什么时候需要？
 
 分片是水平拆分数据到多个服务器：
 
@@ -179,7 +179,7 @@ Oplog（Operations Log）是一个固定集合（Capped Collection），记录�
 
 **架构**：Config Server（元数据）+ Mongos（路由）+ Shard（数据节点）
 
-## Q17: 什么是好的分片键？
+## 5.2 Q17: 什么是好的分片键？
 
 好分片键的标准：
 1. **高基数（High Cardinality）**：值足够多（如userId）
@@ -198,7 +198,7 @@ Oplog（Operations Log）是一个固定集合（Capped Collection），记录�
 { createTime: 1 }                  // 写入热点
 ```
 
-## Q18: 范围分片与哈希分片的区别？
+## 5.3 Q18: 范围分片与哈希分片的区别？
 
 | 特性 | 范围分片 | 哈希分片 |
 |------|---------|---------|
@@ -210,7 +210,7 @@ Oplog（Operations Log）是一个固定集合（Capped Collection），记录�
 
 # 6. 事务
 
-## Q19: MongoDB 4.0后支持ACID事务？它和RDBMS的事务有何不同？
+## 6.1 Q19: MongoDB 4.0后支持ACID事务？它和RDBMS的事务有何不同？
 
 MongoDB 4.0+支持多文档事务，4.2+支持分布式事务：
 
@@ -225,7 +225,7 @@ MongoDB 4.0+支持多文档事务，4.2+支持分布式事务：
 - MongoDB事务性能不如单文档原子操作
 - RDBMS的事务更成熟，适合高频、复杂事务场景
 
-## Q20: 事务中的写冲突如何处理？
+## 6.2 Q20: 事务中的写冲突如何处理？
 
 MongoDB快照隔离下，两个并发事务修改同一文档时：
 - 先提交的事务成功
@@ -242,7 +242,7 @@ public void transfer(String from, String to, long amount) {
 
 # 7. 存储引擎
 
-## Q21: WiredTiger存储引擎有哪些特点？
+## 7.1 Q21: WiredTiger存储引擎有哪些特点？
 
 - **文档级并发控制（MVCC）**：写不阻塞读
 - **压缩**：支持snappy/zlib/zstd，通常压缩到20%-30%
@@ -250,7 +250,7 @@ public void transfer(String from, String to, long amount) {
 - **Checkpoint + Journal**：混合持久化策略
 - **文档级锁** vs MMAPv1的集合级锁
 
-## Q22: WiredTiger的Checkpoint和Journal是什么？
+## 7.2 Q22: WiredTiger的Checkpoint和Journal是什么？
 
 - **Checkpoint（检查点）**：每60秒将内存修改刷到磁盘，创建数据快照
 - **Journal（预写日志 WAL）**：所有写操作先写到Journal，最多丢失100ms数据
@@ -258,7 +258,7 @@ public void transfer(String from, String to, long amount) {
 
 # 8. 设计与优化
 
-## Q23: 嵌入式文档 vs 引用式文档，如何选择？
+## 8.1 Q23: 嵌入式文档 vs 引用式文档，如何选择？
 
 | 选择嵌入 | 选择引用 |
 |---------|---------|
@@ -267,7 +267,7 @@ public void transfer(String from, String to, long amount) {
 | 子数据无独立意义 | 子数据有独立生命周期 |
 | 需要单文档原子操作 | 数据会无限增长 |
 
-## Q24: 如何优化慢查询？
+## 8.2 Q24: 如何优化慢查询？
 
 1. 使用explain()分析执行计划
 2. 创建合适的索引（遵循ESR规则）
@@ -277,7 +277,7 @@ public void transfer(String from, String to, long amount) {
 6. 使用$match在聚合管道前过滤
 7. 检查并清除计划缓存
 
-## Q25: MongoDB如何做分页？
+## 8.3 Q25: MongoDB如何做分页？
 
 ```javascript
 // ❌ 大offset性能差
@@ -299,7 +299,7 @@ db.collection.find({
 
 # 9. 安全管理
 
-## Q26: MongoDB有哪些安全机制？
+## 9.1 Q26: MongoDB有哪些安全机制？
 
 - **认证**：SCRAM-SHA-256、X.509证书、LDAP、Kerberos
 - **授权**：RBAC基于角色的访问控制
@@ -308,7 +308,7 @@ db.collection.find({
 - **字段级加密**：客户端字段级加密（4.2+ FLE）
 - **网络隔离**：bindIp限制、防火墙规则
 
-## Q27: 副本集内部节点如何安全通信？
+## 9.2 Q27: 副本集内部节点如何安全通信？
 
 使用**KeyFile密钥文件**或**X.509证书**进行节点间内部认证：
 
@@ -321,7 +321,7 @@ chmod 600 keyfile
 
 # 10. 场景设计题
 
-## Q28: 设计一个博客系统的MongoDB数据模型
+## 10.1 Q28: 设计一个博客系统的MongoDB数据模型
 
 ```javascript
 // 用户集合
@@ -349,7 +349,7 @@ comments: {
 }
 ```
 
-## Q29: 设计一个电商订单系统，如何保证下单扣库存的原子性？
+## 10.2 Q29: 设计一个电商订单系统，如何保证下单扣库存的原子性？
 
 方案一（推荐）：使用事务
 
@@ -376,7 +376,7 @@ public void createOrder(Order order) {
 
 方案二：嵌入式文档（订单和库存在同一文档中，单文档原子性）
 
-## Q30: 亿级数据的用户表如何设计分片策略？
+## 10.3 Q30: 亿级数据的用户表如何设计分片策略？
 
 ```javascript
 // 1. 分片键选择
@@ -395,7 +395,7 @@ db.users.find({ name: "张三" })    // ❌ 广播
 // 创建单独的搜索服务或使用Elasticsearch
 ```
 
-## Q31: 副本集主节点宕机后的完整处理流程？
+## 10.4 Q31: 副本集主节点宕机后的完整处理流程？
 
 1. 心跳超时检测（10秒内）
 2. 从节点发起选举，获得多数票的节点成为新主
@@ -410,7 +410,7 @@ db.users.find({ name: "张三" })    // ❌ 广播
 - 处理TransientTransactionError重试
 - 使用w: "majority"写关注防止回滚
 
-## Q32: Spring Data MongoDB与传统MongoDB Driver如何选？
+## 10.5 Q32: Spring Data MongoDB与传统MongoDB Driver如何选？
 
 - **Spring Data MongoDB**：适合Spring项目，自动配置、Repository、声明式事务
 - **MongoDB Driver**：更底层的控制、非Spring项目、更高的灵活性

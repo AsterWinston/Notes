@@ -1,4 +1,3 @@
-# 1. Spring JdbcTemplate 详解
 JdbcTemplate是Spring提供的一个JDBC模板类，是对JDBC的封装，简化JDBC代码。
 我们可以使用JdbcTemplate完成与数据库的相关操作
 Spring也可以集成其它的ORM框架，例如：MyBatis、Hibernate等。

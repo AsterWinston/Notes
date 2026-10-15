@@ -889,7 +889,7 @@ public void test() {
 
 ## 10.1 没有经过Spring代理（最核心）
 本质：事务是通过代理对象生效的，而不是原对象
-### 10.1 1.1同类内部方法调用（最经典）
+### 10.1.1 同类内部方法调用（最经典）
 ```
 @Service
 public class UserService {
@@ -927,7 +927,7 @@ public void methodA() {
     ((UserService) AopContext.currentProxy()).methodB();
 }
 ```
-### 10.2 1.2方法不是 public
+### 10.1.2 方法不是 public
 ```
 @Transactional
 private void methodB() {}
@@ -938,7 +938,7 @@ private void methodB() {}
 
 - Spring 默认只代理 public方法
 
-### 10.3 1.3使用 final / static 方法
+### 10.1.3 使用 final / static 方法
 ```
 @Transactional
 public final void method() {}
@@ -951,7 +951,7 @@ public final void method() {}
 
 ## 10.2 事务没有被Spring管理
 
-### 10.4 2.1类没有交给Spring管理
+### 10.2.1 类没有交给Spring管理
 ```
 public class UserService { ... } // ❌ 没有 @Service
 ```
@@ -963,7 +963,7 @@ public class UserService { ... } // ❌ 没有 @Service
 ```
 @Service
 ```
-## 10.5 2.2new 出来的对象
+### 10.2.2 new 出来的对象
 UserService userService = new UserService();
 userService.methodB();
 
@@ -973,7 +973,7 @@ userService.methodB();
 
 ## 10.3 异常处理导致事务不回滚
 
-## 10.6 3.1捕获异常但不抛出
+### 10.3.1 捕获异常但不抛出
 ```
 @Transactional
 public void test() {
@@ -992,7 +992,7 @@ public void test() {
 
 - Spring 只在 异常抛出到代理层时 才回滚
 
-## 10.7 3.2抛出的是受检异常（默认不回滚）
+### 10.3.2 抛出的是受检异常（默认不回滚）
 ```
 @Transactional
 public void test() throws Exception {
@@ -1016,7 +1016,7 @@ public void test() throws Exception {
 
 ## 10.4 事务传播机制问题
 
-## 10.8 4.1事务传播行为设置不当
+### 10.4.1 事务传播行为设置不当
 ```
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 ```
@@ -1032,7 +1032,7 @@ public void test() throws Exception {
 - 新开事务
 - 或直接关闭事务
 
-## 10.9 4.2外层没有事务
+### 10.4.2 外层没有事务
 ```
 public void outer() {
     inner(); // inner有事务，但调用方式不对
@@ -1134,7 +1134,7 @@ public class ProxyTransactionManagementConfiguration extends AbstractTransaction
 }
 ```
 
-### 11.3 BeanFactoryTransactionAttributeSourceAdvisor 如何匹配方法
+### 11.2.1 BeanFactoryTransactionAttributeSourceAdvisor 如何匹配方法
 
 ```
 BeanFactoryTransactionAttributeSourceAdvisor 是一个 PointcutAdvisor，其切入点判断逻辑是：
@@ -1358,7 +1358,7 @@ public final TransactionStatus getTransaction(@Nullable TransactionDefinition de
 }
 ```
 
-### 11.7 handleExistingTransaction() — 处理已存在事务时的传播
+### 11.6.1 handleExistingTransaction() — 处理已存在事务时的传播
 
 ```
 private TransactionStatus handleExistingTransaction(

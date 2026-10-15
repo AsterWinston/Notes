@@ -912,7 +912,7 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor
 }
 ```
 
-### 10.4 BeanWrapperImpl.setPropertyValue() 单属性设置
+### 10.3.1 BeanWrapperImpl.setPropertyValue() 单属性设置
 
 ```
 @SuppressWarnings("unchecked")

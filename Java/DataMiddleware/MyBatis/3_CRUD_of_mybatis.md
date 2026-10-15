@@ -468,5 +468,4 @@ private Object wrapCollection(final Object object) {
 //   <foreach collection="list" item="item">
 //   <foreach collection="ids" item="id">  ← 如果用 @Param("ids") 指定了名称
 ```
-
-```
+

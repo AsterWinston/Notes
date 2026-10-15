@@ -306,5 +306,4 @@ public ResponseEntity<InputStreamResource> downloadLargeFile(HttpServletRequest 
 注意：
 ● InputStreamResource需要导入 org.springframework.core.io.InputStreamResource
 ● 设置Content-Length可以让浏览器显示下载进度
-● 流式下载适用于大文件（如视频、压缩包等），避免服务器内存压力
-```
+● 流式下载适用于大文件（如视频、压缩包等），避免服务器内存压力

@@ -2,7 +2,7 @@
 
 Spring Security 的本质是一条 **Servlet Filter 链**。每个 HTTP 请求都依次经过下面的 Filters：
 
-## 完整过滤器执行顺序
+## 1.1 完整过滤器执行顺序
 
 | 序号 | Filter | 作用 |
 |------|--------|------|
@@ -25,7 +25,7 @@ Spring Security 的本质是一条 **Servlet Filter 链**。每个 HTTP 请求�
 
 > **注意：** 6.x 中 `AuthorizationFilter` 是新的授权过滤器，`FilterSecurityInterceptor` 仍可用但非默认。
 
-### 1.1 UsernamePasswordAuthenticationFilter
+### 1.1.1 UsernamePasswordAuthenticationFilter
 
 处理 **表单登录** (`POST /login`) 的过滤器：
 

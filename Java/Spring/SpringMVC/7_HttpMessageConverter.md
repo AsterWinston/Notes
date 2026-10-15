@@ -803,5 +803,4 @@ ResponseBodyEmitter是SseEmitter的父类，可以发送任意数据格式（不
 SseEmitter与WebSocket的区别：
 ● SseEmitter：单向（服务器 → 浏览器），基于HTTP，轻量
 ● WebSocket：双向（浏览器 ↔ 服务器），基于TCP，重量
-● 如果只需要服务器推送数据，优先使用SseEmitter
-```
+● 如果只需要服务器推送数据，优先使用SseEmitter

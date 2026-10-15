@@ -98,7 +98,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 # 6. 面试高频问题
 
-## Q1: Spring Security 的工作原理？
+## 6.1 Q1: Spring Security 的工作原理？
 
 ```
 1. DelegatingFilterProxy 将请求委托给 Spring Security 的 FilterChainProxy
@@ -112,7 +112,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 6. 后续请求可通过 SecurityContextHolder 获取用户信息
 ```
 
-## Q2: AuthenticationManager、ProviderManager、AuthenticationProvider 的关系？
+## 6.2 Q2: AuthenticationManager、ProviderManager、AuthenticationProvider 的关系？
 
 ```
 AuthenticationManager (顶层接口)
@@ -129,7 +129,7 @@ ProviderManager 遍历所有 Provider：
   - 所有都不匹配 → 抛出最后一个异常
 ```
 
-## Q3: JWT 和 Session 认证的区别？
+## 6.3 Q3: JWT 和 Session 认证的区别？
 
 | 维度 | Session | JWT |
 |------|---------|-----|
@@ -141,7 +141,7 @@ ProviderManager 遍历所有 Provider：
 | 大小 | 仅 Session ID | Token 包含用户信息 |
 | 适用 | 传统 MVC | 前后端分离/微服务 |
 
-## Q4: 如何实现"记住我"功能？
+## 6.4 Q4: 如何实现"记住我"功能？
 
 ```
 方案一：Hash 方式（简单，不推荐生产）
@@ -154,7 +154,7 @@ ProviderManager 遍历所有 Provider：
   - 可用于检测 Cookie 盗用（token 不匹配 → 清除所有记住我）
 ```
 
-## Q5: 如何实现同账号只能登录一个？
+## 6.5 Q5: 如何实现同账号只能登录一个？
 
 ```java
 http.sessionManagement(session -> session
@@ -163,7 +163,7 @@ http.sessionManagement(session -> session
 );
 ```
 
-## Q6: `@PreAuthorize` 和 `@Secured` 有什么区别？
+## 6.6 Q6: `@PreAuthorize` 和 `@Secured` 有什么区别？
 
 | 特性 | @PreAuthorize | @Secured |
 |------|--------------|---------|
@@ -173,7 +173,7 @@ http.sessionManagement(session -> session
 | 权限前缀 | 需写完整 `hasRole('ADMIN')` | 数组 `@Secured({"ROLE_ADMIN"})` |
 | 推荐度 | ★★★★★ | ★★☆☆☆ |
 
-## Q7: Spring Security 6.x 相比 5.x 有哪些重要变更？
+## 6.7 Q7: Spring Security 6.x 相比 5.x 有哪些重要变更？
 
 | 变更 | 5.x | 6.x |
 |------|-----|-----|

@@ -2409,12 +2409,12 @@ Redisson WatchDog:
        |30s       |30s       |30s       |30s       |
 ```
 
-## 4.13 Redisson的multiLock原理
+## 4.12 Redisson的multiLock原理
 
 - 多把锁一起获取，全部成功才继续。
 - 适合跨多个资源的原子操作。
 
-### 4.13.1 MultiLock联锁示例
+### 4.12.1 MultiLock联锁示例
 
 ```java
 // 同时锁定多个资源, 全部成功才继续
@@ -2431,9 +2431,9 @@ if (multiLock.tryLock(5, 30, TimeUnit.SECONDS)) {
 }
 ```
 
-## 4.14 Redlock红锁算法
+## 4.13 Redlock红锁算法
 
-### 4.14.1 Redlock原理
+### 4.13.1 Redlock原理
 
 ```
 Redlock: 在N个独立的Redis节点上获取锁(N一般为奇数,如5)
@@ -2449,7 +2449,7 @@ Redlock: 在N个独立的Redis节点上获取锁(N一般为奇数,如5)
   - 时钟偏移不能太大
 ```
 
-### 4.14.2 Redisson Redlock实现
+### 4.13.2 Redisson Redlock实现
 
 ```java
 package com.hmdp.config;
@@ -2510,9 +2510,9 @@ public class RedlockService {
 }
 ```
 
-## 4.15 分布式锁实战总结
+## 4.14 分布式锁实战总结
 
-### 4.15.1 所有锁方案对比
+### 4.14.1 所有锁方案对比
 
 | 锁方案 | 优点 | 缺点 | 适用场景 |
 |--------|------|------|----------|
@@ -2524,7 +2524,7 @@ public class RedlockService {
 | Zookeeper | 强一致, 自动释放 | 性能低, 运维重 | 强一致性要求 |
 | Redlock | 高可靠, 防脑裂 | 多实例成本, 实现复杂 | 金融级可靠性 |
 
-### 4.15.2 常见坑与解决方案
+### 4.14.2 常见坑与解决方案
 
 | 坑 | 问题 | 解决方案 |
 |----|------|----------|
@@ -2600,13 +2600,13 @@ public Result seckillVoucherAsync(Long voucherId) {
 }
 ```
 
-## 5.3 基于阻塞队列实现异步下单
+## 5.2 基于阻塞队列实现异步下单
 
 - 使用 `ArrayBlockingQueue` 作为内存队列。
 - 消费线程从队列取订单并写库。
 - 后续替换为 Redis Stream 更可靠。
 
-### 5.3.1 Redis Stream消费者（完整实现）
+### 5.2.1 Redis Stream消费者（完整实现）
 
 ```java
 package com.hmdp.service;

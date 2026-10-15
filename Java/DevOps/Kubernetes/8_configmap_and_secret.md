@@ -1,4 +1,4 @@
-﻿# 1.ConfigMap概述
+﻿# 1. ConfigMap概述
 
 ## 1.1 为什么需要ConfigMap
 

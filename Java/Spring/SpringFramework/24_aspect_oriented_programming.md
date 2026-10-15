@@ -1058,7 +1058,7 @@ AbstractAutoProxyCreator                                 │
             - 转化为 Advisor 列表                         │
 ```
 
-### 9.3 关键接口说明
+### 9.2.1 关键接口说明
 
 ```
 SmartInstantiationAwareBeanPostProcessor 定义了三个与实例化相关的方法：
@@ -1132,7 +1132,7 @@ protected Object wrapIfNecessary(Object bean, String beanName, Object cacheKey) 
 }
 ```
 
-### 9.4 AnnotationAwareAspectJAutoProxyCreator.getAdvicesAndAdvisorsForBean()
+### 9.3.1 AnnotationAwareAspectJAutoProxyCreator.getAdvicesAndAdvisorsForBean()
 
 ```
 该方法位于 AbstractAdvisorAutoProxyCreator，但 findCandidateAdvisors() 和
@@ -1156,7 +1156,7 @@ protected List<Advisor> findCandidateAdvisors() {
 // → getIntroductionFilter() 是否有引介增强
 ```
 
-### 9.5 createProxy() 源码
+### 9.3.2 createProxy() 源码
 
 ```
 protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
@@ -1253,7 +1253,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 }
 ```
 
-### 9.5 代理选择决策表
+### 9.4.1 代理选择决策表
 
 ```
                                      ┌─────────────────────────────┐
@@ -1336,7 +1336,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 }
 ```
 
-### 9.6 各通知类型对应的 MethodInterceptor 实现
+### 9.5.1 各通知类型对应的 MethodInterceptor 实现
 
 ```
 五种通知类型的注解分别由不同的 MethodInterceptor（也称 Advice）实现：
@@ -1497,7 +1497,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 }
 ```
 
-### 9.8 getInterceptorsAndDynamicInterceptionAdvice() — Advisor 与 MethodInterceptor 的转换
+### 9.7.1 getInterceptorsAndDynamicInterceptionAdvice() — Advisor 与 MethodInterceptor 的转换
 
 ```
 AdvisedSupport.getInterceptorsAndDynamicInterceptionAdvice():

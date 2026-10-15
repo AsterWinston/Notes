@@ -1,4 +1,3 @@
-# 1. Bean 的实例化方式
 Spring为Bean提供了多种实例化方式，包括如下4种方式：
 第一种：通过构造方法实例化
 第二种：通过简单工厂模式实例化
@@ -487,7 +486,7 @@ public interface InstantiationStrategy {
    - 使用 CGLIB Enhancer 创建运行时子类
 ```
 
-### 8.3 SimpleInstantiationStrategy.instantiate() 源码
+### 8.2.1 SimpleInstantiationStrategy.instantiate() 源码
 
 ```
 public Object instantiate(RootBeanDefinition bd, @Nullable String beanName,
@@ -518,7 +517,7 @@ public static <T> T instantiateClass(Constructor<T> ctor, Object... args)
 }
 ```
 
-### 8.4 CglibSubclassingInstantiationStrategy.instantiate() 源码
+### 8.2.2 CglibSubclassingInstantiationStrategy.instantiate() 源码
 
 ```
 public Object instantiate(@Nullable Constructor<?> ctor, Object... args) {
@@ -602,7 +601,7 @@ protected Object getObjectForBeanInstance(
 }
 ```
 
-### 8.4 FactoryBeanRegistrySupport.getObjectFromFactoryBean()
+### 8.3.1 FactoryBeanRegistrySupport.getObjectFromFactoryBean()
 
 ```
 // 位于 FactoryBeanRegistrySupport（AbstractBeanFactory 的父类）

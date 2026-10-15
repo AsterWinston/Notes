@@ -1974,11 +1974,11 @@ TABLE_PER_CLASS 策略下：
 
 # 9. 附录：常见问题与陷阱
 
-### Q1: 为什么 @MappedSuperclass 不能作为 @OneToMany 的目标？
+## 9.1 Q1: 为什么 @MappedSuperclass 不能作为 @OneToMany 的目标？
 
 因为 `@MappedSuperclass` 不是实体，没有对应的数据库表，也没有持久化标识。JPA 无法为其创建外键约束。应使用具体实体类型或接口。
 
-### Q2: SINGLE_TABLE 中鉴别器列可以使用 INT 类型吗？
+## 9.2 Q2: SINGLE_TABLE 中鉴别器列可以使用 INT 类型吗？
 
 可以。将 `discriminatorType` 设置为 `DiscriminatorType.INTEGER`，对应的 `@DiscriminatorValue` 使用数值字符串：
 
@@ -1994,18 +1994,18 @@ public class Car extends Vehicle { }
 public class Truck extends Vehicle { }
 ```
 
-### Q3: 如何禁止父类实例化？
+## 9.3 Q3: 如何禁止父类实例化？
 
 将父类声明为 `abstract`。这样 `new Vehicle()` 不合法，只能实例化具体子类。同时父类仍然可以使用 `@Entity` + `@Inheritance`。
 
-### Q4: JOINED 策略可以避免多态查询时的全外连接吗？
+## 9.4 Q4: JOINED 策略可以避免多态查询时的全外连接吗？
 
 不能完全避免，但可以通过以下方式优化：
 - 使用 `@Polymorphism(type = PolymorphismType.EXPLICIT)` 限制多态范围（见 Hibernate 文档）
 - 尽量查询具体子类而非父类
 - 使用 DTO 投影只查询需要的字段，避免加载整个实体图
 
-### Q5: TABLE_PER_CLASS 中可以使用 UUID 作主键吗？
+## 9.5 Q5: TABLE_PER_CLASS 中可以使用 UUID 作主键吗？
 
 可以，UUID 天然全局唯一，是 TABLE_PER_CLASS 策略的最佳主键类型之一：
 
@@ -2016,7 +2016,7 @@ public class Truck extends Vehicle { }
 private UUID id;
 ```
 
-### Q6: Hibernate 6 在此有什么改进吗？
+## 9.6 Q6: Hibernate 6 在此有什么改进吗？
 
 Hibernate 6（6.0+）在继承映射方面的重要改进：
 - 改进了鉴别器列的自动检测和处理

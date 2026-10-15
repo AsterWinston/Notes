@@ -1,4 +1,3 @@
-# 1. 工厂模式与 Spring IoC
 设计模式：一种可以被重复利用的解决方案
 开发原则，是软件开发的依据，设计模式会尽量满足开发原则
 GoF（Gang of Four）四人组，在《Design Patterns: Elements of Reusable Object-Oriented Software》（即《设计模式》一书）中描述了23种设计模式，所以一般情况下，GoF就是指23种设计模式

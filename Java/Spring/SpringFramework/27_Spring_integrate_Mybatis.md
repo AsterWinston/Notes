@@ -891,7 +891,7 @@ private void processBeanDefinitions(Set<BeanDefinitionHolder> beanDefinitions) {
 }
 ```
 
-### 14.5 MapperFactoryBean — 单个 Mapper 接口的 FactoryBean
+### 14.4.1 MapperFactoryBean — 单个 Mapper 接口的 FactoryBean
 
 ```
 每个 Mapper 接口最终由一个 MapperFactoryBean 来创建代理对象：

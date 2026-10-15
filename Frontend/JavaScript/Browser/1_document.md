@@ -2422,7 +2422,7 @@ clientTop = 25 —— 上边框宽度
 
 这是希伯来语的例子：
 ```
-## 9.5 clientWidth/Height
+## 9.6 clientWidth/Height
 ```javascript
 这些属性提供了元素边框内区域的大小。
 
@@ -2439,7 +2439,7 @@ clientTop = 25 —— 上边框宽度
 
 因此，当没有 padding 时，我们可以使用 clientWidth/clientHeight 来获取内容区域的大小。
 ```
-## 9.6 scrollWidth/Height
+## 9.7 scrollWidth/Height
 ```javascript
 这些属性就像 clientWidth/clientHeight，但它们还包括滚动出（隐藏）的部分：
 
@@ -2459,7 +2459,7 @@ element.style.height = `${element.scrollHeight}px`;
 text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text
 element.style.height = ${element.scrollHeight}px
 ```
-## 9.7 scrollLeft/scrollTop
+## 9.8 scrollLeft/scrollTop
 ```javascript
 属性 scrollLeft/scrollTop 是元素的隐藏、滚动部分的 width/height。
 
@@ -2486,7 +2486,7 @@ Me
 9
 将 scrollTop 设置为 0 或一个大的值，例如 1e9，将会使元素滚动到顶部/底部。
 ```
-## 9.8 不要从CSS中获取width/height
+## 9.9 不要从CSS中获取width/height
 ```javascript
 我们刚刚介绍了 DOM 元素的几何属性，它们可用于获得宽度、高度和计算距离。
 
@@ -2523,7 +2523,7 @@ alert( getComputedStyle(elem).width ); // 显示 elem 的 CSS width
 
 请注意，所描述的差异只是关于从 JavaScript 读取的 getComputedStyle(...).width，而视觉上看，一切都是正确的。
 ```
-## 9.9 总结
+## 9.10 总结
 ```javascript
 元素具有以下几何属性：
 

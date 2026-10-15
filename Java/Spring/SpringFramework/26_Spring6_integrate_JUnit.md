@@ -1,4 +1,3 @@
-# 1. Spring 6 集成 JUnit
 spring底层有一套API，这套API专门支持JUnit
 # 1. Spring 对 JUnit4 的支持
 ```

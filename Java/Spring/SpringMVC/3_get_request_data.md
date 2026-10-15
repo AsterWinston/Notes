@@ -921,7 +921,7 @@ throws ServletException, IOException {
 如果缺少它，仍然是会存在乱码问题的。自行测试一下！！！！
 ```
 
-# 8. 日期和数字格式化（@DateTimeFormat / @NumberFormat）
+# 9. 日期和数字格式化（@DateTimeFormat / @NumberFormat）
 ```
 SpringMVC提供了数据格式化注解，可以将字符串类型的请求参数自动转换为日期、数字等类型。
 
@@ -989,7 +989,7 @@ public class GlobalExceptionHandler {
 }
 ```
 
-# 9. 枚举类型绑定
+# 10. 枚举类型绑定
 ```
 SpringMVC可以自动将字符串参数绑定到Java枚举类型。
 
@@ -1036,7 +1036,7 @@ public class StringToGenderConverter implements Converter<String, Gender> {
 注意：自定义Converter需要在SpringMVC配置中注册（见@InitBinder章节）。
 ```
 
-# 10. 嵌套POJO绑定
+# 11. 嵌套POJO绑定
 ```
 当POJO中包含另一个POJO作为属性时，前端使用"点号表示法"传递参数。
 
@@ -1084,7 +1084,7 @@ public class Address {
 嵌套对象也不会为null（但属性值都是null/默认值）。
 ```
 
-# 11. 集合类型绑定
+# 12. 集合类型绑定
 ```
 SpringMVC支持将请求参数绑定到List、Set、Map等集合类型。
 
@@ -1151,7 +1151,7 @@ public String deleteBatch(@RequestParam("ids") Long[] ids) {
 // 前端同名参数：ids=1&ids=2&ids=3
 ```
 
-# 12. @InitBinder与WebDataBinder
+# 13. @InitBinder与WebDataBinder
 ```
 @InitBinder用于自定义数据绑定规则，在Controller级别生效。
 
@@ -1201,7 +1201,7 @@ public void initBinder(WebDataBinder binder) {
 如果没有限制，该参数会被自动绑定到User对象的role属性，导致权限提升。
 ```
 
-# 13. @ModelAttribute标注在方法上
+# 14. @ModelAttribute标注在方法上
 ```
 @ModelAttribute除了用于方法参数外，还可以标注在方法上。
 这通常用于在多个处理器方法之间共享公共数据。

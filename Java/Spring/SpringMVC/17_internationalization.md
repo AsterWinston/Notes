@@ -301,4 +301,3 @@ Thymeleaf视图层：
 2. 修改消息文件不生效：开发阶段将cacheSeconds设为0
 3. LocaleResolver不生效：确保Bean的id是 "localeResolver"
 4. Thymeleaf无法显示 #{key}：检查是否配置了MessageSource Bean
-```

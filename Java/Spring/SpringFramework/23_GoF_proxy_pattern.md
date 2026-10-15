@@ -156,7 +156,7 @@ public class Client {
 ## 3.1 JDK 动态代理技术
 JDK 动态代理只能代理接口 
 还是使用静态代理中的例子：一个接口和一个实现类。
-### 1.1 1.1公共接口
+### 3.1.1 公共接口
 ```
 package cw.study.spring.service;
 
@@ -190,7 +190,7 @@ public interface OrderService {
     
 }
 ```
-### 1.2 1.2目标对象
+### 3.1.2 目标对象
 ```
 package cw.study.spring.service;
 
@@ -241,7 +241,7 @@ public class OrderSeriveImpl implements OrderService {
     }
 }
 ```
-### 1.3 1.3动态生成代理类分析
+### 3.1.3 动态生成代理类分析
 ```
 在动态代理中代理类是可以动态生成的，这个类不需要写，我们直接写客户端程序即可
 需要理解：Object proxyObj = Proxy.newProxyInstance(类加载器, 代理类要实现的接口(公共接口), 调用处理器)
@@ -252,7 +252,7 @@ public class OrderSeriveImpl implements OrderService {
 		代理类要实现的接口 Class<?>[] interfaces：代理类要和目标类实现相同的接口，代理类需要实现的接口需要我们进行告知
 		调用处理器 InvocationHandler h：JDK不可能知道我们要代理类增强目标类哪些功能，JDK不知道增强的代码，这个需要我们进行传递，我们可以通过调用处理器告诉JDK代理类的增强代码，调用处理器 InvocationHandler 是一个接口，需要我们进行实现，在需要实现的方法中编写增强代码
 ```
-### 1.4 1.4实现调用处理器接口 InvocationHandler 编写增强代码
+### 3.1.4 实现调用处理器接口 InvocationHandler 编写增强代码
 ```
     编写增强代码的调用处理器只需要编写一次即可
     实现调用处理器接口 InvocationHandler，需要实现调用处理器的invoke方法，实现该方法其实就是在实现代理类实现公共接口时需要实现公共接口的方法的方法体
@@ -318,7 +318,7 @@ public class TimerInvocationHandler implements InvocationHandler {
     }
 }
 ```
-### 1.5 1.5客户端程序
+### 3.1.5 客户端程序
 ```
 package client;
 
@@ -358,7 +358,7 @@ public class Client {
     }
 }
 ```
-### 1.6 1.6JDK 动态代理工具类封装
+### 3.1.6 JDK 动态代理工具类封装
 ```
 package client.cw.study.spring.improve;
 
@@ -418,7 +418,7 @@ public class Client {
 ## 3.2 CGLIB 动态代理
 CGLIB 动态代理可以代理接口，也可以代理类
 CGLIB 动态代理底层采用继承的方式实现。所以被代理的目标类不能使用final修饰。
-### 1.7 2.1CGLIB依赖
+### 3.2.1 CGLIB依赖
 ```
 <dependency>
   <groupId>cglib</groupId>
@@ -426,7 +426,7 @@ CGLIB 动态代理底层采用继承的方式实现。所以被代理的目标�
   <version>3.3.0</version>
 </dependency>
 ```
-### 1.8 2.2目标类
+### 3.2.2 目标类
 ```
 package cw.study.spring.service;
 
@@ -455,7 +455,7 @@ public class UserService {
 }
 
 ```
-### 1.9 2.3方法拦截器MethodInterceptor
+### 3.2.3 方法拦截器MethodInterceptor
 ```
 相当于要执行目标方法的时候，会被拦截器拦截，在执行增强代码的过程中执行目标方法，实现对目标方法的增强
 package client.cw.study.spring.improve;
@@ -501,7 +501,7 @@ public class TimerMethodInterceptor implements MethodInterceptor {
 }
 
 ```
-### 1.10 2.4客户端
+### 3.2.4 客户端
 ```
 package client;
 
@@ -541,7 +541,7 @@ public class Client {
 --add-opens java.base/java.lang=ALL-UNNAMED
 --add-opens java.base/sun.net.util=ALL-UNNAMED
 ```
-### 1.11 2.5CGLIB代理类名格式
+### 3.2.5 CGLIB代理类名格式
 ```
 cw.study.spring.service.UserService$$EnhancerByCGLIB$$d609db49@2d6a9952
 

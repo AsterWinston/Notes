@@ -420,5 +420,4 @@ private DataSourceFactory dataSourceElement(XNode context) throws Exception {
 │  configurationFactory             │  Class<?> configurationFactory        │
 │  shrinkWhitespacesInSql           │  boolean = false(3.5.5+)              │
 └───────────────────────────────────┴──────────────────────────────────────┘
-```
-```
+```

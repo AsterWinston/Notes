@@ -269,4 +269,3 @@ MyBatis 选择 JDK 动态代理而不是 Javassist 的原因：
   → Javassist 可以创建类的子类（和 CGLIB 一样），从而拦截 getter 方法
 ```
 
-```

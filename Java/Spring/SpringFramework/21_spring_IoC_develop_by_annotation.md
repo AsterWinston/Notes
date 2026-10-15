@@ -841,7 +841,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 }
 ```
 
-### 11.2 AnnotatedBeanDefinitionReader 注册配置类
+### 11.1.1 AnnotatedBeanDefinitionReader 注册配置类
 
 ```
 public void register(Class<?>... componentClasses) {
@@ -1244,7 +1244,7 @@ public class AutowiredAnnotationBeanPostProcessor
 }
 ```
 
-### 11.6 @Autowired 注入的实际执行：AutowiredFieldElement.inject()
+### 11.5.1 @Autowired 注入的实际执行：AutowiredFieldElement.inject()
 
 ```
 // AutowiredAnnotationBeanPostProcessor 内部类 AutowiredFieldElement
@@ -1385,7 +1385,7 @@ private static class BeanMethodInterceptor implements MethodInterceptor, Conditi
   → 不创建 CGLIB 代理 → 同一类内调用 @Bean 方法 = 直接调用 Java 方法 → 可能出现多例
 ```
 
-### 11.7 Full vs Lite 模式的判定
+### 11.6.1 Full vs Lite 模式的判定
 
 ```
 ConfigurationClassUtils.checkConfigurationClassCandidate() 中：
