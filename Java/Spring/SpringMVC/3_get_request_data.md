@@ -56,8 +56,6 @@
 </project>
 ```
 ## 1.2 添加web支持
-```
-```
 ## 1.3 编写web.xml文件
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -164,8 +162,6 @@ public class UserController {
 </html>
 ```
 ## 1.7 部署测试
-```
-```
 # 2. 使用原生的Servlet API获取
 ```
 原生的Servlet API指的是：HttpServletRequest
@@ -231,8 +227,6 @@ public String register(HttpServletRequest request){
 这样通过Servlet原生的API获取到提交的数据。但是这种方式不建议使用，因为方法的参数依赖Servlet原生API，Controller的测试将不能单独测试，必须依赖WEB服务器才能测试。另外，换句话说，如果在SpringMVC中使用了原生的Servlet，你为什么还要用SpringMVC框架呢！！！！！
 ```
 # 3. 使用RequestParam注解标注
-```
-```
 
 ## 3.1 RequestParam注解的基本使用
 ```
@@ -578,8 +572,6 @@ public String register(User user,
 ```
 
 # 8. 请求的中文乱码
-```
-```
 
 ## 8.1 get请求乱码
 ```

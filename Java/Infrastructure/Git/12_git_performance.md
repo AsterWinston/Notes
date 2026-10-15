@@ -135,7 +135,7 @@ git clone --filter=blob:none --also-filter-submodules \
 |--------|---------|---------|---------|
 | `blob:none` | 所有 tree + commits | commit log 正常 | CI/日常开发 |
 | `tree:0` | 仅 commits | 基本 log | 仅需提交历史 |
-| `blob:limit=<size>` | 小文件下�� | 小文件操作 | 大文件仓库 |
+| `blob:limit=<size>` | 小文件下载 | 小文件操作 | 大文件仓库 |
 
 ## 3.3 组合使用
 

@@ -229,7 +229,7 @@ SELECT balance FROM account WHERE id=1;  -- 2000（提交后可看到最新值�
 - **redo log**：WAL（Write-Ahead Log）机制。修改先写 redo log，再异步刷脏页。崩溃恢复时通过 redo log 重放已提交但未刷盘的事务。
 - **undo log**：记录旧版本数据。回滚时根据 undo log 恢复；MVCC 中通过 undo log 版本链支持快照读。
 
-> 详细原理参考：[12_InnoDB_engine.md](12_InnoDB_engine.md) 和 [1_log.md](Operation&Maintenance/1_log.md)。
+> 详细原理参考：[12_InnoDB_engine.md](12_InnoDB_engine.md) 和 [1_log.md](../DevOps/1_log.md)。
 
 # 7. MVCC简介
 

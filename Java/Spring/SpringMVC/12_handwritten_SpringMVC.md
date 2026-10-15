@@ -1062,8 +1062,6 @@ if(file.isDirectory()){
 System.out.println("Spring Web容器当下状态：" + beanMap);
 ```
 ## 5.3 初始化HandlerMapping
-```
-```
 
 <img src="images/29.png" width="100%"/>
 
@@ -1072,8 +1070,6 @@ System.out.println("Spring Web容器当下状态：" + beanMap);
 <img src="images/30.png" width="100%"/>
 
 ## 5.5 初始化ViewResolver
-```
-```
 
 <img src="images/31.png" width="100%"/>
 

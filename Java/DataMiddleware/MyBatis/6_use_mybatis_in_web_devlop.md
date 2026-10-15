@@ -494,8 +494,6 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
   // 你的应用逻辑代码
 }
 ```
-```
-```
 
 # 5. 分析当前程序存在的问题
 我们不难发现，这个dao实现类中的方法代码很固定，基本上就是一行代码，通过SqlSession对象调用

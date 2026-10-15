@@ -648,8 +648,6 @@ public class Tomcat {
 }
 ```
 
-```
-```
 
 # 14. ServletConfig
 

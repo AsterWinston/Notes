@@ -148,8 +148,6 @@ public class ProductController {
 经过测试，程序可以正常执行！！！
 ```
 # 4. RequestMapping注解的value属性
-```
-```
 
 ## 4.1 value属性的使用
 ```
@@ -575,8 +573,6 @@ public String testParams(){
 params属性剩下的三种情况，自行测试！！！！
 ```
 # 7. RequestMapping注解的headers属性
-```
-```
 ## 7.1 认识headers属性
 ```
 headers和params原理相同，用法也相同。

@@ -146,8 +146,6 @@ public class MyBatisIntroductionTest {
 注意1：默认采用的事务管理器是：JDBC。JDBC事务默认是不提交的，需要手动提交。
 ```
 ## 3.6 步骤6：运行程序，查看运行结果，以及数据库表中的数据
-```
-```
 
 # 4. 关于Mybatis核心配置文件的名字和路径
 ```

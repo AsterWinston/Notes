@@ -238,7 +238,7 @@ git grep "TODO" -- ':!*.min.js'  # 排除 min 文件
 
 ```bash
 # 搜索代码的添加或删除（不仅包含）
-git log -S "function_name"          # 精确匹���
+git log -S "function_name"          # 精确匹配
 git log -S "function_name" --all    # 在所有分支中搜索
 git log -S "function_name" -p       # 显示对应的 diff
 

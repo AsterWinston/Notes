@@ -41,8 +41,6 @@ MVC 和三层模型都采用了分层结构来设计应用程序，都是降低�
 MVC架构模式关注的是整个应用程序的层次关系和分离思想。现代的开发方式大部分都是MVC架构模式结合三层模型一起用。
 ```
 # 3. 什么是SpringMVC
-```
-```
 ## 3.1 SpringMVC概述
 ```
 SpringMVC是一个实现了MVC架构模式的Web框架，底层基于Servlet实现。
@@ -98,8 +96,6 @@ IDEA版本：2023.3
 Thymeleaf版本：3.1.2
 ```
 # 5. 第一个SpringMVC程序
-```
-```
 
 ## 5.1 创建Maven模块
 ```
@@ -367,8 +363,6 @@ public class FirstController {
 点击超链接：other请求
 ```
 # 6. 第二个SpringMVC程序
-```
-```
 ## 6.1 创建Maven模块
 ```
 1. pom.xml文件中添加依赖

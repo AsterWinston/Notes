@@ -101,7 +101,7 @@ credit_flow_default_credit = {200, 50}        # 默认流控信用值
     %% 消息存储文件大小限制
     {msg_store_file_size_limit, 16777216},     % 16MB
     %% 小消息嵌入队列索引（减少磁盘 I/O）
-    {queue_index_embed_msgs_below, 4096},      % 4KB 以下的消��嵌入索引
+    {queue_index_embed_msgs_below, 4096},      % 4KB 以下的消息嵌入索引
     %% 消息存储 GC 间隔
     {msg_store_credit_disc_bound, {4000, 800}},
     %% 队列主进程 hibernation（内存优化）
@@ -271,7 +271,7 @@ java -jar rabbitmq-perf-test-2.19.0.jar \
 # --producers N          生产者数量
 # --consumers N          消费者数量
 # --pmessages N          每条信道发送的消息数
-# --size N               消息体大���（bytes）
+# --size N               消息体大小（bytes）
 # --confirm N            每 N 条确认一次
 # --autoack              自动确认
 # --flag persistent      持久化消息

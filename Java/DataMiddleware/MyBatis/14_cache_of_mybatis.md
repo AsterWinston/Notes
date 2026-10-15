@@ -169,8 +169,6 @@ EhCache是Java写的。Memcache是C语言写的。所以mybatis集成EhCache较�
 <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
 ```
 ## 3.4 第四步：编写测试程序使用
-```
-```
 
 # 4. 其他二级缓存实现
 ```

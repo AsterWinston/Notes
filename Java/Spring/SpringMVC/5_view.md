@@ -1,6 +1,4 @@
 # 1. SpringMVC中视图的实现原理
-```
-```
 ## 1.1 Spring MVC视图支持可配置
 ```
 在Spring MVC中，视图View是支持定制的，例如我们之前在 springmvc.xml 文件中进行了如下的配置：
@@ -265,8 +263,6 @@ public class IndexController {
 通过测试得知：对于JSP视图来说，底层创建的视图对象是InternalResourceView。
 ```
 # 4. 转发与重定向
-```
-```
 ## 4.1 回顾转发和重定向
 ```
 1. 转发是一次请求。因此浏览器地址栏上的地址不会发生变化。

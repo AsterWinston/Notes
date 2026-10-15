@@ -48,7 +48,7 @@ docker exec -it app sh
 
 ```bash
 docker run -p 8080:8080 my-app:1.0
-docker port ccontainere
+docker port <container>
 ```
 
 常见坑：
