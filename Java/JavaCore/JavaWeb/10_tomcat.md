@@ -3716,7 +3716,6 @@ public TomcatServletWebServerFactory tomcatFactory() {
 三、Tomcat 内置集群配置
 
 在 server.xml 中配置 Cluster 组件：
-```
 
 ```xml
 <!-- 在 Engine 或 Host 中配置 -->
@@ -3766,9 +3765,7 @@ public TomcatServletWebServerFactory tomcatFactory() {
 </Cluster>
 ```
 
-```
 同时，你的 web.xml 中需要加上 <distributable/> 标签，告诉 Tomcat 这个应用支持分布式：
-```
 
 ```xml
 <web-app ...>
@@ -3776,11 +3773,9 @@ public TomcatServletWebServerFactory tomcatFactory() {
 </web-app>
 ```
 
-```
 四、Nginx 反向代理 + 负载均衡配置
 
 生产环境中最常用 Nginx + Tomcat 的组合：
-```
 
 ```nginx
 # nginx.conf
@@ -4031,7 +4026,6 @@ public class RequestFacade implements HttpServletRequest {
 }
 ```
 
-```
 为什么要用门面模式？
 1. 安全：Servlet 开发者看不到也不应该调用 Tomcat 内部方法
 2. 防止滥用：比如 recycle() 这个方法会重置所有请求属性，

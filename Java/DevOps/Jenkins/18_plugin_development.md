@@ -639,7 +639,7 @@ credentials-id: my-plugin-token
 
 ## 8.3 文档
 
-```markdown
+````markdown
 <!-- README.md -->
 # My Plugin
 
@@ -661,6 +661,7 @@ pipeline {
     }
 }
 ```
+````
 
 ## 8.4 Configuration
 Manage Jenkins > Configure System > My Plugin Configuration

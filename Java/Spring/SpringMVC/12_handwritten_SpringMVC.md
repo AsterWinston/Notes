@@ -1403,7 +1403,7 @@ public class InternalResourceView implements View {
 ## 6.7 初步测试
 
 # 7. 调用处理器方法
-## 7.0 新增注解定义
+## 7.1 新增注解定义
 ```
 在调用处理器方法时需要通过反射获取方法的参数信息，因此需要新增两个注解：
 @RequestParam 用于标注普通请求参数
@@ -1444,7 +1444,7 @@ public @interface PathVariable {
     String value() default "";
 }
 ```
-## 7.1 参数解析器设计
+## 7.2 参数解析器设计
 ```
 在调用处理器方法之前，需要将HTTP请求中的参数解析为Java方法的参数。
 SpringMVC中大量使用了策略模式，每种参数类型对应一种解析器。
@@ -1516,7 +1516,7 @@ public class MethodParameter {
     }
 }
 ```
-## 7.2 实现各种参数解析器
+## 7.3 实现各种参数解析器
 ```
 1. HttpServletRequest参数解析器（直接将原生的request对象注入）：
 package org.myspringmvc.web.method.support;
@@ -1630,7 +1630,7 @@ public class PathVariableArgumentResolver implements HandlerMethodArgumentResolv
     }
 }
 ```
-## 7.3 编写参数解析器组合器
+## 7.4 编写参数解析器组合器
 ```
 将所有参数解析器组合在一起，按顺序尝试解析：
 
@@ -1685,7 +1685,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
     }
 }
 ```
-## 7.4 完善请求路径匹配（支持@PathVariable）
+## 7.5 完善请求路径匹配（支持@PathVariable）
 ```
 在第六章中，HandlerMapping.getHandler是将请求URI和RequestMappingInfo中的requestURI直接equals比较的。
 但RESTful风格的路径包含变量（如 /user/{id}），不能直接equals比较。
@@ -1754,7 +1754,7 @@ public class PathMatcher {
 
 然后修改RequestMappingHandlerMapping中的getHandler方法，支持路径模式匹配：
 ```
-## 7.5 完善HandlerAdapter.handle方法
+## 7.6 完善HandlerAdapter.handle方法
 ```
 现在可以完成RequestMappingHandlerAdapter.handle方法的完整实现了：
 
@@ -1835,7 +1835,7 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter {
     }
 }
 ```
-## 7.6 完善DispatcherServlet.doDispatch方法（整合路径变量）
+## 7.7 完善DispatcherServlet.doDispatch方法（整合路径变量）
 ```
 在doDispatch方法中，通过getHandler获取HandlerMethod之后，
 需要将路径变量保存到request属性中，供PathVariable参数解析器使用。
@@ -1860,7 +1860,7 @@ for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMappingMap.entr
 这样，当Controller方法中使用@PathVariable获取路径变量时，
 PathVariableArgumentResolver就能从request属性中拿到对应的值。
 ```
-## 7.7 测试验证
+## 7.8 测试验证
 ```
 创建一个测试Controller，验证参数解析和方法调用：
 

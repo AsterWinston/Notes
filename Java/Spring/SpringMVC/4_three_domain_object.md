@@ -274,6 +274,73 @@ public String session3(@SessionAttribute("user") String user) {
 
 ```
 
+# 4. application域对象
+
+## 4.1 使用 Servlet API
+
+在SpringMVC实现application域数据共享，最常见的方案就是直接使用Servlet API了：
+
+```java
+package com.powernode.springmvc.controller;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * ClassName: ApplicationScopeTestController
+ * Description:
+ * Datetime: 2024/3/18 17:37
+ * Author: 老杜@动力节点
+ * Version: 1.0
+ */
+@Controller
+public class ApplicationScopeTestController {
+
+    @RequestMapping("/testApplicationScope")
+    public String testApplicationScope(HttpServletRequest request){
+
+        // 获取ServletContext对象
+        ServletContext application = request.getServletContext();
+
+        // 向应用域中存储数据
+        application.setAttribute("applicationScope", "我是应用域当中的一条数据");
+
+        return "view";
+    }
+}
+```
+
+视图页面 `view.html`：
+
+```html
+<div th:text="${application.applicationScope}"></div>
+```
+
+超链接 `index.html`：
+
+```html
+<a th:href="@{/testApplicationScope}">在SpringMVC中使用ServletAPI实现application域共享数据</a><br>
+```
+
+## 4.2 使用注入
+
+```java
+@Controller
+public class AppController {
+
+    @Resource
+    private ServletContext servletContext;
+
+    @RequestMapping("/app2")
+    public String app2() {
+        servletContext.setAttribute("count", 100);
+        return "success";
+    }
+}
+```
+
 # 5. RedirectAttributes（闪存属性 — Flash Scope）
 ```
 在Web开发中，Post-Redirect-Get（PRG）是一种防止表单重复提交的重要模式：
@@ -511,95 +578,46 @@ public class AppController {
 ```
 
 # 9. Thymeleaf作用域工具对象
-```
-Thymeleaf提供了便捷的作用域访问方式，无需在Controller中将数据放入Model。
+## 9.1 直接访问 Request 域
 
-9.1 直接访问Request域：
-视图页面中直接使用 #request 对象：
+Thymeleaf 提供了便捷的作用域访问方式，无需在 Controller 中将数据放入 Model。视图页面中直接使用 `#request` 对象：
+
+```html
 <div th:text="${#request.getAttribute('user')}"></div>
 <div th:text="${#request.getParameter('id')}"></div>
 <div th:text="${#request.getContextPath()}"></div>
 <div th:text="${#request.getRequestURI()}"></div>
+```
 
-9.2 直接访问Session域：
+## 9.2 直接访问 Session 域
+
+```html
 <div th:text="${session.user}"></div>
 <div th:text="${session.loginTime}"></div>
 <div th:if="${session.user == null}">
     <a th:href="@{/login}">请登录</a>
 </div>
+```
 
-9.3 直接访问ServletContext域：
+## 9.3 直接访问 ServletContext 域
+
+```html
 <div th:text="${application.visitCount}"></div>
 <div th:text="${application.serverInfo}"></div>
+```
 
-9.4 Thymeleaf内置对象速查：
+## 9.4 Thymeleaf 内置对象速查
+
 | 对象 | 作用 | 示例 |
 |------|------|------|
-| #request | 当前HttpServletRequest | ${#request.getAttribute('user')} |
-| #response | 当前HttpServletResponse | |
-| #session | 当前HttpSession | ${session.user} |
-| #servletContext | ServletContext | ${application.count} |
-| #locale | 当前Locale | ${#locale.country} |
+| `#request` | 当前 HttpServletRequest | `${#request.getAttribute('user')}` |
+| `#response` | 当前 HttpServletResponse | |
+| `#session` | 当前 HttpSession | `${session.user}` |
+| `#servletContext` | ServletContext | `${application.count}` |
+| `#locale` | 当前 Locale | `${#locale.country}` |
 
 注意：
-● ${session.xxx} 直接访问Session属性，比在Controller中通过Model传递更加灵活
-● ${application.xxx} 直接访问ServletContext属性
-● 过度使用这些对象会降低代码可维护性，建议主要的数据传递仍通过Model完成
-```
 
-# 4. application域对象
-## 4.1 使用Servlet API
-```
-在SpringMVC实现application域数据共享，最常见的方案就是直接使用Servlet API了：
-package com.powernode.springmvc.controller;
-
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-/**
- * ClassName: ApplicationScopeTestController
- * Description:
- * Datetime: 2024/3/18 17:37
- * Author: 老杜@动力节点
- * Version: 1.0
- */
-@Controller
-public class ApplicationScopeTestController {
-
-    @RequestMapping("/testApplicationScope")
-    public String testApplicationScope(HttpServletRequest request){
-
-        // 获取ServletContext对象
-        ServletContext application = request.getServletContext();
-
-        // 向应用域中存储数据
-        application.setAttribute("applicationScope", "我是应用域当中的一条数据");
-
-        return "view";
-    }
-}
-
-视图页面：view.html
-<div th:text="${application.applicationScope}"></div>
-
-超链接：index.html
-<a th:href="@{/testApplicationScope}">在SpringMVC中使用ServletAPI实现application域共享数据</a><br>
-```
-## 4.2 使用注入
-```
-@Controller
-public class AppController {
-
-    @Resource
-    private ServletContext servletContext;
-
-    @RequestMapping("/app2")
-    public String app2() {
-        servletContext.setAttribute("count", 100);
-        return "success";
-    }
-}
-
-```
+- `${session.xxx}` 直接访问 Session 属性，比在 Controller 中通过 Model 传递更加灵活
+- `${application.xxx}` 直接访问 ServletContext 属性
+- 过度使用这些对象会降低代码可维护性，建议主要的数据传递仍通过 Model 完成

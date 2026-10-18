@@ -1,9 +1,8 @@
-```
 假设有这样一个请求：http://localhost:8080/springmvc/register?name=zhangsan&password=123&email=zhangsan@powernode.com
 在SpringMVC中应该如何获取请求提交的数据呢？
 在SpringMVC中又应该如何获取请求头信息呢？
 在SpringMVC中又应该如何获取客户端提交的Cookie数据呢？
-```
+
 # 1. 准备
 
 ## 1.1 创建模块，添加依赖

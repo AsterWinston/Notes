@@ -1008,7 +1008,7 @@ public class PoolingHttpClientConnectionManager {
    └── 连接无效或已关闭 → 销毁连接
 ```
 
-### 3.2.4 连接配置
+### 4.3.4 连接配置
 
 ```java
 // 4.x
