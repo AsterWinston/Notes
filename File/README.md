@@ -1,4 +1,4 @@
-本板块整理开发中最常见的结构化数据与文档格式：JSON、YAML、XML、Markdown。目标不是罗列语法，而是让初学者能看懂、写对、校验并在 Java、Go、前端等实际项目里正确选型。
+本板块整理开发中最常见的结构化数据与文档格式：JSON、YAML、XML、Markdown、TOML、CSV、Protobuf。目标不是罗列语法，而是让初学者能看懂、写对、校验并在 Java、Go、Python、前端等实际项目里正确选型。
 
 # 1. 模块定位
 
@@ -25,7 +25,7 @@
 
 ## 2.1 知识目标
 
-- 掌握 JSON、YAML、XML、Markdown 的基本语法和数据类型。
+- 掌握 JSON、YAML、XML、Markdown、TOML、CSV、Protobuf 的基本语法和数据类型。
 - 理解解析、序列化、校验和查询的基本流程。
 - 了解常见安全风险，例如精度丢失、原型污染、XXE。
 - 能根据场景选择合适的格式。
@@ -34,8 +34,9 @@
 
 - 能独立读写和校验一份格式文件。
 - 能定位格式错误并解释原因。
-- 能在 Java、Go、前端中调用对应的解析库。
-- 能设计稳定的接口数据结构。
+- 能在 Java、Go、Python、前端中调用对应的解析库。
+- 能设计稳定的接口数据结构和配置结构。
+- 能区分文本格式、表格格式和二进制协议的适用边界。
 
 # 3. 文件清单与大纲
 
@@ -87,6 +88,37 @@
 | [5_docs_site_and_toolchain.md](Markdown/5_docs_site_and_toolchain.md) | 文档站与工具链 | VitePress、MkDocs、Docusaurus 与部署 |
 | [6_lint_style_and_best_practices.md](Markdown/6_lint_style_and_best_practices.md) | 规范与 lint | markdownlint、标题层级、链接检查与规范 |
 
+## 3.5 TOML
+
+| 文件 | 主题 | 一句话简介 |
+|------|------|-----------|
+| [1_overview_and_syntax.md](TOML/1_overview_and_syntax.md) | 概览与语法 | 键值、表、数组、日期、字符串、注释 |
+| [2_python_and_rust_usage.md](TOML/2_python_and_rust_usage.md) | Python/Rust 使用 | tomllib、toml/serde、Cargo/pyproject |
+| [3_config_best_practices.md](TOML/3_config_best_practices.md) | 配置实践 | 环境区分、密钥、默认值、可读性 |
+| [4_comparison_and_tooling.md](TOML/4_comparison_and_tooling.md) | 对比与工具 | TOML/YAML/JSON/INI、格式化、校验 |
+| [5_validation_and_summary.md](TOML/5_validation_and_summary.md) | 校验与总结 | schema、类型、版本兼容、常见坑 |
+
+## 3.6 CSV
+
+| 文件 | 主题 | 一句话简介 |
+|------|------|-----------|
+| [1_overview_and_syntax.md](CSV/1_overview_and_syntax.md) | 概览与语法 | 行列、分隔符、表头、RFC 4180 |
+| [2_parsing_and_serialization.md](CSV/2_parsing_and_serialization.md) | 解析与序列化 | Python/Java/Go 读写、类型推断 |
+| [3_encoding_and_quoting.md](CSV/3_encoding_and_quoting.md) | 编码与引号 | UTF-8/BOM、转义、Excel、注入风险 |
+| [4_large_files_and_streaming.md](CSV/4_large_files_and_streaming.md) | 大文件与流式 | 逐行读取、分块、内存、压缩 |
+| [5_best_practices_and_summary.md](CSV/5_best_practices_and_summary.md) | 实践与总结 | schema、校验、缺失值、安全 |
+
+## 3.7 Protobuf
+
+| 文件 | 主题 | 一句话简介 |
+|------|------|-----------|
+| [1_overview_and_syntax.md](Protobuf/1_overview_and_syntax.md) | 概览与语法 | proto3、message、字段编号、枚举 |
+| [2_schema_and_compatibility.md](Protobuf/2_schema_and_compatibility.md) | Schema 与兼容 | 增删字段、保留字段、版本演进 |
+| [3_code_generation.md](Protobuf/3_code_generation.md) | 代码生成 | protoc、插件、构建集成 |
+| [4_serialization_and_wire_format.md](Protobuf/4_serialization_and_wire_format.md) | 序列化与编码 | varint、tag、长度前缀、性能 |
+| [5_security_and_pitfalls.md](Protobuf/5_security_and_pitfalls.md) | 安全与坑 | 未知字段、大小、递归、类型混淆 |
+| [6_best_practices_and_summary.md](Protobuf/6_best_practices_and_summary.md) | 实践与总结 | schema 管理、调试、最佳实践 |
+
 # 4. 推荐阅读路径
 
 ```text
@@ -105,6 +137,8 @@ Json 6           格式对比与选型
 - **快速入门**：JSON 1 → 2 → 6，先能读写和选型。
 - **接口开发**：JSON 1 → 2 → 3 → 7，重点掌握契约和设计。
 - **安全排查**：JSON 5 → XML 安全篇，理解不可信输入的风险。
+- **配置与数据**：TOML 1 → 3 → 4，CSV 1 → 2 → 4。
+- **二进制协议**：Protobuf 1 → 2 → 4，配合 gRPC 模块阅读。
 
 # 5. 阅读约定
 
@@ -124,5 +158,8 @@ Json 6           格式对比与选型
 | 校验 | 能用 schema 或校验器约束结构 |
 | 安全 | 能识别常见输入风险并防御 |
 | 选型 | 能根据场景说明为什么选该格式 |
+| 配置 | 能用 TOML/YAML 组织可维护配置 |
+| 表格数据 | 能正确处理 CSV 的编码、引号和大文件 |
+| 二进制协议 | 能理解 Protobuf schema、编码和兼容性 |
 
-建议先完成 JSON 模块，再按实际项目需要学习 YAML、XML 和 Markdown。
+建议先完成 JSON 模块，再按实际项目需要学习 YAML、XML、Markdown、TOML、CSV 和 Protobuf。
