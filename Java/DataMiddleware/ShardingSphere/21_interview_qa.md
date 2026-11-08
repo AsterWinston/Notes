@@ -1,16 +1,10 @@
-
 # 1. 基础题
 
 ## 1.1 ShardingSphere 是什么？有哪些核心能力？
 
-Apache ShardingSphere 是分布式数据库生态系统，通过 JDBC 和 Proxy 两种模式提供：
-- 数据分片（分库分表）
-- 读写分离
-- 数据加密
-- 影子库压测
-- 分布式事务（XA / Seata AT）
+Apache ShardingSphere 是 Apache 顶级项目的**分布式数据库生态系统**，定位不是"分库分表中间件"而是"数据访问层增强引擎"，通过 JDBC（Java SDK）与 Proxy（数据库网关）两种形态对应用透明地提供：**数据分片**（分库分表 + 读写分离 + 影子库）、**数据治理**（加密脱敏、DistSQL、弹性迁移）、**分布式事务**（LOCAL/XA/BASE 三型）与**可观测性**（Agent 探针），底座是五大引擎流水线与 SPI 插件架构，支持 MySQL/PostgreSQL/openGauss 等方言。面试把"生态定位 + 双形态 + 五引擎 + SPI"四个关键词讲全即可。
 
-## 1.2 JDBC 模式和 Proxy 模式有什么区别？
+## 1.2 JDBC 模式和 Proxy 模式有什么区别？怎么选？
 
 | 维度 | JDBC | Proxy |
 |------|------|------|
@@ -19,41 +13,41 @@ Apache ShardingSphere 是分布式数据库生态系统，通过 JDBC 和 Proxy 
 | 语言限制 | 仅 Java | 无限制 |
 | 配置运维 | YAML + 重启 | DistSQL 在线变更 |
 
-## 1.3 ShardingSphere 5.x 有哪些主要变化？
+一句话本质：**JDBC 是进程内增强驱动，Proxy 是协议级数据库网关**。选型三问：有非 Java 语言接入吗（有→Proxy）；在乎极致点查延迟吗（在乎→JDBC）；需要平台级连接收敛与在线规则变更吗（需要→Proxy）。加分点：JDBC 连接占用是"线程数×扇出片数"的乘法放大，Proxy 是 M:1 收敛——库连接紧张时这条比性能差异更决定选型；成熟团队通常混合部署，Java 走 JDBC、异构语言与 DBA 工具走 Proxy，共享注册中心里的同一套规则。
 
-- ANTLR 4 解析器（替换自研）
-- DistSQL 在线配置语言
-- 插件化 SPI 架构
-- 全新治理中心（Cluster 模式）
-- 支持 MySQL/PG/openGauss/SQLServer/Oracle
+## 1.3 ShardingSphere 5.x 相比 4.x 有哪些主要变化？
+
+4.x 到 5.x 是架构级重写：**①** 解析引擎从自研切换为 **ANTLR 4** 多方言语法规；**②** 引入 **DistSQL** 在线管理规则；**③** 引入**模式体系**（Standalone/Cluster），元数据存注册中心，支持 ZooKeeper/etcd/Nacos；**④** SPI 插件化，算法/生成器/事务类型全可插拔；**⑤** 能力扩面：加密、脱敏、影子库、迁移 Pipeline、SQL 联邦、Agent；**⑥** 接入简化：starter 在 5.3 后废弃，统一为 ShardingSphereDriver + 规则 YAML。
 
 # 2. 原理题
 
-## 2.1 ShardingSphere 的五大引擎是什么？
+## 2.1 ShardingSphere 的五大引擎是什么？一条 SQL 怎么流转？
 
-```
+```text
 Parse → Rewrite → Route → Execute → Merge
 
-1. Parse: ANTLR 解析 SQL → AST
-2. Rewrite: 逻辑表名 → 物理表名、补充主键、分页改写
-3. Route: 分片键 → 目标数据源和表
-4. Execute: 多线程并发执行 → 各数据源
+1. Parse: ANTLR 方言解析 SQL → 统一 SQLStatement 语法树
+2. Rewrite: 逻辑表名 → 物理表名、补充主键、分页/聚合改写
+3. Route: 分片键 → 目标数据源和表，产出 RouteContext
+4. Execute: 线程池并发执行 → 各数据源
 5. Merge: 归并排序/聚合/分页 → 统一结果
 ```
 
-## 2.2 ShardingSphere 如何处理跨分片的 ORDER BY + LIMIT？
+实际顺序是 **Parse→Route→Rewrite**——改写需要路由结果（每个路由单元各生成一份物理 SQL），路由在改写之前。Parse 产出带位置信息的 Segment 树；路由提取分片值算出"数据源×表"单元集合；改写按 Token 模型原位替换表名、补主键、放大分页 limit、拆 AVG；执行按连接模式分组并发；归并用装饰器链还原单一游标，全程对 ORM 透明。
 
-1. 每个分片执行 ORDER BY LIMIT（取 offset + limit 条）
-2. 各分片结果集归并排序（K 路归并 / 优先队列）
-3. 跳过 offset 条，取 limit 条返回
+## 2.2 支持哪些分片算法？精确、范围、复合条件分别怎么处理？
 
-## 2.3 ShardingSphere 的分布式事务如何实现？
+内置算法按接口分三类：**PRECISE**（处理 `=`/`IN`，如 INLINE 行表达式、HASH_MOD、MOD）、**RANGE**（处理 `BETWEEN`/比较，如 INTERVAL 按时间、边界表算法）、**COMPLEX**（多分片键组合，如 user_id+order_type 拼接取模）。裁剪规则的多维查询：复合分片键**全部命中才能裁剪**，缺一即全路由；`OR` 连接不同分片键条件提取失败放弃裁剪；`!=`/`NOT` 无法代入公式按广播处理。典型反例：INLINE 对范围条件默认不裁剪（除非开 allow-range-query-with-inline-sharding 全节点枚举代入），时间分表该用 INTERVAL。加分项：自定义算法 SPI（StandardShardingAlgorithm 同时实现 precise+range）与 HINT 算法（路由值来自 HintManager/SQL 注释而非 WHERE）。
 
-- **XA 模式**：集成 Atomikos/Narayana，两阶段提交
-- **Seata AT 模式**：Seata 代理数据源，undo_log 自动回滚
-- **自动判断**：涉及多个数据源时自动升级为 XA/Seata，单数据源用本地事务
+## 2.3 ShardingSphere 如何处理跨分片的 ORDER BY + LIMIT？
 
-## 2.4 广播表和绑定表有什么区别？
+流程是"改写放大 + 归并截取"：逻辑 `LIMIT 100,10` 被改写为每片执行 `LIMIT 0,110`，依据是全局第 101-110 名必然落在某片前 110 内；归并层对 k 路有序结果做 **K 路归并（优先队列，内存恒定 k 行）**，跳过 offset 取 limit。追问必考代价：物理层总读 `k×(offset+limit)` 行、RT 取最慢分片，深分页线性放大——生产纪律是游标分页（`WHERE id > last`）或限制 offset 上限。若 ORDER BY 列不在投影里，改写引擎临时补进物理 SQL 供归并比较、返回前丢弃，这解释了"物理 SQL 比逻辑 SQL 多列"的现象。
+
+## 2.4 跨分片聚合怎么实现？为什么 AVG 要改写、COUNT(DISTINCT) 有坑？
+
+原则是"满足结合律才可下推"：**SUM/MAX/MIN/COUNT 不改写**，各片算局部值后归并层二次聚合；**AVG 必须改写**为 `SUM+COUNT` 下发，归并后 `SUM(总和)/SUM(计数)`，因为平均数不可二次平均；**COUNT(DISTINCT x) 无法无损下推**——各片局部去重再求和会把跨片重复值多算，只能拉明细到归并层内存去重（大基数即 OOM），生产解法是近似计数（ES/HLL）或让查询单片化。GROUP BY 流式归并的前提是改写引擎给物理 SQL 补分组键 ORDER BY，保证同组行连续到达，否则退化内存归并。总答案一句话：**分片聚合 = 结合性判断 + 到达顺序保证**。
+
+## 2.5 广播表和绑定表有什么区别？
 
 | 维度 | 广播表 | 绑定表 |
 |------|--------|--------|
@@ -62,28 +56,33 @@ Parse → Rewrite → Route → Execute → Merge
 | 写入开销 | 多数据源写入 | 单分片写入 |
 | 典型场景 | 字典表、配置表 | 订单 + 订单明细 |
 
+机制上绑定表是**路由优化**——分片算法一致的表 JOIN 时按分片节点成对生成路由单元（`t_order_0 JOIN t_order_item_0` 同库闭环），避免 M×N 笛卡尔积，生效硬条件是 ON 条件同时含两侧分片键且可提取；广播表是**数据冗余**——每库一份全量，JOIN 任意分片本地完成，写扇出所有库只适合低频小表。加分点：绑定失效最常见原因是 ORM 把关联条件写进 WHERE 而非 ON，用 PREVIEW 对比路由单元数即可确认。
+
+## 2.6 ShardingSphere 的分布式事务如何实现？XA 和 BASE 怎么选？
+
+- **XA 模式**：集成 Atomikos/Narayana，两阶段提交
+- **Seata AT 模式**：Seata 代理数据源，undo_log 自动回滚
+- **自动判断**：涉及多个数据源时自动升级为 XA/Seata，单数据源用本地事务
+
+最后一条要答准确：事务类型在**事务开始**阶段按声明确定；单条 SQL 路由单库时即便声明 XA 也降级 LOCAL。XA 是真 ACID：prepare 持锁到 commit，吞吐腰斩、prepared 悬挂要靠 TM 日志恢复，适合资金级低频跨片写；Seata AT 是柔性事务：本地即时提交 + undo_log 快照 + 全局锁防脏写，吞吐接近本地但有全局读未提交窗口。收口：**优先用分片键设计消灭跨库事务**，真跨片写按一致性等级选 XA，高并发柔性选 AT/消息最终一致——事务选型是建模问题不是配置问题。
+
+## 2.7 读写分离怎么实现？主从延迟导致写后读不到怎么办？
+
+读写分离规则把逻辑数据源映射为写库+读库组：DML 与事务内语句强制写库，SELECT 走负载均衡（ROUND_ROBIN/WEIGHT）打读库。写后读不到的治理四档：**①** 事务内自动主库（框架已保证）；**②** 关键读 HintManager `setWriteRouteOnly()`（线程本地，必须 try-with-resources 防泄漏）或 SQL 注释 hint（Proxy 可透传）；**③** 等待复制位点再读；**④** 架构层：敏感读走主库 + 半同步复制缩短延迟。追问组合形态：每个分库组内部再配读写分离（分库路由→读写组展开），连接账本按"片数×(1主N从)"重算。
+
+> **注意**：面试中"读写分离怎么保证一致性"不要答成"ShardingSphere 保证强一致"——它只保证事务内读主，事务外的跨连接读仍受复制延迟支配，一致性语义在业务侧。
+
 # 3. 实践题
 
-## 3.1 如何选择分片键？
+## 3.1 如何选择分片键？买家和卖家两个查询维度怎么办？
 
-1. 查询中最频繁的 WHERE 条件列
-2. 不可变列（避免修改触发数据迁移）
-3. 区分度高（避免数据倾斜）
-4. 与 JOIN 关联键一致（避免跨分片 JOIN）
-5. 业务主键优先（订单号、用户ID）
+四条铁律：**高频查询谓词覆盖**、**不可变**（分片键 UPDATE=数据搬家）、**高区分度**（防倾斜）、**与 JOIN 键对齐**（决定绑定表可行性）。双维度经典解法：主维度（买家）做分片键，把 buyer_id 的模数基因嵌入订单号低位（`order_id = snowflake<<4 | buyer_id%16`），按 order_id 查询反解基因同片命中；次维度（卖家）走 binlog→ES 异构索引。追问"为什么不双份表"：可以，但写放大一倍 + 双写一致性要保——基因法与双份索引表的取舍是"ID 格式耦合成本"与"写放大成本"的对决；基因法只能种一个维度，且扩容换模数会破坏号段语义，属建模期一次性决策。
 
-## 3.2 分库分表后如何做跨分片分页？
+## 3.2 分库分表后如何做跨分片分页？深度分页怎么治理？
 
-深度分页性能差，推荐游标分页：
+常规分页靠"每片放大取 offset+limit、归并跳过截取"（见 2.3），治理深度分页的优先级：**游标分页**（`WHERE id > ? ORDER BY id LIMIT 20`，前端只给下一页）> SQL 审计限制 offset 上限（如 >10000 直接拦截）> 异构索引（ES 翻页）。ORM 细节追问：PageHelper 自动 COUNT 会广播成全片求和（正确但昂贵），且其分页改写与 ShardingSphere 分页归并是两层互不可见的改写，规范是**分片表分页交给 ShardingSphere，PageHelper 只管单库表**。
 
-```sql
--- 替代 OFFSET 10000 LIMIT 20
-SELECT * FROM t_order
-WHERE order_id > ? AND user_id = ?
-ORDER BY order_id LIMIT 20;
-```
-
-## 3.3 分布式主键方案怎么选？
+## 3.3 分布式主键方案怎么选？雪花 ID 的 worker-id 怎么保证唯一？
 
 | 方案 | 场景 |
 |------|------|
@@ -91,6 +90,14 @@ ORDER BY order_id LIMIT 20;
 | UUID | 不需要排序 |
 | COSID_SNOWFLAKE | 需要更好的时钟回拨保护 |
 | AUTO_INCREMENT | 不推荐（单点瓶颈） |
+
+分片环境本地 AUTO_INCREMENT 跨片重号集体出局；UUID 无序导致页分裂与索引膨胀；雪花是默认答案（趋势递增、可解析时间、本地无 RPC）。worker-id 唯一性：**Cluster 模式由注册中心自动分配防重**，Standalone 需手工规划（容器重启 IP 复用、镜像克隆都会重号）；时钟回拨默认抛异常拒绝发号，生产要求 NTP slew 平滑校时或选带回拨保护的生成器。追问"主键不连续是不是 bug"：雪花本就不保证连续，要连续只有号段模式（Leaf/DB 号段），接受吞吐与耦合代价。
+
+## 3.4 影子库压测的原理是什么？
+
+影子规则（`!SHADOW`）在路由层做**流量染色分流**：命中影子判定的语句路由到影子数据源（结构相同的生产副本库），真实库不受压测数据污染。三种判定方式：影子键列、Hint（`setShadowDatabase(true)`，全链路透传）、自动比例（固定百分比镜像）。关键追问：影子判定主要作用于**写语句**，读按影子策略配置；DDL 需同步影子库；压测完影子库直接清理，不回填生产。与读写分离的本质区别：**影子库承接写流量隔离，从库承接读流量分摊**，两者可叠加。
+
+> **行业实践**：全链路压测的染色标要能从入口 HTTP 头一路传到 HintManager（AOP 统一埋点），影子库方案文档里必须同时回答"MQ 重复消费怎么防、定时任务重复跑怎么办"，否则只隔离了数据库一层。
 
 # 4. 对比题
 
@@ -104,6 +111,8 @@ ORDER BY order_id LIMIT 20;
 | 治理 | ZooKeeper/Nacos | ZK/Nacos |
 | 社区 | Apache 顶级 | 社区维护 |
 
+补充判断维度：**能力面**（ShardingSphere 有加密/脱敏/影子/迁移/联邦/事务生态，Mycat 聚焦分片+读写分离）；**引擎路线**（Mycat2 押注 Calcite 统一 SQL 语义，ShardingSphere 是 ANTLR 管方言、Calcite 只做联邦）；**接入形态**（纯 Java 栈要零网络跳只能选 ShardingSphere-JDBC，Mycat 无 SDK）。结论：新项目选 ShardingSphere；存量 Mycat 迁移按"协议兼容层"评估成本即可。
+
 ## 4.2 ShardingSphere vs Vitess？
 
 | 维度 | ShardingSphere | Vitess |
@@ -113,15 +122,24 @@ ORDER BY order_id LIMIT 20;
 | 分布式事务 | XA/Seata | 2PC |
 | 生态 | Java 生态 | CNCF / K8s 生态 |
 
+架构哲学差异更值得讲：Vitess 是**数据库即平台**路线（分片 + tablet 管理 + K8s 编排全家桶），重运维模型；ShardingSphere 是**增强数据访问层**路线（保留你的 MySQL 运维体系，中间件只做 SQL 层治理），弹性靠 Proxy 集群 + 迁移 Pipeline 组合。选型：云原生、超大规模 MySQL 集群治理选 Vitess；Java 微服务、渐进式分片改造、需要加密脱敏选 ShardingSphere。
+
+> **设计争议**：两者是否竞品存在分歧——Vitess 实际在"重建数据库运维体系"，ShardingSphere 在"增强现有数据库"，真正重叠区只有 SQL 网关分片这一层；面试答"同层竞品、生态位不同"比站队更稳。
+
 # 5. 架构题
 
 ## 5.1 ShardingSphere 如何保证高可用？
 
-- **Proxy 集群**：多实例 + LB，通过注册中心同步配置
-- **Cluster 模式**：ZooKeeper/etcd/Nacos 存储元数据
-- **熔断机制**：DISABLE 故障存储单元，自动摘除
-- **数据库发现**：MGR 主从自动发现
+分层回答：**接入层**——Proxy 多实例 + LB，JDBC 形态可用性等于应用自身；**控制层**——Cluster 模式规则集中存 ZooKeeper/etcd（3 节点起），实例 watch 热更新，注册中心短时故障只阻塞变更不影响存量运行；**数据层**——读写分离主从 + `DISABLE STORAGE UNIT` 熔断摘除故障库；**事务层**——XA 恢复依赖 TM 日志持久化与超时参数。追问"Proxy 挂了数据会丢吗"：已提交数据不丢（事务在 DB 端），但断在途事务与会话，应用必须配重连与幂等重试。
 
-## 5.2 数据加密的查询辅助器原理？
+## 5.2 数据加密的查询辅助器原理是什么？
 
-加密字段无法直接 LIKE 查询。查询辅助器对原文做**确定性哈希**（如 MD5），查询时对查询条件同样计算哈希，通过辅助列做精确匹配。支持等值查询和前缀查询，不支持全模糊 LIKE。
+密文无法做等值/模糊匹配，**查询辅助器把"原文上的可查询性"转成"摘要列上的等值匹配"**：写入时除密文列外，用确定性算法（MD5/SHA）对原文计算摘要写入辅助列；查询时 `WHERE id_card = ?` 改写为 `WHERE id_card_assist = ?`（同摘要），返回时密文自动解密还原。确定性保证同原文同摘要才支持**等值查询**；分段前缀哈希可支持前缀 LIKE，**全模糊 `LIKE '%x%'` 无解**——检索需求应移到脱敏+ES 层。追问密钥：走 KMS 外部化，绝不明文写 YAML；加密列不能做分片键（只有摘要列可路由）。
+
+## 5.3 已有单库数据要做分片扩容，怎么在线迁移？
+
+标准路径是 **Migration Pipeline 四阶段**：①`REGISTER MIGRATION SOURCE STORAGE UNIT` 登记源库；②`MIGRATE TABLE INTO` 启动：全量分片搬迁 + binlog 增量追平 + 一致性校验（CHECK MIGRATION 可反复跑）；③读写切换：校验通过后停写秒级切规则或双写灰度；④`COMMIT MIGRATION` 收尾，异常 `ROLLBACK` 回切。追问细节：迁移期间用影子表先验证新拓扑；大表按片并行 + rate-limiter 限速避开高峰；旧版本手工方案"双写 + 全量修补 + 校验"本质相同。纪律一句话：**一次只动一个变量，先迁数据后切流量**。
+
+## 5.4 让你设计一套分库分表方案，完整思路是什么？
+
+压轴框架题按六步收口：**① 建模**——SQL 画像定分片键（主维度 + 次维度基因法/异构索引）、对齐关系定绑定/广播表、按 3 年容量取 2 幂片数；**② 主键**——SNOWFLAKE + Cluster 自动 worker-id；**③ 预检**——全量业务 SQL 跑 PREVIEW，单片路由占比 ≥95%、解析失败清零、深 OFFSET 清零；**④ 事务**——跨库事务清单化，单片优先、XA/AT/消息表分级；**⑤ 资源**——连接二维账本（实例×池×扇出 ≤ DB max_connections 70%）；**⑥ 运维闭环**——DistSQL 变更流程 + EXPORT 回滚存档 + 扇出数/解析失败/连接水位/XA 悬挂四类告警。加分话术：分片事故九成死在第①步建模，技术选型反而最容易——把难题前移是架构面试想听的世界观。
