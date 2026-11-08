@@ -1,7 +1,7 @@
 
 # 1. 故障排查全景流程
 
-```
+```text
 发现问题（监控告警 / 用户反馈）
     │
     ▼
@@ -107,7 +107,7 @@ jmap -histo <pid> | head -20
 
 ## 3.2 内存泄漏的典型特征
 
-```
+```text
 jstat -gc <pid> 查看：
 - FGC 次数持续增长
 - OU (Old Used) 只增不减
@@ -116,7 +116,7 @@ jstat -gc <pid> 查看：
 
 **MAT 分析内存泄漏 —— 关键技巧：**
 
-```
+```text
 1. Histogram → 按 Retained Heap 排序
 2. 找到可疑对象的 Dominator Tree
 3. Path to GC Roots → exclude soft/weak/phantom references
@@ -153,7 +153,7 @@ public class ThreadLocalLeak {
 
 **为什么 ThreadLocal 会泄漏：**
 
-```
+```text
 Thread
   └── ThreadLocalMap
         └── Entry (WeakReference) ← Key (ThreadLocal 对象) 是弱引用
@@ -224,7 +224,7 @@ jcmd <pid> Thread.print | grep -A 50 "deadlock"
 ```
 
 **输出示例：**
-```
+```text
 Found one Java-level deadlock:
 ============================
 "Thread-1":
@@ -285,7 +285,7 @@ public class DeadLock {
 
 ## 6.1 现象
 
-```
+```text
 java.lang.OutOfMemoryError: unable to create new native thread
 ```
 
@@ -351,14 +351,14 @@ trace com.example.controller.OrderController getOrder '#cost > 500'
 # 8. 其他 OOM 场景
 
 ## 8.1 元空间溢出
-```
+```text
 java.lang.OutOfMemoryError: Metaspace
 ```
 - 原因：动态生成类过多（CGLIB、动态代理、Groovy、JSP）。
 - 解决：增大 `-XX:MaxMetaspaceSize` 或排查类生成。
 
 ## 8.2 直接内存溢出
-```
+```text
 java.lang.OutOfMemoryError: Direct buffer memory
 ```
 - 原因：NIO 的 `ByteBuffer.allocateDirect()` 未释放。
@@ -366,7 +366,7 @@ java.lang.OutOfMemoryError: Direct buffer memory
 - 解决：限制 `-XX:MaxDirectMemorySize`，排查代码是否正确释放。
 
 ## 8.3 GC Overhead 超限
-```
+```text
 java.lang.OutOfMemoryError: GC overhead limit exceeded
 ```
 - 含义：超过 98% 的时间在 GC，但只回收了 <2% 的堆。
@@ -378,7 +378,7 @@ java.lang.OutOfMemoryError: GC overhead limit exceeded
 ```
 
 ## 8.4 无法创建线程
-```
+```text
 java.lang.OutOfMemoryError: unable to create new native thread
 ```
 - 含义：系统内存不足以为新线程分配栈空间。

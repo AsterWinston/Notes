@@ -2,7 +2,7 @@
 
 **结论先行**：Semantic Kernel（简称 SK）把 Agent（智能体）抽象为"**模型 + 指令 + 插件 + 线程**"四要素的组合，并提供单 Agent 与多 Agent 两类入口。
 
-```
+```text
 Agent = 模型 + 指令 + 插件 + 线程（会话状态）
 ```
 
@@ -25,7 +25,7 @@ Agent 是"**能自主调用工具、并在多轮对话中保持状态的模型�
 
 ### 1.2.2 一次调用的时序
 
-```
+```text
 调用方            Agent            模型           插件
   │ invokeAsync ──▶ │               │              │
   │                 │ 组装提示 ─────▶│              │
@@ -369,7 +369,7 @@ public class ApprovalTerminationStrategy extends TerminationStrategy {
 
 ### 5.1.2 状态生命周期
 
-```
+```text
 创建线程 → 多轮调用（追加消息）→ 序列化 → 存储
                                         │
                               下次请求 ← 反序列化

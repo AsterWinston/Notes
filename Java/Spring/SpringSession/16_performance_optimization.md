@@ -268,7 +268,7 @@ public class TwoLevelSessionCache {
 
 大多数场景下，**Redis 本身已经足够快**（1ms 以内），不需要二级缓存：
 
-```
+```text
 Redis P50 延迟 ≈ 0.5ms
 本地缓存 P50 延迟 ≈ 0.001ms
 

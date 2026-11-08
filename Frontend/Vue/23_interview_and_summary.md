@@ -56,7 +56,7 @@ watch(a, (n, o) => console.log(o, '→', n))   // 副作用，不返回值
 
 **要点**：effect（工作单元）+ track（读时收集依赖）+ trigger（写时触发依赖）+ scheduler（异步批量合并更新）。
 
-```
+```text
 读 state.count → get 拦截 → track 收集当前 effect
 写 state.count → set 拦截 → trigger 执行依赖的 effect（经 scheduler 排队合并）
 ```
@@ -139,7 +139,7 @@ function reactive<T extends object>(obj: T): T {
 
 # 3. 全系列知识地图
 
-```
+```text
                Vue 3 学习路线（23 篇 · 四阶段）
  ┌────────────┐   ┌────────────┐   ┌────────────┐   ┌────────────┐
  │阶段一 基础  │ → │阶段二 组件  │ → │阶段三 工程  │ → │阶段四 原理  │

@@ -5,7 +5,7 @@ JDBC（Java Database Connectivity）是 Java 访问关系型数据库的标准 A
 
 # 2. JDBC 规范层次
 
-```
+```text
 ┌───────────────────────────────────────┐
 │   Java 应用（面向 JDBC 接口编程）       │
 ├───────────────────────────────────────┤
@@ -61,7 +61,7 @@ try (Connection conn = DriverManager.getConnection(url, user, password);
 
 ## 5.1 为什么要连接池
 
-```
+```text
 无连接池：每次访问都新建 TCP 连接
   建立连接（耗时 30~100ms）→ 执行 SQL → 断开连接
 
@@ -202,7 +202,7 @@ while (crs.next()) {
 
 # 11. 与 ORM 框架的关系
 
-```
+```text
 ┌──────────┐      ┌──────────────┐      ┌──────────────┐
 │  应用    │ ───► │  ORM 框架     │ ───► │    JDBC      │
 │  Service │      │ JPA/MyBatis  │      │   + 连接池    │

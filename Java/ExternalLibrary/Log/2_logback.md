@@ -58,7 +58,7 @@ Logback 分为三个模块：
 
 ## 2.2 核心组件关系
 
-```
+```text
 +------------------+      +------------------+
 |    Logger        |      |    Appender      |
 |  (日志记录器)     |----->|  (日志输出目标)    |
@@ -91,7 +91,7 @@ Logger comExampleService = LoggerFactory.getLogger("com.example.Service");
 
 ## 2.4 日志级别继承规则
 
-```
+```text
 根 Logger 级别: INFO
     ├── com (未设级别) -> 继承 INFO
     │   ├── com.example (未设级别) -> 继承 INFO
@@ -103,7 +103,7 @@ Logger comExampleService = LoggerFactory.getLogger("com.example.Service");
 
 ## 2.5 输出流程
 
-```
+```text
 Logger.log()
     |
     v
@@ -651,7 +651,7 @@ public void callAppenders(ILoggingEvent event) {
 
 每个 Appender 在输出前会经过过滤器链：
 
-```
+```text
 appender.doAppend(event)
     |
     v
@@ -725,7 +725,7 @@ StatusPrinter.print(lc);  // 打印所有状态消息
 
 ### 6.1.1 AsyncAppender 工作原理
 
-```
+```text
 生产者线程 (应用)                   消费者线程 (后台)
                 +-------------------+
   Logger.log()  |  BlockingQueue    |   Worker Thread
@@ -919,7 +919,7 @@ Spring Boot 推荐使用 `logback-spring.xml` 替代 `logback.xml`，因为前�
 
 Spring Boot 在 classpath 上提供了以下预定义配置片段：
 
-```
+```text
 org/springframework/boot/logging/logback/
     base.xml              # 基础配置（包含 console + file 的默认值）
     defaults.xml          # 默认属性（日志模式、字符集等）
@@ -1033,7 +1033,7 @@ public class LogServiceAppender extends AppenderBase<ILoggingEvent> {
 
 ### 8.1.1 配置分离策略
 
-```
+```text
 resources/
 ├── logback-spring.xml          # 通用配置（引入 profile 特定文件）
 ├── logback-spring-dev.xml      # 开发环境

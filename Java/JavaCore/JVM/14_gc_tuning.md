@@ -42,7 +42,7 @@
 ## 2.3 日志解读
 
 **Parallel GC 日志（Young GC）：**
-```
+```text
 2024-01-15T10:30:01.234+0800: 12.345: [GC (Allocation Failure) 
 [PSYoungGen: 65536K->1024K(76288K)] 
 65536K->2048K(249088K), 0.0023456 secs] 
@@ -55,7 +55,7 @@
 - `real=0.02`：实际停顿 20ms
 
 **CMS GC 日志：**
-```
+```text
 [GC (CMS Initial Mark) [1 CMS-initial-mark: 4567K(81920K)] 
 6789K(121920K), 0.0003456 secs]
 
@@ -64,7 +64,7 @@ rescan: 0.2345 secs, weak refs: 0.0123 secs, total=0.3123 secs]
 ```
 
 **G1 GC 日志：**
-```
+```text
 [0.123s] GC(0) Pause Young (Normal) (G1 Evacuation Pause) 
 64M->32M(256M) 12.345ms
 ```
@@ -84,7 +84,7 @@ rescan: 0.2345 secs, weak refs: 0.0123 secs, total=0.3123 secs]
 ## 3.1 Young GC 过于频繁
 
 **现象**：
-```
+```text
 [GC ... 123ms][GC ... 98ms][GC ... 115ms][GC ... 102ms]...
 每几秒一次 Young GC
 ```
@@ -104,7 +104,7 @@ rescan: 0.2345 secs, weak refs: 0.0123 secs, total=0.3123 secs]
 ## 3.2 Full GC 频繁
 
 **现象**：
-```
+```text
 [Full GC ... 5.234s][Full GC ... 4.891s]...
 Full GC 变得频繁且停顿久
 ```
@@ -121,7 +121,7 @@ Full GC 变得频繁且停顿久
 
 **原因**：Minor GC 时 Survivor 区放不下，老年代也满了。
 
-```
+```text
 ParNew: ... [promotion failed ...]
 ```
 
@@ -135,7 +135,7 @@ ParNew: ... [promotion failed ...]
 ## 3.4 并发模式失败（Concurrent Mode Failure — CMS）
 
 **现象**：
-```
+```text
 [GC ... Concurrent Mark ... 并发过程中老年代已满]
 [Full GC ... 退化为 Serial Old]
 ```
@@ -183,7 +183,7 @@ S0     S1     E      O      M     CCS     YGC   YGCT    FGC  FGCT    GCT
 
 # 5. GC 调优的标准步骤
 
-```
+```text
 1. 明确目标
    ├── 吞吐量优先 → Parallel
    ├── 延迟优先 → G1 / ZGC

@@ -9,7 +9,7 @@ Hystrix 是 Netflix 的熔断器库，在 Zuul 网关中提供以下核心能力
 - **超时控制**：设置请求超时时间，避免长时间等待
 - **监控（Metrics）**：收集熔断器状态和请求指标
 
-```
+```text
 Zuul 请求 → HystrixCommand → 正常：转发到后端 → 收到响应
                             → 异常/超时/熔断 → Fallback → 降级响应
 ```
@@ -71,7 +71,7 @@ hystrix:
 
 ## 2.3 策略选择建议
 
-```
+```text
                   是否 IO 密集？
                   /          \
                是              否
@@ -91,7 +91,7 @@ hystrix:
 
 Hystrix 超时与 Ribbon 超时的关系：
 
-```
+```text
 Hystrix 超时 > Ribbon (ConnectTimeout + ReadTimeout) * (MaxAutoRetries + 1) * (MaxAutoRetriesNextServer + 1)
 ```
 
@@ -144,7 +144,7 @@ hystrix:
 
 熔断器状态转换：
 
-```
+```text
          ┌────────────────┐
          │    CLOSED       │  ← 正常状态，请求正常通过
          │  (熔断器关闭)    │

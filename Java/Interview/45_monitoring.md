@@ -103,7 +103,7 @@ node_filesystem_avail_bytes / node_filesystem_size_bytes * 100 < 20
 ```
 
 ## 2.5 ELK 日志收集的整体架构是怎样的？
-```
+```text
 应用服务器(Filebeat 轻量采集) → Kafka(削峰缓冲) → Logstash(清洗解析增强) → Elasticsearch(存储索引) → Kibana(可视化查询)
 ```
 

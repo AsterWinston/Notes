@@ -3,7 +3,7 @@
 
 Zuul 中一个 HTTP 请求的完整生命周期可以分为 8 个阶段：
 
-```
+```text
                                ┌─────────────────┐
                                │   客户端发起请求   │
                                └────────┬────────┘
@@ -180,7 +180,7 @@ Pre 阶段是请求进入后的第一个处理阶段，核心过滤器为 `PreDe
 
 此阶段的执行流程：
 
-```
+```text
 ZuulServlet.preRoute()
     │
     ▼
@@ -198,7 +198,7 @@ FilterProcessor.runFilters("pre")
 
 `PreDecorationFilter` 决定了请求的路由目标：
 
-```
+```text
 请求 /user/profile/123
     │
     ▼  PreDecorationFilter
@@ -217,7 +217,7 @@ FilterProcessor.runFilters("pre")
 
 Route 阶段执行实际的请求转发。核心逻辑是选择一个合适的 RouteFilter 发送请求到后端。
 
-```
+```text
 ZuulServlet.route()
     │
     ▼
@@ -240,7 +240,7 @@ FilterProcessor.runFilters("route")
 
 ## 6.1 RibbonRoutingFilter 详细流程
 
-```
+```text
 RibbonRoutingFilter.run()
     │
     ├─ 1. 从 RequestContext 获取 serviceId
@@ -274,7 +274,7 @@ RibbonRoutingFilter.run()
 
 ## 6.2 SimpleHostRoutingFilter 详细流程
 
-```
+```text
 SimpleHostRoutingFilter.run()
     │
     ├─ 1. 从 RequestContext 获取 routeHost
@@ -300,7 +300,7 @@ SimpleHostRoutingFilter.run()
 
 Route 阶段完成后（无论成功或失败），Post 阶段的过滤器开始执行。
 
-```
+```text
 ZuulServlet.postRoute()
     │
     ▼
@@ -385,7 +385,7 @@ try {
 
 `error()` 方法会执行所有 `filterType()` 返回 `"error"` 的过滤器：
 
-```
+```text
 ZuulServlet.error(e)
     │
     ├─ 设置 ctx.set("error.status_code", ...)
@@ -450,7 +450,7 @@ public class SendErrorFilter extends ZuulFilter {
 
 ## 8.2 异常传播链路
 
-```
+```text
 Pre 阶段某个 Filter.run()
     │
     ├─ 抛出异常

@@ -9,7 +9,7 @@ Dubbo 2.x 的**接口级发现**将每个接口都作为一个独立的服务注
 - **推送风暴**：单个 Provider 变更触发大量 Consumer 重新计算
 - **元数据膨胀**：每个 URL 都携带完整的服务参数
 
-```
+```text
 # Dubbo 2.x 注册中心节点结构
 /dubbo/com.example.UserService/providers/192.168.1.100:20880
 /dubbo/com.example.OrderService/providers/192.168.1.100:20880
@@ -25,7 +25,7 @@ Dubbo 2.x 的**接口级发现**将每个接口都作为一个独立的服务注
 
 Dubbo 3 默认使用**应用级发现**：以应用为粒度注册，元数据独立存储。
 
-```
+```text
 # Dubbo 3 注册中心节点结构
 /services/app-a/192.168.1.100:20880  # 仅一个节点
 
@@ -68,7 +68,7 @@ dubbo:
 
 Dubbo 3 支持两种 Mesh 模式：
 
-```
+```text
 Sidecar Mesh (传统):
   App ←→ Envoy ←→ Network ←→ Envoy ←→ App
 
@@ -216,7 +216,7 @@ public class MetadataInfo {
 
 Consumer 根据 Revision 判断是否需要重新获取元数据：
 
-```
+```text
 Consumer 启动
   ├── 从注册中心获取 Provider 实例列表
   ├── 检查本地缓存的 Provider Revision
@@ -277,7 +277,7 @@ dubbo:
 
 ## 9.2 JDK 版本升级
 
-```
+```text
 Dubbo 3.0.x → JDK 8+
 Dubbo 3.1.x → JDK 8/17
 Dubbo 3.2.x → JDK 17+ (推荐)

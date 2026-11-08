@@ -6,7 +6,7 @@
 
 工具调用让模型突破"只会说话"的限制，去执行真实操作：
 
-```
+```text
 用户提问
    │
    ▼
@@ -43,7 +43,7 @@ Spring AI 执行 Java 方法 getWeather("北京")
 
 ### 1.2.2 时序拆解
 
-```
+```text
 [1] prompt() 组装 UserMessage
 [2] 附带 tools 的 schema 一起发给模型
 [3] 模型返回 AssistantMessage(toolCalls=[...])
@@ -330,7 +330,7 @@ Page<Order> listOrders(
 
 ### 6.2.2 工具检索
 
-```
+```text
 用户问题
    │
    ▼

@@ -360,7 +360,7 @@ public class Comment {
 
 ## 4.1 Repository 接口层级
 
-```
+```text
 Repository<T, ID>
  └── CrudRepository<T, ID>
       └── PagingAndSortingRepository<T, ID>
@@ -1141,7 +1141,7 @@ spring:
 
 ## 12.1 写入后查询不到数据
 
-```
+```text
 原因：ES 默认 refresh_interval 为 1s，写入后需要等待 refresh 才能被搜索到
 
 解决方案：
@@ -1152,7 +1152,7 @@ spring:
 
 ## 12.2 深度分页问题
 
-```
+```text
 ES 默认 from + size 分页限制最多 10000 条（index.max_result_window）
 
 原因：from + size 深度分页需要在每个分片上查询 from+size 条数据，再协调
@@ -1167,7 +1167,7 @@ ES 默认 from + size 分页限制最多 10000 条（index.max_result_window）
 
 ## 12.3 ES 为什么近实时而非实时
 
-```
+```text
 1. 数据写入 → Lucene 内存 Buffer → 每秒 refresh → 生成新 segment → 可搜索
 2. 写入后立即 get 可以获取（通过 translog），但 search 需要等到 refresh
 3. 默认 refresh_interval = 1s
@@ -1201,7 +1201,7 @@ ES 默认 from + size 分页限制最多 10000 条（index.max_result_window）
 
 # 13. 最佳实践总结
 
-```
+```text
 1. Mapping 设计
    - 使用 strict 动态映射策略，避免意外字段
    - 明确每个字段的类型，不依赖自动映射

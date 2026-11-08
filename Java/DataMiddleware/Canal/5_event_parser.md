@@ -3,7 +3,7 @@
 
 EventParser 是 Canal Server 的**数据入口模块**，负责与 MySQL Master 建立连接，模拟 MySQL Slave 协议订阅 Binlog，并将 Binlog 事件解析为 Canal 内部的结构化数据 `CanalEntry.Entry`。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │                     EventParser                           │
 │                                                          │
@@ -21,7 +21,7 @@ EventParser 是 Canal Server 的**数据入口模块**，负责与 MySQL Master 
 
 # 2. 核心类层次结构
 
-```
+```text
 CanalEventParser (接口)
     │
     └── AbstractEventParser (抽象基类)
@@ -209,7 +209,7 @@ protected EntryPosition findStartPosition() {
 ```
 
 **位点查找优先级**：
-```
+```text
 MetaManager 位点（HA 切换后恢复）
     ↓ 未找到
 Instance 配置指定的 journalName + position

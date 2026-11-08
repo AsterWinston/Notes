@@ -15,7 +15,7 @@ Blue Ocean 是 Jenkins 的现代化 UI 界面，重新设计了 Pipeline 的用�
 
 Blue Ocean 是一组插件集合：
 
-```
+```text
 必需插件：
 ├── blueocean (主插件)
 ├── blueocean-web
@@ -52,7 +52,7 @@ curl -X POST \
 
 ## 2.2 访问 Blue Ocean
 
-```
+```text
 访问方式：
 1. 在 Jenkins 首页点击 "Open Blue Ocean" 链接
 2. 直接访问：http://jenkins:8080/blue
@@ -67,7 +67,7 @@ Blue Ocean 可以与传统 UI 共存，用户可以根据偏好切换。
 
 Blue Ocean 的主界面设计简洁：
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │ 🔍 Search Pipelines...                  [Filters]    │
 ├──────────────────────────────────────────────────────┤
@@ -100,7 +100,7 @@ Blue Ocean 的主界面设计简洁：
 
 ## 3.2 过滤器
 
-```
+```text
 Filters:
 ├── Status: All/Success/Failure/Running/Aborted/Paused
 ├── Branch: All branches / 特定分支
@@ -112,7 +112,7 @@ Filters:
 
 用户可以将常用的 Pipeline 添加收藏：
 
-```
+```text
 收藏 Pipeline：
 1. 点击 Pipeline 右侧的 ★ 图标
 2. 收藏的 Pipeline 会显示在仪表盘顶部
@@ -125,7 +125,7 @@ Filters:
 
 点击任意运行记录进入详情页：
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │ my-service-pipeline · main · #142                    │
 │  Duration: 5m 32s  ·  Commit: abc1234  ·  User: dev │
@@ -161,7 +161,7 @@ Filters:
 
 展开 Stage 后显示步骤级别的执行情况：
 
-```
+```text
 ┌─ Scan ──────────────────────────────────────────┐
 │                                                  │
 │  ▶ Checkstyle                          ✓  12s   │
@@ -184,7 +184,7 @@ Filters:
 
 Blue Ocean Pipeline Editor 提供图形化编辑 Declarative Pipeline 的功能。
 
-```
+```text
 访问方式：
 1. 打开任意 Multibranch Pipeline
 2. 点击右上角 "Edit Pipeline" 按钮
@@ -193,7 +193,7 @@ Blue Ocean Pipeline Editor 提供图形化编辑 Declarative Pipeline 的功能�
 
 编辑器功能：
 
-```
+```text
 Pipeline Editor:
 ├── 添加 Stage
 │   ├── 命名 Stage
@@ -255,7 +255,7 @@ pipeline {
 
 Blue Ocean 将 Git 分支和 Pipeline 运行状态整合展示：
 
-```
+```text
 ┌─ Branches ──────────────────────────────────────┐
 │                                                   │
 │  main         ●●●●●●●●⊙○●⊙●⊙●●●                 │
@@ -283,7 +283,7 @@ Blue Ocean 将 Git 分支和 Pipeline 运行状态整合展示：
 
 Blue Ocean 与 GitHub/GitLab 的 PR/MR 紧密集成：
 
-```
+```text
 ┌─ Pull Requests (3 open) ──────────────────────┐
 │                                                  │
 │  #142 - Fix login bug                    dev    │
@@ -348,7 +348,7 @@ Blue Ocean 与 GitHub/GitLab 的 PR/MR 紧密集成：
 
 ## 9.2 Blue Ocean 未显示某些 Job
 
-```
+```text
 检查清单：
 1. Job 是否使用了 Pipeline 类型（传统 Freestyle 不支持）
 2. 多分支 Pipeline 是否被正确扫描
@@ -359,7 +359,7 @@ Blue Ocean 与 GitHub/GitLab 的 PR/MR 紧密集成：
 
 ## 9.3 Pipeline Editor 无法使用
 
-```
+```text
 可能原因：
 1. Pipeline 不是声明式语法（脚本式不可编辑）
 2. Jenkinsfile 存在语法错误

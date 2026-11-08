@@ -215,7 +215,7 @@ public abstract class NamedContextFactory<C extends NamedContextFactory.Specific
 
 # 5. LoadBalancerClientFactory 继承结构
 
-```
+```text
 ApplicationContextAware
         │
         ▼
@@ -354,7 +354,7 @@ public static final class Builder {
 
 # 9. 配置加载优先级
 
-```
+```text
 ① spring.cloud.loadbalancer.configurations.{serviceId}.xxx  (服务级)
     ↓ 覆盖
 ② @LoadBalancerClient(name="xxx", configuration=...)          (注解级)

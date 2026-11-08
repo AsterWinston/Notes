@@ -90,7 +90,7 @@
 
 ### 1.1.2 项目结构
 
-```
+```text
 src/main/java/com/hmdp/
 ├── HmDianPingApplication.java          # 启动类
 ├── config/
@@ -221,7 +221,7 @@ CREATE TABLE tb_follow (
 
 ### 1.2.1 Session登录流程时序图
 
-```
+```text
 用户端               Nginx              SpringBoot           Session/Tomcat       MySQL
  |                    |                     |                      |                  |
  |--(1) POST /user/code                    |                      |                  |
@@ -659,7 +659,7 @@ public class SessionConfig {
 
 ### 1.8.1 Token登录流程详解
 
-```
+```text
 用户端                         后端                          Redis
  |                              |                              |
  |--(1) POST /user/code        |                              |
@@ -1015,7 +1015,7 @@ public boolean allowSendSmsLua(String phone) {
 
 ### 2.1.1 Cache Aside模式详解
 
-```
+```text
          [ 应用层 ]         [ Redis ]         [ MySQL ]
               |                  |                 |
          【读请求】              |                 |
@@ -1153,7 +1153,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
 
 ### 2.4.1 先删缓存再更新DB vs 先更新DB再删缓存
 
-```
+```text
 【先删缓存再更新DB(延时双删)】
   T1: 删除缓存
   T2: 更新DB
@@ -1675,7 +1675,7 @@ public class CachePerformanceTest {
 
 ### 2.11.2 压测结果参考
 
-```
+```text
 ┌─────────────────────────┬──────────┬──────────┬──────────┐
 │ 场景                    │ QPS      │ Avg RT   │ Error%   │
 ├─────────────────────────┼──────────┼──────────┼──────────┤
@@ -1689,7 +1689,7 @@ public class CachePerformanceTest {
 
 ### 2.11.3 JMeter测试计划描述
 
-```
+```text
 JMeter: 商户查询压测
 ├── Thread Group: 1000线程, Ramp-Up 10s, 持续300s
 ├── CSV: shop_ids.csv(50%热点, 30%冷门, 20%不存在)
@@ -1886,7 +1886,7 @@ public class VoucherOrderServiceImpl
 
 ### 3.5.1 超卖问题时序分析
 
-```
+```text
 库存剩余1件, t1和t2并发:
 
   t1                             t2
@@ -1986,7 +1986,7 @@ catch (DuplicateKeyException e) { return Result.fail("您已抢购过该优惠�
 
 ### 3.8.1 集群本地锁失效图解
 
-```
+```text
          [ Nginx ]
        +------+------+
        |             |
@@ -2014,7 +2014,7 @@ catch (DuplicateKeyException e) { return Result.fail("您已抢购过该优惠�
 
 ### 3.9.1 预期QPS分析
 
-```
+```text
 ┌───────────────────────────┬────────────┬────────────┐
 │ 方案                      │ 预估QPS    │ 瓶颈       │
 ├───────────────────────────┼────────────┼────────────┤
@@ -2028,7 +2028,7 @@ catch (DuplicateKeyException e) { return Result.fail("您已抢购过该优惠�
 
 ### 3.9.2 秒杀压测结果记录模板
 
-```
+```text
 环境: 4C8G, Redis单机, MySQL单机, 并发2000, 库存100
 ┌────────────────┬──────────┬──────────┬──────────┬──────────┐
 │ 方案           │ QPS      │ Avg(ms)  │ Error%   │ 超卖数   │
@@ -2066,7 +2066,7 @@ catch (DuplicateKeyException e) { return Result.fail("您已抢购过该优惠�
 
 ### 4.1.2 Redis分布式锁演进路线
 
-```
+```text
 V1: SETNX lock 1               -> 死锁风险(无过期)
 V2: SETNX + EXPIRE             -> 非原子(SETNX后宕机)
 V3: SET lock 1 NX EX 10        -> 可能误删(A的锁B删)，A业务执行完毕后，锁早已过期，B拿到了，A业务执行完毕后删除B的锁
@@ -2154,7 +2154,7 @@ return 0
 
 ### 4.4.1 误删问题时序
 
-```
+```text
 A线程: ┌加锁(锁值=A)───业务执行────────────锁过期────解锁(误删B的锁!)──┐
                                                           ↓
 B线程:                                        ┌加锁(锁值=B)─执行业务─→
@@ -2259,7 +2259,7 @@ try {
 
 ### 4.10.1 Redisson可重入锁(ReentrantLock)示例
 
-- 可重入锁的意义：防止“自己锁自己”；支持递归调用时可以拿到同一把锁
+- 可重入锁的意义：防止"自己锁自己"；支持递归调用时可以拿到同一把锁
 
 ```java
 @Service
@@ -2380,7 +2380,7 @@ try {
 
 ### 4.11.1 可重入锁内部存储与Lua原理
 
-```
+```text
 Redis存储结构(Hash):
   KEY: lock:order:1
   +-- field: "uuid:thread-1"
@@ -2399,7 +2399,7 @@ Redis存储结构(Hash):
 
 ### 4.11.2 WatchDog续期原理
 
-```
+```text
 Redisson WatchDog:
   - leaseTime=-1时启用(默认)
   - 默认30秒过期, 每10秒续期到30秒
@@ -2435,7 +2435,7 @@ if (multiLock.tryLock(5, 30, TimeUnit.SECONDS)) {
 
 ### 4.13.1 Redlock原理
 
-```
+```text
 Redlock: 在N个独立的Redis节点上获取锁(N一般为奇数,如5)
   1. 获取当前时间戳
   2. 依次向N个Redis节点请求锁(SET NX PX)
@@ -2545,7 +2545,7 @@ public class RedlockService {
 
 ### 5.1.1 异步秒杀架构图
 
-```
+```text
 [用户请求] -> [Nginx负载均衡] -> [SpringBoot]
                                       |
                               +(资格校验Lua脚本) -> Redis
@@ -2717,7 +2717,7 @@ public class VoucherOrderStreamConsumer {
 
 ### 6.1.2 消息队列选型建议
 
-```
+```text
 需要极简 + Redis已有     → Redis Stream
 需要强可靠 + 企业级       → RabbitMQ
 需要大数据 + 高吞吐       → Kafka
@@ -2840,7 +2840,7 @@ public void handleMessageWithIdempotence(MapRecord<String, Object, Object> recor
 
 ### 6.7.1 订单处理完整Pipeline (Stream)
 
-```
+```text
 [资格校验Lua] -> XADD stream.orders -> [消费者组监听]
                                           |
                                      +-> 消费者1: 创建订单到MySQL
@@ -3612,7 +3612,7 @@ public class SessionConfig {
 
 ## 15.2 多服务实例Session共享架构
 
-```
+```text
                 [ Nginx/负载均衡 ]
                   /      |      \
          [App-1]  [App-2]  [App-3]

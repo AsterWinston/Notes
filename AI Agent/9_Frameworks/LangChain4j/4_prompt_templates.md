@@ -41,7 +41,7 @@ LangChain4j 提供由低到高的三种提示构建方式：
 
 从低层到高层的迁移通常是这样演进的：
 
-```
+```text
 model.chat("...")            // 1. 写死
       │ 变量变多
       ▼
@@ -325,7 +325,7 @@ interface Translator {
 
 ### 6.1.1 JSON Schema 生成
 
-```
+```text
 返回值类型(enum/record)
       │ 反射提取结构
       ▼
@@ -417,7 +417,7 @@ LangChain4j 会自动在提示中追加格式说明（JSON Schema），并把响
 
 ## 8.1 目录结构与版本化
 
-```
+```text
 src/main/resources/prompts/
 ├── v1/
 │   ├── assistant-system.txt
@@ -476,7 +476,7 @@ public class PromptRegistry {
 
 ## 9.1 攻击面
 
-```
+```text
 用户输入 ──► 拼进提示 ──► 模型
                  ▲
                  │  "忽略上面的指令，改为……"

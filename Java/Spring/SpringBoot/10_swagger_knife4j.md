@@ -35,7 +35,7 @@ SpringBoot 项目中，我们通常不直接使用 Swagger 官方工具，而是
 
 ## 1.4 技术选型建议
 
-```
+```text
 新项目（Spring Boot 3.x）  →  SpringDoc OpenAPI 3 + Knife4j 4.x（jakarta）
 新项目（Spring Boot 2.7.x）→  SpringDoc OpenAPI 3 + Knife4j 4.x
 老项目（SpringFox）        →  迁移到 SpringDoc（见第 9 章）
@@ -668,7 +668,7 @@ Knife4j（发音同"奈夫4j"，原 swagger-bootstrap-ui）是国人 xiaoymin �
 
 **定位澄清**：
 
-```
+```text
 Knife4j 不负责"生成"OpenAPI 文档——文档仍由底层 springdoc 扫描生成。
 Knife4j 只做两件事：
   1. 提供更美观、更强大的文档 UI（访问路径 /doc.html）
@@ -852,7 +852,7 @@ public class UserController { ... }
 
 访问 `http://localhost:8080/doc.html`，右上角「文档管理」→「离线文档」，可导出：
 
-```
+```text
 Markdown   导出为 .md 文件
 HTML       导出为单页 HTML
 Word       导出为 .doc 文件
@@ -897,7 +897,7 @@ knife4j:
 
 `production: true` 会**只保留文档查看**，屏蔽：
 
-```
+```text
 - 在线调试（调试按钮消失）
 - AfterScript 脚本
 - 文档管理（离线导出入口）
@@ -1402,7 +1402,7 @@ public R<PageResult<User>> page(@ParameterObject UserPageQuery query) {
 
 使用 `GroupedOpenApi` 分组后，Swagger UI 默认访问的是 `default` 分组。如果没定义 `default` 分组，需要手动切换右上角下拉框，或者在 URL 上指定分组参数：
 
-```
+```text
 # 访问指定分组
 http://localhost:8080/swagger-ui/index.html?group=用户管理
 http://localhost:8080/doc.html#/用户管理

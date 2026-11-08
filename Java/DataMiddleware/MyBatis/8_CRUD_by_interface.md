@@ -1,13 +1,13 @@
 # 1. 使用 SqlSession 的 getMapper 方法
 
-```
+```text
 通过 SqlSession.getMapper(XXMapper.class) 可以获得 Mapper 接口的动态代理对象。
 底层基于 JDK 动态代理（java.lang.reflect.Proxy），不需要手动编写 DAO 实现类。
 ```
 
 ## 1.1 要求
 
-```
+```text
 1. XxxMapper.xml 的 namespace 必须是 Mapper 接口的全限定类名
 2. XxxMapper.xml 中 SQL 语句的 id 必须和 Mapper 接口中方法的名字一致
 3. XxxMapper.xml 已经正确配置到 mybatis-config.xml 的 <mappers> 中
@@ -28,7 +28,7 @@ List<Car> cars = mapper.selectAll();  // 直接调用接口方法！
 
 ## 1.3 对比传统方式
 
-```
+```text
 传统方式的问题：
   1. 需要手写 DaoImpl 实现类，代码冗余
   2. sqlId 是字符串硬编码，容易写错且 IDE 无法检查
@@ -46,7 +46,7 @@ getMapper 方式的优势：
 
 ## 2.1 总体流程
 
-```
+```text
 SqlSession.getMapper(CarMapper.class)
     │
     ▼
@@ -468,7 +468,7 @@ public class MapperMethod {
 
 # 4. Mapper 接口代理的完整执行链路
 
-```
+```text
 用户代码: carMapper.selectById(1);
 
   ┌─────────────────────────────────────────────────────────────────────────┐
@@ -627,7 +627,7 @@ public class CarMapperTest {
 
 # 6. 基于 Mapper 接口的包扫描配置
 
-```
+```text
 当项目中有大量 Mapper 接口时，一个个配置 <mapper resource=""/> 太繁琐。
 
 方式一：使用 <package name="..."/> 批量扫描
@@ -655,7 +655,7 @@ public class CarMapperTest {
 
 # 7. MapperProxy 与手写 DaoImpl 的本质区别
 
-```
+```text
 传统 DaoImpl 方式：
   - 编译期生成字节码（我们手写的 .java → .class）
   - 方法调用：直接调用实现类的方法

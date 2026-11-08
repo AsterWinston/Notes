@@ -389,7 +389,7 @@ public class MyCollector extends Collector {
 
 所有客户端库都遵循统一的 **OpenMetrics 格式**：
 
-```
+```text
 # HELP app_requests_total Total number of requests.
 # TYPE app_requests_total counter
 app_requests_total{method="GET",path="/api",status="200"} 1027

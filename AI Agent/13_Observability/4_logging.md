@@ -32,7 +32,7 @@
 | 指标 Metrics | 整体是否健康 | 聚合数值、低基数 | 低 |
 | 链路 Tracing | 请求经过了哪里 | 调用关系、耗时 | 中 |
 
-```
+```text
 指标发现异常  -->  链路定位到慢 Span  -->  日志查看该请求细节
    (宏观)               (中观)                   (微观)
 ```
@@ -242,7 +242,7 @@ public class LogSanitizer {
 
 结论先行：一次调用至少在入口、出口、异常三处埋点，并用 Advisor（环绕拦截器）统一实现，避免业务代码重复。
 
-```
+```text
 请求 --> [入口日志] --> 处理 --> [出口日志] --> 响应
                          |
                          +--异常--> [异常日志]
@@ -469,7 +469,7 @@ if (log.isInfoEnabled() && (isError || shouldSample())) {
 log.info("llm.request traceId={} ...", MDC.get("traceId"));
 ```
 
-```
+```text
 日志平台（ELK） --traceId--> Trace 平台（Jaeger/Langfuse）
 ```
 

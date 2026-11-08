@@ -1,5 +1,5 @@
 # 1. p 命名空间注入
-```
+```text
 目的：简化配置。
 p命名空间实际上是对set注入的简化。
 使用p命名空间注入的前提条件包括两个：
@@ -60,7 +60,7 @@ public class Dog {
 
 ## 2.1 NamespaceHandler — 自定义命名空间的背后
 
-```
+```text
 <p:name="小花" />、<c:_0="张三" />、<util:properties>、<context:component-scan> 等
 自定义命名空间的标签如何被 Spring 识别和处理？
 
@@ -94,7 +94,7 @@ if (delegate.isDefaultNamespace(ele)) {
 
 ## 2.2 ContextNamespaceHandler — 处理 <context:> 标签
 
-```
+```java
 public class ContextNamespaceHandler extends NamespaceHandlerSupport {
 
     @Override
@@ -140,7 +140,7 @@ public BeanDefinition parse(Element element, ParserContext parserContext) {
 
 ## 2.3 p/c 命名空间的处理机制
 
-```
+```text
 p/c 命名空间没有对应的 NamespaceHandler，而是由 BeanDefinitionParserDelegate 直接处理。
 
 p-namespace 格式：p:xxx="value" 或 p:xxx-ref="beanId"
@@ -201,7 +201,7 @@ public BeanDefinitionHolder decorateBeanDefinitionIfRequired(
 
 ## 2.4 util 命名空间的处理机制
 
-```
+```text
 util-namespace 有对应的 NamespaceHandler：
 
 public class UtilNamespaceHandler extends NamespaceHandlerSupport {

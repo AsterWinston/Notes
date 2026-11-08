@@ -80,7 +80,7 @@ Token 吞吐决定成本与模型层压力；队列积压是背压（Backpressur
 
 在稳态系统中，并发数、吞吐与延迟满足：
 
-```
+```text
 吞吐 = 并发数 / 平均延迟
 并发数 = 吞吐 × 平均延迟
 平均延迟 = 并发数 / 吞吐
@@ -133,7 +133,7 @@ public String handle(String q) {
 
 ### 3.1.1 六层结构
 
-```
+```text
 ① 接入层：Web 线程 / 连接数
 ② Agent 层：每请求的模型调用次数
 ③ 模型层：RPM / TPM 限制
@@ -156,7 +156,7 @@ public String handle(String q) {
 
 Agent 每处理一个用户请求，可能调用模型多次（规划、工具、总结）。模型层并发需求：
 
-```
+```text
 模型并发 = 目标 QPS × 每请求调用次数 × 平均延迟
 ```
 
@@ -234,7 +234,7 @@ public final class CapacityCalculator {
 
 ### 4.1.2 内存与缓冲区
 
-```
+```text
 1000 个并发流式连接：
 - 连接数：1000
 - 每连接内存：几十 KB ~ 几 MB
@@ -444,7 +444,7 @@ public final class CostCapacityEstimator {
 
 ## 8.1 三种负载
 
-```
+```text
 基线负载 → 固定副本（预留）
 峰值负载 → HPA 弹性扩容
 突发流量 → 队列缓冲 + 限流保护

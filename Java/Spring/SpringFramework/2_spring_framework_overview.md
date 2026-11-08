@@ -36,7 +36,7 @@ Spring6要求JDK最低版本是Java17
 
 # 5. 源码视角：Spring 模块与核心类的对应关系
 
-```
+```text
 Spring 8 大模块与核心类的源码位置对应：
 
 Spring Core（spring-core）
@@ -108,7 +108,7 @@ Spring WebFlux（spring-webflux）
 
 # 6. 设计思想总结
 
-```
+```text
 1. 分层架构：
    Core → Beans → Context → AOP → 上层模块（JDBC/TX/MVC）
    下层不依赖上层，每层专注于特定领域，体现了分层解耦原则。

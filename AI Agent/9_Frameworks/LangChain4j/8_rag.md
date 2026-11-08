@@ -24,7 +24,7 @@
 
 ## 1.3 全链路图
 
-```
+```text
 离线索引：
   Document ─DocumentSplitter─▶ TextSegment ─EmbeddingModel─▶ Embedding
                                                                  │
@@ -236,7 +236,7 @@ EmbeddingStoreContentRetriever.builder()
 
 ## 5.1 四步流程
 
-```
+```text
 Query ─QueryTransformer─▶ 多个查询
           │
           ▼
@@ -357,7 +357,7 @@ ContentAggregator aggregator = ReRankingContentAggregator.builder()
 
 ## 8.1 原理
 
-```
+```text
 入库：父块 P（完整段落）+ 子块 C1,C2,C3（句子级）
       C1,C2,C3 带 metadata: parentId=P
 
@@ -387,7 +387,7 @@ ContentAggregator aggregator = ReRankingContentAggregator.builder()
 
 ## 9.1 原理
 
-```
+```text
          ┌─ 向量检索（语义）─┐
 Query ───┤                    ├─▶ 融合（RRF/加权）─▶ Top-K
          └─ 全文检索（关键词）┘
@@ -420,7 +420,7 @@ RetrievalAugmentor augmentor = DefaultRetrievalAugmentor.builder()
 
 ## 10.1 诊断流程
 
-```
+```text
 用户问 → 检索 → 生成
           │       │
           │       └─ 生成失败：有资料但答错 → 优化提示/换模型

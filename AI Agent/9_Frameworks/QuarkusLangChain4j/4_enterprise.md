@@ -345,7 +345,7 @@ public String chat(String message) {
 
 ### 6.2.3 注解顺序
 
-```
+```text
 @Retry（最外）
   └── @CircuitBreaker
         └── @Timeout（最内）
@@ -386,7 +386,7 @@ public String fallbackChat(String message) {
 
 ## 7.1 分层图
 
-```
+```text
 Resource（REST）→ Service → AI Service（LangChain4j）
                                 │
                                 └── 工具 / RAG / 记忆

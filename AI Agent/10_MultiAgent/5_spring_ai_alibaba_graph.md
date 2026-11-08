@@ -2,7 +2,7 @@
 
 Spring AI Alibaba（阿里开源的 Spring AI 增强实现）提供 **Graph** 编排能力，用于构建多 Agent（智能体）与复杂工作流。它把多 Agent 协作建模为一张有向图：节点承载 Agent 或工具，边决定流转，状态在节点间传递。本文聚焦"多 Agent 编排"这一用途，图的通用机制请参见 `9_Frameworks/SpringAIAlibaba/4_graph.md`。
 
-```
+```text
 StateGraph = 节点 + 边 + 状态
 ```
 
@@ -33,7 +33,7 @@ StateGraph = 节点 + 边 + 状态
 
 三者的关系可以概括为：
 
-```
+```text
 状态 ──► 节点读取 ──► 节点返回增量 ──► 合并回状态 ──► 边选择下一节点
   ▲                                                          │
   └──────────────────── 循环直到 END ────────────────────────┘
@@ -57,7 +57,7 @@ StateGraph = 节点 + 边 + 状态
 
 ## 2.1 Supervisor 拓扑
 
-```
+```text
               ┌──────────────┐
               │  Supervisor  │
               └──────┬───────┘
@@ -415,7 +415,7 @@ private Map<String, Object> synthesizerNode(MultiAgentState state) {
 .addEdge("analyzer", "merge")
 ```
 
-```
+```text
              ┌──────────────┐
              │  supervisor  │
              └──────┬───────┘
@@ -473,7 +473,7 @@ graph.stream(initialState).subscribe(event ->
 
 ## 8.2 Trace 与指标
 
-```
+```text
 Trace: 用户请求
 ├── Span: supervisor（第 1 轮）
 ├── Span: retriever

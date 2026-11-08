@@ -16,7 +16,7 @@ Java 并非只有一种版本，而是根据应用领域划分为三大技术平
 
 ## 1.2 JavaEE 的本质：规范而非实现
 
-```
+```text
 JavaEE 平台 = 一组规范（接口 + 文档 + 配置约定）
                  │
         ┌────────┼────────────┐
@@ -44,7 +44,7 @@ JavaEE 把这些问题抽象为统一的标准 API，避免每个企业重复造
 
 # 2. JavaEE 发展历史
 
-```
+```text
 Sun Microsystems 时期：
   1998  J2EE 1.2（Java 2 Platform Enterprise Edition）
   2001  J2EE 1.3（引入 EJB 2.0、J2EE 连接器）
@@ -122,7 +122,7 @@ JavaEE 被 Oracle 捐赠给 Eclipse 基金会后，由于 Oracle 保留了 `java
 
 ## 4.1 按领域分类
 
-```
+```text
 ┌────────────────────────────────────────────────────────────┐
 │                       Jakarta EE 规范全景                    │
 ├────────────┬───────────────────────────────────────────────┤
@@ -215,7 +215,7 @@ JavaEE 被 Oracle 捐赠给 Eclipse 基金会后，由于 Oracle 保留了 `java
 
 本目录按"完整覆盖 JavaEE/Jakarta EE 全部规范"组织，文件结构如下：
 
-```
+```text
 1_overview.md                   # 平台概述（本文件）
 2_application_servers.md        # 应用服务器与部署环境
 3_web_servlet_jsp.md            # Servlet/JSP/EL/JSTL（规范视角，衔接 JavaWeb 笔记）
@@ -253,7 +253,7 @@ JavaEE 被 Oracle 捐赠给 Eclipse 基金会后，由于 Oracle 保留了 `java
 
 # 7. 学习路线建议
 
-```
+```text
 第一步：掌握 Web 层规范（Servlet/JSP/EL/JSTL）→ 已有 JavaWeb 笔记
 第二步：掌握组件模型（CDI/EJB/拦截器）
 第三步：掌握数据与事务（JDBC/JPA/JTA）

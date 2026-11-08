@@ -8,7 +8,7 @@ LLM-as-Judge（用大模型当评委）是用一个语言模型对另一个模�
 
 ### 1.1.1 基本流程
 
-```
+```text
 问题 + 参考答案 + 模型输出 → Judge 模型 → 分数 + 理由
 ```
 
@@ -118,7 +118,7 @@ Judge 不是替代人工，而是放大人力：人工只用于校准与仲裁�
 
 ## 3.2 模式选择
 
-```
+```text
 要"是否达标"       → 二元
 要"版本 A vs B"     → 成对比较
 要"多维诊断"        → 多维度（每维尽量二元化）
@@ -252,7 +252,7 @@ interface MultiDimJudge {
 
 ## 5.3 加权聚合
 
-```
+```text
 Score = w1 * relevance + w2 * faithfulness + w3 * completeness
 其中 w1 + w2 + w3 = 1
 ```
@@ -428,7 +428,7 @@ public void calibrate(List<LabeledCase> labeled) {
 
 ## 8.3 提升一致率
 
-```
+```text
 ① 细化 Rubric：给出正反例
 ② 换更强模型
 ③ 二元化：降低判定难度
@@ -465,7 +465,7 @@ public void calibrate(List<LabeledCase> labeled) {
 
 全量用便宜模型，对"临界样本"再用强模型复核：
 
-```
+```text
 第一层：小模型判定
 第二层：仅对 0.4~0.6 之间的模糊样本用强模型
 ```

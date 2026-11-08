@@ -1,6 +1,6 @@
 # 1. 什么是 AJAX？
 
-```
+```text
 AJAX = Asynchronous JavaScript And XML（异步的 JavaScript 和 XML）
 
 AJAX 不是一门新的编程语言，而是一种使用现有标准的新方法。
@@ -18,7 +18,7 @@ AJAX 交互（异步）：
 
 # 2. XMLHttpRequest 对象
 
-```
+```text
 XMLHttpRequest 是 AJAX 的核心对象，所有现代浏览器都内置了这个对象。
 
 // 创建 XMLHttpRequest 对象
@@ -151,7 +151,7 @@ public class AjaxServlet extends HttpServlet {
 
 # 6. JSON 格式
 
-```
+```text
 JSON（JavaScript Object Notation）是一种轻量级的数据交换格式。
 
 它是一种纯文本格式，独立于编程语言，易于人阅读和编写，也易于机器解析和生成。
@@ -178,7 +178,7 @@ JSON 的值类型：
 
 # 7. Servlet 返回 JSON 数据
 
-```
+```text
 后端将 Java 对象转换成 JSON 字符串，响应给前端。
 
 常用的 JSON 解析库：
@@ -347,7 +347,7 @@ public class CheckUsernameServlet extends HttpServlet {
 
 # 10. Servlet 接收前端发送的 JSON 数据
 
-```
+```text
 前端发送 JSON 数据，Servlet 端接收并解析。
 
 前端代码：
@@ -399,7 +399,7 @@ public class AjaxServlet extends HttpServlet {
 
 # 11. AJAX 跨域请求
 
-```
+```text
 浏览器的同源策略（Same-Origin Policy）：
   AJAX 请求默认只能访问同源（相同协议+域名+端口）的资源。
   不同源之间的请求称为跨域请求，默认会被浏览器拦截。
@@ -430,7 +430,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
 # 12. Axios（现代 AJAX 方案）
 
-```
+```text
 Axios 是一个基于 Promise 的 HTTP 客户端库，可以替代原生的 XMLHttpRequest。
 在真实项目开发中，Axios 已成为主流选择。
 

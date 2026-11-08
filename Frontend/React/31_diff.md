@@ -4,7 +4,7 @@
 
 ## 1.1 让 O(n³) 变成 O(n)
 
-```
+```text
 树的精确 diff 是 O(n³)(太慢,不可用)
 React 用三条假设,把它降到 O(n):
   1. 只同层比较(不跨层)
@@ -30,7 +30,7 @@ React 用三条假设,把它降到 O(n):
 
 ## 2.2 复用的含义
 
-```
+```html
 <div className="a"> → <div className="b">
   不是"删旧 div 建新 div",而是"复用一个 div,只改 className"
 ```
@@ -41,7 +41,7 @@ React 用三条假设,把它降到 O(n):
 
 ## 3.1 无 key 时的按序比较
 
-```
+```text
 旧: [A, B, C]
 新: [D, A, B, C](头部插入 D)
 无 key 时按 index 逐个比较:
@@ -56,7 +56,7 @@ React 用三条假设,把它降到 O(n):
 
 ## 3.2 有 key 时按身份匹配
 
-```
+```text
 旧: [A(key=a), B(key=b), C(key=c)]
 新: [D, A(key=a), B(key=b), C(key=c)]
 有 key:先按 key 找相同身份的旧节点
@@ -90,7 +90,7 @@ React 用三条假设,把它降到 O(n):
 
 # 5. Diff 与整体流程
 
-```
+```text
 setState → 生成新 Fiber 树 → Diff(render 阶段,可中断)
   → 算出 effect(哪些 DOM 要增删改)
   → commit 阶段:一次性应用到真实 DOM(不可中断)

@@ -53,7 +53,7 @@ spring:
 
 连接池大小没有万能公式，与以下因素相关：
 
-```
+```text
 连接数 = ((核心数 * 2) + 有效磁盘数)
 ```
 
@@ -147,7 +147,7 @@ spring:
 
 ## 5.1 JDBC URL推荐参数
 
-```
+```text
 jdbc:mysql://localhost:3306/mydb
   ?useSSL=false                          # 内网关 SSL（外网必须开）
   &serverTimezone=Asia/Shanghai          # 指定时区
@@ -173,7 +173,7 @@ SHOW STATUS LIKE 'Max_used_connections';       -- 历史最大连接数
 
 **生产环境建议**：
 
-```
+```text
 [mysqld]
 max_connections = 1000          # 根据业务量设置
 wait_timeout = 600              # 10 分钟，及时回收空闲连接
@@ -186,7 +186,7 @@ interactive_timeout = 600
 
 ## 6.1 连接耗尽
 
-```
+```text
 java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 30000ms.
 ```
 

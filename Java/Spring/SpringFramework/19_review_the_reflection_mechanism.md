@@ -9,7 +9,7 @@
 
 
 # 2. 反射机制调用方法
-```
+```text
 /**
  * ClassName: SomeService
  * Package: PACKAGE_NAME
@@ -72,7 +72,7 @@ public class Main {
 ```
 
 # 3. Spring DI（Dependency I）核心实现
-```
+```text
 需求：假设你现在已知以下信息：
 1.有这样一个类，类名叫做：包名.User
 2.这个类符合javabean规范。属性私有化，对外提供公开的setter和getter方法。
@@ -177,7 +177,7 @@ public class Main {
 
 ## 4.1 BeanUtils.instantiateClass() — 构造方法反射
 
-```
+```java
 Spring 中实例化 Bean 的核心反射工具：
 
 // BeanUtils.instantiateClass() 的简化源码
@@ -206,7 +206,7 @@ Object bean = BeanUtils.instantiateClass(constructor);
 
 ## 4.2 BeanWrapperImpl — setter 方法反射
 
-```
+```text
 Spring 中属性注入的核心反射：
 
 // BeanWrapperImpl.setPropertyValue() 的核心：
@@ -221,7 +221,7 @@ writeMethod.invoke(bean, "张三");  // ★ 反射调用 setter
 
 ## 4.3 ReflectionUtils — Spring 对 Java 反射的封装
 
-```
+```java
 Spring 在 java.lang.reflect 基础上封装了 ReflectionUtils：
 
 public abstract class ReflectionUtils {
@@ -259,7 +259,7 @@ public abstract class ReflectionUtils {
 
 ## 4.4 反射在 Spring 中的实际应用场景
 
-```
+```text
 1. Bean 实例化：
    Constructor.newInstance() → 创建 Bean 对象
    位置：AbstractAutowireCapableBeanFactory.createBeanInstance()

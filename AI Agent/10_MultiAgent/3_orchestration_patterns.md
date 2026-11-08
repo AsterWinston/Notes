@@ -37,7 +37,7 @@
 
 **结论先行**：决策者在哪里，故障就在哪里集中。
 
-```
+```text
 Supervisor（中心化）        Swarm（去中心化）
 
      ┌────────┐                  A ──▶ B
@@ -71,7 +71,7 @@ Supervisor（中心化）        Swarm（去中心化）
 
 **原理**：每轮循环做三件事——主管决策、Worker 执行、结果入历史。历史是主管判断的依据，也是上下文增长的主要来源。
 
-```
+```text
 ┌──────────────┐
 │  Supervisor  │  ← 决策：下一步交给谁
 └──────┬───────┘
@@ -154,7 +154,7 @@ public class SupervisorOrchestrator {
 
 ## 3.1 机制
 
-```
+```text
 Agent 间自主交接：
 
   Agent A ──"这个问题需要 B"──▶ Agent B ──▶ Agent C
@@ -234,7 +234,7 @@ public class SwarmOrchestrator {
 
 ## 4.1 机制
 
-```
+```text
 Agent A → Agent B → Agent C
 （顺序执行，前一个的输出是后一个的输入）
 ```
@@ -291,7 +291,7 @@ public class PipelineOrchestrator {
 
 ## 5.1 机制
 
-```
+```text
          ┌──▶ Agent A ──┐
 输入 ────┼──▶ Agent B ──┼───▶ 汇总
          └──▶ Agent C ──┘
@@ -364,7 +364,7 @@ public String parallelVirtual(String input) throws InterruptedException {
 
 ## 6.1 机制
 
-```
+```text
         ┌──────────────┐
         │  顶层主管     │
         └──┬───────┬───┘
@@ -430,7 +430,7 @@ public class HierarchicalOrchestrator {
 
 ## 7.1 机制
 
-```
+```text
 Agent A 提方案 → Agent B 批评 → Agent A 修正 → ... → 结论
 ```
 

@@ -212,7 +212,7 @@ public class DegradeRuleManager {
 
 # 6. 状态转换详解
 
-```
+```text
                     onRequestComplete()
                          │
           ┌──────────────┼──────────────┐

@@ -12,7 +12,7 @@
 
 状态是对"世界当前样子"的最小抽象。它不追求还原真实世界，只保留规划所需的信息。
 
-```
+```text
 State（状态）：世界当前的样子
   { hasWeather: false, hasBudget: false, planReady: false }
 ```
@@ -40,7 +40,7 @@ State（状态）：世界当前的样子
 
 目标通常表示为一个或多个"状态约束"：
 
-```
+```text
 Goal（目标）：期望的状态
   { planReady: true }
 ```
@@ -71,7 +71,7 @@ public class TravelPlanGoal {
 
 结论先行：动作是改变状态的最小操作单元，由前置条件（何时可执行）和效果（执行后状态如何变化）声明。规划器把这些声明当作"契约"来搜索路径。
 
-```
+```text
 Action（动作）：改变状态
   Action: 查天气
     Precondition: { }              （无条件）
@@ -104,7 +104,7 @@ Action（动作）：改变状态
 
 当多条路径都能达成目标时，规划器需要依据代价（Cost）选择较优路径。
 
-```
+```text
 路径 A：查天气 → 查预算 → 生成行程   （代价 3）
 路径 B：查缓存 → 生成行程            （代价 2，若缓存可用）
 ```
@@ -117,7 +117,7 @@ Action（动作）：改变状态
 
 ### 1.4.1 四元组定义
 
-```
+```text
 规划问题 P = (S0, A, G, C)
   S0：初始状态集合
   A ：可用动作集合（含前置条件与效果）
@@ -128,7 +128,7 @@ Action（动作）：改变状态
 
 ### 1.4.2 完整示例
 
-```
+```text
 S0 = { hasWeather: false, hasBudget: false, planReady: false }
 G  = { planReady: true }
 A  = { 查天气, 查预算, 生成行程 }
@@ -150,7 +150,7 @@ A  = { 查天气, 查预算, 生成行程 }
 
 ### 2.1.1 从目标倒推
 
-```
+```text
 目标：planReady = true
   ↓ 需要"生成行程"
 前置：hasWeather && hasBudget
@@ -169,7 +169,7 @@ A  = { 查天气, 查预算, 生成行程 }
 
 反向搜索本质是递归：把目标分解为子目标，直到子目标被初始状态满足。若某子目标无法被任何动作的效果产生，则规划失败。
 
-```
+```text
 求解(G):
   if S0 满足 G: return []
   选择能产生 G 中某效果的动作 a
@@ -185,7 +185,7 @@ A  = { 查天气, 查预算, 生成行程 }
 
 ### 2.2.1 从初始状态推进
 
-```
+```text
 S0 {hasWeather=false, hasBudget=false}
   → 查天气 → {hasWeather=true}
   → 查预算 → {hasWeather=true, hasBudget=true}
@@ -205,7 +205,7 @@ S0 {hasWeather=false, hasBudget=false}
 | 适合 | 目标明确、动作多 | 动作少、目标多 |
 | 缺点 | 多效果动作处理复杂 | 易爆炸 |
 
-```
+```text
         ┌─────────────┐
         │ 目标: 行程   │
         └──────┬──────┘
@@ -439,7 +439,7 @@ public PlanResult runTravelPlan(String city) {
 
 ## 6.3 示例
 
-```
+```text
 环境变化 → 重新规划
   例：查天气失败 → 规划器寻找替代路径
 
@@ -481,7 +481,7 @@ public PlanResult runTravelPlan(String city) {
 
 实践中常采用混合：外层用 Graph 固定关键阶段，内层用 GOAP 处理不确定的子任务。
 
-```
+```text
 Graph: 鉴权 → [GOAP 子规划] → 落库
                  ↑
           目标导向、可重规划
@@ -501,7 +501,7 @@ Graph: 鉴权 → [GOAP 子规划] → 落库
 
 把大目标拆成多个小目标，分层规划，降低单次搜索规模。
 
-```
+```text
 高层目标 → 子目标A → 子目标B
               ↓        ↓
            局部动作   局部动作

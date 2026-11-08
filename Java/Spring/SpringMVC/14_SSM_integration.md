@@ -1,5 +1,5 @@
 # 1. 引入相关依赖
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -107,7 +107,7 @@
 
 ## 2.3 Spring整合Mybatis
 ### 2.3.1 编写jdbc.properties
-```
+```properties
 在类根路径下创建属性配置文件，配置连接数据库的信息：jdbc.properties
 jdbc.driver=com.mysql.cj.jdbc.Driver
 jdbc.url=jdbc:mysql://localhost:3306/powernode?useUnicode=true&serverTimezone=Asia/Shanghai&useSSL=true&characterEncoding=utf-8
@@ -115,7 +115,7 @@ jdbc.username=root
 jdbc.password=1234
 ```
 ### 2.3.2 编写DataSourceConfig
-```
+```java
 package com.powernode.ssm.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
@@ -158,7 +158,7 @@ public class DataSourceConfig {
 
 ```
 ### 2.3.3 编写MybatisConfig
-```
+```java
 package com.powernode.ssm.config;
 
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -194,7 +194,7 @@ public class MyBatisConfig {
 }
 ```
 ### 2.3.4 编写SpringConfig
-```
+```java
 package com.powernode.ssm.config;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -218,7 +218,7 @@ public class SpringConfig {
 ```
 ## 2.4 Spring整合Spring MVC
 ### 2.4.1 编写WebAppInitializer（web.xml）
-```
+```java
 package com.powernode.ssm.config;
 
 import jakarta.servlet.Filter;
@@ -281,7 +281,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
 ```
 ### 2.4.2 编写SpringMVCConfig
-```
+```java
 package com.powernode.ssm.config;
 
 import org.springframework.context.ApplicationContext;
@@ -359,7 +359,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 
 ```
 ## 2.5 添加事务控制
-```
+```text
 第一步：在SpringConfig中开启事务管理器
 @EnableTransactionManagement
 public class SpringConfig {
@@ -380,7 +380,7 @@ public class UserService {}
 
 # 3. 实现功能测试SSM整合
 ## 3.1 数据库表
-```
+```sql
 CREATE DATABASE IF NOT EXISTS powernode DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 USE powernode;
@@ -400,7 +400,7 @@ INSERT INTO tbl_user (name, password, email) VALUES
 ('王五', '111111', 'wangwu@powernode.com');
 ```
 ## 3.2 pojo类
-```
+```java
 package com.powernode.ssm.bean;
 
 /**
@@ -471,7 +471,7 @@ public class User {
 
 ```
 ## 3.3 dao编写
-```
+```java
 package com.powernode.ssm.dao;
 
 import com.powernode.ssm.bean.User;
@@ -493,7 +493,7 @@ public interface UserDao {
 
 ```
 ## 3.4 service编写
-```
+```java
 package com.powernode.ssm.service;
 
 import com.powernode.ssm.bean.User;
@@ -544,7 +544,7 @@ public class UserServiceImpl implements UserService {
 }
 ```
 ## 3.5 handler编写
-```
+```java
 package com.powernode.ssm.handler;
 
 import com.powernode.ssm.bean.User;
@@ -578,7 +578,7 @@ public class UserHandler {
 ```
 ## 3.6 前端发送ajax
 ### 3.6.1 引入js文件
-```
+```text
 在webapp目录下创建static/js目录，将vue3和axios的js文件放入该目录：
 webapp/
 ├── static/
@@ -594,7 +594,7 @@ Vue3可以从 https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js 下载。
 Axios可以从 https://unpkg.com/axios@1.6.7/dist/axios.min.js 下载。
 ```
 ### 3.6.2 开启静态资源处理
-```
+```text
 SpringMVC的DispatcherServlet默认会拦截所有请求（url-pattern为"/"），但不会处理静态资源（js、css、图片等）。
 因此需要在SpringMvcConfig中配置静态资源处理，让SpringMVC将 /static/** 路径下的请求映射到 webapp/static/ 目录。
 
@@ -618,13 +618,13 @@ public void addResourceHandlers(ResourceHandlerRegistry registry) {
 两种方式可以同时配置。方式二更推荐，因为它可以精确控制哪些路径下的文件可以公开访问。
 ```
 ### 3.6.3 视图控制器
-```
+```java
 public void addViewControllers(ViewControllerRegistry registry) {
     registry.addViewController("/").setViewName("index");
 }
 ```
 ### 3.6.4 编写ajax
-```
+```html
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>

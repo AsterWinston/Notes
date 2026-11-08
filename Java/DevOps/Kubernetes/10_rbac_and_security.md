@@ -4,7 +4,7 @@
 
 Kubernetes 的安全模型遵循"纵深防御"（Defense in Depth）原则，从外到内分为四个层面：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │  层面 1: 网络边界安全                                         │
 │  - TLS 加密通信 (所有组件间)                                    │
@@ -32,7 +32,7 @@ Kubernetes 的安全模型遵循"纵深防御"（Defense in Depth）原则，从
 
 每个 API 请求在到达 etcd 之前，依次经过三个安全检查：
 
-```
+```text
 kubectl / client-go 请求
         │
         ▼
@@ -92,7 +92,7 @@ ServiceAccount 是 Kubernetes 中给**应用程序（Pod）**使用的身份，�
 
 ### 2.2.1 ServiceAccount、Token、Secret 的关系
 
-```
+```text
 Namespace: default
   │
   ├── ServiceAccount: default (自动创建)
@@ -205,7 +205,7 @@ curl -k -H "Authorization: Bearer $TOKEN" https://kubernetes.default.svc/api/v1/
 
 ## 3.1 RBAC 的四大核心资源
 
-```
+```text
 Role                    ClusterRole
 (Namespace 级)           (Cluster 级)
      │                       │
@@ -476,7 +476,7 @@ kubectl config set-context alice-context --cluster=my-cluster --user=alice
 
 当 API Server 收到请求并完成认证后，Authorizer 链中的 RBAC Authorizer 执行权限检查：
 
-```
+```text
 请求: GET /api/v1/namespaces/production/pods/nginx-pod
 认证用户: system:serviceaccount:production:my-app
 
@@ -647,7 +647,7 @@ roleRef:
 - 可以拒绝不符合规范的请求
 - 例如：禁止使用 `latest` 标签的镜像、强制要求所有 Pod 设置资源限制
 
-```
+```text
 请求 → Mutating Webhook 1 → Mutating Webhook 2 → Schema Validation → Validating Webhook 1 → Validating Webhook 2 → etcd
 ```
 

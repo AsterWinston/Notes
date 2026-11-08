@@ -1,10 +1,10 @@
 # 1. Listener监听器
 
-```
+```text
 什么是监听器？
 
 监听器是 Servlet 规范中的一员。就像 Filter 一样。Filter 也是 Servlet 规范中的一员。
-在 Servlet 中，所有的监听器接口都是以“Listener”结尾。
+在 Servlet 中，所有的监听器接口都是以"Listener"结尾。
 监听器有什么用？
 
 监听器实际上是 Servlet 规范留给我们 javaweb 程序员的特殊时机。
@@ -13,7 +13,7 @@
 
 # 2. Servlet规范中提供了哪些监听器？
 
-```
+```text
 jakarta.servlet 包下：
 ServletContextListener
 ServletContextAttributeListener
@@ -38,7 +38,7 @@ HttpSessionActivationListener
 
 # 3. 实现一个监听器的步骤：以 ServletContextListener 为例
 
-```
+```text
 第一步：编写一个类实现 ServletContextListener 接口。并且实现里面的方法。
 
 void contextInitialized(ServletContextEvent event)
@@ -60,20 +60,20 @@ void contextDestroyed(ServletContextEvent event)
 请编写一个功能，记录该网站实时的在线用户的个数。
 我们可以通过服务器端有没有分配 session 对象，因为一个 session 代表了一个用户。有一个 session 就代表有一个用户。如果你采用这种逻辑去实现的话，session 有多少个，在线用户就有多少个。这种方式的话：HttpSessionListener 够用了。session 对象只要新建，则 count++，然后将 count 存储到 ServletContext 域当中，在页面展示在线人数即可。
 业务发生改变了，只统计登录的用户的在线数量，这个该怎么办？
-session.setAttribute(“user”, userObj);
+session.setAttribute("user", userObj);
 用户登录的标志是什么？session 中曾经存储过 User 类型的对象。那么这个时候可以让 User 类型的对象实现 HttpSessionBindingListener 监听器，只要 User 类型对象存储到 session 域中，则 count++，然后将 count++ 存储到 ServletContext 对象中。页面展示在线人数即可。
 实现 oa 项目中当前登录在线的人数。
 
 什么代表着用户登录了？
-session.setAttribute(“user”, userObj); User 类型的对象只要往 session 中存储过，表示有新用户登录。
+session.setAttribute("user", userObj); User 类型的对象只要往 session 中存储过，表示有新用户登录。
 什么代表着用户退出了？
-session.removeAttribute(“user”); User 类型的对象从 session 域中移除了。
+session.removeAttribute("user"); User 类型的对象从 session 域中移除了。
 或者有可能是 session 销毁了。（session 超时）
 ```
 
 # 4. 各监听器实战示例
 
-```
+```text
 示例1：ServletContextListener —— 初始化全局资源
 
 @WebListener
@@ -260,7 +260,7 @@ public class Customer implements Serializable, HttpSessionActivationListener {
 
 # 5. 监听器总结
 
-```
+```text
 监听器总共有 8 种（6+2）：
 
 三类域对象监听器（每个域有2种，共6种）：

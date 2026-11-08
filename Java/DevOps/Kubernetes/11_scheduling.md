@@ -16,7 +16,7 @@ kube-scheduler 是 Kubernetes 控制平面的核心组件之一，负责将新�
 
 ## 1.2 调度流程：两个阶段
 
-```
+```text
 待调度 Pod (spec.nodeName 为空)
         │
         ▼
@@ -56,7 +56,7 @@ kube-scheduler 是 Kubernetes 控制平面的核心组件之一，负责将新�
 
 Kubernetes 1.19 引入调度框架（Scheduling Framework）重构了调度器架构，将调度过程拆分为多个扩展点（Extension Points），允许通过插件自定义调度逻辑。
 
-```
+```text
 调度周期 (Scheduling Cycle)
 ┌─────────────────────────────────────────────────────────────┐
 │                                                               │
@@ -405,7 +405,7 @@ spec:
 
 Node Affinity 是"Pod 选择 Node"——Pod 制定规则，选择满足条件的节点。Taints & Tolerations 是"Node 排斥 Pod"——节点设置排斥规则，只有明确声明可以容忍这些排斥条件的 Pod 才能调度上来。
 
-```
+```text
 Node Affinity:  Pod → "我只去有 SSD 标签的节点"（吸引）
 Taints:        Node → "没有 GPU 容忍的 Pod 禁止来我这里"（排斥）
 ```
@@ -492,7 +492,7 @@ Kubernetes 的 Node Controller 在检测到节点异常时自动添加以下污�
 
 ### 4.4.1 节点失联处理流程
 
-```
+```text
 节点正常运行
      │
      │ kubelet 停止上报心跳
@@ -657,7 +657,7 @@ spec:
 
 **`maxSkew`（最大偏差）**：任何两个拓扑域之间的 Pod 数量差的最大允许值。
 
-```
+```text
 可用区  Pod 数
 zone-a    2
 zone-b    2
@@ -777,7 +777,7 @@ spec:
 
 当高优先级 Pod 无法调度时，调度器会尝试抢占低优先级 Pod：
 
-```
+```text
 1. 高优先级 Pod 进入调度队列
        │
        ▼

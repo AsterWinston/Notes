@@ -18,7 +18,7 @@ OAuth 2.0 定义了多种授权模式（Grant Type）以适应不同的客户端
 
 ## 3.1 适用场景
 
-```
+```text
 适用：服务端到服务端通信（Machine-to-Machine, M2M）
 不适用：需要用户身份的端到端认证
 
@@ -30,7 +30,7 @@ OAuth 2.0 定义了多种授权模式（Grant Type）以适应不同的客户端
 
 ## 3.2 流程
 
-```
+```text
 客户端 (Service A)                    授权服务器
         │                                │
         │ POST /token                    │
@@ -96,7 +96,7 @@ spring:
 
 ## 3.4 安全注意事项
 
-```
+```text
 风险点：
 1. client_secret 仅适用于后端应用（SPA/移动端无法保密）
 2. 返回的 Token 不带用户信息（sub 是 client_id）
@@ -112,7 +112,7 @@ spring:
 
 ## 4.1 为什么被废弃
 
-```
+```text
 隐式模式设计初衷：纯前端 SPA 无法保护 client_secret
 
 流程（隐患标注 ❌）：
@@ -142,7 +142,7 @@ GET /authorize?
 
 ## 5.1 流程
 
-```
+```text
 客户端直接收集用户的用户名和密码，代为请求 Token
 
 POST /token
@@ -158,7 +158,7 @@ POST /token
 
 ## 5.2 为什么被废弃
 
-```
+```text
 ❌ 核心问题：客户端接触用户的原始密码！
    - 第三方应用直接看到用户密码
    - 无法区分是用户还是客户端伪造
@@ -202,7 +202,7 @@ public TokenResponse passwordGrant(
 
 ## 6.1 适用场景
 
-```
+```text
 适用：输入受限设备（没有浏览器或键盘体验差）
 """
 - 智能电视 (Smart TV)
@@ -215,7 +215,7 @@ public TokenResponse passwordGrant(
 
 ## 6.2 流程详解
 
-```
+```text
 设备                     授权服务器                用户手机上浏览器
  │                           │                           │
  │ 1. POST /device/code     │                           │
@@ -377,7 +377,7 @@ class DeviceCodeResponse {
 
 ## 7.1 流程
 
-```
+```text
 POST /token
     grant_type=refresh_token
     &refresh_token=tGzv3JOkF0XG5Qx2TlKWIA
@@ -444,7 +444,7 @@ public class TokenRefresher {
 
 ## 8.1 Bearer Token 的问题
 
-```
+```text
 Bearer Token = "持有即可以使用"
 
 问题：
@@ -493,7 +493,7 @@ DPoP: eyJhbGciOi...（DPoP Proof JWT）
 
 # 9. 授权模式选择决策
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                   OAuth 2.0 授权模式选择                       │
 │                                                               │

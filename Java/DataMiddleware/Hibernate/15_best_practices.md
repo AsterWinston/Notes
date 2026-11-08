@@ -1091,7 +1091,7 @@ spring:
 
 ### 3.2.3 场景选择决策流程
 
-```
+```text
 查询是否总是需要关联数据？
 ├── 是 → JOIN FETCH（单次查询，最省数据库往返）
 │         ⚠️ 不能同时 FETCH 多个 List（Bag）集合 → MultipleBagFetchException
@@ -1668,7 +1668,7 @@ public class OrderCreationException extends RuntimeException {
 
 ## 5.2 二级缓存决策树
 
-```
+```text
 是否需要跨 Session 共享数据？
 ├── 否 → 只用一级缓存（PersistenceContext），无需配置
 └── 是 → 考虑二级缓存
@@ -2765,7 +2765,7 @@ void testNoSlowQuery() {
 
 ## 10.1 包结构
 
-```
+```text
 com.example.project
 ├── entity/                     # 实体类（JPA 映射模型）
 │   ├── User.java
@@ -2931,7 +2931,7 @@ public class Order {
 
 ## 10.3 依赖方向
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │                Controller                │
 │          (接收请求、参数校验)              │

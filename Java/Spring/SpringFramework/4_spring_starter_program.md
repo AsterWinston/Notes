@@ -3,7 +3,7 @@
 # 2. 创建第一个Spring模块
 
 # 3. 引入依赖
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -44,7 +44,7 @@
 ```
 
 # 4. 定义普通Java类
-```
+```java
 /**
  * ClassName: User
  * Package: cw.spring.study.pojo
@@ -91,7 +91,7 @@ public class User {
 ```
 
 # 5. 编写Spring配置文件
-```
+```text
 Spring 配置文件放在类根路径下，即 resource 目录下
 该文件放在类的根路径下方便后期的移植
 放在resources目录下，相当于放在类的根路径下
@@ -112,7 +112,7 @@ Spring 配置文件放在类根路径下，即 resource 目录下
 ```
 
 # 6. 编写测试类
-```
+```java
 public class Test {
     @org.junit.Test
     public void tset1() {
@@ -135,7 +135,7 @@ public class Test {
 
 # 7. 源码解析：第一行代码发生了什么
 
-```
+```text
 new ClassPathXmlApplicationContext("spring.xml") 这行代码到底做了什么？
 
 ClassPathXmlApplicationContext 继承链：

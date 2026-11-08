@@ -18,7 +18,7 @@
 
 示例基于 JDK 17/21 与 Spring AI 的 MCP starter，目录建议如下：
 
-```
+```text
 mcp-examples/
   file-server/       文件系统 Server
   db-server/         数据库 Server
@@ -63,7 +63,7 @@ public Map<String, Object> fail(String message) {
 
 ### 2.1.1 机制
 
-```
+```text
 用户路径 path
    │  root.resolve(path)
    ▼
@@ -348,7 +348,7 @@ public Map<String, Object> createTicket(
 
 ### 5.1.1 机制
 
-```
+```text
 Client                          Server
   │  resources/list               │
   ├──────────────────────────────>│
@@ -421,7 +421,7 @@ client.onResourceUpdated(uri -> cache.invalidate(uri));
 
 ### 6.1.1 机制
 
-```
+```text
 filesystem Server ──┐
 database Server ────┤──> McpToolCallbackProvider(多)
 api Server ─────────┘         │
@@ -495,7 +495,7 @@ public ToolCallback prefixed(McpToolCallback cb, String server) {
 
 ### 7.1.1 机制
 
-```
+```text
 question + user
       │
       ▼

@@ -1,5 +1,5 @@
 # 1. c 命名空间注入
-```
+```text
 c命名空间是简化构造方法注入的。
 使用c命名空间的两个前提条件：
 第一：需要在xml配置文件头部添加c命名空间的配置信息：xmlns:c="http://www.springframework.org/schema/c"
@@ -72,7 +72,7 @@ public class People {
 
 ## 2.1 c-namespace 如何映射到构造方法参数
 
-```
+```text
 c-namespace 在 BeanDefinitionParserDelegate.decorateBeanDefinitionIfRequired() 中处理，
 它被转换为 ConstructorArgumentValues，与 <constructor-arg> 标签等价。
 
@@ -100,7 +100,7 @@ if (isCNamespace(nodeName)) {
 
 ## 2.2 JDK 17 -parameters 标志的源码原因
 
-```
+```text
 为什么 Spring 6 + JDK 17 需要 -parameters 才能使用 c:name 方式？
 
 原因在 Constructor.getParameters() 的行为上：
@@ -140,7 +140,7 @@ Spring 6 官方推荐：
 
 ## 2.3 构造注入参数解析：ConstructorResolver 源码片段
 
-```
+```java
 ConstructorResolver.resolveConstructorArguments() — 解析构造参数的核心：
 
 private Object[] resolveConstructorArguments(

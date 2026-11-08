@@ -168,7 +168,7 @@ Feign.builder()
 
 # 5. FeignException 家族
 
-```
+```text
 RuntimeException
   └── FeignException
         ├── FeignClientException    (4xx)
@@ -251,7 +251,7 @@ public interface UserClient {
 
 # 8. 异常处理链路总结
 
-```
+```text
 HTTP Response
   │
   ├── 2xx → Decoder.decode() → 返回业务对象

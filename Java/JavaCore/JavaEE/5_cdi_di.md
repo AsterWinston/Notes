@@ -306,7 +306,7 @@ public abstract class AccountServiceDecorator implements AccountService {
 - 注入的不是 Bean 实例本身，而是**客户端代理**。
 - 调用方法时代理根据当前上下文解析真正的实例，从而保证作用域正确。
 
-```
+```text
 调用方 ──► 客户端代理 ──► 真正的 Bean 实例
            │
            └─ 根据作用域解析（请求/会话/应用上下文）

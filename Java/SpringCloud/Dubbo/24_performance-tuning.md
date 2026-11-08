@@ -54,7 +54,7 @@ dubbo:
 
 **线程数计算**：
 
-```
+```text
 最优线程数 = N_cpu × N_core × (1 + W/C)
 
 N_cpu  = CPU 核数
@@ -154,7 +154,7 @@ dubbo:
 
 ## 4.2 连接复用
 
-```
+```text
 Consumer A ──→ Provider B:
   ├── connection 1 (多个 service 共享)
   └── connection 2

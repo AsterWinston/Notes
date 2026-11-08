@@ -101,7 +101,7 @@ MongoClient mongoClient = MongoClients.create(settings);
 
 ## 2.3 连接字符串参数速查
 
-```
+```text
 mongodb://[user:pass@]host1[:port1][,host2[:port2]]/db[?options]
 
 常用参数：

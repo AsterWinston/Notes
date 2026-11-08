@@ -90,7 +90,7 @@ zuul:
 
 效果：
 
-```
+```text
 客户端请求:  http://gateway:8080/api/user/profile
 匹配的路由:  /api/user/** → user-service
 转发到后端:  http://user-service/user/profile   (stripPrefix=true 时剥离 /api)
@@ -307,7 +307,7 @@ public PatternServiceRouteMapper serviceRouteMapper() {
 
 效果：
 
-```
+```text
 serviceId: user-service-v1
 自动路由路径: /v1/user-service/**
 

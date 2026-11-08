@@ -3,7 +3,7 @@
 
 Dubbo 的线程模型基于 Netty 的 Reactor 模型，通过 Dispatcher 策略将 IO 线程和业务线程分离。
 
-```
+```text
 Netty Boss Thread
     │ (接受 TCP 连接)
     ▼
@@ -113,7 +113,7 @@ public class ExecutionChannelHandler extends WrappedChannelHandler {
 
 ## 2.5 策略选择建议
 
-```
+```text
 高并发业务处理  → all      (默认，最安全)
 极低延迟        → direct   (无线程切换开销，但阻塞 IO 线程)
 连接密集型      → connection
@@ -279,7 +279,7 @@ protected void doOpen() {
 
 # 6. Consumer 端线程模型
 
-```
+```text
 Consumer 业务线程 (Tomcat/自定义)
     │ 调用 userService.getUser(1L)
     ├─→ 代理拦截
@@ -299,7 +299,7 @@ Consumer 业务线程 (Tomcat/自定义)
 
 # 7. Provider 端线程模型
 
-```
+```text
 Netty Boss Thread
     │ accept
     ▼
@@ -399,7 +399,7 @@ public class MyThreadPool implements ThreadPool {
 
 SPI 注册：
 
-```
+```text
 # META-INF/dubbo/org.apache.dubbo.common.threadpool.ThreadPool
 mypool=com.example.MyThreadPool
 ```
@@ -418,7 +418,7 @@ mypool=com.example.MyThreadPool
 
 当出现 `RejectedExecutionException` 时，`AbortPolicyWithReport` 会自动打印所有线程的 StackTrace 到日志文件：
 
-```
+```text
 输出路径: {user.dir}/dubbo-{timestamp}.jstack
 ```
 

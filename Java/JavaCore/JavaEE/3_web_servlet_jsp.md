@@ -3,7 +3,7 @@
 
 Web 层是 JavaEE 中最基础、最常用的规范集合。本笔记从**规范视角**总览，动手实操细节见 `JavaCore/JavaWeb` 系列笔记。
 
-```
+```text
 ┌────────────────────────────────────────────┐
 │              Web 请求处理栈                 │
 │                                            │
@@ -36,7 +36,7 @@ Web 层是 JavaEE 中最基础、最常用的规范集合。本笔记从**规范
 
 ## 2.1 核心接口继承体系
 
-```
+```text
 jakarta.servlet.Servlet（接口）            【爷爷】
     ▲
 jakarta.servlet.GenericServlet（抽象类）   【儿子】协议无关
@@ -147,7 +147,7 @@ public class AsyncServlet extends HttpServlet {
 
 ## 3.3 JSP 的三种脚本元素
 
-```
+```text
 <%! ... %>      声明：定义成员变量/方法
 <% ... %>       脚本片段：执行 Java 代码
 <%= ... %>      表达式：输出表达式结果（等价于 out.print()）
@@ -155,7 +155,7 @@ public class AsyncServlet extends HttpServlet {
 
 ## 3.4 指令与动作
 
-```
+```text
 <%@ page ... %>         页面指令（导包、编码、errorPage、isELIgnored 等）
 <%@ include %>          静态包含（编译期合并）
 <%@ taglib %>           引入标签库
@@ -255,7 +255,7 @@ EL 默认按 `pageScope → requestScope → sessionScope → applicationScope` 
 
 # 7. Web 应用目录结构
 
-```
+```text
 webapp/
 ├── WEB-INF/
 │   ├── web.xml          # 部署描述符（Servlet 3.0+ 可省略）

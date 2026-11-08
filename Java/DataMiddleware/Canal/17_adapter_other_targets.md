@@ -3,7 +3,7 @@
 
 除了 RDB 和 Elasticsearch，Canal Adapter 还支持同步到 HBase、Kudu、以及通过自定义 SPI 扩展到任意目标系统。
 
-```
+```text
                      ┌─────────────┐
                      │ Canal Server│
                      └──────┬──────┘
@@ -324,7 +324,7 @@ public class LoggerOutAdapter extends AbstractOutAdapter {
 
 **日志输出示例**：
 
-```
+```text
 [INSERT] [test.users] pk=[id] data=[{id=1, name=Alice, email=alice@example.com}] old=[]
 [UPDATE] [test.users] pk=[id] data=[{id=1, name=Bob, status=0}] old=[{name=Alice}]
 [DELETE] [test.users] pk=[id] data=[{id=1}] old=[]
@@ -424,7 +424,7 @@ public class MongoOutAdapter extends AbstractOutAdapter {
 
 ## 5.2 注册 SPI
 
-```
+```text
 # META-INF/services/com.alibaba.otter.canal.adapter.out.OutAdapter
 com.example.MongoOutAdapter
 ```

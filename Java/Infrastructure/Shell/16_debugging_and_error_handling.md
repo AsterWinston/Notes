@@ -235,7 +235,7 @@ set -x
 
 **各选项的交互关系：**
 
-```
+```text
 set -e  + set -o pipefail  → 管道中任一命令失败就退出
 set -e  + set -u           → 未定义变量导致退出
 set -x  + set -e           → 在报错前看到最后执行的命令
@@ -376,7 +376,7 @@ trap - DEBUG  # 取消 trap
 ```
 
 **输出：**
-```
+```text
 [DEBUG] 即将执行: name="Alice"
 [DEBUG] 即将执行: echo "Hello, $name"
 Hello, Alice
@@ -457,7 +457,7 @@ foo
 ```
 
 **输出：**
-```
+```text
 [TRACE] main > foo(30) > bar(24) > baz(21) > echo "deep in callstack"
 ```
 
@@ -574,7 +574,7 @@ level1
 ```
 
 **输出：**
-```
+```text
 ========================================
   错误报告
 ========================================
@@ -785,7 +785,7 @@ outer_func
 ```
 
 **输出：**
-```
+```text
 +script.sh:14: outer_func
   +script.sh:9: middle_func
     +script.sh:6: inner_func
@@ -1492,7 +1492,7 @@ main
 
 **bashdb 交互式调试过程：**
 
-```
+```text
 $ bashdb demo.sh
 bashdb<0> break 5            # 在 calculate 函数内设置断点
 Breakpoint 1 set in file demo.sh, line 5.

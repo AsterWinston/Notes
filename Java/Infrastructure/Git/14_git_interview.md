@@ -158,7 +158,7 @@ git revert HEAD
 
 **A**:
 
-```
+```text
 HEAD        → 指向当前分支
 config      → 仓库配置
 index       → 暂存区（二进制文件）

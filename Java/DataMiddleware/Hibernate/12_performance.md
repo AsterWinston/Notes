@@ -309,7 +309,7 @@ List<Author> authors = session.createQuery(
 
 Hibernate 会输出以下警告：
 
-```
+```text
 HHH000104: firstResult/maxResults specified with collection fetch;
 applying in memory!
 ```
@@ -699,7 +699,7 @@ public class Order {
 
 ### 2.6.2 场景选择决策表
 
-```
+```text
 场景：用户列表页，每页 20 条，显示用户名、文章数、粉丝数
 决策：不需要加载文章/粉丝详情，仅需数量
       → 使用 @Formula 或 DTO 投影，避免加载完整集合，不触发 N+1
@@ -1336,7 +1336,7 @@ public class Product {
 
 ### 4.1.4 批处理性能对比
 
-```
+```text
 环境：本地 MySQL，插入 10000 条记录
 ┌─────────────────────┬──────────┬──────────┬──────────┐
 │ 策略                 │ 耗时      │ SQL 批数  │ 网络往返  │
@@ -1387,7 +1387,7 @@ public void batchImport(List<BookDTO> bookDTOs) {
 
 ### 4.2.3 内存释放原理
 
-```
+```text
 无 flush+clear：
   内存中的持久化上下文
   [Book1, Book2, ..., Book50000]  → 占用数百 MB，可能 OOM
@@ -1626,7 +1626,7 @@ spring:
 
 公式：
 
-```
+```text
 连接池大小 = ((CPU 核心数 * 2) + 有效磁盘数)
 ```
 
@@ -1660,7 +1660,7 @@ spring:
 
 泄漏检测日志示例：
 
-```
+```text
 [HikariPool-Business] Connection leak detection triggered
 for conn45995719 on thread http-nio-8080-exec-3 during 65021ms,
 stack trace follows...
@@ -1840,7 +1840,7 @@ spring:
     open-in-view: true   # 默认开启
 ```
 
-```
+```text
 请求流程：
 1. 请求到达 DispatcherServlet
 2. Session 打开 ← 获得数据库连接
@@ -1860,7 +1860,7 @@ spring:
     open-in-view: false
 ```
 
-```
+```text
 请求流程：
 1. 请求到达
 2. → Controller → Service（事务内）→ Session 关闭 → 释放数据库连接
@@ -1871,7 +1871,7 @@ spring:
 
 OSIV 关闭后的常见异常：
 
-```
+```text
 org.hibernate.LazyInitializationException:
 could not initialize proxy [com.example.entity.Author#1] - no Session
 ```
@@ -1922,7 +1922,7 @@ public Order getOrderDetail(Long orderId) {
 
 ### 5.3.4 现代最佳实践
 
-```
+```text
 推荐：关闭 OSIV
 原因：
 1. 连接释放更快，连接池利用率更高
@@ -2123,7 +2123,7 @@ WHERE id = ?;                          -- 仅 3 个 SET 参数
 
 ### 6.2.4 适用场景
 
-```
+```text
 适合 @DynamicUpdate：
 ✓ 宽表（20+ 列）且大部分更新只修改少数列
 ✓ 列包含大字段（BLOB/TEXT）
@@ -2322,7 +2322,7 @@ spring:
 
 ### 7.3.1 默认方式：全字段快照比较
 
-```
+```text
 1. 从数据库加载实体时 → 保存所有字段的快照（Object[]）
 2. flush 时：
    for each managed entity:
@@ -2340,7 +2340,7 @@ spring:
 
 ### 7.3.2 增强方式：属性级脏跟踪
 
-```
+```text
 1. 增强后，每个 setter 自动记录变化的字段：
    public void setName(String name) {
        $$_hibernate_trackChange("name");   // 字节码增强插入的代码
@@ -2912,7 +2912,7 @@ management:
 
 Grafana + Prometheus 监控面板关键指标：
 
-```
+```text
 # Hibernate 查询耗时分布
 hibernate_query_execution_time_seconds_bucket
 
@@ -2966,7 +2966,7 @@ spring:
 
 日志输出：
 
-```
+```text
 HHH90005001: Execution time for query "FROM Author a JOIN FETCH a.books"
 exceeded the threshold of 100ms by 347ms.
 ```

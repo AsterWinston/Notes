@@ -8,7 +8,7 @@
 
 ### 1.1.2 端到端流程
 
-```
+```text
 用户问题（自然语言）
    │
    ▼
@@ -50,7 +50,7 @@
 
 ### 1.2.2 调用链与分层
 
-```
+```text
 Controller
   └─> Orchestrator
         ├─> IntentRouter
@@ -90,7 +90,7 @@ Controller
 | 固定查询工具 | 高 | 低 | 常用查询 | 低 |
 | Text2SQL | 低 | 高 | 探索性 | 高 |
 
-```
+```text
 问题到达
    │
    ├── 命中已注册工具？── 是 ──▶ 固定查询工具
@@ -106,7 +106,7 @@ Controller
 
 固定工具是一组预定义、参数化的查询方法，SQL 写死、仅参数可变。参数需做类型与范围校验，杜绝拼接注入。
 
-```
+```text
 优先固定查询工具：
   queryOrdersByDate(start, end)
   getOrderStats(period)
@@ -156,7 +156,7 @@ public List<Map<String, Object>> querySalesByRegion(String region) {
 
 安全采用纵深防御：任何单层被绕过仍有其他层兜底。最内层是数据库只读账号，即使应用全被攻破也无法写库。
 
-```
+```text
 七层防护：
 ① 只读账号（数据库层）
 ② 表白名单（应用层）
@@ -498,7 +498,7 @@ CREATE TABLE query_audit (
 
 ### 10.1.1 拓扑与配置
 
-```
+```text
 客户端 ──> API 网关 ──> Agent 服务 ──> 只读数据源
                               │
                               ├──> 元数据服务
@@ -517,7 +517,7 @@ CREATE TABLE query_audit (
 
 ### 10.2.1 阶段划分
 
-```
+```text
 阶段1：只读报表（固定查询工具）
 阶段2：Text2SQL（仅管理员）
 阶段3：扩大范围（带权限过滤）

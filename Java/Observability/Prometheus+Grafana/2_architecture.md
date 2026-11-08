@@ -3,7 +3,7 @@
 
 Prometheus 采用**分层模块化架构**，核心模块包括：
 
-```
+```text
                         +---------------------+
                         |   Service Discovery |
                         | (K8s/Consul/DNS/...)|
@@ -52,19 +52,19 @@ Prometheus 采用**分层模块化架构**，核心模块包括：
 
 Prometheus 所有数据都存为**时间序列**，每个时间序列由以下标识唯一确定：
 
-```
+```text
 <metric_name>{<label_name>=<label_value>, ...}
 ```
 
 示例：
 
-```
+```text
 http_requests_total{method="GET", handler="/api/v1/users", status="200"}
 ```
 
 时间序列存储的是随时间变化的一系列样本数据点：
 
-```
+```text
 ^
 |  1.2  1.5  1.8  2.1  2.3
 |   |    |    |    |    |
@@ -199,7 +199,7 @@ Prometheus 会自动添加标签：
 
 ## 5.2 Pull 流程
 
-```
+```text
 1. 配置加载 ──> 2. 目标发现 ──> 3. HTTP GET /metrics
                                      │
                                      v
@@ -229,7 +229,7 @@ scrape_configs:
 
 Prometheus 使用**文本格式**暴露指标，基于 OpenMetrics 标准：
 
-```
+```text
 # HELP http_requests_total The total number of HTTP requests.
 # TYPE http_requests_total counter
 http_requests_total{method="post",code="200"} 1027 1395066363000
@@ -246,7 +246,7 @@ http_requests_total{method="post",code="400"} 3 1395066363000
 
 Prometheus 2.x 使用自研的 TSDB 引擎：
 
-```
+```text
 /data/
   └── 01EM6Q6A1YPX4G9X6R6XG9X6R6/
       ├── chunks/
@@ -269,7 +269,7 @@ Prometheus 2.x 使用自研的 TSDB 引擎：
 
 最简单的方案是运行两个相同的 Prometheus 实例采集相同目标：
 
-```
+```text
              +---> Prometheus A
 Targets -----+
              +---> Prometheus B
@@ -279,7 +279,7 @@ Targets -----+
 
 适用于多级部署（如多个数据中心）：
 
-```
+```text
 Global Prometheus <--- Region Prometheus <--- Zone Prometheus <--- Targets
 ```
 

@@ -8,7 +8,7 @@ Transformer（变换器）解码时逐 token 生成，每一步都要对"已生�
 
 ### 1.1.1 无缓存的过程
 
-```
+```text
 无缓存：
   生成 t1: 计算 [x1] 的 K,V
   生成 t2: 计算 [x1,x2] 的 K,V     ← x1 重复计算
@@ -19,7 +19,7 @@ Transformer（变换器）解码时逐 token 生成，每一步都要对"已生�
 
 ### 1.1.2 有缓存的过程
 
-```
+```text
 有缓存：
   生成 t1: 计算 x1 → 缓存 K1,V1
   生成 t2: 用 K1,V1 + 计算 x2 → 缓存 K2,V2
@@ -35,7 +35,7 @@ Transformer（变换器）解码时逐 token 生成，每一步都要对"已生�
 - Prefill（预填充）：一次性处理整段 prompt，并行计算所有 token 的 K、V 并写入缓存，是计算密集型。
 - Decode（解码）：逐 token 生成，每步只算一个新 token 的 K、V 并追加，是显存带宽密集型。
 
-```
+```text
 Prefill: [x1 x2 x3 ... xn] --> 一次前向 --> 写入全部 KV
 Decode : xn+1 -> 读缓存 + 算一个 KV -> 输出 -> xn+2 -> ...
 ```
@@ -86,7 +86,7 @@ KV Cache 本质是用显存换计算：缓存占用随序列长度线性增长�
 
 每个 token 的隐状态 h 经三组权重投影得到查询 Q、键 K、值 V：
 
-```
+```text
 Q = h W_q
 K = h W_k
 V = h W_v
@@ -94,7 +94,7 @@ V = h W_v
 
 ### 2.1.2 注意力计算
 
-```
+```text
 Attention(Q, K, V) = softmax(Q K^T / sqrt(d_k)) V
 ```
 
@@ -105,7 +105,7 @@ Attention(Q, K, V) = softmax(Q K^T / sqrt(d_k)) V
 - Q 是"查询"，每一步只对当前 token 求一次，用完即弃，无需缓存。
 - K、V 是"被查询的对象"，历史 token 的 K、V 在后续每一步都会被再次使用，因此必须缓存。
 
-```
+```text
 第 t 步:
   Q_t  = 当前 token 的查询        (1 x d)
   K_1..t = 历史键拼接            (t x d)  <- 缓存
@@ -128,7 +128,7 @@ RoPE 在计算注意力前对 Q、K 施加与位置相关的旋转。缓存时�
 
 ## 3.1 计算公式
 
-```
+```text
 KV Cache 显存 ≈ 2 × L × n_kv_heads × head_dim × seq_len × batch × bytes
 
 2：K 和 V
@@ -203,7 +203,7 @@ long bytes = kvCacheBytes(32, 32, 128, 4096, 1, 2);   // ≈ 2 GiB
 
 MHA（多头注意力）下每个查询头都有独立的 KV 头；GQA 让多个查询头共享一组 KV 头，比例 8:1 即 KV 头数降为 1/8，缓存同步降为 1/8。MQA（多查询注意力）更极端，所有查询头共享一组 KV。
 
-```
+```text
 MHA:  Q Q Q Q Q Q Q Q
       | | | | | | | |
       K V K V K V K V   (每头独立)
@@ -248,7 +248,7 @@ MQA:  Q Q Q Q Q Q Q Q
 
 ## 5.2 组合策略
 
-```
+```text
 显存不足
    |
    +--> 先看能否换 GQA/MQA 模型（结构性收益）
@@ -290,20 +290,20 @@ MQA:  Q Q Q Q Q Q Q Q
 
 为应对最长可能输出，系统常按上限预留空间，而实际用不满，造成内部浪费。
 
-```
+```text
 问题：KV Cache 需要连续显存，容易碎片化
 ```
 
 ## 6.2 分页机制
 
-```
+```text
 PagedAttention：
   把 KV Cache 分成固定大小的块（page）
   像操作系统虚拟内存一样管理
   → 减少碎片、支持共享、提升吞吐
 ```
 
-```
+```text
 传统： [====请求1的KV====][====请求2的KV====]  （预留连续空间）
 
 Paged: [page1][page3][page2][page5][page4]     （非连续，按需分配）
@@ -311,7 +311,7 @@ Paged: [page1][page3][page2][page5][page4]     （非连续，按需分配）
 
 逻辑上每个序列看到连续的页序列，物理上页可以散落各处，用一张页表映射。
 
-```
+```text
 逻辑页表（请求1）:  [0] -> 物理页 3
                     [1] -> 物理页 1
                     [2] -> 物理页 5
@@ -352,12 +352,12 @@ Paged: [page1][page3][page2][page5][page4]     （非连续，按需分配）
 
 ## 7.1 原理
 
-```
+```text
 多个请求共享相同前缀（如系统提示）：
   只计算一次前缀的 KV，多个请求复用
 ```
 
-```
+```text
 请求1: [系统提示][问题1]
 请求2: [系统提示][问题2]
         └─ 共享 KV ─┘
@@ -373,7 +373,7 @@ Paged: [page1][page3][page2][page5][page4]     （非连续，按需分配）
 
 ### 7.2.1 命中与未命中对比
 
-```
+```text
 未命中: 请求A 计算 [系统提示+问题A] 全部 KV   (慢)
         请求B 计算 [系统提示+问题B] 全部 KV   (慢)
 
@@ -395,14 +395,14 @@ Paged: [page1][page3][page2][page5][page4]     （非连续，按需分配）
 
 ## 8.1 滑动窗口
 
-```
+```text
 序列太长时，需要淘汰部分 KV：
   滑动窗口：只保留最近 N 个
 ```
 
 只保留最近 N 个 token 的 KV，丢弃更早的。实现简单，但会丢失早期上下文，适合局部依赖强的任务。
 
-```
+```text
 窗口 W=4，当前序列长度 7：
 
   保留:              [t4][t5][t6][t7]
@@ -415,26 +415,26 @@ Paged: [page1][page3][page2][page5][page4]     （非连续，按需分配）
 
 ## 8.2 Attention Sink / StreamingLLM
 
-```
+```text
   StreamingLLM：保留开头的 attention sink
 ```
 
 观察发现，序列开头的少数 token 会吸收大量注意力（attention sink，注意力汇）。StreamingLLM 保留开头若干 sink token 加最近窗口，即可支持超长流式生成。
 
-```
+```text
 保留: [sink1 sink2][ ... 最近窗口 ... ]
 丢弃:           [ 中间被淘汰的 KV ]
 ```
 
 ## 8.3 H2O
 
-```
+```text
   H2O：保留"重要"的 KV
 ```
 
 按累计注意力得分识别"重击者"（heavy hitter）KV，保留高分、淘汰低分，在受限预算下尽量保住信息量。
 
-```
+```text
 重要性得分 ≈ 累计注意力权重
 保留 top-B 个 KV（B 为预算）
 其余丢弃
@@ -455,7 +455,7 @@ Paged: [page1][page3][page2][page5][page4]     （非连续，按需分配）
 
 ### 8.4.1 预算分配示意
 
-```
+```text
 总预算 B 个 KV 槽位：
 
   [ sink(4) ][ 重要 KV(按分保留) ][ 最近窗口 W ]

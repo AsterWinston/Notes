@@ -8,7 +8,7 @@
 
 **多模态模型** = 能处理多种模态（文本、图像、音频、视频）的模型。
 
-```
+```text
 文本 + 图像 + 音频 + 视频 → 统一理解与生成
 ```
 
@@ -36,7 +36,7 @@
 
 把每种模态都变成"token 序列"，再交给同一个 Transformer（变换器）。
 
-```
+```text
 图像 patch ──┐
 文本 token ──┼──▶ 统一 token 序列 ──▶ Transformer ──▶ 输出
 音频帧    ──┘
@@ -81,7 +81,7 @@
 
 ### 2.2.1 组合公式
 
-```
+```text
 图文问答 = 图像编码 + LLM
 视频摘要 = 抽帧/时序编码 + LLM
 语音助手 = ASR + LLM + TTS
@@ -103,7 +103,7 @@
 
 ### 3.1.1 架构图
 
-```
+```text
 图像 → [视觉编码器] → 视觉 token ─┐
                                    ├─▶ [LLM] → 输出
 文本 → [文本 tokenizer] → 文本 token ┘
@@ -123,7 +123,7 @@
 
 ViT（Vision Transformer，视觉变换器）把图像切成 P×P 的 patch（图块），每个 patch 线性投影为一个 token。
 
-```
+```text
 H×W×3 图像
   │ 切分为 (H/P)×(W/P) 个 P×P patch
   ▼
@@ -136,7 +136,7 @@ H×W×3 图像
 
 CLIP（Contrastive Language-Image Pretraining，对比语言-图像预训练）用对比损失把成对图文拉近、非成对推远。
 
-```
+```text
 S = (I · T^T) / τ；Loss = 对称交叉熵（行、列各一次）
 ```
 
@@ -220,7 +220,7 @@ S = (I · T^T) / τ；Loss = 对称交叉熵（行、列各一次）
 
 ### 5.1.1 流程
 
-```
+```text
 图像 ──视觉编码──▶ 视觉 token
                      │
 文本问题 ──分词──▶ 文本 token
@@ -279,7 +279,7 @@ UserMessage msg = UserMessage.from(
 
 ### 6.1.1 扩散直觉
 
-```
+```text
 前向：真实图 x0 ──逐步加噪──▶ 纯噪声 xT
 反向：纯噪声 xT ──逐步去噪──▶ 生成图 x0
 条件：文本编码 c 引导每一步去噪
@@ -287,7 +287,7 @@ UserMessage msg = UserMessage.from(
 
 ### 6.1.2 训练目标
 
-```
+```text
 L = E[ || ε - ε_θ(x_t, t, c) ||² ]
 ε：真实噪声；ε_θ：网络预测；c：文本条件；t：时间步
 ```
@@ -350,7 +350,7 @@ String url = response.getResult().getOutput().getUrl();
 
 ### 7.1.2 语音 Agent 图
 
-```
+```text
 语音 Agent = ASR → LLM → TTS
 
 麦克风 ──▶ ASR ──▶ 文本 ──▶ LLM ──▶ 回复文本 ──▶ TTS ──▶ 扬声器
@@ -369,7 +369,7 @@ String url = response.getResult().getOutput().getUrl();
 
 ### 7.2.2 打断与坑
 
-```
+```text
 用户说话 ──▶ VAD 检测 ──▶ 停止 TTS ──▶ 重新识别
 ```
 
@@ -388,7 +388,7 @@ String url = response.getResult().getOutput().getUrl();
 
 ### 8.1.1 架构图
 
-```
+```text
 图片/扫描件 → 多模态 Embedding（CLIP）或 OCR/图注
                 ↓
             统一向量库
@@ -433,7 +433,7 @@ String url = response.getResult().getOutput().getUrl();
 
 ### 9.1.1 能力列表
 
-```
+```text
 Agent 可以：
 - 看截图理解界面（Computer Use）
 - 读取图表数据
@@ -454,7 +454,7 @@ Agent 可以：
 
 ### 9.2.1 循环
 
-```
+```text
 截图 ──▶ VLM 理解 ──▶ 规划动作 ──▶ 执行 ──▶ 新截图 ──┐
   ▲                                                    │
   └────────────────────────────────────────────────────┘

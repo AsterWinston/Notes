@@ -14,7 +14,7 @@ Git 是一个**内容寻址文件系统**，其核心是四种对象类型：
 
 所有对象都按以下格式存储：
 
-```
+```text
 对象类型 + 空格 + 内容长度 + 空字符 + 原始内容
 ```
 
@@ -33,7 +33,7 @@ echo "hello" | git hash-object --stdin
 
 ## 1.2 .git 目录结构
 
-```
+```text
 .git/
 ├── HEAD                   # 当前分支引用
 ├── config                 # 仓库配置
@@ -93,7 +93,7 @@ git cat-file -s 3b18e51    # 查看大小
 - **不可变**：一旦创建，内容不可更改（更改会产生新的 hash）
 - **不存文件名**：文件名存储在 tree 对象中
 
-```
+```text
 文件 "a.txt" (内容 "hello") ──→ blob(ce0136)
 文件 "b.txt" (内容 "hello") ──→ blob(ce0136)  ← 相同 hash，共享对象
 文件 "a.txt" (内容 "world") ──→ blob(f75ba0)  ← 内容不同，不同 hash
@@ -105,11 +105,11 @@ Tree 对象对应文件系统的目录，记录了文件名、文件权限和指
 
 ## 3.1 Tree 内部格式
 
-```
+```text
 <mode> <name>\0<SHA-1 二进制>
 ```
 
-```
+```text
 100644 hello.c\0<20字节 SHA-1>
 100755 run.sh\0<20字节 SHA-1>
 40000 lib\0<20字节 SHA-1>
@@ -143,7 +143,7 @@ git ls-tree -r -t HEAD  # 包含 tree 自身
 
 ## 3.4 完整的对象关系
 
-```
+```text
 commit (abc123)
 │
 │  tree: def456
@@ -168,7 +168,7 @@ Commit 对象是对项目在某一时刻的快照（tree）的封装，包含元
 
 ## 4.1 Commit 内部结构
 
-```
+```text
 tree d8329fc1cc938780ffdd9f94e0d364e0ea74f579
 parent c6c5e4c0b8c0efc1b9b8e4f0e8f0e0a0b0c0d0e0  # 普通提交
 author John <john@example.com> 1712345678 +0800
@@ -205,7 +205,7 @@ git log --format=raw HEAD
 git log --format=raw -1 --min-parents=2 HEAD
 ```
 
-```
+```text
 # 首次提交
 tree a1b2c3...
 (parent 不存在)
@@ -297,7 +297,7 @@ git gc --auto             # 自动模式（仅在需要时执行）
 
 **Pack 文件格式**：
 
-```
+```text
 .pack 文件：存储实际对象数据（使用增量压缩）
 .idx  文件：索引，快速定位对象在 .pack 中的位置
 ```
@@ -305,7 +305,7 @@ git gc --auto             # 自动模式（仅在需要时执行）
 **Delta 压缩**：
 Git 在打包时会识别相似的对象，只存储差异部分：
 
-```
+```text
 Objects:
   v1: "hello world"         ← base object
   v2: "hello world!!!"     ← delta from v1 (只存 "+!!!" 的差异)
@@ -366,7 +366,7 @@ Reflog 记录了 HEAD 和分支引用的所有变化（是 Git 数据恢复的�
 
 ## 8.1 Reflog 的工作原理
 
-```
+```text
 .git/logs/HEAD 内容格式：
 <old-hash> <new-hash> <committer> <timestamp> <action>
 ```
@@ -446,14 +446,14 @@ git rev-list --objects --all | \
 
 传统的 VCS（如 SVN）存储文件差异（delta）：
 
-```
+```text
 SVN: v1 → v2(delta) → v3(delta) → ...
     （查看 v3 需要：v1 + delta1 + delta2）
 ```
 
 Git 存储完整快照 + 增量压缩：
 
-```
+```text
 Git: v1(full) v2(full) v3(full) → pack(delta compression)
     （本地操作极快，pack 时做 delta 压缩节省空间）
 ```

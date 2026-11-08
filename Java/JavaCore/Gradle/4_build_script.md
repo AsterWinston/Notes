@@ -103,7 +103,7 @@ pluginManagement {
 ```
 
 pluginManagement 在 settings 中的位置和优先级：
-```
+```text
 settings.gradle.kts
     │
     ├── pluginManagement {}  ← 最先处理（甚至在 settings 脚本执行前）
@@ -208,7 +208,7 @@ includeBuild("../other-project") // 外部项目
 ```
 
 图示：include、includeFlat、includeBuild 的区别
-```
+```text
 my-app/                          ← 标准多项目构建
 ├── settings.gradle.kts
 │     include("core")            ← 子目录中
@@ -465,7 +465,7 @@ val springBootVersion: String by lazy {
 
 Gradle 构建脚本不是解释执行的，而是经过编译后运行的：
 
-```
+```text
 build.gradle.kts
     │
     ├── Kotlin Compiler → .class 字节码
@@ -534,7 +534,7 @@ val allJavaFiles2 = fileTree("src").matching { include("**/*.java") }  // Kotlin
 
 `buildSrc` 是一个特殊的 Gradle 项目，用于存放构建逻辑的共享代码。它位于根项目目录下，在构建主项目之前自动编译并添加到构建脚本的 classpath 中。
 
-```
+```text
 my-project/
 ├── buildSrc/
 │   ├── settings.gradle.kts               ← （可选）buildSrc 的 settings
@@ -613,7 +613,7 @@ class JavaConventionPlugin : Plugin<Project> {
 
 **预编译脚本插件（自动生成）：**
 
-```
+```text
 buildSrc/src/main/kotlin/
 ├── java-convention.gradle.kts  ← 文件名即插件 ID
 └── spring-convention.gradle.kts
@@ -665,7 +665,7 @@ buildSrc 的变更检测规则：
 
 复合构建是 buildSrc 的强大替代方案。它将构建逻辑放在一个独立的 Gradle 项目中，通过 `includeBuild` 引入：
 
-```
+```text
 workspace/
 ├── my-app/                      ← 主项目
 │   ├── settings.gradle.kts
@@ -1019,7 +1019,7 @@ dependencyResolutionManagement {
 
 ## 6.1 项目职责分离
 
-```
+```text
 my-multimodule-app/
 ├── build.gradle.kts              ← 根项目：公共配置 + 全局版本
 ├── settings.gradle.kts           ← 项目结构定义

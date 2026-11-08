@@ -17,7 +17,7 @@
 
 ## 2.2 架构设计原则
 
-```
+```text
 ① 认证与授权分离
    ├─ 认证中心：集中验证身份 + 签发 Token
    └─ 业务系统：独立判断权限
@@ -43,7 +43,7 @@
 
 ## 3.1 推荐 Token 策略
 
-```
+```text
 Access Token:
 ├── 格式：JWT（RS256 签名）
 ├── 有效期：5-15 分钟
@@ -99,7 +99,7 @@ response.setHeader("Strict-Transport-Security",
 
 ## 4.2 OAuth2 安全清单
 
-```
+```text
 ✅ 使用授权码模式（Authorization Code + PKCE）
 ✅ 严格校验 redirect_uri（精确匹配 + 白名单）
 ✅ 每次请求生成新的 state + nonce
@@ -116,7 +116,7 @@ response.setHeader("Strict-Transport-Security",
 
 ## 5.1 前后端分离的 SSO
 
-```
+```text
 推荐架构：BFF（Backend For Frontend）模式
 
 Browser (SPA)
@@ -189,7 +189,7 @@ public class SsoSecurityConfig {
 
 ## 6.1 监控指标
 
-```
+```text
 必须监控的 SSO 指标：
 
 认证中心：
@@ -234,7 +234,7 @@ log.info("密钥: {}", secretKey);               // 密钥
 
 ## 6.3 证书管理
 
-```
+```text
 SSL/TLS 证书：
 - 使用 Let's Encrypt 自动续签（公网）
 - 使用内部 CA（内网）
@@ -252,7 +252,7 @@ JWT 签名密钥：
 
 ## 7.1 安全测试清单
 
-```
+```text
 □ OWASP Top 10 渗透测试
 □ Token 重放测试
 □ CSRF 测试（state 参数验证）

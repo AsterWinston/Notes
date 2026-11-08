@@ -117,7 +117,7 @@ public class BlockingLoadBalancerClient implements LoadBalancerClient {
 
 ## 3.2 RestTemplate 请求流程
 
-```
+```text
 restTemplate.getForObject("http://user-service/api/users/1", ...)
     │
     ▼

@@ -3,7 +3,7 @@
 
 动态路由是指在不重启网关的情况下，动态地添加、修改、删除路由规则。Spring Cloud Gateway 通过事件驱动机制实现路由的动态刷新。
 
-```
+```text
 路由变更来源                   网关缓存
     │                            │
     ├── Actuator API ────→ RefreshRoutesEvent

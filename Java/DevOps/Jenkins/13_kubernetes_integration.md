@@ -13,7 +13,7 @@ Jenkins 与 Kubernetes 的集成是现代 DevOps 实践的核心组合。Kuberne
 
 ## 2.1 安装插件
 
-```
+```text
 必需插件：
 ├── Kubernetes Plugin（核心）
 ├── Kubernetes CLI Plugin（kubectl 操作）
@@ -276,7 +276,7 @@ spec:
 
 # 4. Kubernetes Agent 的完整生命周期
 
-```
+```text
 1. Job 触发 → 需要匹配标签的 Agent
 2. Kubernetes 插件检查缓存 → 无可用 Pod
 3. 根据 Pod Template 创建 Pod

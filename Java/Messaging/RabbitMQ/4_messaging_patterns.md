@@ -65,7 +65,7 @@ public class RabbitMQUtil {
 
 # 3. Hello World — 最简单的点对点
 
-```
+```text
 ┌──────────┐     ┌──────────────┐     ┌──────────┐
 │ Producer │────→│    Queue     │────→│ Consumer │
 └──────────┘     └──────────────┘     └──────────┘
@@ -132,7 +132,7 @@ public class HelloWorldConsumer {
 
 # 4. Work Queues — 任务分发
 
-```
+```text
                         ┌─────────────┐
 ┌──────────┐     ┌────→│  Consumer 1  │  (Worker 1)
 │ Producer │────→│ Q   ├─────────────┤
@@ -237,7 +237,7 @@ channel.basicConsume(QUEUE_NAME, false,  // autoAck=false
 
 # 5. Publish/Subscribe — 发布订阅（Fanout）
 
-```
+```text
                           Fanout Exchange
                         ┌────────────────┐
 ┌──────────┐            │                │──→ [sms.queue]
@@ -328,7 +328,7 @@ public class EmailConsumer {
 
 # 6. Routing — 路由模式（Direct）
 
-```
+```text
                           Direct Exchange
                         ┌────────────────┐
 ┌──────────┐            │                │─ "order.create" → [order.create.queue]
@@ -410,7 +410,7 @@ channel.queueBind("order.multi.queue", "order.direct", "order.cancel");
 
 # 7. Topics — 主题模式（Topic）
 
-```
+```text
                           Topic Exchange
                         ┌────────────────┐
    "order.create.cn"    │                │─ "order.#"        → [order.all.queue]
@@ -515,7 +515,7 @@ public class CnOrderConsumer {
 
 # 8. RPC — 远程过程调用
 
-```
+```text
 ┌──────────┐  request ┌──────────────┐  request ┌──────────┐
 │  Client  │─────────→│ request.queue│─────────→│  Server  │
 │          │          └──────────────┘          │          │
@@ -640,7 +640,7 @@ public class RPCClient implements AutoCloseable {
 
 # 9. 模式选择决策
 
-```
+```text
 需要多个消费者同时接收同一条消息？
   ├─ 是 → Pub/Sub（Fanout Exchange）
   └─ 否 → 继续判断

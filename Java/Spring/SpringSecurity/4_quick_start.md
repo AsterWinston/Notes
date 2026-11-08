@@ -3,7 +3,7 @@
 ## 1.1 创建 Spring Boot 项目
 
 **方式一：IDEA 新建项目**
-```
+```text
 File → New → Project → Spring Initializr
   - Project: Maven
   - Language: Java
@@ -102,7 +102,7 @@ public class SecurityApplication {
 7. **启用 CSRF 防护**
 8. **默认 PasswordEncoder**：使用 `DelegatingPasswordEncoder`
 
-```
+```text
 Using generated security password: 8e4f6a3b-b5c2-4d7f-9a1e-2f8c6d3a1b5f
 ```
 
@@ -110,13 +110,13 @@ Using generated security password: 8e4f6a3b-b5c2-4d7f-9a1e-2f8c6d3a1b5f
 
 启动后访问任何 URL，自动跳转到默认登录页：
 
-```
+```text
 http://localhost:8080/ → 302 → http://localhost:8080/login
 ```
 
 默认登录页由 `DefaultLoginPageGeneratingFilter` 动态生成，显示如下：
 
-```
+```text
 ┌──────────────────────────────┐
 │       Please sign in         │
 │                              │
@@ -254,7 +254,7 @@ public PasswordEncoder passwordEncoder() {
 
 ## 3.4 项目完整结构
 
-```
+```text
 src/
 ├── main/
 │   ├── java/com/example/

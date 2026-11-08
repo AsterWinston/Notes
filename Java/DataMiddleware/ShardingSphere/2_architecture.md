@@ -2,7 +2,7 @@ ShardingSphere 的架构可以拆成三层：**接入层**（JDBC/Proxy/Sidecar 
 
 # 1. 整体架构
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │                   ShardingSphere                          │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐               │
@@ -28,7 +28,7 @@ ShardingSphere 的架构可以拆成三层：**接入层**（JDBC/Proxy/Sidecar 
 
 # 2. 五大 SQL 处理引擎
 
-```
+```text
 应用程序 SQL
      │
      ▼
@@ -85,7 +85,7 @@ SQLStatement sqlStatement = parser.parse(sql);
 
 ## 3.1 方言适配
 
-```
+```text
 MySQL      → MySQLSelectParser / MySQLStatementVisitor
 PostgreSQL → PostgreSQLSelectParser
 openGauss  → openGaussSelectParser

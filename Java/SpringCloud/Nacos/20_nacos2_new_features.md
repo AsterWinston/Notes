@@ -1,7 +1,7 @@
 ﻿
 # 1. 版本演进路线
 
-```
+```text
 Nacos 1.x (2018-2021)                Nacos 2.x (2021-至今)
 ┌────────────────────────┐          ┌──────────────────────────┐
 │ HTTP REST + UDP         │   →      │ gRPC Bi-directional      │
@@ -30,7 +30,7 @@ Nacos 1.x 的 HTTP + UDP 通信架构存在以下问题：
 
 ## 2.2 gRPC 连接模型
 
-```
+```text
                     Nacos 2.x gRPC 连接架构
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -161,7 +161,7 @@ public class PostgreDataSourcePluginImpl implements DataSourcePluginService {
 
 ## 3.2 SPI 配置
 
-```
+```text
 resources/
 └── META-INF/
     └── services/
@@ -281,7 +281,7 @@ public class PushService extends Subscriber<ServiceChangeEvent> {
 
 Nacos 2.x 新增 gRPC 端口（基于主端口偏移）：
 
-```
+```text
 主端口: 8848 (HTTP)
   + 1000 = 9848: gRPC 客户端请求服务端端口
   - 1000 = 7848: gRPC 客户端连接端口 (内置 RpcServer)

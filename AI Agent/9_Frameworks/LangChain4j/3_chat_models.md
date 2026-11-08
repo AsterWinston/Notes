@@ -4,7 +4,7 @@ LangChain4j 把"对话"抽象成统一接口，屏蔽厂商差异。理解模型
 
 ## 1.1 接口家族
 
-```
+```text
                     ┌─────────────────────┐
                     │     ChatModel       │  同步
                     │  StreamingChatModel │  流式
@@ -398,7 +398,7 @@ Person person = model.chat(
 
 框架会把 Java 类型转换为 JSON Schema 传给模型，要求模型按结构输出，再反序列化：
 
-```
+```text
 Person(record)
    │ 反射提取字段
    ▼

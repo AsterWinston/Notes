@@ -27,7 +27,7 @@ LangChain4j 是面向 Java 的 **LLM（Large Language Model，大语言模型）
 
 ### 1.2.1 分层示意
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │              LangChain4j 应用层                │
 │   AiServices（声明式）  /  低层 API（命令式）    │
@@ -52,7 +52,7 @@ LangChain4j 是面向 Java 的 **LLM（Large Language Model，大语言模型）
 
 以"带记忆 + 带检索 + 带工具"的一次调用为例：
 
-```
+```text
 用户调用 assistant.chat("帮我订明天的会议室")
         │
         ▼

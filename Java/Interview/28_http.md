@@ -117,7 +117,7 @@ CDN(Content Delivery Network，内容分发网络)是将静态资源部署到全
 `multipart/form-data`：请求体按boundary分割为多个部分(Part)，每个Part有独立的Content-Disposition和Content-Type。Part可以是文本字段和文件字段。适合表单提交(含文件上传)。
 
 示例请求体：
-```
+```text
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
 ------WebKitFormBoundary
 Content-Disposition: form-data; name="file"; filename="photo.jpg"
@@ -133,7 +133,7 @@ A picture
 分块传输编码，允许服务端将响应分块发送(动态内容生成时无需提前知道Content-Length)。HTTP/1.1仅支持（HTTP/2使用DATA帧，不需要chunked）。
 
 格式：
-```
+```text
 HTTP/1.1 200 OK
 Transfer-Encoding: chunked
 

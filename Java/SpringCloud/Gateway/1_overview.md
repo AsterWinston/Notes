@@ -216,7 +216,7 @@ public class DefaultGatewayFilterChain implements GatewayFilterChain {
 
 ## 4.1 完整请求链路
 
-```
+```text
 客户端请求
     │
     ▼
@@ -340,7 +340,7 @@ spring:
 
 ## 5.1 Event Loop 模型
 
-```
+```text
                     ┌─────────────────┐
                     │   Boss Event    │
                     │   Loop Group    │

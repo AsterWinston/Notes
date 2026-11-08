@@ -5,7 +5,7 @@
 
 Build Scan（构建扫描）是 Gradle 提供的构建诊断工具，每次构建都可生成一份详细的执行报告。它将构建过程中的所有数据（任务执行、依赖解析、测试结果、性能指标等）以可视化 Web 页面的形式展示。
 
-```
+```text
 构建扫描 = 构建的 X 光片
 - 时间线：每个任务的精确执行时间和重叠
 - 依赖图：所有依赖的解析路径和原因
@@ -110,7 +110,7 @@ buildScan {
 
 ## 3.1 Timeline（时间线）
 
-```
+```text
 构建扫描的时间线视图展示了任务的并行执行情况：
 
 时间轴 (ms)  0     1000    2000    3000    4000    5000
@@ -144,7 +144,7 @@ Worker 4            [=====:pmdMain======]
 
 ## 3.2 Performance（性能面板）
 
-```
+```text
 性能面板显示的关键指标：
 
 ┌─────────────────────────────────────────┐
@@ -171,7 +171,7 @@ Worker 4            [=====:pmdMain======]
 
 每个任务在构建扫描中展示：
 
-```
+```text
 Task: compileJava
 ├── 结果: FROM-CACHE (或 SUCCESS, UP-TO-DATE, FAILED)
 ├── 耗时: 4.5s
@@ -197,7 +197,7 @@ Task: compileJava
 
 ## 3.4 Dependency Resolution（依赖解析）
 
-```
+```text
 Configuration: compileClasspath
 ├── 解析耗时: 235ms
 ├── 仓库查询:
@@ -226,7 +226,7 @@ Configuration: compileClasspath
 
 ## 3.5 Test Execution（测试执行）
 
-```
+```text
 Tests: 248 passed, 0 failed, 3 skipped
 
 测试时间线:
@@ -248,7 +248,7 @@ test                                                        [=====]
 
 ## 3.6 Switches（构建参数）
 
-```
+```text
 构建命令分析：
 原始命令: gradle build --parallel --build-cache --scan
 
@@ -273,7 +273,7 @@ Gradle 属性:
 
 ## 3.7 Environment（环境信息）
 
-```
+```text
 环境面板:
   Gradle: 8.5
   Java: 17.0.9 (Adoptium)
@@ -665,7 +665,7 @@ gradle build --profile
 
 ## 8.1 识别性能瓶颈
 
-```
+```text
 构建扫描性能诊断分类：
 
 问题类型 1: 配置时间过长 (> 30% 总时间)
@@ -724,7 +724,7 @@ gradle build --profile
 
 ## 8.2 依赖分析诊断
 
-```
+```text
 构建扫描依赖分析：
 
 "为什么这个版本被选中？"
@@ -755,7 +755,7 @@ gradle build --profile
 
 ## 8.3 UP-TO-DATE 判定诊断
 
-```
+```text
 构建扫描中查看 Task 的 UP-TO-DATE 原因：
 
 Task: compileJava

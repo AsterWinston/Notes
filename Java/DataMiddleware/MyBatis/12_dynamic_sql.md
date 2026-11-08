@@ -1,5 +1,5 @@
 # 1. if标签
-```
+```text
 <!--
     if标签中test属性的必须的，值为boolean类型，如果为true则把标签内容拼接到sql语句中，反之不拼接
     test中参数的使用：
@@ -25,7 +25,7 @@
 test使用的参数必须要可以从传入的参数中获取，哪怕是null或者''（也就是至少要声明了），否则抛出异常org.apache.ibatis.binding.BindingException，就如brand, guidePrice, catType这三个，必须可以从接口传入的参数中获取到
 ```
 # 2. where标签
-```
+```text
 where标签的作用：让where子句更加动态智能。
 
 所有条件都为空时，where标签保证不会生成where子句。
@@ -48,7 +48,7 @@ where标签的作用：让where子句更加动态智能。
 
 ```
 # 3. trim标签
-```
+```text
 trim标签的属性：
 
 prefix：在trim标签中的语句前添加内容
@@ -78,7 +78,7 @@ suffixOverrides：后缀覆盖掉（去掉）
 ```
 
 # 4. set标签
-```
+```xml
 <update id="updateBySet">
 update t_car
 <set>
@@ -92,7 +92,7 @@ where id = #{id};
 </update>
 ```
 # 5. choose when otherwise
-```
+```xml
 <choose>
     <when></when>
     <when></when>
@@ -130,7 +130,7 @@ if () {
 
 ```
 # 6. foreach标签
-```
+```text
 循环数组或集合，动态生成sql，比如这样的SQL：
 
 delete from t_car where id in(1,2,3);
@@ -142,7 +142,7 @@ insert into t_car values
     (null,'1003','比亚迪宋',32.0,'2020-10-11','新能源')
 ```
 ## 6.1 批量删除
-```
+```text
 定义接口
 
 int deleteByIds(@Param("ids")Long[] ids);
@@ -166,7 +166,7 @@ sql语句
 </delete>
 ```
 ## 6.2 批量插入
-```
+```text
 定义接口
 
 int insertBatch(@Param("cars") List<Car> cars);
@@ -183,7 +183,7 @@ sql语句
 
 # 7. sql标签与include标签
 
-```
+```text
 sql标签用来声明sql片段
 include标签用来将声明的sql片段包含到某个sql语句当中
 作用：代码复用。易维护。

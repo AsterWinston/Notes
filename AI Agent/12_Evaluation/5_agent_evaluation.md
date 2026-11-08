@@ -26,7 +26,7 @@ RAG 是单轮映射：问题→答案。Agent 是状态机：观察→决策→�
 
 ### 1.1.2 状态转移视角
 
-```
+```text
 观察 o_t ──► 决策 a_t ──► 执行 ──► 新观察 o_{t+1}
      ▲                                    │
      └──────────── 直至终止 ◄─────────────┘
@@ -46,7 +46,7 @@ RAG 可用静态指标（Recall、忠实度）；Agent 还需轨迹指标（步�
 
 结论先行：Agent 评测有五个维度——结果、过程、效率、鲁棒性、安全，缺一不可。
 
-```
+```text
 ① 结果：任务是否完成、答案是否正确
 ② 过程：步骤是否合理、是否走弯路
 ③ 效率：步数、耗时、Token
@@ -72,7 +72,7 @@ RAG 可用静态指标（Recall、忠实度）；Agent 还需轨迹指标（步�
 
 综合分并非各维度等权，通常结果与安全为红线，过程与效率为优化项。
 
-```
+```text
 综合分 = 结果×0.4 + 安全×0.3 + 过程×0.2 + 效率×0.1
 （安全为一票否决项）
 ```
@@ -113,7 +113,7 @@ public double taskSuccessRate(List<AgentTask> tasks) {
 
 对多子任务场景，可用子任务完成率刻画"部分成功"：
 
-```
+```text
 部分成功率 = 完成的子任务数 / 子任务总数
 ```
 
@@ -164,7 +164,7 @@ public ProcessMetrics analyzeProcess(List<AgentTrace> traces) {
 
 ### 4.2.1 常见错误分类
 
-```
+```text
 工具准确率 = 调用正确工具的次数 / 工具调用总次数
 ```
 
@@ -226,7 +226,7 @@ public record EfficiencyMetrics(
 
 在 Trace 的每一步记录时间戳与 token 用量，聚合到任务级：
 
-```
+```text
 任务耗时 = Σ 每步耗时
 任务 Token = Σ 每步 prompt + completion
 任务成本 = Σ token × 单价
@@ -335,7 +335,7 @@ public void evaluateSafety(Assistant agent) {
 
 ### 8.1.1 数据流
 
-```
+```text
  用例集 ──► AgentEvaluator ──► 运行任务(采集Trace)
                  │
                  ├──► 结果指标

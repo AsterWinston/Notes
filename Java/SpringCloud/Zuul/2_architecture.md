@@ -3,7 +3,7 @@
 
 Spring Cloud Zuul 的架构核心是**过滤器链（Filter Chain）**，整个网关可以被视为一系列过滤器的有序组合。每一组过滤器负责请求处理流程中某个特定阶段的工作。
 
-```
+```text
                              ┌──────────────────────┐
                              │   Servlet Container   │
                              │   (Tomcat / Jetty)    │
@@ -48,7 +48,7 @@ Spring Cloud Zuul 的核心组件均在 `com.netflix.zuul` 包下，Spring Cloud
 
 ## 2.1 组件关系图
 
-```
+```text
 ┌───────────────────────────────────────────────────────────────────────┐
 │                         Spring Cloud Zuul                             │
 │                                                                       │

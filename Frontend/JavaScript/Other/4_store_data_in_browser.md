@@ -1,12 +1,12 @@
 # 1. Cookie, document.cookie
-```
+```text
 Cookie 是直接存储在浏览器中的一小串数据。它们是 HTTP 协议的一部分，由 RFC 6265 规范定义。
 
 Cookie 通常是由 Web 服务器使用响应 Set-Cookie HTTP-header 设置的。然后浏览器使用 Cookie HTTP-header 将它们自动添加到（几乎）每个对相同域的请求中。
 
 最常见的用处之一就是身份验证：
 
-登录后，服务器在响应中使用 Set-Cookie HTTP-header 来设置具有唯一“会话标识符（session identifier）”的 cookie。
+登录后，服务器在响应中使用 Set-Cookie HTTP-header 来设置具有唯一"会话标识符（session identifier）"的 cookie。
 下次当请求被发送到同一个域时，浏览器会使用 Cookie HTTP-header 通过网络发送 cookie。
 所以服务器知道是谁发起了请求。
 我们还可以使用 document.cookie 属性从浏览器访问 cookie。
@@ -106,7 +106,7 @@ alert(document.cookie); // 有 cookie user=John
 ```
 ## 1.5 expires, max-age
 ```javascript
-默认情况下，如果一个 cookie 这两个参数都没有设置，那么在关闭浏览器之后，它就会消失。此类 cookie 被称为 "session cookie”。
+默认情况下，如果一个 cookie 这两个参数都没有设置，那么在关闭浏览器之后，它就会消失。此类 cookie 被称为 "session cookie"。
 
 为了让 cookie 在浏览器关闭后仍然存在，我们可以设置 expires 或 max-age 选项中的一个。
 
@@ -161,14 +161,14 @@ XSRF 攻击
 你每次访问 bank.com 时，浏览器都会发送 cookie，即使该表单是从 evil.com 提交过来的。因此，银行会识别你的身份，并执行真实的付款。
 
 
-这就是所谓的“跨网站请求伪造（Cross-Site Request Forgery，简称 XSRF）”攻击。
+这就是所谓的"跨网站请求伪造（Cross-Site Request Forgery，简称 XSRF）"攻击。
 
-当然，实际的银行会防止出现这种情况。所有由 bank.com 生成的表单都具有一个特殊的字段，即所谓的 “XSRF 保护 token”，恶意页面既不能生成，也不能从远程页面提取它。它可以在那里提交表单，但是无法获取数据。并且，网站 bank.com 会对收到的每个表单都进行这种 token 的检查。
+当然，实际的银行会防止出现这种情况。所有由 bank.com 生成的表单都具有一个特殊的字段，即所谓的 "XSRF 保护 token"，恶意页面既不能生成，也不能从远程页面提取它。它可以在那里提交表单，但是无法获取数据。并且，网站 bank.com 会对收到的每个表单都进行这种 token 的检查。
 
 但是，实现这种防护需要花费时间。我们需要确保每个表单都具有所需的 token 字段，并且我们还必须检查所有请求。
 
 输入 cookie samesite 选项
-Cookie 的 samesite 选项提供了另一种防止此类攻击的方式，（理论上）不需要要求 “XSRF 保护 token”。
+Cookie 的 samesite 选项提供了另一种防止此类攻击的方式，（理论上）不需要要求 "XSRF 保护 token"。
 
 它有两个可能的值：
 
@@ -185,7 +185,7 @@ samesite=strict（和没有值的 samesite 一样)
 
 当用户通过合法的链接访问 bank.com 时，例如从他们自己的笔记，他们会感到惊讶，bank.com 无法识别他们的身份。实际上，在这种情况下不会发送 samesite=strict cookie。
 
-我们可以通过使用两个 cookie 来解决这个问题：一个 cookie 用于“一般识别”，仅用于说 “Hello, John”，另一个带有 samesite=strict 的 cookie 用于进行数据更改的操作。这样，从网站外部来的用户会看到欢迎信息，但是支付操作必须是从银行网站启动的，这样第二个 cookie 才能被发送。
+我们可以通过使用两个 cookie 来解决这个问题：一个 cookie 用于"一般识别"，仅用于说 "Hello, John"，另一个带有 samesite=strict 的 cookie 用于进行数据更改的操作。这样，从网站外部来的用户会看到欢迎信息，但是支付操作必须是从银行网站启动的，这样第二个 cookie 才能被发送。
 
 samesite=lax
 一种更轻松的方法，该方法还可以防止 XSRF 攻击，并且不会破坏用户体验。
@@ -194,7 +194,7 @@ samesite=lax
 
 如果以下两个条件均成立，则会发送含 samesite=lax 的 cookie：
 
-HTTP 方法是“安全的”（例如 GET 方法，而不是 POST）。
+HTTP 方法是"安全的"（例如 GET 方法，而不是 POST）。
 
 所有安全的 HTTP 方法详见 RFC7231 规范。基本上，这些都是用于读取而不是写入数据的方法。它们不得执行任何更改数据的操作。跟随链接始终是 GET，是安全的方法。
 
@@ -202,7 +202,7 @@ HTTP 方法是“安全的”（例如 GET 方法，而不是 POST）。
 
 这通常是成立的，但是如果导航是在一个 <iframe> 中执行的，那么它就不是顶级的。此外，用于网络请求的 JavaScript 方法不会执行任何导航，因此它们不适合。
 
-所以，samesite=lax 所做的是基本上允许最常见的“前往 URL”操作携带 cookie。例如，从笔记中打开网站链接就满足这些条件。
+所以，samesite=lax 所做的是基本上允许最常见的"前往 URL"操作携带 cookie。例如，从笔记中打开网站链接就满足这些条件。
 
 但是，任何更复杂的事儿，例如来自另一个网站的网络请求或表单提交都会丢失 cookie。
 
@@ -343,11 +343,11 @@ Firefox 浏览器附带了一个第三方域的黑名单，它阻止了来自名
 
 如果一个网站想要仅为已经经过身份验证的用户设置跟踪的 cookie。
 
-为此，注册表单中必须要有一个复选框，例如“接受隐私政策”（描述怎么使用 cookie），用户必须勾选它，然后网站就可以自由设置身份验证 cookie 了。
+为此，注册表单中必须要有一个复选框，例如"接受隐私政策"（描述怎么使用 cookie），用户必须勾选它，然后网站就可以自由设置身份验证 cookie 了。
 
 如果一个网站想要为所有人设置跟踪的 cookie。
 
-为了合法地这样做，网站为每个新用户显示一个“初始屏幕”弹窗，并要求他们同意设置 cookie。之后网站就可以设置 cookie，并可以让用户看到网站内容了。不过，这可能会使新用户感到反感。没有人喜欢看到“必须点击”的初始屏幕弹窗而不是网站内容。但是 GDPR 要求必须得到用户明确地准许。
+为了合法地这样做，网站为每个新用户显示一个"初始屏幕"弹窗，并要求他们同意设置 cookie。之后网站就可以设置 cookie，并可以让用户看到网站内容了。不过，这可能会使新用户感到反感。没有人喜欢看到"必须点击"的初始屏幕弹窗而不是网站内容。但是 GDPR 要求必须得到用户明确地准许。
 
 GDPR 不仅涉及 cookie，还涉及其他与隐私相关的问题，但这超出了我们的讨论范围。
 ```
@@ -372,7 +372,7 @@ samesite，如果请求来自外部网站，禁止浏览器发送 cookie。这�
 ```
 
 # 2. LocalStorage, sessionStorage
-```
+```text
 Web 存储对象 localStorage 和 sessionStorage 允许我们在浏览器上保存键/值对。
 
 它们有趣的是，在页面刷新后（对于 sessionStorage）甚至浏览器完全重启（对于 localStorage）后，数据仍然保留在浏览器中。我们很快就会看到。
@@ -432,7 +432,7 @@ localStorage[key] = 5; // Error，无法对 length 进行赋值
 ```
 ## 2.3 遍历键
 ```javascript
-正如我们所看到的，这些方法提供了“按照键获取/设置/删除”的功能。但我们如何获取所有保存的值或键呢？
+正如我们所看到的，这些方法提供了"按照键获取/设置/删除"的功能。但我们如何获取所有保存的值或键呢？
 
 不幸的是，存储对象是不可迭代的。
 
@@ -458,7 +458,7 @@ for(let key in localStorage) {
   }
   alert(`${key}: ${localStorage.getItem(key)}`);
 }
-……或者，使用 Object.keys 获取只属于“自己”的键，然后如果需要，可以遍历它们：
+……或者，使用 Object.keys 获取只属于"自己"的键，然后如果需要，可以遍历它们：
 
 let keys = Object.keys(localStorage);
 for(let key of keys) {
@@ -504,7 +504,7 @@ sessionStorage.setItem('test', 1);
 ……然后刷新页面。这时你仍然可以获取到数据：
 
 alert( sessionStorage.getItem('test') ); // after refresh: 1
-……但是，如果你在另一个新的标签页中打开此页面，然后在新页面中再次运行上面这行代码，则会得到 null，表示“未找到数据”。
+……但是，如果你在另一个新的标签页中打开此页面，然后在新页面中再次运行上面这行代码，则会得到 null，表示"未找到数据"。
 
 这是因为 sessionStorage 不仅绑定到源，还绑定在同一浏览器标签页。因此，sessionStorage 很少被使用。
 ```
@@ -536,7 +536,7 @@ window.onstorage = event => { // 也可以使用 window.addEventListener('storag
 localStorage.setItem('now', Date.now());
 请注意，该事件还包含：event.url —— 发生数据更新的文档的 url。
 
-并且，event.storageArea 包含存储对象 —— sessionStorage 和 localStorage 具有相同的事件，所以 event.storageArea 引用了被修改的对象。我们可能会想设置一些东西，以“响应”更改。
+并且，event.storageArea 包含存储对象 —— sessionStorage 和 localStorage 具有相同的事件，所以 event.storageArea 引用了被修改的对象。我们可能会想设置一些东西，以"响应"更改。
 
 这允许同源的不同窗口交换消息。
 
@@ -571,7 +571,7 @@ Storage 事件：
 ```
 
 # 3. IndexedDB
-```
+```text
 IndexedDB 是一个浏览器内建的数据库，它比 localStorage 强大得多。
 
 通过支持多种类型的键，来存储几乎可以是任何类型的值。
@@ -602,10 +602,10 @@ version —— 一个正整数版本，默认为 1（下面解释）。
 
 调用之后会返回 openRequest 对象，我们需要监听该对象上的事件：
 
-success：数据库准备就绪，openRequest.result 中有了一个数据库对象“Database Object”，我们应该将其用于进一步的调用。
+success：数据库准备就绪，openRequest.result 中有了一个数据库对象"Database Object"，我们应该将其用于进一步的调用。
 error：打开失败。
 upgradeneeded：数据库已准备就绪，但其版本已过时（见下文）。
-IndexedDB 具有内建的“模式（scheme）版本控制”机制，这在服务器端数据库中是不存在的。
+IndexedDB 具有内建的"模式（scheme）版本控制"机制，这在服务器端数据库中是不存在的。
 
 与服务器端数据库不同，IndexedDB 存在于客户端，数据存储在浏览器中。因此，开发人员无法随时都能访问它。因此，当我们发布了新版本的应用程序，用户访问我们的网页，我们可能需要更新该数据库。
 
@@ -677,7 +677,7 @@ let deleteRequest = indexedDB.deleteDatabase(name)
 
 问题是，这两个网页是同一个站点，同一个源，共享同一个数据库。而数据库不能同时为版本 1 和版本 2。要执行版本 2 的更新，必须关闭对版本 1 的所有连接，包括第一个标签页中的那个。
 
-为了解决这一问题，versionchange 事件会在“过时的”数据库对象上触发。我们需要监听这个事件，关闭对旧版本数据库的连接（还应该建议访问者重新加载页面，以加载最新的代码）。
+为了解决这一问题，versionchange 事件会在"过时的"数据库对象上触发。我们需要监听这个事件，关闭对旧版本数据库的连接（还应该建议访问者重新加载页面，以加载最新的代码）。
 
 如果我们不监听 versionchange 事件，也不去关闭旧连接，那么新的连接就不会建立。openRequest 对象会产生 blocked 事件，而不是 success 事件。因此第二个标签页无法正常工作。
 
@@ -719,9 +719,9 @@ openRequest.onblocked 监听器通知我们相反的情况：在其他地方有�
 ```javascript
 要在 IndexedDB 中存储某些内容，我们需要一个 对象库。
 
-对象库是 IndexedDB 的核心概念，在其他数据库中对应的对象称为“表”或“集合”。它是储存数据的地方。一个数据库可能有多个存储区：一个用于存储用户数据，另一个用于商品，等等。
+对象库是 IndexedDB 的核心概念，在其他数据库中对应的对象称为"表"或"集合"。它是储存数据的地方。一个数据库可能有多个存储区：一个用于存储用户数据，另一个用于商品，等等。
 
-尽管被命名为“对象库”，但也可以存储原始类型。
+尽管被命名为"对象库"，但也可以存储原始类型。
 
 几乎可以存储任何值，包括复杂的对象。
 
@@ -769,7 +769,7 @@ let openRequest = indexedDB.open("db", 2);
 // 创建/升级 数据库而无需版本检查
 openRequest.onupgradeneeded = function() {
   let db = openRequest.result;
-  if (!db.objectStoreNames.contains('books')) { // 如果没有 “books” 数据
+  if (!db.objectStoreNames.contains('books')) { // 如果没有 "books" 数据
     db.createObjectStore('books', {keyPath: 'id'}); // 创造它
   }
 };
@@ -779,7 +779,7 @@ db.deleteObjectStore('books')
 ```
 ## 3.3 事务（transaction）
 ```javascript
-术语“事务（transaction）”是通用的，许多数据库中都有用到。
+术语"事务（transaction）"是通用的，许多数据库中都有用到。
 
 事务是一组操作，要么全部成功，要么全部失败。
 
@@ -805,7 +805,7 @@ readwrite —— 只能读取和写入数据，而不能 创建/删除/更改 �
 为什么会有不同类型的事务？
 性能是事务需要标记为 readonly 和 readwrite 的原因。
 
-许多 readonly 事务能够同时访问同一存储区，但 readwrite 事务不能。因为 readwrite 事务会“锁定”存储区进行写操作。下一个事务必须等待前一个事务完成，才能访问相同的存储区。
+许多 readonly 事务能够同时访问同一存储区，但 readwrite 事务不能。因为 readwrite 事务会"锁定"存储区进行写操作。下一个事务必须等待前一个事务完成，才能访问相同的存储区。
 
 创建事务后，我们可以将项目添加到库，就像这样：
 
@@ -878,13 +878,13 @@ request1.onsuccess = function() {
 
 IndexedDB 规范的作者认为事务应该是短期的。主要是性能原因。
 
-值得注意的是，readwrite 事务将存储“锁定”以进行写入。因此，如果应用程序的一部分启动了 books 对象库上的 readwrite 操作，那么希望执行相同操作的另一部分必须等待新事务“挂起”，直到第一个事务完成。如果事务处理需要很长时间，将会导致奇怪的延迟。
+值得注意的是，readwrite 事务将存储"锁定"以进行写入。因此，如果应用程序的一部分启动了 books 对象库上的 readwrite 操作，那么希望执行相同操作的另一部分必须等待新事务"挂起"，直到第一个事务完成。如果事务处理需要很长时间，将会导致奇怪的延迟。
 
 那么，该怎么办？
 
 在上面的示例中，我们可以在新请求 (*) 之前创建一个新的 db.transaction。
 
-如果需要在一个事务中把所有操作保持一致，更好的做法是将 IndexedDB 事务和“其他”异步内容分开。
+如果需要在一个事务中把所有操作保持一致，更好的做法是将 IndexedDB 事务和"其他"异步内容分开。
 
 首先，执行 fetch，并根据需要准备数据。然后创建事务并执行所有数据库请求，然后就正常了。
 
@@ -971,12 +971,12 @@ request.onerror = function(event) {
 ```javascript
 对象库有两种主要的搜索类型：
 
-通过键值或键值范围。在我们的 “books” 存储中，将是 book.id 的值或值的范围。
-通过另一个对象字段，例如 book.price。这需要一个额外的数据结构，名为“索引（index）”。
+通过键值或键值范围。在我们的 "books" 存储中，将是 book.id 的值或值的范围。
+通过另一个对象字段，例如 book.price。这需要一个额外的数据结构，名为"索引（index）"。
 通过 key 搜索
 首先，让我们来处理第一种类型的搜索：按键。
 
-支持精确的键值和被称为“值范围”的搜索方法 —— IDBKeyRange 对象，指定一个可接受的“键值范围”。
+支持精确的键值和被称为"值范围"的搜索方法 —— IDBKeyRange 对象，指定一个可接受的"键值范围"。
 
 IDBKeyRange 对象是通过下列调用创建的：
 
@@ -1017,7 +1017,7 @@ books.getAllKeys(IDBKeyRange.lowerBound('js', true))
 因此，请求的返回值，是按照键的顺序排列的。
 
 通过使用索引的字段搜索
-要根据其他对象字段进行搜索，我们需要创建一个名为“索引（index）”的附加数据结构。
+要根据其他对象字段进行搜索，我们需要创建一个名为"索引（index）"的附加数据结构。
 
 索引是存储的"附加项"，用于跟踪给定的对象字段。对于该字段的每个值，它存储有该值的对象的键列表。下面会有更详细的图片。
 
@@ -1195,12 +1195,12 @@ try {
 } catch(err) {
   console.log('error', err.message);
 }
-现在我们有了可爱的“简单异步代码”和「try…catch」捕获的东西。
+现在我们有了可爱的"简单异步代码"和「try…catch」捕获的东西。
 
 错误处理
 如果我们没有捕获到错误，那么程序将一直失败，直到外部最近的 try..catch 捕获到为止。
 
-未捕获的错误将成为 window 对象上的“unhandled promise rejection”事件。
+未捕获的错误将成为 window 对象上的"unhandled promise rejection"事件。
 
 我们可以这样处理这种错误：
 
@@ -1209,7 +1209,7 @@ window.addEventListener('unhandledrejection', event => {
   let error = event.reason; //  未处理的错误对象，与 request.error 相同
   // ……报告错误……
 });
-“非活跃事务”陷阱
+"非活跃事务"陷阱
 我们都知道，浏览器一旦执行完成当前的代码和 微任务 之后，事务就会自动提交。因此，如果我们在事务中间放置一个类似 fetch 的宏任务，事务只是会自动提交，而不会等待它执行完成。因此，下一个请求会失败。
 
 对于 promise 包装器和 async/await，情况是相同的。
@@ -1224,7 +1224,7 @@ await inventory.add({ id: 'js', price: 10, created: new Date() });
 await fetch(...); // (*)
 
 await inventory.add({ id: 'js', price: 10, created: new Date() }); // 错误
-fetch (*) 后的下一个 inventory.add 失败，出现“非活动事务”错误，因为这时事务已经被提交并且关闭了。
+fetch (*) 后的下一个 inventory.add 失败，出现"非活动事务"错误，因为这时事务已经被提交并且关闭了。
 
 解决方法与使用本机 IndexedDB 时相同：进行新事务，或者将事情分开。
 
@@ -1248,7 +1248,7 @@ let result = await promise; // 如果仍然需要
 ```
 ## 3.10 总结
 ```javascript
-IndexedDB 可以被认为是“localStorage on steroids”。这是一个简单的键值对数据库，功能强大到足以支持离线应用，而且用起来比较简单。
+IndexedDB 可以被认为是"localStorage on steroids"。这是一个简单的键值对数据库，功能强大到足以支持离线应用，而且用起来比较简单。
 
 最好的指南是官方文档。目前的版本 是2.0，但是 3.0 版本中的一些方法（差别不大）也得到部分支持。
 

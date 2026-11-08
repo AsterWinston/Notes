@@ -6,7 +6,7 @@ JVM 将类加载器划分为两种：
 - **其他类加载器**（Java 实现，继承 `java.lang.ClassLoader`）。
 
 三层类加载器（Java 8 及之前）：
-```
+```text
 Bootstrap ClassLoader       ← 加载 <JAVA_HOME>/lib 下的 rt.jar 等
         ↑
 Extension ClassLoader       ← 加载 <JAVA_HOME>/lib/ext 目录
@@ -15,7 +15,7 @@ Application ClassLoader     ← 加载用户 classpath 下的类
 ```
 
 Java 9+ 变化（模块化）：
-```
+```text
 Bootstrap ClassLoader       ← 加载 java.base 等核心模块
         ↑
 Platform ClassLoader        ← 取代 Extension，加载 java.se 等平台模块
@@ -44,7 +44,7 @@ System.out.println(bootstrapClassLoader); // null
 
 **核心思想：** 类加载器收到类加载请求时，先委托父类加载器尝试加载，只有在父类加载器无法找到该类时，才尝试自己去加载。
 
-```
+```text
 请求加载 com.example.User
         │
         ▼
@@ -145,7 +145,7 @@ Tomcat 打破双亲委派的原因：
 - Web 应用共享库可以被共享。
 
 Tomcat 的类加载体系：
-```
+```text
 Bootstrap ClassLoader
     ↑
 System ClassLoader
@@ -275,7 +275,7 @@ java -XX:+TraceClassUnloading MyApp
 ```
 
 示例输出：
-```
+```text
 [0.123s][info][class,load] Hello source: file:/path/to/classes/
 [0.124s][info][class,load] java.lang.Object source: jrt:/java.base
 [0.125s][info][class,load] java.lang.String source: jrt:/java.base

@@ -4,10 +4,10 @@
 
 正如我们在 构造器和操作符 "new" 一章中已经学到的，new function 可以帮助我们实现这种需求。
 
-但在现代 JavaScript 中，还有一个更高级的“类（class）”构造方式，它引入许多非常棒的新功能，这些功能对于面向对象编程很有用。
+但在现代 JavaScript 中，还有一个更高级的"类（class）"构造方式，它引入许多非常棒的新功能，这些功能对于面向对象编程很有用。
 ```
 ## 1.1 "class"语法
-```
+```javascript
 基本语法是：
 
 class MyClass {
@@ -51,7 +51,7 @@ constructor 使用给定的参数运行，并将其赋值给 this.name。
 不要把这里的符号与对象字面量相混淆。在类中，不需要逗号。
 ```
 ## 1.2 什么是class?
-```
+```text
 所以，class 到底是什么？正如人们可能认为的那样，这不是一个全新的语言级实体。
 
 让我们揭开其神秘面纱，看看类究竟是什么。这将有助于我们理解许多复杂的方面。
@@ -96,7 +96,7 @@ alert(User.prototype.sayHi); // sayHi 方法的代码
 alert(Object.getOwnPropertyNames(User.prototype)); // constructor, sayHi
 ```
 ## 1.3 不仅仅是语法糖
-```
+```javascript
 人们常说 class 是一个语法糖（旨在使内容更易阅读，但不引入任何新内容的语法），因为我们实际上可以在不使用 class 的情况下声明相同的内容：
 
 // 用纯函数重写 class User
@@ -130,7 +130,7 @@ class User {
 
 alert(typeof User); // function
 User(); // Error: Class constructor User cannot be invoked without 'new'
-此外，大多数 JavaScript 引擎中的类构造器的字符串表示形式都以 “class…” 开头
+此外，大多数 JavaScript 引擎中的类构造器的字符串表示形式都以 "class…" 开头
 
 class User {
   constructor() {}
@@ -148,7 +148,7 @@ alert(User); // class User { ... }
 此外，class 语法还带来了许多其他功能，我们稍后将会探索它们。
 ```
 ## 1.4 类表达式
-```
+```javascript
 就像函数一样，类可以在另外一个表达式中被定义，被传递，被返回，被赋值等。
 
 这是一个类表达式的例子：
@@ -162,7 +162,7 @@ let User = class {
 
 如果类表达式有名字，那么该名字仅在类内部可见：
 
-// “命名类表达式（Named Class Expression）”
+// "命名类表达式（Named Class Expression）"
 // (规范中没有这样的术语，但是它和命名函数表达式类似)
 let User = class MyClass {
   sayHi() {
@@ -173,7 +173,7 @@ let User = class MyClass {
 new User().sayHi(); // 正常运行，显示 MyClass 中定义的内容
 
 alert(MyClass); // error，MyClass 在外部不可见
-我们甚至可以动态地“按需”创建类，就像这样：
+我们甚至可以动态地"按需"创建类，就像这样：
 
 function makeClass(phrase) {
   // 声明一个类并返回它
@@ -190,7 +190,7 @@ let User = makeClass("Hello");
 new User().sayHi(); // Hello
 ```
 ## 1.5 Getters/Setters
-```
+```javascript
 就像对象字面量，类可能包括 getters/setters，计算属性（computed properties）等。
 
 这是一个使用 get/set 实现 user.name 的示例：
@@ -223,7 +223,7 @@ user = new User(""); // Name is too short.
 从技术上来讲，这样的类声明可以通过在 User.prototype 中创建 getters 和 setters 来实现。
 ```
 ## 1.6 计算属性名称[...]
-```
+```text
 这里有一个使用中括号 [...] 的计算方法名称示例：
 
 class User {
@@ -238,13 +238,13 @@ new User().sayHi();
 这种特性很容易记住，因为它们和对象字面量类似。
 ```
 ## 1.7 Class字段
-```
+```javascript
 旧的浏览器可能需要 polyfill
 类字段（field）是最近才添加到语言中的。
 
 之前，我们的类仅具有方法。
 
-“类字段”是一种允许添加任何属性的语法。
+"类字段"是一种允许添加任何属性的语法。
 
 例如，让我们在 class User 中添加一个 name 属性：
 
@@ -257,7 +257,7 @@ class User {
 }
 
 new User().sayHi(); // Hello, John!
-所以，我们就只需在表达式中写 “ = ”，就这样。
+所以，我们就只需在表达式中写 " = "，就这样。
 
 类字段的重要区别在于，它们会被挂在实例对象上，而非 User.prototype 上：
 
@@ -296,7 +296,7 @@ class Button {
 let button = new Button("hello");
 
 setTimeout(button.click, 1000); // undefined
-这个问题被称为“丢失 this”。
+这个问题被称为"丢失 this"。
 
 我们在 函数绑定 一章中讲过，有两种可以修复它的方式：
 
@@ -328,7 +328,7 @@ setTimeout(button.click, 1000); // hello
 因此，我们可以在现有功能之上创建新功能。
 ```
 ## 2.1 "extends"关键字
-```
+```javascript
 假设我们有 class Animal：
 
 class Animal {
@@ -352,7 +352,7 @@ let animal = new Animal("My animal");
 
 ……然后我们想创建另一个 class Rabbit：
 
-因为 rabbit 是 animal，所以 class Rabbit 应该是基于 class Animal 的，可以访问 animal 的方法，以便 rabbit 可以做“一般”动物可以做的事儿。
+因为 rabbit 是 animal，所以 class Rabbit 应该是基于 class Animal 的，可以访问 animal 的方法，以便 rabbit 可以做"一般"动物可以做的事儿。
 
 扩展另一个类的语法是：class Child extends Parent。
 
@@ -399,7 +399,7 @@ new User().sayHi(); // Hello
 这对于高级编程模式，例如当我们根据许多条件使用函数生成类，并继承它们时来说可能很有用。
 ```
 ## 2.2 重写方法
-```
+```javascript
 现在，让我们继续前行并尝试重写一个方法。默认情况下，所有未在 class Rabbit 中指定的方法均从 class Animal 中直接获取。
 
 但是如果我们在 Rabbit 中指定了我们自己的方法，例如 stop()，那么将会使用它：
@@ -464,18 +464,18 @@ class Rabbit extends Animal {
     setTimeout(() => super.stop(), 1000); // 1 秒后调用父类的 stop
   }
 }
-箭头函数中的 super 与 stop() 中的是一样的，所以它能按预期工作。如果我们在这里指定一个“普通”函数，那么将会抛出错误：
+箭头函数中的 super 与 stop() 中的是一样的，所以它能按预期工作。如果我们在这里指定一个"普通"函数，那么将会抛出错误：
 
 // 意料之外的 super
 setTimeout(function() { super.stop() }, 1000);
 ```
 ## 2.3 重写constructor
-```
+```javascript
 对于重写 constructor 来说，则有点棘手。
 
 到目前为止，Rabbit 还没有自己的 constructor。
 
-根据 规范，如果一个类扩展了另一个类并且没有 constructor，那么将生成下面这样的“空” constructor：
+根据 规范，如果一个类扩展了另一个类并且没有 constructor，那么将生成下面这样的"空" constructor：
 
 class Rabbit extends Animal {
   // 为没有自己的 constructor 的扩展类生成的
@@ -518,7 +518,7 @@ let rabbit = new Rabbit("White Rabbit", 10); // Error: this is not defined.
 
 当然，本文会给出一个解释。让我们深入细节，这样你就可以真正地理解发生了什么。
 
-在 JavaScript 中，继承类（所谓的“派生构造器”，英文为 “derived constructor”）的构造函数与其他函数之间是有区别的。派生构造器具有特殊的内部属性 [[ConstructorKind]]:"derived"。这是一个特殊的内部标签。
+在 JavaScript 中，继承类（所谓的"派生构造器"，英文为 "derived constructor"）的构造函数与其他函数之间是有区别的。派生构造器具有特殊的内部属性 [[ConstructorKind]]:"derived"。这是一个特殊的内部标签。
 
 该标签会影响它的 new 行为：
 
@@ -635,7 +635,7 @@ new Rabbit(); // rabbit
 如果出问题了，我们可以通过使用方法或者 getter/setter 替代类字段，来修复这个问题。
 ```
 ## 2.4 深入：内部探究和[[HomeObject]]
-```
+```javascript
 进阶内容
 如果你是第一次阅读本教程，那么则可以跳过本节。
 
@@ -647,7 +647,7 @@ new Rabbit(); // rabbit
 
 的确是这样，让我们问问自己，以技术的角度它是如何工作的？当一个对象方法执行时，它会将当前对象作为 this。随后如果我们调用 super.method()，那么引擎需要从当前对象的原型中获取 method。但这是怎么做到的？
 
-这个任务看起来是挺容易的，但其实并不简单。引擎知道当前对象的 this，所以它可以获取父 method 作为 this.__proto__.method。不幸的是，这个“天真”的解决方法是行不通的。
+这个任务看起来是挺容易的，但其实并不简单。引擎知道当前对象的 this，所以它可以获取父 method 作为 this.__proto__.method。不幸的是，这个"天真"的解决方法是行不通的。
 
 让我们演示一下这个问题。简单起见，我们使用普通对象而不使用类。
 
@@ -767,8 +767,8 @@ let longEar = {
 longEar.eat();  // Long Ear eats.
 它基于 [[HomeObject]] 运行机制按照预期执行。一个方法，例如 longEar.eat，知道其 [[HomeObject]] 并且从其原型中获取父方法。并没有使用 this。
 
-方法并不是“自由”的
-正如我们之前所知道的，函数通常都是“自由”的，并没有绑定到 JavaScript 中的对象。正因如此，它们可以在对象之间复制，并用另外一个 this 调用它。
+方法并不是"自由"的
+正如我们之前所知道的，函数通常都是"自由"的，并没有绑定到 JavaScript 中的对象。正因如此，它们可以在对象之间复制，并用另外一个 this 调用它。
 
 [[HomeObject]] 的存在违反了这个原则，因为方法记住了它们的对象。[[HomeObject]] 不能被更改，所以这个绑定是永久的。
 
@@ -803,7 +803,7 @@ let tree = {
 };
 
 tree.sayHi();  // I'm an animal (?!?)
-调用 tree.sayHi() 显示 “I’m an animal”。这绝对是错误的。
+调用 tree.sayHi() 显示 "I’m an animal"。这绝对是错误的。
 
 原因很简单：
 
@@ -858,7 +858,7 @@ User.staticMethod = function() {
 };
 
 User.staticMethod(); // true
-在 User.staticMethod() 调用中的 this 的值是类构造器 User 自身（“点符号前面的对象”规则）。
+在 User.staticMethod() 调用中的 this 的值是类构造器 User 自身（"点符号前面的对象"规则）。
 
 通常，静态方法用于实现属于整个类，但不属于该类任何特定对象的函数。
 
@@ -887,9 +887,9 @@ let articles = [
 articles.sort(Article.compare);
 
 alert( articles[0].title ); // CSS
-这里 Article.compare 方法代表“上面的”文章，意思是比较它们。它不是文章的方法，而是整个 class 的方法。
+这里 Article.compare 方法代表"上面的"文章，意思是比较它们。它不是文章的方法，而是整个 class 的方法。
 
-另一个例子是所谓的“工厂”方法。
+另一个例子是所谓的"工厂"方法。
 
 比如说，我们需要通过多种方式来创建一篇文章：
 
@@ -931,7 +931,7 @@ Article.remove({id: 12345});
 article.createTodays(); /// Error: article.createTodays is not a function
 ```
 ## 3.1 静态属性
-```
+```text
 最近新增的特性
 这是一个最近添加到 JavaScript 的特性。 示例可以在最近的 Chrome 工作。
 静态的属性也是可能的，它们看起来就像常规的类属性，但前面加有 static：
@@ -946,7 +946,7 @@ alert( Article.publisher ); // Levi Ding
 Article.publisher = "Levi Ding";
 ```
 ## 3.2 继承静态属性和方法
-```
+```javascript
 静态属性和方法是可被继承的。
 
 例如，下面这段代码中的 Animal.compare 和 Animal.planet 是可被继承的，可以通过 Rabbit.compare 和 Rabbit.planet 来访问：
@@ -1014,14 +1014,14 @@ alert(Rabbit.prototype.__proto__ === Animal.prototype); // true
 ```javascript
 面向对象编程最重要的原则之一 —— 将内部接口与外部接口分隔开来。
 
-在开发比 “hello world” 应用程序更复杂的东西时，这是“必须”遵守的做法。
+在开发比 "hello world" 应用程序更复杂的东西时，这是"必须"遵守的做法。
 
 为了理解这一点，让我们脱离开发过程，把目光转向现实世界。
 
 通常，我们使用的设备都非常复杂。但是，将内部接口与外部接口分隔开来可以让我们使用它们且没有任何问题。
 ```
 ## 4.1 一个现实生活中的例子
-```
+```text
 例如，一个咖啡机。从外面看很简单：一个按钮，一个显示器，几个洞……当然，结果就是 —— 很棒的咖啡！:)
 
 
@@ -1041,7 +1041,7 @@ alert(Rabbit.prototype.__proto__ === Animal.prototype); // true
 但是为了隐藏内部细节，我们不会使用保护罩，而是使用语言和约定中的特殊语法。
 ```
 ## 4.2 内部接口和外部接口
-```
+```text
 在面向对象的编程中，属性和方法分为两组：
 
 内部接口 —— 可以通过该类的其他方法访问，但不能从外部访问的方法和属性。
@@ -1060,14 +1060,14 @@ alert(Rabbit.prototype.__proto__ === Animal.prototype); // true
 
 公共的：可从任何地方访问。它们构成了外部接口。到目前为止，我们只使用了公共的属性和方法。
 私有的：只能从类的内部访问。这些用于内部接口。
-在许多其他编程语言中，还存在“受保护”的字段：只能从类的内部和基于其扩展的类的内部访问（例如私有的，但可以从继承的类进行访问）。它们对于内部接口也很有用。从某种意义上讲，它们比私有的属性和方法更为广泛，因为我们通常希望继承类来访问它们。
+在许多其他编程语言中，还存在"受保护"的字段：只能从类的内部和基于其扩展的类的内部访问（例如私有的，但可以从继承的类进行访问）。它们对于内部接口也很有用。从某种意义上讲，它们比私有的属性和方法更为广泛，因为我们通常希望继承类来访问它们。
 
 受保护的字段不是在语言级别的 JavaScript 中实现的，但实际上它们非常方便，因为它们是在 JavaScript 中模拟的类定义语法。
 
 现在，我们将使用所有这些类型的属性在 JavaScript 中制作咖啡机。咖啡机有很多细节，我们不会对它们进行全面模拟以保持简洁（尽管我们可以）。
 ```
 ## 4.3 受保护的"waterAmount"
-```
+```javascript
 首先，让我们做一个简单的咖啡机类：
 
 class CoffeeMachine {
@@ -1123,7 +1123,7 @@ coffeeMachine.waterAmount = -10; // _waterAmount 将变为 0，而不是 -10
 现在访问已受到控制，因此将水量的值设置为小于零的数变得不可能。
 ```
 ## 4.4 只读的"power"
-```
+```javascript
 对于 power 属性，让我们将它设为只读。有时候一个属性必须只能被在创建时进行设置，之后不再被修改。
 
 咖啡机就是这种情况：功率永远不会改变。
@@ -1178,7 +1178,7 @@ new CoffeeMachine().setWaterAmount(100);
 所以受保护的字段是自然可被继承的。与我们接下来将看到的私有字段不同。
 ```
 ## 4.5 私有的"#waterLimit"
-```
+```javascript
 最近新增的特性
 这是一个最近添加到 JavaScript 的特性。 JavaScript 引擎不支持（或部分支持），需要 polyfills。
 这儿有一个马上就会被加到规范中的已完成的 JavaScript 提案，它为私有属性和方法提供语言级支持。
@@ -1338,7 +1338,7 @@ instanceof 操作符用于检查一个对象是否属于某个特定的 class。
 在许多情况下，可能都需要进行此类检查。例如，它可以被用来构建一个 多态性（polymorphic） 的函数，该函数根据参数的类型对参数进行不同的处理。
 ```
 ## 6.1 instanceof操作符
-```
+```text
 语法：
 
 obj instanceof Class
@@ -1426,7 +1426,7 @@ Rabbit.prototype = {};
 alert( rabbit instanceof Rabbit ); // false
 ```
 ## 6.2 福利：使用Object.prototype.toString方法来揭示类型
-```
+```text
 大家都知道，一个普通对象被转化为字符串时为 [object Object]：
 
 let obj = {};
@@ -1483,7 +1483,7 @@ alert( {}.toString.call(window) ); // [object Window]
 alert( {}.toString.call(new XMLHttpRequest()) ); // [object XMLHttpRequest]
 正如我们所看到的，输出结果恰好是 Symbol.toStringTag（如果存在），只不过被包裹进了 [object ...] 里。
 
-这样一来，我们手头上就有了个“磕了药似的 typeof”，不仅能检查原始数据类型，而且适用于内建对象，更可贵的是还支持自定义。
+这样一来，我们手头上就有了个"磕了药似的 typeof"，不仅能检查原始数据类型，而且适用于内建对象，更可贵的是还支持自定义。
 
 所以，如果我们想要获取内建对象的类型，并希望把该信息以字符串的形式返回，而不只是检查类型的话，我们可以用 {}.toString.call 替代 instanceof。
 ```
@@ -1497,17 +1497,17 @@ alert( {}.toString.call(new XMLHttpRequest()) ); // [object XMLHttpRequest]
 
 或者，我们有一个 User 类和一个 EventEmitter 类来实现事件生成（event generation），并且我们想将 EventEmitter 的功能添加到 User 中，以便我们的用户可以触发事件（emit event）。
 
-有一个概念可以帮助我们，叫做 “mixin”。
+有一个概念可以帮助我们，叫做 "mixin"。
 
 根据维基百科的定义，mixin 是一个类，其方法可被其他类使用，而无需继承。
 
 换句话说，mixin 提供了实现特定行为的方法，但是我们不单独使用它，而是使用它来将这些行为添加到其他类中。
 ```
 ## 7.1 一个Mixin示例
-```
+```javascript
 在 JavaScript 中构造一个 mixin 最简单的方式就是构造一个拥有实用方法的对象，以便我们可以轻松地将这些实用的方法合并到任何类的原型中。
 
-例如，这个名为 sayHiMixin 的 mixin 用于给 User 添加一些“语言功能”：
+例如，这个名为 sayHiMixin 的 mixin 用于给 User 添加一些"语言功能"：
 
 // mixin
 let sayHiMixin = {
@@ -1531,7 +1531,7 @@ Object.assign(User.prototype, sayHiMixin);
 
 // 现在 User 可以打招呼了
 new User("Dude").sayHi(); // Hello Dude!
-这里没有继承，只有一个简单的方法拷贝。因此，我们可以让 User 在继承另一个类的同时，使用 mixin 来 “mix-in”（混合）其它方法，就像这样：
+这里没有继承，只有一个简单的方法拷贝。因此，我们可以让 User 在继承另一个类的同时，使用 mixin 来 "mix-in"（混合）其它方法，就像这样：
 
 class User extends Person {
   // ...
@@ -1581,12 +1581,12 @@ new User("Dude").sayHi(); // Hello Dude!
 当 super 在 [[HomeObject]].[[Prototype]] 中寻找父方法时，意味着它搜索的是 sayHiMixin.[[Prototype]]。
 ```
 ## 7.2 EventMixin
-```
+```javascript
 现在让我们为实际运用构造一个 mixin。
 
-例如，许多浏览器对象的一个重要功能是它们可以生成事件。事件是向任何有需要的人“广播信息”的好方法。因此，让我们构造一个 mixin，使我们能够轻松地将与事件相关的函数添加到任意 class/object 中。
+例如，许多浏览器对象的一个重要功能是它们可以生成事件。事件是向任何有需要的人"广播信息"的好方法。因此，让我们构造一个 mixin，使我们能够轻松地将与事件相关的函数添加到任意 class/object 中。
 
-Mixin 将提供 .trigger(name, [...data]) 方法，以在发生重要的事情时“生成一个事件”。name 参数（arguments）是事件的名称，[...data] 是可选的带有事件数据的其他参数（arguments）。
+Mixin 将提供 .trigger(name, [...data]) 方法，以在发生重要的事情时"生成一个事件"。name 参数（arguments）是事件的名称，[...data] 是可选的带有事件数据的其他参数（arguments）。
 此外还有 .on(name, handler) 方法，它为具有给定名称的事件添加了 handler 函数作为监听器（listener）。当具有给定 name 的事件触发时将调用该方法，并从 .trigger 调用中获取参数（arguments）。
 ……还有 .off(name, handler) 方法，它会删除 handler 监听器（listener）。
 添加完 mixin 后，对象 user 将能够在访客登录时生成事件 "login"。另一个对象，例如 calendar 可能希望监听此类事件以便为登录的人加载日历。

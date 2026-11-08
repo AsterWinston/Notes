@@ -106,7 +106,7 @@
 ## 2.6 如何解决 Git 合并冲突？
 1. 当 merge/rebase 产生冲突时 Git 会指出冲突文件
 2. 打开冲突文件，找到冲突标记：
-   ```
+   ```html
    <<<<<<< HEAD (当前分支)
    你的修改
    =======
@@ -129,7 +129,7 @@
 
 ## 2.8 .gitignore 有什么作用？如何编写规则？
 `.gitignore` 文件告诉 Git 忽略特定的文件或文件夹，不将其纳入版本控制。常见配置：
-```
+```text
 # 编译输出
 target/
 build/
@@ -183,7 +183,7 @@ git config --global core.autocrlf false
 ```
 
 最佳实践：在项目根目录添加 `.gitattributes` 文件：
-```
+```text
 * text=auto
 *.bat text eol=crlf
 *.sh text eol=lf

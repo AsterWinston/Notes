@@ -4,7 +4,7 @@ Spring Session 使用 Spring 的 `ApplicationEvent` 机制发布会话生命周�
 
 ## 1.1 事件类层次结构
 
-```
+```text
 ApplicationEvent
   └── SessionEvent
         ├── SessionCreatedEvent       (Session 创建)
@@ -130,7 +130,7 @@ public class TransactionalSessionListener {
 
 在分布式部署中，每个应用实例只能监听到自己 JVM 内的事件。当一个实例上的 Session 过期时，**其他实例无法感知**。
 
-```
+```text
 实例 A                          实例 B
   │                               │
   │ SessionExpiredEvent           │ (不知道这个事件)
@@ -200,7 +200,7 @@ spring.session.redis.configure-action: notify_keyspace_events
 
 ## 4.1 Redis 过期通知流程
 
-```
+```text
 1. Session expires key TTL 到期
        │
 2. Redis 自动删除 key

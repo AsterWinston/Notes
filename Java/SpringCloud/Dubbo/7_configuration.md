@@ -3,7 +3,7 @@
 
 Dubbo 支持多层配置，优先级从高到低：
 
-```
+```text
 ┌────────────────────────────────────────────────────┐
 │  优先级                        来源                    │
 ├────────────────────────────────────────────────────┤
@@ -221,7 +221,7 @@ dubbo:
 
 ## 5.3 动态配置生效流程
 
-```
+```text
 Nacos Config Center
 │
 ├─ 外部化配置（external-configuration）
@@ -336,7 +336,7 @@ public class ApiConfigExample {
 
 同一属性在不同层级的覆盖关系以 `timeout` 为例：
 
-```
+```text
 方法级 timeout                    ← 最高优先级 (方法维度)
   ↓
 @DubboService(timeout=3000)       ← 接口级
@@ -350,13 +350,13 @@ dubbo.properties: timeout=1000    ← 配置文件
 
 **消费端跨越多层的超时优先级**：
 
-```
+```text
 Consumer 方法级 > Consumer 接口级 > Consumer 全局 > Provider 方法级 > Provider 接口级 > Provider 全局
 ```
 
 # 9. 配置类继承体系
 
-```
+```text
 AbstractConfig
 ├── ApplicationConfig          (应用配置)
 ├── RegistryConfig             (注册中心配置)

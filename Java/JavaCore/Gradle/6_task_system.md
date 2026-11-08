@@ -753,7 +753,7 @@ abstract class MyWorkAction implements WorkAction<MyWorkParameters> {
 
 ## 11.1 依赖声明决策树
 
-```
+```text
 是否需要 B 在 A 之前执行，且 A 不能脱离 B 运行？
 ├── 是 → dependsOn
 └── 否 → 是否需要严格顺序？

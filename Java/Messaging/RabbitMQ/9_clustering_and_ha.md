@@ -104,7 +104,7 @@ docker exec -it rabbitmq1 rabbitmqctl cluster_status
 
 ## 3.2 普通集群的消息路由
 
-```
+```text
 客户端连接 node2，发送消息到 queue_on_node1：
 
  ┌────────┐           ┌────────┐
@@ -124,7 +124,7 @@ docker exec -it rabbitmq1 rabbitmqctl cluster_status
 
 ## 4.1 架构
 
-```
+```text
 ┌───────────────────────────────────────────┐
 │           Quorum Queue (3 Nodes)           │
 │                                           │
@@ -218,7 +218,7 @@ rabbitmqctl set_policy ha-exactly "^ha\." \
 
 Federation 用于**跨数据中心、跨 WAN** 的 RabbitMQ 消息传递，不要求节点在同集群中。
 
-```
+```text
 ┌──────────────────────┐         ┌──────────────────────┐
 │  数据中心 A (上游)     │         │  数据中心 B (下游)     │
 │                      │         │                      │
@@ -263,7 +263,7 @@ rabbitmqctl set_policy federate-me "^federated\." \
 
 Shovel 用于在 Broker/集群/队列之间**单向搬运消息**，比 Federation 更灵活（支持任意源和目标）。
 
-```
+```text
 源 Broker: source.queue ──→ Shovel ──→ 目标 Broker: destination.queue
 ```
 
@@ -304,7 +304,7 @@ rabbitmqctl set_parameter shovel my-shovel \
 
 ## 8.1 典型三层架构
 
-```
+```text
                     ┌──────────────┐
                     │   Load       │
                     │   Balancer   │  (HAProxy / Nginx / LVS)
@@ -377,7 +377,7 @@ cluster_partition_handling = autoheal      # 自动选择一方恢复
 
 # 10. 索引 — 队列类型选择
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │                  队列类型选择决策树                    │
 │                                                     │

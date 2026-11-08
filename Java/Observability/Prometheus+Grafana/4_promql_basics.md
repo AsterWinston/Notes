@@ -240,7 +240,7 @@ count_values by (job) ("status_code", http_requests_total)
 
 从高到低：
 
-```
+```text
 ^
 *, /, %
 +, -

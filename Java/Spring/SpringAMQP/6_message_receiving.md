@@ -393,7 +393,7 @@ spring:
 ```
 
 工作原理：
-```
+```text
 第1次尝试 → 失败（等待initial-interval，如2秒）
 第2次重试 → 失败（等待initial-interval * multiplier，如4秒）
 第3次重试 → 失败 → 抛出AmqpRejectAndDontRequeueException → 消息被丢弃或进入死信

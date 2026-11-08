@@ -8,7 +8,7 @@
 
 ### 1.2.1 请求与决策
 
-```
+```text
 ① 请求：消息 + 工具 Schema 发给模型
         │
         ▼
@@ -20,7 +20,7 @@
 
 ### 1.2.2 执行与回填
 
-```
+```text
 ④ 执行：调用真实 Java 方法
         │
         ▼
@@ -29,7 +29,7 @@
 
 ### 1.2.3 再决策与循环
 
-```
+```text
 ⑥ 再决策：模型基于结果决定下一步
         │
         ▼
@@ -50,7 +50,7 @@
 
 ## 2.2 完整示例
 
-```
+```text
 [System]    你是助手，可以使用工具
 [User]      查一下订单 A123 的物流
 [Assistant] tool_calls: [{name: "getOrder", args: {"orderId":"A123"}}]
@@ -277,7 +277,7 @@ CompletableFuture<ToolResult> f = CompletableFuture
 
 ## 6.2 示例
 
-```
+```text
 模型返回 tool_call 带 id：
   {id: "call_abc", name: "getOrder", args: {...}}
 

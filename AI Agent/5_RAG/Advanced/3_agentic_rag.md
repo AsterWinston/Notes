@@ -10,7 +10,7 @@
 
 传统 RAG（Retrieval-Augmented Generation，检索增强生成）的典型链路固定为：
 
-```
+```text
 用户问题
    │
    ▼
@@ -48,7 +48,7 @@
 
 Agentic RAG 让 Agent 自主回答以下问题：
 
-```
+```text
 要不要检索？检索什么？检索几次？用什么工具？结果够不够？
 ```
 
@@ -108,7 +108,7 @@ Agentic RAG 成立需要三个前提，缺一不可：
 
 路由本质上是一个二分类或 N 分类问题：
 
-```
+```text
 问题 → [分类器/LLM] → NEED_RETRIEVAL（需要检索）
                     → DIRECT（直接回答）
                     → TOOL_ONLY（只调工具，不检索）
@@ -160,7 +160,7 @@ public String answer(String question) {
 
 ### 2.2.1 机制拆解
 
-```
+```text
 query = 原问题
 for round in 1..maxRounds:
     docs += retrieve(query)
@@ -224,7 +224,7 @@ interface SufficiencyEvaluator {
 
 Self-RAG（Self-Reflective RAG，自反思检索增强生成）的核心是引入若干"反思标记"（reflection token）：
 
-```
+```text
 [Retrieve]  是否需要检索
 [IsRel]     文档是否与问题相关
 [IsSup]     生成内容是否被文档支持
@@ -355,7 +355,7 @@ public class RetrievalTools {
 
 先让模型产出计划，再逐步执行：
 
-```
+```text
 问题："我们的产品在竞品中表现如何？"
   │
   ├── 工具1：检索内部产品文档

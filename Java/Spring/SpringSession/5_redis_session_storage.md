@@ -15,7 +15,7 @@
 
 ## 2.1 核心 Key 结构
 
-```
+```text
 命名空间: spring:session  (可通过 spring.session.redis.namespace 配置)
 
 Key 1: "spring:session:sessions:{sessionId}"
@@ -65,7 +65,7 @@ redis-cli HGETALL "spring:session:sessions:abc123-def456"
 
 Redis 的 HASH 结构**不支持**对单个 Field 设置 TTL，无法直接通过 HASH Key 的 TTL 实现 Session 过期。因此 Spring Session 采用**专用过期 Key** 的方式：
 
-```
+```text
 ┌──────────────────────────────────────────────────┐
 │ sessions:{id} (HASH)                             │
 │   - creationTime: xxx                            │
@@ -83,7 +83,7 @@ Redis 的 HASH 结构**不支持**对单个 Field 设置 TTL，无法直接通�
 
 **过期处理流程**：
 
-```
+```text
 expires key 过期
   │
   ├── Redis 自动删除 "sessions:expires:{id}"

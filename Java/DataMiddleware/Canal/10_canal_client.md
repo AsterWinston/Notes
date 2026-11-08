@@ -91,7 +91,7 @@ CanalConnector connector = CanalConnectors.newClusterConnector(
 
 ## 2.3 集群模式的工作原理
 
-```
+```text
 ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
 │ Canal Server │    │ Canal Server │    │ Canal Server │
 │   Node-1     │    │   Node-2     │    │   Node-3     │
@@ -308,7 +308,7 @@ public class FilterSwitchHandler {
 
 ## 5.1 数据结构
 
-```
+```text
 Message
 ├── long id                    # Batch ID（ACK 时使用）
 ├── List<Entry> entries        # 事件列表

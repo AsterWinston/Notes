@@ -30,7 +30,7 @@ mongosh --eval "db.runCommand({connectionStatus: 1})"
 
 ## 1.2 认证失败
 
-```
+```text
 Authentication failed.
 
 常见原因：
@@ -78,7 +78,7 @@ db.currentOp({"secs_running": {$gt: 5}})
 
 ## 2.1 查询突然变慢
 
-```
+```text
 排查步骤：
 
 1. 确认有无索引变化
@@ -110,7 +110,7 @@ db.serverStatus().wiredTiger.cache
 
 ## 2.2 写入变慢
 
-```
+```text
 排查步骤：
 
 1. 检查索引数量
@@ -160,7 +160,7 @@ db.collection.aggregate([{$indexStats: {}}])
 
 ## 2.4 聚合管道内存溢出
 
-```
+```text
 Error: Exceeded memory limit for $group, but didn't allow external sort.
 
 原因：
@@ -217,7 +217,7 @@ rs.status().members.forEach(m => print(m.name, m.stateStr))
 
 ## 3.3 Rollback（数据回滚）
 
-```
+```text
 场景：旧主节点恢复后数据被回滚
 
 发生条件：
@@ -259,7 +259,7 @@ sh.moveChunk("mydb.collection", {key: "value"}, "targetShard")
 
 ## 4.2 mongos路由错误
 
-```
+```text
 症状：查询返回不完整数据或错误
 
 常见原因：

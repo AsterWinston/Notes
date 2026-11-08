@@ -97,7 +97,7 @@ static int calculateWarmupWeight(long uptime, int warmup, int weight) {
 
 **预热曲线**：
 
-```
+```text
 权重
 100% ┤                               ,-------
  90% ┤                        ,----'
@@ -401,7 +401,7 @@ public class ConsistentHashLoadBalance extends AbstractLoadBalance {
 
 **虚拟节点环示意**：
 
-```
+```text
         0
         │
     ┌───┼───┐

@@ -31,7 +31,7 @@ public interface EmbeddingModel {
 
 `Embedding.vector()` 返回 `float[]`，长度即维度。维度是向量库的硬约束：写入与查询必须同维度，检索才成立。
 
-```
+```text
 "什么是向量检索" ─▶ EmbeddingModel ─▶ [0.12, -0.03, 0.88, ...]
                                         └──── 长度 = 维度 ────┘
 ```
@@ -189,7 +189,7 @@ public interface EmbeddingStore<Embedded> {
 
 `EmbeddingStore` 只存与检索向量，不负责把文本转成向量。二者由检索器或调用方串联：
 
-```
+```text
 文本 ─EmbeddingModel─▶ 向量 ─EmbeddingStore.add─▶ 存储
 问题 ─EmbeddingModel─▶ 向量 ─EmbeddingStore.search─▶ 命中
 ```
@@ -388,7 +388,7 @@ metadataKey("tenantId").isEqualTo(tenant)
 
 过滤应尽量"下推"到向量库执行，而不是取回后在应用层过滤：
 
-```
+```text
 好：search(filter=tenantId=acme, topK=5)   ← 库内先过滤再算向量
 差：search(topK=1000) → 应用层 filter       ← 取多了、慢、可能漏
 ```

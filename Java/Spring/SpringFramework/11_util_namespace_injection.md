@@ -1,5 +1,5 @@
 # 1. util 命名空间注入
-```
+```text
 使用util命名空间可以让配置复用。
 使用util命名空间的前提是：在spring配置文件头部添加配置信息。
 如下：
@@ -92,7 +92,7 @@ public class MyDataSource2 {
 
 ## 2.1 UtilNamespaceHandler 注册的全部元素
 
-```
+```java
 在 spring-beans 模块的 META-INF/spring.handlers 中：
 http\://www.springframework.org/schema/util=\
   org.springframework.beans.factory.xml.UtilNamespaceHandler
@@ -117,7 +117,7 @@ public void init() {
 
 ## 2.2 各 util 元素的用途与源码
 
-```
+```text
 <util:constant> — 引用静态常量
   示例：<util:constant id="maxValue" static-field="java.lang.Integer.MAX_VALUE"/>
   源码：ConstantBeanDefinitionParser → BeanDefinition(beanClass=Integer.MAX_VALUE.getClass())
@@ -150,7 +150,7 @@ public void init() {
 
 ## 2.3 <util:properties> 的完整解析源码
 
-```
+```java
 // PropertiesBeanDefinitionParser.doParse()
 protected void doParse(Element element, BeanDefinitionBuilder builder) {
     super.doParse(element, builder);  // 解析 <prop> 子元素
@@ -174,7 +174,7 @@ protected void doParse(Element element, BeanDefinitionBuilder builder) {
 
 ## 2.4 util 命名空间 vs 内嵌集合的对比
 
-```
+```text
 不使用 util：
   <bean id="ds1" class="MyDataSource1">
     <property name="properties">

@@ -7,7 +7,7 @@ Binary Log（二进制日志，简称 binlog）是 MySQL Server 层维护的一�
 - **数据恢复（Point-in-Time Recovery）**：通过 binlog 将数据库恢复到指定时间点
 - **CDC（Change Data Capture）**：第三方工具（如 Canal）通过解析 binlog 捕获数据变更
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │              MySQL Server                │
 │                                          │
@@ -61,7 +61,7 @@ UPDATE users SET status = 1 WHERE id > 100;
 ```
 
 **Binlog 中记录的内容**：
-```
+```text
 # at 1234
 #230101 12:00:00 server id 1  end_log_pos 1300  Query
 SET TIMESTAMP=1672545600;
@@ -87,7 +87,7 @@ UPDATE users SET status = 1 WHERE id > 100;
 ```
 
 **Binlog 中记录的内容**（逻辑表示）：
-```
+```text
 Table: test.users
 Event: UPDATE_ROWS_EVENT
 Rows:
@@ -227,7 +227,7 @@ Binlog 文件由以下三部分组成：
 
 ## 4.2 文件结构图解
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │  mysql-bin.000001                                            │
 │                                                              │
@@ -319,7 +319,7 @@ mysqlbinlog --verbose --base64-output=DECODE-ROWS mysql-bin.000003
 
 MySQL 主从复制是 Canal 工作模式的直接参考对象：
 
-```
+```text
 ┌──────────────┐                        ┌──────────────┐
 │    Master    │                        │    Slave     │
 │              │                        │              │
@@ -355,7 +355,7 @@ Canal 模拟的是 Slave 的角色，但只执行 ① 步（接收 binlog），
 4. Slave 通过 `COM_BINLOG_DUMP` 命令请求 binlog 数据
 5. Master 持续推送 binlog event 给 Slave
 
-```
+```text
 -- Slave 连接时，MySQL Master 可以看到：
 mysql> SHOW PROCESSLIST;
 +-----+------+-----------+------+-------------+------+------------------------+
@@ -369,7 +369,7 @@ mysql> SHOW PROCESSLIST;
 **步骤 ② — Write Relay Log（Slave I/O Thread）**
 
 Slave 的 I/O Thread 将收到的 binlog 写入本地 Relay Log：
-```
+```text
 Relay Log 格式与 Binlog 完全一致，只是文件名不同（relay-bin.xxxxxx）
 ```
 
@@ -399,7 +399,7 @@ CHANGE MASTER TO
 
 GTID（Global Transaction Identifier）为每个事务分配全局唯一标识：
 
-```
+```text
 GTID = server_uuid : transaction_id
 
 示例：3E11FA47-71CA-11E1-9E33-C80AA9429562:1-100
@@ -535,7 +535,7 @@ GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_rds_user'@'%';
 
 ## 7.1 事务在 Binlog 中的表示
 
-```
+```text
 一个完整的事务在 Binlog 中由以下 event 组成：
 
 [GTID Event]                 -- GTID 标识（可选）
@@ -549,7 +549,7 @@ GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_rds_user'@'%';
 
 **示例** — 一个 UPDATE 语句影响多行：
 
-```
+```text
 mysql> BEGIN;
 mysql> UPDATE users SET status = 1 WHERE id = 1;
 mysql> UPDATE orders SET status = 'PAID' WHERE user_id = 1;
@@ -577,7 +577,7 @@ Binlog 中记录：
 
 MySQL 5.6+ 支持 Binlog 组提交，将多个事务的 Binlog 一次刷盘，提升写入性能：
 
-```
+```text
 ┌──────────────────────────────────────┐
 │  事务1 ──┐                           │
 │          ├──> 组提交队列              │

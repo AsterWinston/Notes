@@ -3,7 +3,7 @@
 
 一个 Java 对象在堆内存中的布局分为三部分：
 
-```
+```text
 ┌──────────────────────────┐
 │     对象头 (Header)       │  ← Mark Word + Klass Pointer
 ├──────────────────────────┤
@@ -97,7 +97,7 @@ public class JOLDemo {
 ```
 
 **输出示例：**
-```
+```text
 java.lang.Object object internals:
  OFFSET  SIZE   TYPE DESCRIPTION               VALUE
       0     4        (object header)           01 00 00 00 (00000001 ...)
@@ -116,7 +116,7 @@ Space losses: 0 bytes internal + 4 bytes external = 4 bytes total
 - 一个空的 `Object` 占 16 字节（64 位，压缩指针开启）
 
 对比关闭压缩指针：
-```
+```text
 # -XX:-UseCompressedOops
 java.lang.Object object internals:
  OFFSET  SIZE   TYPE DESCRIPTION               VALUE
@@ -147,7 +147,7 @@ Instance size: 24 bytes
 - 压缩指针生效条件：堆内存 < 32GB（约 32G，因为 2^32 * 8 = 32GB）。
 - 超过 32GB 的堆，压缩指针自动失效，每个引用变 8 字节，内存开销显著增加。
 
-```
+```text
 32GB 堆以下：
   引用 4B → 实际地址 = 引用 << 3
   
@@ -177,7 +177,7 @@ JVM 规范只规定栈中引用指向对象，但未规定实现方式。HotSpot
 
 ## 8.1 方式一：句柄访问（间接指针）
 
-```
+```text
 栈 (reference) → ┌──────────────┐
                  │   句柄池      │
                  │ ┌──────────┐ │    ┌──────────┐
@@ -193,7 +193,7 @@ JVM 规范只规定栈中引用指向对象，但未规定实现方式。HotSpot
 
 ## 8.2 方式二：直接指针访问（HotSpot 使用）
 
-```
+```text
 栈 (reference) ──→ ┌──────────────────────────┐
                    │     对象实例               │
                    │ ┌──────────────────────┐  │
@@ -209,7 +209,7 @@ JVM 规范只规定栈中引用指向对象，但未规定实现方式。HotSpot
 
 # 9. 对象创建的详细步骤
 
-```
+```text
 1. 遇到 new 指令
    ↓
 2. 检查类是否已加载、解析、初始化

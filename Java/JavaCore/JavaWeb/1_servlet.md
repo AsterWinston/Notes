@@ -1,6 +1,6 @@
 # 1. 关于系统架构
 
-```
+```text
 一、系统架构的两种形式
 
 1. C/S架构（Client / Server 客户端 / 服务器）
@@ -172,7 +172,7 @@ ip地址是什么？端口号我知道，是8080
 
 # 4. 实现一个最基本的web应用（这个web应用中没有java小程序）
 
-```
+```text
 第一步：找到CATALINA_HOME\webapps目录
 
 因为所有的webapp要放到webapps目录下。（没有为什么，这是Tomcat服务器的要求。如果不放到这里，Tomcat服务器找不到你的应用。）
@@ -204,7 +204,7 @@ ip地址是什么？端口号我知道，是8080
 
 # 5. 对于一个动态的web应用来说，一个请求和响应的过程有多少个角色参与，角色和角色之间有多少个协议
 
-```
+```text
 有哪些角色（在整个BS结构的系统当中，有哪些人参与进去了）
 浏览器软件的开发团队（浏览器软件太多了：谷歌浏览器、火狐浏览器、IE浏览器…）
 WEB Server的开发团队（WEB Server这个软件也是太多了：Tomcat、Jetty、WebLogic、JBOSS、WebSphere…）
@@ -233,7 +233,7 @@ Servlet规范包括什么呢？
 
 # 6. 开发一个带有Servlet（Java小程序）的webapp（重点）
 
-```
+```text
 开发步骤是怎样的？
 
 第一步：在webapps目录下新建一个目录，起名crm（这个crm就是webapp的名字）。当然，也可以是其它项目，比如银行项目，可以创建一个目录bank，办公系统可以创建一个oa。
@@ -290,7 +290,7 @@ CLASSPATH=.;C:\dev\apache-tomcat-10.0.12\lib\servlet-api.jar
 
 第八步：将以上编译之后的HelloServlet.class文件拷贝到WEB-INF\classes目录下。
 
-第九步：在web.xml文件中编写配置信息，让“请求路径”和“Servlet类名”关联在一起。
+第九步：在web.xml文件中编写配置信息，让"请求路径"和"Servlet类名"关联在一起。
 
 这一步用专业术语描述：在web.xml文件中注册Servlet类。
 
@@ -351,7 +351,7 @@ Tomcat服务器调用com.bjpowernode.servlet.HelloServlet对象的service方法�
 
 # 7. 关于JavaEE的版本
 
-```
+```text
 JavaEE目前最高版本是 JavaEE8
 JavaEE被Oracle捐献了，Oracle将JavaEE规范捐献给Apache了。
 Apache把JavaEE换名了，以后不叫JavaEE了，以后叫做 jakarta EE。
@@ -364,7 +364,7 @@ JakartaEE9的时候对应的Servlet类名是：jakarta.servlet.Servlet （包名
 
 # 8. 解决Tomcat服务器在DOS命令窗口中的乱码问题（控制台乱码）
 
-```
+```text
 将CATALINA_HOME/conf/logging.properties文件中的内容修改如下：
 
 java.util.logging.ConsoleHandler.encoding = GBK
@@ -372,7 +372,7 @@ java.util.logging.ConsoleHandler.encoding = GBK
 
 # 9. 向浏览器响应一段HTML代码
 
-```
+```java
 public void service(ServletRequest request, ServletResponse response){
     response.setContentType("text/html");
     PrintWriter out = response.getWriter();
@@ -381,7 +381,7 @@ public void service(ServletRequest request, ServletResponse response){
 ```
 
 # 10. 在Servlet中连接数据库，怎么做？
-```
+```text
 Servlet是Java程序，所以在Servlet中完全可以编写JDBC代码连接数据库。
 在一个webapp中去连接数据库，需要将驱动jar包放到WEB-INF/lib目录下。（com.mysql.cj.jdbc.Driver 这个类就在驱动jar包当中。）
 ```
@@ -389,11 +389,11 @@ Servlet是Java程序，所以在Servlet中完全可以编写JDBC代码连接数�
 
 # 11. 在集成开发环境当中开发Servlet程序
 
-```
+```text
 集成开发工具很多，其中目前使用比较多的是：
 
 IntelliJ IDEA（这个居多，IDEA在提示功能方面要强于Eclipse，也就是说IDEA使用起来比Eclipse更加智能，更好用。JetBrain公司开发的。收费的。）
-Eclipse（这个少一些），Eclipse目前还是有团队使用，只不过处于减少的趋势，自己从事工作之后，可能会遇到。Eclipse是IBM团队开发的。Eclipse寓意是“日食”。“日食”表示将太阳吃掉。太阳是SUN。IBM团队开发Eclipse的寓意是吞并SUN公司，但是2009年的时候SUN公司被Oracle公司并购了。IBM并没有成功并购SUN公司。
+Eclipse（这个少一些），Eclipse目前还是有团队使用，只不过处于减少的趋势，自己从事工作之后，可能会遇到。Eclipse是IBM团队开发的。Eclipse寓意是"日食"。"日食"表示将太阳吃掉。太阳是SUN。IBM团队开发Eclipse的寓意是吞并SUN公司，但是2009年的时候SUN公司被Oracle公司并购了。IBM并没有成功并购SUN公司。
 使用IDEA集成开发工具开发Servlet
 
 第一步：New Project（我比较习惯先创建一个Empty Project【空工程】，然后在空工程下新建Module【模块】，这不是必须的，只是一种习惯，你可以直接新建非空的Project），这个Empty Project起名为：javaweb（不是必须的，只是一个名字而已。一般情况下新建的Project的名字最好和目录的名字一致。）
@@ -477,7 +477,7 @@ IDEA工具右上角，绿色小锤子右边有一个：Add Configuration
 
 # 12. Servlet对象的生命周期
 
-```
+```text
 什么是Servlet对象生命周期？
 
 Servlet对象什么时候被创建。
@@ -594,7 +594,7 @@ destroy方法也很少用。
 
 # 13. GenericServlet
 
-```
+```text
 我们编写一个Servlet类直接实现Servlet接口有什么缺点？
 
 我们只需要service方法，其他方法大部分情况下是不需要使用的。代码很丑陋。
@@ -651,7 +651,7 @@ public class Tomcat {
 
 # 14. ServletConfig
 
-```
+```text
 什么是ServletConfig？
 
 Servlet对象的配置信息对象。
@@ -682,7 +682,7 @@ public String getServletName(); // 获取Servlet的name
 
 # 15. ServletContext
 
-```
+```text
 一个Servlet对象对应一个ServletConfig。100个Servlet对象则对应100个ServletConfig对象。
 
 只要在同一个webapp当中，只要在同一个应用当中，所有的Servlet对象都是共享同一个ServletContext对象的。
@@ -762,7 +762,7 @@ jakarta.servlet.http.HttpServlet extends GenericServlet（抽象类）【孙子�
 大家到目前为止都接触过哪些缓存机制了？
 
 堆内存当中的字符串常量池。
-“abc” 先在字符串常量池中查找，如果有，直接拿来用。如果没有则新建，然后再放入字符串常量池。
+"abc" 先在字符串常量池中查找，如果有，直接拿来用。如果没有则新建，然后再放入字符串常量池。
 堆内存当中的整数型常量池。
 [-128 ~ 127] 一共256个Integer类型的引用，放在整数型常量池中。没有超出这个范围的话，直接从常量池中取。
 连接池(Connection Cache)
@@ -784,7 +784,7 @@ NoSQL数据库。非关系型数据库。缓存数据库。
 
 # 16. HTTP协议
 
-```
+```text
 什么是协议？
 
 协议实际上是某些人，或者某些组织提前制定好的一套规范，大家都按照这个规范来，这样可以做到沟通无障碍。
@@ -857,7 +857,7 @@ cookie等信息
 
 空白行
 
-空白行是用来区分“请求头”和“请求体”
+空白行是用来区分"请求头"和"请求体"
 
 请求体
 
@@ -897,7 +897,7 @@ not found 表示资源找不到。
 
 空白行
 
-用来分隔“响应头”和“响应体”的。
+用来分隔"响应头"和"响应体"的。
 
 响应体
 
@@ -907,18 +907,18 @@ not found 表示资源找不到。
 使用chrome浏览器：F12。然后找到network，通过这个面板可以查看协议的具体内容。
 怎么向服务器发送GET请求，怎么向服务器发送POST请求？
 
-到目前为止，只有一种情况可以发送POST请求：使用form表单，并且form标签中的method属性值为：method=“post”。
+到目前为止，只有一种情况可以发送POST请求：使用form表单，并且form标签中的method属性值为：method="post"。
 其他所有情况一律都是get请求：
 在浏览器地址栏上直接输入URL，敲回车，属于get请求。
 在浏览器上直接点击超链接，属于get请求。
 使用form表单提交数据时，form标签中没有写method属性，默认就是get
-或者使用form的时候，form标签中method属性值为：method=“get”
+或者使用form的时候，form标签中method属性值为：method="get"
 …
 GET请求和POST请求有什么区别？
 
-get请求发送数据的时候，数据会挂在URI的后面，并且在URI后面添加一个“?”，"?"后面是数据。这样会导致发送的数据回显在浏览器的地址栏上。（get请求在“请求行”上发送数据）
+get请求发送数据的时候，数据会挂在URI的后面，并且在URI后面添加一个"?"，"?"后面是数据。这样会导致发送的数据回显在浏览器的地址栏上。（get请求在"请求行"上发送数据）
 http://localhost:8080/servlet05/getServlet?username=zhangsan&userpwd=1111
-post请求发送数据的时候，在请求体当中发送。不会回显到浏览器的地址栏上。也就是说post发送的数据，在浏览器地址栏上看不到。（post在“请求体”当中发送数据）
+post请求发送数据的时候，在请求体当中发送。不会回显到浏览器的地址栏上。也就是说post发送的数据，在浏览器地址栏上看不到。（post在"请求体"当中发送数据）
 get请求只能发送普通的字符串。并且发送的字符串长度有限制，不同的浏览器限制不同。这个没有明确的规范。
 get请求无法发送大数据量。
 post请求可以发送任何类型的数据，包括普通字符串，流媒体等信息：视频、声音、图片。
@@ -929,7 +929,7 @@ get请求是安全的。get请求是绝对安全的。为什么？因为get请�
 post请求是危险的。为什么？因为post请求是向服务器提交数据，如果这些数据通过后门的方式进入到服务器当中，服务器是很危险的。另外post是为了提交数据，所以一般情况下拦截请求的时候，大部分会选择拦截（监听）post请求。
 get请求支持缓存。
 [https://n.sinaimg.cn/finance/590/w240h350/20211101/b40c-b425eb67cabc342ff5b9dc018b4b00cc.jpg](https://n.sinaimg.cn/finance/590/w240h350/20211101/b40c-b425eb67cabc342ff5b9dc018b4b00cc.jpg)
-任何一个get请求最终的“响应结果”都会被浏览器缓存起来。在浏览器缓存当中：
+任何一个get请求最终的"响应结果"都会被浏览器缓存起来。在浏览器缓存当中：
 一个get请求的路径a 对应 一个资源。
 一个get请求的路径b 对应 一个资源。
 一个get请求的路径c 对应 一个资源。
@@ -940,9 +940,9 @@ get请求支持缓存。
 [https://n.sinaimg.cn/finance/590/w240h350/20211101/7cabc342ff5b9dc018b4b00cc.jpg?t=789789787897898](https://n.sinaimg.cn/finance/590/w240h350/20211101/7cabc342ff5b9dc018b4b00cc.jpg?t=789789787897898)
 [https://n.sinaimg.cn/finance/590/w240h350/20211101/7cabc342ff5b9dc018b4b00cc.jpg?t=789789787897899](https://n.sinaimg.cn/finance/590/w240h350/20211101/7cabc342ff5b9dc018b4b00cc.jpg?t=789789787897899)
 [https://n.sinaimg.cn/finance/590/w240h350/20211101/7cabc342ff5b9dc018b4b00cc.jpg?t=系统毫秒数](https://n.sinaimg.cn/finance/590/w240h350/20211101/7cabc342ff5b9dc018b4b00cc.jpg?t=系统毫秒数)
-怎么解决？可以在路径的后面添加一个每时每刻都在变化的“时间戳”，这样，每一次的请求路径都不一样，浏览器就不走缓存了。
+怎么解决？可以在路径的后面添加一个每时每刻都在变化的"时间戳"，这样，每一次的请求路径都不一样，浏览器就不走缓存了。
 post请求不支持缓存。（POST是用来修改服务器端的资源的。）
-post请求之后，服务器“响应的结果”不会被浏览器缓存起来。因为这个缓存没有意义。
+post请求之后，服务器"响应的结果"不会被浏览器缓存起来。因为这个缓存没有意义。
 GET请求和POST请求如何选择，什么时候使用GET请求，什么时候使用POST请求？
 
 怎么选择GET请求和POST请求呢？衡量标准是什么呢？你这个请求是想获取服务器端的数据，还是想向服务器发送数据。如果你是想从服务器上获取资源，建议使用GET请求，如果你这个请求是为了向服务器提交数据，建议使用POST请求。
@@ -988,7 +988,7 @@ pojo
 
 # 17. HttpServlet源码分析
 
-```
+```text
 HttpServlet类是专门为HTTP协议准备的。比GenericServlet更加适合HTTP协议下的开发。
 HttpServlet在哪个包下？
 jakarta.servlet.http.HttpServlet
@@ -1007,7 +1007,7 @@ jakarta.servlet.http.HttpServletResponse （HTTP协议专用的响应对象）
 HttpServletRequest对象中封装了什么信息？
 HttpServletRequest，简称request对象。
 HttpServletRequest中封装了请求协议的全部内容。
-Tomcat服务器（WEB服务器）将“请求协议”中的数据全部解析出来，然后将这些数据全部封装到request对象当中了。
+Tomcat服务器（WEB服务器）将"请求协议"中的数据全部解析出来，然后将这些数据全部封装到request对象当中了。
 也就是说，我们只要面向HttpServletRequest，就可以获取请求协议中的数据。
 HttpServletResponse对象是专门用来响应HTTP协议到浏览器的。
 回忆Servlet生命周期？
@@ -1200,7 +1200,7 @@ public abstract class HttpServlet extends GenericServlet {
 什么是一个web站点的欢迎页面？
 
 对于一个webapp来说，我们是可以设置它的欢迎页面的。
-设置了欢迎页面之后，当你访问这个webapp的时候，或者访问这个web站点的时候，没有指定任何“资源路径”，这个时候会默认访问你的欢迎页面。
+设置了欢迎页面之后，当你访问这个webapp的时候，或者访问这个web站点的时候，没有指定任何"资源路径"，这个时候会默认访问你的欢迎页面。
 我们一般的访问方式是：
 http://localhost:8080/servlet06/login.html 这种方式是指定了要访问的就是login.html资源。
 如果我们访问的方式是：
@@ -1214,7 +1214,7 @@ http://localhost:8080/servlet06 如果我们访问的就是这个站点，没有
 <welcome-file-list>
     <welcome-file>login.html</welcome-file>
 </welcome-file-list>
-注意：设置欢迎页面的时候，这个路径不需要以“/”开始。并且这个路径默认是从webapp的根下开始查找。
+注意：设置欢迎页面的时候，这个路径不需要以"/"开始。并且这个路径默认是从webapp的根下开始查找。
 注意：路径不可以是WEB-INF开头，因为无法托管WEB-INF里面的文件作为静态资源（里面的资源受保护）
 
 第三步：启动服务器，浏览器地址栏输入地址
@@ -1232,7 +1232,7 @@ http://localhost:8080/servlet07
 <welcome-file-list>
     <welcome-file>page1/page2/page.html</welcome-file>
 </welcome-file-list>
-注意：路径不需要以“/”开始，并且路径默认从webapp的根下开始找。
+注意：路径不需要以"/"开始，并且路径默认从webapp的根下开始找。
 
 一个webapp是可以设置多个欢迎页面的
 <welcome-file-list>
@@ -1365,7 +1365,7 @@ Map<String, String[]>
     username		{"abc"}
     userpwd			{"111"}
     aihao			{"s","d","tt"}
-注意：前端表单提交数据的时候，假设提交了120这样的“数字”，其实是以字符串"120"的方式提交的，所以服务器端获取到的一定是一个字符串的"120"，而不是一个数字。（前端永远提交的是字符串，后端获取的也永远是字符串。）
+注意：前端表单提交数据的时候，假设提交了120这样的"数字"，其实是以字符串"120"的方式提交的，所以服务器端获取到的一定是一个字符串的"120"，而不是一个数字。（前端永远提交的是字符串，后端获取的也永远是字符串。）
 
 手工开发一个webapp。测试HttpServletRequest接口中的相关方法。
 
@@ -1375,7 +1375,7 @@ Map<String, String[]>
 	Enumeration<String> names = request.getParameterNames();
 	String[] values = request.getParameterValues("name");
 	String value = request.getParameter("name");
-request对象实际上又称为“请求域”对象。
+request对象实际上又称为"请求域"对象。
 
 应用域对象是什么？
 
@@ -1407,9 +1407,9 @@ map.put("name", obj); // 向map集合中放key和value
 Object obj = map.get("name"); // 通过map集合的key获取value
 map.remove("name"); // 通过Map集合的key删除key和value这个键值对。
 
-“请求域”对象
+"请求域"对象
 
-“请求域”对象要比“应用域”对象范围小很多。生命周期短很多。请求域只在一次请求内有效。
+"请求域"对象要比"应用域"对象范围小很多。生命周期短很多。请求域只在一次请求内有效。
 
 一个请求对象request对应一个请求域对象。一次请求结束之后，这个请求域就销毁了。
 
@@ -1440,7 +1440,7 @@ request.getRequestDispatcher("/b").forward(request,response);
 转发的下一个资源必须是一个Servlet吗？
 
 不一定，只要是Tomcat服务器当中的合法资源，都是可以转发的。例如：html…
-注意：转发的时候，路径的写法要注意，转发的路径以“/”开始，不加项目名。
+注意：转发的时候，路径的写法要注意，转发的路径以"/"开始，不加项目名。
 关于request对象中两个非常容易混淆的方法：
 
 // uri?username=zhangsan&userpwd=123&sex=1
@@ -1494,7 +1494,7 @@ String servletPath = request.getServletPath(); //   /testRequest
 
 # 21. 使用纯Servlet做一个单表的CRUD操作
 
-```
+```text
 使用纯粹的Servlet完成单表【对部门的】的增删改查操作。（B/S结构的。）
 
 实现步骤
@@ -1603,7 +1603,7 @@ while(rs.next()){
 
 建议：从前端往后端一步一步实现。首先要考虑的是，用户点击的是什么？用户点击的东西在哪里？
 
-一定要先找到用户点的“详情”在哪里。找了半天，终于在后端的java程序中找到了
+一定要先找到用户点的"详情"在哪里。找了半天，终于在后端的java程序中找到了
 <a href='写一个路径'>详情</a>
 详情 是需要连接数据库的，所以这个超链接点击之后也是需要执行一段java代码的。所以要将这个超链接的路径修改一下。
 
@@ -1742,7 +1742,7 @@ request.getRequestDispatcher("/dept/list").forward(request, response);
 重定向
 // 注意：路径上要加一个项目名。为什么？
 // 浏览器发送请求，请求路径上是需要添加项目名的。
-// 以下这一行代码会将请求路径“/oa/dept/list”发送给浏览器
+// 以下这一行代码会将请求路径"/oa/dept/list"发送给浏览器
 // 浏览器会自发的向服务器发送一次全新的请求：/oa/dept/list
 response.sendRedirect("/oa/dept/list");
 形式上有什么区别？
@@ -1906,7 +1906,7 @@ session 的实现原理中，每一个 session 对象都会关联一个 sessioni
 
 JSESSIONID=41C481F0224664BDB28E95081D23D5B8
 以上的这个键值对数据其实就是 cookie 对象。
-对于 session 关联的 cookie 来说，这个 cookie 是被保存在浏览器的“运行内存”当中。
+对于 session 关联的 cookie 来说，这个 cookie 是被保存在浏览器的"运行内存"当中。
 只要浏览器不关闭，用户再次发送请求的时候，会自动将运行内存中的 cookie 发送给服务器。
 例如，这个 Cookie: JSESSIONID=41C481F0224664BDB28E95081D23D5B8 就会再次发送给服务器。
 服务器就是根据 41C481F0224664BDB28E95081D23D5B8 这个值来找到对应的 session 对象的。
@@ -1958,11 +1958,11 @@ cookie 被删除，同名 cookie 被删除。
 保存在运行内存中。和不设置一样。
 关于 cookie 的 path，cookie 关联的路径：
 
-假设现在发送的请求路径是“http://localhost:8080/servlet13/cookie/generate”生成的 cookie，如果 cookie 没有设置 path，默认的 path 是什么？
+假设现在发送的请求路径是"http://localhost:8080/servlet13/cookie/generate"生成的 cookie，如果 cookie 没有设置 path，默认的 path 是什么？
 默认的 path 是：http://localhost:8080/servlet13/cookie 以及它的子路径。
 也就是说，以后只要浏览器的请求路径是 http://localhost:8080/servlet13/cookie 这个路径以及这个路径下的子路径，cookie 都会被发送到服务器。
 手动设置 cookie 的 path
-cookie.setPath(“/servlet13”); 表示只要是这个 servlet13 项目的请求路径，都会提交这个 cookie 给服务器。
+cookie.setPath("/servlet13"); 表示只要是这个 servlet13 项目的请求路径，都会提交这个 cookie 给服务器。
 浏览器发送 cookie 给服务器了，服务器中的 java 程序怎么接收？
 Cookie[] cookies = request.getCookies(); // 这个方法可能返回 null
 if(cookies != null){

@@ -25,7 +25,7 @@ CSS 通常是页面性能的"隐性玩家"——一个选择器写得重、一�
 
 ## 2.1 两者的区别
 
-```
+```text
 回流(reflow/重排):geometry 变了(尺寸、位置)→ 重新计算布局 → 重新绘制
   · width/height/margin/top/left/display 等改变
   · 代价高:它会"波及"兄弟与后代
@@ -39,7 +39,7 @@ CSS 通常是页面性能的"隐性玩家"——一个选择器写得重、一�
 
 ## 2.2 三个层级
 
-```
+```text
 回流(reflow) > 重绘(repaint) > 合成(composite,只 transform/opacity)
 （代价从高到低）
 ```

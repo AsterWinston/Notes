@@ -184,7 +184,7 @@ public class BatchTokenValidator {
 
 ## 4.1 体积影响因素
 
-```
+```text
 JWT 体积 ≈ Header(约 50B) + Payload(变化) + Signature(算法相关)
 
 算法签名大小（Base64URL 编码后）：
@@ -289,7 +289,7 @@ jwt:
 
 ## 5.3 跨数据中心部署
 
-```
+```text
 数据中心 A               数据中心 B
 ┌─────────────┐         ┌─────────────┐
 │ Auth Server │         │ Auth Server │
@@ -398,7 +398,7 @@ public class AuthController {
 
 ## 7.2 选型决策
 
-```
+```text
 系统规模 < 10 服务节点、低并发:
   → Session + Redis 方案足够
 

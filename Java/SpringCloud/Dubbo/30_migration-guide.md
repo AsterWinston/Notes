@@ -3,7 +3,7 @@
 
 Dubbo 3.x 是面向云原生的重大升级。相对于 2.7.x，3.x 在服务发现模型、通信协议、性能优化等方面有根本性变化。
 
-```
+```text
 Dubbo 2.7.x ─────────────────────→ Dubbo 3.3.x
   ├── 接口级服务发现                   ├── 应用级服务发现（默认）
   ├── Dubbo 协议为主                   ├── Triple 协议（推荐）
@@ -192,7 +192,7 @@ dubbo:
 
 推荐"先升级 Provider，再升级 Consumer"的策略：
 
-```
+```text
 第1步: Provider 升级到 Dubbo 3（register-mode: all，双注册）
 第2步: Consumer 升级到 Dubbo 3（仍使用接口级发现）
 第3步: Consumer 切换为应用级发现
@@ -234,7 +234,7 @@ dubbo:
 
 **现象**：
 
-```
+```text
 WARN [DubboMetadataReport] Failed to publish metadata
 ```
 

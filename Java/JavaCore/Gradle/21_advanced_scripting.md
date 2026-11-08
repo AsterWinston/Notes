@@ -305,7 +305,7 @@ environmentConfig {
 
 ## 2.6 HasConfigurableValue 接口体系
 
-```
+```text
 HasConfigurableValue
 ├── Configurable
 │   ├── Property<T>

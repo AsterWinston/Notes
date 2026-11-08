@@ -44,7 +44,7 @@ chsh -s /bin/zsh
 
 **Zsh 启动文件加载顺序（关键！）：**
 
-```
+```text
 登录 Shell:
   /etc/zprofile            # 全局登录配置
   → ~/.zprofile            # 用户登录配置（一般放环境变量）
@@ -111,7 +111,7 @@ sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/ins
 
 **目录结构：**
 
-```
+```text
 ~/.oh-my-zsh/
 ├── lib/              # 核心库文件（自动加载）
 │   ├── theme-and-appearance.zsh
@@ -328,7 +328,7 @@ zinit load zsh-users/zsh-completions
 
 **Turbo Mode 原理：**
 
-```
+```text
 传统加载：  source p1 → source p2 → source p3 → 显示 prompt
 Turbo 加载： 显示 prompt → [后台 source p1] → [后台 source p2] → ...
               ↑ 用户立即可以输入命令
@@ -683,7 +683,7 @@ Fish 的设计目标纯粹是**交互式 Shell**，官方文档明确指出：
 
 **最佳实践：**
 
-```
+```text
 场景                      推荐
 ─────────────────────────────────────────
 交互式使用（个人终端）    Fish / Zsh
@@ -709,7 +709,7 @@ Dash（Debian Almquist Shell）和 Ash（Almquist Shell）是轻量级 POSIX She
 
 **Ubuntu/Debian `/bin/sh` 变迁：**
 
-```
+```text
 Ubuntu 6.06 之前: /bin/sh → bash
 Ubuntu 6.10 (2006) 起: /bin/sh → dash
 原因：启动速度快（dash 远小于 bash）、POSIX 严格、资源占用少
@@ -1124,7 +1124,7 @@ if (_status !== 0) {
 
 ## 5.4 使用场景
 
-```
+```text
 场景                        推荐
 ─────────────────────────────────────────
 运行现有 Bash 脚本          osh script.sh
@@ -1640,7 +1640,7 @@ teardown() {
 
 **Bats 执行模型：**
 
-```
+```text
 对每个 @test 测试用例：
   1. 执行 setup_file()（如果定义，文件级，仅执行一次）
   2. 执行 setup()（测试级，每个 @test 前执行）
@@ -2210,7 +2210,7 @@ inv --list          # 列出所有任务
 
 **工具选择决策树：**
 
-```
+```text
 是否需要基于文件的增量构建？
 ├─ 是 → 是否已有 Makefile？
 │       ├─ 是 → Make（保持兼容）

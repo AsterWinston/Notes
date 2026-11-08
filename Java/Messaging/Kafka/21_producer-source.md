@@ -21,7 +21,7 @@ git checkout 3.6.0  # 或你分析的版本
 
 ## 1.2 Producer 核心类图
 
-```
+```text
 KafkaProducer
 │
 ├── Partitioner (分区器)
@@ -627,7 +627,7 @@ public class TransactionManager {
 
 ## 7.1 生产者线程模型
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                     Producer 线程模型                         │
 │                                                             │

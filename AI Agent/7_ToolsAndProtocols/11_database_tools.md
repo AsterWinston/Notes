@@ -198,7 +198,7 @@ CREATE POLICY tenant_isolation ON orders
 
 **结论先行**：Text2SQL 的执行必须经过"生成 → 校验 → 只读执行 → 限行 → 返回"五步，任何一步不可省略。
 
-```
+```text
 用户问题
    |
    v
@@ -351,7 +351,7 @@ public class SqlValidator {
 
 **结论先行**：数据库工具的安全依赖七层防护叠加，任一层被绕过，其他层仍能兜住。
 
-```
+```text
 ① 只读账号（数据库层）
 ② 表白名单（应用层）
 ③ SQL 语法校验（应用层）

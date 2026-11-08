@@ -2,7 +2,7 @@
 
 ## 1.1 监控层次
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                    Kafka 监控金字塔                            │
 │                                                              │
@@ -298,7 +298,7 @@ instances:
 
 Burrow 是 LinkedIn 开源的 Kafka Consumer Lag 检测工具，能评估 Consumer 状态而非仅看 Lag 数值。
 
-```
+```text
 Burrow 的 Consumer Status 评估:
   - OK: 消费正常
   - WARNING: Lag 在增长但未跨过分区边界
@@ -338,7 +338,7 @@ curl -X POST "http://localhost:9090/kafkacruisecontrol/rebalance?dryrun=false"
 
 ## 5.3 Kafka Manager (CMAK)
 
-```
+```text
 功能:
   - 可视化查看 Topic 清单和详情
   - 创建/删除 Topic

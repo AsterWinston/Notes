@@ -34,7 +34,7 @@ graph TD
 
 ## 1.2 算法选择决策树
 
-```
+```text
                           是否需要多方验证？
                           /                \
                         是                   否
@@ -57,7 +57,7 @@ HS256 是最常用的对称签名算法，**同一个密钥**用于签名和验�
 
 ### 2.1.1 算法原理
 
-```
+```text
 HS256 JWT 签名 = HMAC-SHA256(
     key = 共享密钥,
     message = base64UrlEncode(header) + "." + base64UrlEncode(payload)
@@ -66,7 +66,7 @@ HS256 JWT 签名 = HMAC-SHA256(
 
 HMAC 的本质是将密钥与消息混合后计算哈希：
 
-```
+```text
 HMAC(K, m) = H((K' ⊕ opad) || H((K' ⊕ ipad) || m))
 ```
 
@@ -125,7 +125,7 @@ String secretKey = Base64.getEncoder().encodeToString(keyBytes);
 
 RSA 使用**私钥签名、公钥验证**：
 
-```
+```text
 签名：signer 使用 private key
 验证：verifier 使用 public key
 ```
@@ -134,7 +134,7 @@ RSA 使用**私钥签名、公钥验证**：
 
 ### 3.1.1 签名生成过程
 
-```
+```text
 1. 计算消息摘要：digest = SHA-256(base64(header) + "." + base64(payload))
 
 2. PKCS#1 v1.5 填充：EM = 0x00 || 0x01 || PS || 0x00 || T
@@ -147,7 +147,7 @@ RSA 使用**私钥签名、公钥验证**：
 
 ### 3.1.2 签名验证过程
 
-```
+```text
 1. RSA 公钥运算：EM = signature^e mod n
 
 2. 去除 PKCS#1 v1.5 填充，提取 DigestInfo
@@ -226,7 +226,7 @@ ECDSA 使用椭圆曲线加密，在相同安全强度下密钥更小、速度�
 
 ### 4.1.1 ECDSA 的优势
 
-```
+```text
 安全强度对比（128位安全级别）：
 RSA：需要 3072 位密钥
 ECDSA：只需要 256 位密钥（P-256）
@@ -263,7 +263,7 @@ Jws<Claims> jws = Jwts.parserBuilder()
 
 ECDSA 签名的随机数 `k` **绝对不能**重用。历史上多次因为 k 值重用导致私钥泄漏的事故：
 
-```
+```text
 签名1：k → (r, s1)
 签名2：k → (r, s2)  ← 相同的 r 暴露了 k 被重用
 
@@ -334,7 +334,7 @@ String jwt = Jwts.builder()
 
 ## 6.2 算法推荐
 
-```
+```text
 内部微服务间通信（同域）:
   1st: ES256 或 EdDSA（无状态对称易用）
   2nd: HS256（适合无密钥分发机制的场景）
@@ -382,7 +382,7 @@ JwtParser parser = Jwts.parserBuilder()
 
 ### 7.1.2 轮换策略
 
-```
+```text
 密钥 ID              有效期
 ├── key-2025-01       2025-01-01 ~ 2025-04-01（已过期）
 ├── key-2025-04       2025-04-01 ~ 2025-07-01（正在使用）
@@ -508,7 +508,7 @@ String secret = Base64.getUrlEncoder().withoutPadding().encodeToString(key);
 
 ### 9.1.1 场景一：前后端分离 SPA
 
-```
+```text
 浏览器 ↔ API 网关 ↔ 微服务集群
 
 推荐：RS256 或 ES256
@@ -519,7 +519,7 @@ String secret = Base64.getUrlEncoder().withoutPadding().encodeToString(key);
 
 ### 9.1.2 场景二：微服务内部通信
 
-```
+```text
 服务 A → 服务 B → 服务 C
 
 推荐：HS256（同一可信域内）
@@ -530,7 +530,7 @@ String secret = Base64.getUrlEncoder().withoutPadding().encodeToString(key);
 
 ### 9.1.3 场景三：OAuth2 / OIDC Provider
 
-```
+```text
 Authorization Server → Resource Server
 
 推荐：RS256 或 ES256
@@ -541,7 +541,7 @@ Authorization Server → Resource Server
 
 ### 9.1.4 场景四：移动端 / IoT 设备
 
-```
+```text
 低功耗设备 ↔ 服务器
 
 推荐：EdDSA (Ed25519)
@@ -553,7 +553,7 @@ Authorization Server → Resource Server
 
 ## 9.2 渐进式算法迁移
 
-```
+```text
 阶段1：当前使用 RS256
 阶段2：签发时同时支持 RS256 和 ES256（旧系统用 RS256，新系统用 ES256）
 阶段3：只签发 ES256，但仍验证 RS256（让旧令牌自然过期）

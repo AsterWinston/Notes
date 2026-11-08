@@ -3,7 +3,7 @@
 
 Zuul 的监控体系覆盖网关的四个核心维度：
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │                  Zuul 监控                    │
 │                                              │
@@ -279,7 +279,7 @@ public class ZuulMetricsFilter extends ZuulFilter {
 
 导出到 Prometheus 的指标示例：
 
-```
+```text
 # HELP zuul_requests_total Zuul 请求总数
 # TYPE zuul_requests_total counter
 zuul_requests_total 12345

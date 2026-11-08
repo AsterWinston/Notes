@@ -1,6 +1,6 @@
 # 1. EL表达式
 
-```
+```text
 EL表达式是干什么用的？
 
 Expression Language（表达式语言）
@@ -24,13 +24,13 @@ application
 
 # 2. EL表达式很好用，基本的语法格式
 
-```
+```text
 ${表达式}
 ```
 
 # 3. EL表达式的使用
 
-```
+```text
 <%
 	// 创建User对象
 	User user = new User();
@@ -84,9 +84,9 @@ EL表达式取数据的时候有两种形式：
 
 第一种：. （大部分使用这种方式）
 第二种：[ ] （如果存储到域的时候，这个name中含有特殊字符，可以使用 [ ]）
-request.setAttribute(“abc.def”, “zhangsan”);
+request.setAttribute("abc.def", "zhangsan");
 ${requestScope.abc.def} 这样是无法取值的。
-应该这样：${requestScope[“abc.def”]}
+应该这样：${requestScope["abc.def"]}
 掌握使用EL表达式，怎么从Map集合中取数据：
 
 ${map.key}
@@ -135,7 +135,7 @@ ${!empty param.password}
 
 # 4. EL隐式对象详解
 
-```
+```text
 EL表达式提供了11个隐式对象，分为以下几类：
 
 一、作用域对象（4个）
@@ -195,7 +195,7 @@ ${pageContext.request.requestURI}          -- 获取请求URI
 
 # 5. EL函数
 
-```
+```text
 EL函数允许在EL表达式中调用Java类的静态方法。
 
 使用步骤：

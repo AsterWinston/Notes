@@ -4,7 +4,7 @@ Rust **不是**传统面向对象语言（没有类、没有继承），但它�
 
 ★ **关键认知**：传统 OOP 的三大特性在 Rust 中的对应：
 
-```
+```text
 封装（Encapsulation）  → pub 控制可见性（结构体字段默认私有）
 继承（Inheritance）    → ❌ Rust 没有继承，用"组合 + trait 默认方法"替代
 多态（Polymorphism）   → trait + 泛型（静态分发）/ trait 对象（动态分发）

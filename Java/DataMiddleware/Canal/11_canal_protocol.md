@@ -3,7 +3,7 @@
 
 Canal 的 Client-Server 通信协议基于 **TCP + Protobuf** 实现。客户端通过 TCP 连接到 Canal Server 的指定端口（默认 11111），通过 Protobuf 编码的消息进行交互。
 
-```
+```text
 ┌────────────────────┐                    ┌────────────────────┐
 │   Canal Client     │                    │   Canal Server     │
 │                    │    TCP/Netty       │                    │
@@ -20,7 +20,7 @@ Canal 的 Client-Server 通信协议基于 **TCP + Protobuf** 实现。客户端
 
 每个 Canal 协议消息由两层组成：
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │            Outer Packet                   │
 │                                           │
@@ -130,7 +130,7 @@ public class Packet {
 
 Canal 的 Protobuf 定义在 `canal-protocol` 模块中：
 
-```
+```text
 canal-protocol/src/main/protobuf/
 ├── CanalProtocol.proto    # 通信协议消息定义
 ├── EntryProtocol.proto    # 数据 Entry 定义
@@ -346,7 +346,7 @@ message FlatMessage {
 
 ## 5.1 标准通信流程
 
-```
+```text
 Client                                  Server
   │                                       │
   │──── TCP Connect ────────────────────>│

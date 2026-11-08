@@ -3,7 +3,7 @@
 
 泛化调用（Generic Service）允许**不依赖服务接口的 .class 文件**即可调用远程 Dubbo 服务。Consumer 不需要引入 Provider 的 API 模块。
 
-```
+```text
 传统调用：
   Consumer                                 Provider
   UserService userService (强类型接口)  →  UserServiceImpl

@@ -3,7 +3,7 @@
 
 ## 1.1 提交信息格式
 
-```
+```html
 <type>(<scope>): <subject>
 
 <body>
@@ -32,7 +32,7 @@
 
 ## 1.3 示例
 
-```
+```text
 feat: add user login functionality
 
 Implement OAuth2-based login with JWT token support.
@@ -44,7 +44,7 @@ Closes #123
 BREAKING CHANGE: Removed the deprecated password-based auth
 ```
 
-```
+```text
 fix(auth): resolve token expiry race condition
 
 The refresh token was not being invalidated after password change,
@@ -53,7 +53,7 @@ causing a brief window where old tokens remained valid.
 Fixes #456
 ```
 
-```
+```text
 docs: update API documentation
 
 - Add missing endpoint descriptions
@@ -80,7 +80,7 @@ npm run release
 
 ## 2.1 推荐格式
 
-```
+```text
 feature/<issue-id>-<short-description>
 bugfix/<issue-id>-<short-description>
 hotfix/<issue-id>-<short-description>
@@ -92,7 +92,7 @@ test/<description>
 
 **示例**：
 
-```
+```text
 feature/123-user-login
 bugfix/456-fix-npe-on-empty-input
 hotfix/789-security-patch-cve-2024
@@ -104,7 +104,7 @@ test/add-unit-tests-for-auth
 
 ## 2.2 不推荐的命名
 
-```
+```text
 feature/my-new-feature      # 太长，无 Issue 关联
 fix                        # 太简短
 johns-branch               # 人名相关
@@ -130,7 +130,7 @@ git fetch --prune
 
 ## 3.1 提交粒度
 
-```
+```text
 太细：太过琐碎，没有意义
   ✗ "fix typo"
   ✗ "add space"
@@ -169,7 +169,7 @@ git commit -m "lots of changes"
 
 ## 3.3 提交信息最佳实践
 
-```
+```text
 1. 第一行不超过 50 个字符
 2. 第一行首字母小写（Conventional Commits 规范）
 3. 第一行不加句号

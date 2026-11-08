@@ -217,7 +217,7 @@ public class RetryableErrorDecoder implements ErrorDecoder {
 
 # 8. 重试对幂等性的影响
 
-```
+```text
 重试风险：
   POST /orders → 创建订单  → 不幂等！重试可能导致重复创建
   GET  /users/1  → 查询用户  → 幂等，安全重试

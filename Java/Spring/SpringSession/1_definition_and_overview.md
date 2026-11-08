@@ -26,7 +26,7 @@ Spring Session 是 Spring 生态中用于**管理用户会话（Session）信息
 
 ### 1.1.2 Spring Session 提供的解决方案
 
-```
+```text
 传统架构：                          Spring Session 架构：
 ┌─────────────┐                    ┌─────────────┐
 │  浏览器      │                    │  浏览器      │
@@ -94,7 +94,7 @@ Spring Session 是 Spring 生态中用于**管理用户会话（Session）信息
 
 ### 1.3.1 典型应用场景
 
-```
+```text
 场景一：微服务 + 分布式部署
 ┌─────────────────────────────────────┐
 │  Service A    Service B    Service C│
@@ -131,7 +131,7 @@ Spring Session 是 Spring 生态中用于**管理用户会话（Session）信息
 
 ### 1.4.1 Spring Session vs Spring Security
 
-```
+```text
 Spring Security
   └── 认证（Authentication）
   └── 授权（Authorization）

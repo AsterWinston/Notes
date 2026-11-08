@@ -6,7 +6,7 @@
 
 ### 1.1.1 检索视角
 
-```
+```text
 块小 → 检索准（语义聚焦），但喂给模型的信息不完整
 块大 → 信息完整，但检索不准（语义被稀释）
 ```
@@ -27,7 +27,7 @@ LLM（Large Language Model，大语言模型）需要足够上下文才能作答
 
 用信息密度与语义聚焦度可粗略量化这一矛盾：
 
-```
+```text
 语义聚焦度 ≈ 1 / 块内主题数
 信息完整度 ≈ 块内主题覆盖率
 ```
@@ -42,7 +42,7 @@ LLM（Large Language Model，大语言模型）需要足够上下文才能作答
 
 ## 1.2 父子分块的核心思想
 
-```
+```text
 小块用于"检索"（精准命中），大块用于"生成"（信息完整）
 ```
 
@@ -63,7 +63,7 @@ LLM（Large Language Model，大语言模型）需要足够上下文才能作答
 
 ## 2.1 父子层级模型
 
-```
+```text
 父块 P1（完整章节，约 1500 字）
 ├── 子块 C1（约 300 字）→ 向量化，用于检索
 ├── 子块 C2（约 300 字）→ 向量化，用于检索
@@ -140,7 +140,7 @@ TextSegment child = TextSegment.from(text, Metadata.from(meta));
 
 ## 3.1 双存储架构
 
-```
+```text
 ┌──────────────┐        ┌──────────────┐
 │   向量库      │        │  文档/关系库  │
 │  子块向量     │        │   父块全文    │
@@ -200,7 +200,7 @@ public void writeParentChild(ParentDocument parent, List<TextSegment> kids) {
 
 ## 4.1 四步流程
 
-```
+```text
 查询
   │
   ▼
@@ -334,7 +334,7 @@ public class ParentChildRetriever {
 
 若框架版本不提供 `ParentDocumentRetriever`，可用下述伪代码表达等价语义：
 
-```
+```javascript
 function retrieve(query):
     children = vectorSearch(query, topK)
     parents  = orderedSet()
@@ -359,14 +359,14 @@ function retrieve(query):
 
 ## 6.2 调参直觉
 
-```
+```text
 父块/子块比 ≈ 4 ~ 6 倍
 父块去重后数量 ≈ 上下文预算 / 父块 Token 数
 ```
 
 ### 6.2.1 预算分配示例
 
-```
+```text
 上下文窗口 8K Token
 预留系统提示与答案 2K
 可用上下文 6K
@@ -385,7 +385,7 @@ function retrieve(query):
 
 ## 7.1 机制
 
-```
+```text
 以"句子"为单位向量化，元数据记录所在段落
 命中句子 → 扩展前后 N 句 → 返回窗口内容
 ```
@@ -495,7 +495,7 @@ metrics.record(m);
 
 ## 10.2 落地清单
 
-```
+```text
 1. 定义父/子切分器（父 1000~2000 字，子 200~400 字）
 2. 子块写入向量库并带 parentId
 3. 父块写入文档库

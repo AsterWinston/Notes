@@ -8,7 +8,7 @@ JAX-RS（Jakarta RESTful Web Services）是 JavaEE 的 **RESTful Web 服务规�
 - 参考实现（RI）：**Jersey**
 - 其他实现：**RESTEasy**（Red Hat）、Apache CXF
 
-```
+```text
 HTTP 方法（GET/POST/PUT/DELETE/PATCH）
     │
     ▼
@@ -89,7 +89,7 @@ public class UserResource {
 
 ## 4.1 路径与查询参数
 
-```
+```java
 GET /users/1001?page=2&size=20
 
 @Path("/{id}")

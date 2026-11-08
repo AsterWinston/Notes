@@ -224,7 +224,7 @@ taskset -c 2-3 command            # 启动时绑定到 CPU 2-3
 
 ## 7.1 概念层级
 
-```
+```text
 会话 (Session)
  ├── 前台进程组 (Foreground Process Group)
  │   ├── 进程 A

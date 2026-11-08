@@ -5,7 +5,7 @@
 
 Jakarta Concurrency（原 JSR-236）为 JavaEE 环境提供**受容器管理的并发 API**，让应用可以在容器内安全地执行异步任务、定时任务，而无需直接操作线程。
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │  应用（EJB/CDI/Servlet）                  │
 │        │ @Asynchronous / 注入 Executor   │
@@ -105,7 +105,7 @@ public void runWithContext(Runnable task) {
 
 Jakarta Batch（原 JSR-352）提供**标准化的批处理框架**，支持分块处理、监听器、跳过/重试、检查点等。参考实现：**JBeret**（WildFly）等。
 
-```
+```text
 Job（作业）
   ├─ Step（步骤）1
   │    ├─ ItemReader（读取）

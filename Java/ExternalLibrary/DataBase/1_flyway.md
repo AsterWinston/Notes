@@ -105,7 +105,7 @@ U2__add_email_column.sql    -- 撤销 V2
 
 完整的文件名格式：
 
-```
+```text
 [Prefix][Version]__[Description].[Suffix]
   │          │            │           │
   V         1             create_user sql
@@ -836,7 +836,7 @@ public class FlywayAutoConfiguration {
 
 ### 8.2.1 校验失败
 
-```
+```text
 ERROR: Validate failed: Migrations have failed validation
 Detected applied migration not resolved locally: V3
 ```

@@ -2,7 +2,7 @@
 
 # 1. 分片核心概念
 
-```
+```text
 逻辑表 t_order (1000 万行)
     │
     │ user_id % 2 (分库) + order_id % 2 (分表)
@@ -294,7 +294,7 @@ SELECT * FROM t_order WHERE order_id > #{lastMaxId} ORDER BY order_id LIMIT 10;
 
 把日常 SQL 按路由宽度分四档，心里有了这张表就很少写出灾难 SQL：
 
-```
+```text
 代价
  ▲
  │  ┌────────────┐

@@ -230,7 +230,7 @@ public class MetricsLoadBalancerLifecycle
 
 推荐的项目包结构：
 
-```
+```text
 com.example.config
   ├── loadbalancer/
   │   ├── config/                     ← 不被 @ComponentScan 扫描

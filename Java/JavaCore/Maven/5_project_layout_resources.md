@@ -1,7 +1,7 @@
 
 # 1. 标准目录结构
 
-```
+```text
 project
 ├── pom.xml
 ├── src
@@ -22,7 +22,7 @@ project
 
 ## 1.1 Web 项目布局（WAR）
 
-```
+```text
 project
 ├── pom.xml
 ├── src
@@ -115,7 +115,7 @@ project
 ```
 
 资源文件示例：
-```
+```properties
 app.name=demo
 app.version=${project.version}
 ```

@@ -311,7 +311,7 @@ relabel_configs:
 
 ## 7.3 默认 Relabel 流程
 
-```
+```text
 __address__ ──> instance (默认 replace)
 __scheme__  ──> scheme
 __metrics_path__ ──> metrics_path

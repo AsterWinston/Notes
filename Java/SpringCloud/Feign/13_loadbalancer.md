@@ -3,7 +3,7 @@
 
 Spring Cloud OpenFeign 默认集成了 **Spring Cloud LoadBalancer**，可以将 `@FeignClient` 中的服务名（`name`）自动解析为实际的服务实例地址，并实现客户端负载均衡。
 
-```
+```text
 服务名 (user-service)
     │
     │  Spring Cloud LoadBalancer
@@ -234,7 +234,7 @@ UserClient client = Feign.builder()
 
 # 9. LoadBalancer 生命周期
 
-```
+```text
 首次请求某个服务
     │
     ├── ServiceInstanceListSupplier 获取实例列表

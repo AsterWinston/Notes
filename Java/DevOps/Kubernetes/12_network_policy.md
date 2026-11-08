@@ -15,7 +15,7 @@ NetworkPolicy 是 Kubernetes 内置的"防火墙"，允许你定义 Pod 之间�
 
 Kubernetes 的默认策略是"全部放行"（allow-all）。一旦你创建了第一条 NetworkPolicy，未被该策略明确允许的流量就可能被拒绝（取决于 CNI 插件的实现和策略的具体规则）。
 
-```
+```text
 无 NetworkPolicy:
 ┌─────────┐    ┌─────────┐
 │  Pod A  │◄──►│  Pod B  │    所有流量自由通行
@@ -506,7 +506,7 @@ kubectl run debug --rm -it --image=nicolaka/netshoot -- /bin/bash
 
 ## 4.4 生产环境推荐策略
 
-```
+```text
 推荐的 NetworkPolicy 配置层级：
 
 层级 1: 全局基线

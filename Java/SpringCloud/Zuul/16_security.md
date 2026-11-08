@@ -3,7 +3,7 @@
 
 Zuul 作为 API 网关，是安全体系的第一道防线。典型安全职责：
 
-```
+```text
 客户端 → Zuul 网关安全层
               │
               ├── 身份认证（Authentication）
@@ -109,7 +109,7 @@ Zuul 与 Spring MVC 的 CORS 处理可能冲突。如果同时配置了 `CorsFil
 
 ## 3.1 认证流程设计
 
-```
+```text
 客户端                            Zuul 网关                         后端服务
    │                                │                                │
    ├─ POST /auth/login ────────────→│                                │

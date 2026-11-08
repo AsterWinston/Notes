@@ -22,7 +22,7 @@ OAuth2 的核心是通过不同的**授权模式（Authorization Grant Types）*
 
 Authorization Code 模式是整个 OAuth2 的基石，理解其流程等于掌握了 OAuth2 的核心。
 
-```
+```text
       用户                  客户端               授权服务器          资源服务器
        │                     │                     │                  │
        │  1. 点击"GitHub登录"  │                     │                  │
@@ -114,7 +114,7 @@ Host: auth-server.example.com
 
 ### 2.2.2 第 5-8 步：用户认证并授权
 
-```
+```text
 授权服务器内部处理流程：
 
 1. 解析请求参数，验证 client_id 和 redirect_uri
@@ -136,7 +136,7 @@ Host: auth-server.example.com
 
 ### 2.2.3 第 9-10 步：颁发授权码并重定向
 
-```
+```text
 授权服务器生成 Authorization Code：
 
 code 的特征：
@@ -174,7 +174,7 @@ grant_type=authorization_code
 
 **授权服务器的验证步骤**（必须严格按顺序）：
 
-```
+```text
 1. 验证 client_id 是否存在、client_secret 是否正确
 2. 验证 grant_type 是否为 authorization_code
 3. 验证 authorization code 是否存在、是否已过期
@@ -223,7 +223,7 @@ grant_type=authorization_code
 
 ### 2.3.1 为什么 Authorization Code 比 Implicit 更安全？
 
-```
+```text
 安全核心：Access Token 不经过浏览器（User-Agent）传递
 
 Implicit 模式的问题：
@@ -242,7 +242,7 @@ Authorization Code 模式的保障：
 
 **攻击场景**：恶意应用注册了相同的自定义 URL Scheme，截获回调 URL：
 
-```
+```text
 Android 示例：
 用户安装了恶意 App "Evil App"，也注册了 myapp://callback 这个 scheme。
 授权服务器重定向 myapp://callback?code=real_code 时，系统弹出选择框。
@@ -262,7 +262,7 @@ PKCE（RFC 7636，发音 "pixy"）最初是为移动 App 和 Native 应用设计
 
 **为什么 Native App 和 SPA 尤其需要 PKCE？**
 
-```
+```text
 场景对比：
 
 Web 应用 (机密客户端)：
@@ -279,7 +279,7 @@ Native App (公开客户端)：
 
 ### 3.2.1 code_verifier
 
-```
+```text
 定义：高熵随机字符串，由客户端生成
 字符集：ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~
 长度：43-128 字符（RFC 7636 要求）
@@ -294,7 +294,7 @@ String code_verifier = Base64.getUrlEncoder().withoutPadding().encodeToString(co
 
 ### 3.2.2 code_challenge
 
-```
+```text
 两种计算方式：
 
 1. S256（推荐，必须实现）：
@@ -311,7 +311,7 @@ String code_challenge = Base64.getUrlEncoder().withoutPadding().encodeToString(d
 
 ### 3.2.3 参数传递流程
 
-```
+```text
 请求 /authorize：
   &code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
   &code_challenge_method=S256
@@ -342,7 +342,7 @@ String code_challenge = Base64.getUrlEncoder().withoutPadding().encodeToString(d
 
 Client Credentials 是唯一一个不涉及用户的授权模式，专为**服务器到服务器**通信设计。
 
-```
+```text
 典型应用场景：
 
 1. 微服务间 API 调用
@@ -398,7 +398,7 @@ grant_type=client_credentials
 
 ## 4.4 Client Credentials 的安全考量
 
-```
+```text
 安全要点：
 
 1. client_secret 保护
@@ -446,7 +446,7 @@ JWT Assertion 的优势：
 
 ## 5.1 为什么被淘汰
 
-```
+```text
 核心问题：违背 OAuth2 的根本设计理念
 
 OAuth2 的初衷：用户不把密码给第三方
@@ -487,7 +487,7 @@ Password 模式：用户把密码给第三方
 
 ## 6.1 历史角色与淘汰原因
 
-```
+```text
 历史背景：
 2012 年 OAuth2 发布时，浏览器的跨域请求能力有限。
 SPA 无法用 JS 直接 POST 到 Token Endpoint（CORS 未普及）。
@@ -514,7 +514,7 @@ SPA 无法用 JS 直接 POST 到 Token Endpoint（CORS 未普及）。
 
 ## 6.2 现代替代方案
 
-```
+```text
 SPA 的 OAuth2 最佳实践：
 
 方案：Authorization Code + PKCE（无 client_secret）
@@ -549,7 +549,7 @@ SPA 的 OAuth2 最佳实践：
 
 ## 7.2 协议流程
 
-```
+```text
            设备/CLI                  授权服务器                  用户的手机/PC
               │                         │                          │
               │  1. POST /device_authorization                     │
@@ -626,7 +626,7 @@ grant_type=urn:ietf:params:oauth:grant-type:device_code
 
 ## 7.3 安全考量
 
-```
+```text
 1. 速率限制
    - 轮询间隔应逐渐增加（exponential backoff）
    - 防止暴力猜测 user_code
@@ -647,7 +647,7 @@ grant_type=urn:ietf:params:oauth:grant-type:device_code
 
 RFC 8693 定义了 Token Exchange 机制，允许一个 Token 换取另一个 Token：
 
-```
+```text
 场景：
 - 委托授权（Delegation）— 服务 A 用其 Token 换取代表用户的 Token 调用服务 B
 - 降权限（Downgrade Scope）— 减少 Token 的权限范围
@@ -665,7 +665,7 @@ POST /token
 
 # 9. 授权模式选择决策树（完整版）
 
-```
+```text
                           ┌─────────────┐
                           │  开始选择    │
                           └──────┬──────┘

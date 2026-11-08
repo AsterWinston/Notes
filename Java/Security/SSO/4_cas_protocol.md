@@ -3,7 +3,7 @@
 
 **CAS（Central Authentication Service）** 是耶鲁大学开发的开源 SSO 协议，广泛用于 Java Web 应用的企业内部认证。CAS 以票据（Ticket）为核心，提供完整的认证、单点登出（SLO）和代理（Proxy）能力。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                        CAS 核心架构                               │
 │                                                                   │
@@ -33,7 +33,7 @@
 
 ## 2.1 票据类型与关系
 
-```
+```text
 TGC (Ticket Granting Cookie)
   │  浏览器 Cookie，表示用户已全局认证
   │  存储在客户端，每次访问 CAS Server 时携带
@@ -104,7 +104,7 @@ public class DefaultTicketRegistry extends AbstractTicketRegistry {
 
 ## 3.2 CAS 1.0 协议（已过时）
 
-```
+```text
 验证请求：
 GET /validate?service=app-url&ticket=ST-xxx
 
@@ -163,7 +163,7 @@ GET /p3/serviceValidate?service=app-url&ticket=ST-xxx&format=JSON
 
 ## 4.1 首次访问（未登录）
 
-```
+```text
 浏览器                     App Server              CAS Server
   │                            │                       │
   │ 1. GET /protected          │                       │
@@ -218,7 +218,7 @@ GET /p3/serviceValidate?service=app-url&ticket=ST-xxx&format=JSON
 
 ## 4.2 访问第二个应用（已登录）
 
-```
+```text
 浏览器                     App B                  CAS Server
   │                            │                       │
   │ 1. GET /app-b              │                       │
@@ -314,7 +314,7 @@ public class TicketValidationFilter extends AbstractTicketValidationFilter {
 
 ## 5.1 SLO 流程
 
-```
+```text
 用户点击登出
      │
      ▼
@@ -425,7 +425,7 @@ public class SingleSignOutFilter implements Filter {
 
 ## 6.1 代理模式场景
 
-```
+```text
 用户 ──→ App A（前端应用，有用户 Session）
               │
               │ 需要以"用户身份"访问 App B（后端 API）
@@ -438,7 +438,7 @@ public class SingleSignOutFilter implements Filter {
 
 ## 6.2 Proxy 认证流程
 
-```
+```text
 用户        App A (SP)          CAS Server          App B (Target)
  │             │                    │                    │
  │ 1. 已登录   │                    │                    │

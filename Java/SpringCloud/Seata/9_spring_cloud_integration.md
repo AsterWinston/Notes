@@ -10,7 +10,7 @@ Seata 通过 `spring-cloud-starter-alibaba-seata` 与 Spring Cloud Alibaba 生�
 
 # 2. 项目结构
 
-```
+```text
 order-service/
 ├── pom.xml
 ├── src/main/resources/
@@ -96,7 +96,7 @@ spring:
 
 Seata 内置 `SeataFeignClientAutoConfiguration`，自动为每个 Feign 请求添加 `TX_XID` 请求头：
 
-```
+```text
 订单服务 (TM)                    账户服务 (RM)
      │                                │
      │ Feign Request                  │

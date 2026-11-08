@@ -33,7 +33,7 @@
 
 ## 2.1 两者共通的底层思想
 
-```
+```text
 依赖注入（DI）      ：CDI @Inject  ≈ Spring @Autowired
 面向切面（AOP）     ：Interceptors  ≈ Spring AOP
 声明式事务          ：@TransactionAttribute ≈ @Transactional
@@ -58,7 +58,7 @@
 
 # 3. 学习路线回顾
 
-```
+```text
 第 1 步：Web 层      Servlet/JSP/EL/JSTL       → JavaWeb 笔记（实操）
 第 2 步：组件模型    CDI/DI/拦截器/托管Bean    → 理解 IoC/AOP 本质
 第 3 步：数据与事务  JDBC/JPA/JTA              → 理解持久化与事务边界
@@ -83,7 +83,7 @@
 
 # 4. JavaEE 与 Spring 的共存形态
 
-```
+```text
 形态一：纯 JavaEE     → 应用服务器（GlassFish/WildFly）+ EJB/JSF/JPA
 形态二：纯 Spring     → Spring Boot + 内嵌 Tomcat + Spring 全家桶
 形态三：混合（存量）  → 应用服务器 + Spring（通过 jndi/事务管理器集成）

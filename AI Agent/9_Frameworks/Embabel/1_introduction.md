@@ -2,7 +2,7 @@
 
 **结论先行**：**Embabel** 是面向 JVM（Java 虚拟机）的 Agent（智能体）框架，由 Spring 生态知名开发者 Rod Johnson 创建，核心特色是**基于 GOAP（Goal-Oriented Action Planning，目标导向动作规划）的目标导向规划**。
 
-```
+```text
 Embabel = Spring + GOAP 规划 + Agent
 ```
 
@@ -42,7 +42,7 @@ Rod Johnson 是 Spring Framework 的创始人。Embabel 延续了他"**用约定
 
 ## 1.5 架构分层
 
-```
+```text
 ┌────────────────────────────────────┐
 │  应用层：目标声明（Goal）           │
 ├────────────────────────────────────┤
@@ -70,7 +70,7 @@ Rod Johnson 是 Spring Framework 的创始人。Embabel 延续了他"**用约定
 
 **结论先行**：**GOAP（Goal-Oriented Action Planning）** = 从目标出发，自动搜索达成目标的动作序列。
 
-```
+```text
 目标：完成旅行规划
   ↓ 反向搜索
 前置条件：知道天气、知道预算
@@ -92,7 +92,7 @@ GOAP 把世界建模为**状态集合**（一组键值对），目标是**期望
 
 ### 2.1.2 前向与反向搜索
 
-```
+```text
 反向搜索（Embabel 常用）：
   目标 itinerary=done
     ← 需要 precond: weather=known
@@ -114,7 +114,7 @@ GOAP 把世界建模为**状态集合**（一组键值对），目标是**期望
 
 ## 2.2 一个例子
 
-```
+```text
 目标：itinerary=done
 
 可用动作：
@@ -214,7 +214,7 @@ public City resolveCity(String cityName) {
 
 方法的**参数类型**天然构成前置条件：要调用 `getWeather(City)`，状态中必须已有 `City`。
 
-```
+```text
 City 不存在 → getWeather 不可执行
 City 存在   → getWeather 可执行，产出 Weather
 ```
@@ -271,7 +271,7 @@ City 存在   → getWeather 可执行，产出 Weather
 
 ## 4.3 决策示意
 
-```
+```text
 路径是否固定？
  ├─ 是 → 传统编排
  └─ 否 → 动作是否类型清晰、可组合？
@@ -318,7 +318,7 @@ City 存在   → getWeather 可执行，产出 Weather
 
 ## 5.3 反例
 
-```
+```text
 反例：用 Embabel 做"固定三步的数据清洗管道"
 问题：路径完全固定，GOAP 规划纯属浪费
 修复：直接写顺序代码
@@ -405,7 +405,7 @@ public Summary summarize(Document doc) {
 
 ## 7.1 五步路径
 
-```
+```text
 ① 理解 GOAP 概念
 ② 定义 Goal / Action / Precondition
 ③ 使用 Planner 自动规划

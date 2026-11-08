@@ -3,7 +3,7 @@
 
 Jenkins 的安全体系分为三个层次：
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │          认证（Authentication）              │
 │  确认"你是谁"：用户名密码、LDAP、SSO、Token   │
@@ -27,7 +27,7 @@ Jenkins 的安全体系分为三个层次：
 
 **配置路径**：Manage Jenkins > Security > Security Realm
 
-```
+```text
 Security Realm:
   - Jenkins' own user database
     - Allow users to sign up: false（生产环境关闭注册）
@@ -68,7 +68,7 @@ Security Realm: LDAP
 
 通过插件支持单点登录：
 
-```
+```text
 支持的插件：
 - SAML Plugin：使用 SAML 2.0 协议
 - CAS Plugin：使用 CAS 协议  
@@ -182,7 +182,7 @@ User/Group: anonymous
 
 **角色类型**：
 
-```
+```text
 Global Roles（全局角色）：
   - admin: 完全访问
   - developer: 开发者权限
@@ -276,7 +276,7 @@ Folder roles:
 
 Jenkins 凭据加密基于对称加密，使用存储在 Master 文件系统中的密钥：
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │                  加密流程                         │
 │                                                   │
@@ -424,7 +424,7 @@ ID: client-cert
 
 Jenkins 凭据不仅限于 Jenkins 自身，还可以集成外部凭据存储：
 
-```
+```text
 支持的凭据提供者（需插件）：
 ├── Jenkins 内置存储（默认）
 ├── HashiCorp Vault Plugin

@@ -31,7 +31,7 @@ starter-test 传递引入的核心依赖：
 
 Spring Boot 2.1 之后，`@SpringBootTest` 元注解上带了 `@ExtendWith(SpringExtension.class)`——这是 JUnit 5 扩展模型（Extension）对 JUnit 4 `SpringRunner` 的替代。所以**写 `@SpringBootTest` 的测试类不需要再显式声明任何 `@ExtendWith`**，Spring 容器已经被接入了 Jupiter 的生命周期：
 
-```
+```text
 ┌────────────────────────────────────────────────────────────┐
 │              JUnit Jupiter 执行一个 Spring 测试             │
 │                                                            │

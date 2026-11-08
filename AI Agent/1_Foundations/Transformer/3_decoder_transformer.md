@@ -6,7 +6,7 @@
 
 **原理**：Transformer 有三种用法，区别在于使用编码器还是解码器、注意力是否加因果掩码。
 
-```
+```text
 Encoder-only（BERT）：双向注意力，适合理解
 Decoder-only（GPT）：因果注意力，适合生成
 Encoder-Decoder（T5）：适合序列到序列
@@ -61,7 +61,7 @@ Decoder-only 的预训练目标就是"给定前文，预测下一个词"。推�
 
 **原理**：训练时整个序列一次前向，如果第 i 个位置能看到第 j > i 个位置，就相当于"偷看答案"，模型学不到真正的预测能力。掩码把不允许的位置权重压到 0。
 
-```
+```text
 每个位置只能看到自己和之前的位置：
 
 位置:  1  2  3  4
@@ -77,7 +77,7 @@ Decoder-only 的预训练目标就是"给定前文，预测下一个词"。推�
 
 **公式**：注意力分数先缩放，再加上掩码，最后 Softmax：
 
-```
+```text
 scores = Q · Kᵀ / √d_k
 scores = scores + M          # M 的上三角为 -inf
 attn   = softmax(scores)     # -inf 位置权重为 0
@@ -120,7 +120,7 @@ def causal_mask(seq_len):
 
 ## 3.1 逐步生成过程
 
-```
+```text
 输入:  "今天天气"
   ↓
 预测:  "真"
@@ -134,7 +134,7 @@ def causal_mask(seq_len):
 
 **原理**：第 t 步的输出依赖第 1 到 t-1 步的全部输出，形成链式分解：
 
-```
+```text
 P(x1, x2, ..., xn) = ∏ P(x_t | x_1, ..., x_{t-1})
 ```
 
@@ -159,7 +159,7 @@ P(x1, x2, ..., xn) = ∏ P(x_t | x_1, ..., x_{t-1})
 
 温度的作用可写为：
 
-```
+```text
 probs = softmax(logits / T)
 ```
 
@@ -204,7 +204,7 @@ def generate(model, prompt, max_new_tokens):
 
 ## 4.2 推理：串行
 
-```
+```text
 训练：一次前向处理所有位置（利用掩码）
 推理：每生成一个 token 都要一次前向 → 慢
 ```
@@ -237,7 +237,7 @@ KV Cache 用显存换取速度，其大小随序列长度线性增长，成为�
 
 ## 5.1 下一 Token 预测
 
-```
+```text
 下一 Token 预测（Next Token Prediction）：
 
 输入:  [BOS] 今 天 天 气 真 好
@@ -252,7 +252,7 @@ KV Cache 用显存换取速度，其大小随序列长度线性增长，成为�
 
 **公式**：交叉熵损失
 
-```
+```text
 L = - (1/N) Σ_t log P(x_t | x_<t)
 ```
 
@@ -298,7 +298,7 @@ loss = cross_entropy(logits[:, :-1], targets[:, 1:])
 
 ## 6.1 为什么需要位置信息
 
-```
+```text
 注意力本身无序（置换不变）
 必须注入位置信息 → 位置编码
 ```
@@ -317,7 +317,7 @@ loss = cross_entropy(logits[:, :-1], targets[:, 1:])
 
 **公式**：RoPE 通过对查询与键施加与位置相关的旋转，使内积只依赖相对位置：
 
-```
+```text
 ⟨R_m q, R_n k⟩ = f(q, k, m - n)
 ```
 
@@ -337,7 +337,7 @@ loss = cross_entropy(logits[:, :-1], targets[:, 1:])
 
 ## 7.1 标准解码器块
 
-```
+```text
 Input Embedding
   ↓
 [Decoder Block] × N
@@ -367,7 +367,7 @@ LM Head（输出层）
 
 **公式**：只做均方根缩放，不减均值：
 
-```
+```text
 RMSNorm(x) = x / √(mean(x²) + ε) · γ
 ```
 
@@ -377,7 +377,7 @@ RMSNorm(x) = x / √(mean(x²) + ε) · γ
 
 **公式**：门控线性单元的一种：
 
-```
+```text
 SwiGLU(x) = (xW₁ ⊙ swish(xW₃)) W₂
 ```
 
@@ -407,7 +407,7 @@ SwiGLU(x) = (xW₁ ⊙ swish(xW₃)) W₂
 
 ## 8.1 单层参数拆解
 
-```
+```text
 模型大小 ≈ 层数 × 每层参数
 
 每层参数：
@@ -425,7 +425,7 @@ SwiGLU(x) = (xW₁ ⊙ swish(xW₃)) W₂
 
 **公式**：
 
-```
+```text
 总参数 ≈ 12 × L × d_model²
 ```
 
@@ -501,7 +501,7 @@ SwiGLU(x) = (xW₁ ⊙ swish(xW₃)) W₂
 
 ## 10.2 记忆口诀
 
-```
+```text
 因果掩码定方向，下一 Token 是目标
 训练并行推理慢，KV Cache 来救场
 Norm 换 RMS，位置用 RoPE

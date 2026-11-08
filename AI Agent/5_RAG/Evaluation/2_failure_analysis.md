@@ -1,6 +1,6 @@
 # 1. 失败定位三步法
 
-```
+```text
 ① 复现：能否用相同输入稳定复现？
 ② 定位：失败在检索还是生成？
 ③ 归因：属于哪一类失败？
@@ -46,7 +46,7 @@ public record FailureCase(
 
 ### 1.2.2 定位工具
 
-```
+```text
 问题 ─► 检索 ─► [打印命中文档] ─► 生成 ─► [打印回答]
             │                          │
             └──── 答案在上下文？───────┘
@@ -110,7 +110,7 @@ private boolean containsAnswer(String text, String expected) {
 
 ### 2.2.1 三种结果
 
-```
+```text
 答案不在上下文 → 检索失败（A 类）
 答案在上下文但答错 → 生成失败（B 类）
 答案在上下文且答对 → 非失败，检查是否偶发
@@ -323,7 +323,7 @@ public List<String> lint(String answer, List<String> mustContain,
 
 ### 5.2.2 案例生命周期
 
-```
+```text
 发现失败 ─► 定位归因 ─► 修复验证 ─► 归档案例 ─► 回流评测集
 ```
 
@@ -333,7 +333,7 @@ public List<String> lint(String answer, List<String> mustContain,
 
 ### 6.1.1 闭环流程
 
-```
+```text
 失败案例 → 分析归因 → 修复 → 加入评测集 → 防回归
 ```
 
@@ -401,7 +401,7 @@ public FailureReport analyzeBatch(List<EvalCase> cases) {
 
 输出示例：
 
-```
+```text
 RETRIEVAL: 18
 GENERATION: 7
 → 结论：检索是主要瓶颈，优先优化分块与混合检索

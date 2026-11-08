@@ -27,7 +27,7 @@ export function add(a: number, b: number): number { return a + b; }   // 源码
 npx tsc --noEmit                          # 返回非零退出码 = 类型检查失败，流水线中断
 ```
 
-```
+```text
   git push ──▶ CI ──▶ ┌────────────────────┐ ──▶ 测试 ──▶ 发布
                       │ npx tsc --noEmit   │
                       │ （类型关卡，秒级~） │
@@ -59,7 +59,7 @@ type T = { a: number };                    // 纯类型：人人可安全删除
 
 ## 2.2 类型检查与转译分离的工程模式
 
-```
+```text
                  ┌──────────────────────┐
    src/*.ts ────▶│  esbuild / swc 转译  │────▶ dist/*.js      （速度线：秒级）
                  │  （擦类型 + 降级）    │
@@ -123,7 +123,7 @@ type T = { a: number };                    // 纯类型：人人可安全删除
 
 ## 4.1 双格式 ESM + CJS 的目录结构
 
-```
+```text
    my-lib/
    ├── src/                     TS 源码（唯一事实源）
    ├── dist/

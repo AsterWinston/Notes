@@ -4,7 +4,7 @@ LLM（大语言模型，Large Language Model）应用的"发布"对象远多于�
 
 ## 1.1 发布对象清单
 
-```
+```text
 ① 代码（业务逻辑）
 ② 镜像（应用）
 ③ 配置（模型、阈值）
@@ -94,7 +94,7 @@ LLM（大语言模型，Large Language Model）应用的"发布"对象远多于�
 
 ## 3.1 放量阶段
 
-```
+```text
 阶段1：1% 流量 → 观察 30 分钟
 阶段2：10% 流量 → 观察 1 小时
 阶段3：50% 流量 → 观察 2 小时
@@ -233,7 +233,7 @@ kubectl delete -f deployment-blue.yaml
 
 ## 5.1 原理
 
-```
+```text
 真实请求 ──┬──▶ 稳定版 ──▶ 返回用户
            │
            └──▶ 影子版 ──▶ 只记录结果（不返回）
@@ -309,7 +309,7 @@ public String resolvePromptVersion(UserContext user) {
 
 删除期间检索会失败，用户请求直接报错；重建耗时可能数小时，服务不可用窗口无法接受。
 
-```
+```text
 ① 用新配置构建新索引（新表/新集合）
 ② 双写：新数据同时写入新旧索引
 ③ 灰度：部分流量走新索引
@@ -388,7 +388,7 @@ configCenter.rollback("ai-app", "prompt-version", previousRevision);
 
 # 9. 回滚演练
 
-```
+```text
 定期演练：
 - 模拟故障 → 执行回滚 → 记录耗时
 - 目标：5 分钟内完成回滚

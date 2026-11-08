@@ -44,7 +44,7 @@
 
 结论先行：正确顺序是工作流 → 单 Agent → 多 Agent，逐级验证后再升级。
 
-```
+```text
 工作流（确定性编排）→ 单 Agent（ReAct + 工具）→ 多 Agent（分工协作）
 ```
 
@@ -168,7 +168,7 @@ public Agent get(String name) {
 
 结论先行：按任务特征选择编排模式，优先选最简单的可用模式。
 
-```
+```text
 任务可分解、需协调 → Supervisor
 固定顺序 → 流水线
 独立子任务 → 并行
@@ -356,7 +356,7 @@ public class BudgetGuard {
 
 结论先行：用父子 span 还原协作链，每次交接是一个 span。
 
-```
+```text
 Trace: 用户任务
 ├── Span: Supervisor 决策 1
 ├── Span: Agent A（输入、输出、耗时、Token）
@@ -493,7 +493,7 @@ class SupervisorOrchestratorTest {
 
 结论先行：以"传全量历史"为例，拆解其如何从方便演变为灾难。
 
-```
+```text
 初始：2 个 Agent，历史短，无感
    │ 轮次增加 → 历史线性增长 → 上下文膨胀 → 成本上升
    │ 超上下文窗口 → 被迫截断 → 早期信息丢失 → 目标漂移

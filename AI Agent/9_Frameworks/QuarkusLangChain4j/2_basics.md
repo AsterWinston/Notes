@@ -8,7 +8,7 @@
 
 ### 1.1.2 目录树
 
-```
+```text
 src/main/java/com/example
 ├── Assistant.java          AI Service 接口
 ├── ChatResource.java       REST 端点
@@ -20,7 +20,7 @@ src/main/resources
 
 ### 1.1.3 扩展后的建议布局
 
-```
+```text
 com.example
 ├── ai/                     AI Service 接口
 │   ├── Assistant.java
@@ -92,7 +92,7 @@ public interface Assistant {
 
 构建期扩展为接口生成实现类：
 
-```
+```text
 接口 Assistant
    │ 构建期扫描 @RegisterAiService
    ▼
@@ -191,7 +191,7 @@ RESTEasy Reactive 在事件循环或工作线程上执行；模型调用是阻�
 
 `Multi<String>` 是 Mutiny 的响应式流，`SERVER_SENT_EVENTS` 将其逐条推送给客户端。
 
-```
+```text
 客户端 ──GET /stream──► Resource ──stream()──► LLM
    ▲                                            │
    └────────── SSE 逐 token ────────────────────┘
@@ -262,7 +262,7 @@ public interface Assistant {
 
 ### 4.2.3 工具调用循环
 
-```
+```text
 用户问题
   → 模型决定调用工具
   → 框架执行 Java 方法
@@ -298,7 +298,7 @@ public interface Assistant {
 
 ### 5.1.2 @MemoryId 机制
 
-```
+```text
 @MemoryId 值
    │
    ▼

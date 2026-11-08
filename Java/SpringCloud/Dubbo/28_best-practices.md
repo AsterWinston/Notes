@@ -3,7 +3,7 @@
 
 ## 1.1 分包策略
 
-```
+```text
 my-project/
 ├── my-service-api/                 # API 模块（Consumer 和 Provider 共享）
 │   ├── src/main/java/
@@ -208,7 +208,7 @@ private UserService userServiceV2;
 
 ## 3.2 接口兼容性
 
-```
+```text
 兼容升级（可安全升级）:
   ✅ 新增方法
   ✅ 新增字段（请求/响应对象）
@@ -224,7 +224,7 @@ private UserService userServiceV2;
 
 ## 3.3 灰度发布流程
 
-```
+```text
 1. Provider v2 以低权重上线 (weight=10)
 2. 观察监控（错误率、RT）
 3. 逐步提升 v2 权重，降低 v1 权重
@@ -270,7 +270,7 @@ private NotificationService notificationService;
 
 ## 4.3 超时与重试的关系
 
-```
+```text
 Consumer timeout = 3000ms
 Provider timeout = 2000ms
 Consumer retries = 2
@@ -450,7 +450,7 @@ dubbo:
 
 # 10. 开发流程最佳实践
 
-```
+```text
 1. 接口先行：
    - 先定义 API 模块中的接口和 DTO
    - Provider 和 Consumer 并行开发

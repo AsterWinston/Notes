@@ -12,7 +12,7 @@ A2A 的目标不是"让模型更聪明"，而是"让 Agent 能互相找到并协
 
 ## 1.2 与其他协议的边界
 
-```
+```text
 MCP：Agent ↔ 工具
 A2A：Agent ↔ Agent
 ```
@@ -82,7 +82,7 @@ A2A 的抽象不多，但每个都承担明确职责。
 
 ## 3.2 概念之间的关系
 
-```
+```text
 Agent Card（发现）
       │
       ▼
@@ -149,7 +149,7 @@ Agent Card 是 A2A 的入口：客户端先取名片，才知道该发什么任�
 
 > Agent Card 发布在 `/.well-known/agent-card.json`，供其他 Agent 发现。
 
-```
+```text
 客户端                         服务端 Agent
    │  GET /.well-known/agent-card.json
    │──────────────────────────────────▶
@@ -213,7 +213,7 @@ Task 是 A2A 的核心：它把"一次协作"变成一个可查询、可恢复�
 
 ## 5.1 状态机
 
-```
+```text
 Task 状态：
 SUBMITTED → WORKING → COMPLETED
                     ├──▶ FAILED
@@ -287,7 +287,7 @@ A2A 支持三种交互方式，覆盖短任务、长任务与实时反馈。
 | 流式（SSE） | 任务执行中推送状态与消息 |
 | 推送通知 | 完成后回调客户端 webhook |
 
-```
+```text
 短任务：sendMessage  ──▶ 直接返回 COMPLETED
 长任务：sendMessage  ──▶ 返回 taskId ──▶ getTask 轮询
 实时  ：sendMessageStreaming ──▶ 事件流
@@ -387,7 +387,7 @@ A2A 与 MCP 经常被拿来比较，但二者是不同层次的协议。
 
 ## 7.1 分层视图
 
-```
+```text
 ┌─────────────┐   A2A   ┌─────────────┐
 │  Agent A    │◀───────▶│  Agent B    │
 └──────┬──────┘         └──────┬──────┘
@@ -428,7 +428,7 @@ A2A 与 MCP 经常被拿来比较，但二者是不同层次的协议。
 
 以"企业报销 Agent 调用外部差旅 Agent"为例：
 
-```
+```text
 报销 Agent（本公司）                   差旅 Agent（服务商）
       │  A2A: Task(skill=book-hotel)
       │──────────────────────────────────▶

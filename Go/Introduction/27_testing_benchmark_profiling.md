@@ -19,7 +19,7 @@ func TestAdd(t *testing.T) {
 
 ★ **关键认知**：Go 测试遵循固定约定：
 
-```
+```text
 1. 测试文件和被测文件同目录，命名 xxx_test.go
 2. 测试函数命名 TestXxx（Xxx 大写开头）
 3. 参数是 *testing.T
@@ -97,7 +97,7 @@ func BenchmarkAdd(b *testing.B) {
 
 ## 3.2 解读基准结果
 
-```
+```text
 BenchmarkAdd-8    1000000000    0.30 ns/op    0 B/op    0 allocs/op
     │               │            │            │        │
     函数名         执行次数      每次耗时      每次分配   分配次数
@@ -127,7 +127,7 @@ go run -race main.go   # 运行程序并检测竞态
 
 ★ **关键认知**：`-race` 是 Go 最有价值的工具之一——它用 **ThreadSanitizer** 技术动态检测并发程序的数据竞态：
 
-```
+```text
 数据竞态：两个 goroutine 并发访问同一变量，且至少一个在写。
 结果：行为不确定，可能崩溃或产生错误数据。
 ```
@@ -175,7 +175,7 @@ go tool pprof -top cpu.out           # 命令行查看 top 函数
 
 ★ **关键认知**：pprof 能精确告诉你**哪个函数消耗了最多 CPU/内存**。核心命令：
 
-```
+```text
 pprof 分析类型：
 - cpu：CPU 时间热点
 - heap：堆内存分配
@@ -186,7 +186,7 @@ pprof 分析类型：
 
 ## 6.3 分析内存泄漏
 
-```
+```text
 1. 采集 heap profile（两个时间点的对比）
 2. go tool pprof -inuse_space  查看当前占用
 3. go tool pprof -alloc_space  查看累计分配
@@ -199,7 +199,7 @@ pprof 分析类型：
 
 ★ **关键认知**：Go 测试的一些经验法则：
 
-```
+```text
 1. 表驱动测试优于重复的测试函数
 2. 用 t.Helper() 标记辅助函数
 3. 测试要独立、可重复、无外部依赖（用 mock/接口）

@@ -4,7 +4,7 @@
 
 # 1. HA 模块概述
 
-```
+```text
 HA 模块负责 Broker Master → Slave 之间的数据同步
 
 核心组件:
@@ -338,7 +338,7 @@ public void handleHA(AppendMessageResult result, MessageExtBrokerInner msg,
 
 # 6. HA 协议格式
 
-```
+```text
 Master → Slave 数据推送：
 ┌──────────────────────────────────────┐
 │ Header (12B)                         │

@@ -4,7 +4,7 @@
 
 **Session（会话）** 是 Web 应用中服务器端维护的用户状态容器。由于 HTTP 协议是无状态的，服务器需要一种机制来识别同一个用户的多次请求，Session 就是这种机制的载体。
 
-```
+```text
 客户端                          服务端
   │                               │
   │  ① 首次请求 (无Cookie)         │
@@ -112,7 +112,7 @@ public interface SessionRepository<S extends Session> {
 
 **设计意图**：
 
-```
+```text
 SessionRepository<S extends Session>
   ├── MapSessionRepository        (内存实现，适合测试)
   ├── RedisSessionRepository      (Redis 实现)
@@ -190,14 +190,14 @@ public interface HttpSessionIdResolver {
 
 **Cookie 方式**：
 
-```
+```text
 请求：Cookie: SESSION=abc123-def456-ghi789
 响应：Set-Cookie: SESSION=abc123-def456-ghi789; Path=/; HttpOnly
 ```
 
 **Header 方式**：
 
-```
+```text
 请求：X-Auth-Token: abc123-def456-ghi789
 响应：X-Auth-Token: abc123-def456-ghi789
 ```
@@ -233,7 +233,7 @@ public final class MapSession implements Session, Serializable {
 
 `RedisSession` 是 Redis 后端的 Session 实现，具有以下特点：
 
-```
+```text
 RedisSession 数据结构：
   ┌────────────────────────────────────────────┐
   │ Key: "spring:session:sessions:{sessionId}" │

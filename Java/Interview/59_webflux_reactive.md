@@ -58,7 +58,7 @@
 - `onBackpressureLatest()`：缓冲区满时保留最新到达的元素，丢弃旧的。
 - `onBackpressureError()`：缓冲区满时抛出异常。
 
-```
+```text
 Flux.range(1, 1000)
     .onBackpressureBuffer(100)  // 缓冲区大小 100
     .limitRate(20)              // 每次 request(20)

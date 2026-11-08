@@ -4,7 +4,7 @@
 
 ## 1.1 端到端数据流
 
-```
+```text
 文件（PDF/Word/Excel/PPT/HTML/Markdown/TXT）
         │  DocumentParser
         ▼
@@ -198,7 +198,7 @@ public class CsvDocumentParser implements DocumentParser {
 
 ## 2.10 解析器选择决策树
 
-```
+```text
 格式已知？
 ├─ 否 ──────────────────▶ ApacheTikaDocumentParser
 └─ 是
@@ -350,7 +350,7 @@ DocumentBySentenceSplitter sentenceSplitter =
 
 字符数不等于 Token 数。中文约 1 字符 ≈ 1 Token，英文约 4 字符 ≈ 1 Token，代码与符号密度更高。以字符数配置块大小时，应留出安全余量，确保"块 + Prompt + 输出"不超过模型上下文上限：
 
-```
+```text
 可用上下文 = 模型上限 - 系统提示 - 输出预留
 块上限     = 可用上下文 / 召回块数
 ```

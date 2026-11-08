@@ -3,7 +3,7 @@
 
 注册中心是 Dubbo 服务治理的枢纽，负责服务地址的注册与发现。Provider 上线时注册服务地址，Consumer 启动时订阅服务地址，Provider 下线时自动注销。
 
-```
+```text
 Provider ──register──→  Registry Center (Nacos/Zookeeper/Redis)  ←──subscribe── Consumer
                            │
                      ┌─────┴─────┐
@@ -82,14 +82,14 @@ dubbo:
 
 **接口级（Dubbo 2.x）**：
 
-```
+```text
 服务名: providers:org.example.UserService:1.0.0:dev
 内容: dubbo://192.168.1.100:20880/org.example.UserService?...
 ```
 
 **应用级（Dubbo 3.x 默认）**：
 
-```
+```text
 服务名: instances:user-service
 内容: {
   "name": "user-service",
@@ -162,7 +162,7 @@ dubbo:
 
 ## 4.3 ZK 节点结构
 
-```
+```text
 /dubbo/                                    ← 根节点
   └── org.example.UserService/             ← 服务接口
       ├── providers/                        ← 提供者目录
@@ -209,7 +209,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
 
 ## 5.1 抽象层设计
 
-```
+```text
 RegistryService (接口)
     └── AbstractRegistry (抽象基类，本地文件缓存)
          └── FailbackRegistry (失败重试机制)
@@ -297,7 +297,7 @@ public abstract class AbstractRegistry implements RegistryService {
 
 **应用级发现的核心流程**：
 
-```
+```text
 Provider 启动
   │
   ├─→ 注册应用实例 (ServiceInstance) → Nacos/ZK
@@ -333,7 +333,7 @@ MetadataService 也是通过 Dubbo RPC 暴露的，Consumer 通过它获取 Prov
 
 # 8. 注册中心高可用
 
-```
+```text
 Consumer                                                    Provider
    │                                                          │
    │  1. 启动时从注册中心拉取 Provider 列表                     │
@@ -358,7 +358,7 @@ Consumer                                                    Provider
 
 ## 8.2 启动加载顺序
 
-```
+```text
 1. 加载本地磁盘缓存文件
 2. 连接注册中心（异步，不阻塞启动）
 3. 拉取注册中心最新数据覆盖本地缓存
@@ -387,7 +387,7 @@ public class CustomRegistryFactory implements RegistryFactory {
 
 SPI 文件（`META-INF/dubbo/org.apache.dubbo.registry.RegistryFactory`）：
 
-```
+```text
 custom=com.example.CustomRegistryFactory
 ```
 

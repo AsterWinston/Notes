@@ -534,7 +534,7 @@ session.remove(user); // Managed → Removed
 
 ### 4.3.5 状态转换图
 
-```
+```text
     new / close
   ┌──────────────┐
   │  TRANSIENT   │ ←──────────────────┐
@@ -1053,7 +1053,7 @@ Hibernate 使用 JBoss Logging 作为底层日志门面，可以桥接到 SLF4J 
 
 ### 7.3.4 日志输出示例
 
-```
+```text
 16:23:45.123 [main] DEBUG org.hibernate.SQL -
     /* insert com.example.entity.User */
     insert

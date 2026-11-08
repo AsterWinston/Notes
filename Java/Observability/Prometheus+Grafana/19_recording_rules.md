@@ -12,7 +12,7 @@ Recording Rules（记录规则）是 Prometheus 提供的一种**预计算机制
 
 ## 1.2 工作原理
 
-```
+```text
 原始数据                          Recording Rule                   预计算结果
 http_requests_total ──┐                                          job:http_requests:rate5m
                       │     sum(rate(http_requests_total[5m]))        10:00  500
@@ -45,7 +45,7 @@ groups:
 
 Prometheus 官方推荐的 Recording Rule 命名格式：
 
-```
+```text
 <level>:<metric_name>:<operation>
 ```
 
@@ -208,7 +208,7 @@ job:http_requests:rate5m
 
 ## 5.2 存储开销计算
 
-```
+```text
 每时间序列的存储：
 - 原始数据：1.37 bytes/sample × 86400 samples/day × N 序列
 - Recording Rule：1.37 bytes/sample × 86400 samples/day × M 序列

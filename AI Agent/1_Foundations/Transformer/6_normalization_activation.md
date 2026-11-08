@@ -4,7 +4,7 @@
 
 ## 1.1 内部协变量偏移
 
-```
+```text
 深层网络的问题：
 - 各层输入分布不断变化（内部协变量偏移）
 - 梯度消失/爆炸
@@ -15,7 +15,7 @@
 
 ### 1.1.1 一个直观类比
 
-```
+```text
 想象你在学开车，但每天的"方向盘转角"含义都在变：
   今天打 30 度左转，明天打 30 度却右转
 → 你永远学不会，因为规则一直在漂移
@@ -31,7 +31,7 @@
 
 **原理**：若激活值尺度过大，反向传播时梯度随之放大，容易爆炸；若尺度过小，梯度逐层衰减，容易消失。归一化把激活值拉回稳定尺度，使梯度保持在合理区间。
 
-```
+```text
 未归一化：
   激活值尺度失控 → 梯度爆炸 / 消失
 
@@ -62,7 +62,7 @@
 
 ## 2.1 公式与原理
 
-```
+```text
 对每个样本的特征维度做归一化：
 
   μ = mean(x)
@@ -72,7 +72,7 @@
 
 **公式**：
 
-```
+```text
 LayerNorm(x) = γ ⊙ (x - μ) / √(σ² + ε) + β
 μ = (1/d) Σ x_i
 σ² = (1/d) Σ (x_i - μ)²
@@ -86,7 +86,7 @@ LayerNorm(x) = γ ⊙ (x - μ) / √(σ² + ε) + β
 
 ### 2.1.2 归一化维度
 
-```
+```text
 输入形状 (batch, seq_len, d_model)
 
 LayerNorm 对最后一维 d_model 归一化：
@@ -152,14 +152,14 @@ class LayerNorm(nn.Module):
 
 ## 3.1 公式与原理
 
-```
+```text
   rms = sqrt(mean(x²))
   y = x / rms × γ
 ```
 
 **公式**：
 
-```
+```text
 RMSNorm(x) = γ ⊙ x / √(mean(x²) + ε)
 ```
 
@@ -215,7 +215,7 @@ class RMSNorm(nn.Module):
 
 ## 4.1 Post-LN（原始设计）
 
-```
+```text
 Post-LN（原始）：
   x = LayerNorm(x + Sublayer(x))
   → 需 warmup，深层不稳定
@@ -225,7 +225,7 @@ Post-LN（原始）：
 
 ## 4.2 Pre-LN（现代设计）
 
-```
+```text
 Pre-LN（现代）：
   x = x + Sublayer(LayerNorm(x))
   → 更稳定，无需 warmup
@@ -235,7 +235,7 @@ Pre-LN（现代）：
 
 ### 4.2.1 结构对比图
 
-```
+```text
 Post-LN：               Pre-LN：
   ┌─────────┐             ┌─────────┐
   │ Sublayer│             │  Norm   │
@@ -286,7 +286,7 @@ Pre-LN  归一化在残差之前
 
 **公式**：
 
-```
+```text
 ReLU(x) = max(0, x)
 ```
 
@@ -304,7 +304,7 @@ ReLU(x) = max(0, x)
 
 **公式**：
 
-```
+```text
 GELU(x) = x · Φ(x)
 ```
 
@@ -314,7 +314,7 @@ GELU(x) = x · Φ(x)
 
 ### 5.2.1 近似实现
 
-```
+```text
 GELU(x) ≈ 0.5x(1 + tanh(√(2/π)(x + 0.044715x³)))
 ```
 
@@ -324,7 +324,7 @@ GELU(x) ≈ 0.5x(1 + tanh(√(2/π)(x + 0.044715x³)))
 
 **公式**：
 
-```
+```text
 SiLU(x) = x · sigmoid(x)
 ```
 
@@ -353,7 +353,7 @@ SiLU(x) = x · sigmoid(x)
 
 ## 6.1 门控思想
 
-```
+```text
 门控（Gating）：
   一路输出作为"阀门"，逐元素控制另一路的通过量
 
@@ -366,7 +366,7 @@ SiLU(x) = x · sigmoid(x)
 
 ## 6.2 公式与维度
 
-```
+```text
 SwiGLU(x) = Swish(xW₁) ⊙ (xW₃) · W₂
 
 需要三个权重矩阵（而非两个）
@@ -375,7 +375,7 @@ SwiGLU(x) = Swish(xW₁) ⊙ (xW₃) · W₂
 
 **公式**：
 
-```
+```text
 FFN_SwiGLU(x) = W₂ ( SiLU(W₁ x) ⊙ W₃ x )
 ```
 
@@ -385,7 +385,7 @@ FFN_SwiGLU(x) = W₂ ( SiLU(W₁ x) ⊙ W₃ x )
 
 ### 6.2.2 参数计算
 
-```
+```text
 标准 FFN：2 × d × 4d = 8d²
 SwiGLU ：3 × d × (8/3)d = 8d²
 → 两者参数量相当
@@ -426,7 +426,7 @@ class SwiGLU(nn.Module):
 
 ## 7.1 逐层结构
 
-```
+```text
 每个 Decoder 层：
   x = x + Attention(RMSNorm(x))       # Pre-Norm + RMSNorm
   x = x + SwiGLU(RMSNorm(x))          # Pre-Norm + SwiGLU
@@ -508,7 +508,7 @@ class SwiGLU(nn.Module):
 
 ## 9.2 记忆口诀
 
-```
+```text
 归一化稳分布，LayerNorm 按特征
 RMSNorm 省均值，快上一两成
 Pre-LN 走残差，梯度不衰减

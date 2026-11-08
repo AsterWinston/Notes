@@ -1,6 +1,6 @@
 # 1. 我的第一个JSP程序
 
-```
+```text
 在WEB-INF目录之外创建一个index.jsp文件，然后这个文件中没有任何内容。
 将上面的项目部署之后，启动服务器，打开浏览器，访问以下地址：
 
@@ -12,7 +12,7 @@ http://localhost:8080/jsp/index.jsp 展现在大家面前的是一个空白。
 
 # 2. JSP实际上就是一个Servlet
 
-```
+```text
 index.jsp访问的时候，会自动翻译生成index_jsp.java，会自动编译生成index_jsp.class，那么index_jsp 这就是一个类。
 index_jsp 类继承 HttpJspBase，而HttpJspBase类继承的是HttpServlet。所以index_jsp类就是一个Servlet类。
 jsp的生命周期和Servlet的生命周期完全相同。完全就是一个东西。没有任何区别。
@@ -32,11 +32,11 @@ java源文件要编译生成class字节码文件
 
 # 3. JSP是什么？
 
-```
+```text
 JSP是java程序。（JSP本质还是一个Servlet）
 JSP是：JavaServer Pages的缩写。（基于Java语言实现的服务器端的页面。）
 Servlet是JavaEE的13个子规范之一，那么JSP也是JavaEE的13个子规范之一。
-JSP是一套规范。所有的web容器/web服务器都是遵循这套规范的，都是按照这套规范进行的“翻译”
+JSP是一套规范。所有的web容器/web服务器都是遵循这套规范的，都是按照这套规范进行的"翻译"
 每一个web容器/web服务器都会内置一个JSP翻译引擎。
 对JSP进行错误调试的时候，还是要直接打开JSP文件对应的java文件，检查java代码。
 
@@ -52,18 +52,18 @@ JSP的职责是什么：展示数据。（JSP的强项是做数据的展示）
 
 # 4. JSP的基础语法
 
-```
+```text
 在jsp文件中直接编写文字，都会自动被翻译到哪里？
-翻译到servlet类的service方法的out.write(“翻译到这里”)，直接翻译到双引号里，被java程序当做普通字符串打印输出到浏览器。
+翻译到servlet类的service方法的out.write("翻译到这里")，直接翻译到双引号里，被java程序当做普通字符串打印输出到浏览器。
 在JSP中编写的HTML CSS JS代码，这些代码对于JSP来说只是一个普通的字符串。但是JSP把这个普通的字符串一旦输出到浏览器，浏览器就会对HTML CSS JS进行解释执行。展现一个效果。
 JSP的page指令（这个指令后面再详细说，这里先解决一下中文乱码问题），解决响应时的中文乱码问题：
 通过page指令来设置响应的内容类型，在内容类型的最后面添加：charset=UTF-8
-<%@page contentType=“text/html;charset=UTF-8”%>，表示响应的内容类型是text/html，采用的字符集UTF-8
-<%@page import=“java.util.List,java.util.ArrayList”%>
+<%@page contentType="text/html;charset=UTF-8"%>，表示响应的内容类型是text/html，采用的字符集UTF-8
+<%@page import="java.util.List,java.util.ArrayList"%>
 怎么在JSP中编写Java程序：
 <% java语句; %>
 在这个符号当中编写的被视为java程序，被翻译到Servlet类的service方法内部。
-这里你要细心点，你要思考，在<% %>这个符号里面写java代码的时候，你要时时刻刻的记住你正在“方法体”当中写代码，方法体中可以写什么，不可以写什么，你心里是否明白呢？
+这里你要细心点，你要思考，在<% %>这个符号里面写java代码的时候，你要时时刻刻的记住你正在"方法体"当中写代码，方法体中可以写什么，不可以写什么，你心里是否明白呢？
 在service方法当中编写的代码是有顺序的，方法体当中的代码要遵循自上而下的顺序依次逐行执行。
 service方法当中不能写静态代码块，不能写方法，不能定义成员变量。。。。。。
 在同一个JSP当中 <%%> 这个符号可以出现多个。
@@ -72,10 +72,10 @@ service方法当中不能写静态代码块，不能写方法，不能定义成�
 这个语法很少用，为什么？不建议使用，因为在service方法外面写静态变量和实例变量，都会存在线程安全问题，因为JSP就是servlet，servlet是单例的，多线程并发的环境下，这个静态变量和实例变量一旦有修改操作，必然会存在线程安全问题。
 JSP的输出语句
 怎么向浏览器上输出一个java变量。
-<% String name = “jack”; out.write("name = " + name); %>
+<% String name = "jack"; out.write("name = " + name); %>
 注意：以上代码中的out是JSP的九大内置对象之一。可以直接拿来用。当然，必须只能在service方法内部使用。
-如果向浏览器上输出的内容中没有“java代码”，例如输出的字符串是一个固定的字符串，可以直接在jsp中编写，不需要写到<%%> 这里。
-如果输出的内容中含有“java代码”，这个时候可以使用以下语法格式：
+如果向浏览器上输出的内容中没有"java代码"，例如输出的字符串是一个固定的字符串，可以直接在jsp中编写，不需要写到<%%> 这里。
+如果输出的内容中含有"java代码"，这个时候可以使用以下语法格式：
 <%= %> 注意：在=的后面编写要输出的内容。
 <%= %> 这个符号会被翻译到哪里？最终翻译成什么？
 翻译成了这个java代码： out.print();
@@ -85,14 +85,14 @@ JSP的输出语句
 <%–JSP的专业注释，不会被翻译到java源代码当中。–%>
 JSP基础语法总结：
 JSP中直接编写普通字符串
-翻译到service方法的out.write(“这里”)
+翻译到service方法的out.write("这里")
 <%%>
 翻译到service方法体内部，里面是一条一条的java语句。
 <%! %>
 翻译到service方法之外。
 <%= %>
 翻译到service方法体内部，翻译为：out.print();
-<%@page contentType=“text/html;charset=UTF-8”%>
+<%@page contentType="text/html;charset=UTF-8"%>
 page指令，通过contentType属性用来设置响应的内容类型。
 使用Servlet + JSP完成oa项目的改造。
 使用Servlet处理业务，收集数据。 使用JSP展示数据。
@@ -152,7 +152,7 @@ javabean其实就是java中的实体类。负责数据的封装。
 
 # 5. 当前的oa应用存在的问题
 
-```
+```text
 任何一个用户都可以访问这个系统，都可以对这个系统当中的数据进行增删改这些危险的操作。我只想让合法的用户去使用这个系统，不合法的用户不能访问这个系统，怎么办？
 加一个登录功能。登录成功的可以访问该系统，登录失败不能访问。
 实现登录功能：
@@ -175,7 +175,7 @@ t_user表当中存储的是用户的登录信息，最基本的也包括：登�
 
 # 6. JSP的指令
 
-```
+```text
 指令的作用：指导JSP的翻译引擎如何工作（指导当前的JSP翻译引擎如何翻译JSP文件。）
 
 指令包括哪些呢？
@@ -216,7 +216,7 @@ errorPage属性用来指定出错之后的跳转位置。
 
 # 7. JSP的九大内置对象
 
-```
+```text
 jakarta.servlet.jsp.PageContext pageContext 页面作用域
 
 jakarta.servlet.http.HttpServletRequest request 请求作用域
@@ -241,7 +241,7 @@ jakarta.servlet.http.HttpServletResponse response （负责响应）
 
 # 8. JSP的标准动作（Standard Actions）
 
-```
+```text
 JSP标准动作是使用XML语法格式的标签，用来控制JSP引擎的行为。
 
 常用的JSP标准动作有哪些？

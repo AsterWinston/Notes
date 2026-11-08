@@ -8,7 +8,7 @@
 
 ### 1.1.1 三类定义
 
-```
+```text
 ① 情景记忆（Episodic）   "发生过什么"   —— 具体事件与交互
 ② 语义记忆（Semantic）   "知道什么"     —— 事实与知识
 ③ 程序性记忆（Procedural）"怎么做"      —— 技能与流程
@@ -28,7 +28,7 @@
 
 **结论先行**：三者不是互斥，而是从"具体经验"到"抽象规律"再到"行动策略"的递进。
 
-```
+```text
 情景（具体） ──归纳──> 语义（规律） ──提炼──> 程序性（行动）
 ```
 
@@ -166,7 +166,7 @@ public record SemanticMemory(
 
 ### 3.1.2 三元组示例
 
-```
+```text
 (用户, 职位, 后端工程师)
 (用户, 偏好回答风格, 简洁)
 (用户公司, 技术栈, Java 21)
@@ -241,7 +241,7 @@ public record ProceduralMemory(
 ) {}
 ```
 
-```
+```text
 触发：用户询问报销问题
 流程：先查《报销政策》文档 → 提取关键条款 → 附来源回答
 
@@ -302,7 +302,7 @@ public Optional<ProceduralMemory> matchByRule(String userId, String question) {
 
 ### 5.1.1 顺序
 
-```
+```text
 用户提问
    │
    ▼
@@ -429,7 +429,7 @@ public void maybeLearn(UserContext user, AgentTrace trace) {
 
 **结论先行**：情景记忆多次重复可归纳为语义记忆，语义规律多次验证可提炼为程序性记忆。
 
-```
+```text
 情景记忆（多次相似事件）
         │ 归纳
         ▼

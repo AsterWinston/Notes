@@ -1,4 +1,4 @@
-```
+```text
 MyBatis的逆向工程
 所谓的逆向工程是：根据数据库表逆向生成Java的pojo类，SqlMapper.xml文件，以及Mapper接口类等。
 要完成这个工作，需要借助别人写好的逆向工程插件。
@@ -15,11 +15,11 @@ Mapper接口名以及生成位置。
 # 1. 逆向工程配置与生产
 
 ## 1.1 第一步：基础环境配置
-```
+```text
 打包方式jar
 ```
 ## 1.2 第二步：pom中添加逆向工程依赖
-```
+```text
 <!--配置-->
 <!--定制构建过程-->
 <build>
@@ -50,7 +50,7 @@ Mapper接口名以及生成位置。
 ```
 
 ## 1.3 第三步：配置generatorConfig.xml
-```
+```text
 该文件名必须叫做：generatorConfig.xml
 该文件必须放在类的根路径下。
 
@@ -105,17 +105,17 @@ Mapper接口名以及生成位置。
 </generatorConfiguration>
 ```
 ## 1.4 第四步：运行插件
-```
+```text
 <context id="DB2Tables" targetRuntime="">配置不同，区别很大
 ```
 
 # 2. QBC查询风格
-```
+```text
 QBC全称：query by criteria
 ```
 
 # 3. 测试逆向工程生成的内容
-```
+```text
 这是对<context id="DB2Tables" targetRuntime="MyBatis3Simple">生成的内容的测试
 public class BookMapperTest {
     @Test

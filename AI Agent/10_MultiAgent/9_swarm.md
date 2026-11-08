@@ -11,13 +11,13 @@
 3. `Handoff.nextAgent == null` 表示"我来收尾"，流程结束。
 4. 否则控制权转移到下一个 Agent，消息与上下文随之传递。
 
-```
+```text
 Agent 间自主交接，无中心主管：
 
   Agent A ──"这个问题需要 B"──▶ Agent B ──▶ Agent C
 ```
 
-```
+```text
 用户 ──▶ Agent A
             │ 判断：需要 B 的专业能力
             ▼
@@ -87,7 +87,7 @@ Agent 间自主交接，无中心主管：
 2. 交接是单向的：交出控制权后，原 Agent 不再参与本轮。
 3. 因此同一时刻只有一个 Agent 活跃，避免了并发写冲突。
 
-```
+```text
         ┌─────┐        ┌─────┐
         │  A  │───────▶│  B  │
         └──┬──┘        └──┬──┘
@@ -403,7 +403,7 @@ record Hop(int step, String from, String to, String reason, long costMs) {}
 
 结论先行：Agent A 认为该 B 处理，B 认为该 A 处理，形成无限互推。
 
-```
+```text
 Agent A → "这个应该 B 处理" → Agent B
 Agent B → "这个应该 A 处理" → Agent A
         ↓ 无限循环

@@ -3,7 +3,7 @@
 
 RocketMQ 存储模块是整个系统的核心，基于**文件系统**（非数据库），采用**顺序写 + 随机读**的设计。
 
-```
+```text
                               store/
                                 │
                 ┌───────────────┼───────────────┐
@@ -27,7 +27,7 @@ RocketMQ 存储模块是整个系统的核心，基于**文件系统**（非数�
 
 ## 1.2 为什么顺序写 + 随机读？
 
-```
+```text
 磁盘 I/O 特性：
 ┌──────────────────────────────────────────────────────────┐
 │  顺序写 (Sequential Write) ≈ 600MB/s                    │
@@ -46,7 +46,7 @@ RocketMQ 的设计：
 
 ## 2.1 为什么使用内存映射？
 
-```
+```text
 传统 I/O 流程:
 用户态 Buffer → 内核态 PageCache → 磁盘 (2次拷贝)
 
@@ -86,7 +86,7 @@ public class MappedFile extends ReferenceResource {
 
 ## 2.3 文件命名规则
 
-```
+```text
 CommitLog 文件名 = 文件起始偏移量 (20位，左补0)
 例如：00000000000000000000  (第一个文件，偏移量 0)
      00000000001073741824  (第二个文件，偏移量 1073741824 = 1GB)
@@ -104,7 +104,7 @@ CommitLog 文件名 = 文件起始偏移量 (20位，左补0)
 
 ## 3.1 存储格式
 
-```
+```text
 每条消息的存储格式：
 
 ┌────────────────────────────────────────────────┐
@@ -189,7 +189,7 @@ public PutMessageResult putMessage(final MessageExtBrokerInner msg) {
 
 ## 4.1 为什么需要 ConsumeQueue？
 
-```
+```text
 CommitLog 是全局唯一的，所有 Topic 混在一起写入
 
 问题：Consumer 如何找到 "Topic-A, Queue-3" 的消息？
@@ -201,7 +201,7 @@ CommitLog 是全局唯一的，所有 Topic 混在一起写入
 
 ## 4.2 20 字节条目格式
 
-```
+```text
 ConsumeQueue 条目（每条 20 字节）：
 ┌──────────────────────┬──────────────────────┬────────────┬───────────┐
 │ CommitLog Offset (8B)│ Message Size (4B)    │ Tag HashCode (8B)        │
@@ -210,7 +210,7 @@ ConsumeQueue 条目（每条 20 字节）：
 ```
 
 **读取流程**：
-```
+```text
 1. 根据 ConsumeQueue 的 offset 计算文件位置：
    pos = offset * 20
 
@@ -256,7 +256,7 @@ public class ReputMessageService extends ServiceThread {
 
 ## 5.2 文件格式
 
-```
+```text
 IndexFile 结构：
 ┌─────────────────────────────────────────────┐
 │  IndexHeader (40B)                           │
@@ -284,7 +284,7 @@ IndexFile 结构：
 
 ## 5.3 查询流程
 
-```
+```text
 1. 计算 key 的 Hash 值 → keyHash
 2. keyHash % hashSlotCount → 找到 hashSlot[keyHash]
 3. 遍历链表查询（nextItem = IndexEntry.prevIndexNo）
@@ -336,7 +336,7 @@ public void handleDiskFlush(AppendMessageResult result, MessageExt msg) {
 
 # 7. 过期文件清理
 
-```
+```text
 文件保留时间：fileReservedTime (默认 72 小时)
 清理触发时间：deleteWhen (默认凌晨 4 点)
 

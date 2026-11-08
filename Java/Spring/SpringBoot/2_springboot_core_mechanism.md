@@ -1,7 +1,7 @@
 # 1. 为何以继承方式引入SpringBoot
 ## 1.1 提出疑问
 以前我们在开发项目时，需要什么，引入对应的依赖就行，比如我们需要连接mysql数据，则引入mysql驱动的依赖，如下：
-```
+```xml
 <dependency>
   <groupId>com.mysql</groupId>
 
@@ -13,7 +13,7 @@
 
 ```
 现在我们要使用SpringBoot框架，按说也应该采用依赖的方式将SpringBoot框架引入，如下：
-```
+```xml
 <dependency>
   <groupId>org.springframework.boot</groupId>
 
@@ -25,7 +25,7 @@
 
 ```
 但是SpringBoot官方推荐的不是直接引入依赖，而是采用继承的方式实现，如下：
-```
+```xml
 <parent>
     <groupId>org.springframework.boot</groupId>
 
@@ -64,11 +64,11 @@
 通过上图源码可以看到Spring Boot预先对开发中需要用到的依赖进行了版本的统一管理。我们需要和SpringBoot框架共享这个构建配置。因此官方推荐使用继承的方式引入SpringBoot框架。
 
 ## 1.4 依赖统一管理的好处
-Spring Boot 框架的一个重要特性就是简化了项目依赖管理。它通过提供一个叫做“依赖管理”的功能来帮助开发者更容易地管理和使用第三方库和其他 Spring 组件。具体来说，Spring Boot 提供了一个包含多个 Spring 和其他常用库的依赖版本配置文件（通常是在 spring-boot-dependencies 文件中），这使得开发者不需要在自己的项目中显式指定这些依赖的版本号。
+Spring Boot 框架的一个重要特性就是简化了项目依赖管理。它通过提供一个叫做"依赖管理"的功能来帮助开发者更容易地管理和使用第三方库和其他 Spring 组件。具体来说，Spring Boot 提供了一个包含多个 Spring 和其他常用库的依赖版本配置文件（通常是在 spring-boot-dependencies 文件中），这使得开发者不需要在自己的项目中显式指定这些依赖的版本号。
 这样做有以下几个好处：
 1. 简化依赖声明：
 开发者只需要在 pom.xml 文件中声明需要的依赖而不需要指定其版本号，因为 Spring Boot 已经为这些依赖指定了版本。例如，如果你需要使用mysql驱动，你只需要添加相应的依赖声明而不需要关心版本。
-```
+```xml
 <dependency>
     <groupId>com.mysql</groupId>
 
@@ -78,7 +78,7 @@ Spring Boot 框架的一个重要特性就是简化了项目依赖管理。它�
 
 ```
 2. 避免版本冲突：
-当多个库之间存在依赖关系的时候，如果手动管理版本可能会导致版本之间的冲突（即“依赖地狱”）。Spring Boot 提供的统一版本管理可以减少这种冲突的可能性。
+当多个库之间存在依赖关系的时候，如果手动管理版本可能会导致版本之间的冲突（即"依赖地狱"）。Spring Boot 提供的统一版本管理可以减少这种冲突的可能性。
 3. 易于升级：
 当 Spring Boot 发布新版本时，通常会更新其依赖库到最新稳定版。因此，当你升级 Spring Boot 版本时，它所管理的所有依赖也会随之更新到兼容的版本。
 4. 减少配置错误：
@@ -89,7 +89,7 @@ Spring Boot 框架的一个重要特性就是简化了项目依赖管理。它�
 
 当然，如果你在项目中需要更改某个依赖的版本号，不想使用SpringBoot框架指定的版本号，只需要在引入依赖时强行执行版本号即可，maven是支持就近原则的：
 这样做就是采用SpringBoot指定版本的依赖：
-```
+```xml
 <dependency>
     <groupId>com.mysql</groupId>
 
@@ -99,7 +99,7 @@ Spring Boot 框架的一个重要特性就是简化了项目依赖管理。它�
 
 ```
 这样做就是不采用SpringBoot指定版本的依赖：
-```
+```xml
 <dependency>
     <groupId>com.mysql</groupId>
 
@@ -128,7 +128,7 @@ Spring Boot 的启动器本质上就是一组预定义的依赖集合，它们�
 
 使用启动器的示例
 假设你想创建一个基于 Spring MVC 的 RESTful Web 应用，你可以简单地将 spring-boot-starter-web 添加到你的项目中：
-```
+```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
 
@@ -162,7 +162,7 @@ Spring Boot的主入口程序被@SpringBootApplication注解标注，可见这�
 @SpringBootConfiguration注解的源码如下：
 <img src="images/19.png" width="100%">
 可以看到这个注解的被@Configuration标注，说明主入口程序是一个配置类。也就是说主入口中的方法可以被@Bean注解标注，被@Bean注解的标注的方法会被Spring容器自动调用，并且将该方法的返回对象纳入IoC容器的管理。测试一下：
-```
+```java
 @SpringBootApplication
 public class Sb305CoreApplication {
     @Bean
@@ -231,7 +231,7 @@ public class MyApplication002 {
 
 ## 3.4 @ComponentScan注解
 这个注解的作用是：启动组件扫描功能，代替spring框架xml文件中这个配置：
-```
+```text
 <context:component-scan base-package="com.powernode.sb305core"/>
 ```
 因此被@Spri ngBootApplication注解标注之后，会启动组件扫描功能，扫描的包是主入口程序所在包及子包，因此如果一个bean要纳入IoC容器的管理则必须放到主入口程序所在包及子包下。放到主入口程序所在包之外的话，扫描不到。测试一下
@@ -240,7 +240,7 @@ public class MyApplication002 {
 <img src="images/20.png" width="100%">
 HelloController代码如下：
 
-```
+```java
 @RestController
 public class HelloController {
     @GetMapping("/hello")
@@ -256,7 +256,7 @@ public class HelloController {
 可以看到UserController没有在sb305core包下。
 
 UserController代码如下：
-```
+```java
 @RestController
 public class UserController {
     @GetMapping("/list")
@@ -276,7 +276,7 @@ public class UserController {
 创建模块
 使用脚手架创建sb3-06-test模块，不添加任何启动器
 编写service
-```
+```java
 package com.powernode.sb306test.service.impl;
 
 import com.powernode.sb306test.service.UserService;
@@ -291,7 +291,7 @@ public class UserServiceImpl implements UserService {
 }
 ```
 直接在入口程序中调用service
-```
+```java
 @SpringBootApplication
 public class Sb306TestApplication {
     public static void main(String[] args) {
@@ -310,7 +310,7 @@ test-starter引入以及测试类编写
 <img src="images/23.png" width="100%">
 当然，如果要使用单元测试，需要引入单元测试启动器，如果使用脚手架创建SpringBoot项目，这个test启动器会自动引入：
 
-```
+```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
 
@@ -334,7 +334,7 @@ test-starter引入以及测试类编写
     总的来说，@SpringBootTest 为你的测试提供了尽可能接近实际运行时环境的条件，这对于验证应用程序的行为非常有用。
 
 注入service并调用
-```
+```java
 @SpringBootTest
 class Sb306TestApplicationTests {
 
@@ -383,7 +383,7 @@ Spring Boot 框架在启动时会尝试从以下位置加载 application.propert
 4. classpath:/：如果在 /config/ 下没有找到，它会在类路径的根目录下查找。
 Spring Boot 会按照这个顺序来加载配置文件，如果在多个位置有相同的属性定义，那么最先检查的位置中的属性值将优先使用。
 如果你想要指定其他的配置文件位置或者改变默认的行为，可以通过 --spring.config.location= 后跟路径的方式来指定配置文件的具体位置。例如 ：
-```
+```text
 java -jar sb3-01-first-web-1.0-SNAPSHOT.jar --spring.config.location=file:///E:\a\b\application.properties
 ```
 这样，Spring Boot 将会首先从 E:\a\b\ 这个路径加载配置文件。注意，这种方式可以用来覆盖默认的配置文件位置，并且可以结合以上提到的位置一起使用。
@@ -398,13 +398,13 @@ java -jar sb3-01-first-web-1.0-SNAPSHOT.jar --spring.config.location=file:///E:\
 <img src="images/24.png" width="100%">
 
 在resources/application.properties文件中进行如下配置：
-```
+```properties
 myapp.username=jack
 myapp.email=jack@123.com
 myapp.age=30
 ```
 编写service类：
-```
+```java
 @Service("userService")
 public class UserService {
     
@@ -424,7 +424,7 @@ public class UserService {
 }
 ```
 编写单元测试：
-```
+```java
 @SpringBootTest
 class Sb307ExternalConfigApplicationTests {
     @Autowired
@@ -438,7 +438,7 @@ class Sb307ExternalConfigApplicationTests {
 
 使用@Value注解时也可以指定默认值，当指定默认值时，如果配置文件中没有指定配置值，则采用默认值。
 语法格式：@Value("${key:defalut}")
-```
+```java
 @Service("userService")
 public class UserService {
 
@@ -545,21 +545,21 @@ myapp:
 一个项目中所有的配置全部编写到application.properties文件中，会导致配置臃肿，不易维护，有时我们会将配置编写到不同的文件中，例如：application-mysql.properties专门配置mysql的信息，application-redis.properties专门配置redis的信息，最终将两个配置文件合并到一个配置文件中。
 ### 5.5.1 properties文件
 application-mysql.properties
-```
+```properties
 spring.datasource.username=root
 spring.datasource.password=123456
 ```
 application-redis.properties
-```
+```properties
 spring.data.redis.host=localhost
 spring.data.redis.port=6379
 ```
 application.properties
-```
+```properties
 spring.config.import=classpath:application-mysql.properties,classpath:application-redis.properties
 ```
 编写service测试，看看能否拿到配置信息：
-```
+```java
 package com.powernode.sb307externalconfig.service;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -584,14 +584,14 @@ public class UserServiceMulti {
 ```
 ### 5.5.2 yaml文件
 application-mysql.yml
-```
+```text
 spring:
   datasource:
     username: root
     password: 789789
 ```
 application-redis.yml
-```
+```text
 spring:
   data:
     redis:
@@ -599,7 +599,7 @@ spring:
       port: 6379
 ```
 application.yml
-```
+```text
 spring:
   config:
     import:
@@ -610,25 +610,25 @@ spring:
 在Spring Boot中，多环境切换是指在一个应用程序中支持多种运行环境配置的能力。这通常用于区分开发（development）、测试（testing）、预生产（staging）和生产（production）等不同阶段的环境。
 这种功能使得开发者能够在不同的环境中使用不同的配置，比如数据库连接信息、服务器端口、环境变量等，而不需要更改代码。这对于维护一个可移植且易于管理的应用程序非常重要。
 1. 开发环境的配置文件名一般叫做：application-dev.properties
-```
+```properties
 spring.datasource.username=dev
 spring.datasource.password=dev123
 spring.datasource.url=jdbc:mysql://localhost:3306/dev
 ```
 2. 测试环境的配置文件名一般叫做：application-test.properties
-```
+```properties
 spring.datasource.username=test
 spring.datasource.password=test123
 spring.datasource.url=jdbc:mysql://localhost:3306/test
 ```
 3. 预生产环境的配置文件名一般叫做：application-preprod.properties
-```
+```properties
 spring.datasource.username=preprod
 spring.datasource.password=preprod123
 spring.datasource.url=jdbc:mysql://localhost:3306/preprod
 ```
 4. 生产环境的配置文件名一般叫做：application-prod.properties
-```
+```properties
 spring.datasource.username=prod
 spring.datasource.password=prod123
 spring.datasource.url=jdbc:mysql://localhost:3306/prod
@@ -650,7 +650,7 @@ app:
   email: jack@123.com
 ```
 Bean需要这样定义：
-```
+```java
 package com.powernode.sb307externalconfig.bean;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -714,7 +714,7 @@ app:
 ### 5.7.2 @Configuration注解
 
 以上操作中使用了@Component注解进行了标注，来纳入IoC容器的管理。也可以使用另外一个注解@Configuration，用这个注解将Bean标注为配置类。多数情况下我们会选择使用这个注解，因为该Bean对象的属性对应的就是配置文件中的配置信息，因此这个Bean我们也可以将其看做是一个配置类。
-```
+```java
 @Configuration
 @ConfigurationProperties(prefix = "app")
 public class AppBean {
@@ -729,7 +729,7 @@ public class AppBean {
 可以发现底层实际上创建了AppBean的代理对象AppBean$$SpringCGLIB。
 生成代理对象会影响效率，这里我们不需要使用代理功能，可以通过以下配置来取消代理机制：
 
-```
+```java
 @Configuration(proxyBeanMethods = false)
 @ConfigurationProperties(prefix = "app")
 public class AppBean {
@@ -744,7 +744,7 @@ public class AppBean {
 ### 5.7.3 绑定嵌套bean
 当一个Bean中嵌套了一个Bean，这种情况下可以将配置信息绑定到该Bean上吗？当然可以。
 有这样的一个配置：
-```
+```text
 app:
   name: jack
   age: 30
@@ -863,7 +863,7 @@ public class Address {
 ● 第二种：@ConfigurationPropertiesScan
 这两个注解都是标注在SpringBoot主入口程序上的：
 
-```
+```java
 @EnableConfigurationProperties(AppBean.class)
 @SpringBootApplication
 public class Sb307ExternalConfigApplication {
@@ -873,7 +873,7 @@ public class Sb307ExternalConfigApplication {
 }
 ```
 或者
-```
+```java
 @ConfigurationPropertiesScan(basePackages = "com.powernode.sb307externalconfig.bean")
 @SpringBootApplication
 public class Sb307ExternalConfigApplication {
@@ -1090,7 +1090,7 @@ public class ApplicationConfig {
 之前所讲的内容是将Spring Boot框架默认的配置文件application.properties或application.yml作为数据的来源绑定到Bean上。如果配置信息没有在默认的配置文件中呢？可以使用@PropertySource注解指定配置文件的位置，这个配置文件可以是.properties，也可以是.xml。这里重点掌握.properties即可。
 
 在resources目录下新建a目录，在a目录下新建b目录，b目录中新建group-info.properties文件，进行如下的配置：
-```
+```properties
 group.name=IT
 group.leader=LaoDu
 group.count=20
@@ -1159,7 +1159,7 @@ public class Group {
 第二种和第三种我们都已经知道了。针对第一种方式，如果在SpringBoot框架中应该怎么实现呢？使用@ImportResource注解实现
 
 定义一个普通的Java类：Person
-```
+```java
 package com.powernode.sb307externalconfig.bean;
 
 public class Person {
@@ -1193,7 +1193,7 @@ public class Person {
 
 ```
 在resources目录下新建applicationContext.xml配置文件：
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1207,12 +1207,12 @@ public class Person {
 
 ```
 在SpringBoot主入口类上添加@ImportResource进行资源导入，这样applicationContext.xml文件中的Bean将会纳入IoC容器的管理：
-```
+```java
 @ImportResource("classpath:applicationContext.xml")
 public class Sb307ExternalConfigApplication {}
 ```
 编写测试程序，看看是否可以获取到person这个bean对象：
-```
+```java
 @SpringBootTest
 class Sb307ExternalConfigApplicationTests {
     @Autowired
@@ -1235,7 +1235,7 @@ Environment对象封装的主要数据包括：
 4. Command Line Arguments: 应用程序启动时传递给主方法的命令行参数。
 5. Property Sources: Environment还包含了一个PropertySource列表，这个列表包含了从不同来源加载的所有属性。PropertySource可以来自多种地方，比如配置文件、系统属性、环境变量等。
 在Spring Boot中，可以通过注入Environment来获取上述信息。例如：
-```
+```java
 package com.powernode.springboot.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1271,7 +1271,7 @@ public class SomeBean {
 
 Spring Boot的AOP编程和Spring框架中AOP编程的唯一区别是：引入依赖的方式不同。其他内容完全一样。Spring Boot中AOP编程需要引入aop启动器：
 
-```
+```text
 <!--aop启动器-->
 <dependency>
   <groupId>org.springframework.boot</groupId>
@@ -1292,7 +1292,7 @@ Spring Boot的AOP编程和Spring框架中AOP编程的唯一区别是：引入依
 实现功能：项目中很多service，要求执行任何service中的任何方法之前记录日志。
 ### 6.2.1 创建Spring Boot项目引入aop启动器
 项目名：sb3-08-aop
-```
+```text
 <!--aop启动器-->
 <dependency>
   <groupId>org.springframework.boot</groupId>
@@ -1303,7 +1303,7 @@ Spring Boot的AOP编程和Spring框架中AOP编程的唯一区别是：引入依
 
 ```
 ### 6.2.2 编写service并提供方法
-```
+```text
 package com.powernode.aop.service;
 
 public interface OrderService {
@@ -1318,7 +1318,7 @@ public interface OrderService {
     void detail();
 }
 ```
-```
+```java
 package com.powernode.aop.service.impl;
 
 import com.powernode.aop.service.OrderService;
@@ -1340,7 +1340,7 @@ public class OrderServiceImpl implements OrderService {
 ```
 
 ### 6.2.3 编写切面
-```
+```java
 package com.powernode.aop;
 
 import org.aspectj.lang.JoinPoint;
@@ -1388,7 +1388,7 @@ public class LogAspect {
 ```
 
 ### 6.2.4 测试
-```
+```java
 package com.powernode.aop;
 
 import com.powernode.aop.service.OrderService;
@@ -1468,12 +1468,12 @@ public class LogAspect {
 ### 6.3.2 各通知执行顺序
 
 当目标方法正常返回时，执行顺序：
-```
+```text
 Around前 → Before → 目标方法 → AfterReturning → After → Around后
 ```
 
 当目标方法抛出异常时，执行顺序：
-```
+```text
 Around前 → Before → 目标方法 → AfterThrowing → After → (Around后不执行)
 ```
 

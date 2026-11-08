@@ -15,7 +15,7 @@
 
 拦截器（Interceptor）在**目标方法调用前后**插入横切逻辑，是 AOP 思想的声明式实现，可应用于 EJB、CDI Bean 等。
 
-```
+```text
 调用方
   │
   ▼
@@ -137,7 +137,7 @@ public class LoggingInterceptor { }
 
 托管 Bean（Managed Bean）是 JavaEE 中**由容器管理生命周期**的普通 POJO，规范定义统一的生命周期回调约定：
 
-```
+```text
 容器创建实例
     │
     ▼

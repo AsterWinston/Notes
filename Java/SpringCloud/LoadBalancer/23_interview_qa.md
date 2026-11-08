@@ -53,7 +53,7 @@ Spring Cloud LoadBalancer 是 Spring Cloud 官方提供的客户端负载均衡�
 
 `LoadBalancerClientFactory` 继承自 `NamedContextFactory`，为每个 `serviceId` 创建独立的 `AnnotationConfigApplicationContext` 子容器：
 
-```
+```text
 LoadBalancerClientFactory (父容器)
   ├── "user-service" → RoundRobin + UserSupplier
   ├── "order-service" → Random + OrderSupplier
@@ -68,7 +68,7 @@ LoadBalancerClientFactory (父容器)
 
 采用装饰器模式，链式包装：
 
-```
+```text
 DiscoveryClientSupplier（从注册中心获取原始列表）
   → CachingSupplier（缓存 N 秒）
   → ZonePreferenceSupplier（同 Zone 过滤）

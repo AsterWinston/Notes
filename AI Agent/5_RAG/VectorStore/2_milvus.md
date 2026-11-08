@@ -16,7 +16,7 @@ Milvus 不是"更快的 PGVector"，而是为向量而生的独立系统。它�
 
 ## 1.2 架构分层
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │              接入层（SDK / REST）          │
 ├──────────────────────────────────────────┤
@@ -68,7 +68,7 @@ Milvus 不是"更快的 PGVector"，而是为向量而生的独立系统。它�
 
 ## 2.2 概念之间的关系
 
-```
+```text
 Collection（集合）
    ├── Partition tenant_a（分区）
    │      └── Entity（实体：id + embedding + content + tenant_id）
@@ -481,7 +481,7 @@ store.addAll(embeddings, segments);
 
 ## 10.3 端到端流程
 
-```
+```text
 1. 创建集合（Schema：id + embedding + content + tenant_id）
 2. 创建向量索引（HNSW, COSINE）
 3. 为 tenant_id 创建 INVERTED 标量索引

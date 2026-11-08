@@ -3,7 +3,7 @@
 
 Docker 在 Jenkins CI/CD 流程中扮演三个关键角色：
 
-```
+```text
 ┌────────────────────────────────────────────────────────────┐
 │  Docker 在 Jenkins 中的三种使用场景                        │
 ├────────────────────────────────────────────────────────────┤
@@ -28,7 +28,7 @@ Docker 在 Jenkins CI/CD 流程中扮演三个关键角色：
 
 ## 2.1 插件安装
 
-```
+```text
 必需插件：
 ├── Docker Pipeline Plugin（核心）
 ├── Docker Plugin（管理 Docker Agent）
@@ -414,7 +414,7 @@ pipeline {
 
 ## 6.3 Docker Agent 生命周期
 
-```
+```text
 1. Job 触发，需要 maven 标签的 Agent
 2. Docker Cloud 检查是否有空闲容器
 3. 无 → 根据模板创建新容器

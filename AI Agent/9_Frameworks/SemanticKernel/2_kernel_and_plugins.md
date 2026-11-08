@@ -8,7 +8,7 @@ Kernel 是 Semantic Kernel 的中央容器与执行入口。它的价值在于**
 
 Kernel 承担五项职责：注册 AI 服务、注册插件、管理记忆、管理过滤器、提供调用入口。
 
-```
+```text
 Kernel = 中央容器
   ├── 注册 AI 服务（模型）
   ├── 注册插件（函数）
@@ -85,7 +85,7 @@ public class WeatherPlugin {
 
 ### 2.1.1 结构
 
-```
+```text
 Plugin = 一组相关函数的集合
   ├── 原生函数（Java 方法）
   └── 语义函数（Prompt 模板）
@@ -151,7 +151,7 @@ FunctionResult r = kernel.invokeAsync("weather", "getWeather",
 
 ### 2.3.1 按领域分组
 
-```
+```text
 Plugin 1（weather）：getWeather、getForecast
 Plugin 2（order）：queryOrder、cancelOrder
 Plugin 3（summarize）：summarize
@@ -181,7 +181,7 @@ Plugin 3（summarize）：summarize
 
 ### 3.1.1 Prompt 模板
 
-```
+```text
 语义函数 = Prompt 模板 + 参数
 由 LLM 执行，非确定性
 ```
@@ -227,7 +227,7 @@ String prompt = "输出 JSON：{\"title\": string, \"points\": string[]}\n" + te
 
 典型组合是：原生函数取数，语义函数生成，再由编排层串联。
 
-```
+```text
 语义函数（理解意图）
       │
       ▼
@@ -364,7 +364,7 @@ if (!authorizer.allow(user, pluginName, functionName)) {
 
 ### 6.1.1 三类过滤器
 
-```
+```text
 过滤器 = 拦截器（类似 Spring AI 的 Advisor）
   ├── 函数调用过滤器
   ├── Prompt 过滤器
@@ -425,7 +425,7 @@ public class AuthFilter implements FunctionInvocationFilter {
 
 过滤器按注册顺序构成责任链，先注册的先进入、后退出。
 
-```
+```text
 Filter A 进入
   Filter B 进入
     函数执行

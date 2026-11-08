@@ -16,7 +16,7 @@ public interface UserClient {
 
 ## 2.1 依赖关系
 
-```
+```text
 spring-cloud-starter-openfeign
     │
     ├── spring-cloud-openfeign-core
@@ -201,7 +201,7 @@ public class UserServiceFeignConfig {
 
 # 7. Feign + LoadBalancer 完整请求链路
 
-```
+```text
 OrderService.orderClient.getUser(1L)
     │
     ▼
@@ -255,7 +255,7 @@ feign:
 
 **熔断 + 负载均衡的协同**：
 
-```
+```text
 请求 user-service
   │
   ▼ LoadBalancer 选择实例

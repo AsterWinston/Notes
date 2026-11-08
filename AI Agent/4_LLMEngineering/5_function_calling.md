@@ -22,7 +22,7 @@
 
 模型基于工具结果生成自然语言回答，闭环结束。
 
-```
+```text
 ① 请求中带上工具定义（Schema）
 ② 模型判断需要调用工具 → 返回 tool_calls
 ③ 客户端执行工具 → 回填结果
@@ -349,7 +349,7 @@ ChatOptions options = ChatOptions.builder()
 
 ## 9.1 循环控制
 
-```
+```text
 循环：请求 → 是否有 tool_calls？
   是 → 执行并回填 → 继续循环
   否 → 返回文本，结束

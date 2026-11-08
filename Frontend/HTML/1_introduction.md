@@ -31,7 +31,7 @@ HTML（HyperText Markup Language，超文本标记语言）是一种**标记语�
 
 ## 2.1 从字节到 DOM 树
 
-```
+```text
  字节流（网络）
      │
      ▼

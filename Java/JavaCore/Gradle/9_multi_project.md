@@ -3,7 +3,7 @@
 
 ## 1.1 典型多项目目录结构
 
-```
+```text
 my-application/
 ├── settings.gradle(.kts)           ← 声明项目树
 ├── build.gradle(.kts)              ← 根项目构建脚本
@@ -267,7 +267,7 @@ dependencies {
 
 ## 4.2 项目依赖的配置传递
 
-```
+```text
 app/build.gradle:
   dependencies { implementation project(':core') }
 
@@ -323,7 +323,7 @@ include ':data'      // 依赖 :api
 
 Gradle 按**项目名称字母顺序**评估项目（在满足依赖约束的前提下）：
 
-```
+```text
 根项目 (:) → 直接子项目按字母顺序
 每层级的项目按字母顺序评估
 
@@ -384,7 +384,7 @@ gradle.settingsEvaluated { settings ->
 
 ## 6.1 `buildSrc` 目录
 
-```
+```text
 buildSrc/
 ├── build.gradle.kts
 │   plugins { `kotlin-dsl` }
@@ -454,7 +454,7 @@ dependencies {
 
 ## 6.3 独立约定插件项目（Included Builds）
 
-```
+```text
 gradle/
 ├── plugins/
 │   ├── settings.gradle.kts
@@ -538,7 +538,7 @@ includeBuild('../common-utils')
 
 ## 8.1 多项目下的三阶段流程
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │ 初始化阶段 (Initialization)                       │
 │ ├── 读取 settings.gradle                         │
@@ -831,7 +831,7 @@ Build Scan 提供：
 
 ## 13.1 项目结构原则
 
-```
+```text
 ✓ 推荐
 ├── :app (入口)
 ├── :feature-a:api, :feature-a:impl (API/实现分离)

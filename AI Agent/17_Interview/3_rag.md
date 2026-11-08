@@ -30,7 +30,7 @@ String answer = llm.chat(systemWithContext(context), query);
 
 ## 2.1 标准答案
 
-```
+```text
 离线索引：解析 → 切分 → 向量化 → 入库
 在线查询：改写 → 检索 → 重排 → 生成
 ```
@@ -201,7 +201,7 @@ var merged = rrfFuse(List.of(dense, sparse), 60);
 
 RRF（Reciprocal Rank Fusion，倒数排名融合，推荐）：
 
-```
+```text
 RRF(d) = Σ 1/(k + rank_i(d))，k=60
 ```
 
@@ -235,7 +235,7 @@ for (var list : lists)
 
 重排（Rerank）用交叉编码器（Cross-Encoder）精排，精度高于双塔。
 
-```
+```text
 召回多（20~50）→ 重排 → 取少（3~5）
 ```
 
@@ -301,7 +301,7 @@ var hits = retrieve(hyde, 20);
 
 ## 10.1 标准答案
 
-```
+```text
 filterExpression("tenantId == '" + tenant + "'")
 ```
 
@@ -333,7 +333,7 @@ var hits = store.search(qv, f, topK);
 
 ## 11.1 标准答案
 
-```
+```text
 ① 打印检索结果，看答案是否在上下文中
 ② 不在 → 检索问题（分块/Embedding/改写/提高 topK）
 ③ 在但答错 → 生成问题（提示/模型）
@@ -493,7 +493,7 @@ verifyCitations(answer, context);
 
 ## 16.1 标准答案
 
-```
+```text
 1. 建评测集        2. 调分块（收益最大）
 3. 加混合检索      4. 加 Rerank
 5. 查询改写/HyDE   6. 上下文增强

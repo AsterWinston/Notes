@@ -3,7 +3,7 @@
 
 Spring Cloud Gateway 支持 WebSocket 代理，可以将客户端的 WebSocket 请求转发到后端服务。底层基于 Reactor Netty 的 WebSocket 支持。
 
-```
+```text
 客户端 (WS) ──→ Gateway ──→ 后端服务 (WS/WSS)
     ↑                    ↑
     │  升级请求           │ 握手转发
@@ -309,7 +309,7 @@ public class WebSocketConnectionManagerFilter implements GlobalFilter {
 
 WebSocket 协议升级的核心在于 HTTP 升级握手：
 
-```
+```text
 客户端请求：                         网关转发：
 GET /ws HTTP/1.1                    GET /ws HTTP/1.1
 Host: gateway:8080                  Host: backend:3001

@@ -62,7 +62,7 @@ ports:
   - "8080:8080"
 ```
 
-提示：ports 是“对外暴露”；容器间互访通常走服务名 + 容器端口，不需要 ports。
+提示：ports 是"对外暴露"；容器间互访通常走服务名 + 容器端口，不需要 ports。
 
 ## 3.3 environment / env_file
 
@@ -119,7 +119,7 @@ restart: unless-stopped
 
 ## 4.1 `depends_on` 的真实含义
 
-`depends_on` 解决的是**容器启动顺序**，不保证“业务已经可用”。
+`depends_on` 解决的是**容器启动顺序**，不保证"业务已经可用"。
 
 推荐用法是：`depends_on` 配合 `healthcheck`，让依赖服务先变为 healthy，再启动上层服务。
 
@@ -139,7 +139,7 @@ services:
       retries: 5
 ```
 
-工程提醒：即使 `service_healthy` 生效，也不代表你的业务依赖“逻辑层面”就绪（例如 MySQL 已能 ping，但表结构初始化还没完成）。必要时仍需应用侧做重试/熔断。
+工程提醒：即使 `service_healthy` 生效，也不代表你的业务依赖"逻辑层面"就绪（例如 MySQL 已能 ping，但表结构初始化还没完成）。必要时仍需应用侧做重试/熔断。
 
 # 5. 多环境组织方式（推荐两种）
 
@@ -212,4 +212,4 @@ docker compose config  # 查看渲染后的最终配置（排查变量替换很�
 | Compose 解决什么 | 单机多容器声明式启动、网络/卷统一管理 |
 | Compose 的边界 | 不负责跨主机调度/复杂自愈/大规模治理 |
 | `depends_on` 的含义 | 启动顺序，不等于依赖服务可用 |
-| 为什么要 healthcheck | 区分“进程存活”和“服务可用” |
+| 为什么要 healthcheck | 区分"进程存活"和"服务可用" |

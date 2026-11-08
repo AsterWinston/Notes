@@ -1,17 +1,17 @@
 # 1. HttpMessageConverter
-```
+```text
 HttpMessageConverter是Spring MVC中非常重要的一个接口，翻译为：HTTP消息转换器，该接口提供了很多实现类，不同实现类有不同的转换方式。
 ```
 ## 1.1 什么是HTTP消息
-```
+```text
 HTTP消息其实就是HTTP协议。HTTP协议包括请求协议和响应协议。
 ```
 ## 1.2 转换器转换的是什么
-```
+```text
 转换的是HTTP协议与Java程序中的对象之间的互相转换。请看下图：
 ```
 <img src="images/06.png" width="100%"/>
-```
+```text
 上图是我们之前经常写的代码。请求体中的数据是如何转换成user对象的，底层实际上使用了HttpMessageConverter接口的其中一个实现类FormHttpMessageConverter。
 通过上图可以看出FormHttpMessageConverter是负责将请求协议转换为Java对象的。
 再看下图：
@@ -19,13 +19,13 @@ HTTP消息其实就是HTTP协议。HTTP协议包括请求协议和响应协议�
 
 <img src="images/07.png" width="100%">
 
-```
+```text
 上图的代码也是之前我们经常写的，Controller返回值看做逻辑视图名称，视图解析器将其转换成物理视图名称，生成视图对象，StringHttpMessageConverter负责将视图对象中的HTML字符串写入到HTTP协议的响应体中。最终完成响应。
 通过上图可以看出StringHttpMessageConverter是负责将Java对象转换为响应协议的。
 通过以上内容的学习，大家应该能够了解到HttpMessageConverter接口是用来做什么的了：
 ```
 <img src="images/08.png" width="100%">
-```
+```text
 如上图所示：HttpMessageConverter接口的可以将请求协议转换成Java对象，也可以把Java对象转换为响应协议。
 HttpMessageConverter是接口，SpringMVC帮我们提供了非常多而丰富的实现类。每个实现类都有自己不同的转换风格。
 对于我们程序员来说，Spring MVC已经帮助我们写好了，我们只需要在不同的业务场景下，选择合适的HTTP消息转换器即可。
@@ -37,7 +37,7 @@ HttpMessageConverter是接口，SpringMVC帮我们提供了非常多而丰富的
 ● RequestEntity
 ```
 # 2. Spring MVC中的AJAX请求
-```
+```text
 SpringMVC+Vue3+Thymeleaf+Axios发送一个简单的AJAX请求。
 引入Vue和Axios的js文件：
 ...
@@ -173,7 +173,7 @@ public class HelloController {
 # 3. @ResponseBody
 
 ## 3.1 StringHttpMessageConverter
-```
+```text
 上面的AJAX案例，Controller的代码可以修改为：
 package com.powernode.springmvc.controller;
 
@@ -188,7 +188,7 @@ public class HelloController {
     @ResponseBody
     public String hello(){
         // 由于你使用了 @ResponseBody 注解
-        // 以下的return语句返回的字符串则不再是“逻辑视图名”了
+        // 以下的return语句返回的字符串则不再是"逻辑视图名"了
         // 而是作为响应协议的响应体进行响应。
         return "hello";
     }
@@ -219,7 +219,7 @@ public class HelloController {
 
 ```
 ## 3.2 MappingJackson2HttpMessageConverter
-```
+```text
 启用MappingJackson2HttpMessageConverter消息转换器的步骤如下：
 第一步：引入jackson依赖，可以将java对象转换为json格式字符串
 <dependency>
@@ -284,7 +284,7 @@ public class HelloController {
 其实这个消息转换器MappingJackson2HttpMessageConverter本质上只是比StringHttpMessageConverter多了一个json字符串的转换，其他的还是一样。
 ```
 # 4. RestController
-```
+```text
 因为我们现代的开发方式都是基于AJAX方式的，因此 @ResponseBody 注解非常重要，很常用。
 为了方便，Spring MVC中提供了一个注解 @RestController。这一个注解代表了：@Controller + @ResponseBody。
 @RestController 标注在类上即可。被它标注的Controller中所有的方法上都会自动标注 @ResponseBody
@@ -308,7 +308,7 @@ public class HelloController {
 # 5. RequestBody
 
 ## 5.1 FromHttpMessageConverter
-```
+```text
 这个注解的作用是直接将请求体传递给Java程序，在Java程序中可以直接使用一个String类型的变量接收这个请求体的内容。
 在没有使用这个注解的时候：
 @RequestMapping("/save")
@@ -330,7 +330,7 @@ public String save(@RequestBody String requestBodyStr){
 Spring MVC仍然会使用 FormHttpMessageConverter消息转换器，将请求体直接以字符串形式传递给 requestBodyStr 变量。
 ```
 ## 5.2 MappingJackson2HttpMessageConverter
-```
+```text
 另外，如果在请求体中提交的是一个JSON格式的字符串，这个JSON字符串传递给Spring MVC之后，能不能将JSON字符串转换成POJO对象呢？答案是可以的。
 此时必须使用@RequestBody 注解来完成 。并且底层使用的消息转换器是：MappingJackson2HttpMessageConverter。实现步骤如下：
 ● 第一步：引入jackson依赖
@@ -391,7 +391,7 @@ public String send(@RequestBody User user){
 </html>
 ```
 # 6. RequestEntity
-```
+```text
 RequestEntity不是一个注解，是一个普通的类。这个类的实例封装了整个请求协议：包括请求行、请求头、请求体所有信息。
 出现在控制器方法的参数上：
 <!DOCTYPE html>
@@ -458,7 +458,7 @@ public String send(RequestEntity<User> requestEntity){
 在实际的开发中，如果你需要获取更详细的请求协议中的信息。可以使用RequestEntity
 ```
 # 7. ResponseEntity
-```
+```text
 ResponseEntity不是注解，是一个类。用该类的实例可以封装响应协议，包括：状态行、响应头、响应体。也就是说：如果你想定制属于自己的响应协议，可以使用该类。
 假如我要完成这样一个需求：前端提交一个id，后端根据id进行查询，如果返回null，请在前端显示404错误。如果返回不是null，则输出返回的user。
 

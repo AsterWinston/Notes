@@ -16,7 +16,7 @@ Helm 被称为"Kubernetes 的包管理器"，解决了以下核心问题：
 
 ## 1.2 Helm 的核心概念
 
-```
+```text
 Chart（包）
   └── 一个包含 Kubernetes 资源模板的压缩包
       类似于 apt 的 .deb 或 yum 的 .rpm
@@ -36,7 +36,7 @@ Revision（版本）
 
 ### 1.2.1 Helm 架构（v3 简化）
 
-```
+```text
 ┌─────────────┐
 │  helm CLI   │
 └──────┬──────┘
@@ -353,7 +353,7 @@ helm template my-release ./my-chart -s templates/deployment.yaml
 
 Values 有多个来源，按优先级从低到高：
 
-```
+```text
 1. Chart 内置的 values.yaml（最低优先级）
 2. 父 Chart 的 values.yaml（如果是子 Chart）
 3. 用户通过 -f 传入的 values 文件

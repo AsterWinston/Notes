@@ -10,7 +10,7 @@
 
 ### 1.1.1 组成结构
 
-```
+```text
 会话级记忆 = 会话内的完整状态
 ├── 消息历史
 ├── 会话摘要
@@ -46,7 +46,7 @@
 
 结论先行：把会话看成一台状态机，所有读写都围绕"当前状态"展开。
 
-```
+```text
 客户端 ──▶ 会话服务 ──▶ [会话存储]
                 │            │
                 ├─ 消息存储 ──┤
@@ -191,7 +191,7 @@ public boolean updateVariablesCas(String sessionId,
 结论先行：槽位填充把"用户分多轮提供的信息"累积到结构化槽位，
 填满后触发执行，未填满则追问。
 
-```
+```text
 第1轮 "我要退款"        → intent=退款, slots={}
 第2轮 "订单 ORD-001"    → slots={orderId: ORD-001}
 第3轮 "金额 100"        → slots={orderId, amount:100}
@@ -263,7 +263,7 @@ interface SlotExtractor {
 结论先行：会话在 ACTIVE / IDLE / CLOSED 间流转，
 超时驱动状态迁移，关闭时归档。
 
-```
+```text
 ACTIVE ──超时──▶ IDLE ──超时──▶ CLOSED
   ▲                │
   └──新消息────────┘
@@ -351,7 +351,7 @@ public String buildSessionContext(String sessionId) {
 
 结论先行：摘要应增量更新而非每次全量重算，否则成本与延迟不可控。
 
-```
+```text
 每 N 轮 或 每 M token：
     newSummary = summarize(oldSummary + 新增消息)
     覆盖保存 summary
@@ -366,7 +366,7 @@ public String buildSessionContext(String sessionId) {
 
 结论先行：恢复会话前必须校验归属，再决定是继续还是新建。
 
-```
+```text
 请求恢复 ──▶ 加载会话 ──▶ 归属校验 ──▶ 已关闭？
                                     ├─ 是 → 询问是否继续
                                     └─ 否 → 组装上下文返回
@@ -454,7 +454,7 @@ String sessionId = tenantId + ":" + userId + ":"
 结论先行：同一会话的并发请求会导致"读—改—写"丢失更新，
 必须串行化。
 
-```
+```text
 请求A 读 messages=[m1]       请求B 读 messages=[m1]
 请求A 写 [m1,a]              请求B 写 [m1,b]
 结果：[m1,b]  ← A 的写入丢失

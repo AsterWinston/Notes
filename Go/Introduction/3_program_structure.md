@@ -19,7 +19,7 @@ func main() {         // main 函数，程序从这里开始执行
 
 ## 1.2 package 的语义
 
-```
+```text
 package 是 Go 的基本组织单位：
 
 1. 同一目录下的所有 .go 文件必须声明同一个包名
@@ -65,7 +65,7 @@ func init() {}    // 私有
 
 ## 3.1 编译链接流水线
 
-```
+```text
 .go 源码
   │
   ▼  ① 词法/语法分析（scanner/parser）
@@ -91,7 +91,7 @@ GOSSAFUNC 可见的 SSA 形式
 
 ## 3.2 分段查看编译过程
 
-```
+```text
 go build -x              # ★ 打印每一步实际执行的命令，看清 compile/asm/link 全流程
 go build -work           # 保留临时工作目录，可查看中间产物
 go build -gcflags="-S"   # 打印生成的汇编代码
@@ -100,7 +100,7 @@ GOSSAFUNC=main go build  # 生成 SSA 可视化 HTML，研究编译优化的利�
 
 ## 3.3 可执行文件的构成
 
-```
+```text
 Go 可执行文件 = 用户代码 + 运行时（runtime）+ 静态链接的标准库
 
 特点：
@@ -129,7 +129,7 @@ func init() {
 
 ★ **关键认知**：Go 的初始化遵循严格的确定性顺序：
 
-```
+```text
 1. 先初始化被 import 的包（深度优先，按 import 顺序）
 2. 每个包内：先初始化包级变量（按声明顺序），再执行 init 函数（按声明顺序）
 3. 最后才执行 main 包自己的变量初始化和 init
@@ -142,7 +142,7 @@ func init() {
 
 ## 5.1 推荐的工程布局
 
-```
+```text
 project/
 ├── go.mod
 ├── main.go              # 入口

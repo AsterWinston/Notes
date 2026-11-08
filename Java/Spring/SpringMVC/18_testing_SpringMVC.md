@@ -1,5 +1,5 @@
 # 1. 测试概述
-```
+```text
 SpringMVC提供了强大的测试支持，通过MockMvc可以在不启动Servlet容器（Tomcat）的情况下，
 模拟HTTP请求来测试Controller层的各种行为。
 
@@ -27,7 +27,7 @@ SpringMVC提供了强大的测试支持，通过MockMvc可以在不启动Servlet
 ```
 
 # 2. 搭建MockMvc测试环境
-```
+```text
 MockMvc通过MockMvcBuilders来构建，支持两种方式：
 
 方式一：独立模式（standaloneSetup）—— 不加载Spring容器
@@ -78,7 +78,7 @@ public abstract class BaseControllerTest {
 ```
 
 # 3. 测试GET请求（返回视图）
-```
+```text
 测试一个返回Thymeleaf视图的Controller：
 
 // 要被测试的Controller
@@ -139,7 +139,7 @@ public class UserControllerTest extends BaseControllerTest {
 ```
 
 # 4. 测试POST请求（表单提交）
-```
+```java
 
 @Controller
 public class UserController {
@@ -187,7 +187,7 @@ public void testSaveUserWithValidation() throws Exception {
 ```
 
 # 5. 测试RESTful API（JSON请求和响应）
-```
+```text
 测试返回JSON的@RestController：
 
 @RestController
@@ -254,7 +254,7 @@ public void testSaveUserApi() throws Exception {
 ```
 
 # 6. 测试文件上传
-```
+```java
 Controller：
 @PostMapping("/file/up")
 public String fileUp(@RequestParam("fileName") MultipartFile file) throws IOException {
@@ -298,7 +298,7 @@ public void testMultiFileUpload() throws Exception {
 ```
 
 # 7. 测试异常处理
-```
+```text
 测试@ControllerAdvice异常处理器：
 
 异常处理器：
@@ -348,7 +348,7 @@ public void testBusinessExceptionReturnsJson() throws Exception {
 ```
 
 # 8. 测试拦截器
-```
+```text
 测试拦截器是否对指定路径生效：
 
 拦截器配置：
@@ -391,7 +391,7 @@ public void testInterceptorExcludedPath() throws Exception {
 ```
 
 # 9. 设置请求头和Session
-```
+```text
 5.1 设置请求头：
 mockMvc.perform(get("/api/user/1")
         .header("Authorization", "Bearer xxx-token")   // 设置Authorization头
@@ -419,7 +419,7 @@ mockMvc.perform(get("/user/123"))                       // URL中的123就是Pat
 ```
 
 # 10. 测试速查表
-```
+```text
 | 测试目标 | 示例代码 |
 |----------|----------|
 | GET请求 | mockMvc.perform(get("/path")) |

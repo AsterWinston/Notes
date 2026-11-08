@@ -89,7 +89,7 @@ session2.close();                    // → transient（对象已无意义）
 
 状态转换图：
 
-```
+```text
         persist()          close()/clear()/evict()
 Transient ─────────► Persistent ─────────────────────► Detached
     ▲                    │  ▲                               │
@@ -1252,7 +1252,7 @@ List<User> users = em.createQuery(
 
 **问题**：对 `@OneToMany` 集合使用 `JOIN FETCH` + `setFirstResult()/setMaxResults()` 时，Hibernate 会发出警告，并在**内存中进行分页**（将全部数据取回再截断），可能导致 OOM。
 
-```
+```text
 HHH000104: firstResult/maxResults specified with collection fetch;
 applying in memory!
 ```
@@ -2759,7 +2759,7 @@ public void bulkImport(List<User> users, int batchSize) {
 
 **Q: Hibernate 项目分层架构建议？**
 
-```
+```text
 Controller/Resource 层
     ↓ DTO (数据传输对象)
 Service/Facade 层 (@Transactional)
@@ -2866,7 +2866,7 @@ spring.flyway.enabled=true
 
 **经典公式**（来源：《HikariCP 文档》和 PostgreSQL 文档）：
 
-```
+```text
 connections = ((core_count * 2) + effective_spindle_count)
 ```
 

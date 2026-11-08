@@ -1,7 +1,7 @@
 
 # 1. 方法区的演进
 
-```
+```text
 JDK 6及之前：永久代 (PermGen) — 在 JVM 堆中
 JDK 7：       永久代 — 但字符串常量池、静态变量移到堆中
 JDK 8+：      元空间 (Metaspace) — 使用本地内存，移除永久代
@@ -13,7 +13,7 @@ JDK 8+：      元空间 (Metaspace) — 使用本地内存，移除永久代
 - 永久代 GC 复杂（与堆混合回收）。
 - JRockit 没有永久代概念，HotSpot 与 JRockit 合并后统一为元空间。
 
-```
+```text
 JDK 7                     JDK 8+
 ┌──────────────┐         ┌──────────────────────┐
 │   JVM 堆     │         │      JVM 堆          │
@@ -110,7 +110,7 @@ jstat -gc <pid>
 ```
 
 代码缓存满时的表现：
-```
+```text
 Java HotSpot(TM) 64-Bit Server VM warning:
 CodeCache is full. Compiler has been disabled.
 ```

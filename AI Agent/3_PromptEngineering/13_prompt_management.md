@@ -4,7 +4,7 @@
 
 Prompt（提示词）不是随手写在字符串里的文本，而是决定模型行为的核心资产。它具备代码的全部特征：
 
-```
+```text
 Prompt 是代码：
 - 会频繁变更
 - 变更影响效果
@@ -48,7 +48,7 @@ Prompt 是代码：
 
 ## 2.1 五维度总览
 
-```
+```text
 ① 版本：每次变更一个新版本
 ② 注册：统一注册与命名
 ③ 灰度：按比例放量
@@ -68,7 +68,7 @@ Prompt 是代码：
 
 五个维度不是并列的，而是一条闭环流水线：
 
-```
+```text
 变更 → 新版本 → 注册 → 评测 → 灰度 → 全量
                           │
                           └── 指标异常 → 回滚
@@ -196,7 +196,7 @@ public class PromptRegistry {
 
 ## 4.1 命名结构
 
-```
+```text
 <模块>_<用途>_<类型>
 
 qa_system          QA 模块的系统提示
@@ -284,7 +284,7 @@ public record QaPromptVars(
 
 ## 6.1 目录布局
 
-```
+```text
 resources/prompts/
 ├── v1/
 │   ├── qa_system.txt
@@ -323,7 +323,7 @@ resources/prompts/
 
 除 manifest 外，每个版本还应记录元数据：创建人、创建时间、审批人、评测分数与变更说明。版本状态机如下：
 
-```
+```text
 draft → evaluating → approved → gray → active → archived
 ```
 
@@ -472,7 +472,7 @@ public class PromptAuditAspect {
 
 ## 9.2 发布流程
 
-```
+```text
 草稿 → 评测通过 → 审批 → 灰度 → 全量
 ```
 

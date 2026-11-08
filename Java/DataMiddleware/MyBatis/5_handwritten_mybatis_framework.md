@@ -1,6 +1,6 @@
 # 1. dom4j解析XML文件
 
-```
+```text
 dom4j 是一个高性能的 Java XML 解析库。在 MyBatis 中，核心配置文件 mybatis-config.xml 
 和 SQL 映射文件 XxxMapper.xml 都是通过 dom4j（实际上是 XPath + dom4j）来解析的。
 
@@ -99,7 +99,7 @@ private static void parseMapperXml(String resource) {
 
 # 2. GodBatis 手写框架
 
-```
+```text
 目标：手写一个极简版 MyBatis 框架，命名为 GodBatis，核心实现以下功能：
   1. 解析 mybatis-config.xml 获取数据源配置
   2. 解析 XxxMapper.xml 获取 SQL 语句
@@ -111,7 +111,7 @@ private static void parseMapperXml(String resource) {
 
 ## 2.1 整体架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                         GodBatis 核心架构                      │
 ├─────────────────────────────────────────────────────────────┤
@@ -1480,7 +1480,7 @@ public class GodBatisTest {
 
 # 5. 总结 MyBatis 框架的重要实现原理
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────────┐
 │                   MyBatis 核心执行流程总结                              │
 ├────────────────────────────────────────────────────────────────────┤
@@ -1536,7 +1536,7 @@ public class GodBatisTest {
 
 ## 5.1 关键扩展点
 
-```
+```text
 MyBatis 提供了多个扩展点，允许用户自定义行为：
 
 1. TypeHandler（类型处理器）
@@ -1560,7 +1560,7 @@ MyBatis 提供了多个扩展点，允许用户自定义行为：
 
 ## 5.2 与真正 MyBatis 的差距
 
-```
+```text
 我们的 GodBatis 是一个极简版，与真正的 MyBatis 相比，缺少以下核心特性：
 
 1. 动态 SQL（if/where/trim/foreach/choose/set）
@@ -1602,7 +1602,7 @@ MyBatis 提供了多个扩展点，允许用户自定义行为：
 
 ## 5.3 推荐阅读源码的入口
 
-```
+```text
 如果你想深入阅读 MyBatis 源码，建议按以下顺序：
 
 1. SqlSessionFactoryBuilder.build() → 了解配置加载入口

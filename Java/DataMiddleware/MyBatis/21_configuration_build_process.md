@@ -1,6 +1,6 @@
 # 1. 配置构建全过程概览
 
-```
+```text
 MyBatis 启动时最重要的工作就是解析配置文件，构建 Configuration 对象。
 
 整个构建过程分为两大部分：
@@ -706,7 +706,7 @@ public class Configuration {
 
 # 8. 构建过程时序总结
 
-```
+```text
 ┌─────────────┐    ┌─────────────────┐    ┌─────────────────────┐    ┌──────────────┐
 │  Spring/用户  │    │SqlSessionFactory │    │   XMLConfigBuilder    │    │Configuration │
 │              │    │    Builder        │    │                       │    │              │

@@ -3,7 +3,7 @@
 
 Sentinel 通过 Dubbo Filter SPI 机制透明集成 Dubbo，对 Provider 和 Consumer 两侧均提供流量防护能力。
 
-```
+```text
 Consumer                                Provider
 ┌──────────────────────┐               ┌──────────────────────┐
 │  SentinelDubboConsumer│              │  SentinelDubboProvider│
@@ -36,7 +36,7 @@ Consumer                                Provider
 
 Sentinel 通过 Dubbo SPI 自动注册 Filter：
 
-```
+```text
 META-INF/dubbo/org.apache.dubbo.rpc.Filter:
 
 sentinel.dubbo.provider=com.alibaba.csp.sentinel.adapter.dubbo3.SentinelDubboProviderFilter

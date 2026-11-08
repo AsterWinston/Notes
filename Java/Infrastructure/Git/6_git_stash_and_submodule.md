@@ -5,7 +5,7 @@
 
 `git stash` 用于**临时保存工作目录和暂存区的修改**，让你可以切换分支或执行其他操作，之后再恢复。
 
-```
+```text
 stash 前：
 Working Tree: 修改了 file.txt
 Index: 暂存了 login.js
@@ -192,7 +192,7 @@ cd ../docs-view
 
 Submodule 允许你在一个 Git 仓库中包含另一个 Git 仓库作为子目录。
 
-```
+```text
 父仓库 project/
 ├── .gitmodules          ← 子模块配置
 ├── src/
@@ -312,7 +312,7 @@ git diff --submodule  # 检查子模块是否有变更
 
 Subtree 是 Submodule 的替代方案，它将外部仓库的代码**直接合并**到当前仓库的某个子目录中。
 
-```
+```text
 Submodule 方式：
 project/
 └── libs/common   ← 指向外部仓库（独立 .git）

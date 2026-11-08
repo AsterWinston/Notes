@@ -4,7 +4,7 @@
 
 ShardingSphere 提供透明读写分离，写操作自动路由到主库，读操作负载均衡到从库。
 
-```
+```text
 Application (JDBC / Proxy)
     │ SQL
     ▼
@@ -179,7 +179,7 @@ rules:
 
 **效果**：分片路由先把 SQL 定到逻辑组 `readwrite_ds`，再由读写分离层决定进 `ds_master` 还是 `ds_slaveX`。生产形态常是"**每个分库一组主从**"，用行表达式批量声明：
 
-```
+```text
 t_order (逻辑) ──分片(库)──► readwrite_ds0 / readwrite_ds1
                                 │读写分离              │
                           master0├─slave00,slave01   master1├─slave10,slave11
@@ -187,7 +187,7 @@ t_order (逻辑) ──分片(库)──► readwrite_ds0 / readwrite_ds1
 
 # 7. 从库故障处理与熔断
 
-```
+```text
 心跳/连接检测失败 → 标记不可用 → 从读负载中摘除（写主库不受影响）
        ↑                                   │
        └──── 探测恢复 → 自动重新加入读负载 ◄┘

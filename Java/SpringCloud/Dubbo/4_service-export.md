@@ -3,7 +3,7 @@
 
 服务导出是将一个 Java 对象（Service 实现类）变成 Dubbo 框架可以调用的远程服务的全过程。导出完成后，其他应用可以通过 RPC 调用该服务。
 
-```
+```text
 ServiceImpl (业务实现)
     │
     ▼
@@ -280,7 +280,7 @@ public class DubboExporter<T> extends AbstractExporter<T> {
 
 服务导出过程是**同步**的，在 Spring 容器刷新时在**主线程**中执行：
 
-```
+```text
 Spring ApplicationContext.refresh()
     └── DubboServiceBean.init()
         └── ServiceConfig.export()
@@ -313,7 +313,7 @@ public void export() {
 
 # 10. 导出流程时序图
 
-```
+```text
 ServiceConfig   ProxyFactory   RegistryProtocol   DubboProtocol   Registry   Netty
     │                │               │                  │              │         │
     ├─export()──────→│               │                  │              │         │

@@ -36,7 +36,7 @@ String result = agent.run("帮我查订单并申请退款");
 
 ## 2.1 标准答案
 
-```
+```text
 感知 → 规划 → 行动 → 观察 → (循环) → 达成目标
 ```
 
@@ -137,7 +137,7 @@ Autonomy level = action.isRisky() ? Autonomy.L2_APPROVE : Autonomy.L4_HIGH;
 
 ## 5.1 标准答案
 
-```
+```text
 ① 请求带工具 Schema
 ② 模型返回 tool_calls
 ③ 客户端执行
@@ -270,7 +270,7 @@ if (!seenSignatures.add(call.signature())) {
 
 每步保存检查点，状态外置（Redis/DB）：
 
-```
+```text
   ├── 消息历史
   ├── 计划
   ├── 已执行工具签名（幂等）
@@ -391,7 +391,7 @@ if (!seen.add(sig) && ++repeated > 3) throw new LoopDetectedException();
 
 ## 13.1 标准答案
 
-```
+```text
 上下文（本次请求）
 短期记忆（会话内）
 长期记忆（跨会话）

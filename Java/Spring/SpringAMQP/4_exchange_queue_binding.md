@@ -13,7 +13,7 @@ Exchange是AMQP协议中的消息路由组件，它的核心职责是**接收生
 ### 1.2.1 工作原理
 Direct Exchange采用**精确匹配**策略，将Routing Key与Binding Key进行完全相等的比较。
 
-```
+```text
 生产者: exchange = "order.exchange", routingKey = "order.create"
                     ↓
 Direct Exchange: 检查所有Binding
@@ -80,7 +80,7 @@ Topic Exchange采用**模式匹配**策略，Binding Key使用`.`分隔的单词
 - `#`（井号）：匹配**零个或多个**单词
 
 匹配示例：
-```
+```text
 Binding Key        | Routing Key              | 匹配?
 -------------------+--------------------------+------
 order.*            | order.create             | ✓ (一个单词)
@@ -154,7 +154,7 @@ public class TopicExchangeConfig {
 ### 1.4.1 工作原理
 Fanout Exchange是最简单的交换机类型，它将接收到的消息**广播到所有绑定的Queue**，完全**忽略Routing Key**。
 
-```
+```text
 生产者: exchange = "notify.fanout.exchange", routingKey = "任意值(忽略)"
                     ↓
 Fanout Exchange: 广播到所有绑定的Queue
@@ -421,7 +421,7 @@ Queue quorumQueue = QueueBuilder.durable("quorum.queue")
 ## 3.1 Binding的本质
 Binding是Exchange和Queue之间的关联关系，定义了消息从Exchange流向Queue的规则：
 
-```
+```text
 Exchange --[Binding]--> Queue
   ↑                        ↑
 接收消息                 存储并投递给消费者
@@ -456,7 +456,7 @@ BindingBuilder.bind(queue).to(exchange2).with("key2");
 ## 3.3 多Binding与路由策略
 一个Exchange可以有多个Binding，一个Queue也可以绑定到多个Exchange：
 
-```
+```text
         Queue1 ←--[key1]-- ExchangeA --[key2]--> Queue2
            ↑                                          ↓
         [broadcast]                            Queue3
@@ -498,7 +498,7 @@ Exchange exchange = ExchangeBuilder.directExchange("order.exchange")
 ```
 
 备用交换机的工作流程：
-```
+```text
 消息 → order.exchange → 无匹配Binding
   ↓
 alternate-exchange → unroutable.exchange → unroutable.queue（捕获无法路由的消息）

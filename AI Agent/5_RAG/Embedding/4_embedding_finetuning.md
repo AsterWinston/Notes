@@ -6,7 +6,7 @@
 
 ### 1.1.1 决策流程图
 
-```
+```text
 通用 Embedding 效果不佳
         │
         ├── 先排查：前缀、分块、度量、阈值 → 多数问题在此解决
@@ -72,14 +72,14 @@
 
 ### 2.1.1 正负样本对
 
-```
+```text
 正样本对（语义相近）→ 拉近向量距离
 负样本对（语义无关）→ 推远向量距离
 ```
 
 ### 2.1.2 几何直觉
 
-```
+```text
        ▲
        │   ●查询  ○正样本   （拉近）
        │
@@ -101,7 +101,7 @@
 
 只需正样本对 (query, doc)，同批其他 doc 自动成为负例。批越大，负例越多，效果通常越好。其目标函数近似 InfoNCE：
 
-```
+```text
 L = -log( exp(sim(q, d+) / τ)
           ───────────────────────────── )
           Σ_j exp(sim(q, d_j) / τ)
@@ -329,7 +329,7 @@ List<float[]> vectors = model.embed(queries);
 
 前 K 条里是否包含相关文档，衡量召回能力。公式：
 
-```
+```text
 Recall@K = 命中相关文档的查询数 / 查询总数
 ```
 
@@ -423,7 +423,7 @@ public double mrr(EmbeddingModel model, List<EvalCase> cases, int k) {
 
 ## 8.2 实践顺序
 
-```
+```text
 换模型 → 混合检索 → 重排 → 查询改写 → 微调
 ```
 
@@ -456,7 +456,7 @@ public double mrr(EmbeddingModel model, List<EvalCase> cases, int k) {
 
 ## 9.3 上线检查清单
 
-```
+```text
 [ ] 评测集未泄漏
 [ ] 微调前后指标已对比
 [ ] 全量索引已重建

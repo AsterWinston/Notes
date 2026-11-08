@@ -10,7 +10,7 @@ Bean Validation（Jakarta Bean Validation）是 JavaEE 的**声明式数据校�
 
 ## 1.2 为什么需要它
 
-```
+```text
 传统手动校验：
   if (user.getName() == null || user.getName().isEmpty()) { throw ... }
   if (user.getAge() < 18) { throw ... }

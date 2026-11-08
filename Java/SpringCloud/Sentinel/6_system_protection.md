@@ -100,7 +100,7 @@ rule.setHighestSystemLoad(2.0);  // 仍可作为兜底
 
 BBR 算法根据**当前 QPS 与最大 QPS**的比值，动态调整通过量：
 
-```
+```text
 当前 QPS
   ├── < 最大 QPS * 容忍度 → 通过
   ├── > 最大 QPS * 容忍度 → 按比例放行

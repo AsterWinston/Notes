@@ -44,7 +44,7 @@ location /ws/ {
 ## 2.1 WebSocket的握手过程是怎样的？
 WebSocket握手通过HTTP升级完成：
 1) 客户端发送HTTP请求：
-```
+```text
 GET /chat HTTP/1.1
 Host: server.example.com
 Upgrade: websocket
@@ -56,7 +56,7 @@ Sec-WebSocket-Version: 13
 3) 对拼接字符串计算SHA-1，得到20字节摘要
 4) 对摘要进行Base64编码得到Sec-WebSocket-Accept
 5) 服务端返回101响应：
-```
+```text
 HTTP/1.1 101 Switching Protocols
 Upgrade: websocket
 Connection: Upgrade
@@ -78,7 +78,7 @@ WebSocket适合需要双向实时交互的场景(IM、游戏)；SSE适合只有�
 
 ## 2.3 WebSocket的数据帧结构是怎样的？
 WebSocket帧格式(按bit排列)：
-```
+```text
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-------+-+-------------+-------------------------------+

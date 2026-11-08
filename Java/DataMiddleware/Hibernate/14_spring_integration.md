@@ -224,7 +224,7 @@ public class HibernateJpaAutoConfiguration {
 
 **类继承关系**：
 
-```
+```text
 HibernateJpaAutoConfiguration
     └── @Import → HibernateJpaConfiguration
             └── extends JpaBaseConfiguration（自动配置的核心抽象类）
@@ -480,7 +480,7 @@ spring:
 
 ### 3.1.2 物理命名策略 vs 隐式命名策略
 
-```
+```text
 Java 实体属性名
     │
     ▼
@@ -639,7 +639,7 @@ spring:
 
 ### 3.3.1 连接池大小计算公式
 
-```
+```text
 数据库连接数 = ((核心数 * 2) + 硬盘数)
 
 简化公式（源自 HikariCP 官方 wiki）：
@@ -1037,7 +1037,7 @@ public class ReadOnlyEffects {
 
 Spring 使用 `SpringSessionContext` 实现 `CurrentSessionContext` 接口，将 Hibernate Session 与 Spring 事务绑定：
 
-```
+```text
 Spring 事务周期：
 ┌──────────────────────────────────────────────────────────────┐
 │ @Transactional                                                │
@@ -1099,7 +1099,7 @@ Hibernate 访问数据库时抛出的异常属于受检异常体系（`Hibernate
 
 ### 5.3.1 异常转换原理
 
-```
+```text
 Hibernate 异常层次                   Spring 异常层次
 ┌──────────────────┐               ┌──────────────────────┐
 │ HibernateException│  ──转换──→  │ DataAccessException   │
@@ -1163,7 +1163,7 @@ OSIV 是 Web 应用中最容易被忽视但也最具争议的配置。Spring Boo
 
 ### 6.1.1 工作流程
 
-```
+```text
 HTTP Request 生命周期（OSIV 开启）：
 
 1. 请求到达 DispatcherServlet
@@ -1213,7 +1213,7 @@ public class OpenEntityManagerInViewInterceptor {
 
 ### 6.2.1 问题一：数据库连接长时间占用
 
-```
+```text
 请求时间线（OSIV 开启）：
 
 时间 ──────────────────────────────────────────────────→
@@ -1258,7 +1258,7 @@ public class OrderController {
 
 ### 6.2.3 问题三：连接池耗尽
 
-```
+```text
 高并发场景：
 - 100 个并发请求
 - 连接池大小：20
@@ -2269,7 +2269,7 @@ class IsolatedRepositoryTest {
 
 ### 10.1.1 错误一：Unable to determine Dialect
 
-```
+```text
 Caused by: org.hibernate.HibernateException:
     Access to DialectResolutionInfo cannot be null when
     'hibernate.dialect' not set
@@ -2297,7 +2297,7 @@ public HibernatePropertiesCustomizer dialectCustomizer() {
 
 ### 10.1.2 错误二：No EntityManager with actual transaction available
 
-```
+```text
 org.springframework.dao.InvalidDataAccessApiUsageException:
     No EntityManager with actual transaction available for current
     thread - cannot reliably process 'persist' call
@@ -2322,7 +2322,7 @@ public void save(User user) {
 
 ### 10.1.3 错误三：Multiple representations of the same entity
 
-```
+```text
 java.lang.IllegalStateException:
     Multiple representations of the same entity [...] are being merged.
 ```
@@ -2348,7 +2348,7 @@ public User updateUser(Long id, UserDto dto) {
 
 ### 10.2.1 LazyInitializationException
 
-```
+```text
 org.hibernate.LazyInitializationException:
     could not initialize proxy [com.example.User#1] - no Session
 ```
@@ -2388,7 +2388,7 @@ Optional<UserDto> findUserDtoById(@Param("id") Long id);
 
 ### 10.2.2 OptimisticLockException
 
-```
+```text
 org.hibernate.StaleObjectStateException:
     Row was updated or deleted by another transaction
 ```
@@ -2417,7 +2417,7 @@ public class OptimisticLockRetryService {
 
 ### 10.2.3 NonUniqueResultException
 
-```
+```text
 org.hibernate.NonUniqueResultException:
     query did not return a unique result: 5
 ```

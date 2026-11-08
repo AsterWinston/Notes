@@ -8,7 +8,7 @@
 
 **SFT（Supervised Fine-Tuning，监督微调）** = 用"指令-回答"数据微调 Base Model，让它学会遵循指令。
 
-```
+```text
 Base Model：会补全，但不会遵循指令
 SFT 之后：  "请写一首诗" → 输出一首诗
 ```
@@ -19,7 +19,7 @@ Base Model 只学过"预测下一个 token"，它的行为是"续写"而不是"�
 
 现代大模型训练通常分三段：
 
-```
+```text
 预训练（Pre-training）
    │  海量无标注文本，学语言与世界知识
    ▼
@@ -84,7 +84,7 @@ $$
 
 主流格式是消息列表：
 
-```
+```json
 {
   "messages": [
     {"role": "system", "content": "你是一个有用的助手。"},
@@ -110,7 +110,7 @@ $$
 
 序列化时用特殊 token 标记角色边界，例如：
 
-```
+```text
 <|system|>你是一个有用的助手。<|user|>写一首诗<|assistant|>春风...
 ```
 
@@ -155,7 +155,7 @@ $$
 
 ### 3.1.1 原理
 
-```
+```text
 只在 assistant 部分计算损失：
   user 部分的 token 不参与损失计算
 
@@ -252,7 +252,7 @@ public static double maskedCrossEntropy(double[][] logits,
 
 ### 4.1.1 正确性与相关性
 
-```
+```text
 SFT 效果 = 数据质量 × 数量
 质量远比数量重要
 ```
@@ -306,7 +306,7 @@ def generate_sft_data(seed_examples, target_model):
 
 ### 4.3.1 典型配比
 
-```
+```text
 一个高质量 SFT 数据集应覆盖：
 ├── 通用对话（30%）
 ├── 推理与数学（20%）
@@ -414,7 +414,7 @@ ZeRO/FSDP 把优化器状态、梯度、参数分片到多卡，降低单卡显�
 
 ### 6.1.1 成因
 
-```
+```text
 微调可能让模型"忘记"预训练学到的能力
 ```
 

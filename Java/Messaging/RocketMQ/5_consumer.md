@@ -18,7 +18,7 @@ Consumer 负责从 Broker 拉取消息并进行业务消费。RocketMQ 提供两
 **集群消费（Clustering） — 默认
 **：
 
-```
+```text
 Producer ─→ Topic (8个MessageQueue)
               ├── Q0 ─→ Consumer 1 (Group: myGroup)
               ├── Q1 ─→ Consumer 1
@@ -34,7 +34,7 @@ Producer ─→ Topic (8个MessageQueue)
 **广播消费（Broadcasting）
 **：
 
-```
+```text
 Producer ─→ Topic (8个MessageQueue)
               ├── Q0 ─→ Consumer 1, Consumer 2, Consumer 3
               ├── Q1 ─→ Consumer 1, Consumer 2, Consumer 3
@@ -162,7 +162,7 @@ while (true) {
 
 ## 4.2 Rebalance 算法
 
-```
+```text
 1. 获取 Consumer Group 下所有 Consumer 实例 (cidAll)
 2. 获取 Topic 下所有 MessageQueue (mqAll)
 3. 排序 cidAll 和 mqAll
@@ -208,7 +208,7 @@ consumer.setMaxReconsumeTimes(16);   // 最大重试次数
 
 ## 6.2 端到端流量控制
 
-```
+```text
 速率控制器 = 滑动窗口 + 令牌桶
 
 Producer 端：限制发送速率

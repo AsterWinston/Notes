@@ -4,7 +4,7 @@
 
 ### 1.1.1 分区数计算
 
-```
+```text
 分区数 = Max(
     targetThroughput / singlePartitionThroughput,
     consumerConcurrency
@@ -26,7 +26,7 @@
 
 ### 1.1.3 最佳实践
 
-```
+```text
 1. 先估算再验证，避免一开始就创建过多分区
 2. 使用 kafka-producer-perf-test.sh 测量单分区吞吐
 3. 监控 kafka.server:type=ReplicaManager,name=UnderReplicatedPartitions
@@ -35,7 +35,7 @@
 
 ## 1.2 Topic 设计
 
-```
+```text
 命名规范: <domain>.<entity>.<event_type>
 
 示例:
@@ -88,7 +88,7 @@ props.put("linger.ms", 10);                      // ⑧ 10ms 额外等待
 
 ## 2.2 消息 Key 设计
 
-```
+```text
 消息 Key 的作用:
   ① 分区路由: hash(key) % partitions → 决定消息落在哪个分区
   ② 消息去重: 幂等去重的依据
@@ -283,7 +283,7 @@ kafka-log-dirs.sh --bootstrap-server $BS --describe --broker-list 0,1,2
 
 ## 5.3 滚动升级规范
 
-```
+```text
 1. 逐台 Broker 升级（一次一台）
 2. 每台升级前确认集群 ISR 恢复
 3. 观察至少 10 分钟后再升级下一台
@@ -297,7 +297,7 @@ kafka-log-dirs.sh --bootstrap-server $BS --describe --broker-list 0,1,2
 
 ## 6.1 估算公式
 
-```
+```text
 磁盘容量 = 日数据量 × retention_days × replication_factor
           / compression_ratio
 
@@ -335,7 +335,7 @@ super.users=User:admin
 allow.everyone.if.no.acl.found=false
 ```
 
-```
+```text
 ACL 模板:
   Producer: 需要 Topic WRITE + (Cluster IDEMPOTENT_WRITE, 如果开启幂等)
   Consumer: 需要 Topic READ + Group READ
@@ -345,7 +345,7 @@ ACL 模板:
 
 # 8. 监控告警
 
-```
+```text
 关键告警规则:
   1. UnderReplicatedPartitions > 0 → CRITICAL
   2. ActiveControllerCount != 1 → CRITICAL
@@ -384,7 +384,7 @@ ACL 模板:
 
 ## 9.3 快速参考卡
 
-```
+```text
 Kafka 版本选择:
   新项目 → 3.6+ KRaft 模式
   存量 → ≥ 2.8，计划迁移

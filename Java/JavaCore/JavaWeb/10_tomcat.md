@@ -1,6 +1,6 @@
 ﻿# 1. 回顾：Servlet阶段已学的Tomcat知识
 
-```
+```text
 在学Servlet的时候，你已经接触过Tomcat了。我们先快速复习一下你已经知道的东西，避免重复：
 
 1. Tomcat是什么？
@@ -45,7 +45,7 @@
 
 # 2. Tomcat是什么？为什么需要它？
 
-```
+```text
 要真正理解Tomcat，首先要回答一个根本问题：为什么浏览器不能直接调用你的Java类？
 
 一、HTTP协议的本质
@@ -61,7 +61,7 @@ Accept: text/html
 
 ```
 
-```
+```text
 服务器返回的也是纯文本：
 ```
 
@@ -73,7 +73,7 @@ Content-Length: 1234
 <html>...</html>
 ```
 
-```
+```text
 二、直接调用Java类的障碍
 
 浏览器只能发HTTP文本，不能直接调用JVM中的方法。如果每写一个web应用都要自己实现：
@@ -135,7 +135,7 @@ Tomcat作为Servlet容器，它的核心职责是：
 
 # 3. Tomcat的由来与版本演进
 
-```
+```text
 一、历史渊源
 
 Tomcat的故事要从Apache基金会的James Duncan Davidson说起：
@@ -200,7 +200,7 @@ Tomcat的故事要从Apache基金会的James Duncan Davidson说起：
 
 # 4. Tomcat整体架构概览
 
-```
+```text
 在深入每个细节之前，必须先在脑子里建立一个"顶层设计地图"。Tomcat的架构可以用一句话概括：
 
   一个Server包含多个Service，每个Service包含一个Container和多个Connector
@@ -288,7 +288,7 @@ Tomcat不是铁板一块，而是三个独立子项目的组合：
 
 # 5. Tomcat源码结构概览
 
-```
+```text
 阅读源码是深入理解Tomcat的最佳方式。这一节给你一个源码地图，让你知道从哪里入手。
 
 一、获取源码
@@ -365,7 +365,7 @@ org.apache.tomcat.util.digester.Digester           // XML解析器（解析serve
 org.apache.tomcat.util.scan.StandardJarScanner     // Jar扫描（Servlet 3.0+的注解扫描）
 ```
 
-```
+```text
 四、推荐阅读源码的顺序（由浅入深）
 
 第一步：Lifecycle → LifecycleBase（理解生命周期）
@@ -382,7 +382,7 @@ org.apache.tomcat.util.scan.StandardJarScanner     // Jar扫描（Servlet 3.0+�
 
 # 6. server.xml核心配置详解（上）
 
-```
+```text
 server.xml 是 Tomcat 最重要的配置文件，位于 $CATALINA_BASE/conf/server.xml。
 Tomcat 启动时做的第一件大事就是解析这个文件（用Digester框架），然后根据配置创建对应的Java对象。
 
@@ -426,7 +426,7 @@ Tomcat 启动时做的第一件大事就是解析这个文件（用Digester框�
 </Server>
 ```
 
-```
+```text
 二、Server 元素
 
 <Server port="8005" shutdown="SHUTDOWN">
@@ -465,7 +465,7 @@ Service 是一个"逻辑组合"——将一个 Container（处理请求）和若
 
 # 7. server.xml核心配置详解（下）
 
-```
+```text
 六、Connector 元素（最重要！）
 
 这是 server.xml 中你最常修改的配置。Connector 定义了一个对外监听端口。
@@ -490,7 +490,7 @@ Service 是一个"逻辑组合"——将一个 Container（处理请求）和若
            useBodyEncodingForURI="true" />
 ```
 
-```
+```text
 各参数详解：
 
 ┌──────────────────────┬────────────────────────────────────────────┐
@@ -584,7 +584,7 @@ Valve（阀门）是Tomcat中的"拦截器"，可以插入到Engine/Host/Context
        showServerInfo="false" />
 ```
 
-```
+```text
 十一、一个完整的 server.xml 骨架总结
 
 <Server>
@@ -609,7 +609,7 @@ Valve（阀门）是Tomcat中的"拦截器"，可以插入到Engine/Host/Context
 
 # 8. Connector连接器深度解析（上）—— 架构与协议
 
-```
+```text
 前面我们讲了Connector是"门卫+邮差"，现在来看它内部到底长什么样。
 
 一、Connector的三层组件
@@ -664,7 +664,7 @@ ProtocolHandler是"老板"，它把Endpoint和Processor组合在一起。
 <Connector protocol="org.apache.coyote.http11.Http11NioProtocol" />
 ```
 
-```
+```text
 三、Endpoint：网络端点
 
 Endpoint 负责最底层的网络I/O操作。它的内部结构：
@@ -711,7 +711,7 @@ Processor负责把字节流解析成HTTP请求对象：
   → 调用 Adapter.service(request, response)
 ```
 
-```
+```text
 五、LimitLatch：连接数限制
 
 LimitLatch 是 Endpoint 内部用来限制最大连接数的组件。
@@ -728,7 +728,7 @@ LimitLatch 是 Endpoint 内部用来限制最大连接数的组件。
 
 # 9. Connector连接器深度解析（下）—— 内部组件
 
-```
+```text
 六、Adapter：CoyoteAdapter 桥接器
 
 这是整个Tomcat架构中最关键的"转接头"。它在 Coyote 世界和 Catalina 世界之间
@@ -766,7 +766,7 @@ public void service(org.apache.coyote.Request req,
 }
 ```
 
-```
+```text
 这就是为什么你在Servlet中写的是 HttpServletRequest 而不是 Coyote的Request——
 CoyoteAdapter 帮你做了转换。
 
@@ -832,7 +832,7 @@ CoyoteAdapter.service(coyoteReq, coyoteRes)
 
 # 10. I/O模型对比：BIO / NIO / NIO2 / APR
 
-```
+```text
 这是一个面试高频问题，也是性能调优的基础。
 把Tomcat支持的四中I/O模型彻底搞清楚。
 
@@ -873,7 +873,7 @@ Tomcat 中的实现：
 核心原理图解：
 ```
 
-```
+```text
   BIO 模型（一对一）：
    连接1 ---- 线程1（read阻塞）
    连接2 ---- 线程2（read阻塞）
@@ -890,7 +890,7 @@ Tomcat 中的实现：
    连接N ----┘
 ```
 
-```
+```text
 selector.select() 会返回所有有事件（可读/可写）的SelectionKey，
 然后为每个有数据的连接创建一个任务，交给Worker线程池处理。
 
@@ -963,7 +963,7 @@ Tomcat 中的实现：
 <Connector protocol="HTTP/1.1" port="8080" />
 ```
 
-```
+```text
 七、Spring Boot 中的配置
 
 Spring Boot 内嵌 Tomcat 默认使用 NIO。如果你要切换：
@@ -979,7 +979,7 @@ server:
     accept-count: 100
 ```
 
-```
+```text
 或通过编程方式：
 ```
 
@@ -994,7 +994,7 @@ public TomcatServletWebServerFactory tomcatFactory() {
 
 # 11. Catalina容器层次结构
 
-```
+```text
 前面我们把Connector讲透了，现在来看"集装箱"的另一半——Catalina容器。
 
 一、四级容器模型
@@ -1131,14 +1131,14 @@ public interface Container extends Lifecycle {
 }
 ```
 
-```
+```text
 这种统一的接口设计让Tomcat可以用完全相同的代码来处理不同层级的容器。
 这就是"面向接口编程"的威力。
 ```
 
 # 12. Pipeline-Valve管道阀门机制
 
-```
+```text
 Pipeline-Valve 是 Tomcat 内部实现请求处理的核心设计模式——责任链模式。
 
 一、什么是Pipeline-Valve？
@@ -1189,7 +1189,7 @@ public interface Pipeline {
 }
 ```
 
-```
+```text
 三、一个请求的阀门执行顺序
 
 以标准的本地Tomcat为例，请求从Connector进入容器后，经过的阀门链是：
@@ -1270,7 +1270,7 @@ public final void invoke(Request request, Response response) {
 }
 ```
 
-```
+```text
 六、自定义 Valve 示例
 
 你可以写自己的 Valve 插入到任意容器的 Pipeline 中：
@@ -1309,7 +1309,7 @@ public class MyLoggingValve extends ValveBase {
 }
 ```
 
-```
+```text
 在 server.xml 中配置：
 ```
 
@@ -1319,7 +1319,7 @@ public class MyLoggingValve extends ValveBase {
 </Host>
 ```
 
-```
+```text
 注意：
   - Valve 可以用在任何容器层级（Engine / Host / Context / Wrapper）
   - 如果 Valve 在 Host 级别，则该Host下的所有Context的所有请求都会经过它
@@ -1329,7 +1329,7 @@ public class MyLoggingValve extends ValveBase {
 
 # 13. Tomcat的类加载机制（上）—— 为什么打破双亲委派
 
-```
+```text
 类加载机制是Tomcat设计中最精妙的部分之一，也是面试必问话题。
 
 一、JVM的"双亲委派"模型（快速复习）
@@ -1399,7 +1399,7 @@ Java标准的双亲委派模型一个需求都满足不了！
 
 # 14. Tomcat的类加载机制（下）—— 类加载器层次与热部署
 
-```
+```text
 三、Tomcat的类加载器层次
 
 Tomcat设计了一套打破双亲委派的类加载结构：
@@ -1492,7 +1492,7 @@ protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundE
 }
 ```
 
-```
+```text
 关键点：
   - 对于 JRE 核心类（java.* / javax.* 等），仍然走双亲委派（安全性）
   - 对于应用类，先自己在 WEB-INF 中加载，找不到再向上委托
@@ -1536,7 +1536,7 @@ protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundE
 
 # 15. Lifecycle接口与生命周期管理
 
-```
+```text
 一、什么是Lifecycle？
 
 Tomcat中几乎所有重要组件（Server、Service、Connector、Container、Valve...）
@@ -1585,7 +1585,7 @@ public interface Lifecycle {
 }
 ```
 
-```
+```text
 三、生命周期状态机
 
 Tomcat的生命周期不是简单的"启动→运行→停止"，而是一个精密的状态机：
@@ -1651,7 +1651,7 @@ public abstract class LifecycleBase implements Lifecycle {
 }
 ```
 
-```
+```text
 LifecycleBase 的 start() 方法也是同样的套路：
   1. 状态检查
   2. 发射 BEFORE_START_EVENT 事件
@@ -1687,7 +1687,7 @@ public class MyLifecycleListener implements LifecycleListener {
 }
 ```
 
-```
+```text
 在 server.xml 中注册到某个组件上：
 ```
 
@@ -1697,7 +1697,7 @@ public class MyLifecycleListener implements LifecycleListener {
 </Server>
 ```
 
-```
+```text
 六、lifecycle 在 Tomcat 中的实际使用场景
 
 1. GlobalResourcesLifecycleListener：
@@ -1728,7 +1728,7 @@ public void backgroundProcess();
 
 # 16. Mapper：请求路由映射机制
 
-```
+```text
 Connector把请求交给Container后，Container怎么知道该由哪个Servlet处理？
 答案是：Mapper。
 
@@ -1798,7 +1798,7 @@ public void map(MessageBytes host, MessageBytes uri,
 }
 ```
 
-```
+```text
 四、路由匹配的优先级规则
 
 ┌──────────────┬──────────────────────┬─────────────────────────┐
@@ -1836,7 +1836,7 @@ Mapper 将 Host/Context/Wrapper 组织成多层Map结构，可以 O(log n) 找�
 
 # 17. Tomcat启动流程（上）—— Bootstrap到Server
 
-```
+```text
 Tomcat的启动看似简单（双击startup.bat），但背后的流程非常复杂。
 我们从入口开始，一层层剖析。
 
@@ -1858,7 +1858,7 @@ set CLASSPATH=%CATALINA_HOME%\bin\bootstrap.jar;%CATALINA_HOME%\bin\tomcat-juli.
   org.apache.catalina.startup.Bootstrap start
 ```
 
-```
+```text
 注意：
   - classpath 只包含 bootstrap.jar 和 tomcat-juli.jar
   - catalina.jar 不在classpath中！（这就是后面要讲的类加载器隔离）
@@ -1893,7 +1893,7 @@ public static void main(String args[]) {
 }
 ```
 
-```
+```text
 三、Bootstrap.init() —— 创建三大ClassLoader
 
 这是Tomcat类加载机制的核心初始化：
@@ -1934,7 +1934,7 @@ public void init() throws Exception {
 }
 ```
 
-```
+```text
 四、Bootstrap.load() —— 加载 server.xml
 
 通过反射调用 Catalina.load()，它做了这些事情：
@@ -1966,7 +1966,7 @@ public void load() {
 }
 ```
 
-```
+```text
 五、Digester 是什么？
 
 Digester 是 Apache Commons 的一个 XML 解析框架，它用"规则链"的方式把 XML 元素
@@ -1999,14 +1999,14 @@ digester.addSetNext("Server/Service/Connector", "addConnector");
 // ... 以此类推
 ```
 
-```
+```text
 这样，server.xml 中的每个元素都变成了一个 Java 对象，并被正确地"挂"到父对象上。
 至此，Server → Service → Connector → Engine → Host 的 Java 对象树就建立起来了。
 ```
 
 # 18. Tomcat启动流程（下）—— Service到Context
 
-```
+```text
 六、Bootstrap.start() → Catalina.start() → Server.start()
 
 Server.init() 只是创建对象、设置属性，真正让一切运行起来的是 start()。
@@ -2046,7 +2046,7 @@ public void startInternal() throws LifecycleException {
 }
 ```
 
-```
+```text
 注意启动顺序：
   ① 先启动容器（Engine + Host）
   ② 再启动 MapperListener
@@ -2085,7 +2085,7 @@ protected void deployApps() {
 }
 ```
 
-```
+```text
 对于每个war包/目录，Tomcat会创建一个 StandardContext 对象并启动它。
 
 十、StandardContext.startInternal() —— 整个Tomcat最复杂的方法
@@ -2138,7 +2138,7 @@ protected synchronized void startInternal() throws LifecycleException {
 }
 ```
 
-```
+```text
 十一、为什么Tomcat启动有时候很慢？
 
 看了上面的启动流程，你应该能理解启动慢的几个原因：
@@ -2158,7 +2158,7 @@ protected synchronized void startInternal() throws LifecycleException {
 </Context>
 ```
 
-```
+```text
 2. 注解扫描：
    Servlet 3.0+ 引入了注解，Tomcat要扫描 /WEB-INF/classes 下所有.class文件
    解决办法：在 web.xml 中设置 metadata-complete="true" 跳过注解扫描：
@@ -2168,7 +2168,7 @@ protected synchronized void startInternal() throws LifecycleException {
 <web-app metadata-complete="true" ...>
 ```
 
-```
+```text
 3. SecureRandom（Linux上最常见的问题）：
    JVM 启动时初始化 SecureRandom 需要收集熵值
    在Linux上，如果熵池不足，会阻塞很长时间
@@ -2186,7 +2186,7 @@ protected synchronized void startInternal() throws LifecycleException {
 
 # 19. 一个HTTP请求的完整旅程（上）—— 从Socket到Adapter
 
-```
+```text
 把前面学的所有知识串起来，看一个HTTP请求从进来到出去的完整路径。
 
 一、阶段一：连接建立
@@ -2260,7 +2260,7 @@ if ("chunked".equals(request.getHeader("Transfer-Encoding"))) {
 }
 ```
 
-```
+```text
 14. Http11Processor 构建内部对象：
     org.apache.coyote.Request    —— 存储解析结果
     org.apache.coyote.Response   —— 响应包装
@@ -2296,7 +2296,7 @@ public void service(org.apache.coyote.Request req,
 }
 ```
 
-```
+```text
 至此，请求已经从网络字节流变成了一个结构化的 Java 对象，
 并且 Tomcat 已经知道该由哪个 Servlet 来处理它了。
 接下来就要进入容器的Pipeline-Valve执行链。
@@ -2304,7 +2304,7 @@ public void service(org.apache.coyote.Request req,
 
 # 20. 一个HTTP请求的完整旅程（下）—— 从Valve到Servlet
 
-```
+```text
 五、阶段五：容器Pipeline执行
 
 17. Engine Pipeline 的 StandardEngineValve.invoke()
@@ -2366,7 +2366,7 @@ public final void invoke(Request request, Response response) {
 }
 ```
 
-```
+```text
 七、阶段七：Filter链的执行
 
 21. ApplicationFilterChain.doFilter()
@@ -2471,7 +2471,7 @@ Acceptor 接收 ---- Poller 检测IO ---- Worker线程池
 
 # 21. Tomcat线程模型与线程池调优
 
-```
+```text
 一、Tomcat的线程池
 
 Tomcat 有两套线程池：
@@ -2507,7 +2507,7 @@ Tomcat 有两套线程池：
            maxKeepAliveRequests="100" />
 ```
 
-```
+```text
 ┌──────────────────────┬─────────┬──────────────────────────────────────┐
 │ 参数                  │ 默认值   │ 含义                                  │
 ├──────────────────────┼─────────┼──────────────────────────────────────┤
@@ -2595,7 +2595,7 @@ public WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatCustomize
 }
 ```
 
-```
+```text
 五、请求排队与拒绝的完整流程
 
 客户端请求到达时，Tomcat的处理流程：
@@ -2629,7 +2629,7 @@ public WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatCustomize
 
 # 22. Session管理机制
 
-```
+```text
 一、Session的创建
 
 Session并不是浏览器一打开就创建的，而是"按需创建"：
@@ -2668,7 +2668,7 @@ StandardManager 把 Session 存在内存中（一个 ConcurrentHashMap）。
          sessionIdLength="32" />
 ```
 
-```
+```text
 参数说明：
   - maxActiveSessions：最大活动Session数（-1表示无限制）
   - sessionIdLength：生成的JSESSIONID的长度（默认32字符）
@@ -2723,7 +2723,7 @@ Session的"过期"是一个后台线程定期检查的。流程：
 </Manager>
 ```
 
-```
+```text
 六、Session的安全问题
 
 1. JSESSIONID 泄露 = 等于交出账号！他人拿到你的JSESSIONID就能冒充你的身份
@@ -2748,7 +2748,7 @@ Session的"过期"是一个后台线程定期检查的。流程：
 
 # 23. Context配置与自动部署
 
-```
+```text
 一、Context的多种配置方式
 
 Context（一个webapp）可以通过四种方式来配置，各有优先级：
@@ -2795,7 +2795,7 @@ Context（一个webapp）可以通过四种方式来配置，各有优先级：
 </Context>
 ```
 
-```
+```text
 三、autoDeploy vs deployOnStartup
 
 这两个 Host 属性经常被混淆：
@@ -2857,7 +2857,7 @@ reloadable="true" 时，Tomcat 会监听 WatchedResource 指定的文件变化�
 
 # 24. WebSocket支持
 
-```
+```text
 Tomcat 7 开始支持 WebSocket（JSR 356），Tomcat 8+ 完美支持。
 
 一、WebSocket 是什么？
@@ -2898,7 +2898,7 @@ Connection: Upgrade
 Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
 ```
 
-```
+```text
 三、Tomcat 中开发 WebSocket（服务端）
 
 有两种方式：
@@ -2944,7 +2944,7 @@ public class ChatEndpoint {
 }
 ```
 
-```
+```text
 方式二：继承 Endpoint 类
 ```
 
@@ -2962,7 +2962,7 @@ public class MyEndpoint extends Endpoint {
 }
 ```
 
-```
+```text
 四、Tomcat 对 WebSocket 的实现
 
 Tomcat 内部对 WebSocket 的处理流程：
@@ -3022,7 +3022,7 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
 
 # 25. Tomcat安全配置
 
-```
+```text
 安全问题在生产环境中是重中之重。Tomcat 虽然默认配置"能用"，但要"安全地用"，
 需要做一些加固。
 
@@ -3040,7 +3040,7 @@ Tomcat 默认监听 8005 端口，收到 "SHUTDOWN" 字符串就会关闭。
 <Server port="-1" shutdown="SHUTDOWN">
 ```
 
-```
+```text
 这样设置后，只能通过 kill 进程的方式来停止Tomcat（这正是生产环境推荐的方式）。
 
 二、隐藏Tomcat版本信息
@@ -3060,7 +3060,7 @@ Tomcat 默认监听 8005 端口，收到 "SHUTDOWN" 字符串就会关闭。
 </Host>
 ```
 
-```
+```text
 三、Realm 认证与授权
 
 Realm 是 Tomcat 的"用户认证域"。支持的 Realm 类型：
@@ -3097,7 +3097,7 @@ Realm 是 Tomcat 的"用户认证域"。支持的 Realm 类型：
        roleNameCol="role_name" />
 ```
 
-```
+```text
 四、SSL/TLS 配置
 
 为了保护数据传输安全（特别是登录密码），生产环境必须用HTTPS。
@@ -3111,7 +3111,7 @@ keytool -genkey -alias tomcat -keyalg RSA \
         -validity 3650
 ```
 
-```
+```text
 步骤2：在 server.xml 中配置 SSL Connector
 ```
 
@@ -3132,7 +3132,7 @@ keytool -genkey -alias tomcat -keyalg RSA \
 </Connector>
 ```
 
-```
+```text
 Tomcat 8.5+ 使用 <SSLHostConfig>，之前版本直接设置 keystoreFile 属性。
 
 步骤3：强制 HTTP 跳转到 HTTPS
@@ -3151,7 +3151,7 @@ Tomcat 8.5+ 使用 <SSLHostConfig>，之前版本直接设置 keystoreFile 属�
 </security-constraint>
 ```
 
-```
+```text
 五、Security Constraint（安全约束）
 
 web.xml 中可以配置细粒度的安全约束：
@@ -3185,7 +3185,7 @@ web.xml 中可以配置细粒度的安全约束：
 </security-role>
 ```
 
-```
+```text
 六、其他安全加固建议
 
 1. 限制 HTTP 方法
@@ -3206,7 +3206,7 @@ web.xml 中可以配置细粒度的安全约束：
 </security-constraint>
 ```
 
-```
+```text
 2. 删除默认应用
    - 删除 webapps 下的 ROOT、docs、examples、manager、host-manager
    - 生产服务器不需要这些
@@ -3223,7 +3223,7 @@ web.xml 中可以配置细粒度的安全约束：
                  sameSiteCookies="strict" />
 ```
 
-```
+```text
 5. 文件上传限制
 ```
 
@@ -3233,7 +3233,7 @@ web.xml 中可以配置细粒度的安全约束：
 
 # 26. Tomcat日志系统（JULI）
 
-```
+```text
 一、为什么Tomcat自创了JULI？
 
 Tomcat 没有直接用 java.util.logging（JUL），而是创建了 JULI（Java Utility Logging Implementation）。
@@ -3287,7 +3287,7 @@ org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/manager].level =
 org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/host-manager].level = INFO
 ```
 
-```
+```text
 三、JULI 的几个核心 Handler
 
 1. FileHandler：按天滚动
@@ -3315,7 +3315,7 @@ org.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/host-manager].le
        maxDays="30" />
 ```
 
-```
+```text
 pattern 中的常用占位符：
 
 ┌──────────┬──────────────────────────────────────────┐
@@ -3376,7 +3376,7 @@ JULI 支持每个webapp有自己的 logging.properties，放在 /WEB-INF/classes
 
 # 27. 性能调优实战
 
-```
+```text
 Tomcat 性能调优是一个系统工程，从JVM到Connector到应用代码，每层都能优化。
 
 一、JVM层优化
@@ -3399,7 +3399,7 @@ JAVA_OPTS="-server
   -Djava.security.egd=file:/dev/./urandom  # Linux熵值优化"
 ```
 
-```
+```text
 二、Connector 性能调优
 ```
 
@@ -3425,7 +3425,7 @@ JAVA_OPTS="-server
 />
 ```
 
-```
+```text
 三、Host/Context 层优化
 ```
 
@@ -3447,7 +3447,7 @@ JAVA_OPTS="-server
 </Host>
 ```
 
-```
+```text
 四、静态资源优化
 
 1. 配置静态资源缓存（在 web.xml 中的 DefaultServlet）：
@@ -3473,7 +3473,7 @@ JAVA_OPTS="-server
 </servlet>
 ```
 
-```
+```text
 2. 使用 Nginx 做反向代理处理静态资源：
    Nginx 处理静态文件（HTML/CSS/JS/图片）比 Tomcat 高效得多
    让 Tomcat 只干 Servlet 的活
@@ -3501,7 +3501,7 @@ JAVA_OPTS="-server
           removeAbandonedTimeout="60" />
 ```
 
-```
+```text
 六、应用层面的优化
 
 1. 减少 web.xml 的复杂性
@@ -3523,7 +3523,7 @@ JAVA_OPTS="-server
 
 # 28. 嵌入式Tomcat与Spring Boot
 
-```
+```text
 一、传统部署 vs 嵌入式启动
 
 传统部署模式（你之前学的）：
@@ -3587,7 +3587,7 @@ public WebServer getWebServer(ServletContextInitializer... initializers) {
 }
 ```
 
-```
+```text
 三、关键区别
 
 ┌──────────────┬──────────────────────┬────────────────────────────┐
@@ -3650,7 +3650,7 @@ public TomcatServletWebServerFactory tomcatFactory() {
 }
 ```
 
-```
+```text
 五、嵌入式 Tomcat 的优势
 
 1. 部署极简：一个jar包，一条命令，到处运行
@@ -3817,7 +3817,7 @@ server {
 }
 ```
 
-```
+```text
 五、集群注意事项
 
 1. 时间同步：
@@ -3840,7 +3840,7 @@ server {
 
 # 30. Tomcat 9→10 迁移：javax → jakarta
 
-```
+```text
 这是Tomcat历史上最大的一次不兼容变更。如果你在维护老项目，这一节必须看。
 
 一、为什么改名？
@@ -3900,7 +3900,7 @@ import jakarta.servlet.Filter;
 </dependency>
 ```
 
-```
+```text
 三、Spring Boot 的对应关系
 
 ┌──────────────┬──────────────────────┬───────────────────┐
@@ -3945,7 +3945,7 @@ Apache 官方提供了迁移工具：
 
 # 31. Tomcat设计模式分析
 
-```
+```text
 Tomcat 的设计质量在开源Java项目中属于顶级水平。它巧妙地运用了大量设计模式。
 理解这些模式，不仅帮你读懂Tomcat源码，更让你在日常开发中\"有招可用\"。
 
@@ -3980,7 +3980,7 @@ public abstract class ValveBase implements Valve {
 }
 ```
 
-```
+```text
 二、责任链模式（Chain of Responsibility）
 
 在哪用：Pipeline-Valve
@@ -4073,7 +4073,7 @@ public class UserServlet extends HttpServlet {
 ```
 
 
-```
+```text
 八、适配器模式（Adapter）
 
 在哪用：CoyoteAdapter
@@ -4103,7 +4103,7 @@ Tomcat 让你看到了设计模式在真实大型项目中的应用。下次学�
 
 # 32. 常见问题排查
 
-```
+```text
 一、端口占用（最最常见）
 
 现象：启动Tomcat时报错 \"Address already in use: bind\"
@@ -4126,7 +4126,7 @@ netstat -tlnp | grep 8080
 kill -9 <PID>
 ```
 
-```
+```text
 常见占用场景：
   - 上一个Tomcat没有正常关闭（双击了startup.bat两次）
   - IDEA 中已启动了一个Tomcat，又在外面启动了一个
@@ -4175,7 +4175,7 @@ JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
 #    在 context.xml 中配置跳过不必要的Jar扫描（参见第18节）
 ```
 
-```
+```text
 四、中文乱码问题汇总
 
 乱码是 JavaWeb 中最烦人的问题之一，涉及好多层：
@@ -4245,7 +4245,7 @@ JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
 
 # 33. Tomcat学习资源与进阶方向
 
-```
+```text
 一、官方资源
 
 1. 官方文档（第一手资料）

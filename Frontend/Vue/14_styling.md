@@ -14,7 +14,7 @@
 
 ## 1.2 直观对比
 
-```
+```html
 源码： .title { color: red; }
 编译： .title[data-v-f3f3eg9] { color: red; }
 

@@ -3,7 +3,7 @@
 
 # 1. 知识体系回顾
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │                 Nginx 知识体系                     │
 ├────────────┬──────────────┬──────────────────────┤
@@ -29,7 +29,7 @@
 
 ## 2.1 Q1: Nginx 的 Master-Worker 进程模型是如何工作的？
 
-```
+```text
 Master 进程负责：
   - 读取和验证配置
   - 管理 Worker 进程的创建与销毁
@@ -51,7 +51,7 @@ Worker 进程负责：
 
 ## 2.2 Q2: Nginx 如何处理请求？11 个阶段是什么？
 
-```
+```text
 请求处理依次经过 11 个阶段：
 
 1.  POST_READ        → 读取请求头后，realip 模块
@@ -84,7 +84,7 @@ Worker 进程负责：
 
 ## 2.4 Q4: root 和 alias 的区别？
 
-```
+```text
 root：拼接完整路径
   root /var/www;
   请求 /images/logo.png → /var/www/images/logo.png
@@ -98,7 +98,7 @@ alias 仅替换 location 匹配的前缀部分
 
 ## 2.5 Q5: proxy_pass 末尾 `/` 的影响？
 
-```
+```text
 location /api/ {
     proxy_pass http://backend;       → /api/user → http://backend/api/user
     proxy_pass http://backend/;      → /api/user → http://backend/user
@@ -109,7 +109,7 @@ location /api/ {
 
 ## 2.6 Q6: Nginx 如何实现高可用？
 
-```
+```text
 1. Keepalived + VIP 漂移：
    - 主备两台 Nginx，Keepalived 管理虚拟 IP
    - 主节点故障 → VIP 自动漂移到备节点
@@ -124,7 +124,7 @@ location /api/ {
 
 ## 2.7 Q7: Nginx 限流是如何实现的？有哪些方式？
 
-```
+```text
 1. limit_req（请求频率）：漏桶算法，限制每秒请求数
    limit_req_zone $binary_remote_addr zone=req:10m rate=10r/s;
    limit_req zone=req burst=20 nodelay;
@@ -172,7 +172,7 @@ location /api/ {
 
 ## 2.10 Q10: access_log 出现大量 502 如何排查？
 
-```
+```text
 1. 检查 upstream 后端服务是否正常运行
    - 直接 curl 后端地址
    - 查看后端应用日志
@@ -226,7 +226,7 @@ curl http://localhost/nginx_status
 
 # 5. 进阶学习方向
 
-```
+```text
 Nginx 基础
   ├── OpenResty（Lua 开发）
   │     ├── API 网关开发（动态路由、鉴权、熔断）

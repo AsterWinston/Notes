@@ -1,7 +1,7 @@
 
 # 1. 核心类关系
 
-```
+```text
 @FeignClient 接口
     │
     │ FeignClientsRegistrar 扫描注册
@@ -222,7 +222,7 @@ static class FeignInvocationHandler implements InvocationHandler {
 
 # 6. 完整代理创建时序图
 
-```
+```text
 Spring 容器启动
     │
     ├── FeignClientsRegistrar.registerFeignClients()

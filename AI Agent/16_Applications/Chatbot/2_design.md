@@ -4,7 +4,7 @@
 
 ## 1.1 分层视图
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │  前端（Web/App）                         │
 │  EventSource ← SSE                       │
@@ -52,7 +52,7 @@
 
 ## 2.1 一次对话的完整链路
 
-```
+```text
 用户消息
   │
   ▼
@@ -178,7 +178,7 @@ CREATE TABLE feedback (
 
 ### 4.1.1 表关系
 
-```
+```text
 conversation 1 ──< message 1 ──< feedback
 ```
 
@@ -296,7 +296,7 @@ List<ToolCallback> tools = switch (intent) {
 
 ## 6.1 三层记忆
 
-```
+```text
 短期：最近 10 轮消息（Redis）
 长期：会话摘要（超 20 轮后压缩）
 用户：用户画像（跨会话）
@@ -335,7 +335,7 @@ List<ToolCallback> tools = switch (intent) {
 
 ## 8.1 部署拓扑
 
-```
+```text
 无状态服务 × N（K8s）
   ├── Redis（会话 + 缓存）
   ├── PostgreSQL + pgvector（知识库）

@@ -41,7 +41,7 @@ String text = response.getResult().getOutput().getText();
 
 `ChatClient` 提供了一套 **Fluent API 门面（facade）**，把上述一切串成一条可读的链：
 
-```
+```text
 ChatClient.prompt()
     ├── .system(...) / .user(...) / .messages(...)   组装输入
     ├── .options(...)                                调用参数
@@ -69,7 +69,7 @@ ChatClient.prompt()
 
 **机制**：`prompt()` 返回一个可变的请求构建器，链式方法逐层累积输入、参数与 Advisor；`call()` 或 `stream()` 触发终端操作，把累积结果固化为 `Prompt` 交给 `ChatModel`。
 
-```
+```text
 业务调用 ──► ChatClient 链式构建 ──► Advisor 链 ──► ChatModel ──► 模型 API
                     ▲                                     │
                     └────────── 解析/转换结果 ◄───────────┘
@@ -333,7 +333,7 @@ ChatClient client = builder
 
 参数优先级从高到低：
 
-```
+```text
 单次 .options()  >  defaultOptions  >  application.yml 配置
 ```
 

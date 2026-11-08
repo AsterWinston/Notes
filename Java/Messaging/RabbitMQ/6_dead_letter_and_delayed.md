@@ -17,7 +17,7 @@
 
 ## 1.2 死信处理流程
 
-```
+```text
 ┌────────────────────────────────────────────┐
 │                  Broker                     │
 │                                            │
@@ -179,7 +179,7 @@ rabbitmq-plugins enable rabbitmq_delayed_message_exchange
 
 ## 3.2 工作原理
 
-```
+```text
 ┌───────────────────────────────────────────┐
 │          delayed.exchange                 │
 │          (x-delayed-type: direct)         │
@@ -254,7 +254,7 @@ public class DelayedMessageExample {
 
 ## 4.1 重试架构
 
-```
+```text
 ┌──────────┐  Nack+requeue  ┌──────────────┐
 │ 消费者    │──────────────→│  Working Queue│
 │ (处理)    │               └──────┬───────┘
@@ -383,7 +383,7 @@ public class RetryConfig {
 
 ## 5.1 场景一：订单超时取消
 
-```
+```text
 下单 → 发送 "order.created" 消息（x-delay=30min）
      → 30分钟后消费者收到消息
      → 查询订单状态
@@ -422,7 +422,7 @@ public void handleCancel(@Payload CancelOrderEvent event) {
 
 ## 5.2 场景二：短信重试
 
-```
+```text
 发送短信 → 失败
   → 第1次重试（2秒后）
   → 第2次重试（4秒后）

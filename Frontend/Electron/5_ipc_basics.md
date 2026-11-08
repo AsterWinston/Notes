@@ -4,7 +4,7 @@
 
 ## 1.1 ipcMain 与 ipcRenderer
 
-```
+```text
 ipcRenderer(渲染进程)  ────消息────▶  ipcMain(主进程)
 ipcMain(主进程)        ────推送────▶  ipcRenderer(渲染进程)
 ```

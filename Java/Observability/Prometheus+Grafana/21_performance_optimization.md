@@ -3,7 +3,7 @@
 
 Prometheus 的性能瓶颈通常出现在以下环节：
 
-```
+```text
 Scrape → WAL → Head Block → Compaction → Query
   │        │        │           │           │
 采集耗时  写盘速度  内存占用  CPU/IO    查询延迟
@@ -212,7 +212,7 @@ GOGC=50 prometheus ...
 
 ## 6.2 公式
 
-```
+```text
 样本数/秒 = 时间序列数 / scrape_interval
 每天样本数 = 时间序列数 × (86400 / scrape_interval)
 磁盘空间(15天) = 每天样本数 × 1.37 bytes × 15

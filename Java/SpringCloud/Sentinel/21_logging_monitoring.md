@@ -3,7 +3,7 @@
 
 Sentinel 提供多层次的日志记录，用于问题排查和运行监控。
 
-```
+```text
 ${user.home}/logs/csp/
   ├── sentinel-record.log.{yyyy-MM-dd}       # 拦截/流控日志
   ├── {appName}-metrics.log.{yyyy-MM-dd}     # 指标日志
@@ -15,7 +15,7 @@ ${user.home}/logs/csp/
 
 ## 2.1 日志格式
 
-```
+```text
 # sentinel-record.log
 2024-01-15 10:30:00.123|order-service|getUser|FlowException|default|100|0
   │                      │            │      │           │      │  │
@@ -49,7 +49,7 @@ csp.sentinel.log.use.pid=true
 
 ## 3.1 日志格式
 
-```
+```text
 # {appName}-metrics.log
 1705302000|1705302001000|getUser|10|5|0|2|2|25|0|0|0
   │         │             │       │  │ │ │ │ │  │ │ │

@@ -4,7 +4,7 @@
 
 ## 1.1 资源服务器的核心职责
 
-```
+```text
 资源服务器的三个核心职责：
 
 1. Token 验证 — 确认 Access Token 有效且未过期
@@ -14,7 +14,7 @@
 
 ## 1.2 资源服务器在系统架构中的位置
 
-```
+```text
                           API Gateway
                     ┌──────────────────────┐
                     │  Token 初步验证       │
@@ -214,7 +214,7 @@ public class IntrospectionTokenValidator {
 
 ### 2.3.1 Introspection 缓存策略
 
-```
+```text
 缓存策略精要：
 
 1. 活跃 Token → 短期缓存（30-60 秒）
@@ -236,7 +236,7 @@ public class IntrospectionTokenValidator {
 
 ## 2.4 混合策略（本地验证 + 黑名单）
 
-```
+```text
 混合验证流程：
 
 1. 先本地验证 JWT 签名（快速过滤无效 Token）
@@ -321,7 +321,7 @@ public class ScopeValidationAspect {
 
 ## 3.2 细粒度权限设计（OAuth2 Scope + 应用层 RBAC）
 
-```
+```text
 OAuth2 Scope 负责粗粒度（资源分类），应用层 RBAC 负责细粒度（操作/数据权限）。
 
 三层权限模型：
@@ -363,7 +363,7 @@ OAuth2 Scope 负责粗粒度（资源分类），应用层 RBAC 负责细粒度�
 
 ## 4.2 推荐方案：分层验证
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │  API Gateway（第一层验证）                             │
 │  ├─ Token 格式/签名验证（非法 Token 在此拦截）          │
@@ -441,7 +441,7 @@ public void warmUpJwks() {
 
 ## 5.2 高并发场景设计
 
-```
+```text
 优化策略：
 
 1. 无状态设计
@@ -501,7 +501,7 @@ WWW-Authenticate: Bearer realm="example",
 
 # 7. 安全注意事项
 
-```
+```text
 资源服务器安全清单：
 
 □ Token 传输强制 HTTPS（生产环境）

@@ -12,7 +12,7 @@
 
 ### 1.2.1 拓扑结构
 
-```
+```text
                  +-------------+
                  |  Root Agent |
                  +------+------+
@@ -87,7 +87,7 @@ LlmAgent root = LlmAgent.builder()
 
 ### 2.2.2 委托流程
 
-```
+```text
 用户问题
    |
    v
@@ -161,7 +161,7 @@ SequentialAgent 按固定顺序依次执行子 Agent，适合"研究 → 撰写 
 
 ## 3.2 机制拆解
 
-```
+```text
 input --> [research] --> [write] --> [review] --> output
              |              |            |
              +-- state -----+-- state ---+
@@ -236,7 +236,7 @@ ParallelAgent 并发执行多个子 Agent，适合可独立并行、最后汇总
 
 ## 4.2 机制拆解
 
-```
+```text
             +--> [agentA] --+
 input ------+               +--> merge --> output
             +--> [agentB] --+
@@ -321,7 +321,7 @@ LoopAgent 反复执行子 Agent，直到满足终止条件或达到最大轮次�
 
 ### 5.2.2 执行流程
 
-```
+```text
       +-------------------+
       v                   |
 [generate] --> [check] --通过?-- 否 --> 回到 generate
@@ -401,7 +401,7 @@ LlmAgent checkAgent = LlmAgent.builder()
 
 ### 6.2.2 组合示例
 
-```
+```text
 Sequential
   |-- Parallel (risk ∥ credit)
   |-- LlmAgent (决策)

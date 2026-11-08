@@ -15,7 +15,7 @@
 
 ## 2.1 三级配置模型
 
-```
+```text
 Namespace (命名空间 / 租户)
   └── Group (分组)
         └── DataID (配置ID)
@@ -30,7 +30,7 @@ Namespace (命名空间 / 租户)
 
 Spring Cloud 应用中的 Data ID 组成规则：
 
-```
+```text
 ${prefix}-${spring.profiles.active}.${file-extension}
 ```
 
@@ -40,7 +40,7 @@ ${prefix}-${spring.profiles.active}.${file-extension}
 
 **示例**：
 
-```
+```text
 order-service-dev.yaml      → 应用: order-service, 环境: dev, 格式: yaml
 order-service.yaml           → 应用: order-service, 无环境, 格式: yaml
 user-service-prod.properties → 应用: user-service, 环境: prod, 格式: properties
@@ -93,7 +93,7 @@ spring:
 
 Nacos 配置加载遵循以下优先级（数字越大优先级越高）：
 
-```
+```text
 1. shared-configs[0]           (共享配置，最低优先级)
 2. shared-configs[1]
 3. ...
@@ -128,7 +128,7 @@ public class ConfigController {
 
 动态刷新流程：
 
-```
+```text
 Nacos Console 修改配置
         │
         ▼
@@ -231,7 +231,7 @@ curl -X DELETE 'http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=order-service-d
 
 ## 5.2 灰度发布流程
 
-```
+```text
 1. 创建 Beta 配置（指定灰度 IP）
         │
 2. 灰度实例拉取 Beta 配置，验证功能正常
@@ -254,14 +254,14 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=order-service-dev.
 
 Nacos 控制台支持一键导出/导入整个命名空间下的所有配置：
 
-```
+```text
 控制台 → 配置管理 → 配置列表 → 导出配置 (导出为 .zip 文件)
 控制台 → 配置管理 → 配置列表 → 导入配置 (上传 .zip 文件)
 ```
 
 导出的文件结构：
 
-```
+```text
 nacos_config_export_20240101120000.zip
 ├── DEFAULT_GROUP/
 │   ├── order-service-dev.yaml
@@ -332,7 +332,7 @@ spring:
 
 Nacos 客户端在首次获取配置后，会将配置内容缓存到本地文件系统：
 
-```
+```text
 ${user.home}/nacos/config/
     └── fixed-127.0.0.1_8848_nacos/
         └── snapshot/

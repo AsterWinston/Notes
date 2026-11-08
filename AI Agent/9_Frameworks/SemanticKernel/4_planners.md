@@ -2,7 +2,7 @@
 
 **结论先行**：**Planner（规划器）** 是让模型自动规划"用哪些函数、按什么顺序"完成任务的组件。它把"流程决策权"从开发者手中交给大语言模型（LLM，Large Language Model）。
 
-```
+```text
 用户目标 → Planner 生成计划 → 执行计划
 ```
 
@@ -32,7 +32,7 @@ Planner 的本质是"**把自然语言目标翻译成可执行的函数调用序
 
 ### 1.2.2 运行时序
 
-```
+```text
 ┌─────────┐   goal    ┌──────────┐  prompt   ┌───────┐
 │  Caller │──────────▶│ Planner  │──────────▶│  LLM  │
 └─────────┘           └──────────┘◀──────────└───────┘
@@ -82,7 +82,7 @@ FunctionResult result = kernel.invokeAsync(planner, Map.of(
 
 ## 2.1 手工编排 vs Planner
 
-```
+```text
 手工编排：开发者写死流程
 Planner： 模型自动决定流程
 ```
@@ -169,7 +169,7 @@ String plan = """
 
 ### 3.3.2 示例
 
-```
+```text
 步骤 1：查询东京未来三天天气
 步骤 2：根据天气决定室内/室外景点
 步骤 3：生成行程
@@ -202,7 +202,7 @@ String itinerary = itineraryFunction.invokeAsync(city, weather).block();
 
 ## 3.7 模式选择
 
-```
+```text
 任务分支数是否可穷举？
  ├─ 是 → 手写规划
  └─ 否 → 步骤间是否有强数据依赖？
@@ -332,7 +332,7 @@ public class PlannerDemo {
 
 ## 5.1 四类典型失效
 
-```
+```text
 Planner 的问题：
 - 生成的计划可能不可执行
 - 可能调用错误的函数
@@ -375,7 +375,7 @@ Planner 看不到运行时状态（用户权限、数据可用性），因此计
 
 ## 5.5 反例：一次失败的计划
 
-```
+```text
 目标：帮我订明天去东京的机票
 
 模型生成计划：
@@ -424,7 +424,7 @@ public void validate(List<Step> plan) {
 
 ### 6.2.1 结构
 
-```
+```text
 ┌──────────────────────────────┐
 │  显式编排（主流程，Graph）    │
 │  ┌────────┐   ┌────────────┐ │
@@ -444,7 +444,7 @@ String itinerary = itineraryFn.invokeAsync(plan).block(); // 固定
 
 ## 6.3 选型决策树
 
-```
+```text
 流程是否稳定？
  ├─ 是 → 显式编排
  └─ 否 → 是否有强合规/低延迟要求？

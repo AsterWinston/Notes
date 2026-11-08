@@ -5,7 +5,7 @@
 
 Rebase 的核心思想是**将一系列提交从一个基础移动到另一个基础**。与 Merge 不同，Rebase 不会产生 merge commit，而是改写提交历史，使其保持线性。
 
-```
+```text
 Merge 方式：
 main:    A──B──C──────────M
                \          /
@@ -24,7 +24,7 @@ feature: A──B──C──D'──E'  ← D' 和 E' 是基于 C 的新提交
 
 Rebase 不是一个"移动"操作，而是**重放**（replay）：
 
-```
+```text
 1. 找到共同祖先：B
 2. 收集 feature 分支在 B 之上的所有提交：D、E
 3. 将 HEAD 指向 main 的最新提交 C
@@ -60,7 +60,7 @@ git rebase -i abc123  # 对 abc123 之后的提交进行操作
 
 交互式变基提供了多种操作类型：
 
-```
+```text
 pick abc123 feat: add login form
 pick def456 fix: typo in login
 pick 789abc feat: add validation
@@ -257,7 +257,7 @@ git cherry-pick -e abc123
 
 Git 维护三个树状结构：
 
-```
+```text
 HEAD          → 当前分支指向的提交（最近一次提交）
 Index         → 暂存区（下一次提交的内容）
 Working Tree  → 实际文件系统的内容
@@ -277,7 +277,7 @@ Working Tree  → 实际文件系统的内容
 git reset --soft HEAD~1
 ```
 
-```
+```text
 执行前：
 HEAD → commit C (最新)
 Index → C 的内容
@@ -313,7 +313,7 @@ git reset HEAD~1
 git reset --mixed HEAD~1
 ```
 
-```
+```text
 执行前：
 HEAD → commit C
 Index → C 的内容
@@ -349,7 +349,7 @@ git commit -m "better message"
 git reset --hard HEAD~1
 ```
 
-```
+```text
 执行前：
 HEAD → commit C
 Index → C 的内容

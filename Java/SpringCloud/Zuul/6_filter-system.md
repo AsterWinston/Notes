@@ -25,7 +25,7 @@ public abstract class ZuulFilter implements IZuulFilter, Comparable<ZuulFilter> 
 
 # 2. 四种过滤器类型
 
-```
+```text
 HTTP 请求
     │
     ▼
@@ -127,7 +127,7 @@ public abstract class ErrorFilter extends ZuulFilter {
 
 Zuul 内部通过 `filterOrder()` 返回值来排序，**数字越小越先执行**。
 
-```
+```text
 Pre 阶段：
     -3  ServletDetectionFilter        ← 检测是否通过 Spring DispatcherServlet
     -2  Servlet30WrapperFilter        ← 包装 Servlet 3.0 请求
@@ -137,21 +137,21 @@ Pre 阶段：
     10  用户自定义 Pre Filter...
 ```
 
-```
+```text
 Route 阶段：
     10  RibbonRoutingFilter            ← ★ Ribbon 路由
    100  SimpleHostRoutingFilter        ← URL 路由
    500  SendForwardFilter              ← Forward 本地转发
 ```
 
-```
+```text
 Post 阶段：
    900  LocationRewriteFilter          ← 重定向 Location 头
   1000  SendResponseFilter             ← ★ 输出响应到客户端
   1100  用户自定义 Post Filter...
 ```
 
-```
+```text
 Error 阶段：
      0  SendErrorFilter                ← ★ 统一错误响应
 ```
@@ -272,7 +272,7 @@ ctx.getResponseStatusCode();                  // 供 LocationRewriteFilter 检�
 
 # 7. 过滤器生命周期完整流程图
 
-```
+```text
                     HTTP Request
                          │
                          ▼

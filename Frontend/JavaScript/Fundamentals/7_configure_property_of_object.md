@@ -2,18 +2,18 @@
 ```javascript
 我们知道，对象可以存储属性。
 
-到目前为止，属性对我们来说只是一个简单的“键值”对。但对象属性实际上是更灵活且更强大的东西。
+到目前为止，属性对我们来说只是一个简单的"键值"对。但对象属性实际上是更灵活且更强大的东西。
 
 在本章中，我们将学习其他配置选项，在下一章中，我们将学习如何将它们无形地转换为 getter/setter 函数。
 ```
 ## 1.1 属性标志
-```
-对象属性（properties），除 value 外，还有三个特殊的特性（attributes），也就是所谓的“标志”：
+```text
+对象属性（properties），除 value 外，还有三个特殊的特性（attributes），也就是所谓的"标志"：
 
 writable — 如果为 true，则值可以被修改，否则它是只可读的。
 enumerable — 如果为 true，则会被在循环中列出，否则不会被列出。
 configurable — 如果为 true，则此属性可以被删除，这些特性也可以被修改，否则不可以。
-我们到现在还没看到它们，是因为它们通常不会出现。当我们用“常用的方式”创建一个属性时，它们都为 true。但我们也可以随时更改它们。
+我们到现在还没看到它们，是因为它们通常不会出现。当我们用"常用的方式"创建一个属性时，它们都为 true。但我们也可以随时更改它们。
 
 首先，让我们来看看如何获得这些标志。
 
@@ -26,7 +26,7 @@ obj
 需要从中获取信息的对象。
 propertyName
 属性的名称。
-返回值是一个所谓的“属性描述符”对象：它包含值和所有的标志。
+返回值是一个所谓的"属性描述符"对象：它包含值和所有的标志。
 
 例如：
 
@@ -75,12 +75,12 @@ alert( JSON.stringify(descriptor, null, 2 ) );
   "configurable": false
 }
  */
-将它与上面的“以常用方式创建的” user.name 进行比较：现在所有标志都为 false。如果这不是我们想要的，那么我们最好在 descriptor 中将它们设置为 true。
+将它与上面的"以常用方式创建的" user.name 进行比较：现在所有标志都为 false。如果这不是我们想要的，那么我们最好在 descriptor 中将它们设置为 true。
 
 现在让我们通过示例来看看标志的影响。
 ```
 ## 1.2 只读
-```
+```text
 让我们通过更改 writable 标志来把 user.name 设置为只读（user.name 不能被重新赋值）：
 
 let user = {
@@ -112,7 +112,7 @@ alert(user.name); // John
 user.name = "Pete"; // Error
 ```
 ## 1.3 不可枚举
-```
+```javascript
 现在让我们向 user 添加一个自定义的 toString。
 
 通常，对象中内建的 toString 是不可枚举的，它不会显示在 for..in 中。但是如果我们添加我们自己的 toString，那么默认情况下它将显示在 for..in 中，如下所示：
@@ -146,7 +146,7 @@ for (let key in user) alert(key); // name
 alert(Object.keys(user)); // name
 ```
 ## 1.4 不可配置
-```
+```text
 不可配置标志（configurable:false）有时会预设在内建对象和属性中。
 
 不可配置的属性不能被删除，它的特性（attribute）不能被修改。
@@ -191,7 +191,7 @@ Object.defineProperty(user, "name", {
 
 user.name = "Pete"; // 正常工作
 delete user.name; // Error
-现在，我们将 user.name 设置为一个“永不可改”的常量，就像内建的 Math.PI：
+现在，我们将 user.name 设置为一个"永不可改"的常量，就像内建的 Math.PI：
 
 let user = {
   name: "John"
@@ -213,7 +213,7 @@ Object.defineProperty(user, "name", { value: "Pete" });
 对于不可配置的属性，我们可以将 writable: true 更改为 false，从而防止其值被修改（以添加另一层保护）。但无法反向行之。
 ```
 ## 1.5 Object.defineProperties
-```
+```text
 有一个方法 Object.defineProperties(obj, descriptors)，允许一次定义多个属性。
 
 语法是：
@@ -233,10 +233,10 @@ Object.defineProperties(user, {
 所以，我们可以一次性设置多个属性。
 ```
 ## 1.6 Object.getOwnPropertyDescriptiors
-```
+```text
 要一次获取所有属性描述符，我们可以使用 Object.getOwnPropertyDescriptors(obj) 方法。
 
-它与 Object.defineProperties 一起可以用作克隆对象的“标志感知”方式：
+它与 Object.defineProperties 一起可以用作克隆对象的"标志感知"方式：
 
 let clone = Object.defineProperties({}, Object.getOwnPropertyDescriptors(obj));
 通常，当我们克隆一个对象时，我们使用赋值的方式来复制属性，像这样：
@@ -244,12 +244,12 @@ let clone = Object.defineProperties({}, Object.getOwnPropertyDescriptors(obj));
 for (let key in user) {
   clone[key] = user[key]
 }
-……但是，这并不能复制标志。所以如果我们想要一个“更好”的克隆，那么 Object.defineProperties 是首选。
+……但是，这并不能复制标志。所以如果我们想要一个"更好"的克隆，那么 Object.defineProperties 是首选。
 
 另一个区别是 for..in 会忽略 symbol 类型的和不可枚举的属性，但是 Object.getOwnPropertyDescriptors 返回包含 symbol 类型的和不可枚举的属性在内的 所有 属性描述符。
 ```
 ## 1.7 设定一个全局的密封对象
-```
+```text
 属性描述符在单个属性的级别上工作。
 
 还有一些限制访问 整个 对象的方法：
@@ -280,8 +280,8 @@ Object.isFrozen(obj)
 第二种类型的属性是新东西。它是 访问器属性（accessor property）。它们本质上是用于获取和设置值的函数，但从外部代码来看就像常规属性。
 ```
 ## 2.1 getter和setter
-```
-访问器属性由 “getter” 和 “setter” 方法表示。在对象字面量中，它们用 get 和 set 表示：
+```javascript
+访问器属性由 "getter" 和 "setter" 方法表示。在对象字面量中，它们用 get 和 set 表示：
 
 let obj = {
   get propName() {
@@ -343,10 +343,10 @@ user.fullName = "Alice Cooper";
 
 alert(user.name); // Alice
 alert(user.surname); // Cooper
-现在，我们就有一个“虚拟”属性。它是可读且可写的。
+现在，我们就有一个"虚拟"属性。它是可读且可写的。
 ```
 ## 2.2 访问器和描述符
-```
+```javascript
 访问器属性的描述符与数据属性的不同。
 
 对于访问器属性，没有 value 和 writable，但是有 get 和 set 函数。
@@ -391,8 +391,8 @@ Object.defineProperty({}, 'prop', {
 });
 ```
 ## 2.3 更聪明的getter/setter
-```
-getter/setter 可以用作“真实”属性值的包装器，以便对它们进行更多的控制。
+```javascript
+getter/setter 可以用作"真实"属性值的包装器，以便对它们进行更多的控制。
 
 例如，如果我们想禁止太短的 user 的 name，我们可以创建一个 setter name，并将值存储在一个单独的属性 _name 中：
 
@@ -419,8 +419,8 @@ user.name = ""; // Name 太短了……
 从技术上讲，外部代码可以使用 user._name 直接访问 name。但是，这儿有一个众所周知的约定，即以下划线 "_" 开头的属性是内部属性，不应该从对象外部进行访问。
 ```
 ## 2.4 兼容性
-```
-访问器的一大用途是，它们允许随时通过使用 getter 和 setter 替换“正常的”数据属性，来控制和调整这些属性的行为。
+```javascript
+访问器的一大用途是，它们允许随时通过使用 getter 和 setter 替换"正常的"数据属性，来控制和调整这些属性的行为。
 
 想象一下，我们开始使用数据属性 name 和 age 来实现 user 对象：
 

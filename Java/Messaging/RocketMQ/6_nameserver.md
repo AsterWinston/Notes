@@ -8,7 +8,7 @@ NameServer 是 RocketMQ 的**轻量级路由注册中心**，职责单一：
 
 ## 1.1 设计哲学
 
-```
+```text
 ┌────────────────────────────────────┐
 │  为什么不用 ZooKeeper？             │
 │                                    │
@@ -25,7 +25,7 @@ NameServer 是 RocketMQ 的**轻量级路由注册中心**，职责单一：
 
 # 2. NameServer 架构
 
-```
+```text
                  NamesrvController
                         │
         ┌───────────────┼───────────────┐
@@ -80,7 +80,7 @@ class BrokerLiveInfo {
 
 # 4. 路由注册流程
 
-```
+```text
 Broker 启动
     │
     ├─ 每 30s (registerBrokerInterval) 向所有 NameServer 发送心跳
@@ -197,7 +197,7 @@ public class TopicRouteData {
 
 ## 5.2 路由缓存与更新
 
-```
+```text
 TopicRouteInfo 在 Client 端缓存
 
 更新时机：
@@ -210,7 +210,7 @@ TopicRouteInfo 在 Client 端缓存
 
 ## 6.1 Broker 心跳
 
-```
+```text
 Broker ──(每30s)──→ NameServer (注册/心跳)
                       │
                       └── 更新 brokerLiveTable.lastUpdateTimestamp
@@ -247,7 +247,7 @@ public void scanNotActiveBroker() {
 
 ## 7.1 NameServer 集群
 
-```
+```text
 NameServer-1        NameServer-2        NameServer-3
 (独立)              (独立)              (独立)
     ↑                   ↑                   ↑

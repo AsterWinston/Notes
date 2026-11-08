@@ -61,7 +61,7 @@
 
 Langfuse 的层次为：`Trace`（一次端到端请求）→ `Observation`（一次操作）。Observation 又分为 `SPAN`（有耗时的普通步骤）、`GENERATION`（一次模型调用，含 Token 与成本）、`EVENT`（瞬时事件）。
 
-```
+```text
 Trace
  ├── SPAN  rag.retrieval
  ├── SPAN  tool.search
@@ -233,7 +233,7 @@ public void reportRun(LlmTracePayload p) {
 
 若不想引入平台，可用 OTel + Grafana 自建：
 
-```
+```text
 应用 → OTel Collector → Tempo（Trace）
                       → Prometheus（Metrics）
                       → Loki（Logs）
@@ -364,14 +364,14 @@ public class Redactor {
 
 ## 6.1 查看失败案例
 
-```
+```text
 按 status=ERROR 过滤 → 查看完整提示与响应
 → 定位是检索没命中还是模型答错
 ```
 
 ## 6.2 成本分析
 
-```
+```text
 按 model / tenant / user 分组 → 找出高消耗来源
 ```
 
@@ -390,13 +390,13 @@ public class Redactor {
 
 ## 6.3 Prompt 对比
 
-```
+```text
 A/B 两组 Trace 对比：成功率、Token、延迟、人工评分
 ```
 
 ## 6.4 数据集回流
 
-```
+```text
 把线上失败案例加入数据集 → 用于评测与回归
 ```
 

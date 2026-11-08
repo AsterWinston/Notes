@@ -10,7 +10,7 @@ Go 采用语义化版本（SemVer）中的 `主.次` 双段式命名，补丁号
 
 ★ **关键认知**：这意味着官方几乎**从不**删除已发布的 API，只做新增。你会在标准库看到大量被标记 `// Deprecated:` 的函数——它们只是不推荐使用，但永远不会被移除。这是 Go 生态能长期稳定演进的技术根基。
 
-```
+```text
 发布节奏：每年 2 月和 8 月各一个大版本（如 go1.22 → go1.23）。
 版本形式：go1.23.0（主.次.补丁），补丁只修 bug 不改 API。
 ```
@@ -25,7 +25,7 @@ Go 采用语义化版本（SemVer）中的 `主.次` 双段式命名，补丁号
 
 ### 1.2.1 二进制压缩包（推荐）
 
-```
+```text
 下载 go1.23.4.windows-amd64.zip → 解压到 C:\Go 或 D:\dev\go
 
 解压后的关键可执行文件：
@@ -44,7 +44,7 @@ C:\Go\bin\gopls.exe     # 语言服务器（高版本随安装包附带，也可
 
 Go 的实现语言是 Go 自己（自举），所以编译 Go 需要先有一个 Go：
 
-```
+```text
 1. 用一个旧版 Go 编译 go1.4 的源码（历史上 go1.4 是最后一个用 C 写的版本）
 2. 用 go1.4 编译新版 Go 源码
 3. 重复迭代直至目标版本
@@ -56,7 +56,7 @@ Go 的实现语言是 Go 自己（自举），所以编译 Go 需要先有一个
 
 ## 1.3 验证安装
 
-```
+```text
 go version            # go version go1.23.4 windows/amd64
 go env GOROOT         # 打印 Go 安装根目录
 go env GOPATH         # 打印工作区
@@ -68,7 +68,7 @@ Go 的路径体系本质上围绕两个根目录展开：**工具链所在**（G
 
 ## 2.1 GOROOT —— 安装根目录
 
-```
+```text
 GOROOT 指向 Go 工具链与标准库源码所在的位置，等价于 Java 的 JDK 目录。
 
 C:\Go\
@@ -98,7 +98,7 @@ C:\Go\
 
 ## 2.2 GOPATH —— 工作区
 
-```
+```text
 GOPATH 是 Go 1.11 模块机制之前的工作区概念，也是第三方工具链仍依赖的目录。
 
 早期（GOPATH 时代）强制要求：
@@ -119,7 +119,7 @@ GOPATH/
 
 ## 2.3 GOBIN —— 可执行文件落点
 
-```
+```text
 GOBIN 指定 go install / go build 生成的可执行文件存放目录。
 默认值：$GOPATH/bin
 ```
@@ -132,7 +132,7 @@ Go 的依赖生态通过两个变量保证"下载快 + 内容可信"，这是模
 
 ## 3.1 GOPROXY —— 模块代理
 
-```
+```text
 GOPROXY 指定下载模块时的代理服务器列表，用逗号分隔，支持特殊值：
 - https://proxy.golang.org         官方代理（国内访问慢）
 - https://goproxy.cn,direct         七牛代理；direct 表示代理失败后直连源站（如 GitHub）
@@ -141,7 +141,7 @@ GOPROXY 指定下载模块时的代理服务器列表，用逗号分隔，支持
 
 国内开发通常设置为：
 
-```
+```text
 go env -w GOPROXY=https://goproxy.cn,direct
 ```
 
@@ -149,7 +149,7 @@ go env -w GOPROXY=https://goproxy.cn,direct
 
 ★ **关键认知**：`go env -w` 会把配置写入 `$GOENV`（默认 `%USERPROFILE%\AppData\Roaming\go\env`）文件，而不是系统环境变量。用 `go env -w` 修改的配置**优先级高于系统环境变量**，且对所有项目全局生效。可用 `go env -u KEY` 撤销。
 
-```
+```text
 # 查看 env 配置文件路径与内容
 go env GOENV
 cat $(go env GOENV)      # Windows 用 type
@@ -157,7 +157,7 @@ cat $(go env GOENV)      # Windows 用 type
 
 ### 3.1.2 私有模块：GOPRIVATE / GONOPROXY / GONOSUMDB
 
-```
+```text
 GOPRIVATE    # 匹配该模式的模块走私有路径：不走代理、不做校验和验证
 GONOPROXY    # 匹配的模块跳过代理（直连）
 GONOSUMDB    # 匹配的模块跳过校验和数据库
@@ -169,7 +169,7 @@ GONOSUMDB    # 匹配的模块跳过校验和数据库
 
 ## 3.2 GOSUMDB —— 校验和数据库
 
-```
+```text
 GOSUMDB 用于校验下载模块的完整性，防止依赖被篡改（供应链攻击）。
 默认指向 sum.golang.org，下载每个模块时用其哈希做权威比对。
 
@@ -183,7 +183,7 @@ GOSUMDB 用于校验下载模块的完整性，防止依赖被篡改（供应链
 
 ## 4.1 过渡开关
 
-```
+```text
 GO111MODULE 控制是否启用 module 模式，是 Go 1.11 到 1.16 的过渡开关：
 
 - GO111MODULE=off      禁用 module，退回 GOPATH 模式（老项目）
@@ -197,7 +197,7 @@ Go 1.16 起默认 on；Go 1.17 起 auto/off 形同虚设，此变量已退出历
 
 ## 4.2 演进时间线
 
-```
+```text
 Go 1.11 (2018)  引入 module 实验性支持
 Go 1.13 (2019)  module 转正，GOPROXY/GOSUMDB 默认启用
 Go 1.16 (2021)  module 默认开启，GOPATH 模式退出
@@ -210,7 +210,7 @@ Go 1.21 (2023)  工具链管理（GOTOOLCHAIN）
 
 `go env` 列出所有变量，`go env -json` 以 JSON 输出。对后续底层学习最相关的几个：
 
-```
+```text
 GOOS / GOARCH       目标操作系统 / 架构（交叉编译核心）
 GOARM / GOMIPS      特定架构的子版本控制（如 ARM v6/v7）
 CGO_ENABLED         是否启用 cgo（默认 1，交叉编译时往往要设为 0）
@@ -234,7 +234,7 @@ GOTMPDIR            编译临时目录
 
 ## 6.1 gopls 是什么
 
-```
+```text
 Go 官方推荐方案：VSCode + Go 扩展 + gopls（Go 语言服务器）。
 
 gopls 负责：自动补全、跳转定义、重构、诊断（底层基于 go/packages 与类型检查器）。
@@ -260,7 +260,7 @@ func main() {
 }
 ```
 
-```
+```text
 go run main.go     # 编译并运行（临时目录，不留产物）
 go build main.go   # 编译出 main.exe（Windows）或 main（Linux/macOS）
 ```
@@ -269,7 +269,7 @@ go build main.go   # 编译出 main.exe（Windows）或 main（Linux/macOS）
 
 ## 7.2 常见环境坑
 
-```
+```text
 1. 提示 'go' 不是内部或外部命令 → PATH 未包含 GOROOT\bin（或 GOBIN）
 2. 提示 go.mod file not found → 在 module 外执行了 go build，先 go mod init
 3. 依赖拉取超时 → 未设置 GOPROXY 国内镜像

@@ -30,7 +30,7 @@ annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
 ## 1.3 工作原理概览
 
-```
+```text
 Java 源码（含 Lombok 注解）
         ↓
    Java Compiler (javac)
@@ -728,7 +728,7 @@ lombok.log.fieldName=log
 
 ### 3.6.1 配置文件查找顺序
 
-```
+```text
 1. lombok.config（当前目录）
 2. lombok.config（父目录，递归向上）
 3. ~/.lombok.config（用户目录）
@@ -742,7 +742,7 @@ lombok.log.fieldName=log
 
 Lombok 使用 Java 的"可插拔注解处理 API"（JSR 269）在编译时修改源代码。
 
-```
+```text
 编译流程：
 1. javac 解析源码生成 AST
 2. Lombok Annotation Processor 拦截处理

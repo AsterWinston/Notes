@@ -2,11 +2,11 @@
 ```javascript
 常规函数只会返回一个单一值（或者不返回任何值）。
 
-而 generator 可以按需一个接一个地返回（“yield”）多个值。它们可与 iterable 完美配合使用，从而可以轻松地创建数据流。
+而 generator 可以按需一个接一个地返回（"yield"）多个值。它们可与 iterable 完美配合使用，从而可以轻松地创建数据流。
 ```
 ## 1.1 generator函数
-```
-要创建一个 generator，我们需要一个特殊的语法结构：function*，即所谓的 “generator function”。
+```javascript
+要创建一个 generator，我们需要一个特殊的语法结构：function*，即所谓的 "generator function"。
 
 它看起来像这样：
 
@@ -15,7 +15,7 @@ function* generateSequence() {
   yield 2;
   return 3;
 }
-generator 函数与常规函数的行为不同。在此类函数被调用时，它不会运行其代码。而是返回一个被称为 “generator object” 的特殊对象，来管理执行流程。
+generator 函数与常规函数的行为不同。在此类函数被调用时，它不会运行其代码。而是返回一个被称为 "generator object" 的特殊对象，来管理执行流程。
 
 我们来看一个例子：
 
@@ -75,7 +75,7 @@ function* f(…) 或 function *f(…)？
 但是通常更倾向于第一种语法，因为星号 * 表示它是一个 generator 函数，它描述的是函数种类而不是名称，因此 * 应该和 function 关键字紧贴一起。
 ```
 ## 1.2 generator是可迭代的
-```
+```javascript
 当你看到 next() 方法，或许你已经猜到了 generator 是 可迭代（iterable）的。
 
 我们可以使用 for..of 循环遍历它所有的值：
@@ -122,7 +122,7 @@ alert(sequence); // 0, 1, 2, 3
 在上面这段代码中，...generateSequence() 将可迭代的 generator 对象转换为了一个数组（关于 spread 语法的更多细节请见 Rest 参数与 Spread 语法）。
 ```
 ## 1.3 使用generator进行迭代
-```
+```javascript
 在前面的 Iterable object（可迭代对象） 一章中，我们创建了一个可迭代的 range 对象，它返回 from..to 的值。
 
 现在，我们回忆一下代码：
@@ -184,8 +184,8 @@ generator 可以永远产出（yield）值
 这种情况下肯定需要在 generator 的 for..of 循环中添加一个 break（或者 return）。否则循环将永远重复下去并挂起。
 ```
 ## 1.4 generator组合
-```
-generator 组合（composition）是 generator 的一个特殊功能，它允许透明地（transparently）将 generator 彼此“嵌入（embed）”到一起。
+```javascript
+generator 组合（composition）是 generator 的一个特殊功能，它允许透明地（transparently）将 generator 彼此"嵌入（embed）"到一起。
 
 例如，我们有一个生成数字序列的函数：
 
@@ -201,7 +201,7 @@ function* generateSequence(start, end) {
 
 在常规函数中，要合并其他多个函数的结果，我们需要调用它们，存储它们的结果，最后再将它们合并到一起。
 
-对于 generator 而言，我们可以使用 yield* 这个特殊的语法来将一个 generator “嵌入”（组合）到另一个 generator 中：
+对于 generator 而言，我们可以使用 yield* 这个特殊的语法来将一个 generator "嵌入"（组合）到另一个 generator 中：
 
 组合的 generator 的例子：
 
@@ -261,7 +261,7 @@ generator 组合（composition）是将一个 generator 流插入到另一个 ge
 
 ```
 ## 1.5 "yield"是一条双向路
-```
+```javascript
 目前看来，generator 和可迭代对象类似，都具有用来生成值的特殊语法。但实际上，generator 更加强大且灵活。
 
 这是因为 yield 是一条双向路（two-way street）：它不仅可以向外返回结果，而且还可以将外部的值传递到 generator 内。
@@ -321,10 +321,10 @@ alert( generator.next(9).done ); // true
 第二个 .next(4) 将 4 作为第一个 yield 的结果传递回 generator 并恢复 generator 的执行。
 ……执行到达第二个 yield，它变成了 generator 调用的结果。
 第三个 next(9) 将 9 作为第二个 yield 的结果传入 generator 并恢复 generator 的执行，执行现在到达了函数的最底部，所以返回 done: true。
-这个过程就像“乒乓球”游戏。每个 next(value)（除了第一个）传递一个值到 generator 中，该值变成了当前 yield 的结果，然后获取下一个 yield 的结果。
+这个过程就像"乒乓球"游戏。每个 next(value)（除了第一个）传递一个值到 generator 中，该值变成了当前 yield 的结果，然后获取下一个 yield 的结果。
 ```
 ## 1.6 geneartor.throw
-```
+```javascript
 正如我们在上面的例子中观察到的那样，外部代码可能会将一个值传递到 generator，作为 yield 的结果。
 
 ……但是它也可以在那里发起（抛出）一个 error。这很自然，因为 error 本身也是一种结果。
@@ -350,7 +350,7 @@ let question = generator.next().value;
 generator.throw(new Error("The answer is not found in my database")); // (2)
 在 (2) 行引入到 generator 的 error 导致了在 (1) 行中的 yield 出现了一个异常。在上面这个例子中，try..catch 捕获并显示了这个 error。
 
-如果我们没有捕获它，那么就会像其他的异常一样，它将从 generator “掉出”到调用代码中。
+如果我们没有捕获它，那么就会像其他的异常一样，它将从 generator "掉出"到调用代码中。
 
 调用代码的当前行是 generator.throw 所在的那一行，标记为 (2)。所以我们可以在这里捕获它，就像这样：
 
@@ -370,7 +370,7 @@ try {
 如果我们没有在那里捕获这个 error，那么，通常，它会掉入外部调用代码（如果有），如果在外部也没有被捕获，则会杀死脚本。
 ```
 ## 1.7 generator.return
-```
+```javascript
 generator.return(value) 完成 generator 的执行并返回给定的 value。
 
 function* gen() {
@@ -406,7 +406,7 @@ generator 是通过 generator 函数 function* f(…) {…} 创建的。
 首先，让我们来看一个简单的示例以掌握语法，然后再看一个实际用例。
 ```
 ## 2.1 回顾可迭代对象
-```
+```javascript
 让我们回顾一下可迭代对象的相关内容。
 
 假设我们有一个对象，例如下面的 range：
@@ -452,7 +452,7 @@ for(let value of range) {
 如果有任何不清楚的，你可以阅读 Iterable object（可迭代对象） 一章，其中详细讲解了关于常规迭代器（iterator）的所有内容。
 ```
 ## 2.2 异步可迭代对象
-```
+```javascript
 当值是以异步的形式出现时，例如在 setTimeout 或者另一种延迟之后，就需要异步迭代。
 
 最常见的场景是，对象需要发送一个网络请求以传递下一个值，稍后我们将看到一个它的真实示例。
@@ -522,10 +522,10 @@ alert( [...range] ); // Error, no Symbol.iterator
 for..of 的情况和这个一样：没有 await 关键字时，则期望找到的是 Symbol.iterator。
 ```
 ## 2.3 回顾generator
-```
+```javascript
 现在，让我们回顾一下 generator，它使我们能够写出更短的迭代代码。在大多数时候，当我们想要创建一个可迭代对象时，我们会使用 generator。
 
-简单起见，这里省略了一些解释，即 generator 是“生成（yield）值的函数”。关于此的详细说明请见 generator 一章。
+简单起见，这里省略了一些解释，即 generator 是"生成（yield）值的函数"。关于此的详细说明请见 generator 一章。
 
 Generator 是标有 function*（注意星号）的函数，它使用 yield 来生成值，并且我们可以使用 for..of 循环来遍历它们。
 
@@ -574,7 +574,7 @@ for(let value of range) {
 让我们再回到异步 generator，来使这个需求成为可能。
 ```
 ## 2.4 异步generator(finally)
-```
+```javascript
 对于大多数的实际应用程序，当我们想创建一个异步生成一系列值的对象时，我们都可以使用异步 generator。
 
 语法很简单：在 function* 前面加上 async。这即可使 generator 变为异步的。
@@ -651,10 +651,10 @@ let range = {
 但是实际上，这将是一件很奇怪的事情。
 ```
 ## 2.5 实际的例子：分页的数据
-```
+```javascript
 到目前为止，我们已经了解了一些基本示例，以加深理解。现在，我们来看一个实际的用例。
 
-目前，有很多在线服务都是发送的分页的数据（paginated data）。例如，当我们需要一个用户列表时，一个请求只返回一个预设数量的用户（例如 100 个用户）—— “一页”，并提供了指向下一页的 URL。
+目前，有很多在线服务都是发送的分页的数据（paginated data）。例如，当我们需要一个用户列表时，一个请求只返回一个预设数量的用户（例如 100 个用户）—— "一页"，并提供了指向下一页的 URL。
 
 这种模式非常常见。不仅可用于获取用户列表，这种模式还可以用于任意东西。
 

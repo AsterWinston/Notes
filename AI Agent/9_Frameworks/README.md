@@ -25,7 +25,7 @@
 
 ## 1.2 在整个知识体系中的位置
 
-```
+```text
 PromptEngineering / LLMEngineering / RAG / AgentCore / Tools / Memory
                               │
                               ▼
@@ -178,7 +178,7 @@ PromptEngineering / LLMEngineering / RAG / AgentCore / Tools / Memory
 
 ## 3.9 模块间关系
 
-```
+```text
 0_framework_comparison（全局认知）
         │
         ├── SpringAI/（主线一）
@@ -190,7 +190,7 @@ PromptEngineering / LLMEngineering / RAG / AgentCore / Tools / Memory
 
 ## 4.1 推荐学习路径
 
-```
+```text
 0_framework_comparison（先建立全局认知）
       ↓
 SpringAI（主线一，1→18）

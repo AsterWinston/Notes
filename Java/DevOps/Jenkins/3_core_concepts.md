@@ -35,7 +35,7 @@ Master 通过 SSH 连接到 Agent，执行远程命令。
 - Master 配置 SSH 凭据（用户名+密码 或 SSH Key）
 - Agent 机器上安装 Java Runtime（JRE）
 
-```
+```text
 Agent 配置示例：
 - Name: linux-agent-1
 - Remote root directory: /home/jenkins/agent
@@ -94,7 +94,7 @@ java -jar agent.jar -url http://jenkins-master:8080/ -secret xxx -name agent1 -w
 
 标签是 Agent 的分类标识，用于 Pipeline 中指定执行节点。
 
-```
+```text
 Agent 的标签设计原则：
 ├── 架构标签：linux, windows, amd64, arm64
 ├── 工具标签：docker, maven, nodejs, python
@@ -130,7 +130,7 @@ Executor 是 Agent 上并行执行任务的线程。每个 Agent 可以配置多
 - **I/O 密集型任务**：Executor 可适当增加（为核心数的 1.5~2 倍）
 - **Docker Agent**：通常设为 1（每个容器只执行一个任务）
 
-```
+```text
 Agent 配置中的 Executor：
 # of executors: 2  # 表示该 Agent 同时执行 2 个构建任务
 ```
@@ -181,7 +181,7 @@ Build 是 Job 的一次具体执行实例，包含完整的执行记录。
 
 每次构建都有一个唯一编号（从 1 开始递增），存储在 `JENKINS_HOME/jobs/<job>/builds/<build-number>/` 目录：
 
-```
+```text
 builds/<number>/
 ├── build.xml          # 构建元数据（参数、结果、时间等）
 ├── log                # 控制台输出日志（完整文本）
@@ -255,7 +255,7 @@ View 用于组织和管理 Job 的展示方式。
 
 ## 7.2 视图配置
 
-```
+```text
 List View 配置：
 - Name: My-Services
 - Description: 微服务构建视图
@@ -279,7 +279,7 @@ List View 配置：
 
 ## 8.1 凭据存储架构
 
-```
+```text
 ┌────────────────────────────────────────────────┐
 │                  Credentials                    │
 ├──────────────┬────────────────┬────────────────-┤
@@ -343,7 +343,7 @@ withCredentials([file(
 
 ## 8.3 凭据加密原理
 
-```
+```text
 1. Jenkins 启动时生成 master.key（AES 256 位密钥）
 2. 使用 master.key 加密生成 hudson.util.Secret 的密钥
 3. 所有凭据使用 Secret 加密后存储在 XML 中
@@ -399,7 +399,7 @@ Queue 是 Jenkins Master 内部的优先级队列，用于调度构建任务。
 
 ## 10.1 调度流程
 
-```
+```text
 1. Job 被触发 → 创建 Build 对象
 2. Build 进入 Queue
 3. Queue 查找匹配的 Agent（根据标签表达式）
@@ -446,7 +446,7 @@ Jenkins 的 Folder 类似于文件系统中的目录，用于组织和管理 Job
 - **凭据作用域**：文件夹内的凭据只在文件夹内可见
 - **视图隔离**：不同文件夹下的 Job 视图独立
 
-```
+```text
 项目结构示例：
 ├── services/ (文件夹)
 │   ├── user-service/ (Pipeline)
@@ -463,13 +463,13 @@ Jenkins 的 Folder 类似于文件系统中的目录，用于组织和管理 Job
 
 ## 13.1 SCM Polling（SCM 轮询）
 
-```
+```text
 Poll SCM 配置：
 Schedule: H/5 * * * *   # 每 5 分钟检查一次变更
 ```
 
 Cron 语法说明：
-```
+```text
 MINUTE HOUR DOM MONTH DOW
 H/5 * * * *   # H 表示哈希分散，避免所有 Job 同时轮询
 ```
@@ -487,7 +487,7 @@ H/5 * * * *   # H 表示哈希分散，避免所有 Job 同时轮询
 
 **GitHub Webhook 配置**：
 
-```
+```text
 GitHub 侧：
 1. Settings > Webhooks > Add webhook
 2. Payload URL: http://jenkins:8080/github-webhook/
@@ -497,7 +497,7 @@ GitHub 侧：
 
 **GitLab Webhook 配置**：
 
-```
+```text
 GitLab 侧：
 1. Settings > Webhooks > Add webhook
 2. URL: http://jenkins:8080/project/<job-name>

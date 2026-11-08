@@ -2,7 +2,7 @@
 
 Spring Session 与 Spring Security 的集成是实现**分布式安全架构**的关键。Spring Security 负责认证授权，Spring Session 负责会话存储和管理，两者结合可以构建完整的分布式安全体系。
 
-```
+```text
 Spring Security                         Spring Session
 ┌─────────────────────┐              ┌──────────────────┐
 │ 认证 (Authentication) │              │ Session 外部存储   │
@@ -47,7 +47,7 @@ Spring Security                         Spring Session
 
 ## 3.1 存储流程
 
-```
+```text
 用户认证成功
   │
   ├── UsernamePasswordAuthenticationFilter
@@ -64,7 +64,7 @@ Spring Security                         Spring Session
 
 ## 3.2 读取流程
 
-```
+```text
 用户请求到达
   │
   ├── SessionRepositoryFilter
@@ -258,7 +258,7 @@ public class SessionManagementController {
 
 ## 6.1 运作机制
 
-```
+```text
 用户 "zhangsan" 登录请求到达
   │
   ├── 认证成功
@@ -314,7 +314,7 @@ public class RestConcurrencyConfig {
 
 ## 6.3 跨服务并发控制
 
-```
+```text
 ┌─────────────┐     ┌─────────────┐
 │  认证服务 A   │     │  认证服务 B   │
 │  (8080)     │     │  (8081)     │
@@ -423,7 +423,7 @@ public class RememberMeConfig {
 
 ## 8.2 RememberMe 与 Session 的关系
 
-```
+```text
 用户勾选"记住我"登录
   │
   ├── RememberMeAuthenticationFilter
@@ -448,7 +448,7 @@ public class RememberMeConfig {
 
 ## 9.1 攻击原理
 
-```
+```text
 攻击者诱导用户使用攻击者已知的 Session ID，
 用户登录后，攻击者也可以使用同一 Session ID 冒充用户。
 ```

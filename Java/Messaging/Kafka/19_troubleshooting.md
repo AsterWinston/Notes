@@ -8,7 +8,7 @@
 
 ## 1.2 排查流程
 
-```
+```text
 Step 1: 判断 Lag 增长速度
   → 如果 Lag 匀速增长（Consumer 正常只是跟不上）
       → 扩大 Consumer 数量或增加分区
@@ -51,7 +51,7 @@ Step 4: 检查下游系统
 
 ## 2.2 常见原因
 
-```
+```text
 ① session.timeout.ms 太小
   heartbeat.interval.ms=3s, session.timeout.ms=10s
   GC 暂停 2s → 心跳延迟 → 可能超时 → Rebalance
@@ -214,7 +214,7 @@ kafka.producer:type=producer-metrics,client-id=*
 
 ## 6.2 消息丢失
 
-```
+```text
 场景 A: acks=0 → 不等待确认，Broker 未写入
   解决: 改用 acks=1 或 acks=all
 
@@ -231,7 +231,7 @@ kafka.producer:type=producer-metrics,client-id=*
 
 ## 7.1 消息丢失
 
-```
+```text
 场景 A: enable.auto.commit=true
   poll() 自动提交了上一批的 offset
   消费者崩溃 → 当前批未处理 → 消息丢失
@@ -249,7 +249,7 @@ kafka.producer:type=producer-metrics,client-id=*
 
 ## 7.2 消息重复
 
-```
+```text
 场景 A: 处理成功但提交失败
   解决: 消费端做幂等处理（唯一 Key 去重）
 
@@ -294,7 +294,7 @@ grep "Controller" /var/log/kafka/server.log | tail -50
 
 ## 9.1 Producer 无法连接
 
-```
+```text
 错误: org.apache.kafka.common.errors.TimeoutException:
       Failed to update metadata after 60000 ms.
 
@@ -308,7 +308,7 @@ grep "Controller" /var/log/kafka/server.log | tail -50
 
 ## 9.2 Consumer 不能消费
 
-```
+```text
 错误: org.apache.kafka.common.errors.GroupAuthorizationException:
       Not authorized to access group
 
@@ -333,7 +333,7 @@ kafka-topics.sh --bootstrap-server localhost:9092 \
 
 ## 10.2 Offset 越界
 
-```
+```text
 错误: OffsetOutOfRangeException
 原因: 日志被清理了（retention），已提交的 offset 不在任何 Segment 中
 解决: 重置 offset 到 earliest/latest

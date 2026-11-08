@@ -2,7 +2,7 @@
 
 Agent 作为可演进的软件资产，也有"版本、发布、运行、下线"的过程：
 
-```
+```text
 定义 → 版本化 → 测试 → 发布 → 灰度 → 运行 → 下线
 ```
 
@@ -31,7 +31,7 @@ Agent 作为可演进的软件资产，也有"版本、发布、运行、下线"
 
 ## 1.3 与其他模块的关系
 
-```
+```text
 配置治理（Architecture 4） ─┐
 可观测（Observability）     ─┼─▶ 生命周期管理
 CI/CD（Deployment 2/3）     ─┘
@@ -152,7 +152,7 @@ CREATE TABLE agent_active (
 
 ## 4.1 状态流转
 
-```
+```text
 DRAFT ──测试──▶ CANDIDATE ──灰度──▶ ACTIVE ──下线──▶ DEPRECATED
 ```
 
@@ -234,7 +234,7 @@ private boolean inCanary(UserContext user, String version, double ratio) {
 
 推进节奏建议：
 
-```
+```text
 1% → 观察 30min → 5% → 观察 1h → 20% → 观察 4h → 100%
 ```
 
@@ -348,7 +348,7 @@ public void rollback(String agentId) {
 
 ## 8.1 废弃流程
 
-```
+```text
 DEPRECATED → 停止新流量 → 观察期 → 删除
 ```
 
@@ -381,7 +381,7 @@ public void deprecate(String agentId, String version) {
 
 ## 9.1 版本标签
 
-```
+```text
 AgentDefinition (版本)
         │
         ▼

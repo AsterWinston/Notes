@@ -3,7 +3,7 @@
 
 Seata 的配置分为两层：
 
-```
+```text
 ┌──────────────────────────────────┐
 │         TC Server 配置            │
 │   (seata.properties / Nacos)     │
@@ -217,7 +217,7 @@ seata:
 
 # 7. 全局事务超时配置层次
 
-```
+```text
 1. @GlobalTransactional(timeoutMills = 60000)    ← 最高优先级
 2. seata.client.tm.default-global-transaction-timeout
 3. TC Server: server.maxCommitRetryTimeout

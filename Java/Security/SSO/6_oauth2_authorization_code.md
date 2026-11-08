@@ -3,7 +3,7 @@
 
 **OAuth 2.0 授权码模式（Authorization Code Grant）** 是 OAuth 2.0 中最安全、最常用的授权流程。它是实现"使用微信/Google 登录第三方网站"这类功能的底层协议。2022 年发布的 OAuth 2.1 草案中，授权码模式被提升为**唯一推荐**的前端参与授权流程。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │               OAuth 2.0 授权码模式核心角色                        │
 │                                                                   │
@@ -30,7 +30,7 @@
 
 ## 2.1 核心安全设计
 
-```
+```text
               ┌─── 前端 Channel ───┐        ┌─── 后端 Channel ───┐
               │   (不安全)          │        │   (安全)            │
               │                     │        │                     │
@@ -78,7 +78,7 @@
 
 ## 3.1 第一步：请求授权（Authorization Request）
 
-```
+```text
 用户点击"使用微信登录"
        │
        ▼
@@ -95,7 +95,7 @@ GET /authorize?
 
 ## 3.2 第二步：用户授权
 
-```
+```text
 授权服务器处理：
 1. 验证 client_id 是否已注册
 2. 验证 redirect_uri 是否匹配注册的
@@ -205,7 +205,7 @@ public UserInfo getUserInfo(String accessToken) {
 
 ## 4.1 Scope 设计原则
 
-```
+```text
 Scope = 权限粒度 + 用户可理解性
 
 好的 Scope 设计：
@@ -254,7 +254,7 @@ PKCE 确保：即使授权码被截获，攻击者也无法凭它换取 Token。
 
 ## 5.2 PKCE 原理
 
-```
+```text
 ┌─────────────────── PKCE 原理 ───────────────────┐
 │                                                    │
 │  客户端生成两个随机值：                             │
@@ -398,7 +398,7 @@ params.add("client_assertion", createClientAssertionJwt(...));
 
 ## 7.1 Refresh Token 流程
 
-```
+```text
 Access Token 过期
         │
         ▼
@@ -463,7 +463,7 @@ public void detectTokenReuse(String currentToken, StoredRefreshToken stored) {
 
 ## 8.1 CSRF 攻击 → state 参数防御
 
-```
+```text
 攻击流程：
 1. 攻击者用自己的账号获得授权码 code=attacker_code
 2. 攻击者诱导受害者访问：https://victim-app.com/callback?code=attacker_code
@@ -480,7 +480,7 @@ GET /authorize?...&state=RANDOM_STRING
 
 ## 8.2 重定向 URI 劫持
 
-```
+```text
 攻击者注册恶意 redirect_uri：
 GET /authorize?redirect_uri=https://evil.com&...
 

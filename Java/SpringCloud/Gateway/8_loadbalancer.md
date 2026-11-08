@@ -3,7 +3,7 @@
 
 API 网关作为微服务流量的统一入口，负载均衡是其核心功能之一。Spring Cloud Gateway 通过 `lb://` 协议前缀与 Spring Cloud LoadBalancer 集成，实现客户端负载均衡。
 
-```
+```text
 客户端请求 → Gateway → LoadBalancer → ServiceInstance A
                                     → ServiceInstance B
                                     → ServiceInstance C
@@ -442,7 +442,7 @@ public class DiscoveryClientRouteDefinitionLocator
 
 # 7. 负载均衡的请求流程
 
-```
+```text
 请求: GET /api/users
 
 1. RoutePredicateHandlerMapping 匹配路由

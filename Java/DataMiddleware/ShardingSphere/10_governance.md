@@ -75,7 +75,7 @@ Cluster 模式把元数据写入注册中心，所有 Proxy/开启 Cluster 的 J
 
 Cluster 模式下注册中心保存的是一棵分层树（以 `namespace` 为根，示意结构，不同小版本节点名略有差异）：
 
-```
+```text
 /{namespace}/
   ├── metadata/          # 逻辑库、存储单元、表结构等元数据
   ├── rules/             # 各功能规则（分片/读写分离/加密/影子…）
@@ -130,7 +130,7 @@ FORCE REFRESH DATABASE METADATA;          -- 把本地最新元数据写回治�
 
 在线扩缩容与异构迁库由 **数据迁移（Migration）Pipeline** 完成，它是一条"存量全量 + 增量 binlog + 一致性校验 + 切流"的可控流水线，取代早期 ElasticJob 方案。核心机制：
 
-```
+```text
 1. 注册迁移源            REGISTER MIGRATION SOURCE STORAGE UNIT
 2. 建目标规则            CREATE SHARDING TABLE RULE（新分片布局）
 3. 启动迁移             MIGRATE TABLE ds0.t_order INTO t_order

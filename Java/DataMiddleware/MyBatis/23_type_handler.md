@@ -1,6 +1,6 @@
 # 1. TypeHandler 概述
 
-```
+```text
 TypeHandler 是 MyBatis 中负责 Java 类型与 JDBC 类型之间相互转换的组件。
 
 当 MyBatis 执行以下操作时，都需要 TypeHandler 参与：
@@ -94,7 +94,7 @@ public abstract class BaseTypeHandler<T> extends TypeReference<T> implements Typ
 
 # 4. 内置 TypeHandler
 
-```
+```text
 MyBatis 内置了大量的 TypeHandler，覆盖了常见类型：
 
 ┌────────────────────────┬──────────────────────────────────────┐
@@ -463,7 +463,7 @@ User selectById(Long id);
 
 # 8. TypeHandler 的执行时机
 
-```
+```text
 写操作（INSERT/UPDATE）：
   ParameterHandler.setParameters()
     → 遍历 parameterMappings

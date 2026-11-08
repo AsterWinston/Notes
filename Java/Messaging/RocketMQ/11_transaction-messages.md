@@ -3,7 +3,7 @@
 
 RocketMQ 的事务消息用于解决**分布式事务最终一致性**问题，基于**两阶段提交 + 事务回查**机制实现。
 
-```
+```text
 典型场景：电商下单
 下单服务 → Producer
 ├── 发送事务消息（订单创建事件）
@@ -24,7 +24,7 @@ RocketMQ 的事务消息用于解决**分布式事务最终一致性**问题，�
 
 # 2. 事务消息流程
 
-```
+```text
 Producer                    Broker                        Consumer
     │                         │                              │
     │  1.发送 Half Message    │                              │
@@ -49,7 +49,7 @@ Producer                    Broker                        Consumer
 
 ## 2.1 超时回查
 
-```
+```text
 如果 Producer 在步骤4之前宕机：
 
 Broker 定时扫描 Half Message（超时未提交）
@@ -163,7 +163,7 @@ public static final int TRANSACTION_ROLLBACK_TYPE   = 0x3 << 2;  // 已回滚
 
 ## 4.2 事务消息存储流程
 
-```
+```text
 1. Half Message → CommitLog (标记 TRANSACTION_PREPARED_TYPE)
                   → CommitLog 中存储 preparedTransactionOffset
 

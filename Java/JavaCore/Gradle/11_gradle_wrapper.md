@@ -17,7 +17,7 @@ Gradle Wrapper 是一组脚本和 JAR 文件，作为项目的一部分提交到
 
 一个标准 Wrapper 由以下文件组成：
 
-```
+```text
 project-root/
 ├── gradlew                    # Unix shell 启动脚本
 ├── gradlew.bat                # Windows 批处理启动脚本
@@ -43,7 +43,7 @@ project-root/
 
 `gradlew` 是一个 Shell 脚本，其核心执行流程如下：
 
-```
+```text
 用户执行 ./gradlew build
         │
         ▼
@@ -106,7 +106,7 @@ project-root/
 
 `gradle-wrapper.jar` 是一个可执行 JAR，其 MANIFEST.MF 中指定了主类为 `org.gradle.wrapper.GradleWrapperMain`。核心类结构：
 
-```
+```text
 org.gradle.wrapper
 ├── GradleWrapperMain          # 入口点，解析参数、协调流程
 ├── Install                    # 负责下载和解压 Gradle 发行版
@@ -147,7 +147,7 @@ public static void main(String[] args) throws Exception {
 
 Gradle 发行版缓存位于 `~/.gradle/wrapper/dists/` 下：
 
-```
+```text
 ~/.gradle/wrapper/dists/
 └── gradle-8.7-bin/
     └── bhs2wmbdwecv87pi65oeuq5iu/     # 随机目录名（基于 URL 哈希）
@@ -196,7 +196,7 @@ validateDistributionUrl=true
 
 `distributionUrl` 的格式：
 
-```
+```text
 https://services.gradle.org/distributions/gradle-{version}-{type}.zip
 ```
 
@@ -616,7 +616,7 @@ fi
 
 在一个多项目仓库中，子项目可以使用不同版本的 Gradle：
 
-```
+```text
 monorepo/
 ├── settings.gradle.kts
 ├── gradle/wrapper/              # 根项目 Wrapper (Gradle 8.7)
@@ -651,7 +651,7 @@ monorepo/
 
 ## 9.5 Wrapper 工作流总结
 
-```
+```text
 开发者克隆项目
     │
     ├── 执行 ./gradlew build
@@ -676,7 +676,7 @@ monorepo/
 
 **问题 1：`Could not determine Java version`**
 
-```
+```text
 解决方案：确保 JAVA_HOME 指向有效的 JDK，或项目使用的 Gradle 版本支持当前 JDK。
 Gradle 版本与 JDK 版本兼容性参考：
   - Gradle 8.x 支持 JDK 17-21
@@ -686,7 +686,7 @@ Gradle 版本与 JDK 版本兼容性参考：
 
 **问题 2：`Exception in thread "main" java.io.IOException: Downloading from ... failed`**
 
-```
+```text
 排查步骤：
 1. 检查网络连接和代理配置
 2. 验证 distributionUrl 中的 URL 是否正确可访问

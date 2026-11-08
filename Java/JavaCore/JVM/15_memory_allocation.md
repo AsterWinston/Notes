@@ -56,7 +56,7 @@ byte[] large = new byte[4 * 1024 * 1024];  // 4MB，直接进老年代
 - HotSpot 不严格按 `MaxTenuringThreshold` 晋升。
 - **如果 Survivor 空间中相同年龄的对象大小之和 > Survivor 空间的一半，则年龄 >= 该年龄的对象都可直接晋升。**
 
-```
+```text
 示例：Survivor 区 100MB
 年龄1: 30MB
 年龄2: 30MB    ← 30+30=60 > 100/2
@@ -69,7 +69,7 @@ byte[] large = new byte[4 * 1024 * 1024];  // 4MB，直接进老年代
 ```
 
 输出示例：
-```
+```text
 Desired survivor size 5242880 bytes, new threshold 2 (max 15)
 - age 1: 3145728 bytes, 3145728 total
 - age 2: 2097152 bytes, 5242880 total

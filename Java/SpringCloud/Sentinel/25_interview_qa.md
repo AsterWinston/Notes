@@ -37,7 +37,7 @@ Sentinel 是阿里开源的**分布式系统流量防护组件**，核心能力�
 
 SlotChain 是 Sentinel 的核心执行引擎，基于**责任链模式**将规则检查串联：
 
-```
+```text
 1. NodeSelectorSlot    → 构建调用树 Node
 2. ClusterBuilderSlot  → 构建全局 ClusterNode
 3. LogSlot             → 记录拦截日志
@@ -86,7 +86,7 @@ SlotChain 是 Sentinel 的核心执行引擎，基于**责任链模式**将规�
 
 ## 3.2 如何设计多级降级方案？
 
-```
+```text
 一级：流控拒绝 → 快速返回"排队中"
 二级：熔断触发 → 返回缓存数据（Redis/本地缓存）
 三级：系统保护 → 返回静态兜底（本地文件）
@@ -95,7 +95,7 @@ SlotChain 是 Sentinel 的核心执行引擎，基于**责任链模式**将规�
 
 ## 3.3 生产环境如何部署 Sentinel？
 
-```
+```text
 ┌──────────┐   规则拉取   ┌──────────┐
 │  Nacos   │ ←────────── │ Sentinel │
 │ (持久化) │ ──────────→ │ Client   │
@@ -112,7 +112,7 @@ SlotChain 是 Sentinel 的核心执行引擎，基于**责任链模式**将规�
 
 ## 4.1 Sentinel 的 Context/Entry/Node 关系？
 
-```
+```text
 一次请求:
   Context（调用上下文）
     └── Entry（资源调用记录）
@@ -134,7 +134,7 @@ SlotChain 是 Sentinel 的核心执行引擎，基于**责任链模式**将规�
 
 ## 4.3 Sentinel 的数据源 Push 模式如何实现？
 
-```
+```text
 Nacos ConfigService
   │
   ├── Client 注册 Listener
@@ -173,7 +173,7 @@ Sentinel 设计非常轻量：
 
 ## 6.1 秒杀场景如何用 Sentinel 保护？
 
-```
+```text
 1. 匀速排队（RateLimiter）: 平滑突发流量
    controlBehavior = CONTROL_BEHAVIOR_RATE_LIMITER, count = 500
 

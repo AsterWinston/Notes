@@ -1,7 +1,7 @@
 ﻿
 # 1. 三层配置模型全景
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                       Nacos 配置模型                         │
 │                                                              │
@@ -74,7 +74,7 @@ public class NamespaceManager {
 
 ## 2.3 命名空间 ID 生成策略
 
-```
+```text
 public namespace (系统默认):
   - namespaceId: ""
   - namespaceName: "public"
@@ -133,7 +133,7 @@ spring:
 
 ## 4.1 Data ID 命名规范
 
-```
+```text
 Spring Cloud Alibaba 自动生成的 Data ID:
 
 ${prefix}${spring.profiles.active}.${file-extension}
@@ -186,7 +186,7 @@ spring:
 
 当 `spring.profiles.active=dev,china` 时，会尝试加载：
 
-```
+```text
 1. order-service.yaml            (无 profile)
 2. order-service-dev.yaml        (dev profile)
 3. order-service-china.yaml      (china profile)
@@ -249,7 +249,7 @@ order:
 
 ## 6.1 推送触发机制
 
-```
+```text
 Nacos 服务端配置变更触发推送的几种方式:
 
 1. 主动推送（gRPC 双向流）
@@ -281,7 +281,7 @@ Nacos 服务端配置变更触发推送的几种方式:
 
 ## 7.1 配置状态机
 
-```
+```text
      ┌─────────┐
      │  CREATED │  (新建)
      └────┬─────┘
@@ -348,7 +348,7 @@ curl -X POST 'http://127.0.0.1:8848/nacos/v1/cs/configs' \
 
 ## 9.1 集群配置同步流程
 
-```
+```text
 Node-1 (收到配置写入)          Node-2               Node-3
     │                             │                    │
     ├── 写入 MySQL                │                    │
@@ -371,7 +371,7 @@ Node-1 (收到配置写入)          Node-2               Node-3
 
 ## 9.2 配置同步数据流
 
-```
+```text
     ┌──────────────────┐
     │    Client 请求    │
     └────────┬─────────┘

@@ -35,7 +35,7 @@ A2A 是一套基于 HTTP + JSON-RPC 2.0 的开放协议。理论上你可以手�
 
 ## 1.3 一次调用的完整时序
 
-```
+```text
 
  Client                     Server
    |                          |
@@ -133,7 +133,7 @@ AgentCard agentCard = AgentCard.builder()
 
 ### 3.1.2 任务状态机
 
-```
+```text
 
  SUBMITTED ──► WORKING ──► COMPLETED
       │            │

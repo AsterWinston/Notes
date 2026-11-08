@@ -6,7 +6,7 @@ Rust 的工具链由三部分组成：`rustup`（版本管理器）、`cargo`（
 
 Rust 官方推荐用 `rustup` 安装，它同时是工具链版本管理器：
 
-```
+```text
 1.1 下载 rustup-init（Windows 是 rustup-init.exe）
 1.2 设置环境变量 CARGO_HOME 和 RUSTUP_HOME
     - 这两个是 rustup 依赖的，执行 rustup-init 时据此确定安装位置
@@ -18,7 +18,7 @@ Rust 官方推荐用 `rustup` 安装，它同时是工具链版本管理器：
 
 ## 1.2 关键环境变量
 
-```
+```text
 CARGO_HOME     cargo 的根目录（默认 <user>\.cargo），存放 registry 缓存、配置
 RUSTUP_HOME    rustup 的根目录（默认 <user>\.rustup），存放各版本工具链
 PATH           需包含 %CARGO_HOME%\bin，才能调用 cargo/rustc
@@ -28,7 +28,7 @@ PATH           需包含 %CARGO_HOME%\bin，才能调用 cargo/rustc
 
 ## 1.3 国内镜像加速
 
-```
+```text
 在 %CARGO_HOME%\config.toml 中配置：
 
 [source.crates-io]
@@ -42,7 +42,7 @@ registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"
 
 # 2. rustup 常用命令
 
-```
+```text
 2.1 rustup show              # 显示当前工具链与目标平台
 2.2 rustup install nightly   # 安装指定版本工具链
 2.3 rustup default stable    # 设置默认工具链
@@ -58,7 +58,7 @@ registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"
 
 ## 3.1 直接编译单文件
 
-```
+```text
 3.1 rustc main.rs            # 编译为可执行文件
 3.2 rustc --version          # 查看编译器版本
 3.3 rustc -O main.rs         # 开启优化
@@ -66,7 +66,7 @@ registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"
 
 ## 3.2 rustc 的产物
 
-```
+```text
 rustc main.rs  →  main（Windows 为 main.exe）+ 中间产物
 
 流程：源码 → 词法/语法分析 → HIR → MIR → LLVM IR → 机器码
@@ -78,7 +78,7 @@ rustc main.rs  →  main（Windows 为 main.exe）+ 中间产物
 
 ## 4.1 常用命令
 
-```
+```text
 4.1 cargo new <project_name>           # 新建项目（默认二进制 crate）
 4.2 cargo new --lib <name>             # 新建库 crate
 4.3 cargo build                        # 编译（debug 模式）
@@ -95,7 +95,7 @@ rustc main.rs  →  main（Windows 为 main.exe）+ 中间产物
 
 ## 4.2 debug vs release
 
-```
+```text
 debug（cargo build）：
   - 开启调试符号，关闭优化
   - 编译快，运行慢
@@ -111,7 +111,7 @@ release（cargo build --release）：
 
 ## 4.3 Cargo.toml 与 Cargo.lock
 
-```
+```text
 Cargo.toml    项目的清单文件，声明依赖和元数据（人写）
 Cargo.lock    精确锁定依赖版本与哈希（cargo 自动生成）
 ```

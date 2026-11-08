@@ -29,7 +29,7 @@
 
 **回答要点**：
 
-```
+```text
 三层架构：
 1. 适配层：SessionRepositoryFilter（Servlet）/ WebSessionManager（WebFlux）
 2. 核心层：SessionRepository 接口、Session 接口、HttpSessionIdResolver
@@ -260,7 +260,7 @@ public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
 
 # 11. 知识体系总结
 
-```
+```text
 Spring Session 知识体系
 │
 ├── 基础概念

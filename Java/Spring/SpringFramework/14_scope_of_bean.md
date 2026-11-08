@@ -1,5 +1,5 @@
 ﻿# 1. singleton与prototype
-```
+```text
 Spring默认情况下是如何管理这个Bean的：
 默认情况下Bean是单例的。(单例：singleton)
 在Spring上下文初始化的时候实例化。
@@ -46,7 +46,7 @@ websocket：一个websocket生命周期对应一个Bean。仅限于在WEB应用�
 自定义scope：很少使用。
 
 # 3. 自定义作用域Scope
-```
+```text
 接下来自定义一个Scope，线程级别的Scope，在同一个线程中，获取的Bean都是同一个。跨线程则是不同的对象：
 第一步：自定义Scope。（实现Scope接口：import org.springframework.beans.factory.config.Scope;）
 spring内置了线程范围的类：org.springframework.context.support.SimpleThreadScope，可以直接用，我们不需要额外自己实现一个Scope。
@@ -116,7 +116,7 @@ public class MyScope implements Scope {
 
 ## 4.1 Scope 接口定义
 
-```
+```text
 public interface Scope {
 
     /**
@@ -154,7 +154,7 @@ public interface Scope {
 
 ## 4.2 Spring 内置的 Scope 实现
 
-```
+```text
 Singleton Scope — 单例（DefaultSingletonBeanRegistry 内部管理，不实现 Scope 接口）
   生命周期：容器启动时创建，容器关闭时销毁
   存储位置：DefaultSingletonBeanRegistry.singletonObjects (ConcurrentHashMap)
@@ -187,7 +187,7 @@ SimpleThreadScope — 线程级别（Spring 内置的自定义 scope 示例）
 
 ## 4.3 doGetBean() 中的 Scope 处理分支
 
-```
+```text
 AbstractBeanFactory.doGetBean() 中的 Scope 分支：
 
 if (mbd.isSingleton()) {
@@ -244,7 +244,7 @@ else {
 
 ## 4.4 SimpleThreadScope 源码
 
-```
+```java
 Spring 内置的 SimpleThreadScope 是自定义 Scope 的参考实现：
 
 public class SimpleThreadScope implements Scope {
@@ -299,7 +299,7 @@ public class SimpleThreadScope implements Scope {
 
 ## 4.5 Scope 注册机制
 
-```
+```java
 <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
     <property name="scopes">
         <map>
@@ -347,7 +347,7 @@ public class CustomScopeConfigurer implements BeanFactoryPostProcessor {
 
 ## 4.6 Bean 作用域选择策略与生命周期对比
 
-```
+```text
 ┌─────────────┬──────────────┬──────────────┬──────────────┬────────────────────┐
 │ 作用域      │ 创建时机      │ 存储位置      │ 销毁时机      │ Spring 管理生命周期 │
 ├─────────────┼──────────────┼──────────────┼──────────────┼────────────────────┤

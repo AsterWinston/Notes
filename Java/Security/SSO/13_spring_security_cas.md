@@ -3,7 +3,7 @@
 
 Spring Security 提供 `spring-security-cas` 模块，使 Java Web 应用可以无缝集成 CAS Server 作为 SSO 客户端。它提供了 CAS 专用的认证过滤器、Ticket 验证器和用户信息映射。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │              Spring Security CAS 集成架构                         │
 │                                                                   │

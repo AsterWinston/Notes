@@ -4,7 +4,7 @@
 
 ★ **关键认知**：智能指针本质是**实现了 `Deref` 和 `Drop` 的结构体**：
 
-```
+```text
 1.1 Deref trait    —— 让智能指针能像引用一样使用（支持 * 解引用、deref coercion）
 1.2 Drop trait     —— 离开作用域时自动清理堆资源（RAII）
 
@@ -12,7 +12,7 @@
 智能指针：拥有数据，负责释放，可带额外能力
 ```
 
-```
+```text
 常用智能指针：
 Box<T>       独占所有权的堆分配
 Rc<T>        引用计数的共享所有权（单线程）
@@ -64,7 +64,7 @@ let b = Box::new(String::from("world"));
 hello(&b);                  // &Box<String> → &str（链式转换）
 ```
 
-```
+```text
 deref coercion 转换链：
 &Box<String> → &String → &str
 ```
@@ -107,7 +107,7 @@ impl Drop for CustomSmartPointer {
 }   // 作用域结束，自动调用 drop
 ```
 
-```
+```text
 4.1 drop 调用顺序：后进先出（LIFO）
 4.2 可用 std::mem::drop(x) 提前释放
 4.3 不能手动调用 .drop() 方法
@@ -150,7 +150,7 @@ let c = RefCell::new(5);
 println!("{}", c.borrow());     // 15
 ```
 
-```
+```text
 borrow()      返回 Ref<T>，运行时检查"不可变借用"
 borrow_mut()  返回 RefMut<T>，运行时检查"可变借用"
 ```

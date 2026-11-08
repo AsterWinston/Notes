@@ -2,7 +2,7 @@
 
 结论先行：Ollama 把"下载模型、量化、加载、开服务"四步压成一条命令，是本地跑大模型最省心的方案，代价是吞吐与并发能力有限。
 
-```
+```text
 Ollama 让本地跑大模型变得极简：
   ollama pull qwen2.5:7b
   ollama run qwen2.5:7b
@@ -20,7 +20,7 @@ Ollama 让本地跑大模型变得极简：
 
 ## 1.2 工作原理
 
-```
+```text
 ollama pull → 下载 GGUF（含量化）到本地
 ollama run  → 加载权重，起本地推理进程
 ollama serve → 常驻服务，暴露 11434 端口
@@ -135,7 +135,7 @@ set OLLAMA_KEEP_ALIVE=24h
 
 ### 3.2.3 上下文与显存
 
-```
+```text
 显存 ≈ 权重 + KV Cache
 KV Cache 随 num_ctx 与并发线性增长
 ```
@@ -290,7 +290,7 @@ ollama run my-assistant
 
 ### 6.2.3 模板定制
 
-```
+```text
 TEMPLATE """{{ if .System }}<|im_start|>system
 {{ .System }}<|im_end|>
 {{ end }}<|im_start|>user
@@ -319,7 +319,7 @@ ollama create my-model -f Modelfile
 
 ## 7.2 转换链路
 
-```
+```text
 LoRA/全量微调产物
    ↓ merge 到基座（可选）
 HF 格式（safetensors）
@@ -369,7 +369,7 @@ ADAPTER ./my-lora-adapter
 
 ## 8.2 决策建议
 
-```
+```text
 并发 < 5 且单机？
  ├── 是 → Ollama
  └── 否 → 需要高吞吐/多副本？
@@ -384,7 +384,7 @@ ADAPTER ./my-lora-adapter
 
 ### 8.2.2 混合架构
 
-```
+```text
 开发机：Ollama（快速验证）
         ↓ 接口一致
 生产集群：vLLM（高吞吐）
@@ -444,7 +444,7 @@ ADAPTER ./my-lora-adapter
 
 ## 10.1 监控
 
-```
+```text
 /health            → 存活探针
 /api/ps            → 已加载模型
 日志中的 load/unload → 冷启动分析
@@ -453,7 +453,7 @@ ADAPTER ./my-lora-adapter
 
 ## 10.2 上线清单
 
-```
+```text
 □ 并发评估，超阈值改用 vLLM
 □ 显存预留 KV Cache 余量
 □ 多实例 + 负载均衡

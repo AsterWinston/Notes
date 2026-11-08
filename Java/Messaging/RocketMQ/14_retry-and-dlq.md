@@ -3,7 +3,7 @@
 
 当 Consumer 消费消息失败时，RocketMQ 支持**自动重试**，重试次数达上限后将消息转入**死信队列（DLQ, Dead Letter Queue）**。
 
-```
+```text
 消费失败处理流程：
 
 消息消费失败
@@ -71,7 +71,7 @@ private String messageDelayLevel = "1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m
 
 # 3. Consumer 发送重试消息的流程
 
-```
+```text
 消费失败 (RECONSUME_LATER)
     │
     ▼
@@ -96,7 +96,7 @@ Consumer 重新消费（reconsumeTimes 已增加）
 
 ## 3.1 重试 Topic 命名
 
-```
+```text
 重试消息的 Topic 格式: %RETRY%{consumerGroup}
 例如: %RETRY%order_consumer_group
 ```
@@ -107,14 +107,14 @@ Consumer 重新消费（reconsumeTimes 已增加）
 
 ## 4.1 触发条件
 
-```
+```text
 进入死信队列的条件：
 消息的 reconsumeTimes >= maxReconsumeTimes (默认 16)
 ```
 
 ## 4.2 死信 Topic 命名
 
-```
+```text
 死信 Topic 格式: %DLQ%{consumerGroup}
 例如: %DLQ%order_consumer_group
 ```
@@ -226,7 +226,7 @@ consumer.setMaxReconsumeTimes(5);  // 减少重试次数，加速死信
 
 # 7. Retry 与 DLQ Topic 的自动创建
 
-```
+```text
 首次重试时，Broker 自动创建：
 - %RETRY%{consumerGroup} (retryTopic)
   配置:

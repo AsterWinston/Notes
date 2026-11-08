@@ -38,7 +38,7 @@
 
 ## 1.3 反思循环的整体流程
 ### 1.3.1 闭环流程图
-```
+```text
 执行 → 评估 → 发现不足 → 反思原因 → 改进重试
   ↑                                    │
   └────────────────────────────────────┘
@@ -129,7 +129,7 @@ public String reflectStrategy(String task, List<String> pastFailures) {
 结论先行：生成-批判-修正（Generate-Critique-Revise）是反思的最小可行形态，用一对 Generator/Critic 交替循环即可实现。
 
 ## 3.1 模式概述
-```
+```text
 生成 generate → 批判 critique → 修正 revise
      ↑                              │
      └────────── 未通过 ────────────┘

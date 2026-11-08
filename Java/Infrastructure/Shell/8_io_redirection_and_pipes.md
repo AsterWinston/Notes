@@ -316,7 +316,7 @@ rm /tmp/queue
 
 ## 10.1 fork+exec 过程中 FD 的继承
 
-```
+```text
 1. Shell 解析命令行：ls | grep txt > result
    ↓
 2. 创建管道：pipe() 返回 fd[0](读端), fd[1](写端)

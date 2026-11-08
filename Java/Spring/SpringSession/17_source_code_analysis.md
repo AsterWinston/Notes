@@ -1,6 +1,6 @@
 # 1. 源码学习路线
 
-```
+```text
 建议阅读顺序：
 1. Session 接口           → 理解核心抽象
 2. MapSession            → 理解基本实现
@@ -123,7 +123,7 @@ public interface SessionRepository<S extends Session> {
 
 这是一个典型的**仓储 (Repository) 模式**，将存储操作抽象为统一接口：
 
-```
+```text
 SessionRepository            — 持久化抽象层
   ├── MapSessionRepository   — 基于 HashMap（测试用）
   ├── RedisSessionRepository — 基于 Redis（最常用）
@@ -454,7 +454,7 @@ private void updatePrincipalIndex(RedisSession session) {
 
 **索引数据结构选择**：
 
-```
+```text
 为什么使用 Redis SET（集合）存储索引？
 
 1. 一个用户名可能对应多个 Session（多设备登录）

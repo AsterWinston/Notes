@@ -7,11 +7,11 @@
 原型继承（Prototypal inheritance） 这个语言特性能够帮助我们实现这一需求。
 ```
 ## 1.1 [[Prototype]]
-```
-在 JavaScript 中，对象有一个特殊的隐藏属性 [[Prototype]]（如规范中所命名的），它要么为 null，要么就是对另一个对象的引用。该对象被称为“原型”：
+```text
+在 JavaScript 中，对象有一个特殊的隐藏属性 [[Prototype]]（如规范中所命名的），它要么为 null，要么就是对另一个对象的引用。该对象被称为"原型"：
 
 
-当我们从 object 中读取一个缺失的属性时，JavaScript 会自动从原型中获取该属性。在编程中，这被称为“原型继承”。很快，我们将通过很多示例来学习此类继承，以及基于此类继承的更炫酷的语言功能。
+当我们从 object 中读取一个缺失的属性时，JavaScript 会自动从原型中获取该属性。在编程中，这被称为"原型继承"。很快，我们将通过很多示例来学习此类继承，以及基于此类继承的更炫酷的语言功能。
 
 属性 [[Prototype]] 是内部的而且是隐藏的，但是这儿有很多设置它的方式。
 
@@ -46,9 +46,9 @@ alert( rabbit.jumps ); // true
 当 alert 试图读取 rabbit.eats (**) 时，因为它不存在于 rabbit 中，所以 JavaScript 会顺着 [[Prototype]] 引用，在 animal 中查找（自下而上）：
 
 
-在这儿我们可以说 “animal 是 rabbit 的原型”，或者说 “rabbit 的原型是从 animal 继承而来的”。
+在这儿我们可以说 "animal 是 rabbit 的原型"，或者说 "rabbit 的原型是从 animal 继承而来的"。
 
-因此，如果 animal 有许多有用的属性和方法，那么它们将自动地变为在 rabbit 中可用。这种属性被称为“继承”。
+因此，如果 animal 有许多有用的属性和方法，那么它们将自动地变为在 rabbit 中可用。这种属性被称为"继承"。
 
 如果我们在 animal 中有一个方法，它可以在 rabbit 中被调用：
 
@@ -112,7 +112,7 @@ __proto__ 属性有点过时了。它的存在是出于历史的原因，现代�
 由于 __proto__ 标记在观感上更加明显，所以我们在后面的示例中将使用它。
 ```
 ## 1.2 写入不使用原型
-```
+```javascript
 原型仅用于读取属性。
 
 对于写入/删除操作可以直接在对象上进行。
@@ -170,7 +170,7 @@ alert(user.fullName);  // John Smith，user 的内容被保护了
 在 (*) 行中，属性 admin.fullName 在原型 user 中有一个 getter，因此它会被调用。在 (**) 行中，属性在原型中有一个 setter，因此它会被调用。
 ```
 ## 1.3 "this"的值
-```
+```javascript
 在上面的例子中可能会出现一个有趣的问题：在 set fullName(value) 中 this 的值是什么？属性 this.name 和 this.surname 被写在哪里：在 user 还是 admin？
 
 答案很简单：this 根本不受原型的影响。
@@ -181,7 +181,7 @@ alert(user.fullName);  // John Smith，user 的内容被保护了
 
 这是一件非常重要的事儿，因为我们可能有一个带有很多方法的大对象，并且还有从其继承的对象。当继承的对象运行继承的方法时，它们将仅修改自己的状态，而不会修改大对象的状态。
 
-例如，这里的 animal 代表“方法存储”，rabbit 在使用其中的方法。
+例如，这里的 animal 代表"方法存储"，rabbit 在使用其中的方法。
 
 调用 rabbit.sleep() 会在 rabbit 对象上设置 this.isSleeping：
 
@@ -215,7 +215,7 @@ alert(animal.isSleeping); // undefined（原型中没有此属性）
 所以，方法是共享的，但对象状态不是。
 ```
 ## 1.4 for..in循环
-```
+```javascript
 for..in 循环也会迭代继承的属性。
 
 例如：
@@ -282,7 +282,7 @@ JavaScript 从一开始就有了原型继承。这是 JavaScript 编程语言的
 
 但是在过去，没有直接对其进行访问的方式。唯一可靠的方法是本章中会介绍的构造函数的 "prototype" 属性。目前仍有许多脚本仍在使用它。
 
-请注意，这里的 F.prototype 指的是 F 的一个名为 "prototype" 的常规属性。这听起来与“原型”这个术语很类似，但这里我们实际上指的是具有该名字的常规属性。
+请注意，这里的 F.prototype 指的是 F 的一个名为 "prototype" 的常规属性。这听起来与"原型"这个术语很类似，但这里我们实际上指的是具有该名字的常规属性。
 
 下面是一个例子：
 
@@ -299,7 +299,7 @@ Rabbit.prototype = animal;
 let rabbit = new Rabbit("White Rabbit"); //  rabbit.__proto__ == animal
 
 alert( rabbit.eats ); // true
-设置 Rabbit.prototype = animal 的字面意思是：“当创建了一个 new Rabbit 时，把它的 [[Prototype]] 赋值为 animal”。
+设置 Rabbit.prototype = animal 的字面意思是："当创建了一个 new Rabbit 时，把它的 [[Prototype]] 赋值为 animal"。
 
 这是结果示意图：
 
@@ -312,7 +312,7 @@ F.prototype 属性仅在 new F 被调用时使用，它为新对象的 [[Prototy
 如果在创建之后，F.prototype 属性有了变化（F.prototype = <another object>），那么通过 new F 创建的新对象也将随之拥有新的对象作为 [[Prototype]]，但已经存在的对象将保持旧有的值。
 ```
 ## 2.1 默认的F.prototype，构造器属性
-```
+```text
 每个函数都有 "prototype" 属性，即使我们没有提供它。
 
 默认的 "prototype" 是一个只有属性 constructor 的对象，属性 constructor 指向函数自身。
@@ -398,7 +398,7 @@ Rabbit.prototype = {
 首先，我们将看看原生原型的详细信息，然后学习如何使用它为内建对象添加新功能。
 ```
 ## 3.1 Object.prototype
-```
+```javascript
 假如我们输出一个空对象：
 
 let obj = {};
@@ -428,12 +428,12 @@ alert(obj.toString === Object.prototype.toString); //true
 alert(Object.prototype.__proto__); // null
 ```
 ## 3.2 其他内建原型
-```
+```text
 其他内建对象，像 Array、Date、Function 及其他，都在 prototype 上挂载了方法。
 
 例如，当我们创建一个数组 [1, 2, 3]，在内部会默认使用 new Array() 构造器。因此 Array.prototype 变成了这个数组的 prototype，并为这个数组提供数组的操作方法。这样内存的存储效率是很高的。
 
-按照规范，所有的内建原型顶端都是 Object.prototype。这就是为什么有人说“一切都从对象继承而来”。
+按照规范，所有的内建原型顶端都是 Object.prototype。这就是为什么有人说"一切都从对象继承而来"。
 
 下面是完整的示意图（3 个内建对象）：
 
@@ -468,7 +468,7 @@ alert(f.__proto__ == Function.prototype); // true
 alert(f.__proto__.__proto__ == Object.prototype); // true，继承自 Object
 ```
 ## 3.3 基本数据类型
-```
+```text
 最复杂的事情发生在字符串、数字和布尔值上。
 
 正如我们记忆中的那样，它们并不是对象。但是如果我们试图访问它们的属性，那么临时包装器对象将会通过内建的构造器 String、Number 和 Boolean 被创建。它们提供给我们操作字符串、数字和布尔值的方法然后消失。
@@ -479,7 +479,7 @@ alert(f.__proto__.__proto__ == Object.prototype); // true，继承自 Object
 特殊值 null 和 undefined 比较特殊。它们没有对象包装器，所以它们没有方法和属性。并且它们也没有相应的原型。
 ```
 ## 3.4 更改原生类型
-```
+```text
 原生的原型是可以被修改的。例如，我们向 String.prototype 中添加一个方法，这个方法将对所有的字符串都是可用的：
 
 String.prototype.show = function() {
@@ -515,7 +515,7 @@ if (!String.prototype.repeat) { // 如果这儿没有这个方法
 alert( "La".repeat(3) ); // LaLaLa
 ```
 ## 3.5 从原型中借用
-```
+```text
 在 装饰器模式和转发，call/apply 一章中，我们讨论了方法借用。
 
 那是指我们从一个对象获取一个方法，并将其复制到另一个对象。
@@ -600,7 +600,7 @@ let clone = Object.create(
 此调用可以对 obj 进行真正准确地拷贝，包括所有的属性：可枚举和不可枚举的，数据属性和 setters/getters —— 包括所有内容，并带有正确的 [[Prototype]]。
 ```
 ## 4.1 原型简史
-```
+```text
 有这么多可以处理 [[Prototype]] 的方式。发生了什么？为什么会这样？
 
 这是历史原因。
@@ -622,10 +622,10 @@ let clone = Object.create(
 如果速度很重要，就请不要修改已存在的对象的 [[Prototype]]
 从技术上来讲，我们可以在任何时候 get/set [[Prototype]]。但是通常我们只在创建对象的时候设置它一次，自那之后不再修改：rabbit 继承自 animal，之后不再更改。
 
-并且，JavaScript 引擎对此进行了高度优化。用 Object.setPrototypeOf 或 obj.__proto__= “即时”更改原型是一个非常缓慢的操作，因为它破坏了对象属性访问操作的内部优化。因此，除非你知道自己在做什么，或者 JavaScript 的执行速度对你来说完全不重要，否则请避免使用它。
+并且，JavaScript 引擎对此进行了高度优化。用 Object.setPrototypeOf 或 obj.__proto__= "即时"更改原型是一个非常缓慢的操作，因为它破坏了对象属性访问操作的内部优化。因此，除非你知道自己在做什么，或者 JavaScript 的执行速度对你来说完全不重要，否则请避免使用它。
 ```
 ## 4.2 "Very plain" objects
-```
+```javascript
 我们知道，对象可以用作关联数组（associative arrays）来存储键/值对。
 
 ……但是如果我们尝试在其中存储 用户提供的 键（例如：一个用户输入的字典），我们可以发现一个有趣的小故障：所有的键都正常工作，除了 "__proto__"。
@@ -685,7 +685,7 @@ Object.create(null) 创建了一个空对象，这个对象没有原型（[[Prot
 
 因此，它没有继承 __proto__ 的 getter/setter 方法。现在，它被作为正常的数据属性进行处理，因此上面的这个示例能够正常工作。
 
-我们可以把这样的对象称为 “very plain” 或 “pure dictionary” 对象，因为它们甚至比通常的普通对象（plain object）{...} 还要简单。
+我们可以把这样的对象称为 "very plain" 或 "pure dictionary" 对象，因为它们甚至比通常的普通对象（plain object）{...} 还要简单。
 
 缺点是这样的对象没有任何内建的对象的方法，例如 toString：
 
@@ -694,7 +694,7 @@ let obj = Object.create(null);
 alert(obj); // Error (no toString)
 ……但是它们通常对关联数组而言还是很友好。
 
-请注意，大多数与对象相关的方法都是 Object.something(...)，例如 Object.keys(obj) —— 它们不在 prototype 中，因此在 “very plain” 对象中它们还是可以继续使用：
+请注意，大多数与对象相关的方法都是 Object.something(...)，例如 Object.keys(obj) —— 它们不在 prototype 中，因此在 "very plain" 对象中它们还是可以继续使用：
 
 let chineseDictionary = Object.create(null);
 chineseDictionary.hello = "你好";

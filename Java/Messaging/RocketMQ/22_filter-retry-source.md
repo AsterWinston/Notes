@@ -4,7 +4,7 @@
 
 # 1. 消息过滤整体架构
 
-```
+```text
 过滤流程:
 Consumer 订阅 (Topic + 表达式)
     │
@@ -121,7 +121,7 @@ GetMessageResult getMessage(final String group, final String topic,
 
 ## 2.3 过滤前后对比
 
-```
+```text
 无过滤 (全量消费):
   Consumer 收到 10000 条消息
   Consumer 端自行过滤掉 9500 条
@@ -315,7 +315,7 @@ msg.getProperty(MessageConst.PROPERTY_ORIGIN_MESSAGE_ID);  // 原始消息ID
 
 # 7. 重试消息的存储路线
 
-```
+```text
 消费失败 RECONSUME_LATER
     │
     ▼

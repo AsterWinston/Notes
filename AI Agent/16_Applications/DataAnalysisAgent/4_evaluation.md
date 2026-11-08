@@ -396,7 +396,7 @@ void should_filter_by_region() {
 
 ### 7.1.2 阶段图
 
-```
+```text
 阶段1：只读报表（固定查询工具）
 阶段2：Text2SQL（仅管理员）
 阶段3：扩大范围（带权限过滤）
@@ -467,7 +467,7 @@ void should_filter_by_region() {
 
 ### 8.2.2 处置流程
 
-```
+```text
 告警触发
    │
    ▼
@@ -505,7 +505,7 @@ void should_filter_by_region() {
 
 ### 9.2.1 闭环流程
 
-```
+```text
 评测发现失败
    │
    ▼

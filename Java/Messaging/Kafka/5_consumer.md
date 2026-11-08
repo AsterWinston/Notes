@@ -2,7 +2,7 @@
 
 ## 1.1 Consumer 与 Consumer Group 关系
 
-```
+```text
 ┌────────────────────────────────────────────────────────────┐
 │                  Consumer Group 模型                        │
 │                                                            │
@@ -65,7 +65,7 @@ props.put("isolation.level", "read_committed");      // read_uncommitted/read_co
 
 ## 2.1 Consumer Group 状态机
 
-```
+```text
                     ┌──────────┐
           Consumer  │  Empty   │  所有成员离开
           加入      └────┬─────┘
@@ -100,7 +100,7 @@ props.put("isolation.level", "read_committed");      // read_uncommitted/read_co
 
 ## 2.2 JoinGroup 协议（Eager 模式）
 
-```
+```text
 Coordinator                    Consumer A (Leader)        Consumer B
     │                              │                        │
     │ ◄─ ① Heartbeat 超时          │                        │
@@ -134,7 +134,7 @@ Coordinator                    Consumer A (Leader)        Consumer B
 
 ## 2.3 Cooperative（增量式）Rebalance 协议（Kafka 2.4+）
 
-```
+```text
 与 Eager 的关键区别：
 
 Eager Revocation:
@@ -169,7 +169,7 @@ props.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
 
 默认策略，按 Topic 逐一分配。对每个 Topic，分区连续分配给各个 Consumer。
 
-```
+```text
 Topic "A": 7 Partitions, Group: 3 Consumers
 
 排序后分配:
@@ -209,7 +209,7 @@ Map<String, List<TopicPartition>> assign(
 
 将所有 Topic 的所有 Partition 排序后在 Consumer 间轮询。
 
-```
+```text
 Topic "A": P0, P1, P2
 Topic "B": P0, P1
 
@@ -224,7 +224,7 @@ Consumer2: A-P1, B-P0
 
 ## 3.3 StickyAssignor（粘性分配）
 
-```
+```text
 Rebalance 前后对比:
 
 Rebalance 前:
@@ -246,7 +246,7 @@ C3: P5, P6            ← 全部重新分配，迁移量大
 
 基于 Sticky 的策略 + Cooperative 协议。分配时只迁移所需的少量分区，且分批完成。
 
-```
+```text
 迁移过程（分批次）:
 
 第 1 批:
@@ -353,7 +353,7 @@ for (ConsumerRecord<String, String> record : records) {
 
 ### 4.2.2 `__consumer_offsets` 内部结构
 
-```
+```yaml
 Key: GroupMetadataKey
   - groupId: String
   - topic: String
@@ -384,7 +384,7 @@ props.put("auto.offset.reset", "earliest"); // 从最早的 offset 开始
 
 Kafka Consumer 有两类关键线程：
 
-```
+```text
 KafkaConsumer 线程模型
 │
 ├── 用户线程（User Thread）
@@ -402,7 +402,7 @@ KafkaConsumer 线程模型
 
 ### 5.1.1 关键超时时间线
 
-```
+```text
 时间轴 ────────────────────────────────────────────────────▶
 
 │◀──── heartbeat.interval.ms ────▶│  ← 每隔 3s 发送心跳
@@ -450,7 +450,7 @@ asyncProcess(records, () -> {
 
 ## 6.1 Fetcher 拉取模型
 
-```
+```text
 KafkaConsumer.poll(timeout)
 │
 ├── ① ensureCoordinatorReady() → 确保 Coordinator 连接就绪
@@ -473,7 +473,7 @@ KafkaConsumer.poll(timeout)
 
 ## 6.2 Fetch 参数协同机制
 
-```
+```text
 fetch.min.bytes = 1                 ← 最少字节数。达不到则等待
 fetch.max.wait.ms = 500             ← 等待多久（ms）
 fetch.max.bytes = 52428800          ← 总拉取上限(50MB)

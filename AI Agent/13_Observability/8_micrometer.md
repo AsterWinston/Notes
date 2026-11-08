@@ -4,7 +4,7 @@
 
 ## 1.1 门面模式的价值
 
-```
+```text
 应用代码 → Micrometer API → Prometheus / Datadog / CloudWatch ...
 ```
 
@@ -19,7 +19,7 @@
 
 Micrometer 有两层：`MeterRegistry`（指标）与 `ObservationRegistry`（观测）。Observation 是更上层的抽象，一次观测同时产生指标、Trace 与日志，Micrometer 指标是其中一种输出。
 
-```
+```text
 Observation（观测）
  ├── Metrics   → MeterRegistry
  ├── Tracing   → Tracer（OTel/Brave）
@@ -167,7 +167,7 @@ public class LlmMetricsService {
 
 Spring AI 自动为模型调用创建 Observation：
 
-```
+```text
 observation.name: spring.ai.chat.client
 keyValues:
   spring.ai.chat.client.operation = chat

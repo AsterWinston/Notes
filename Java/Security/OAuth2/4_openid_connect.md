@@ -4,7 +4,7 @@ OpenID Connect 1.0（OIDC）是构建在 OAuth 2.0 之上的**身份认证层**�
 
 ## 1.1 OAuth2 为什么不能做认证？
 
-```
+```text
 OAuth2 的 Access Token 回答了：
   "这个客户端有权访问这个用户的数据"
 
@@ -28,7 +28,7 @@ OIDC 通过 ID Token 解决：
 
 ## 1.2 OIDC 与 OAuth2 的关系
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │                  OpenID Connect                   │
 │  ┌───────────────────────────────────────────┐  │
@@ -65,7 +65,7 @@ ID Token 是 OIDC 的核心产物，是一个 JWT 格式的安全令牌，包含
 
 ## 2.1 ID Token 的结构
 
-```
+```text
 ID Token = Header.Payload.Signature
 
 Header:
@@ -117,7 +117,7 @@ Payload:
 
 ### 2.2.3 nonce 防重放机制
 
-```
+```text
 攻击场景（无 nonce）：
 1. 攻击者在公开网络截获了 ID Token
 2. 攻击者重放该 ID Token 给客户端
@@ -133,7 +133,7 @@ nonce 防御：
 
 ### 2.2.4 at_hash 的 Token 绑定
 
-```
+```text
 at_hash 计算方式：
   at_hash = Base64UrlEncode(SHA-256(AccessToken)[0..15])
 
@@ -165,7 +165,7 @@ OIDC 扩展了 OAuth2 的 scope 机制，定义了几个标准 Scope，每个对
 | address | address (JSON Object) | 地址信息 |
 | phone | phone_number, phone_number_verified | 电话号码 |
 
-```
+```text
 示例请求：
 scope=openid profile email
 
@@ -190,7 +190,7 @@ scope=openid profile email
 
 授权服务器可以定义自己的 Scope 和 Claims：
 
-```
+```text
 自定义 Scope：
   scope=openid department role
 
@@ -211,7 +211,7 @@ OIDC 基于 OAuth2 的 Authorization Code 和 Implicit 模式，定义了三种�
 
 **这是 OIDC 唯一推荐的认证流程。**
 
-```
+```text
 OIDC Authorization Code Flow：
 
 1. 客户端 → /authorize
@@ -243,7 +243,7 @@ OIDC Authorization Code Flow：
 
 Hybrid Flow 是 Authorization Code Flow 的变体，允许部分 Token 从前端返回：
 
-```
+```text
 response_type=code id_token
 response_type=code token
 response_type=code id_token token
@@ -300,7 +300,7 @@ UserInfo 端点支持两种响应格式，由客户端在注册时指定：
 
 ### 5.2.2 JWT 格式（签名/加密的 UserInfo 响应）
 
-```
+```text
 Header: Content-Type: application/jwt
 
 响应体：完整的 JWT，与 ID Token 具有相同的签名验证要求
@@ -316,7 +316,7 @@ Header: Content-Type: application/jwt
 | 敏感信息 | UserInfo 端点 | 地址、电话等信息通过 UserInfo 按需获取 |
 | 自定义属性 | UserInfo 端点 | 企业自定义属性通常在 UserInfo 中返回 |
 
-```
+```text
 最佳实践：
 1. sub 是唯一稳定的用户标识 — 始终用 sub 做关联
 2. email 可能会变化 — 不要用 email 做主键
@@ -339,7 +339,7 @@ GET /end_session?
     &state=logout_state_123
 ```
 
-```
+```text
 注销流程：
 
 1. 用户在客户端点击"退出登录"
@@ -383,7 +383,7 @@ Logout Token 是一个特殊的 JWT：
 
 ## 6.3 Session Management（iframe 方式，已不推荐）
 
-```
+```text
 旧方式：OP iframe + postMessage
 - 在客户端嵌入一个隐藏的 OP iframe
 - 通过 postMessage 检测用户在 OP 的会话状态
@@ -398,7 +398,7 @@ Logout Token 是一个特殊的 JWT：
 
 ## 7.1 OpenID Provider 发现
 
-```
+```text
 OIDC 的发现基于 Issuer URL：
 
 已知：https://accounts.google.com
@@ -425,7 +425,7 @@ https://accounts.google.com/.well-known/openid-configuration
 
 ## 7.2 动态客户端注册（Dynamic Client Registration）
 
-```
+```text
 POST /register HTTP/1.1
 Content-Type: application/json
 
@@ -454,7 +454,7 @@ Content-Type: application/json
 
 客户端在接收到 ID Token 后，必须按以下顺序进行验证：
 
-```
+```text
 □ 1. 验证 iss（Issuer）—— 必须等于你配置的 Issuer URL
 □ 2. 验证 aud（Audience）—— 必须包含你的 client_id
 □ 3. 验证 exp（Expiration）—— 当前时间 < exp

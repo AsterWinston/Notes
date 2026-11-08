@@ -4,7 +4,7 @@
 
 Kubernetes 的核心设计理念之一是"平台平台"（Platform for Platforms）——它不仅是一个容器编排工具，更是一个构建分布式平台的基础框架。这种可扩展性通过以下机制实现：
 
-```
+```text
 扩展层级 1: 内置资源
   Pod, Service, Deployment, ConfigMap, ...
   → 大多数应用足够
@@ -122,7 +122,7 @@ kubectl get database my-postgres -o yaml
 
 Operator 模式由 CoreOS 在 2016 年提出，核心思想是：**让软件自己管理自己**。它将人类运维专家的操作知识（安装、配置、升级、备份、故障恢复）编码为控制器逻辑，实现自动化运维。
 
-```
+```text
 传统模式（人类操作）:
   DBA 收到需求 → 手动安装 PostgreSQL → 配置主从复制 → 配置备份
   → 监控运行状态 → 故障时手动恢复 → 手动升级版本
@@ -181,7 +181,7 @@ spec:
 
 ### 2.1.1 版本升级的场景
 
-```
+```text
 用户创建 v1alpha1 的资源:
 kubectl apply -f db-v1alpha1.yaml
 
@@ -309,7 +309,7 @@ kubebuilder create webhook \
 
 ### 3.1.1 生成的项目结构
 
-```
+```text
 my-operator/
 ├── api/
 │   └── v1/
@@ -561,7 +561,7 @@ func (d *Database) validate() error {
 
 ## 4.1 Operator 开发生命周期
 
-```
+```text
 阶段 1: 领域建模
 ├── 确定 CRD 的 spec（用户需要声明什么）
 ├── 确定 CRD 的 status（需要暴露什么状态）

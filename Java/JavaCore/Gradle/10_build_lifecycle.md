@@ -3,7 +3,7 @@
 
 Gradle 构建生命周期严格分为三个阶段，每个阶段有明确的职责边界：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │                     Phase 1: 初始化 (Initialization)                  │
 │                                                                      │
@@ -179,7 +179,7 @@ dependencyResolutionManagement { ... }              // 依赖仓库配置
 
 每个 `Project` 通过 `AbstractProject.evaluate()` 进入配置阶段。Gradle 内部维护一个**项目评估顺序**：
 
-```
+```text
 根项目 (:) → 直接子项目（字母顺序）
   ↓ (如果 :app evaluationDependsOn ':core')
   :core → :app → :data → :integration-test
@@ -267,7 +267,7 @@ gradle.addProjectEvaluationListener(new ProjectEvaluationListener() {
 
 ## 3.4 配置阶段状态图
 
-```
+```text
                     ┌──────────┐
                     │  CREATED │  (刚创建，路径/名称已确定)
                     └────┬─────┘
@@ -555,7 +555,7 @@ gradle build --configuration-cache
 
 **配置缓存的生命周期**：
 
-```
+```text
 首次构建:
   初始化 → 配置(完整) → 序列化配置 → 执行
                                       │
@@ -814,7 +814,7 @@ gradle.settingsEvaluated { settings ->
 
 **执行 `gradle :core:build` 的完整输出顺序**：
 
-```
+```text
 [0] 项目评估前: :          ← beforeEvaluate
 [3] 开始评估: :           ← beforeProject
 [4] 完成评估: :           ← afterProject

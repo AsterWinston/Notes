@@ -59,7 +59,7 @@ http {
 
 # 2. 配置块层级关系
 
-```
+```text
 main（全局块）
 ├── events         —— 连接处理相关
 ├── http           —— HTTP 协议相关
@@ -117,7 +117,7 @@ Nginx 通过 `server_name` 区分不同站点：
 
 ## 4.1 匹配优先级
 
-```
+```text
 1. 精确匹配        server_name www.example.com;
 2. 前通配符        server_name *.example.com;
 3. 后通配符        server_name www.example.*;
@@ -192,7 +192,7 @@ http {
 
 典型的模块化目录结构：
 
-```
+```text
 /etc/nginx/
 ├── nginx.conf                    # 主配置
 ├── conf.d/                       # 站点配置

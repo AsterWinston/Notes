@@ -202,7 +202,7 @@ public PageResult<User> listByCursor(
 
 ## 4.1 升级策略
 
-```
+```text
 升级不能跨大版本：
 4.0 → 4.2 → 4.4 → 5.0 → 6.0 → 7.0
 

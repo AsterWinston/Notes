@@ -6,7 +6,7 @@
 
 ### 1.1.1 基本流程
 
-```
+```text
 查询 ──Embedding──▶ 查询向量 ──ANN──▶ Top-K 相似向量 ──▶ 对应文本
 ```
 
@@ -74,7 +74,7 @@
 
 ## 2.2 一个例子
 
-```
+```text
 查询："怎么报销"
 稠密：能召回"差旅费用申请流程"（语义相近）
 稀疏：召回不到（没有共同词）
@@ -211,14 +211,14 @@ public List<Doc> search(String query, int topK) {
 
 ### 5.1.1 粗排与精排
 
-```
+```text
 粗排（召回）目标：不漏掉相关文档 → topK 取大（20~50）
 精排（重排）目标：把最相关的排前面 → 取 3~5
 ```
 
 ### 5.1.2 漏斗图
 
-```
+```text
 全部文档
    │  向量召回 topK=50
    ▼
@@ -253,7 +253,7 @@ HyDE（Hypothetical Document Embeddings，假设文档嵌入）先让大模型"�
 
 多路结果用 RRF（Reciprocal Rank Fusion，倒数排名融合）合并，避免不同路的分数不可比。
 
-```
+```text
 RRF(d) = Σ  1 / (k + rank_i(d))
         i∈路数
 ```
@@ -340,7 +340,7 @@ public void calibrate(List<EvalCase> cases) {
 
 ## 7.3 分数分布直觉
 
-```
+```text
 相关样本分数   ██████████ 集中在 0.7~0.9
 不相关样本分数 ███        集中在 0.4~0.6
                     ▲
@@ -418,7 +418,7 @@ public List<Document> searchWithCache(String question) {
 
 ## 9.2 监控指标
 
-```
+```text
 召回率（离线评测集）
 空结果率（线上）
 平均延迟 P50/P99
@@ -427,7 +427,7 @@ public List<Document> searchWithCache(String question) {
 
 ## 9.3 上线检查清单
 
-```
+```text
 [ ] 阈值已用数据校准
 [ ] 权限过滤已下推
 [ ] 混合检索已启用

@@ -5,7 +5,7 @@
 
 # 1. 消息模型全景
 
-```
+```text
                                   RabbitMQ Broker
 ┌──────────┐                ┌──────────────────────────┐                ┌──────────┐
 │ Producer │────msg────────→│        Exchange          │───msg────────→│ Consumer │
@@ -22,7 +22,7 @@
 
 **一条消息的生命周期**：
 
-```
+```text
 Producer 创建消息 → 指定 Exchange + RoutingKey → Broker 接收消息
 → Exchange 根据类型和 BindingKey 匹配 Queue → 消息存入 Queue
 → Consumer 监听 Queue 拉取消息 → 处理完成后发送 ACK → 消息从 Queue 删除
@@ -137,7 +137,7 @@ if (response != null) {
 
 RabbitMQ Broker 的职责：
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │                  RabbitMQ Broker                 │
 │                                                  │
@@ -201,7 +201,7 @@ Connection connection = factory.newConnection();
 
 Channel 是 Connection 内的**轻量级逻辑连接**，所有 AMQP 操作都通过 Channel 进行。
 
-```
+```text
 ┌───────────────────────────────────────────┐
 │              Connection (TCP)             │
 │                                           │
@@ -288,7 +288,7 @@ channel.exchangeDeclare("order.headers", BuiltinExchangeType.HEADERS, true);    
 
 ## 7.3 Direct Exchange — 精确路由
 
-```
+```text
                       Direct Exchange
                     ┌────────────────┐
    RoutingKey="info"│                │─ BindingKey="info" ──→ [queue_info]
@@ -300,7 +300,7 @@ channel.exchangeDeclare("order.headers", BuiltinExchangeType.HEADERS, true);    
 
 ## 7.4 Fanout Exchange — 广播
 
-```
+```text
                       Fanout Exchange
                     ┌────────────────┐
    RoutingKey=忽略  │                │────→ [queue1]
@@ -311,7 +311,7 @@ channel.exchangeDeclare("order.headers", BuiltinExchangeType.HEADERS, true);    
 
 ## 7.5 Topic Exchange — 通配符匹配
 
-```
+```text
                       Topic Exchange
                     ┌────────────────┐
    "order.create.cn"│                │─ "order.#"      → [order_queue]
@@ -404,7 +404,7 @@ channel.queueDeclare("order.queue", true, false, false, args);
 
 ## 8.4 经典队列演进
 
-```
+```text
 Classic Queue
   └─→ Mirror Queue（镜像，quorum 出来前的高可用方案，3.13 已不推荐）
   └─→ Quorum Queue（基于 Raft，3.8+ 推荐）
@@ -417,7 +417,7 @@ Classic Queue
 
 Binding 是 Exchange 和 Queue 之间的**路由规则连接**。
 
-```
+```text
 Exchange  ←──Binding──→  Queue
    (路由规则 = BindingKey + Arguments)
 ```
@@ -441,7 +441,7 @@ channel.queueBind("queue1", "order.fanout", "");
 
 VHost 是 RabbitMQ 的**逻辑隔离单元**，类似命名空间或数据库。
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │            RabbitMQ Broker              │
 │                                         │
@@ -488,7 +488,7 @@ rabbitmqctl set_permissions -p /dev myuser ".*" ".*" ".*"
 
 # 12. 消息流转完整过程（七个步骤）
 
-```
+```text
 1. Producer 建立与 Broker 的 TCP Connection
 2. Producer 在 Connection 内创建 Channel
 3. Producer 声明 Exchange（指定名称、类型、持久化等属性）
@@ -509,7 +509,7 @@ rabbitmqctl set_permissions -p /dev myuser ".*" ".*" ".*"
 
 ## 13.1 推荐的资源命名规范
 
-```
+```text
 Exchange:  {domain}.{type}.exchange     例: order.direct.exchange
 Queue:     {domain}.{action}.queue       例: order.created.queue
 BindingKey:{domain}.{action}             例: order.created
@@ -518,7 +518,7 @@ VHost:     /{environment}                例: /prod
 
 ## 13.2 Channel 与 Connection 管理
 
-```
+```text
 单例 Connection
   └─ ThreadLocal Channel（每个线程独立Channel）
   └─ 或者连接池 ConnectionFactory（Spring AMQP 已封装 CachingConnectionFactory）

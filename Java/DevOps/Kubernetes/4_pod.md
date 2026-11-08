@@ -55,7 +55,7 @@ PID 命名空间共享是可选的，默认不共享。这是出于安全考虑�
 
 在实际应用中，经常存在需要"绑在一起运行"的容器组：
 
-```
+```text
 场景1：Web服务 + 日志收集
 ┌─────────────────────────┐
 │  Pod                    │
@@ -127,7 +127,7 @@ Pod 的概念直接来源于 Google 内部系统 Borg 的 `alloc`（allocation�
 
 **深度类比**：
 
-```
+```text
 操作系统视角：
   一台服务器
     ├── 进程1（Nginx）
@@ -168,7 +168,7 @@ Kubernetes 的设计者有意让 Pod 成为这个"逻辑主机"的边界，而�
 
 Pod 内所有容器共享同一个网络命名空间，这意味着：
 
-```
+```text
 Pod IP: 10.244.1.5
 ┌───────────────────────────────────┐
 │  Network Namespace (podns)        │
@@ -977,7 +977,7 @@ Kubernetes 使用 Ki/K（2^10=1024）和 Mi/M（2^20）表示二进制单位，K
 
 ### 3.4.3 requests 与 limits 的关系
 
-```
+```text
 limit (500m)  ────────────────────  可能被限流
           │                        
           │    超配区域（Overcommit）
@@ -1101,7 +1101,7 @@ securityContext:
 
 Pod 的 `status.phase` 是对 Pod 在其生命周期中所处位置的简单、高层次的总结。它是一个状态机，定义了 Pod 的可能状态：
 
-```
+```text
                     ┌──────────┐
                     │  Pending │
                     └────┬─────┘
@@ -1260,7 +1260,7 @@ status:
 
 **Conditions 的时间线**：
 
-```
+```text
 Pod 创建
   │
   ▼
@@ -1347,7 +1347,7 @@ lifecycle:
 
 Pod 的终止是一个优雅但有时限的过程。完整的终止流程如下：
 
-```
+```text
 外部请求删除 Pod (kubectl delete / API调用 / controller缩减副本)
   │
   ▼
@@ -1412,7 +1412,7 @@ spec:
 
 kubelet 使用指数退避（exponential back-off）策略重启失败容器，避免频繁重启导致系统负载过高：
 
-```
+```text
 首次崩溃 → 立即重启 (0s)
 再次崩溃 → 等待 10s
 再次崩溃 → 等待 20s
@@ -1556,7 +1556,7 @@ probe:
 
 **时间计算公式**：
 
-```
+```text
 Liveness 探测失败到容器被杀死的时间：
 = periodSeconds × failureThreshold + timeoutSeconds × failureThreshold
 ≈ periodSeconds × failureThreshold
@@ -1750,7 +1750,7 @@ periodSeconds: 30      # 适用于判断稳定的服务
 
 **陷阱1：Liveness Probe 与 Readiness Probe 的混淆**
 
-```
+```text
 错误认知：Liveness 失败 → Pod 被重启
 正确理解：Liveness 失败 → 容器被本地 kubelet 杀死并重启（在同一个节点上）
           这不是 Pod 级别的重新调度！Pod IP 保持不变！
@@ -1853,7 +1853,7 @@ spec:
 
 Init 容器严格按照定义的顺序**串行**执行，且每个 Init 容器必须成功退出后才能执行下一个：
 
-```
+```text
 Pod 创建
   │
   ▼
@@ -1957,7 +1957,7 @@ spec:
 
 **启动和关闭顺序**：
 
-```
+```text
 启动顺序：
   Sidecar 容器 → 主容器
   （Sidecar 先启动，确保代理/日志等服务已就绪）
@@ -1993,7 +1993,7 @@ kubectl label nodes worker-node-2 disktype=hdd
 **工作原理**：
 调度器的预选阶段（Filtering/Feasibility check）会检查节点是否拥有所有 `nodeSelector` 指定的标签。如果没有任何节点匹配，Pod 会一直处于 Pending 状态，并产生事件：
 
-```
+```text
 Warning  FailedScheduling  pod/my-pod  0/3 nodes are available:
   1 node(s) didn't match Pod's node affinity/selector.
   2 node(s) didn't match node selector.
@@ -2198,7 +2198,7 @@ spec:
 
 **maxSkew 计算示例**：
 
-```
+```text
 3 个 zone (zone-a, zone-b, zone-c)，需要调度 6 个 Pod
 maxSkew = 1, whenUnsatisfiable = DoNotSchedule
 
@@ -2342,7 +2342,7 @@ spec:
 
 当高优先级 Pod 无法调度时，调度器会尝试**驱逐**低优先级的 Pod：
 
-```
+```text
 调度流程：
   新 Pod 到达（priority=1000000）
     │
@@ -2395,7 +2395,7 @@ resources:
 
 **两者的关系**：
 
-```
+```text
           limits (1000m)
           ┌─────────────────────┐
           │  可突发使用的区间      │
@@ -2487,7 +2487,7 @@ containers:
 
 当节点资源紧张时，kubelet 按 QoS 等级决定驱逐顺序：
 
-```
+```text
 驱逐优先级（先被驱逐）：
   BestEffort  ──►  Burstable（超出requests部分）──►  Burstable（requests内）──►  Guaranteed
   (最低)                                                                    (最高/最后被驱逐)
@@ -2521,7 +2521,7 @@ OOM Score 是 Linux 内核在内存不足时决定杀死哪个进程的评分标
 
 ### 8.4.1 OOM Score 计算公式
 
-```
+```text
 oom_score = 进程内存使用百分比 × 1000 + oom_score_adj
 ```
 
@@ -2554,7 +2554,7 @@ kubelet 和容器运行时自身需要被优先保护。如果 Guaranteed Pod �
 
 **OOM Kill 的日志特征**：
 
-```
+```text
 # 查看 Pod 是否被 OOMKilled
 kubectl describe pod my-pod
 
@@ -2825,7 +2825,7 @@ spec:
 
 ### 10.3.2 迁移路径
 
-```
+```text
 PSP (v1.21 deprecation → v1.25 removal)
         ↓
 Pod Security Admission (内置，命名空间级别)
@@ -2844,7 +2844,7 @@ OPA/Gatekeeper、Kyverno (第三方，更灵活)
 
 Static Pod 是由 kubelet 直接管理的 Pod，**不经过** API Server 和调度器。kubelet 监视本地文件系统中的 Pod 清单文件，自动创建和管理这些 Pod。
 
-```
+```text
 普通 Pod：
   API Server ◄── kubectl/user ──► etcd ──► Scheduler ──► kubelet ──► Container Runtime
 
@@ -2921,7 +2921,7 @@ spec:
 
 kubeadm 部署的 Kubernetes 集群中，控制平面组件本身以 Static Pod 方式运行：
 
-```
+```text
 /etc/kubernetes/manifests/
 ├── etcd.yaml                     # etcd
 ├── kube-apiserver.yaml           # kube-apiserver
@@ -2961,7 +2961,7 @@ sudo vi /etc/kubernetes/manifests/kube-apiserver.yaml
 
 Pod 一直处于 Pending 状态，说明一个或多个容器尚未创建：
 
-```
+```text
 常见原因：
 ├── 资源不足
 │   ├── 节点 CPU/内存 requests 总和超过节点分配资源
@@ -2994,7 +2994,7 @@ Pod 一直处于 Pending 状态，说明一个或多个容器尚未创建：
 
 容器启动后立即崩溃，不断重启：
 
-```
+```text
 常见原因：
 ├── 应用启动失败
 │   ├── 配置文件错误或缺失
@@ -3027,7 +3027,7 @@ Pod 一直处于 Pending 状态，说明一个或多个容器尚未创建：
 
 镜像拉取失败后的退避状态：
 
-```
+```text
 常见原因：
 ├── 镜像名称错误
 │   └── 拼写错误、标签不存在、镜像仓库地址错误
@@ -3051,7 +3051,7 @@ Pod 一直处于 Pending 状态，说明一个或多个容器尚未创建：
 
 Pod 被驱逐，通常因节点资源压力：
 
-```
+```text
 常见原因：
 ├── 节点内存压力
 │   └── 节点可用内存低于 eviction-hard 阈值
@@ -3091,7 +3091,7 @@ kubectl describe node <node-name>
 **Terminating 卡住**：
 Pod 的 `deletionTimestamp` 已设置，但 Pod 一直不消失：
 
-```
+```text
 常见原因：
 ├── Finalizer 未被移除
 │   ├── 自定义 Finalizer 的后端逻辑卡住或出错

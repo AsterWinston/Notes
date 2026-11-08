@@ -3,7 +3,7 @@
 
 Canal 的高可用基于 ZooKeeper 实现，通过主备模式（Active-Standby）确保在 Canal Server 节点故障时自动切换，保障数据订阅的连续性。
 
-```
+```text
 ┌───────────────────────────────────────────────────────────────┐
 │                      ZooKeeper Cluster                        │
 │                                                               │
@@ -28,7 +28,7 @@ Canal 的高可用基于 ZooKeeper 实现，通过主备模式（Active-Standby�
 
 ## 2.1 ZK 节点结构
 
-```
+```text
 /otter/canal/
 ├── cluster/
 │   └── ...
@@ -156,7 +156,7 @@ public class CanalHAController {
 
 ## 3.1 正常情况
 
-```
+```text
 Node-1 (Master) → running 节点存在
 Node-2 (Standby) → 等待
 Node-3 (Standby) → 等待
@@ -166,7 +166,7 @@ Client → ZK → 获取 running = Node-1 → 连接 Node-1
 
 ## 3.2 Node-1 宕机
 
-```
+```text
 1. Node-1 宕机 → ZK 检测到会话超时
 
 2. ZK 自动删除 Node-1 的所有临时节点：
@@ -190,7 +190,7 @@ Client → ZK → 获取 running = Node-1 → 连接 Node-1
 
 ## 3.3 故障恢复时间
 
-```
+```text
 Node 宕机检测:     ZK Session Timeout (默认 3-10s)
 + Running 节点删除: 即时（ZK 自动）
 + Watcher 通知:     即时
@@ -344,7 +344,7 @@ public class ClusterCanalConnector implements CanalConnector {
 
 ## 6.1 脑裂问题
 
-```
+```text
 场景：Node-1 与 ZK 之间网络断开，但 Node-1 与 MySQL 连接正常
 
 ┌──────────┐     ✗ 断开 ✗    ┌──────────┐
@@ -474,7 +474,7 @@ canal.instance.gtidon = true
 
 # 8. 多实例 HA 负载
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │                    ZooKeeper                              │
 │                                                          │

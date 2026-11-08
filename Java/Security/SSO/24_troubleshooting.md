@@ -5,7 +5,7 @@ SSO 涉及浏览器、认证中心和业务系统三方协作，故障可能发�
 
 # 2. 故障排查方法论
 
-```
+```text
 SSO 故障排查四步法：
 
 ① 定位故障环节
@@ -28,7 +28,7 @@ SSO 故障排查四步法：
 
 ## 3.1 无限重定向
 
-```
+```text
 现象：浏览器地址栏不断在业务系统和认证中心之间跳转
 
 可能原因：
@@ -55,7 +55,7 @@ cookie.setSameSite("Lax"); // SSO 必须用 Lax，不能用 Strict
 
 ## 3.2 "未收到有效的 CAS Ticket"
 
-```
+```text
 现象：CAS 验证返回 "ticket not recognized" 或 "INVALID_TICKET"
 
 原因分析：
@@ -78,7 +78,7 @@ ntpdate -u ntp.example.com
 
 ## 3.3 JWT 签名验证失败
 
-```
+```text
 现象：401 Unauthorized，"Invalid JWT signature"
 
 原因分析：
@@ -105,7 +105,7 @@ Jwts.parser().verifyWith(publicKey).build().parseSignedClaims(token);
 
 ## 3.4 Cookie 未正常传递（跨域问题）
 
-```
+```text
 现象：用户已在认证中心登录，但业务系统仍重定向到登录页
 
 原因分析：
@@ -130,7 +130,7 @@ cookie.setAttribute("SameSite", "Lax");
 
 ## 3.5 OAuth2 redirect_uri 不匹配
 
-```
+```text
 现象：授权服务器返回 "invalid redirect_uri" 或 "redirect_uri mismatch"
 
 原因分析：
@@ -161,7 +161,7 @@ cookie.setAttribute("SameSite", "Lax");
 
 ## 3.6 认证后返回 403
 
-```
+```text
 现象：认证成功，但访问资源时返回 403
 
 可能原因：
@@ -191,7 +191,7 @@ public JwtAuthenticationConverter jwtAuthenticationConverter() {
 
 ## 3.7 Session 丢失（集群切换）
 
-```
+```text
 现象：用户登录后刷新页面或访问其他节点，变为未登录
 
 原因分析：
@@ -220,7 +220,7 @@ upstream backend {
 
 ## 3.8 SLO 不生效
 
-```
+```text
 现象：用户在一个系统登出后，访问其他系统仍然显示已登录
 
 原因分析：
@@ -249,7 +249,7 @@ upstream backend {
 
 ## 3.9 Token 频繁过期
 
-```
+```text
 现象：用户频繁被踢出，需要重新登录
 
 原因分析：
@@ -279,7 +279,7 @@ NimbusJwtDecoder decoder = NimbusJwtDecoder
 
 ## 3.10 高并发下性能下降
 
-```
+```text
 现象：用户量大时登录变慢或超时
 
 原因分析：
@@ -308,7 +308,7 @@ NimbusJwtDecoder decoder = NimbusJwtDecoder
 
 ## 4.1 浏览器调试
 
-```
+```text
 Chrome DevTools:
 1. F12 → Application → Cookies → 查看 Cookie 属性
 2. Network → 勾选 "Preserve log" → 跟踪 302 跳转链

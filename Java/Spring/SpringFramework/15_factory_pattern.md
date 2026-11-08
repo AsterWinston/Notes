@@ -20,7 +20,7 @@ GoF23种设计模式可以分为三类：
 抽象工厂模式（Abstract Factory）：是23种设计模式之一。
 
 # 2. 简单工厂模式
-```
+```text
 Spring中的BeanFactory就使用了简单工厂模式。
 在简单工厂模式中，工厂类中生产产品的方法为静态方法
 简单工厂模式的角色包括三个：
@@ -157,7 +157,7 @@ public void test01() {
 
 简单工厂模式解决的问题（优点）
 客户端程序不需要关心对象的创建细节，需要哪个对象时，只需要向工厂索要即可，初步实现了责任的分离。
-客户端只负责“消费”，工厂负责“生产”，生产和消费分离。
+客户端只负责"消费"，工厂负责"生产"，生产和消费分离。
 
 简单工厂模式的缺点
 简单工厂模式不符合OCP开闭原则，因为在系统需要进行扩展时，需要修改原先已经写好的工厂类
@@ -165,7 +165,7 @@ public void test01() {
 ```
 
 # 3. 工厂方法模式
-```
+```text
 工厂方法模式，区别与简单工厂模式，就是一个产品对应一个工厂类
 工厂方法模式的角色包括：
 抽象工厂角色
@@ -353,7 +353,7 @@ public void test01() {
 
 ## 4.1 BeanFactory — 简单工厂模式的 Spring 实现
 
-```
+```text
 // BeanFactory 是最典型的简单工厂：
 // 根据 beanName 返回不同类型的对象
 
@@ -376,7 +376,7 @@ public interface BeanFactory {
 
 ## 4.2 FactoryBean — 工厂方法模式的 Spring 实现
 
-```
+```text
 // FactoryBean 定义了 getObject() 工厂方法
 // 每个 FactoryBean 实现类是一个具体工厂，生产一种特定产品
 
@@ -402,7 +402,7 @@ PropertiesFactoryBean    → 工厂方法 getObject() → Properties
 
 ## 4.3 Spring 中 BeanFactory 和 FactoryBean 的协作
 
-```
+```text
 getBean("sqlSessionFactory") 的执行流程：
 
 1. getBean("sqlSessionFactory")
@@ -430,7 +430,7 @@ getBean("sqlSessionFactory") 的执行流程：
 
 ## 4.4 抽象工厂模式在 Spring 中的体现
 
-```
+```text
 Spring 中没有显式的抽象工厂接口，但 ApplicationContext 相关的工厂体系
 体现了抽象工厂的思想：
 

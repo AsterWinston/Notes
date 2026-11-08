@@ -72,7 +72,7 @@ public class ProtocolFilterWrapper implements Protocol {
 
 **构建示意**：
 
-```
+```text
 原始 Invoker
     │
     ▼
@@ -318,7 +318,7 @@ public class InvokeLogFilter implements Filter {
 
 文件 `META-INF/dubbo/org.apache.dubbo.rpc.Filter`：
 
-```
+```text
 invokeLog=com.example.filter.InvokeLogFilter
 ```
 
@@ -370,7 +370,7 @@ public class ConsumerContextFilter implements Filter {
 
 # 8. 全链路 Filter 链视图
 
-```
+```text
 Consumer                                 Provider
 ┌──────────────────────────────┐     ┌──────────────────────────────┐
 │ InvokerInvocationHandler     │     │ DubboExporter                │

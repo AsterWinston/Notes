@@ -31,7 +31,7 @@
 
 ### 1.2.1 先定位瓶颈
 
-```
+```text
 答案不在上下文 → 检索问题（召回失败）
 答案在上下文但答错 → 生成问题（提示/模型）
 ```
@@ -80,7 +80,7 @@
 
 分块决定了"检索单元"的语义质量，检索决定了"生成依据"的质量。二者位于流水线前端，错误会逐级放大：
 
-```
+```text
 分块差 → 召回差 → 上下文差 → 答案差
 ```
 
@@ -168,7 +168,7 @@ public List<Document> hybridSearch(String query, int topK) {
 
 融合常用 RRF（Reciprocal Rank Fusion，倒数排名融合），无需归一化分数：
 
-```
+```text
 score(d) = Σ 1 / (k + rank_i(d))     k 常取 60
 ```
 
@@ -306,7 +306,7 @@ public String buildContext(List<Document> docs, int maxTokens) {
 
 大模型对上下文**开头与结尾**更敏感（"lost in the middle"）。对策是：把最相关的片段放在最前或最后，避免关键信息落在中段。
 
-```
+```text
 [片段1 最相关] ... [片段N 次相关] ... [片段2 次相关]
      ↑ 开头强                  ↑ 结尾强   ↑ 中段弱
 ```
@@ -433,7 +433,7 @@ public String generate(String question, String context) {
 
 ### 9.1.1 顺序清单
 
-```
+```text
 1. 建评测集（必须第一步）
 2. 调分块（收益最大、成本最低）
 3. 加混合检索（稠密 + BM25）

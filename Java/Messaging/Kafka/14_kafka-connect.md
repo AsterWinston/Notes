@@ -4,7 +4,7 @@
 
 Kafka Connect 是 Apache Kafka 提供的数据集成框架，用于**将外部系统数据导入/导出 Kafka**，目标是"零编码数据集成"。
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                     Kafka Connect 定位                           │
 │                                                                 │
@@ -41,7 +41,7 @@ Kafka Connect 是 Apache Kafka 提供的数据集成框架，用于**将外部�
 
 ## 2.1 分布式模式架构
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                    Connect 分布式模式                          │
 │                                                              │
@@ -73,7 +73,7 @@ Kafka Connect 是 Apache Kafka 提供的数据集成框架，用于**将外部�
 
 ## 2.2 Worker 内部结构
 
-```
+```text
 Worker 进程
 │
 ├── REST Server (端口 8083)
@@ -401,7 +401,7 @@ public class UppercaseTransform<R extends ConnectRecord<R>>
 
 ## 7.2 死信队列（DLQ）记录格式
 
-```
+```text
 DLQ Topic 中每条记录:
   Key: 原始消息的 Key
   Value: 原始消息的 Value

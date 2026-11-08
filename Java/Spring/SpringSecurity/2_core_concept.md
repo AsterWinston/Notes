@@ -74,7 +74,7 @@ String username = auth.getName();
 
 ## 1.3 ProviderManager 与 AuthenticationProvider
 
-```
+```text
 AuthenticationManager (接口)
     └── ProviderManager (实现)
             ├── DaoAuthenticationProvider

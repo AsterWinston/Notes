@@ -743,7 +743,7 @@ session.close();
 
 完整的实体生命周期状态转换如下（文字描述）：
 
-```
+```text
                     new()
                     ──────▶  Transient（瞬时态）
                                │
@@ -908,7 +908,7 @@ List<Object[]> rows = session.createNativeQuery("SELECT * FROM users WHERE name 
 
 Flush 的内部执行分为多个阶段，由 `SessionImpl.flush()` → `AbstractFlushingEventListener` 驱动：
 
-```
+```text
 1. flushEverythingToExecutions(flushEvent)
    ├── 收集 PersistenceContext 中所有 EntityEntry
    ├── 对比当前状态与快照 → 生成 EntityUpdateAction
@@ -1769,7 +1769,7 @@ JTA 用于分布式事务场景，协调多个资源（多个数据库、消息�
 
 ### 5.4.1 两阶段提交（2PC）简介
 
-```
+```text
 Phase 1 — 准备阶段（Prepare）：
   TransactionManager 向所有资源管理器（RM）发送 prepare 指令
   每个 RM 执行操作并写入 Undo/Redo 日志，返回 prepared 或 fail

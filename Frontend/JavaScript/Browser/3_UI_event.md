@@ -1,8 +1,8 @@
 # 1. 鼠标事件
-```
+```text
 在本章中，我们将详细介绍鼠标事件及其属性。
 
-请注意：此类事件不仅可能来自于“鼠标设备”，还可能来自于对此类操作进行了模拟以实现兼容性的其他设备，例如手机和平板电脑。
+请注意：此类事件不仅可能来自于"鼠标设备"，还可能来自于对此类操作进行了模拟以实现兼容性的其他设备，例如手机和平板电脑。
 ```
 ## 1.1 鼠标事件类型
 ```javascript
@@ -186,7 +186,7 @@ mousedown 的默认浏览器操作是文本选择，如果它对界面不利，�
 
 
 # 2. 移动鼠标：mouseover/out, mouseenter/leave
-```
+```text
 我们将深入研究鼠标在元素之间移动时发生的事件。
 ```
 ## 2.1 事件mouseover/mouseout, relatedTarget
@@ -230,12 +230,12 @@ relatedTarget 属性可以为 null。
 
 这对性能很有好处，因为可能有很多中间元素。我们并不真的想要处理每一个移入和离开的过程。
 
-另一方面，我们应该记住，鼠标指针并不会“访问”所有元素。它可以“跳过”一些元素。
+另一方面，我们应该记住，鼠标指针并不会"访问"所有元素。它可以"跳过"一些元素。
 
 特别是，鼠标指针可能会从窗口外跳到页面的中间。在这种情况下，relatedTarget 为 null，因为它是从石头缝里蹦出来的（nowhere）：
 
 
-你可以在下面的测试台中“实时”查看。
+你可以在下面的测试台中"实时"查看。
 
 它的 HTML 有两个嵌套的元素：<div id="child"> 在 <div id="parent"> 内部。如果将鼠标快速移动到它们上，则可能只有 <div id="child"> 或者只有 <div id="parent"> 触发事件，或者根本没有事件触发。
 
@@ -244,7 +244,7 @@ relatedTarget 属性可以为 null。
 结果script.jsstyle.cssindex.html
 
 如果 mouseover 被触发了，则必须有 mouseout
-在鼠标快速移动的情况下，中间元素可能会被忽略，但是我们可以肯定一件事：如果鼠标指针“正式地”进入了一个元素（生成了 mouseover 事件），那么一旦它离开，我们就会得到 mouseout。
+在鼠标快速移动的情况下，中间元素可能会被忽略，但是我们可以肯定一件事：如果鼠标指针"正式地"进入了一个元素（生成了 mouseover 事件），那么一旦它离开，我们就会得到 mouseout。
 ```
 ## 2.3 当移动到一个子元素时mouseout
 ```javascript
@@ -437,14 +437,14 @@ mouseenter/leave 事件在这方面不同：它们仅在鼠标进入和离开元
 ```
 
 # 3. 鼠标拖放事件
-```
+```text
 拖放（Drag’n’Drop）是一个很赞的界面解决方案。取某件东西并将其拖放是执行许多东西的一种简单明了的方式，从复制和移动文档（如在文件管理器中）到订购（将物品放入购物车）。
 
 在现代 HTML 标准中有一个 关于拖放的部分，其中包含了例如 dragstart 和 dragend 等特殊事件。
 
 这些事件使我们能够支持特殊类型的拖放，例如处理从 OS 文件管理器中拖动文件，并将其拖放到浏览器窗口中。之后，JavaScript 便可以访问此类文件中的内容。
 
-但是，原生的拖放事件也有其局限性。例如，我们无法阻止从特定区域的拖动。并且，我们无法将拖动变成“水平”或“竖直”的。还有很多其他使用它们无法完成的拖放任务。并且，移动设备对此类事件的支持非常有限。
+但是，原生的拖放事件也有其局限性。例如，我们无法阻止从特定区域的拖动。并且，我们无法将拖动变成"水平"或"竖直"的。还有很多其他使用它们无法完成的拖放任务。并且，移动设备对此类事件的支持非常有限。
 
 因此，在这里我们将看到，如何使用鼠标事件来实现拖放。
 ```
@@ -491,7 +491,7 @@ ball.onmousedown = function(event) {
   };
 
 };
-如果我们运行这段代码，我们会发现一些奇怪的事情。在拖放的一开始，球“分叉”了：我们开始拖动它的“克隆”。
+如果我们运行这段代码，我们会发现一些奇怪的事情。在拖放的一开始，球"分叉"了：我们开始拖动它的"克隆"。
 
 这是一个正在运行中的示例：
 
@@ -522,7 +522,7 @@ ball.ondragstart = function() {
 
 ball.style.left = pageX - ball.offsetWidth / 2 + 'px';
 ball.style.top = pageY - ball.offsetHeight / 2 + 'px';
-不错，但这存在副作用。要启动拖放，我们可以在球上的任意位置 mousedown。但是，如果从球的边缘“抓住”球，那么球会突然“跳转”以使球的中心位于鼠标指针下方。
+不错，但这存在副作用。要启动拖放，我们可以在球上的任意位置 mousedown。但是，如果从球的边缘"抓住"球，那么球会突然"跳转"以使球的中心位于鼠标指针下方。
 
 如果我们能够保持元素相对于鼠标指针的初始偏移，那就更好了。
 
@@ -585,21 +585,21 @@ ball.ondragstart = function() {
 In action (inside <iframe>):
 
 
-如果我们按住球的右下角来进行拖动，这种差异会尤其明显。在前面的示例中，球会在鼠标指针下“跳转”一下。现在，更新后的代码可以让我们从当前位置流畅地跟随鼠标。
+如果我们按住球的右下角来进行拖动，这种差异会尤其明显。在前面的示例中，球会在鼠标指针下"跳转"一下。现在，更新后的代码可以让我们从当前位置流畅地跟随鼠标。
 ```
 ## 3.3 潜在的放置目标
 ```javascript
-在前面的示例中，球可以被放置（drop）到“任何地方”。在实际中，我们通常是将一个元素放到另一个元素上。例如，将一个“文件”放置到一个“文件夹”或者其他地方。
+在前面的示例中，球可以被放置（drop）到"任何地方"。在实际中，我们通常是将一个元素放到另一个元素上。例如，将一个"文件"放置到一个"文件夹"或者其他地方。
 
-抽象地讲，我们取一个 “draggable” 的元素，并将其放在 “droppable” 的元素上。
+抽象地讲，我们取一个 "draggable" 的元素，并将其放在 "droppable" 的元素上。
 
 我们需要知道：
 
 在拖放结束时，所拖动的元素要放在哪里 —— 执行相应的行为
-并且，最好知道我们所拖动到的 “droppable” 的元素的位置，并高亮显示 “droppable” 的元素。
+并且，最好知道我们所拖动到的 "droppable" 的元素的位置，并高亮显示 "droppable" 的元素。
 这个解决方案很有意思，只是有点麻烦，所以我们在这儿对此进行介绍。
 
-第一个想法是什么？可能是将 onmouseover/mouseup 处理程序放在潜在的 “droppable” 的元素中？
+第一个想法是什么？可能是将 onmouseover/mouseup 处理程序放在潜在的 "droppable" 的元素中？
 
 但这行不通。
 
@@ -620,13 +620,13 @@ In action (inside <iframe>):
 
 与可拖动的元素相同。球始终位于其他元素之上，因此事件会发生在球上。无论我们在较低的元素上设置什么处理程序，它们都不会起作用。
 
-这就是一开始的那个想法，将处理程序放在潜在的 “droppable” 的元素，在实际操作中不起作用的原因。它们不会运行。
+这就是一开始的那个想法，将处理程序放在潜在的 "droppable" 的元素，在实际操作中不起作用的原因。它们不会运行。
 
 那么，该怎么办？
 
 有一个叫做 document.elementFromPoint(clientX, clientY) 的方法。它会返回在给定的窗口相对坐标处的嵌套的最深的元素（如果给定的坐标在窗口外，则返回 null）。如果同一坐标上有多个重叠的元素，则返回最上面的元素。
 
-我们可以在我们的任何鼠标事件处理程序中使用它，以检测鼠标指针下的潜在的 “droppable” 的元素，就像这样：
+我们可以在我们的任何鼠标事件处理程序中使用它，以检测鼠标指针下的潜在的 "droppable" 的元素，就像这样：
 
 // 在一个鼠标事件处理程序中
 ball.hidden = true; // (*) 隐藏我们拖动的元素
@@ -637,9 +637,9 @@ let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
 ball.hidden = false;
 请注意：我们需要在调用 (*) 之前隐藏球。否则，我们通常会在这些坐标上有一个球，因为它是在鼠标指针下的最顶部的元素：elemBelow=ball。
 
-我们可以使用该代码来检查我们正在“飞过”的元素是什么。并在放置（drop）时，对放置进行处理。
+我们可以使用该代码来检查我们正在"飞过"的元素是什么。并在放置（drop）时，对放置进行处理。
 
-基于 onMouseMove 扩展的代码，用于查找 “droppable” 的元素：
+基于 onMouseMove 扩展的代码，用于查找 "droppable" 的元素：
 
 // 我们当前正在飞过的潜在的 droppable 的元素
 let currentDroppable = null;
@@ -665,12 +665,12 @@ function onMouseMove(event) {
     //   droppableBelow=null —— 如果现在，在当前事件中，我们的鼠标指针不是在一个 droppable 的元素上
 
     if (currentDroppable) {
-      // 处理“飞出” droppable 的元素时的处理逻辑（移除高亮）
+      // 处理"飞出" droppable 的元素时的处理逻辑（移除高亮）
       leaveDroppable(currentDroppable);
     }
     currentDroppable = droppableBelow;
     if (currentDroppable) {
-      // 处理“飞入” droppable 的元素时的逻辑
+      // 处理"飞入" droppable 的元素时的逻辑
       enterDroppable(currentDroppable);
     }
   }
@@ -679,7 +679,7 @@ function onMouseMove(event) {
 
 结果style.cssindex.html
 
-现在，我们在整个处理过程中，在当前变量 currentDroppable 中都存储了当前的“放置目标”，可以用它来进行高亮显示或者其他操作。
+现在，我们在整个处理过程中，在当前变量 currentDroppable 中都存储了当前的"放置目标"，可以用它来进行高亮显示或者其他操作。
 
 ```
 ## 3.4 总结
@@ -690,11 +690,11 @@ function onMouseMove(event) {
 
 事件流：ball.mousedown → document.mousemove → ball.mouseup（不要忘记取消原生 ondragstart）。
 在拖动开始时 —— 记住鼠标指针相对于元素的初始偏移（shift）：shiftX/shiftY，并在拖动过程中保持它不变。
-使用 document.elementFromPoint 检测鼠标指针下的 “droppable” 的元素。
+使用 document.elementFromPoint 检测鼠标指针下的 "droppable" 的元素。
 我们可以在此基础上做很多事情。
 
 在 mouseup 上，我们可以智能地完成放置（drop）：更改数据，移动元素。
-我们可以高亮我们正在“飞过”的元素。
+我们可以高亮我们正在"飞过"的元素。
 我们可以将拖动限制在特定的区域或者方向。
 我们可以对 mousedown/up 使用事件委托。一个大范围的用于检查 event.target 的事件处理程序可以管理数百个元素的拖放。
 等。
@@ -702,7 +702,7 @@ function onMouseMove(event) {
 ```
 
 # 4. 指针事件
-```
+```text
 指针事件（Pointer Events）是一种用于处理来自各种输入设备（例如鼠标、触控笔和触摸屏等）的输入信息的现代化解决方案。
 ```
 ## 4.1 一段简史
@@ -749,7 +749,7 @@ lostpointercapture	-
 在代码中用 pointer<event> 替换 mouse<event>
 我们可以把代码中的 mouse<event> 都替换成 pointer<event>，程序仍然正常兼容鼠标设备。
 
-替换之后，程序对触屏设备的支持会“魔法般”地提升。但是，我们可能需要在 CSS 中的某些地方添加 touch-action: none。我们会在下文的 pointercancel 一节中描述这里面的细节。
+替换之后，程序对触屏设备的支持会"魔法般"地提升。但是，我们可能需要在 CSS 中的某些地方添加 touch-action: none。我们会在下文的 pointercancel 一节中描述这里面的细节。
 ```
 ## 4.3 指针事件属性
 ```javascript
@@ -759,7 +759,7 @@ pointerId —— 触发当前事件的指针唯一标识符。
 
 浏览器生成的。使我们能够处理多指针的情况，例如带有触控笔和多点触控功能的触摸屏（下文会有相关示例）。
 
-pointerType —— 指针的设备类型。必须为字符串，可以是：“mouse”、“pen” 或 “touch”。
+pointerType —— 指针的设备类型。必须为字符串，可以是："mouse"、"pen" 或 "touch"。
 
 我们可以使用这个属性来针对不同类型的指针输入做出不同响应。
 
@@ -819,7 +819,7 @@ pointermove 事件触发，可能触发多次
 然后意料之外的情况发生了！浏览器有自己原生的图片拖放操作，接管了之前的拖放过程，于是触发了 pointercancel 事件。
 现在拖放图片的操作由浏览器自行实现。用户甚至可能会把图片拖出浏览器，放进他们的邮件程序或文件管理器。
 我们不会再得到 pointermove 事件了。
-这里的问题就在于浏览器”劫持“了这一个互动操作：在“拖放”过程开始时触发了 pointercancel 事件，并且不再有 pointermove 事件会被生成。
+这里的问题就在于浏览器"劫持"了这一个互动操作：在"拖放"过程开始时触发了 pointercancel 事件，并且不再有 pointermove 事件会被生成。
 
 这里是拖放示例的演示，并且在拖放过程中，指针事件（只包含 up/down、move 和 cancel）的触发会被记录在 textarea 中：
 
@@ -867,7 +867,7 @@ elem.setPointerCapture(pointerId) —— 将给定的 pointerId 绑定到 elem�
 
 让我们来回忆一下在 鼠标拖放事件 中提到的，如何实现一个自定义滑动条。
 
-我们可以创建一个带有条形图的、并且内部有一个“滑块”（thumb）的滑动条元素（slider）：
+我们可以创建一个带有条形图的、并且内部有一个"滑块"（thumb）的滑动条元素（slider）：
 
 <div class="slider">
   <div class="thumb"></div>
@@ -908,7 +908,7 @@ thumb.onpointerdown = function(event) {
   thumb.onpointerup = function(event) {
     thumb.onpointermove = null;
     thumb.onpointerup = null;
-    // ...这里还可以处理“拖动结束”相关的逻辑
+    // ...这里还可以处理"拖动结束"相关的逻辑
   };
 };
 
@@ -954,8 +954,8 @@ lostpointercapture 会在捕获被释放后触发：其触发可能是由于 rel
 ```
 
 # 5. 键盘：keydown和keyup
-```
-在我们开始学习键盘的相关内容之前，请注意，在现代设备上，还有其他“输入内容”的方法。例如，人们使用语音识别（尤其是在移动端设备上）或用鼠标复制/粘贴。
+```html
+在我们开始学习键盘的相关内容之前，请注意，在现代设备上，还有其他"输入内容"的方法。例如，人们使用语音识别（尤其是在移动端设备上）或用鼠标复制/粘贴。
 
 因此，如果我们想要跟踪 <input> 字段中的所有输入，那么键盘事件是不够的。无论如何，还需要一个名为 input 的事件来跟踪 <input> 字段中的更改。对于这样的任务来说，这可能是一个更好的选择。稍后我们将在 事件：change，input，cut，copy，paste 一章中介绍它们。
 
@@ -975,7 +975,7 @@ lostpointercapture 会在捕获被释放后触发：其触发可能是由于 rel
 当一个按键被按下时，会触发 keydown 事件，而当按键被释放时，会触发 keyup 事件。
 
 event.code 和 event.key
-事件对象的 key 属性允许获取字符，而事件对象的 code 属性则允许获取“物理按键代码”。
+事件对象的 key 属性允许获取字符，而事件对象的 code 属性则允许获取"物理按键代码"。
 
 例如，同一个按键 Z，可以与或不与 Shift 一起按下。我们会得到两个不同的字符：小写的 z 和大写的 Z。
 
@@ -986,7 +986,7 @@ Z	z（小写）	KeyZ
 Shift+Z	Z（大写）	KeyZ
 如果用户使用不同的语言，那么切换到另一种语言将产生完全不同的字符，而不是 "Z"。它将成为 event.key 的值，而 event.code 则始终都是一样的："KeyZ"。
 
-“KeyZ” 和其他按键代码
+"KeyZ" 和其他按键代码
 每个按键的代码都取决于该按键在键盘上的位置。UI 事件代码规范 中描述了按键代码。
 
 例如：
@@ -1009,9 +1009,9 @@ Key	event.key	event.code
 F1	F1	F1
 Backspace	Backspace	Backspace
 Shift	Shift	ShiftRight 或 ShiftLeft
-请注意，event.code 准确地标明了哪个键被按下了。例如，大多数键盘有两个 Shift 键，一个在左边，一个在右边。event.code 会准确地告诉我们按下了哪个键，而 event.key 对按键的“含义”负责：它是什么（一个 “Shift”）。
+请注意，event.code 准确地标明了哪个键被按下了。例如，大多数键盘有两个 Shift 键，一个在左边，一个在右边。event.code 会准确地告诉我们按下了哪个键，而 event.key 对按键的"含义"负责：它是什么（一个 "Shift"）。
 
-假设，我们要处理一个热键：Ctrl+Z（或 Mac 上的 Cmd+Z）。大多数文本编辑器将“撤销”行为挂在其上。我们可以在 keydown 上设置一个监听器，并检查哪个键被按下了。
+假设，我们要处理一个热键：Ctrl+Z（或 Mac 上的 Cmd+Z）。大多数文本编辑器将"撤销"行为挂在其上。我们可以在 keydown 上设置一个监听器，并检查哪个键被按下了。
 
 这里有个难题：在这样的监听器中，我们应该检查 event.key 的值还是 event.code 的值？
 
@@ -1026,11 +1026,11 @@ document.addEventListener('keydown', function(event) {
 });
 另一方面，event.code 有一个问题。对于不同的键盘布局，相同的按键可能会具有不同的字符。
 
-例如，下面是美式布局（“QWERTY”）和德式布局（“QWERTZ”）—— 来自 Wikipedia：
+例如，下面是美式布局（"QWERTY"）和德式布局（"QWERTZ"）—— 来自 Wikipedia：
 
 
 
-对于同一个按键，美式布局为 “Z”，而德式布局为 “Y”（字母被替换了）。
+对于同一个按键，美式布局为 "Z"，而德式布局为 "Y"（字母被替换了）。
 
 从字面上看，对于使用德式布局键盘的人来说，但他们按下 Y 时，event.code 将等于 KeyZ。
 
@@ -1050,7 +1050,7 @@ document.addEventListener('keydown', function(event) {
 ```
 ## 5.3 自动重复
 ```javascript
-如果按下一个键足够长的时间，它就会开始“自动重复”：keydown 会被一次又一次地触发，然后当按键被释放时，我们最终会得到 keyup。因此，有很多 keydown 却只有一个 keyup 是很正常的。
+如果按下一个键足够长的时间，它就会开始"自动重复"：keydown 会被一次又一次地触发，然后当按键被释放时，我们最终会得到 keyup。因此，有很多 keydown 却只有一个 keyup 是很正常的。
 
 对于由自动重复触发的事件，event 对象的 event.repeat 属性被设置为 true。
 ```
@@ -1063,7 +1063,7 @@ document.addEventListener('keydown', function(event) {
 出现在屏幕上的一个字符（最明显的结果）。
 一个字符被删除（Delete 键）。
 滚动页面（PageDown 键）。
-浏览器打开“保存页面”对话框（Ctrl+S）
+浏览器打开"保存页面"对话框（Ctrl+S）
 ……等。
 阻止对 keydown 的默认行为可以取消大多数的行为，但基于 OS 的特殊按键除外。例如，在 Windows 中，Alt+F4 会关闭当前浏览器窗口。并且无法通过在 JavaScript 中阻止默认行为来阻止它。
 
@@ -1120,7 +1120,7 @@ keydown —— 在按下键时（如果长按按键，则将自动重复），
 keyup —— 释放按键时。
 键盘事件的主要属性：
 
-code —— “按键代码”（"KeyA"，"ArrowLeft" 等），特定于键盘上按键的物理位置。
+code —— "按键代码"（"KeyA"，"ArrowLeft" 等），特定于键盘上按键的物理位置。
 key —— 字符（"A"，"a" 等），对于非字符（non-character）的按键，通常具有与 code 相同的值。
 过去，键盘事件有时会被用于跟踪表单字段中的用户输入。这并不可靠，因为输入可能来自各种来源。我们有 input 和 change 事件来处理任何输入（稍后我们会在 事件：change，input，cut，copy，paste 一章中进行介绍）。它们在任何类型的输入（包括复制粘贴或语音识别）后触发。
 
@@ -1128,7 +1128,7 @@ key —— 字符（"A"，"a" 等），对于非字符（non-character）的按�
 ```
 
 # 6. 滚动
-```
+```text
 scroll 事件允许对页面或元素滚动作出反应。我们可以在这里做一些有用的事情。
 
 例如：

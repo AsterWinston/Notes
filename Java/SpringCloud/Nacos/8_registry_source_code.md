@@ -3,7 +3,7 @@
 
 Nacos 客户端（nacos-client）负责与 Nacos 服务端通信，核心职责包括：
 
-```
+```text
 nacos-client/
 ├── com.alibaba.nacos.client
 │   ├── naming/                        # 命名服务（注册中心）
@@ -506,7 +506,7 @@ public class ServerListManager {
 
 # 8. 完整客户端注册时序图
 
-```
+```text
 应用启动
     │
     ▼

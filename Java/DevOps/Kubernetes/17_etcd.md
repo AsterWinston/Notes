@@ -8,7 +8,7 @@ etcd 在 CNCF 的毕业时间甚至早于 Kubernetes（2018 年 11 月毕业）�
 
 ### 1.1.1 Kubernetes 中存储在 etcd 的数据
 
-```
+```text
 /registry/
 ├── pods/
 │   ├── default/nginx-deployment-7d5c8f-abc/
@@ -37,7 +37,7 @@ etcd 在 CNCF 的毕业时间甚至早于 Kubernetes（2018 年 11 月毕业）�
 
 Kubernetes 的控制循环（List-Watch）机制完全依赖 etcd 的 Watch 功能。当一个控制器需要监听 Pod 变化时：
 
-```
+```text
 Controller → API Server (Watch) → etcd (Watch)
 
 etcd 的每次 key 变更都会产生一个事件，通过 Watch 流推送给所有订阅者
@@ -70,7 +70,7 @@ Raft 将一致性问题分解为三个子问题：
 
 ## 2.2 etcd 集群中的角色
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │                etcd Cluster (3 节点)           │
 │                                                │
@@ -89,7 +89,7 @@ Raft 将一致性问题分解为三个子问题：
 
 ## 2.3 Raft 的写操作流程
 
-```
+```text
 1. 客户端向 Leader 发送写请求
          │
          ▼
@@ -115,7 +115,7 @@ Raft 将一致性问题分解为三个子问题：
 
 ## 2.4 领导者选举
 
-```
+```text
 初始状态（所有节点都是 Follower）
          │
     ┌────▼────┐
@@ -145,7 +145,7 @@ Raft 将一致性问题分解为三个子问题：
 
 etcd 使用 BoltDB（一个 Go 语言编写的嵌入式 B+ 树数据库）作为持久化存储引擎。数据目录结构：
 
-```
+```text
 /var/lib/etcd/
 ├── member/
 │   ├── snap/
@@ -164,7 +164,7 @@ etcd 使用 BoltDB（一个 Go 语言编写的嵌入式 B+ 树数据库）作为
 
 etcd 使用 MVCC（多版本并发控制）存储数据：
 
-```
+```text
 Key: /registry/pods/default/nginx
   ├── Revision 100: {apiVersion: v1, kind: Pod, ...} (创建)
   ├── Revision 150: {apiVersion: v1, kind: Pod, status: Running, ...} (状态更新)
@@ -368,7 +368,7 @@ groups:
 
 etcd 的 Raft 协议要求日志条目在返回客户端之前必须被持久化到磁盘（fsync）。因此磁盘延迟直接影响 etcd 的写入性能：
 
-```
+```text
 推荐配置：
 - SSD（NVMe 更好），IOPS ≥ 5000
 - 独立磁盘，不与 Kubernetes 日志/容器数据共享 I/O

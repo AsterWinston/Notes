@@ -91,7 +91,7 @@ public class UserFeignConfig {
 
 # 4. 超时生效过程
 
-```
+```text
 FeignClient 调用
   │
   │  Options 对象在 Feign.Builder 或 Spring 容器中
@@ -195,7 +195,7 @@ public okhttp3.OkHttpClient okHttpClient() {
 
 # 6. 超时与重试的关系
 
-```
+```text
 第 1 次尝试: connectTimeout=3000, readTimeout=5000
   失败 (RetryableException)
 第 2 次尝试: connectTimeout=3000, readTimeout=5000  ← 每次尝试独立计时
@@ -238,7 +238,7 @@ OkHttp 默认自动开启 Keep-Alive，且有自己的连接保活检查。
 
 ## 8.1 连接超时排查
 
-```
+```text
 检查点：
 1. 目标服务端口是否可达 (telnet host port)
 2. 防火墙 / 安全组规则
@@ -249,7 +249,7 @@ OkHttp 默认自动开启 Keep-Alive，且有自己的连接保活检查。
 
 ## 8.2 读取超时排查
 
-```
+```text
 检查点：
 1. 目标服务处理时间是否过长
 2. 网络延迟是否异常

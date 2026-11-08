@@ -6,7 +6,7 @@
 
 ### 1.1.1 框架定位
 
-```
+```text
 ADK = Agent 定义 + 工具 + 多 Agent 编排 + 部署运行时
 ```
 
@@ -18,7 +18,7 @@ ADK 不是单纯的模型 SDK，而是覆盖"开发—编排—部署"全流程�
 | 编排 | 多 Agent 协作、工作流 |
 | 运行 | Runner、Session、部署 |
 
-```
+```text
 ADK 组成
   ├── Agent 抽象（LlmAgent / WorkflowAgent）
   ├── Tools（函数、检索、第三方）
@@ -123,7 +123,7 @@ Runner runner = Runner.builder()
 
 ## 2.2 概念关系
 
-```
+```text
          ┌────────────┐
          │   Runner   │  驱动
          └─────┬──────┘
@@ -360,7 +360,7 @@ runner.runAsync(session, "你好")
 
 ## 7.1 四步路径
 
-```
+```text
 ① 定义 Agent（指令 + 模型）
 ② 添加工具
 ③ 多 Agent 编排

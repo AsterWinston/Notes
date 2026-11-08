@@ -6,7 +6,7 @@ RAG（Retrieval-Augmented Generation，检索增强生成）是企业落地 AI �
 
 RAG 在生成前先"查资料"，把检索到的相关片段作为上下文喂给大模型。它把"知识"从模型参数里解耦出来，放到可随时更新的外部知识库中：
 
-```
+```text
 用户问题 ─► 检索外部知识 ─► 拼装上下文 ─► 大模型生成 ─► 带依据的回答
 ```
 
@@ -14,7 +14,7 @@ RAG 在生成前先"查资料"，把检索到的相关片段作为上下文喂�
 
 RAG 的工程实现分成两段：离线做索引，在线做问答。
 
-```
+```text
 离线索引：采集 ─► 解析 ─► 分块 ─► 向量化 ─► 入库
 在线服务：提问 ─► 改写 ─► 检索 ─► 重排 ─► 生成
 ```
@@ -162,7 +162,7 @@ RAG 的工程实现分成两段：离线做索引，在线做问答。
 
 ## 4.1 推荐路径
 
-```
+```text
 Basics → DataProcessing → Embedding → VectorStore → Retrieval → Advanced → Evaluation
 ```
 
@@ -194,7 +194,7 @@ Basics → DataProcessing → Embedding → VectorStore → Retrieval → Advanc
 - 上游依赖：`2_LLM`、`4_LLMEngineering`。
 - 下游影响：`6_AgentCore`、`8_Memory`（向量记忆）、`16_Applications/KnowledgeBase`。
 
-```
+```text
 2_LLM ─┐
        ├─► 5_RAG ─┬─► 6_AgentCore
 4_LLMEng ┘         ├─► 8_Memory

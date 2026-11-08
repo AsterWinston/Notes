@@ -12,7 +12,7 @@
 
 ## 1.2 Kafka 各语义的支撑能力
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                Kafka 投递语义全景图                            │
 │                                                              │
@@ -50,7 +50,7 @@ props.put("retries", 0);       // 发送失败不重试
 
 ### 2.1.1 At-Most-Once 的工作流
 
-```
+```text
 Producer.send(msg)
     │
     ├── 成功 → 消息可能到达 Broker
@@ -77,7 +77,7 @@ props.put("enable.idempotence", false); // 不开启幂等
 
 ### 2.2.1 At-Least-Once 可能产生重复的场景
 
-```
+```text
 场景 1: ACK 网络超时
   Producer→Broker:  写入 msg (offset=100) ✓ Broker 写入成功
   Broker→Producer:  ACK 由于网络丢失 ✗ Producer 没收到
@@ -164,7 +164,7 @@ while (true) {
 
 ### 3.2.1 At-Least-Once 的重复场景
 
-```
+```text
 场景 1: 提交失败
   poll() → 获得 [offset:100-109]
   process([100-109]) → 全部处理成功
@@ -279,7 +279,7 @@ public void consume(ConsumerRecord<String, String> record) {
 
 ## 4.1 实现复杂度与适用场景
 
-```
+```text
 At-Most-Once → 最简单
   场景: 日志、Metrics、非关键数据
   代价: 可能丢消息
@@ -298,7 +298,7 @@ Exactly-Once → 复杂
 
 ## 4.2 端到端 Exactly-Once 的完整要求
 
-```
+```text
 实现端到端 Exactly-Once 需要的条件:
 
 ① Producer → Kafka: Exactly-Once (幂等 + 事务)
@@ -317,7 +317,7 @@ Exactly-Once → 复杂
 
 ## 4.3 各语义间的权衡
 
-```
+```text
                         可靠性
                           ▲
                           │         ┌──────────────┐

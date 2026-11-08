@@ -32,7 +32,7 @@ record EvalCase(String input, String expected, Set<String> tags) {}
 
 ## 2.1 标准答案
 
-```
+```text
 ① 组件评测：Embedding、Rerank 等单项
 ② 系统评测：RAG 端到端、Agent 任务成功率
 ③ 线上评测：A/B 实验、用户反馈
@@ -174,7 +174,7 @@ record AgentTrace(List<Step> steps, boolean success, int tokens, long millis) {}
 
 评测 Agent 的完整动作序列，而非只看结果。
 
-```
+```text
 只看结果会漏掉"碰巧对"与"越权对"
 ```
 
@@ -311,7 +311,7 @@ enum CaseSplit { TRAIN, DEV, GOLDEN }
 
 ## 10.1 标准答案
 
-```
+```text
 ① 单元测试（Mock 模型）
 ② 集成测试（真实链路）
 ③ 评测回归（完整评测集）
@@ -384,7 +384,7 @@ CI 快速跑 Mock 单测，Nightly（每晚）跑真实链路集成测试。
 
 ## 12.1 标准答案
 
-```
+```text
 ① 定义假设与指标
 ② 按用户哈希分流（稳定）
 ③ 收集数据（固定周期）
@@ -422,7 +422,7 @@ A/B 与成本、延迟一起看，避免"效果好但成本失控"。
 
 ## 13.1 标准答案
 
-```
+```text
 ① 离线对比（快）
 ② 分维度对比（发现"整体提升但某类下降"）
 ③ 线上灰度（验证真实效果）

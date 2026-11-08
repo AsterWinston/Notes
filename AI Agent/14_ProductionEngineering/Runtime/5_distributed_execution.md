@@ -4,7 +4,7 @@ Agent 运行时的负载天然具有"长耗时、突发、不可预测"的特点
 
 ## 1.1 单机的边界
 
-```
+```text
 单机：并发受限、无法水平扩展、故障即中断
 分布式：多实例并行、弹性伸缩、故障转移
 ```
@@ -52,7 +52,7 @@ Agent 运行时的负载天然具有"长耗时、突发、不可预测"的特点
 
 ## 2.1 组件分层
 
-```
+```text
                  ┌──────────────┐
   请求 ─────────▶│  API 网关     │
                  └──────┬───────┘
@@ -87,7 +87,7 @@ Agent 运行时的负载天然具有"长耗时、突发、不可预测"的特点
 
 ## 2.2 数据流
 
-```
+```text
 submit → 状态 CREATED → 入队
         ↓
 Worker 消费 → 状态 RUNNING → 执行
@@ -222,7 +222,7 @@ public class AgentTaskConsumer {
 
 消费端第一件事永远是查状态，而不是直接执行。检查逻辑：
 
-```
+```text
 load(taskId)
   ├─ COMPLETED → 直接 ACK，跳过
   ├─ RUNNING   → 可能重复投递，检查心跳
@@ -316,7 +316,7 @@ public boolean tryProcess(String messageId, Runnable action) {
 
 ## 6.1 并发写冲突
 
-```
+```text
 Worker A 和 Worker B 同时处理同一任务 → 状态互相覆盖
 ```
 
@@ -326,7 +326,7 @@ Worker A 和 Worker B 同时处理同一任务 → 状态互相覆盖
 
 分区键保证同一任务只会被消费者组内一个消费者处理，从源头避免并行。
 
-```
+```text
 taskId 哈希 → 固定分区 → 组内唯一消费者 → 天然串行
 ```
 
@@ -447,7 +447,7 @@ terminationGracePeriodSeconds: 120
 
 ## 8.2 故障转移流程
 
-```
+```text
 Worker 崩溃
    │
    ▼

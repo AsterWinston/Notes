@@ -1,6 +1,6 @@
 # 1. 文件上传基础
 
-```
+```text
 文件上传是指将客户端（浏览器）的文件传输到服务器的过程。
 
 文件上传的三要素：
@@ -27,7 +27,7 @@ HTML 文件上传表单：
 
 # 2. Servlet 3.0 之前的文件上传方式
 
-```
+```text
 在 Servlet 3.0 之前，没有内置的文件上传支持，需要借助第三方库：
 
   1. Apache Commons FileUpload（最常用）
@@ -71,7 +71,7 @@ HTML 文件上传表单：
 
 # 3. Servlet 3.0+ 内置文件上传（Part 接口）
 
-```
+```text
 从 Servlet 3.0（Tomcat 7+）开始，规范内置了文件上传支持，不再需要第三方库。
 
 核心类和注解：
@@ -182,7 +182,7 @@ public class UploadServlet extends HttpServlet {
 
 # 5. 文件上传时的注意事项
 
-```
+```text
 1. 文件大小限制
    - @MultipartConfig 的 maxFileSize 和 maxRequestSize
    - Tomcat 的全局限制：CATALINA_HOME/conf/server.xml 中 Connector 的 maxPostSize 属性
@@ -223,7 +223,7 @@ public class UploadServlet extends HttpServlet {
 
 # 6. 文件下载
 
-```
+```text
 文件下载的关键是设置响应头 Content-Disposition。
 
 方式一：超链接直接下载（适合静态资源，但会暴露文件真实路径）
@@ -383,7 +383,7 @@ public class BatchUploadServlet extends HttpServlet {
 
 # 9. 总结：文件上传下载关键点
 
-```
+```text
 上传关键点：
   1. form 的 method="post" + enctype="multipart/form-data"
   2. Servlet 使用 @MultipartConfig 注解

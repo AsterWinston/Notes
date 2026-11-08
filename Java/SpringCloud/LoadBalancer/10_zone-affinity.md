@@ -3,7 +3,7 @@
 
 在多机房/多可用区（Multi-AZ）部署场景中，Zone 亲和路由器优先将请求发送到**与调用方在同一 Zone** 的服务实例，以减少跨 Zone 的网络延迟和带宽成本。
 
-```
+```text
 ┌─────────────────── Zone SH ───────────────────┐
 │  调用方 (order-service)                        │
 │     │                                          │
@@ -61,7 +61,7 @@ public class ZonePreferenceServiceInstanceListSupplier
 
 ## 2.2 决策逻辑
 
-```
+```text
 同 Zone 实例 > 0 ？
   │
   ├── 是 → 仅路由到同 Zone 实例（完全隔离）
@@ -292,7 +292,7 @@ public ServiceInstanceListSupplier productionSupplier(
 
 **请求链路**：
 
-```
+```text
 注册中心返回: [SH-1, SH-2, BJ-1, BJ-2, GZ-1]
     │
     ▼ ZonePreference(zone=SH)

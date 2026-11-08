@@ -1,5 +1,5 @@
 # 1. 准备工作
-```
+```text
 创建module（Maven的普通Java模块）：mybatis-002-crud
 pom.xml
 打包方式jar
@@ -15,7 +15,7 @@ logback.xml放在类的根路径下
 创建测试用例：com.powernode.mybatis.CarMapperTest
 ```
 # 2. insert
-```
+```text
 分析以下SQL映射文件中SQL语句存在的问题
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
@@ -269,7 +269,7 @@ public void testInsertCarByPOJO(){
 ```
 
 # 3. delete
-```
+```text
 需求：根据car_num进行删除。
 SQL语句这样写：
 <delete id="deleteByCarNum">
@@ -290,7 +290,7 @@ public void testDeleteByCarNum(){
 ```
 
 # 4. update
-```
+```text
 需求：修改id=34的Car信息，car_num为102，brand为比亚迪汉，guide_price为30.23，produce_time为2018-09-10，car_type为电车
 SQL语句如下：
 <update id="updateCarByPOJO">
@@ -325,7 +325,7 @@ Java代码如下：
 # 5. select
 
 ## 5.1 select（查一个，返回结果是一个）
-```
+```java
 <select id="selectById" resultType="com.ziv.mybatis.pojo.Car">
     select id,car_num as carNum, brand, guide_price as guidePrice,
     produce_time as produceTime, car_type as carType
@@ -346,7 +346,7 @@ mybatis执行了select语句之后，会返回一个ResultSet对象，然后从�
 注意：select语句中查询的列别名要和pojo类中的属性名一致，本质就是和setXXX方法中的XXX首字母小写一致就好
 ```
 ## 5.2 select（查所有）
-```
+```java
 <select id="selectAll" resultType="com.ziv.mybatis.pojo.Car">
     select id,car_num as carNum, brand, guide_price as guidePrice,
     produce_time as produceTime, car_type as carType
@@ -364,7 +364,7 @@ public void testSelectAll(){
 
 ```
 # 6. 关于SQL Mapper 的namespace
-```
+```text
 在SQL Mapper配置文件中标签的namespace属性可以翻译为命名空间，这个命名空间主要是为了防止sqlId冲突的。
 
 当有两个不同的Mapper.xml文件中的sql语句id相同的时候，就需要使用命名空间加id的形式。

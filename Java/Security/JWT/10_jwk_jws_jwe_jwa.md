@@ -4,7 +4,7 @@ JOSE（JSON Object Signing and Encryption）是一组关于 JSON 格式安全传
 
 ## 1.1 规范关系
 
-```
+```text
 ┌────────────────────────────────────────────────────┐
 │                      JWT (RFC 7519)                │
 │              JSON Web Token 结构定义                │
@@ -222,7 +222,7 @@ JWS 定义了如何对 JSON 数据进行数字签名，确保数据的**完整�
 
 JWT 最常用的形式，三个 Base64URL 编码段以 `.` 连接：
 
-```
+```text
 BASE64URL(UTF8(JWS Protected Header)) .
 BASE64URL(JWS Payload) .
 BASE64URL(JWS Signature)
@@ -230,7 +230,7 @@ BASE64URL(JWS Signature)
 
 ### 3.2.2 JWS 签名计算过程
 
-```
+```text
 JWS Signing Input = ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' || BASE64URL(JWS Payload))
 
 JWS Signature = Sign(JWS Signing Input, Private Key, Algorithm)
@@ -341,7 +341,7 @@ JWE 提供数据的**机密性**保护。与 JWS 不同，JWE 的 Payload 被完
 
 JWE 紧凑序列化有 5 个部分：
 
-```
+```text
 BASE64URL(JWE Protected Header) .
 BASE64URL(JWE Encrypted Key) .
 BASE64URL(JWE Initialization Vector) .
@@ -351,7 +351,7 @@ BASE64URL(JWE Authentication Tag)
 
 ## 4.2 JWE 加密过程
 
-```
+```text
 步骤1：确定加密算法和密钥加密算法
   alg: RSA-OAEP（非对称加密 Content Encryption Key）
   enc: A256GCM（对称加密 Payload）
@@ -379,7 +379,7 @@ BASE64URL(JWE Authentication Tag)
 
 ### 4.2.1 为什么使用两层加密
 
-```
+```text
 Payload 使用对称算法加密（AES-GCM） → 高效加密大数据
 对称密钥使用非对称算法加密（RSA-OAEP） → 安全传递密钥给接收方
 ```
@@ -573,7 +573,7 @@ public class NestedJwtExample {
 
 ## 7.1 使用场景决策
 
-```
+```text
 需要数据完整性（防篡改）？
     ├── 是 → 使用 JWS（JWT 默认形式）
     └── 否 → 继续判断
@@ -591,7 +591,7 @@ public class NestedJwtExample {
 
 ## 7.2 推荐配置
 
-```
+```text
 Web API 认证（常规）:
   JWS + RS256/ES256 + JWK Set 端点
 

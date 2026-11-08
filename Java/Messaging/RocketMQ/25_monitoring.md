@@ -1,7 +1,7 @@
 ﻿
 # 1. 监控体系总览
 
-```
+```text
 监控层次：
 ┌──────────────────────────────────────────────┐
 │ 应用层    │ 消费延迟、消息堆积、消费成功率    │
@@ -25,7 +25,7 @@
 
 ## 2.1 核心功能
 
-```
+```text
 驾驶舱 (Dashboard)
   ├── Broker 数量
   ├── Topic 数量
@@ -98,7 +98,7 @@ sh bin/mqadmin updateBrokerConfig -n 127.0.0.1:9876 -b broker-a -k key -v value
 
 ## 3.2 consumerProgress 输出解读
 
-```
+```text
 # 查看消费进度
 sh bin/mqadmin consumerProgress -n 127.0.0.1:9876 -g order_consumer_group
 
@@ -179,7 +179,7 @@ consumer.setEnableMsgTrace(true);
 
 ## 5.2 轨迹信息
 
-```
+```text
 消息轨迹包含：
 ├── Producer 端：
 │    ├── 发送时间、发送耗时

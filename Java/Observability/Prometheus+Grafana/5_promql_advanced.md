@@ -101,7 +101,7 @@ changes(node_memory_MemAvailable_bytes[1h])
 
 Prometheus 的 rate() 和 increase() 能正确处理 Counter 重置的原理：
 
-```
+```text
 样本点: 5 -> 10 -> 15 -> 3 -> 8 -> 12
                                ^重置点（进程重启）
 rate 计算：(10-5) + (15-10) + (8-0) + (12-3)  / 总时间
@@ -147,7 +147,7 @@ sort_desc(rate(http_requests_total[5m]))
 
 Histogram 指标由三部分组成：
 
-```
+```text
 # HELP http_request_duration_seconds Request duration in seconds
 # TYPE http_request_duration_seconds histogram
 http_request_duration_seconds_bucket{le="0.005"} 10
@@ -182,7 +182,7 @@ histogram_quantile(0.95,
 
 `histogram_quantile()` 使用线性插值法计算分位数：
 
-```
+```text
 假设分位数 φ，累计计数为 C，总计数为 N
 目标 rank = φ * N
 
@@ -217,7 +217,7 @@ rate(http_request_duration_seconds_count[5m])
 
 ## 3.1 语法
 
-```
+```text
 <instant_query>[<range>:<resolution>]
 ```
 

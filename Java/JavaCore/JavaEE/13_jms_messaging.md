@@ -5,7 +5,7 @@
 
 JMS（Java Message Service，Java 消息服务）是 JavaEE 的**异步消息中间件标准规范**（JSR-914），提供统一的发送/接收消息 API，屏蔽具体消息中间件差异。
 
-```
+```text
 ┌──────────┐   send   ┌──────────────┐   receive  ┌──────────┐
 │ 生产者    │ ───────► │  消息提供者    │ ─────────► │ 消费者    │
 │ Producer │          │  Broker       │            │ Consumer │
@@ -33,7 +33,7 @@ JMS（Java Message Service，Java 消息服务）是 JavaEE 的**异步消息中
 
 ## 2.1 对象模型
 
-```
+```text
 ConnectionFactory
       │ createConnection()
       ▼
@@ -64,7 +64,7 @@ Session
 | **点对点（P2P）** | Queue | 一条消息只有一个消费者；消费者可离线，消息保留直到被消费 |
 | **发布/订阅（Pub/Sub）** | Topic | 一条消息广播给所有订阅者；订阅者需要在线或有持久订阅 |
 
-```
+```text
 P2P：  P ──► [Queue] ──► C1（独占）
                           C2 不会收到
 

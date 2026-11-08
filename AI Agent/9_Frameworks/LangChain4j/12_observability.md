@@ -12,7 +12,7 @@ public interface ChatModelListener {
 }
 ```
 
-```
+```text
 onRequest ──▶ （模型调用） ──▶ onResponse
                        └────▶ onError
 ```
@@ -63,7 +63,7 @@ ChatModel model = OpenAiChatModel.builder()
 
 通过 Java SPI 机制注册，可对所有模型生效，无需逐处配置：
 
-```
+```text
 src/main/resources/META-INF/services/
     dev.langchain4j.model.chat.listener.ChatModelListener
 ```
@@ -376,7 +376,7 @@ public class OtelListener implements ChatModelListener {
 
 ## 8.1 Trace 结构
 
-```
+```text
 Trace: 用户目标
 ├── Span: 记忆读取
 ├── Span: LLM 调用（第 1 轮，决策）

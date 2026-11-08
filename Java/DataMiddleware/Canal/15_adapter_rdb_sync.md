@@ -14,7 +14,7 @@ RDB Adapter 是 Canal Adapter 中最常用的模块，负责将 MySQL 的增量�
 
 # 2. 整体架构
 
-```
+```text
 ┌──────────┐    ┌──────────────┐    ┌─────────────────────────┐
 │  MySQL   │───>│ Canal Server │───>│     Canal Adapter        │
 │ (Source) │    │              │    │                          │
@@ -706,7 +706,7 @@ public class TransactionManager {
 
 ## 12.1 MySQL → MySQL 实时同步
 
-```
+```text
 场景：将生产库 prod_db 的数据实时同步到分析库 analytics_db
 
 Canal Server 订阅 prod_db binlog

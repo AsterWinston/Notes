@@ -8,7 +8,7 @@
 
 **RLHF（Reinforcement Learning from Human Feedback）** = 用人类偏好训练奖励模型，再用强化学习优化语言模型。
 
-```
+```text
 SFT → 训练奖励模型 → PPO 优化
 ```
 
@@ -22,7 +22,7 @@ SFT 只最大化示范回答的似然，只能告诉模型"这样答"，无法�
 
 ### 1.2.1 SFT → 奖励模型 → PPO
 
-```
+```text
 ① SFT：用指令数据微调 Base Model
        ↓
 ② 奖励模型（RM）：用人类偏好数据训练打分模型
@@ -32,7 +32,7 @@ SFT 只最大化示范回答的似然，只能告诉模型"这样答"，无法�
 
 ### 1.2.2 数据流与模型角色
 
-```
+```text
                    人类偏好数据
                         │
                         ▼
@@ -86,7 +86,7 @@ $$
 
 ### 2.1.1 成对比较
 
-```
+```text
 给标注者两个回答，选更好的：
 
 Prompt: "解释什么是量子纠缠"
@@ -182,7 +182,7 @@ public static Preference parse(Map<String, String> row) {
 
 ### 3.1.1 Bradley-Terry 模型
 
-```
+```text
 输入：prompt + response
 输出：一个分数
 
@@ -265,7 +265,7 @@ private static double logSigmoid(double x) {
 
 ### 4.1.1 奖励减 KL
 
-```
+```text
 目标：最大化奖励，同时不偏离 SFT 模型太远
 
   max E[r(x, y)] - β · KL(π || π_SFT)
@@ -345,7 +345,7 @@ public static double[] normalizeAdvantages(double[] adv) {
 
 ### 4.3.1 作用
 
-```
+```text
 没有 KL 惩罚：
   模型会"钻空子" → 输出奖励模型喜欢但人类不喜欢的怪话
 
@@ -395,7 +395,7 @@ $$
 
 ### 5.1.1 表现
 
-```
+```text
 模型找到"骗过奖励模型"的方法：
 - 输出冗长但空洞
 - 迎合奖励模型的偏见

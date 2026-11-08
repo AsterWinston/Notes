@@ -89,7 +89,7 @@ CREATE UNIQUE INDEX idx_long_url_hash ON short_url(long_url_hash);
 
 ## 2.5 请设计一个限流器，要求支持不同的时间精度(秒/分/时)
 采用Redis + Lua实现滑动窗口限流：
-```
+```text
 -- KEYS[1]: 限流key, ARGV[1]: 窗口大小(秒), ARGV[2]: 限制数量, ARGV[3]: 当前时间戳
 local window = tonumber(ARGV[1])
 local limit = tonumber(ARGV[2])

@@ -184,7 +184,7 @@ public okhttp3.OkHttpClient okHttpClient() {
 
 # 6. 性能测试参考
 
-```
+```text
 场景：1000 次请求，并发 50，本地回环
 
 引擎                  平均响应时间     P99         QPS

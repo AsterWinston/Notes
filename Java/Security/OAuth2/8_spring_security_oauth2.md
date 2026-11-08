@@ -4,7 +4,7 @@ Spring Security 提供了对 OAuth2 的一等支持，覆盖了客户端、资�
 
 ## 1.1 Spring Security OAuth2 演进
 
-```
+```text
 Spring Security OAuth2 演进历程：
 
 ┌──────────────────────────────────────────────────────────┐
@@ -763,7 +763,7 @@ spring:
 
 # 7. Spring Security OAuth2 最佳实践
 
-```
+```text
 开发实践清单：
 
 □ 在 yml 中使用 ${ENVVAR} 而非硬编码密钥

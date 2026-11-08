@@ -1,5 +1,5 @@
 # 1. 从星球轨道的高度讲起
-```
+```text
 这一部分我们将会讲述关于「Web Components」的一系列现代标准。
 
 到目前为止，这些标准仍然在制定中。其中一些特性已经被很好地支持并集成到了现代 HTML/DOM 标准中，但是还有部分特性仍然处在草案阶段。你可以在任何浏览器中尝试一些例子，Google Chrome 可能是对这些新特性支持得最好的浏览器。猜测可能是因为 Google 公司的人本身就是很多相关标准的支持者。
@@ -72,7 +72,7 @@ Event retargeting 以及更多的小东西，让自定义组件更适用于开�
 ```
 
 # 2. Custom elements
-```
+```text
 我们可以通过描述带有自己的方法、属性和事件等的类来创建自定义 HTML 元素。
 
 在 custom elements （自定义标签）定义完成之后，我们可以将其和 HTML 的内建标签一同使用。
@@ -83,7 +83,7 @@ Event retargeting 以及更多的小东西，让自定义组件更适用于开�
 
 Custom elements 有两种：
 
-Autonomous custom elements （自主自定义标签） —— “全新的” 元素, 继承自 HTMLElement 抽象类.
+Autonomous custom elements （自主自定义标签） —— "全新的" 元素, 继承自 HTMLElement 抽象类.
 Customized built-in elements （自定义内建元素） —— 继承内建的 HTML 元素，比如自定义 HTMLButtonElement 等。
 我们将会先创建 autonomous 元素，然后再创建 customized built-in 元素。
 
@@ -372,7 +372,7 @@ HTML 现行标准： https://html.spec.whatwg.org/#custom-elements。
 ```javascript
 有两种 custom element：
 
-“Autonomous” —— 全新的标签，继承 HTMLElement。
+"Autonomous" —— 全新的标签，继承 HTMLElement。
 
 定义方式：
 
@@ -386,7 +386,7 @@ class MyElement extends HTMLElement {
  }
 customElements.define('my-element', MyElement);
 /* <my-element> */
-“Customized built-in elements” —— 已有元素的扩展。
+"Customized built-in elements" —— 已有元素的扩展。
 
 需要多一个 .define 参数，同时 is="..." 在 HTML 中：
 
@@ -397,7 +397,7 @@ Custom element 在各浏览器中的兼容性已经非常好了。Edge 支持地
 ```
 
 # 3. 影子DOM（Shadow DOM）
-```
+```text
 Shadow DOM 为封装而生。它可以让一个组件拥有自己的「影子」DOM 树，这个 DOM 树不能在主文档中被任意访问，可能拥有局部样式规则，还有其他特性。
 ```
 ## 3.1 内建shadow DOM
@@ -535,7 +535,7 @@ Shadow DOM，如果存在的话，会被浏览器渲染而不是所谓的 「lig
 ```
 
 # 4. 模板元素
-```
+```html
 内建的 <template> 元素用来存储 HTML 模板。浏览器将忽略它的内容，仅检查语法的有效性，但是我们可以在 JavaScript 中访问和使用它来创建其他元素。
 
 从理论上讲，我们可以在 HTML 中的任何位置创建不可见元素来储存 HTML 模板。那 <template> 元素有什么优势？
@@ -549,7 +549,7 @@ Shadow DOM，如果存在的话，会被浏览器渲染而不是所谓的 「lig
     <td>Contents</td>
   </tr>
 </template>
-通常，如果我们在 <tr> 内放置类似 <div> 的元素，浏览器会检测到无效的 DOM 结构并对其进行“修复”，然后用 <table> 封闭 <tr> ，那不是我们想要的。而 <template> 则完全保留我们储存的内容。
+通常，如果我们在 <tr> 内放置类似 <div> 的元素，浏览器会检测到无效的 DOM 结构并对其进行"修复"，然后用 <table> 封闭 <tr> ，那不是我们想要的。而 <template> 则完全保留我们储存的内容。
 
 我们也可以将样式和脚本放入 <template> 元素中：
 
@@ -561,7 +561,7 @@ Shadow DOM，如果存在的话，会被浏览器渲染而不是所谓的 「lig
     alert("Hello");
   </script>
 </template>
-浏览器认为 <template> 的内容“不在文档中”：样式不会被应用，脚本也不会被执行， <video autoplay> 也不会运行，等。
+浏览器认为 <template> 的内容"不在文档中"：样式不会被应用，脚本也不会被执行， <video autoplay> 也不会运行，等。
 
 当我们将内容插入文档时，该内容将变为活动状态（应用样式，运行脚本等）。
 ```
@@ -623,7 +623,7 @@ Shadow DOM，如果存在的话，会被浏览器渲染而不是所谓的 「lig
 总结一下：
 
 <template> 的内容可以是任何语法正确的 HTML。
-<template> 内容被视为“超出文档范围”，因此它不会产生任何影响。
+<template> 内容被视为"超出文档范围"，因此它不会产生任何影响。
 我们可以在JavaScript 中访问 template.content ，将其克隆以在新组件中重复使用。
 <template> 标签非常独特，因为：
 
@@ -635,7 +635,7 @@ Shadow DOM，如果存在的话，会被浏览器渲染而不是所谓的 「lig
 
 
 # 5. Shadow DOM插槽，组成
-```
+```text
 许多类型的组件，例如标签、菜单、照片库等等，需要内容去渲染。
 
 就像浏览器内建的 <select> 需要 <option> 子项，我们的 <custom-tabs> 可能需要实际的标签内容来起作用。并且一个 <custom-menu> 可能需要菜单子项。
@@ -683,9 +683,9 @@ customElements.define('user-card', class extends HTMLElement {
   <span slot="birthday">01.01.2001</span>
 </user-card>
 
-在 shadow DOM 中，<slot name="X"> 定义了一个“插入点”，一个带有 slot="X" 的元素被渲染的地方。
+在 shadow DOM 中，<slot name="X"> 定义了一个"插入点"，一个带有 slot="X" 的元素被渲染的地方。
 
-然后浏览器执行”组合“：它从 light DOM 中获取元素并且渲染到 shadow DOM 中的对应插槽中。最后，正是我们想要的 —— 一个能被填充数据的通用组件。
+然后浏览器执行"组合"：它从 light DOM 中获取元素并且渲染到 shadow DOM 中的对应插槽中。最后，正是我们想要的 —— 一个能被填充数据的通用组件。
 
 这是编译后，不考虑组合的 DOM 结构：
 
@@ -721,7 +721,7 @@ customElements.define('user-card', class extends HTMLElement {
       </slot>
     </div>
 </user-card>
-……但是 “flattened” DOM 仅仅被创建用来渲染和事件处理，是“虚拟”的。虽然是渲染出来了，但文档中的节点事实上并没有到处移动！
+……但是 "flattened" DOM 仅仅被创建用来渲染和事件处理，是"虚拟"的。虽然是渲染出来了，但文档中的节点事实上并没有到处移动！
 
 如果我们调用 querySelectorAll 那就很容易验证：节点仍在它们的位置。
 
@@ -729,7 +729,7 @@ customElements.define('user-card', class extends HTMLElement {
 alert( document.querySelectorAll('user-card span').length ); // 2
 因此，扁平化 DOM 是通过插入插槽从 shadow DOM 派生出来的。浏览器渲染它并且用于样式继承、事件传播。但是 JavaScript 在扁平前仍按原样看到文档。
 
-仅顶层子元素可以设置 slot=“…” 特性
+仅顶层子元素可以设置 slot="…" 特性
 slot="..." 属性仅仅对 shadow host 的直接子代 (在我们的例子中的 <user-card> 元素) 有效。对于嵌套元素它将被忽略。
 
 例如，这里的第二个 <span> 被忽略了(因为它不是 <user-card> 的顶层子元素)：
@@ -807,7 +807,7 @@ customElements.define('user-card', class extends HTMLElement {
   <div>...And play volleyball too!</div>
 </user-card>
 
-所有未被插入的 light DOM 内容进入 “其他信息” 字段集。
+所有未被插入的 light DOM 内容进入 "其他信息" 字段集。
 
 元素一个接一个的附加到插槽中，因此这两个未插入插槽的信息都在默认插槽中。
 
@@ -1013,7 +1013,7 @@ setTimeout(() => {
 默认插槽：第一个没有名字的 <slot>（随后的未命名插槽将被忽略）- 接受不是插槽的 light 子元素。
 如果同一插槽中有很多元素 – 它们会被一个接一个地添加。
 <slot> 元素的内容作为备用。如果插槽没有 light 型的子元素，就会显示。
-在其插槽内渲染插槽元素的过程称为“组合”。结果称为“扁平化 DOM”。
+在其插槽内渲染插槽元素的过程称为"组合"。结果称为"扁平化 DOM"。
 
 组合不会真实的去移动节点，从 JavaScript 的视角看 DOM 仍然是相同的。
 
@@ -1031,7 +1031,7 @@ slotchange 事件 – 在插槽第一次填充时触发，并且在插槽元素�
 ```
 
 # 6. 给Shadow DOM添加样式
-```
+```html
 shadow DOM 可以包含 <style> 和 <link rel="stylesheet" href="…"> 标签。在后一种情况下，样式表是 HTTP 缓存的，因此不会为使用同一模板的多个组件重新下载样式表。
 
 一般来说，局部样式只在 shadow 树内起作用，文档样式在 shadow 树外起作用。但也有少数例外。
@@ -1087,7 +1087,7 @@ custom-dialog {
 </style>
 ……那么 <custom-dialog> 将没有 padding。
 
-这是非常有利的，因为我们可以在其 :host 规则中设置 “默认” 组件样式，然后在文档中轻松地覆盖它们。
+这是非常有利的，因为我们可以在其 :host 规则中设置 "默认" 组件样式，然后在文档中轻松地覆盖它们。
 
 唯一的例外是当局部属性被标记 !important 时，对于这样的属性，局部样式优先。
 ```
@@ -1317,7 +1317,7 @@ shadow 宿主（因为它位于外部文档中）
 占槽元素及占槽元素的内容（因为它们同样位于外部文档中）
 当 CSS 属性冲突时，通常文档样式具有优先级，除非属性被标记为 !important，那么局部样式优先。
 
-CSS 自定义属性穿透 shadow DOM。它们被用作 “勾子” 来设计组件的样式：
+CSS 自定义属性穿透 shadow DOM。它们被用作 "勾子" 来设计组件的样式：
 
 组件使用自定义 CSS 属性对关键元素进行样式设置，比如 var(--component-name-title, <default value>) 。
 组件作者为开发人员发布这些属性，它们和其他公共的组件方法一样重要。
@@ -1326,7 +1326,7 @@ CSS 自定义属性穿透 shadow DOM。它们被用作 “勾子” 来设计组
 ```
 
 # 7. Shadow DOM和事件（events）
-```
+```html
 Shadow tree 背后的思想是封装组件的内部实现细节。
 
 假设，在 <user-card> 组件的 shadow DOM 内触发一个点击事件。但是主文档内部的脚本并不了解 shadow DOM 内部，尤其是当组件来自于第三方库。

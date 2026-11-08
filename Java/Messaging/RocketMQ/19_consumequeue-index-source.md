@@ -6,7 +6,7 @@
 
 ConsumeQueue 是 CommitLog 的**消费索引**，为每个 `{Topic, QueueId}` 建立独立的队列文件。
 
-```
+```text
 为什么需要 ConsumeQueue？
 
 CommitLog 中所有 Topic 的消息混在一起，Consumer 要找到 
@@ -21,7 +21,7 @@ ConsumeQueue 解决：
 
 ## 2.1 每个条目 = 20 字节
 
-```
+```text
 ConsumeQueue 条目结构 (CqUnit)：
 ┌──────────────────────────────────────┐
 │ CommitLog Offset (8B)  物理偏移量    │
@@ -35,7 +35,7 @@ ConsumeQueue 条目结构 (CqUnit)：
 
 ## 2.2 存储路径
 
-```
+```text
 ~/store/consumequeue/
     ├── Topic-A/
     │    ├── 0/

@@ -20,7 +20,7 @@ JUnit 4 的扩展点只有两种：`Runner`（接管整个类的执行，一个�
 
 理解 Extension 的时机，最好的方式是看一次完整调用的嵌套结构：
 
-```
+```text
 BeforeAllCallback
   └─ @BeforeAll
        └─ BeforeEachCallback

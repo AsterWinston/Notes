@@ -1,5 +1,5 @@
 # 1. 拦截器概述
-```
+```text
 拦截器（Interceptor）类似于过滤器（Filter）
 Spring MVC的拦截器作用是在请求到达控制器之前或之后进行拦截，可以对请求和响应进行一些特定的处理。
 拦截器可以用于很多场景下：
@@ -18,7 +18,7 @@ Filter、Servlet、Interceptor、Controller的执行顺序：
 # 2. 拦截器的创建与基本配置
 
 ## 2.1 定义拦截器
-```
+```text
 实现org.springframework.web.servlet.HandlerInterceptor 接口，共有三个方法可以进行选择性的实现：
 ● preHandle：处理器方法调用之前执行
   ○ 只有该方法有返回值，返回值是布尔类型，true放行，false拦截。
@@ -26,7 +26,7 @@ Filter、Servlet、Interceptor、Controller的执行顺序：
 ● afterCompletion：渲染完成后执行
 ```
 ## 2.2 拦截器基本配置
-```
+```text
 在springmvc.xml文件中进行如下配置：
 第一种方式：
 <mvc:interceptors>
@@ -44,7 +44,7 @@ Filter、Servlet、Interceptor、Controller的执行顺序：
 ## 2.3 拦截器部分源码分析
 
 ### 2.3.1 方法执行顺序的源码分析
-```
+```java
 DispatcherServlet部分源码
 public class DispatcherServlet extends FrameworkServlet {
     protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -71,7 +71,7 @@ public class DispatcherServlet extends FrameworkServlet {
 }
 ```
 ### 2.3.2 拦截与放行的源码分析
-```
+```text
 DispatcherServlet部分源码
 public class DispatcherServlet extends FrameworkServlet {
     protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -100,7 +100,7 @@ public class HandlerExecutionChain {
 }
 ```
 # 3. 拦截器的高级配置
-```
+```text
 采用以上基本配置方式，拦截器是拦截所有请求路径的。如果要针对某些路径进行拦截，某些路径不拦截，可以采用高级配置：
 
 <mvc:interceptors>
@@ -118,7 +118,7 @@ public class HandlerExecutionChain {
 # 4. 拦截器的执行顺序
 ## 4.1 执行顺序
 ### 4.1.1 如果所有拦截器preHandle都返回true
-```
+```text
 按照springmvc.xml文件中配置的顺序，自上而下调用 preHandle：
 <mvc:interceptors>
     <ref bean="interceptor1"/>
@@ -130,7 +130,7 @@ public class HandlerExecutionChain {
 <img src="images/12.png" width="100%">
 
 ### 4.1.2 如果其中一个拦截器preHandle返回false
-```
+```text
 <mvc:interceptors>
     <ref bean="interceptor1"/>
     <ref bean="interceptor2"/>
@@ -139,11 +139,11 @@ public class HandlerExecutionChain {
 ```
 
 <img src="images/13.png" width="100%">
-```
+```text
 规则：只要有一个拦截器preHandle返回false，任何postHandle都不执行。但返回false的拦截器的前面的拦截器按照逆序执行afterCompletion。注意只有返回false的拦截器执行afterCompletion
 ```
 ## 4.2 DispatcherServlet和 HandlerExecutionChain的部分源码
-```
+```java
 public class DispatcherServlet extends FrameworkServlet {
     protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 按照顺序执行所有拦截器的preHandle方法
@@ -213,7 +213,7 @@ public class HandlerExecutionChain {
 | afterCompletion | 整个请求完成后             | 资源释放 / 日志记录        |
 
 # 6. 实战案例一：登录检查拦截器
-```
+```text
 这是一个最常见的拦截器应用场景：检查用户是否已登录，未登录则重定向到登录页。
 
 public class LoginInterceptor implements HandlerInterceptor {
@@ -245,7 +245,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 ```
 
 # 7. 实战案例二：请求耗时统计拦截器
-```
+```text
 记录每个请求的处理耗时，用于性能监控。
 
 public class TimingInterceptor implements HandlerInterceptor {
@@ -284,7 +284,7 @@ public class TimingInterceptor implements HandlerInterceptor {
 ```
 
 # 8. ThreadLocal在拦截器中的典型使用模式
-```
+```text
 ThreadLocal经常配合拦截器使用，用于在请求处理链中传递上下文信息。
 
 8.1 典型用法：传递当前登录用户信息
@@ -335,7 +335,7 @@ public class OrderService {
 ```
 
 # 9. 拦截器对REST API的正确处理
-```
+```text
 对于返回JSON的@RestController，拦截器中的重定向（sendRedirect）不起作用。
 前端Axios收到302重定向后，会跟随重定向并获取最终响应，但不会跳转页面。
 
@@ -374,7 +374,7 @@ axios.interceptors.response.use(
 ```
 
 # 10. 异步请求拦截器（AsyncHandlerInterceptor）
-```
+```text
 当Controller使用Callable或DeferredResult异步处理时，
 标准的HandlerInterceptor行为会发生变化。
 
@@ -420,7 +420,7 @@ public class AsyncLoggingInterceptor implements AsyncHandlerInterceptor {
 ```
 
 # 11. 拦截器的Java Config配置
-```
+```text
 除了XML配置，拦截器也可以通过Java Config方式注册。
 
 @Configuration
@@ -460,7 +460,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 ```
 
 # 12. 拦截器与过滤器的完整对比
-```
+```text
 | 对比维度 | 过滤器（Filter） | 拦截器（Interceptor） |
 |----------|-----------------|---------------------|
 | 规范 | Servlet规范（JavaEE） | Spring框架（SpringMVC） |

@@ -5,7 +5,7 @@
 
 # 1. 消息可靠性全景
 
-```
+```text
 ┌─────────┐           ┌───────────────┐           ┌─────────┐
 │Producer │── ① ──→  │   RabbitMQ    │── ③ ──→  │Consumer │
 └─────────┘           └───────────────┘           └─────────┘
@@ -86,7 +86,7 @@ RabbitMQ 的重启分为两种：
 
 ## 3.1 三个层次的持久化
 
-```
+```text
 消息持久化需要三层同时满足：
 
 1. Exchange 持久化  ─→  exchangeDeclare(name, type, durable=true)
@@ -113,7 +113,7 @@ channel.basicPublish("order.exchange", "order.created",
 
 Publisher Confirm 是 **轻量级** 的异步确认机制，Producer 发送消息后 Broker 返回确认结果。
 
-```
+```text
 Producer                                Broker
    │                                       │
    │──── basicPublish + Confirm ──────────→│
@@ -297,7 +297,7 @@ public class RabbitConfig implements RabbitTemplate.ReturnsCallback {
 
 ## 7.1 设计原则
 
-```
+```text
                         ┌──────────────────────┐
                         │  持久化 Exchange      │
                         │  持久化 Queue         │
@@ -382,7 +382,7 @@ public class ReliableProducer {
 
 ## 7.4 本地消息表（最终一致性方案）
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │                 业务数据库                             │
 │  ┌──────────┐  本地事务写入   ┌──────────┐            │
@@ -416,7 +416,7 @@ CREATE TABLE event_message (
 
 # 8. 消息可靠性总结
 
-```
+```text
          第1层                  第2层                  第3层
     ┌─────────────┐       ┌─────────────┐       ┌─────────────┐
     │ 确认机制     │       │ 持久化       │       │ 冗余         │

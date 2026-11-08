@@ -49,7 +49,7 @@
 第十一步：编写测试程序，并添加事务，进行测试
 
 # 2. 数据库表
-```
+```sql
 USE spring6;
 
 DROP TABLE IF EXISTS t_act;
@@ -66,7 +66,7 @@ INSERT INTO t_act(actno, balance) VALUES ('act002', 0);
 ```
 
 # 3. 创建项目引入依赖
-```
+```text
 spring-context：Spring 基础核心依赖，会关联引入 aop 依赖
 spring-jdbc：Spring jdbc 依赖，会关联引入事务的依赖
 mysql驱动
@@ -126,7 +126,7 @@ junit
 # 4. 创建软件包
 
 # 5. 实体类
-```
+```java
 package cw.study.spring.pojo;
 
 /**
@@ -174,7 +174,7 @@ public class Account {
 ```
 
 # 6. 编写Mapper接口
-```
+```text
 package cw.study.spring.mapper;
 
 import cw.study.spring.pojo.Account;
@@ -234,7 +234,7 @@ public interface AccountMapper {
 }
 ```
 # 7. 编写Mapper配置文件
-```
+```xml
 Mapper 配置文件的所在目录位置和 Mapper 接口的所在目录位置要一致，并且配置文件的文件名要接口的名称一样
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
@@ -259,7 +259,7 @@ Mapper 配置文件的所在目录位置和 Mapper 接口的所在目录位置�
 </mapper>
 ```
 # 8. 编写service接口和service接口实现类
-```
+```java
 package cw.study.spring.service;
 
 import cw.study.spring.pojo.Account;
@@ -390,7 +390,7 @@ public class AccountServiceImpl implements AccountService {
 ```
 
 # 9. 编写jdbc.properties
-```
+```properties
 放在类的根路径下
 jdbc.driver=com.mysql.cj.jdbc.Driver
 jdbc.url=jdbc:mysql://localhost:3306/spring6
@@ -398,7 +398,7 @@ jdbc.username=root
 jdbc.password=123123
 ```
 # 10. 编写 mybatis-config.xml 配置文件
-```
+```text
 放在类的根路径下，只开启日志，其他配置到spring.xml中。
 连接数据库的信息、包扫描等在spring配置文件中进行配置，在mybatis核心配置文件中进行mybatis相关的系统级配置
 
@@ -455,7 +455,7 @@ jdbc.password=123123
 ```
 
 # 11. 编写spring.xml配置文件
-```
+```text
 注意：当你在spring.xml文件中直接写标签内容时，IDEA会自动给你添加命名空间
 组件扫描
 引入外部的属性文件
@@ -535,7 +535,7 @@ Mapper扫描配置器
 </beans>
 ```
 # 12. 添加事务
-```
+```text
 @Transactional // 添加事务
 @Service("accountService") // 纳入spring容器管理
 public class AccountServiceImpl implements AccountService {
@@ -543,7 +543,7 @@ public class AccountServiceImpl implements AccountService {
 }
 ```
 # 13. 测试程序
-```
+```java
 import cw.study.spring.service.AccountService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -578,7 +578,7 @@ public class SMTest {
 
 ## 14.1 SqlSessionFactoryBean — SqlSessionFactory 的 Spring 管理
 
-```
+```text
 SqlSessionFactoryBean 实现了 FactoryBean<SqlSessionFactory>，因此：
   - getBean("&sqlSessionFactory") → 返回 SqlSessionFactoryBean 本身
   - getBean("sqlSessionFactory") → 返回 SqlSessionFactory 实例
@@ -674,7 +674,7 @@ public class SqlSessionFactoryBean
 
 ## 14.2 SpringManagedTransactionFactory — 事务桥接
 
-```
+```text
 SqlSessionFactoryBean 中设置的 SpringManagedTransactionFactory 是关键桥梁：
 
 public class SpringManagedTransactionFactory implements TransactionFactory {
@@ -730,7 +730,7 @@ public void rollback() throws SQLException {
 
 ## 14.3 SqlSessionTemplate — SqlSession 的线程安全封装
 
-```
+```text
 SqlSessionTemplate 是 MyBatis-Spring 的核心类，封装了 SqlSession 的使用：
 
 public class SqlSessionTemplate implements SqlSession, DisposableBean {
@@ -825,7 +825,7 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
 
 ## 14.4 MapperScannerConfigurer — Mapper 接口自动代理
 
-```
+```text
 MapperScannerConfigurer 实现了 BeanDefinitionRegistryPostProcessor，
 在容器启动时自动扫描指定包下的所有 Mapper 接口，为每个接口创建代理 Bean：
 
@@ -893,7 +893,7 @@ private void processBeanDefinitions(Set<BeanDefinitionHolder> beanDefinitions) {
 
 ### 14.4.1 MapperFactoryBean — 单个 Mapper 接口的 FactoryBean
 
-```
+```text
 每个 Mapper 接口最终由一个 MapperFactoryBean 来创建代理对象：
 
 public class MapperFactoryBean<T> extends SqlSessionDaoSupport
@@ -927,7 +927,7 @@ MapperFactoryBean 继承自 SqlSessionDaoSupport：
 
 ## 14.5 MyBatis-Spring 集成架构总图
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                     MyBatis-Spring 集成架构                        │
 ├──────────────────────────────────────────────────────────────────┤
@@ -1002,7 +1002,7 @@ MapperFactoryBean 继承自 SqlSessionDaoSupport：
 
 ## 14.6 设计思想总结
 
-```
+```text
 1. FactoryBean 的"生产性"运用：
    SqlSessionFactoryBean 和 MapperFactoryBean 都是 FactoryBean 的实际运用：
    - SqlSessionFactoryBean：复杂的构建过程（配置、扫描、组装）

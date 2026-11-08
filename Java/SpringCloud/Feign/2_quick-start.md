@@ -143,7 +143,7 @@ logging:
 
 # 6. 调用链路全貌
 
-```
+```text
 OrderService
   │
   └─→ userClient.getUser(1L)
@@ -169,7 +169,7 @@ OrderService
 
 # 7. 完整示例项目结构
 
-```
+```text
 order-service/
 ├── pom.xml
 ├── src/main/java/com/example/order/

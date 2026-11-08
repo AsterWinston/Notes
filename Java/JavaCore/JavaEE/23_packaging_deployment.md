@@ -3,7 +3,7 @@
 
 JavaEE 应用的打包与部署遵循标准化的归档结构。理解归档结构是部署到应用服务器的基础。
 
-```
+```text
 三种部署单元：
   JAR   ──► EJB 模块 / 类库
   WAR   ──► Web 应用
@@ -20,7 +20,7 @@ JavaEE 应用的打包与部署遵循标准化的归档结构。理解归档结�
 
 # 3. WAR 结构
 
-```
+```text
 myapp.war
 ├── index.html
 ├── css/ js/ image/
@@ -70,7 +70,7 @@ myapp.war
 
 # 4. JAR（EJB 模块）结构
 
-```
+```text
 myejb.jar
 ├── com/example/bean/OrderServiceBean.class
 ├── META-INF/
@@ -80,7 +80,7 @@ myejb.jar
 
 # 5. EAR 结构
 
-```
+```text
 myapp.ear
 ├── META-INF/
 │   ├── application.xml        # 企业应用部署描述符
@@ -199,7 +199,7 @@ undeploy myapp.war
 
 # 10. 现代部署方式对比
 
-```
+```text
 传统：EAR/WAR → 应用服务器部署目录 → 服务器托管
 
 现代：可执行 JAR（Spring Boot）→ 内嵌容器 → 单进程

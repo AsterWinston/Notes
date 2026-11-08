@@ -63,7 +63,7 @@ public class QueryTools {
 
 `@Tool` 注解的方法会被框架扫描并注册为可调用工具，模型通过函数调用（function calling）触发。注册时需暴露清晰的工具名与描述，避免模型误选。
 
-```
+```text
 用户问题
    │
    ▼

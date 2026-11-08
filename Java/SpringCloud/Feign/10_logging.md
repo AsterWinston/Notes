@@ -32,14 +32,14 @@ public abstract class Logger {
 
 ## 2.2 BASIC
 
-```
+```text
 [UserClient#getUser] ---> GET http://user-service/api/users/1 HTTP/1.1
 [UserClient#getUser] <--- HTTP/1.1 200 (45ms)
 ```
 
 ## 2.3 HEADERS
 
-```
+```text
 [UserClient#getUser] ---> GET http://user-service/api/users/1 HTTP/1.1
 [UserClient#getUser] Authorization: Bearer xxx
 [UserClient#getUser] Accept: application/json
@@ -52,7 +52,7 @@ public abstract class Logger {
 
 ## 2.4 FULL
 
-```
+```text
 [UserClient#getUser] ---> GET http://user-service/api/users/1 HTTP/1.1
 [UserClient#getUser] Authorization: Bearer xxx
 [UserClient#getUser] Accept: application/json
@@ -189,7 +189,7 @@ public class Slf4jLogger extends Logger {
 
 # 6. 流程源码
 
-```
+```text
 SynchronousMethodHandler.executeAndDecode()
   │
   ├── targetRequest(template)   → 构建 Request

@@ -38,7 +38,7 @@
 
 ## 1.3 编写数据源配置
 前面提到过，Spring Boot配置统一可以编写到application.properties中，配置如下：
-```
+```text
 # Spring Boot脚手架自动生成的
 spring.application.name=sb3-05-springboot-mybatis
 
@@ -135,7 +135,7 @@ public class Vip {
 
 ## 1.5 编写Mapper接口
 创建repository包，在该包下新建VipMapper接口，代码如下：
-```
+```text
 package com.powernode.sb305springbootmybatis.repository;
 
 import com.powernode.sb305springbootmybatis.model.Vip;
@@ -194,7 +194,7 @@ public interface VipMapper {
 <img src="images/32.png" width="100%">
 
 接下来就是编写SQL语句了，最终`VipMapper.xml`文件的配置如下：
-```
+```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.powernode.sb305springbootmybatis.repository.VipMapper">
@@ -228,13 +228,13 @@ public interface VipMapper {
 
 ## 1.8 告诉Mybatis框架MapperXML文件的位置
 在application.properties配置文件中进行如下配置：
-```
+```properties
 mybatis.mapper-locations=classpath:mapper/*.xml
 ```
 
 ## 1.9 测试整合Mybatis是否成功
 在Spring Boot主入口程序中获取Spring上下文对象ApplicationContext，从Spring容器中获取VipMapper对象，然后调用相关方法进行测试：
-```
+```java
 package com.powernode.sb305springbootmybatis;
 
 import com.powernode.sb305springbootmybatis.model.Vip;
@@ -269,7 +269,7 @@ public class Sb305SpringbootMybatisApplication {
 <img src="images/34.png" width="100%">
 第二种方式：通过配置自动映射
 在application.properties配置文件中进行如下配置：
-```
+```properties
 mybatis.configuration.map-underscore-to-camel-case=true
 ```
 map-underscore-to-camel-case 是一个配置项，主要用于处理数据库字段名与Java对象属性名之间的命名差异。在许多数据库中，字段名通常使用下划线（_）分隔单词，例如 first_name 或 last_name。而在Java代码中，变量名通常使用驼峰式命名法（camel case），如 firstName 和 lastName。
@@ -368,7 +368,7 @@ public interface VipMapper {
 创建一个普通的Maven模块来快速测试一下Lombok库的使用
 ### 2.2.1 添加依赖
 在 Maven 的 pom.xml 文件中添加 Lombok 依赖：
-```
+```xml
 <dependency>
     <groupId>org.projectlombok</groupId>
 
@@ -394,7 +394,7 @@ Lombok插件不是必须要安装的，为了提高开发效率以及开发者�
 
 ### 2.2.3 使用Lombok注解
 在 Java 类中使用 Lombok 提供的注解。
-```
+```java
 import lombok.Data;
 
 @Data
@@ -403,7 +403,7 @@ public class User {
 }
 ```
 编写测试程序：
-```
+```java
 package com.powernode.lomboktest;
 
 import com.powernode.lomboktest.model.User;
@@ -441,7 +441,7 @@ public class Test {
 ### 2.3.1 @Value
 该注解会给所有属性添加final，给所有属性提供getter方法，自动生成toString、hashCode、equals
 通过这个注解可以创建不可变对象。
-```
+```java
 package com.powernode.lomboktest.model;
 
 import lombok.Value;
@@ -454,7 +454,7 @@ public class Customer {
 }
 ```
 测试程序：
-```
+```java
 package com.powernode.lomboktest;
 
 import com.powernode.lomboktest.model.Customer;
@@ -488,7 +488,7 @@ GoF23种设计模式之一：建造模式
 
 建造模式的代码
 建造模式代码如下：
-```
+```java
 package com.powernode.lomboktest.model;
 
 // 建造模式
@@ -566,7 +566,7 @@ public class Person {
 ```
 使用@Builder注解自动生成建造模式的代码
 该注解可以直接帮助我们生成以上的代码。使用@Builder注解改造以上代码。
-```
+```java
 package com.powernode.lomboktest.model;
 
 import lombok.Builder;
@@ -595,7 +595,7 @@ public class Person {
 ### 2.3.3 @Singular
 @Singular注解是辅助@Builder注解的。
 当被建造的对象的属性是一个集合，这个集合属性使用@Singular注解进行标注的话，可以连续调用集合属性对应的方法完成多个元素的添加。如果没有这个注解，则无法连续调用方法完成多个元素的添加。代码如下：
-```
+```java
 package com.powernode.lomboktest.model;
 
 import lombok.Builder;
@@ -644,7 +644,7 @@ Lombok 支持多种日志框架的注解，可以根据你使用的日志框架�
 
 使用示例
 假设我们有一个类 ExampleClass，并且我们想要使用 SLF4J 作为日志框架，我们可以这样使用 @Slf4j 注解：
-```
+```java
 package com.powernode.lomboktest.service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -672,7 +672,7 @@ public class UserService {
 确保在使用这些注解之前，已经在项目中引入了相应的日志框架依赖。例如，如果你使用 SLF4J，你需要在项目中添加 SLF4J 的依赖，以及一个具体的日志实现（如 Logback）。对于其他日志框架，也需要相应地添加依赖。
 示例依赖
 如果你使用 Maven 项目，并且选择了 SLF4J + Logback 的组合，可以添加以下依赖：
-```
+```text
 <!--Slf4j日志规范-->
 <dependency>
     <groupId>org.slf4j</groupId>
@@ -721,7 +721,7 @@ MyBatis逆向工程：使用IDEA插件可以根据数据库表的设计逆向生
 
 ## 3.6 编写mybatis相关配置
 application.properties属性文件的配置：
-```
+```properties
 spring.datasource.type=com.zaxxer.hikari.HikariDataSource
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.datasource.url=jdbc:mysql://localhost:3306/springboot
@@ -732,7 +732,7 @@ mybatis.mapper-locations=classpath:com/powernode/springboot/repository/*.xml
 mybatis.configuration.map-underscore-to-camel-case=true
 ```
 ## 3.7 编写测试程序
-```
+```java
 package com.powernode.springboot;
 
 import com.powernode.springboot.model.Vip;
@@ -783,7 +783,7 @@ Spring Boot项目本身就是基于Spring框架实现的。因此SSM整合时，
 
 ## 4.3 整合Mybatis
 编写数据源的配置
-```
+```properties
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.datasource.url=jdbc:mysql://localhost:3306/springboot
 spring.datasource.username=root
@@ -791,12 +791,12 @@ spring.datasource.password=123456
 spring.datasource.type=com.zaxxer.hikari.HikariDataSource
 ```
 编写mapper xml配置文件的位置
-```
+```properties
 mybatis.mapper-locations=classpath:mapper/*.xml
 mybatis.configuration.map-underscore-to-camel-case=true
 ```
 在主入口类上添加@MapperScan注解
-```
+```java
 package com.powernode.sb307ssm;
 
 import org.mybatis.spring.annotation.MapperScan;
@@ -815,7 +815,7 @@ public class Sb307SsmApplication {
 ```
 ## 4.4 编写Service
 编写VipService接口：
-```
+```java
 package com.powernode.sb307ssm.service;
 
 import com.powernode.sb307ssm.model.Vip;
@@ -831,7 +831,7 @@ public interface VipService {
 
 ```
 编写VipServiceImpl实现类：
-```
+```java
 package com.powernode.sb307ssm.service.impl;
 
 import com.powernode.sb307ssm.model.Vip;
@@ -856,7 +856,7 @@ public class VipServiceImpl implements VipService {
 
 ## 4.5 编写Controller
 编写VipController，代码如下：
-```
+```java
 package com.powernode.sb307ssm.controller;
 
 import com.powernode.sb307ssm.model.Vip;

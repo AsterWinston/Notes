@@ -5,7 +5,7 @@ Producer 是消息生产者，负责将业务消息发送到 Broker。RocketMQ �
 
 ## 1.1 类层次结构
 
-```
+```text
 MQProducer (接口)
   └── DefaultMQProducer (默认实现)
        ├── TransactionMQProducer (事务消息生产者)
@@ -34,7 +34,7 @@ System.out.println(result);
 ```
 
 **流程**：
-```
+```text
 Producer 发送请求 → Netty I/O 线程 → Broker 处理 → 返回响应
                  └── 调用线程阻塞等待 ──────────────→ 收到响应唤醒
 ```
@@ -96,7 +96,7 @@ producer.sendOneway(msg);
 
 ## 3.1 路由流程
 
-```
+```text
 发送消息
     │
     ├── 1. 从 NameServer 获取 Topic 路由信息（TopicRouteData）
@@ -149,7 +149,7 @@ SendResult result = producer.send(msg, new MessageQueueSelector() {
 
 ## 4.1 同步发送重试
 
-```
+```text
 第1次发送 → 失败
     ├── 等待 retryAnotherBrokerWhenNotStoreOK
     ├── 第2次重试 → 失败
@@ -172,7 +172,7 @@ producer.setSendLatencyFaultEnable(true);
 ```
 
 **原理**：
-```
+```text
 Broker 响应时间 > 阈值 → 标记为不可用 → 延迟重试（按延迟级别递增）
 550ms → 30s 不可用
 1000ms → 60s 不可用

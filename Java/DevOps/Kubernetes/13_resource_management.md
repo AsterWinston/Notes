@@ -14,7 +14,7 @@ Kubernetes 集群的资源（CPU、内存、存储、GPU 等）是有限的。�
 
 Kubernetes 通过三层资源管理机制解决上述问题：
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │  层1: 容器级资源控制                                   │
 │  resources.requests / resources.limits                │
@@ -61,7 +61,7 @@ containers:
 
 ### 2.1.3 CPU 与内存的本质区别
 
-```
+```text
 CPU（可压缩资源）：
   0% ───────── request(250m) ───────── limit(500m) ──────────
        [保证]              [可超用]              [被限流]
@@ -163,7 +163,7 @@ resources:
 
 Linux 使用 CFS（Completely Fair Scheduler）的 cgroup 子系统实现 CPU 限制：
 
-```
+```text
 容器 CPU request = 250m：
   cpu.shares = 250  → 权重为 250，决定竞争时的 CPU 分配比例
 
@@ -175,7 +175,7 @@ Linux 使用 CFS（Completely Fair Scheduler）的 cgroup 子系统实现 CPU �
 
 ### 2.4.2 Memory 的 OOM 机制
 
-```
+```text
 容器 Memory limit = 512Mi：
   memory.limit_in_bytes = 536870912  (512Mi)
 
@@ -271,7 +271,7 @@ OOM Score 越高，越容易被 OOM Killer 选中。BestEffort Pod 的 OOM Score
 
 kubelet 在节点资源紧张时驱逐 Pod，按照以下优先级：
 
-```
+```text
 1. BestEffort 的 Pod（最先驱逐）
 2. 超出 requests 的 Burstable Pod（其次驱逐）
 3. 未超出 requests 的 Burstable Pod
@@ -332,7 +332,7 @@ spec:
 
 ResourceQuota 通过**准入控制器**（Admission Controller）实现：
 
-```
+```text
 用户创建 Pod
      │
      ▼
@@ -500,7 +500,7 @@ evictionSoftGracePeriod:             # 软驱逐宽限期
 
 kubelet 按照以下优先级选择要驱逐的 Pod：
 
-```
+```text
 1. 按 QoS 等级
    BestEffort → Burstable(超出request) → Burstable(未超出) → Guaranteed
 
@@ -513,7 +513,7 @@ kubelet 按照以下优先级选择要驱逐的 Pod：
 
 ## 6.2 节点压力驱逐流程
 
-```
+```text
 节点内存紧张 (available < 100Mi)
      │
      ▼
@@ -539,7 +539,7 @@ kubelet Eviction Manager 开始驱逐 Pod
 
 当高优先级 Pod 无法调度时，会触发抢占驱逐：
 
-```
+```text
 高优先级 Pod Pending
      │
      ▼
@@ -558,7 +558,7 @@ Eviction API 驱逐低优先级 Pod
 
 ## 7.1 资源规划的黄金法则
 
-```
+```text
 法则 1: 所有生产 Pod 必须设置 resources
   - 至少设置 requests
   - 推荐同时设置 requests 和 limits

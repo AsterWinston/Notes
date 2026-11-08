@@ -168,7 +168,7 @@ public class OptimizedIntrospectionService {
 
 ## 2.1 授权服务器高可用
 
-```
+```text
                     高可用授权服务器架构
 
                          Load Balancer
@@ -200,7 +200,7 @@ public class OptimizedIntrospectionService {
 
 ### 2.1.1 一致性考量
 
-```
+```text
 OAuth2 状态存储的一致性要求：
 
 高一致性要求（必须强一致）：
@@ -254,7 +254,7 @@ public class RedisAuthorizationCodeService {
 
 ## 2.2 大规模 Token 吊销
 
-```
+```text
 场景：用户修改密码或账户被盗，需要立即吊销所有 Token
 
 方案一：维护 Token 版本号
@@ -282,7 +282,7 @@ public class RedisAuthorizationCodeService {
 
 ## 3.1 多租户架构
 
-```
+```text
 OAuth2 多租户场景：
   一个授权服务器实例服务多个组织（Tenant）
   每个 Tenant 有独立的用户、客户端、权限
@@ -344,7 +344,7 @@ public class MultiTenantJwtValidator {
 
 ## 4.1 服务间 Token 传递
 
-```
+```text
 微服务调用链中的 Token 传递：
 
 ┌─────────┐     ┌────────────┐
@@ -396,7 +396,7 @@ public RestTemplate restTemplate() {
 
 ## 4.2 Token Exchange（RFC 8693）
 
-```
+```text
 场景：Service A 需要代表用户调用 Service B，但不想传递用户的原始 Token
 
 方案：Token Exchange
@@ -457,7 +457,7 @@ spring:
 
 ## 5.2 Secrets 管理
 
-```
+```text
 OAuth2 配置中的 Secrets：
 
 必须通过 Secret Manager 管理的：

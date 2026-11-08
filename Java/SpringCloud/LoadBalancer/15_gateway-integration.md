@@ -115,13 +115,13 @@ spring:
 
 **自动路由效果**：Nacos 中注册了 `user-service`，Gateway 自动生成：
 
-```
+```text
 Path=/user-service/** → lb://user-service
 ```
 
 # 4. 完整请求链路
 
-```
+```text
 客户端请求: GET http://gateway:8080/api/users/1
 
 ① DispatcherHandler 接收请求

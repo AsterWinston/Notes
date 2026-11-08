@@ -469,7 +469,7 @@ public class RequestLoggingFilter implements GlobalFilter, Ordered {
 
 # 8. 高可用网关架构
 
-```
+```text
               ┌─────────────┐
               │    DNS/VIP   │
               └──────┬──────┘

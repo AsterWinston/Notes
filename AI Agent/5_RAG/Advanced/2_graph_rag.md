@@ -6,7 +6,7 @@
 
 ### 1.1.1 多跳推理
 
-```
+```text
 问题："A 公司和 B 公司有什么关联？"
 
 传统 RAG：
@@ -37,7 +37,7 @@
 
 ### 1.2.1 图论视角
 
-```
+```text
 向量检索 = 单点最近邻（1-hop）
 多跳问题 = k-hop 可达性
 全局问题 = 连通分量 / 社区聚合
@@ -57,7 +57,7 @@
 
 **用知识图谱显式建模实体与关系**，检索时沿图遍历：
 
-```
+```text
         ┌─────────┐
         │  A 公司  │
         └────┬────┘
@@ -99,7 +99,7 @@ GraphRAG 的"建索引"成本远高于传统 RAG：每块都要 LLM 抽取，社
 
 ## 3.1 五步流水线
 
-```
+```text
 ① 文档 → 分块
 ② 每块用 LLM 抽取 (实体, 关系, 实体)
 ③ 合并去重 → 构建知识图谱
@@ -180,7 +180,7 @@ public String normalize(String entity, Map<String, String> aliasTable) {
 
 从查询中识别实体 → 图中找邻居 → 取相关子图与原文。
 
-```
+```text
 查询："A 公司和 B 公司的关系"
   → 识别实体 A公司、B公司
   → 图中找路径 A --投资--> B
@@ -206,7 +206,7 @@ public String localSearch(String query, int hops) {
 
 用社区摘要回答"整体性"问题。
 
-```
+```text
 查询："这批文档的主要主题是什么？"
   → 取各社区摘要（预生成）
   → map-reduce 汇总
@@ -268,7 +268,7 @@ public SearchMode route(String query) {
 
 ## 5.2 图数据库建模
 
-```
+```text
 (:Entity {name, type, embedding})
   -[:REL {type, sourceChunkId, weight}]->
 (:Entity)
@@ -311,7 +311,7 @@ public SearchMode route(String query) {
 
 Java 侧缺少像 Python 那样成熟的 GraphRAG 框架，通常做法是：
 
-```
+```text
 LangChain4j 调 LLM 抽取 → Neo4j Java Driver 建图
 → 向量库做实体/摘要检索 → 自写局部/全局检索
 ```
@@ -369,14 +369,14 @@ LangChain4j 调 LLM 抽取 → Neo4j Java Driver 建图
 
 ### 8.1.1 量级示例
 
-```
+```text
 1 万块文档 × 每块 800 Token = 800 万 Token 抽取
 假设社区 500 个 × 每摘要 1500 Token = 75 万 Token 摘要
 ```
 
 ## 8.2 成本估算公式
 
-```
+```text
 抽取成本 ≈ 块数 × 单块 Token × 单价
 摘要成本 ≈ 社区数 × 摘要 Token × 单价
 总成本   ≈ 抽取成本 + 摘要成本 + 存储与运维
@@ -443,7 +443,7 @@ public boolean valid(Triple t) {
 
 ## 10.2 落地清单
 
-```
+```text
 1. 验证普通 RAG 在多跳/全局问题上的失败率
 2. 定义实体与关系 schema
 3. LLM 抽取 + 归一化建图

@@ -2,7 +2,7 @@
 
 ## 1.1 Producer 在 Kafka 生态中的角色
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │                   Producer 核心流程                   │
 │                                                      │
@@ -167,7 +167,7 @@ public int partition(String topic, Object key, byte[] keyBytes,
 - 将消息"粘"在一个分区上，直到 Batch 被发走
 - 减少请求数量，提升吞吐
 
-```
+```text
 旧版轮询：
 Msg1→P0  Msg2→P1  Msg3→P2  （3 个网络请求）
 
@@ -307,7 +307,7 @@ public class AuditInterceptor implements ProducerInterceptor<String, String> {
 
 ## 6.1 数据结构
 
-```
+```text
 RecordAccumulator
 │
 ├── ConcurrentMap<TopicPartition, Deque<ProducerBatch>>
@@ -328,7 +328,7 @@ RecordAccumulator
 
 ## 6.2 关键参数协同关系
 
-```
+```text
 消息到达速度  vs  发送速度
      │              │
      ▼              ▼
@@ -376,7 +376,7 @@ void run() {
 
 Kafka 的网络层基于 Java NIO Selector 实现：
 
-```
+```text
 Sender Thread
 │
 ├── NetworkClient
@@ -399,7 +399,7 @@ Sender Thread
 
 ## 8.1 ACK 三种级别
 
-```
+```text
 acks=0：
   Producer 不等待任何确认
   ┌──────┐
@@ -442,7 +442,7 @@ acks=all (或 acks=-1)：
 
 `min.insync.replicas` 指定了在 acks=all 时，最少需要多少 ISR 副本确认写入。
 
-```
+```text
 假设: replication.factor=3, min.insync.replicas=2
 
 正常状态 (ISR=3):
@@ -457,7 +457,7 @@ acks=all (或 acks=-1)：
 
 推荐的配置组合：
 
-```
+```text
 replication.factor = 3
 min.insync.replicas = 2
 acks = all
@@ -477,7 +477,7 @@ props.put("request.timeout.ms", 30000);           // 单次请求超时
 
 ### 9.1.1 delivery.timeout.ms 与旧版参数的关系（Kafka 2.1+）
 
-```
+```text
 旧版: retries + max.in.flight.requests.per.connection
 新版: delivery.timeout.ms = 120000
 
@@ -488,7 +488,7 @@ delivery.timeout.ms 是消息从 send() 到 ACK/失败的总时间上限
 
 ## 9.2 重试可能导致的消息乱序
 
-```
+```text
 max.in.flight.requests.per.connection = 5
 
 时间线 ──────────────────────────────▶
@@ -526,7 +526,7 @@ props.put("max.in.flight.requests.per.connection", 1);
 
 幂等生产者通过为每条消息分配唯一的 **Producer ID (PID) + Sequence Number** 来确保同一批次不会重复写入：
 
-```
+```text
 Producer 初始化:
   → Broker 返回一个全局唯一的 Producer ID (PID)
 
@@ -614,7 +614,7 @@ try {
 
 ## 11.2 事务底层原理
 
-```
+```text
 ┌───────────────────────────────────────────────────────┐
 │                   事务流程                              │
 │                                                       │
@@ -659,7 +659,7 @@ props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "lz4");
 
 ## 12.2 压缩发生在哪个层级
 
-```
+```text
 发送端压缩:
   Producer → (snappy/lz4) → Broker（原样存储）→ Consumer（原样传输，解压在 Consumer 端）
 

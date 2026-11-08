@@ -167,7 +167,7 @@ map.insert(field_name, field_value);
 
 # 4. 其他集合
 
-```
+```text
 HashSet<T>      // 无序集合，去重（HashMap 的键集合）
 BTreeMap<K,V>   // 有序 map（基于 B 树，键需 Ord，遍历有序）
 BTreeSet<T>     // 有序集合

@@ -253,7 +253,7 @@ public class SensitiveConverter extends MessageConverter {
 推荐方案一全局覆盖日志输出。
 
 ## 2.12 日志收集的规范架构是什么样的？
-```
+```text
 业务应用(JSON Log + TraceId + MDC)
     ↓ (写入日志文件)
 Filebeat (采集)

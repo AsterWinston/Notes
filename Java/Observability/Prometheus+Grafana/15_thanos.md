@@ -7,7 +7,7 @@ Thanos 也是 CNCF 毕业项目，是目前最流行的 Prometheus 扩展方案�
 
 # 2. 核心组件
 
-```
+```text
                         +-------------+
                         |  Thanos     |
                         |  Query      |
@@ -134,7 +134,7 @@ services:
 
 适用于无法部署 Sidecar 的场景（如托管 Prometheus）。
 
-```
+```text
 Prometheus -- Remote Write --> Thanos Receive --> Object Storage
                                                     |
                                               Thanos Query <-- Grafana
@@ -174,7 +174,7 @@ config:
 
 ## 5.1 查询流程
 
-```
+```text
 客户端查询: sum(rate(http_requests_total[5m]))
 
 Thanos Query:
@@ -292,13 +292,13 @@ rate(thanos_store_bucket_touched_series_count[5m])
 
 ## 10.1 单数据中心
 
-```
+```text
 Prometheus + Sidecar → S3 → Thanos Store + Thanos Query → Grafana
 ```
 
 ## 10.2 多数据中心
 
-```
+```text
 DC1: Prometheus + Sidecar ─┐
                             ├── Thanos Query (Global) → Grafana
 DC2: Prometheus + Sidecar ─┘

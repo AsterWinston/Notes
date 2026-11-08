@@ -5,7 +5,7 @@
 
 DNS（Domain Name System）是一个分布式的命名系统，将域名映射为 IP 地址。
 
-```
+```text
 根域（.）
 ├── 顶级域（TLD）：.com .org .net .cn .jp ...
 │   ├── 二级域：google.com baidu.com
@@ -16,7 +16,7 @@ DNS（Domain Name System）是一个分布式的命名系统，将域名映射�
 
 ## 1.2 DNS 查询流程
 
-```
+```text
 用户在浏览器输入 www.example.com
 
 1. 浏览器检查本地 DNS 缓存

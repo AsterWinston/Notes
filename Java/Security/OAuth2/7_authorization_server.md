@@ -4,7 +4,7 @@
 
 ## 1.1 授权服务器的核心功能
 
-```
+```text
 授权服务器的能力矩阵：
 
 ┌──────────────────────────────────────────────────────┐
@@ -35,7 +35,7 @@
 
 ## 2.1 整体架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                      授权服务器                              │
 │                                                             │
@@ -554,7 +554,7 @@ public class RefreshTokenService {
 
 ## 5.2 密钥轮换（Key Rotation）
 
-```
+```text
 密钥轮换策略：
 
 1. 时间线：
@@ -621,7 +621,7 @@ public class KeyManagementService {
 
 ## 6.1 授权页面设计
 
-```
+```text
 授权页面（Consent Page）设计要点：
 
 1. 清晰展示请求的权限
@@ -655,7 +655,7 @@ public class KeyManagementService {
 
 ## 7.1 授权码安全
 
-```
+```text
 授权码安全要求清单：
 
 □ 使用高熵随机值（≥ 128 bit）
@@ -670,7 +670,7 @@ public class KeyManagementService {
 
 ## 7.2 客户端认证安全
 
-```
+```text
 client_secret 存储：
 □ 使用 BCrypt / Argon2 哈希存储（不是明文）
 □ 支持 client_secret 轮换
@@ -685,7 +685,7 @@ private_key_jwt 认证：
 
 ## 7.3 安全日志与监控
 
-```
+```text
 必须记录的安全事件：
 
 授权端点：

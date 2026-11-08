@@ -3,7 +3,7 @@
 
 Spring Security OAuth2 Resource Server 是服务端验证 OAuth 2.0 Bearer Token（通常是 JWT）的模块，用于保护 REST API 资源。它是微服务架构下实现**无状态认证**的核心组件。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                  Resource Server 架构                         │
 │                                                               │
@@ -257,7 +257,7 @@ public class MultiTenantJwtDecoder implements JwtDecoder {
 
 ## 5.1 何时使用
 
-```
+```text
 JWT 模式：Token 自包含信息，本体验证（签名验证）
 Opaque Token 模式：Token 是不透明字符串，需调用授权服务器验证
 

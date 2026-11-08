@@ -37,7 +37,7 @@ Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 
 ## 2.1 Spring Security 完整流程
 
-```
+```text
 HTTP 请求
     │
     ▼
@@ -165,7 +165,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 ### 2.2.4 PasswordEncoder
 
-```
+```text
 BCryptPasswordEncoder
   encode("123456") → "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p..."
   matches("123456", "$2a$10$N9qo...") → true

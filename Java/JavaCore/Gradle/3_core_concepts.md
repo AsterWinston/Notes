@@ -9,7 +9,7 @@
 **多项目构建**：一个根 Project + 每个子模块一个 Project 对象
 
 Gradle 中 Project 对象的层次结构：
-```
+```text
 Root Project 'my-app'
 ├── Project ':core'           ← domain 逻辑模块
 ├── Project ':web'            ← Web 层模块
@@ -101,7 +101,7 @@ gradle.taskGraph.whenReady {
 ```
 
 Gradle 对象的层次位置：
-```
+```text
 Gradle  ← 一次构建调用（全局）
   └── Settings  ← settings.gradle 的执行上下文
        └── Project  ← build.gradle 的执行上下文（根项目）
@@ -385,7 +385,7 @@ tasks.register("taskA") {
 ```
 
 执行顺序的可视化（Task DAG）：
-```
+```text
          [clean]
            │
       ┌────┴────┐
@@ -463,7 +463,7 @@ tasks.register("demo") {
 ```
 
 输出（第一次执行）：
-```
+```text
 [配置阶段] Task 'demo' 正在被配置
 > Task :demo
 [执行阶段:doFirst] Task 'demo' 开始执行
@@ -473,7 +473,7 @@ tasks.register("demo") {
 ```
 
 输出（第二次执行，demo 标记为 UP-TO-DATE）：
-```
+```text
 [配置阶段] Task 'demo' 正在被配置  ← 配置阶段仍然执行
 > Task :demo UP-TO-DATE             ← 执行阶段被跳过
 ```
@@ -512,7 +512,7 @@ tasks.register("lifecycleDemo") {
 ```
 
 执行顺序：
-```
+```text
 1. onlyIf 检查
 2. enabled 检查
 3. doFirst #1
@@ -590,7 +590,7 @@ gradle.taskGraph.whenReady {
 ```
 
 典型输出：
-```
+```text
 projectsLoaded: 所有项目已加载
 beforeProject: root
 === 配置根项目 root ===
@@ -676,7 +676,7 @@ gradle.buildFinished {
 
 配置缓存将配置阶段的结果序列化到磁盘，使得后续构建可以跳过配置阶段：
 
-```
+```text
 普通构建:
   初始化 → 配置（评估所有 .gradle 文件） → 执行
 
@@ -760,7 +760,7 @@ apply(from = "gradle/java-convention.gradle")  // Kotlin
 
 从 Gradle 6.0 开始，推荐使用预编译脚本插件代替传统的脚本插件。它们位于 `buildSrc` 目录下，自动编译为 JAR。
 
-```
+```text
 buildSrc/
 ├── build.gradle.kts          ← buildSrc 自身的构建文件
 ├── settings.gradle.kts        ← （可选）
@@ -879,7 +879,7 @@ gradlePlugin {
 
 当 Gradle 遇到 `plugins {}` 块时：
 
-```
+```text
 plugins { id("java") version "1.0" }
     │
     ├─► 1. 从 Plugin Specification 中提取 id 和 version

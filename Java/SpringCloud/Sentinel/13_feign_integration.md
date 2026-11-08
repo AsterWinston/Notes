@@ -3,7 +3,7 @@
 
 Sentinel 通过 `SentinelFeign` 和 `@SentinelRestTemplate` 为 Feign 声明式 HTTP 调用提供流量防护。
 
-```
+```text
 Feign Client (声明式接口)
   │
   ├── SentinelFeign.Builder
@@ -104,7 +104,7 @@ public class UserClientFallbackFactory implements FallbackFactory<UserClient> {
 
 Sentinel Feign 自动生成的资源名格式：
 
-```
+```text
 HTTP 方法:协议://服务名/路径
 
 示例:

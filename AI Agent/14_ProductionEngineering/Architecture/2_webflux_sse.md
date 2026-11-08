@@ -8,7 +8,7 @@
 
 ### 1.2.1 时间线对比
 
-```
+```text
 非流式：
 t=0s ───────────────────────────── t=5s
 [         等待，界面无任何输出          ] → 一次性返回全部
@@ -58,7 +58,7 @@ t=0s     t=0.2s                                t=5s
 
 ### 2.2.2 选型决策
 
-```
+```text
 需要客户端实时上行？
   ├─ 是 → WebSocket（如协作编辑、实时语音）
   └─ 否 → 只需要服务端推流？
@@ -184,7 +184,7 @@ public class StreamingChatController {
 
 ## 4.3 协议示例
 
-```
+```text
 event: start
 data: {"sessionId":"s1"}
 
@@ -222,7 +222,7 @@ data: {"code":"MODEL_TIMEOUT","message":"模型超时"}
 
 Reactor 在订阅取消时会自动向下游传播取消信号。WebFlux 检测到连接关闭后，会取消订阅，从而触发上游（如 HTTP 客户端到模型网关）的取消。但**前提是底层 HTTP 客户端支持取消**，部分客户端会继续把响应读完。
 
-```
+```text
 浏览器关闭连接
       │
       ▼
@@ -267,7 +267,7 @@ public Flux<String> stream(@RequestParam String message) {
 
 ## 6.2 阶段编排
 
-```
+```text
 ① 收到问题
 ② 检索文档（同步，几百毫秒）
 ③ 发送 event: sources（引用来源）
@@ -327,7 +327,7 @@ Agent 的多步执行（规划、工具调用、观察）必须反馈进度，�
 
 用 `Sinks.Many`（多值发射器）在后台线程中发射事件，控制器返回 `sink.asFlux()`。每完成一步就 `tryEmitNext`，最后 `tryEmitComplete` 或 `tryEmitError`。
 
-```
+```text
 Agent 线程                     响应式流
    │                              │
    ├─ thinking  ───────────────▶ 事件
@@ -450,7 +450,7 @@ while (true) {
 
 反向代理默认会缓冲上游响应以便计算 `Content-Length`、压缩或缓存。对流式响应，缓冲会把"逐块下发"退化为"一次性下发"。
 
-```
+```text
 无缓冲：上游 chunk ─▶ 代理 ─▶ 浏览器（立即）
 有缓冲：上游 chunk ─▶ 代理缓存 ─▶ ... ─▶ 全部完成后一次性下发
 ```

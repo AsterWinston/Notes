@@ -1,7 +1,7 @@
 
 # 1. 核心类图
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │        ReactiveLoadBalancer<T>            │
 │  + choose(Request): Mono<Response<T>>    │
@@ -349,7 +349,7 @@ public final class CompletionContext<RES, T, RC> {
 
 # 9. 性能关键路径分析
 
-```
+```text
 一次负载均衡调用的关键路径：
 
 ① choose() 入口                                      ~0ns

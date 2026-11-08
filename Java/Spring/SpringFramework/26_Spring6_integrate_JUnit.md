@@ -1,14 +1,14 @@
 spring底层有一套API，这套API专门支持JUnit
 # 1. Spring 对 JUnit4 的支持
-```
+```text
 Spring提供的方便主要是这几个注解：
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(“classpath:spring.xml”)
+@ContextConfiguration("classpath:spring.xml")
 在单元测试类上使用这两个注解之后，在单元测试类中的属性上可以使用@Autowired。比较方便。
 
 ```
 ## 1.1 依赖
-```
+```xml
 <dependencies>
   <!-- spring核心依赖 -->
   <dependency>
@@ -33,7 +33,7 @@ Spring提供的方便主要是这几个注解：
 </dependencies>
 ```
 ## 1.2 实体类
-```
+```java
 package cw.study.spring.bean;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -75,7 +75,7 @@ public class User {
 
 ```
 ## 1.3 配置文件spring.xml
-```
+```text
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -90,7 +90,7 @@ public class User {
 
 ```
 ## 1.4 测试程序
-```
+```java
 import cw.study.spring.bean.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,7 +128,7 @@ public class TestJUnit4 {
 
 # 2. Spring对Junit5的支持
 ## 2.1 依赖
-```
+```text
 引入JUnit5的依赖，Spring对JUnit支持的依赖还是：spring-test
 <dependencies>
   <!-- spring核心依赖 -->
@@ -155,7 +155,7 @@ public class TestJUnit4 {
 
 ```
 ## 2.2 实体类
-```
+```java
 package cw.study.spring.bean;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -197,7 +197,7 @@ public class User {
 
 ```
 ## 2.3 spring.xml配置文件
-```
+```text
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -212,7 +212,7 @@ public class User {
 
 ```
 ## 2.4 测试程序
-```
+```java
 如果使用配置类代替配置文件，注解用这个@ContextConfiguration(classes = Spring6Config.class)
 
 import cw.study.spring.bean.User;
@@ -254,7 +254,7 @@ public class TestJUnit5 {
 
 ## 3.1 SpringJUnit4ClassRunner — JUnit4 集成核心
 
-```
+```text
 @RunWith(SpringJUnit4ClassRunner.class) 替换了 JUnit 默认的 Runner：
 
 public class SpringJUnit4ClassRunner extends BlockJUnit4ClassRunner {
@@ -290,7 +290,7 @@ TestContextManager.prepareTestInstance():
 
 ## 3.2 SpringExtension — JUnit5 集成核心
 
-```
+```java
 @ExtendWith(SpringExtension.class) 是 JUnit5 的扩展机制：
 
 public class SpringExtension implements BeforeAllCallback, AfterAllCallback,
@@ -314,7 +314,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback,
 
 ## 3.3 TestContextManager — 测试上下文管理器
 
-```
+```java
 TestContextManager 是整个 Spring Test 框架的核心调度器：
 
 public class TestContextManager {
@@ -356,7 +356,7 @@ public class TestContextManager {
 
 ## 3.4 @ContextConfiguration → ApplicationContext 的创建
 
-```
+```text
 @ContextConfiguration("classpath:spring.xml")
     │
     ▼
@@ -379,7 +379,7 @@ TestContext 创建时解析该注解：
 
 ## 3.5 DependencyInjectionTestExecutionListener — @Autowired 注入
 
-```
+```text
 DependencyInjectionTestExecutionListener 负责将 Spring Bean 注入到测试实例：
 
 public class DependencyInjectionTestExecutionListener
@@ -412,7 +412,7 @@ public class DependencyInjectionTestExecutionListener
 
 ## 3.6 TransactionalTestExecutionListener — 测试事务自动回滚
 
-```
+```java
 @Transactional 在测试类上的行为和业务代码中不同：
   ★ 测试中的 @Transactional 默认会在测试完成后自动回滚！
 
@@ -447,7 +447,7 @@ public class TransactionalTestExecutionListener extends AbstractTestExecutionLis
 
 ## 3.7 JUnit4 vs JUnit5 的 Spring 集成差异
 
-```
+```text
 ┌──────────────────┬──────────────────────────┬──────────────────────────┐
 │ 特性             │ JUnit4                   │ JUnit5                   │
 ├──────────────────┼──────────────────────────┼──────────────────────────┤

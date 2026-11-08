@@ -1,7 +1,7 @@
 
 # 1. Contract 解析流程
 
-```
+```text
 @FeignClient 接口
     │
     ▼
@@ -344,7 +344,7 @@ public Request request() {
 
 # 7. 完整调用链路总结
 
-```
+```text
 userClient.getUser(1L)
   │
   │ JDK Proxy

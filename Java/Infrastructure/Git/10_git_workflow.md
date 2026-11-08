@@ -5,7 +5,7 @@ Git Flow 是 2010 年由 Vincent Driessen 提出的经典工作流模型，定�
 
 ## 1.1 分支结构
 
-```
+```text
 main ──── M1 ────────── M2 ──────────── M3 ────────── M4
             \            \              /            /
 develop ── D1 ── D2 ──── D3 ── D4 ──── D5 ── D6 ── D7
@@ -81,7 +81,7 @@ GitHub Flow 是 GitHub 推崇的轻量级工作流，适合持续部署。
 
 ## 2.1 核心原则
 
-```
+```text
 main ──── M1 ───── M2 ───── M3 ───── M4 ───── M5
            \        /          \        /
 feature ── F1 ── F2   feature ── F1 ── F2
@@ -141,7 +141,7 @@ GitLab Flow 结合了 Git Flow 的严格性和 GitHub Flow 的简洁性，增加
 
 ## 3.1 环境分支模型
 
-```
+```text
 main ── M1 ── M2 ── M3 ── M4 ── M5
          \           \      \
 pre-prod ── P1 ── P2 ─ P3 ── P4
@@ -187,7 +187,7 @@ git tag -a v1.2.0 -m "Release v1.2.0"
 
 ## 4.1 核心原则
 
-```
+```text
 main ── M1 ── M2 ── M3 ── M4 ── M5 ── M6 ── M7
           \    /      \    /      \
           F1  F2      F3  F4      F5  F6

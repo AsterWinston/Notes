@@ -1,7 +1,7 @@
 
 # 1. Java 中锁的优化历程
 
-```
+```text
 JDK 1.0-1.2: synchronized 直接使用 OS 互斥量（重量级锁），非常慢
 JDK 1.3-1.4: 初步优化
 JDK 1.5: 引入 J.U.C (ReentrantLock, AtomicXXX, ConcurrentHashMap 等)
@@ -25,7 +25,7 @@ JDK 21: 虚拟线程 + 进一步优化
 
 # 3. 锁升级过程
 
-```
+```text
                    ┌──────────┐
                    │   无锁    │
                    └────┬─────┘
@@ -90,7 +90,7 @@ public class BiasedLocking {
 - 如果 CAS 成功 → 获得轻量级锁。
 - 如果 CAS 失败 → 自旋重试（自适应自旋）。
 
-```
+```text
 线程栈                   堆中的对象
 ┌────────────┐         ┌──────────────────┐
 │ 栈帧        │         │  对象头            │
@@ -112,7 +112,7 @@ public class BiasedLocking {
 - 未获取锁的线程进入**阻塞**状态（WAITING / BLOCKED）。
 
 **ObjectMonitor 结构：**
-```
+```text
 对象关联的 ObjectMonitor:
 ┌─────────────────────┐
 │ _owner    → 持有锁的线程      │
@@ -189,7 +189,7 @@ public void doWork() {
 ```
 
 **字节码层面：**
-```
+```text
 // 同步方法：方法访问标志中设置 ACC_SYNCHRONIZED
 
 // 同步代码块：

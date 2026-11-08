@@ -101,7 +101,7 @@ public class CustomAuthenticationEntryPoint
 
 **三种异常的处理链：**
 
-```
+```text
 未登录 → AuthenticationEntryPoint → 返回 401
 登录失败 → AuthenticationFailureHandler → 返回 401
 无权限 → AccessDeniedHandler → 返回 403
@@ -294,7 +294,7 @@ public class SecurityConfig {
 
 **完整异常处理流程图：**
 
-```
+```text
 HTTP 请求到达
     │
     ├─ 未登录 → ExceptionTranslationFilter

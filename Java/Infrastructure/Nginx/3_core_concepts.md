@@ -5,7 +5,7 @@
 
 Nginx 启动后会生成两种进程：
 
-```
+```text
           ┌─────────┐
           │  Master  │  （1个）—— 管理 Worker、读取配置、处理信号
           └────┬─────┘
@@ -39,7 +39,7 @@ Nginx 启动后会生成两种进程：
 
 ## 2.2 Nginx 事件驱动流程
 
-```
+```text
 1. Worker 进程在 listen 端口上等待事件（epoll/kqueue/select）
 2. 新连接到达 → 事件通知 Worker
 3. Worker 将连接加入事件循环，异步处理 I/O
@@ -57,7 +57,7 @@ Nginx 启动后会生成两种进程：
 
 ## 3.1 Worker 竞争锁
 
-```
+```text
 多个 Worker 进程通过共享锁（accept_mutex）竞争新连接：
   - accept_mutex on   → 同一时刻只有一个 Worker 接收新连接（默认开启）
   - accept_mutex off  → 所有 Worker 同时接收（可能惊群，Linux 3.9+ 内核已解决）
@@ -81,7 +81,7 @@ events {
 
 **最大并发连接数计算公式**：
 
-```
+```text
 最大并发连接数 = worker_processes × worker_connections
 
 作为反向代理时：
@@ -113,7 +113,7 @@ kill -HUP $(cat /var/run/nginx.pid)
 
 # 5. 平滑升级流程
 
-```
+```text
 1. 准备新版 Nginx 二进制文件
 2. kill -USR2 <旧master_pid>     → 启动新 Master（新旧并存）
 3. kill -WINCH <旧master_pid>    → 优雅关闭旧 Worker

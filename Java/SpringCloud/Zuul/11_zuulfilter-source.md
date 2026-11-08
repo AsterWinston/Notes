@@ -100,7 +100,7 @@ public abstract class BaseFilter<T, Z> {
 
 # 3. 内置过滤器类层次结构
 
-```
+```text
 IZuulFilter (接口)
     ↑
 ZuulFilter (抽象类)
@@ -496,7 +496,7 @@ Spring Cloud 在 `ZuulController.handleRequest()` 的 `finally` 块中也加入�
 
 # 7. 过滤器执行全景总结
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │                    应用启动阶段                         │
 │                                                      │

@@ -248,7 +248,7 @@ public class RouteRegistrationBean implements ApplicationRunner {
 
 ## 3.1 类层次结构
 
-```
+```text
 RouteLocator（接口：获取路由列表）
     │
     ├── CachingRouteLocator（缓存装饰器）
@@ -541,7 +541,7 @@ spring:
 
 ## 7.2 路由命名规范
 
-```
+```text
 {service-name}_{function}_{version}
 ```
 

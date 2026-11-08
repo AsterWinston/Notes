@@ -15,7 +15,7 @@ public interface Serialization {
 
 序列化 ID 与协议帧中的 Flag 字节关联：
 
-```
+```text
 Flag 字节 (8位)
 ┌──────────────────────────────────┐
 │ [7]  [6-5]   [4-3]    [2-0]     │
@@ -180,7 +180,7 @@ public class KryoFactory {
 
 SPI 配置文件 `META-INF/dubbo/org.apache.dubbo.common.serialize.Serialization`：
 
-```
+```text
 kryo=org.apache.dubbo.common.serialize.kryo.KryoSerialization
 ```
 
@@ -266,7 +266,7 @@ public class CustomSerialization implements Serialization {
 
 SPI 注册（`META-INF/dubbo/org.apache.dubbo.common.serialize.Serialization`）：
 
-```
+```text
 custom=com.example.CustomSerialization
 ```
 
@@ -280,7 +280,7 @@ dubbo:
 
 # 8. 序列化性能对比
 
-```
+```text
 维度\方案     Hessian2    FastJSON2    Kryo     Protobuf    Java
 ────────────────────────────────────────────────────────────
 体积          小          中           极小      极小        大

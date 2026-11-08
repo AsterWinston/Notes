@@ -62,7 +62,7 @@
 
 ### 2.1.1 机制拆解
 
-```
+```text
 图片 → OCR/多模态模型描述 → 文本 → 文本 RAG
 ✅ 实现简单、复用现有链路
 ❌ 转换有信息损失
@@ -95,7 +95,7 @@ public Document toTextDocument(byte[] imageBytes, String source) {
 
 ### 2.2.1 机制拆解
 
-```
+```text
 图片/文本 → 同一向量空间 → 跨模态检索
 ✅ 保留原始语义
 ❌ 需要多模态模型，链路复杂
@@ -134,7 +134,7 @@ Embedding imageEmb = multimodalModel.embedImage(imageBytes);
 
 ### 2.3.2 选型决策
 
-```
+```text
 是否只需要图中的文字？
   ├── 是 → 转文本（OCR）
   └── 否 → 是否需要"用文本搜图"？
@@ -252,7 +252,7 @@ OCR 后仍需按版面做阅读顺序重排，否则多栏文档的文本会错�
 | Jina CLIP | 多语言 |
 | Cohere Embed v3 | 支持图像 |
 
-```
+```text
 文本 "报销标准"  →  ┐
                     ├─ 同一向量空间 → 跨模态检索
 图片（报销标准表）→  ┘
@@ -305,7 +305,7 @@ vectorStore.add(List.of(
 
 结论：图文分数尺度不同，直接混排会失真，应分路排序后融合。
 
-```
+```text
 文本路 topN ─┐
              ├─ 归一化 → 加权融合 → Rerank → 最终
 图片路 topN ─┘
@@ -321,7 +321,7 @@ vectorStore.add(List.of(
 
 ### 5.1.1 机制拆解
 
-```
+```text
 PDF 页面
   ├── 文本块 → 文本 Embedding
   ├── 图片块 → 图片 Embedding + 图注
@@ -454,7 +454,7 @@ String transcript = transcriptionModel.call(
 
 ### 7.2.1 机制拆解
 
-```
+```text
 视频 → 音频轨 → ASR → 带时间戳文本
      → 视频轨 → 关键帧抽取 → 图注/图片向量
      → 合并（按时间戳对齐）
@@ -484,7 +484,7 @@ record VideoSegment(long startMs, long endMs, String transcript,
 
 ## 8.2 混合方案
 
-```
+```text
 文字密集的扫描件 → OCR 转文本
 含图表的关键图 → 多模态 Embedding
 普通照片 → Caption 转文本

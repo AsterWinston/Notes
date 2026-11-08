@@ -67,7 +67,7 @@ public class HealthCheckServiceInstanceListSupplier
 
 ## 2.2 健康检查流程图
 
-```
+```text
 请求实例列表
     │
     ▼
@@ -325,7 +325,7 @@ public class ProductionLoadBalancerConfig {
 
 **过滤顺序**：
 
-```
+```text
 DiscoveryClient（全量 10 个实例）
     │
     ▼ ZonePreference（同 Zone：6 个）

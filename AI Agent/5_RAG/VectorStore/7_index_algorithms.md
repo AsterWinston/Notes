@@ -29,7 +29,7 @@
 
 ANN 不保证返回真正的 Top-K，而是返回"很可能在 Top-K 中"的结果。核心指标：
 
-```
+```text
 Recall@K = |ANN 返回结果 ∩ 真实 Top-K| / K
 ```
 
@@ -58,7 +58,7 @@ Recall@K = |ANN 返回结果 ∩ 真实 Top-K| / K
 
 ANN 索引可归为四大流派：
 
-```
+```text
 ANN 索引
 ├── 基于哈希      LSH（局部敏感哈希）
 ├── 基于树        KD-Tree、Ball-Tree（高维退化）
@@ -94,7 +94,7 @@ ANN 索引
 
 ## 2.2 构建-查询生命周期
 
-```
+```text
 建索引阶段                    查询阶段
 ─────────────                ─────────────
 ① 采集向量                   ① 查询向量编码
@@ -126,7 +126,7 @@ ANN 索引
 
 ## 3.1 原理与实现
 
-```
+```text
 查询向量 ──▶ 与所有向量逐一计算距离 ──▶ 排序取 Top-K
 ```
 
@@ -187,7 +187,7 @@ private float l2(float[] a, float[] b) {
 
 ## 4.1 机制拆解
 
-```
+```text
 ① 训练：用 K-means 把向量空间聚成 N 个簇
 ② 写入：每个向量归入最近的簇
 ③ 查询：只在最近的 nprobe 个簇里搜索
@@ -195,7 +195,7 @@ private float l2(float[] a, float[] b) {
 
 ### 4.1.1 训练：K-means 聚类
 
-```
+```text
         ▲
    ● ●  │  ● ●
   ●  C1 │ C2  ●        查询点 Q 在 C1 附近
@@ -209,7 +209,7 @@ private float l2(float[] a, float[] b) {
 
 K-means 目标函数（最小化簇内平方和）：
 
-```
+```text
 J = Σ_{i=1}^{nlist} Σ_{x ∈ Ci} ‖x - μi‖²
 ```
 
@@ -228,7 +228,7 @@ J = Σ_{i=1}^{nlist} Σ_{x ∈ Ci} ‖x - μi‖²
 
 扫描比例直觉：
 
-```
+```text
 实际扫描向量数 ≈ N × (nprobe / nlist)
 ```
 
@@ -270,7 +270,7 @@ public class IvfIndex {
 
 ## 5.1 机制拆解
 
-```
+```text
 Layer 2:   A ──────────────── B         （稀疏，快速跳转）
 Layer 1:   A ──── C ──── D ──── B        （中等密度）
 Layer 0:   A─E─C─F─D─G─H─B─I             （最密，精确搜索）
@@ -292,7 +292,7 @@ Layer 0:   A─E─C─F─D─G─H─B─I             （最密，精确搜�
 | `efConstruction` | 建索引时的搜索宽度 | 越大索引质量越好、建得越慢（常用 100 ~ 500） |
 | `efSearch` | 查询时的搜索宽度 | 越大越准、越慢（常用 50 ~ 200） |
 
-```
+```text
 召回率 ↑  ←  efSearch ↑  →  延迟 ↑
 ```
 
@@ -332,7 +332,7 @@ public List<Integer> search(float[] query, int efSearch, int topK) {
 
 ## 6.1 机制拆解
 
-```
+```text
 原始向量（1024 维 float32 = 4KB）
       │ 切成 8 段，每段 128 维
       ▼
@@ -349,7 +349,7 @@ public List<Integer> search(float[] query, int efSearch, int topK) {
 
 查询向量不编码，与数据库向量的每个子空间中心预计算距离表（ADC，Asymmetric Distance Computation），查询时查表求和，避免全维运算。
 
-```
+```text
 d(q, x) ≈ Σ_{m=1}^{M} d(q_m, c_{m, id_m})
 ```
 
@@ -375,13 +375,13 @@ d(q, x) ≈ Σ_{m=1}^{M} d(q_m, c_{m, id_m})
 
 ## 7.1 机制
 
-```
+```text
 float32 (4 字节) → int8 (1 字节)，内存降至 25%
 ```
 
 线性映射公式：
 
-```
+```text
 q = round((x - min) / (max - min) × 255)
 ```
 
@@ -407,7 +407,7 @@ Qdrant、Elasticsearch 均支持 SQ，可作为 HNSW 的内存优化层。
 
 ## 8.1 机制
 
-```
+```text
 内存：PQ 压缩向量（导航用）
 磁盘：完整图结构 + 原始向量
 查询：内存导航 → SSD 按需读节点 → 重排
@@ -433,7 +433,7 @@ Qdrant、Elasticsearch 均支持 SQ，可作为 HNSW 的内存优化层。
 
 ## 9.1 调优流程
 
-```
+```text
 目标：在满足延迟要求下，最大化召回率
 
 步骤：
@@ -493,7 +493,7 @@ public void tuneHnsw(int[] efSearchValues) {
 
 ## 10.3 决策树
 
-```
+```text
 开始
  ├─ 数据 < 10 万？ ──是──▶ Flat
  ├─ 需要 100% 召回？ ──是──▶ Flat / 精确重排
@@ -542,7 +542,7 @@ public void tuneHnsw(int[] efSearchValues) {
 
 ## 12.2 选型口诀
 
-```
+```text
 小数据用 Flat，通用选 HNSW；
 内存不够加量化，亿级规模上磁盘；
 度量归一化，参数靠评测。

@@ -4,7 +4,7 @@
 
 **轨迹（Trajectory）** = Agent 从目标到结果的完整动作序列。
 
-```
+```text
 目标：查订单 A123 物流并催单
 
 轨迹：
@@ -59,7 +59,7 @@ public record Step(
 
 结论先行：结果正确不等于过程正确；只看结果会漏掉"碰巧对"与"越权对"两类高危情况。
 
-```
+```text
 结果正确 ≠ 过程正确
 ```
 
@@ -78,7 +78,7 @@ public record Step(
 
 结果与过程是两个独立维度，组合出四象限：
 
-```
+```text
             过程正确
               │
    低效对 ────┼──── 理想
@@ -139,7 +139,7 @@ public record Step(
 
 规则负责可确定的部分（工具名、签名、循环），LLM 负责语义部分（必要性、是否有更优路径）。
 
-```
+```text
 规则可判 ──► 工具名、参数格式、重复、循环、步数
 LLM 可判 ──► 步骤必要性、路径合理性、替代方案
 ```
@@ -225,7 +225,7 @@ public boolean isOrderValid(AgentTrace trace, List<String> expectedOrder) {
 
 更严谨的做法是把动作建模为有向无环图（DAG），检查拓扑顺序：
 
-```
+```text
 queryOrder ──► queryLogistics ──► urgeOrder
                     │
                     └──► generateAnswer
@@ -419,7 +419,7 @@ interface TrajectoryJudge {
 | 必要性 | 部分 | ✅ |
 | 路径合理性 | — | ✅ |
 
-```
+```text
 最终分 = 规则分 × 0.6 + LLM 分 × 0.4
 ```
 
@@ -435,7 +435,7 @@ interface TrajectoryJudge {
 
 ### 10.1.1 时间线示例
 
-```
+```text
 Step 1  [LLM]    决策：调用 queryOrder
         └─ 耗时 1.2s, tokens 850
 

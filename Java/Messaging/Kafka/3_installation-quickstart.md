@@ -165,7 +165,7 @@ bin/kafka-server-start.sh -daemon config/kraft/server.properties
 
 ## 4.1 ZooKeeper 集群模式拓扑
 
-```
+```text
 ┌──────────────────┐
 │   ZooKeeper 集群  │
 │  zk1:2181        │

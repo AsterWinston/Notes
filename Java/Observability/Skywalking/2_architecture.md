@@ -3,7 +3,7 @@
 
 SkyWalking 采用**三层架构**：探针层 → 分析平台 → 存储/UI。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                        Probe Layer                            
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
@@ -42,7 +42,7 @@ SkyWalking 采用**三层架构**：探针层 → 分析平台 → 存储/UI。
 
 # 2. OAP Server 内部管道
 
-```
+```text
 Agent (gRPC) 
   │ TraceSegment / Meter
   ▼
@@ -74,7 +74,7 @@ Agent (gRPC)
 
 ## 3.1 Trace — 一次完整的请求调用链
 
-```
+```text
 Trace (全局唯一 TraceId)
   ├── Segment 1 (Service A — entry)
   │     ├── Span: /api/user (Entry)
@@ -107,7 +107,7 @@ Trace (全局唯一 TraceId)
 
 # 4. 通信协议
 
-```
+```text
 Agent ──gRPC Streaming──→ OAP Server
   ├── TraceSegmentReportService (追踪数据)
   ├── JVMMetricReportService (JVM 指标)
@@ -140,7 +140,7 @@ SkyWalking 9.x 引入 Layer 概念，按层次组织服务：
 
 # 6. OAP 集群
 
-```
+```text
                     Load Balancer
                           │
               ┌───────────┼───────────┐

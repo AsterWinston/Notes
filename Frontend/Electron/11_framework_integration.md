@@ -2,7 +2,7 @@
 
 # 1. 分层视图
 
-```
+```text
 ┌─────────────────────────────┐
 │      渲染进程(前端框架)       │  Vue/React:界面、组件、UI 状态
 │  window.api.xxx 调用 IPC     │
@@ -75,7 +75,7 @@ declare global {
 
 ## 3.2 共享类型的工程组织
 
-```
+```text
 src/
 ├── main/         # 主进程(实现 API 的主进程侧)
 ├── preload/      # preload(桥接,类型与实现对齐)

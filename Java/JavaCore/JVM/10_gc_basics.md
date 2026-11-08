@@ -38,7 +38,7 @@ public class RefCount {
 - 以一系列 **GC Roots** 为起点，沿着引用链向下搜索，搜索路径称为**引用链**（Reference Chain）。
 - 搜索不到的对象判定为**不可达**，可以被回收。
 
-```
+```text
 GC Roots:
   ● (栈中引用)
   │

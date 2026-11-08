@@ -5,7 +5,7 @@ Pushgateway 是 Prometheus 生态中的一个**辅助组件**，允许临时或�
 
 ## 1.1 架构
 
-```
+```text
 +----------------+     Push (HTTP)    +----------------+     Pull (HTTP)    +----------------+
 | Batch Job      |------------------>|  Pushgateway   |<------------------|  Prometheus    |
 | Cron Job       |   POST /metrics   |  :9091         |   GET /metrics    |  :9090         |
@@ -108,7 +108,7 @@ func main() {
 
 Pushgateway 使用 **Job + Grouping Labels** 来组织指标：
 
-```
+```text
 /metrics/job/<JOB>{/<LABEL_NAME>/<LABEL_VALUE>}
 ```
 

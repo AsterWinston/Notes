@@ -128,7 +128,7 @@ org.hibernate.collection.internal.*              // PersistentSet/List/Bag/Map �
 
 从 `MetadataSources` -> `StandardServiceRegistry` -> `Metadata` -> `SessionFactory` 追踪，理解配置转化为运行时元数据和执行器的过程。
 
-```
+```text
 MetadataSources -> BootstrapServiceRegistry -> StandardServiceRegistry 
 -> MetadataBuilder -> Metadata -> SessionFactoryBuilder -> SessionFactoryImpl
 ```
@@ -137,7 +137,7 @@ MetadataSources -> BootstrapServiceRegistry -> StandardServiceRegistry
 
 以 `persist()` / `find()` / `merge()` / `remove()` 为入口，跟踪事件触发、ActionQueue 排队、SQL 生成、JDBC 执行、结果集映射的全过程。
 
-```
+```text
 Session.find() -> LoadEvent -> DefaultLoadEventListener -> Loader.loadEntity()
   -> AbstractEntityPersister.load() -> SQL 生成 -> ResultSet 处理
   -> TwoPhaseLoad.initializeEntity() -> PersistenceContext 注册
@@ -288,7 +288,7 @@ public class ClassLoaderServiceImpl implements ClassLoaderService {
 
 2. **Integrator 加载** -- 利用 Java SPI `ServiceLoader` 机制：
 
-```
+```text
 META-INF/services/org.hibernate.integrator.spi.Integrator
 ```
 
@@ -603,7 +603,7 @@ for (Integrator integrator : integrators) {
 
 以下用文字调用链描述从零到 SessionFactory 的完整启动过程：
 
-```
+```text
 [用户代码]
   |
   +- new StandardServiceRegistryBuilder()
@@ -805,7 +805,7 @@ public final class SessionImpl
 
 ### 3.2.2 SessionImpl 继承层次
 
-```
+```text
 java.lang.Object
   +-- org.hibernate.internal.AbstractSessionImpl
         implements Serializable, SharedSessionContractImplementor
@@ -985,7 +985,7 @@ public interface LazyInitializer {
 
 ### 3.4.3 懒加载触发流程
 
-```
+```text
 用户代码: user.getAddress().getCity()
   |
   +- user 是代理对象，getAddress() 触发属性访问
@@ -1804,7 +1804,7 @@ public class QueryTranslatorImpl implements QueryTranslator {
 }
 ```
 
-```
+```text
 HQL AST 示例:
 HQL: from User u where u.age > :minAge order by u.name
 

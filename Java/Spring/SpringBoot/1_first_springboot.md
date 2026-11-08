@@ -76,7 +76,7 @@ Spring Boot 3.x 相比 2.x 有重大变更：
 - IDE：**IntelliJ IDEA**
 
 # 4. First SpringBoot
-```
+```text
 1.继承父工程
 2.引入依赖
 3.编写启动类
@@ -87,7 +87,7 @@ Spring Boot 3.x 相比 2.x 有重大变更：
 
 # 5. 便捷的部署方式
 ## 5.1 打jar包运行
-```
+```text
 使用springboot官方提供的插件进行package
     <build>
         <plugins>
@@ -99,10 +99,10 @@ Spring Boot 3.x 相比 2.x 有重大变更：
     </build>
 ```
 ## 5.2 SpringBoot的jar包和普通jar包的区别
-```
+```text
 SpringBoot打包的jar文件与传统Java应用程序的Jar文件相比确实有一些显著区别，主要体现在依赖管理和可执行性上
 （1）依赖管理
-● Spring Boot 的 JAR 包通常包含了应用程序运行所需的所有依赖项，也就是说它是一个“fat jar”（胖 JAR 包），这种打包方式使得应用可以独立运行，而不需要外部的类路径或应用服务器上的其他依赖。
+● Spring Boot 的 JAR 包通常包含了应用程序运行所需的所有依赖项，也就是说它是一个"fat jar"（胖 JAR 包），这种打包方式使得应用可以独立运行，而不需要外部的类路径或应用服务器上的其他依赖。
 ● 普通的 JAR 文件一般只包含一个类库的功能，并且需要依赖于特定的类路径来找到其他的类库或者框架，这些依赖项通常在部署环境中已经存在，比如在一个应用服务器中。
 （2）可执行性
 ● Spring Boot 的 JAR 文件可以通过直接执行这个 JAR 文件来启动应用程序，也就是说它是一个可执行的 JAR 文件。通过 java -jar your-application.jar 命令就可以直接运行应用程序。
@@ -117,15 +117,15 @@ springboot的可执行jar包目录结构
 # 6. SpringBoot脚手架
 ## 6.1 什么是脚手架
 ### 6.1.1 建筑工程中的脚手架
-```
-在建筑工程领域，“脚手架”指的是临时性的结构，用于支撑建筑物以及建筑材料，同时为建筑工人提供工作平台。这种脚手架通常是由钢管、扣件、木板和其他配件组成的，可以根据施工需要搭建不同高度和形状的结构。
+```text
+在建筑工程领域，"脚手架"指的是临时性的结构，用于支撑建筑物以及建筑材料，同时为建筑工人提供工作平台。这种脚手架通常是由钢管、扣件、木板和其他配件组成的，可以根据施工需要搭建不同高度和形状的结构。
 ```
 ### 6.1.2 软件开发中的脚手架
-```
-在软件开发领域，“脚手架”指的是用于快速创建项目基本结构的工具或模板。它帮助开发者初始化项目，设置必要的目录结构、文件模板以及依赖项。 
+```text
+在软件开发领域，"脚手架"指的是用于快速创建项目基本结构的工具或模板。它帮助开发者初始化项目，设置必要的目录结构、文件模板以及依赖项。 
 ```
 ### 6.1.3 SpringBoot脚手架
-```
+```text
 Spring Boot 脚手架（Scaffold）可以帮助开发者快速搭建一个Spring Boot项目结构，让开发者只专注于业务逻辑的开发，而不是在项目的初始阶段花费大量时间来配置环境或者解决依赖关系。
 
 Spring Boot 脚手架工具存在多种形式，以下是一些常见的 Spring Boot 脚手架工具和方法：
@@ -152,11 +152,11 @@ Visual Studio Code 社区提供了多个插件，如 Spring Boot Extension Pack�
 ```
 ## 6.2 使用官方提供的
 ### 6.2.1 使用官方脚手架生成Spring Boot项目
-```
+```text
 Spring Initializr：https://start.spring.io
 ```
 <img src="images/03.png" width="100%">
-点击“GENERATE”后，生成zip压缩包
+点击"GENERATE"后，生成zip压缩包
 将其解压后的目录结构是一个标准的maven 工程：
 <img src="images/04.png" width="100%">
 
@@ -169,7 +169,7 @@ Spring Initializr：https://start.spring.io
 注意：如果pom.xml文件的图标颜色不是蓝色，而是橘色，需要在pom.xml文件上右键，选择：add as maven project。这样pom.xml文件的图标就会变为蓝色了。
 
 ### 6.2.3 脚手架生成的pom.xml文件
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">

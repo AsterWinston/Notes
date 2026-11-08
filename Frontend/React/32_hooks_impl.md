@@ -4,7 +4,7 @@ Hooks "记住状态"这件事,既没有缓存变量、也没有全局变量,靠�
 
 ## 1.1 每个组件一条 Hook 链表
 
-```
+```text
 组件 Fiber 上挂一条"Hook 链表":
   HookNode1 (第一个 useState) → HookNode2 (第二个 useState) → HookNode3 (useEffect)
 每个 HookNode 记:自己的状态(memoizedState)、下一个节点的指针(next)
@@ -14,7 +14,7 @@ Hooks "记住状态"这件事,既没有缓存变量、也没有全局变量,靠�
 
 ## 1.2 useState 里存了什么
 
-```
+```text
 useState 的 HookNode:
   memoizedState = 当前值(count)
   queue = 待处理的更新队列(setCount 攒下的更新)
@@ -28,7 +28,7 @@ useEffect 的 HookNode:
 
 ## 2.1 挂载与更新
 
-```
+```text
 首次渲染(mount):
   useState(0) → 建节点,存 0,返回 [0, setCount]
 更新:
@@ -50,7 +50,7 @@ setCount(c => c + 1)   // 这个函数被推进 queue,处理时拿"前一个值"
 
 ## 3.1 闭包与 cleanup
 
-```
+```text
 每次渲染,effect 函数都是"新闭包"(捕获本次渲染的 state)
 依赖比对:Object.is(上次的 deps[i], 这次的 deps[i])
   全相等 → 不执行
@@ -82,7 +82,7 @@ setCount(c => c + 1)
 
 # 5. 一张完全串起来的图
 
-```
+```text
 setState
   → Hook 节点.queue 入队
   → 调度(优先级,第 30 篇)

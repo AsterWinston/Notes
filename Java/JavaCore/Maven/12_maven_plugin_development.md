@@ -132,7 +132,7 @@ public class ValidateConfigMojo extends AbstractMojo {
 
 一个插件可以包含多个 MOJO（多个目标）：
 
-```
+```text
 hello-maven-plugin
 ├── HelloMojo.java          (goal: hello)
 ├── InfoMojo.java            (goal: info)

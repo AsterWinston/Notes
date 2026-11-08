@@ -18,7 +18,7 @@ RAG（Retrieval-Augmented Generation，检索增强生成）链路长、变量�
 
 一条典型的 RAG 链路可以拆成离线索引与在线检索生成两段：
 
-```
+```text
 离线索引                          在线服务
 ─────────────                     ─────────────
 文档采集 ─► 解析 ─► 分块          问题 ─► 改写 ─► 检索 ─► 重排
@@ -65,7 +65,7 @@ RAG（Retrieval-Augmented Generation，检索增强生成）链路长、变量�
 
 # 2. 评测的两个层次
 
-```
+```text
 ① 检索评测：能不能检索到正确答案所在的文档
 ② 生成评测：基于检索内容，回答是否忠实、相关、正确
 ```
@@ -105,7 +105,7 @@ RAG（Retrieval-Augmented Generation，检索增强生成）链路长、变量�
 
 两层不是并列关系，而是串联关系：
 
-```
+```text
 检索层 ──► 生成层 ──► 端到端
   │            │
   └─ 决定上限  └─ 决定实现程度
@@ -134,7 +134,7 @@ RAG（Retrieval-Augmented Generation，检索增强生成）链路长、变量�
 
 其中 DCG 的常见形式为：
 
-```
+```text
 DCG@K  = Σ (2^rel_i - 1) / log2(i + 1)
 IDCG@K = 理想排序下的 DCG@K
 nDCG@K = DCG@K / IDCG@K
@@ -197,7 +197,7 @@ public double mrr(List<EvalCase> cases) {
 
 ### 3.2.2 公式拆解
 
-```
+```text
 Faithfulness      = 可被上下文支撑的断言数 / 回答总断言数
 Context Precision = 相关片段数 / 上下文片段总数（可加位置权重）
 Context Recall    = 被上下文覆盖的标准答案信息点 / 全部信息点
@@ -378,7 +378,7 @@ public class SpringAiJudge implements Judge {
 
 ### 6.1.1 流程拆解
 
-```
+```text
 读取评测集
    │
    ▼
@@ -459,7 +459,7 @@ void rag_regression() {
 
 ### 7.2.1 流水线设计
 
-```
+```text
 提交代码
    │
    ▼

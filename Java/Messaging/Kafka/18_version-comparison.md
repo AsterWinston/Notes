@@ -2,7 +2,7 @@
 
 ## 1.1 版本号命名规则
 
-```
+```text
 Kafka 版本格式: kafka_<Scala版本>-<Kafka版本>
 
 例如: kafka_2.13-3.6.0
@@ -270,7 +270,7 @@ kafka-metadata-quorum.sh --bootstrap-server localhost:9092 \
 
 ## 10.1 升级路线
 
-```
+```text
 从老版本迁移推荐路线:
 
 0.10.x → 0.11.x → 1.1.x → 2.0.x → 2.4.x → 2.8.x → 3.3+ (KRaft)

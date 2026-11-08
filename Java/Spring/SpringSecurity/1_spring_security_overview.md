@@ -63,7 +63,7 @@ Spring Security 提供开箱即用的：
 
 ## 2.1 核心组件
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │              SecurityFilterChain                      │
 │  ┌─────────┐ ┌─────────┐ ┌──────────┐ ┌───────────┐ │
@@ -152,7 +152,7 @@ public interface PasswordEncoder {
 
 ## 2.2 核心流程
 
-```
+```text
 用户请求 --> SecurityFilterChain --> 认证过滤器 --> AuthenticationManager
     --> AuthenticationProvider --> UserDetailsService (加载用户)
     --> PasswordEncoder (比对密码) --> Authentication对象

@@ -6,7 +6,7 @@
 
 ★ **关键认知**：build tags 用于**条件编译**——根据目标平台、架构或自定义标签，决定哪些文件参与编译。典型场景：不同操作系统有不同的实现文件。
 
-```
+```text
 场景：某功能在 Linux 和 Windows 实现不同
 ├── util_linux.go     // 只在 Linux 编译
 ├── util_windows.go   // 只在 Windows 编译
@@ -69,7 +69,7 @@ go generate ./...    # 执行所有 go:generate 指令
 
 ★ **关键认知**：代码生成是反射的高性能替代方案（见反射章节）：
 
-```
+```text
 反射：运行时解析类型，灵活但慢
 代码生成：编译期生成专用代码，零运行时开销，但需额外构建步骤
 ```
@@ -92,7 +92,7 @@ var templates embed.FS         // 嵌入为文件系统
 
 ★ **关键认知**：`go:embed`（Go 1.16+）把外部文件**编译进二进制**，运行时无需外部文件依赖。这对"单文件部署"意义重大——模板、配置文件、静态资源都能打包进可执行文件：
 
-```
+```text
 支持嵌入：
 - 单个文件（嵌入为 string 或 []byte）
 - 多个文件/目录（嵌入为 embed.FS）
@@ -118,7 +118,7 @@ GOOS=darwin GOARCH=arm64 go build -o app-mac main.go
 
 ## 4.2 支持的平台
 
-```
+```text
 GOOS:    linux, windows, darwin, freebsd, android, js, ...
 GOARCH:  amd64, arm64, 386, arm, mips, riscv64, ...
 
@@ -132,7 +132,7 @@ linux/amd64   Windows/amd64   darwin/arm64(M1 Mac)   linux/arm64
 
 ★ **关键认知**：**纯 Go** 代码可任意交叉编译，但**用了 cgo** 的代码交叉编译很困难：
 
-```
+```text
 CGO_ENABLED=0   禁用 cgo（纯 Go），可自由交叉编译
 CGO_ENABLED=1   启用 cgo，交叉编译需要目标平台的 C 交叉编译器
 ```
@@ -148,7 +148,7 @@ go build -ldflags="-s -w"        # 去掉符号表和调试信息
 go build -trimpath              # 去掉编译路径（可复现构建）
 ```
 
-```
+```text
 -s   去除符号表
 -w   去除 DWARF 调试信息
 组合使用可减小 30%~50% 的体积
@@ -158,7 +158,7 @@ go build -trimpath              # 去掉编译路径（可复现构建）
 
 ★ **关键认知**：可复现构建（reproducible build）指"相同源码永远产出字节级相同的二进制"。关键参数：
 
-```
+```text
 1. -trimpath：去掉编译机绝对路径
 2. 固定 CGO_ENABLED、GOOS、GOARCH
 3. 固定 Go 版本（或使用 GOTOOLCHAIN 锁定）
@@ -168,7 +168,7 @@ go build -trimpath              # 去掉编译路径（可复现构建）
 
 ## 5.3 容器化部署
 
-```
+```text
 Go 部署的黄金搭档是 Docker 多阶段构建：
 
 FROM golang:1.23 AS builder
@@ -187,13 +187,13 @@ ENTRYPOINT ["/app"]
 
 ★ **关键认知**：Go 的构建缓存（GOCACHE）让增量编译极快：
 
-```
+```text
 1. 每个包按"源码哈希 + 编译参数"缓存产物
 2. 未变化的包直接复用缓存，不重编
 3. 配合多核并行编译（默认自动），大型项目编译秒级完成
 ```
 
-```
+```text
 加速技巧：
 1. 保持依赖精简（减少编译包数量）
 2. 用 go build ./... 而非重复单文件编译

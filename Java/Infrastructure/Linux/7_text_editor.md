@@ -7,7 +7,7 @@ Vim（Vi IMproved）是 Linux 上最经典的文本编辑器，由 Bram Moolenaa
 
 # 2. Vim 的四种模式
 
-```
+```text
 正常模式（Normal）   ← 默认模式，用于导航和操作
     ↕ i / a / o     → 进入插入模式
     ↕ v / V / Ctrl+v → 进入可视模式
@@ -268,7 +268,7 @@ colorscheme desert
 
 ## 9.1 块的批量操作（Ctrl+v）
 
-```
+```text
 步骤：
 1. 按 Ctrl+v 进入可视块模式
 2. 移动光标选中多行首列

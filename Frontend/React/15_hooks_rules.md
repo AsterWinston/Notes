@@ -38,7 +38,7 @@ function notComponent() {
 
 ## 2.1 状态与顺序的对应
 
-```
+```text
 第一次渲染:
   const [count, ...] = useState(0)   → 存到"存放槽 #0"
   const [name, ...]  = useState('')  → 存到"存放槽 #1"
@@ -77,7 +77,7 @@ useEffect(() => {
 
 ## 3.3 依赖的完整心智链
 
-```
+```text
 state 是快照 → 闭包捕获快照 → effect 依赖没变就不重跑(读旧值)
 → 所以要"依赖数组诚实" + "值变时用函数式更新"
 → 引用要稳定就 useMemo/useCallback

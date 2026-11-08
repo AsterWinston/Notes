@@ -156,7 +156,7 @@ CI 的核心实践：
 
 Jenkins 采用 **Master/Agent 架构**（也称为 Controller/Agent）：
 
-```
+```text
                         ┌─────────────────┐
                         │    Jenkins UI    │
                         │  (Web Dashboard) │

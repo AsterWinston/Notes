@@ -10,7 +10,7 @@
 
 ## 2.1 核心类架构
 
-```
+```text
 Jwts (入口)
 ├── JwtBuilder (构建器)
 │   ├── DefaultJwtBuilder (签发实现)
@@ -217,7 +217,7 @@ public static boolean isEqual(byte[] digesta, byte[] digestb) {
 
 ## 3.1 核心类架构
 
-```
+```text
 JWT
 ├── SignedJWT (JWS 实现)
 ├── EncryptedJWT (JWE 实现)
@@ -461,7 +461,7 @@ public final class NimbusJwtDecoder implements JwtDecoder {
 
 ## 5.1 时序攻击原理
 
-```
+```text
 攻击者通过测量服务器处理不同签名值的响应时间来推断正确的签名：
 
 正常签名（前几个字节正确）：服务器在签名验证阶段需要更多时间
@@ -559,7 +559,7 @@ private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
 ## 7.1 JJWT 异常层次
 
-```
+```text
 JwtException
 ├── SecurityException
 │   └── SignatureException
@@ -577,7 +577,7 @@ JwtException
 
 ## 7.2 Nimbus 异常层次
 
-```
+```text
 JOSEException
 ├── KeyLengthException
 ├── KeyException

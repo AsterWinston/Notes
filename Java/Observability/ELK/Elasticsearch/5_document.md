@@ -2,7 +2,7 @@
 
 文档是 ES 里的最小数据单元：一段 JSON，挂在一个 ID 上，落在一个分片里。ES 7.x 移除 mapping type 之后，8.x 的文档模型已经收敛成一套非常简单的元数据语义：
 
-```
+```text
 Index: orders
   └── _doc (type, 7.x 后固定)
         └── Document (JSON)

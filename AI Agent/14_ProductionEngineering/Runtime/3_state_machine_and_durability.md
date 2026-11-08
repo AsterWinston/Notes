@@ -22,7 +22,7 @@
 
 ## 1.2 状态机 vs 隐式流程
 
-```
+```text
 隐式（if-else）：
 if (done) return;
 else if (waiting) { ... }
@@ -128,7 +128,7 @@ public record AgentState(
 
 ## 3.1 流转表
 
-```
+```text
 CREATED ──▶ PLANNING ──▶ EXECUTING ──▶ COMPLETED
                             │  ▲
                             │  └── WAITING_TOOL
@@ -272,7 +272,7 @@ public void save(String taskId, AgentState next) {
 
 ## 5.1 卡住任务扫描
 
-```
+```text
 正常：EXECUTING → 保存检查点 → 继续
 崩溃：进程死亡，最后状态为 EXECUTING
 
@@ -378,7 +378,7 @@ public AgentState rebuild(List<AgentEvent> events) {
 
 事件无限增长会导致重放变慢。定期把状态快照（snapshot）落库，并截断快照之前的事件。
 
-```
+```text
 events:  e1 e2 e3 ... e100  [snapshot@100]  e101 e102 ...
 rebuild: 从 snapshot@100 开始，仅重放 e101、e102
 ```
@@ -410,7 +410,7 @@ public interface EventStore {
 
 ## 7.1 至少一次加幂等
 
-```
+```text
 至少一次投递 + 幂等消费 = 效果上等价于恰好一次
 ```
 

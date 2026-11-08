@@ -4,7 +4,7 @@
 
 项目讲述要结构化，最常用的是 STAR（Situation 情境、Task 任务、Action 行动、Result 结果），它强迫你把"背景—目标—行动—结果"讲成闭环。
 
-```
+```text
 S（Situation）：背景与问题
 T（Task）：你的目标与职责
 A（Action）：你的具体行动
@@ -60,7 +60,7 @@ Context（背景）、Action（行动）、Result（结果）、Learning（收�
 
 ## 2.1 模板总览
 
-```
+```text
 【背景】
   业务问题 + 规模（用户数、数据量、QPS）
 
@@ -237,7 +237,7 @@ Context（背景）、Action（行动）、Result（结果）、Learning（收�
 
 ## 5.1 指标分类
 
-```
+```text
 质量：准确率、召回率、忠实度
 效率：延迟、吞吐、步数
 成本：单次成本、总成本、降本比例

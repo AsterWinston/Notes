@@ -3,7 +3,7 @@
 
 Nacos 采用分层架构设计，每一层职责清晰，依赖关系自上而下：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                      接入层 (Access Layer)                       │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────────┐ │
@@ -95,7 +95,7 @@ Nacos 采用分层架构设计，每一层职责清晰，依赖关系自上而�
 
 ## 3.1 命名空间模型
 
-```
+```text
 Tenant (Namespace)
   ├── Namespace-1 (生产环境)
   │     ├── Service-A (Group: DEFAULT_GROUP)
@@ -113,7 +113,7 @@ Tenant (Namespace)
 
 ## 3.2 配置数据模型
 
-```
+```text
 Namespace
   └── Group
         └── DataID
@@ -171,7 +171,7 @@ public class Instance {
 
 Nacos 是目前唯一支持**在服务发现和配置管理两个场景中根据需要切换 CAP 模型**的注册中心。
 
-```
+```text
                     选择 AP 模式
           ┌─────────────────────────┐
           │   服务注册与发现场景     │
@@ -218,7 +218,7 @@ Nacos 2.x 对通信协议进行了全面升级：
 
 ## 5.2 gRPC 通信模型
 
-```
+```text
 Client                          Nacos Server
   │                                    │
   │──── setup gRPC connection ────────>│  (Bi-directional Stream)
@@ -278,7 +278,7 @@ sequenceDiagram
 
 Nacos 源码（GitHub: alibaba/nacos）的主要模块划分：
 
-```
+```text
 nacos
 ├── address/            # 地址服务器模块
 ├── api/                # API 接口定义

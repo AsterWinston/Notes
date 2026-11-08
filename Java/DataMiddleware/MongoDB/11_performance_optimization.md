@@ -5,7 +5,7 @@ MongoDB性能优化遵循"测量 → 分析 → 优化 → 验证"的循环。�
 
 ## 1.1 性能瓶颈识别框架
 
-```
+```text
 ┌──────────────────────────────────┐
 │          应用层                    │
 │  连接池、序列化、查询设计、N+1     │
@@ -570,7 +570,7 @@ sh.isBalancerRunning()
 
 ## 10.3 内存不足的表现
 
-```
+```text
 - pages evicted by application threads 持续增加
 - WiredTiger缓存使用率接近100%
 - 操作系统swap使用增加

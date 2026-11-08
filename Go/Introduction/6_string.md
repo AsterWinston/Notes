@@ -14,7 +14,7 @@ type stringStruct struct {
 }
 ```
 
-```
+```text
 内存布局：
 string 变量（16 字节）
 ┌──────────────┬──────────────┐

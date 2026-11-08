@@ -3,7 +3,7 @@
 
 **JWT（JSON Web Token）** 是一种紧凑、URL 安全的令牌格式，用于在各方之间传输声明（Claims）。JWT 是现代 SSO 和无状态认证的核心技术，也是 OIDC 中 ID Token 的标准格式。
 
-```
+```text
 JWT = Header.Payload.Signature
 
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9       ← Base64URL(Header)
@@ -55,7 +55,7 @@ JWT 的 Claims 分为三类：
 
 ## 2.3 Signature（签名）
 
-```
+```text
 签名 = HMAC-SHA256(Secret, Header.Base64URL + "." + Payload.Base64URL)
 或
 签名 = RSA-SHA256(PrivateKey, Header.Base64URL + "." + Payload.Base64URL)
@@ -168,7 +168,7 @@ public class RsaJwtExample {
 
 ## 4.1 JWE vs JWS
 
-```
+```text
 JWS（JSON Web Signature）= 签名 → 防篡改，但是 Payload 明文可见
 JWE（JSON Web Encryption）= 加密 → 防窥探，Payload 加密
 
@@ -220,7 +220,7 @@ public class JweExample {
 
 ## 4.3 嵌套 JWT（签名 + 加密）
 
-```
+```text
 步骤：
 1. 先对 Claims 签名 → 生成 JWS
 2. 再用 JWE 加密整个 JWS → 生成嵌套 JWT

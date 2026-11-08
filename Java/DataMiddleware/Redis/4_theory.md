@@ -14,7 +14,7 @@
 
 ### 2.1.1 SDS 结构布局
 
-```
+```text
 +--------+--------+--------+--------+-------------------+
 | flags  | len    | alloc  | buf[]  | (未使用空间)       |
 +--------+--------+--------+--------+-------------------+
@@ -62,7 +62,7 @@
 
 ### 2.2.1 IntSet 结构布局
 
-```
+```text
 +----------+----------+-------------------+
 | encoding | length   | contents[]        |
 +----------+----------+-------------------+
@@ -111,7 +111,7 @@
 
 ### 2.3.1 Dict 结构层级
 
-```
+```text
 dict
   ├── dictType (类型方法表，含 hashFunction、keyCompare 等)
   ├── privdata (私有数据)
@@ -154,7 +154,7 @@ Rehash 由 `_dictExpandIfNeeded()` 检查触发：
 
 ### 2.4.2 渐进式 Rehash 完整流程
 
-```
+```text
 初始状态:
   ht[0].table = [...buckets...]   (旧表, size=4, used=3)
   ht[1].table = NULL
@@ -207,7 +207,7 @@ ASCII 示意:
 
 ### 2.5.1 ZipList 整体结构（字节级布局）
 
-```
+```text
 +--------+--------+--------+--------+--------+-----+--------+--------+
 | zlbytes| zltail | zllen  | entry1 | entry2 | ... | entryN | zlend  |
 +--------+--------+--------+--------+--------+-----+--------+--------+
@@ -261,7 +261,7 @@ ASCII 示意:
 
 ### 2.6.1 连锁更新执行过程示例
 
-```
+```text
 初始状态 (每个 entry 长度均为 253B，所以 prevlen 占 1B):
   [zlbytes][zltail][zllen][E1: prevlen=1B, 253B data][E2: same][E3: same][zlend]
 
@@ -295,7 +295,7 @@ Step 3: 同理, E3 的 prevlen 也需 1B → 5B...
 
 ### 2.7.1 ListPack 结构布局
 
-```
+```text
 +--------+--------+--------+-----+--------+--------+
 | lpbytes| lplen  | entry1 | ... | entryN | lpend  |
 +--------+--------+--------+-----+--------+--------+
@@ -308,7 +308,7 @@ Step 3: 同理, E3 的 prevlen 也需 1B → 5B...
 
 ### 2.7.2 ListPack Entry 编码
 
-```
+```text
 +------------+----------+-------------------+
 | encoding   | data     | backlen(entry总长) |
 +------------+----------+-------------------+
@@ -342,7 +342,7 @@ Step 3: 同理, E3 的 prevlen 也需 1B → 5B...
 
 ### 2.8.1 QuickList 结构
 
-```
+```text
 quicklist
   ├── head → quicklistNode → quicklistNode → ... → tail
   ├── count (总元素数)
@@ -394,7 +394,7 @@ quicklistNode
 
 ### 2.9.1 SkipList 结构示意（ASCII Art）
 
-```
+```text
 Level 3:  HEAD ──────────────────────> 30 ──────────────> NULL
 Level 2:  HEAD ──────────> 10 ───────> 30 ───────> 40 ──> NULL
 Level 1:  HEAD ──> 5 ────> 10 ──> 15 ─> 30 ──> 35 ─> 40 ─> 45 ──> NULL
@@ -421,7 +421,7 @@ zskiplistNode { sds ele, double score, zskiplistNode *backward,
 
 ### 2.9.4 ZSet 的双结构：Dict + SkipList
 
-```
+```text
 ZSet 同时维护:
   ┌── Dict:  {member → score}     用于 O(1) 单点查询/更新 score
   └── SkipList: {score, member}   用于 O(log N) 范围查询/排序/rank
@@ -519,7 +519,7 @@ typedef struct redisObject {
 
 **三种编码图解**
 
-```
+```text
 【int 编码】(整数值在 0~9999 时共享对象, 否则嵌入 ptr):
   redisObject.type=STRING, encoding=INT
   ptr → (整数值直接嵌在 ptr 中, 非指针)
@@ -570,7 +570,7 @@ typedef struct redisObject {
 
 **编码转换规则**
 
-```
+```text
 新 Set, all integers && count <= set-max-intset-entries
   → intset
 
@@ -594,7 +594,7 @@ typedef struct redisObject {
 
 **双结构详解**
 
-```
+```text
 ZSet 对象:
   redisObject.type = ZSET
 
@@ -633,7 +633,7 @@ ZSet 对象:
 
 **编码转换规则**
 
-```
+```text
 新 Hash, field-count ≤ hash-max-ziplist-entries
       && each-field-value ≤ hash-max-ziplist-value
   → ziplist/listpack (field, value 交替存储)
@@ -695,7 +695,7 @@ ZSet 对象:
 
 ### 3.2.1 阻塞 IO 流程（伪代码 + 时序）
 
-```
+```text
 【服务端 - 单线程模型】
 socket = socket(AF_INET, SOCK_STREAM)
 bind(socket, addr)
@@ -717,7 +717,7 @@ while (1) {
 }
 ```
 
-```
+```text
 时序图 (单连接处理):
   Client          Kernel           Server Process
     |               |                    |
@@ -741,7 +741,7 @@ while (1) {
 
 ### 3.3.1 非阻塞 IO 流程（伪代码）
 
-```
+```text
 【服务端 - 轮询模型】
 socket = socket(...)
 fcntl(socket, F_SETFL, O_NONBLOCK)    // 设置为非阻塞
@@ -774,7 +774,7 @@ while (1) {
 }
 ```
 
-```
+```text
 时序图:
   Server Process                           Kernel
        |                                     |
@@ -795,7 +795,7 @@ while (1) {
 
 ### 3.4.1 IO 多路复用流程（核心思想）
 
-```
+```text
 while (1) {
     // 1. 向内核注册多个 fd
     // 2. 内核监控这些 fd, 当任一 fd 数据就绪时返回
@@ -809,7 +809,7 @@ while (1) {
 }
 ```
 
-```
+```text
 时序图:
   Server Process         Kernel(多路复用器)
        |                        |
@@ -967,7 +967,7 @@ while (1) {
 
 - **触发条件**：只要 socket 接收缓冲区有数据（可读）或发送缓冲区未满（可写），每次 `epoll_wait` 都会通知。
 - **示例**：
-  ```
+  ```text
   fd 缓冲区收到 2KB 数据
     → epoll_wait 返回 fd 通知
     → 应用 read 了 1KB (还剩 1KB)
@@ -982,7 +982,7 @@ while (1) {
 
 - **触发条件**：只在状态**变化**的时刻通知一次（如缓冲区从空→非空，或从满→非满）。
 - **示例**：
-  ```
+  ```text
   fd 缓冲区收到 2KB 数据 (状态变化！)
     → epoll_wait 返回 fd 通知 (仅此一次)
     → 应用 read 了 1KB (还剩 1KB)
@@ -1166,7 +1166,7 @@ typedef struct aeTimeEvent {
 
 ### 3.8.2 Redis 事件循环主流程
 
-```
+```text
 main() → initServer() → aeMain()
   └── aeProcessEvents() 循环
         │
@@ -1224,7 +1224,7 @@ main() → initServer() → aeMain()
 
 ### 3.9.1 Redis 6.0+ 多线程 IO 模型
 
-```
+```text
                     ┌──────────────────────────┐
                     │    单线程命令执行引擎       │
                     │  (processCommand)         │
@@ -1314,7 +1314,7 @@ RESP 有 5 种数据类型：
 ### 4.1.3 常见命令 RESP 示例
 
 **SET key value**：
-```
+```text
 请求:
 *3\r\n
 $3\r\n
@@ -1329,7 +1329,7 @@ value\r\n
 ```
 
 **GET key（存在）**：
-```
+```text
 请求:
 *2\r\n
 $3\r\n
@@ -1343,13 +1343,13 @@ value\r\n
 ```
 
 **GET key（不存在）**：
-```
+```text
 响应:
 $-1\r\n
 ```
 
 **INCR counter**：
-```
+```text
 请求:
 *2\r\n
 $4\r\n
@@ -1362,7 +1362,7 @@ counter\r\n
 ```
 
 **HMSET user name tom age 20**：
-```
+```text
 请求:
 *6\r\n
 $5\r\n
@@ -1400,7 +1400,7 @@ RESP3 兼容 RESP2，新增类型解决 RESP2 的局限：
 优点：结构化响应更清晰（HELLO 命令中客户端可协商使用 RESP3），服务端推送支持更优雅。
 
 示例：
-```
+```text
 *2
 $4
 PING
@@ -1661,7 +1661,7 @@ public class RedisConnectionPool {
 ### 5.2.3 近似 LFU 算法（Redis 4.0+）
 
 LFU 用 `lru` 字段的 24 位分成两部分：
-```
+```text
 +-----------------------+------------------------+
 | 16 bits: last_dec_time | 8 bits: logarithmic ctr|
 +-----------------------+------------------------+
@@ -1689,7 +1689,7 @@ LFU 用 `lru` 字段的 24 位分成两部分：
 
 ### 5.2.5 淘汰执行流程
 
-```
+```text
 当内存使用 > maxmemory 时:
   1. 判断是否有需要淘汰的 key (noeviction → 报错)
   2. 计算需要释放的内存大小 (mem_tofree)
@@ -1785,7 +1785,7 @@ active-defrag-max-scan-fields 1000                  # 每次扫描最多处理�
 
 ## 6.1 MULTI/EXEC/DISCARD 内部实现
 
-```
+```text
 MULTI
   →  client.flags |= CLIENT_MULTI  (标记客户端进入事务模式)
   →  后续命令不立即执行, 而是加入 client.multiState.commands 队列
@@ -1806,7 +1806,7 @@ DISCARD:
 
 ### 6.1.1 WATCH 乐观锁实现
 
-```
+```text
 WATCH key1 key2:
   →  client 的 watched_keys 列表中加入 (db, key1), (db, key2)
   →  被监视的 key 在 redisDb.watched_keys 字典中注册
@@ -1839,7 +1839,7 @@ WATCH key1 key2:
 
 ## 7.1 Lua 脚本执行流程
 
-```
+```text
 客户端:
   EVAL "return redis.call('SET', KEYS[1], ARGV[1])" 1 key1 value1
 
@@ -1904,7 +1904,7 @@ lua-time-limit 5000    # 脚本最大执行时间 (毫秒), 默认 5000ms
 
 ### 8.1.1 Stream 宏观结构
 
-```
+```text
 stream {
     rax *rax;               // 基数树索引: (stream_id + key) → streamID
     rax *cgroups;           // 消费者组索引 (Radix Tree)
@@ -1923,7 +1923,7 @@ stream {
 
 ### 8.1.3 消费者组内部实现
 
-```
+```text
 consumerGroup {
     streamID last_id;             // 最后投递的消息 ID
     rax *pel;                     // PEL（Pending Entries List, Rax 字典)

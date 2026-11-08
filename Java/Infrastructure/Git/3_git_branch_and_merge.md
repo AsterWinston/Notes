@@ -5,7 +5,7 @@ Git 的分支本质上是一个指向 commit 对象的**可移动指针**。每�
 
 ## 1.1 分支的物理存储
 
-```
+```text
 .git/refs/heads/
 ├── main        # 包含一个 commit hash
 ├── develop
@@ -101,7 +101,7 @@ git branch --no-contains abc123
 
 当目标分支自分支点以来没有新提交时，Git 执行快进合并：
 
-```
+```text
 合并前：
 main:    A──B──C
 feature:      C──D──E
@@ -126,7 +126,7 @@ git merge --ff-only feature       # 仅当可以 fast-forward 时合并，否则
 
 **--no-ff 的合并结果**：
 
-```
+```text
 main:    A──B──C──────────F
                \          /
 feature:        C──D──E──/
@@ -138,7 +138,7 @@ feature:        C──D──E──/
 
 当两个分支都有新提交时，Git 使用三路合并：
 
-```
+```text
 main:    A──B──C──F
 feature: A──B──D──E
 共同祖先: B
@@ -196,7 +196,7 @@ git apply <差异>                # 应用更改
 
 **Squash 合并前后**：
 
-```
+```text
 合并前 feature 分支：
 A──B──C──D──E
     │
@@ -341,7 +341,7 @@ git config --local push.denyCurrentBranch warn
 
 ## 5.2 分支命名规范
 
-```
+```text
 main                     # 生产分支
 develop                  # 开发主线分支
 feature/<描述>          # 功能开发分支

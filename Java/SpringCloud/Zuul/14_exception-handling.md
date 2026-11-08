@@ -3,7 +3,7 @@
 
 Zuul 的异常处理涉及多个层面：
 
-```
+```text
                     ┌──────────────────────┐
                     │   应用层异常           │
                     │   Filter.run() 抛出    │
@@ -384,7 +384,7 @@ public Object run() throws ZuulException {
 
 Pre 阶段异常的特殊处理路径：
 
-```
+```text
 ZuulServlet.service()
     │
     ├── preRoute() → 抛出异常

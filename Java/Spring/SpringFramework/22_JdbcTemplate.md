@@ -4,7 +4,7 @@ Spring也可以集成其它的ORM框架，例如：MyBatis、Hibernate等。
 # 1. 环境准备
 ## 1.1 创建模块
 ## 1.2 引入依赖
-```
+```xml
 <dependencies>
   <!-- spring 基础依赖 -->
   <dependency>
@@ -35,7 +35,7 @@ Spring也可以集成其它的ORM框架，例如：MyBatis、Hibernate等。
 </dependencies>
 ```
 ## 1.3 数据库表
-```
+```sql
 CREATE DATABASE spring6;
 
 USE spring6;
@@ -52,7 +52,7 @@ VALUES (NULL, '张三', 12),
        (NULL, '李四', 23);
 ```
 ## 1.4 数据库表对应的 Java 类
-```
+```java
 package cw.spring.study.pojo;
 
 /**
@@ -109,7 +109,7 @@ public class User {
 }
 ```
 ## 1.5 数据源
-```
+```java
 package cw.spring.study.pojo;
 
 import javax.sql.DataSource;
@@ -216,7 +216,7 @@ public class MyDataSource implements DataSource {
 }
 ```
 ## 1.6 spring 配置文件
-```
+```text
 要使用spring中的JdbcTemplate进行数据库操作，就需要一个JdbcTemplate对象
 spring是对象的容器，可以在Spring配置文件中配置JdbcTemplate，由spring管理JdbcTemplate对象
 <?xml version="1.0" encoding="UTF-8"?>
@@ -241,7 +241,7 @@ spring是对象的容器，可以在Spring配置文件中配置JdbcTemplate，�
 </beans>
 ```
 ## 1.7 测试
-```
+```java
 @org.junit.Test
 public void testJDBC() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -252,7 +252,7 @@ public void testJDBC() {
 ```
 
 # 2. 新增数据
-```
+```java
 @org.junit.Test
 public void testInsert() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -270,7 +270,7 @@ public void testInsert() {
 ```
 
 # 3. 修改数据
-```
+```java
 @org.junit.Test
 public void testUpdate() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -283,7 +283,7 @@ public void testUpdate() {
 ```
 
 # 4. 删除数据
-```
+```java
 @org.junit.Test
 public void testDelete () {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -296,7 +296,7 @@ public void testDelete () {
 ```
 
 # 5. 查询一个对象
-```
+```java
 Spring 中的 JDBC 可以实现数据库表字段名到Java对象属性名的映射（要符合命名规范）
 @org.junit.Test
 public void testSelectOneObject() {
@@ -315,7 +315,7 @@ public void testSelectOneObject() {
 ```
 
 # 6. 查询多个对象
-```
+```java
 @org.junit.Test
 public void testSelectAll() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -333,7 +333,7 @@ public void testSelectAll() {
 ```
 
 # 7. 查一个值
-```
+```java
 @org.junit.Test
 public void testSelectOneValue() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -348,7 +348,7 @@ public void testSelectOneValue() {
 ```
 
 # 8. 批量添加
-```
+```java
 @org.junit.Test
 public void testBatchInsert() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -375,7 +375,7 @@ public void testBatchInsert() {
 ```
 
 # 9. 批量更新
-```
+```java
 @org.junit.Test
 public void testBatchUpdate() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -402,7 +402,7 @@ public void testBatchUpdate() {
 ```
 
 # 10. 批量删除
-```
+```java
 @org.junit.Test
 public void testBatchDelete() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -428,7 +428,7 @@ public void testBatchDelete() {
 ```
 
 # 11. 回调函数
-```
+```java
 如果要写JDBC代码，可以使用回调函数
 @org.junit.Test
 public void test10() {
@@ -463,7 +463,7 @@ public void test10() {
 ```
 
 # 12. 整合德鲁伊连接池
-```
+```text
 引入德鲁伊连接池的依赖
 <dependency>
   <groupId>com.alibaba</groupId>
@@ -498,7 +498,7 @@ public void test06() {
 
 ## 13.1 JdbcTemplate 的核心架构
 
-```
+```text
 JdbcTemplate 是 Spring JDBC 的核心类，它封装了所有样板代码：
 
 JdbcTemplate 的设计模式：
@@ -529,7 +529,7 @@ JdbcTemplate 的设计模式：
 
 ## 13.2 execute() — 所有操作的统一入口
 
-```
+```java
 JdbcTemplate.execute() 是所有 JDBC 操作的底层统一入口：
 
 @Nullable
@@ -592,7 +592,7 @@ private <T> T execute(PreparedStatementCreator psc, PreparedStatementCallback<T>
 
 ## 13.3 query() 方法的执行链路
 
-```
+```java
 以 query(sql, RowMapper) 为例，追踪完整执行链路：
 
 public <T> List<T> query(String sql, RowMapper<T> rowMapper) throws DataAccessException {
@@ -635,7 +635,7 @@ public <T> T query(
 
 ## 13.4 update() 方法的执行链路
 
-```
+```java
 public int update(final String sql) throws DataAccessException {
     Assert.notNull(sql, "SQL must not be null");
     // ★ 调用 execute()，使用 SimplePreparedStatementCreator
@@ -675,7 +675,7 @@ protected int update(
 
 ## 13.5 DataSourceUtils.getConnection() — 连接获取策略
 
-```
+```java
 DataSourceUtils 是 Spring JDBC 中的连接管理工具类，负责处理连接获取、事务感知和释放：
 
 public static Connection getConnection(DataSource dataSource) throws CannotGetJdbcConnectionException {
@@ -729,7 +729,7 @@ public static Connection doGetConnection(DataSource dataSource) throws SQLExcept
 
 ## 13.6 DataSourceUtils.releaseConnection() — 连接释放策略
 
-```
+```java
 public static void releaseConnection(
         @Nullable Connection con, @Nullable DataSource dataSource) {
 
@@ -783,7 +783,7 @@ public static void doCloseConnection(
 
 ## 13.7 BeanPropertyRowMapper — 结果集到 Bean 的映射
 
-```
+```java
 BeanPropertyRowMapper 负责将 ResultSet 的一行转换为 Bean：
 
 public class BeanPropertyRowMapper<T> implements RowMapper<T> {
@@ -822,7 +822,7 @@ public class BeanPropertyRowMapper<T> implements RowMapper<T> {
 
 ## 13.8 JdbcTemplate 事务感知完整流程图
 
-```
+```text
 业务方法 @Transactional
     │
     └─ TransactionInterceptor（事务开启）

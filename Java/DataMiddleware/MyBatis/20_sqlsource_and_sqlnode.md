@@ -1,6 +1,6 @@
 # 1. SqlSource 体系概览
 
-```
+```text
 SqlSource 是 MyBatis 中表示 SQL 源的抽象接口。
 它负责将 Mapper.xml 或注解中的 SQL 语句转换为可执行的 BoundSql。
 
@@ -25,7 +25,7 @@ MyBatis 源码中 SqlSource 的体系结构：
 
 # 2. getBoundSql() 的执行流程
 
-```
+```text
 SqlSource.getBoundSql(parameterObject) 的执行取决于具体实现：
 
 DynamicSqlSource.getBoundSql(parameterObject):
@@ -54,7 +54,7 @@ StaticSqlSource.getBoundSql(parameterObject):
 
 # 3. SqlNode 树 — 动态 SQL 的 AST
 
-```
+```text
 MyBatis 将动态 SQL 的 XML 标签解析为一棵 SqlNode 树（AST），
 每次执行 SQL 时遍历这棵树来动态生成最终的 SQL 语句。
 
@@ -90,7 +90,7 @@ MyBatis 中所有的 SqlNode 类型：
 
 # 4. XMLScriptBuilder — SqlNode 树的构建过程
 
-```
+```text
 XMLScriptBuilder 负责将 Mapper.xml 中的 SQL 标签解析为 SqlNode 树。
 
 源码：org.apache.ibatis.scripting.xmltags.XMLScriptBuilder
@@ -573,7 +573,7 @@ public class GenericTokenParser {
 
 # 9. SqlSource 的创建决策流程
 
-```
+```text
 XMLScriptBuilder 在解析 SQL 标签时，会根据是否包含动态元素决定创建哪种 SqlSource：
 
   parseScriptNode()
@@ -659,7 +659,7 @@ public class BoundSql {
 
 # 11. 实例：一条动态 SQL 的完整解析过程
 
-```
+```text
 以以下 SQL 为例，追踪从 XML 到 BoundSql 的完整流程：
 
 XML 源码：
@@ -733,7 +733,7 @@ Step 5: 返回 BoundSql(sql="select * from t_car WHERE brand like concat('%',?, 
 
 # 12. 缓存：MapperMethod 中的 SqlCommand
 
-```
+```text
 在 MapperMethod 中，SqlCommand 的构建中也涉及到 MappedStatement 的查找：
 
 MappedStatement ms = configuration.getMappedStatement(statementId);

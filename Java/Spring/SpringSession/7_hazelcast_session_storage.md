@@ -30,7 +30,7 @@
 
 ## 2.1 整体架构
 
-```
+```text
 应用实例 A (Hazelcast 节点)      应用实例 B (Hazelcast 节点)
 ┌──────────────────────┐      ┌──────────────────────┐
 │  App A               │      │  App B               │
@@ -48,7 +48,7 @@
 
 Session 数据存储在 Hazelcast 的 **分布式 IMap** 中：
 
-```
+```text
 IMap<String, MapSession>
   ├── Key: sessionId (自动分片)
   ├── Value: MapSession (序列化存储)

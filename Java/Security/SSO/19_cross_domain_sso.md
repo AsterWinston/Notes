@@ -3,7 +3,7 @@
 
 当企业的多个系统分布在不同的域名下时（如 `app1.example.com`、`app2.other.com`、`external.partner.com`），Cookie 的 Domain 机制失效，需要更复杂的跨域 SSO 方案。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                    跨域 SSO 场景                                  │
 │                                                                   │
@@ -35,7 +35,7 @@
 
 ## 3.1 流程
 
-```
+```text
 用户  App A (a.com)    认证中心 (sso.com)      App B (b.com)
  │       │                    │                    │
  │ ① GET a.com              │                    │
@@ -163,7 +163,7 @@ public class CrossDomainSsoFilter extends OncePerRequestFilter {
 
 利用一个隐蔽的 iframe 加载 SSO 域页面，通过 `postMessage` API 跨域传递登录状态。
 
-```
+```text
 主域名页面 (app1.example.com)
     │
     ├── <iframe src="https://sso.example.com/check" style="display:none">
@@ -269,7 +269,7 @@ public class CrossDomainSsoFilter extends OncePerRequestFilter {
 
 如果所有系统共享同一个父域名，可以在父域设置 Cookie：
 
-```
+```text
 sso.example.com 写入 Cookie:
   Set-Cookie: SSO_TOKEN=xxx; Domain=.example.com; Path=/
 
@@ -313,7 +313,7 @@ public CookieSerializer cookieSerializer() {
 
 # 6. 方案四：SAML/OIDC 跨域联合
 
-```
+```text
 组织 A (company-a.com)                    组织 B (partner.com)
 ┌────────────────────┐                   ┌────────────────────┐
 │  IdP (Azure AD)     │                   │  IdP (Okta)         │

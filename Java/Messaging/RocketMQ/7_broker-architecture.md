@@ -20,7 +20,7 @@ public static BrokerController createBrokerController(String[] args) {
 
 ## 1.2 Broker 角色
 
-```
+```text
                       Master (brokerId=0)
                      /        |        \
                (读写)     (读写)     (写服务)
@@ -39,7 +39,7 @@ public static BrokerController createBrokerController(String[] args) {
 
 # 2. BrokerController 核心模块
 
-```
+```text
 BrokerController
 ├── BrokerConfig                     — 配置管理
 ├── NettyServerConfig                — 网络服务端配置
@@ -83,7 +83,7 @@ BrokerController
 
 # 3. Broker 消息处理架构
 
-```
+```text
                      Netty Server (10911)
                             │
                ┌────────────┼────────────┐
@@ -107,7 +107,7 @@ BrokerController
 
 ## 3.1 请求处理线程模型
 
-```
+```text
 Netty Worker Group (已设置线程名称前缀)
     ↓
     ├── Default → 工作线程池 (SendMessageThreadPoolNums=默认 1 个线程池)
@@ -192,7 +192,7 @@ public class RequestCode {
 
 # 5. 延迟消息调度 (ScheduledMessageService)
 
-```
+```text
 延迟消息投递流程：
 Producer 发送消息 (delayLevel=3)
     │
@@ -221,7 +221,7 @@ Consumer 正常消费
 
 # 6. 事务消息管理 (TransactionalMessageService)
 
-```
+```text
 事务消息流程：
 1. Producer 发送 Half Message
 2. Broker 存储消息 (标记 TRANSACTION_NOT_TYPE 或 TRANSACTION_PREPARED_TYPE)

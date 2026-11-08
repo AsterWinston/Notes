@@ -17,7 +17,7 @@
 
 ## 1.3 公式/图示：预处理流水线
 
-```
+```text
 原始文本
    │
    ▼
@@ -260,7 +260,7 @@ def to_halfwidth(text):
 
 ## 5.3 公式/图示：pad / truncate
 
-```
+```text
 max_len = 6
 tokens = [a, b, c, d, e, f, g]  → 截断 → [a, b, c, d, e, f]
 tokens = [a, b, c]              → 填充 → [a, b, c, PAD, PAD, PAD]
@@ -328,7 +328,7 @@ def pad_or_truncate(tokens, max_len, pad_id=0):
 
 ## 6.3 公式/图示
 
-```
+```text
 编辑距离：min(增, 删, 改) 次数
 Jaccard(A, B) = |A ∩ B| / |A ∪ B|
 余弦相似度 = (A · B) / (‖A‖ · ‖B‖)
@@ -457,7 +457,7 @@ def split_sentences(text):
     return [s.strip() for s in sentences if s.strip()]
 ```
 
-```
+```text
 输入： "今天下雨了。我们没出门！你还好吗？"
 输出： ["今天下雨了。", "我们没出门！", "你还好吗？"]
 ```
@@ -497,7 +497,7 @@ def split_sentences(text):
 
 ## 9.3 公式/图示：索引/查询一致性
 
-```
+```text
         ┌──────────────┐
 文档 ──▶│ preprocess() │──▶ 建索引
         └──────────────┘

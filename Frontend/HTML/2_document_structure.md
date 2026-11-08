@@ -100,7 +100,7 @@ btn.dataset.action  // "delete"
 </div>
 ```
 
-```
+```text
 DOM 树：
       div#a
       /    \

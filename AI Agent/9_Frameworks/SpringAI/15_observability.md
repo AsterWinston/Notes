@@ -41,7 +41,7 @@
 
 **结论先行**：可观测由 Trace（追踪）、Metrics（指标）、Logs（日志）三大支柱构成，三者互补而非替代。
 
-```
+```text
 Trace    一次请求的完整调用链（模型、工具、检索、记忆）
 Metrics  延迟、Token、成功率、错误率、成本
 Logs     结构化日志（含脱敏后的提示与响应）
@@ -67,7 +67,7 @@ Logs 是离散的事件记录，信息量最大但检索成本高，适合记录
 | Metrics | 聚合 | 告警与趋势 | 避免高基数 |
 | Logs | 事件 | 细节与取证 | 必须脱敏 |
 
-```
+```text
 Trace ──(聚合)──▶ Metrics
   │
   └──(关联)──▶ Logs（通过 TraceId 关联）
@@ -77,7 +77,7 @@ Trace ──(聚合)──▶ Metrics
 
 **结论先行**：一次故障排查通常遵循"指标发现异常 → Trace 定位环节 → 日志查看细节"的顺序。
 
-```
+```text
 1) Metrics 告警：ai.chat.duration P99 升高
         │
         ▼
@@ -102,7 +102,7 @@ Trace ──(聚合)──▶ Metrics
 
 Spring AI 通过 Micrometer Observation 为每次模型调用生成观测数据：
 
-```
+```text
 observation
 ├── name: spring.ai.chat.client
 ├── lowCardinalityKeyValues
@@ -390,7 +390,7 @@ Span 的父子关系应反映真实调用层次：检索与记忆是 chat 的前
 
 ## 7.1 Trace 结构
 
-```
+```text
 Trace: 用户提问
 ├── Span: 记忆读取
 ├── Span: 模型调用（第 1 轮，决定调用工具）
@@ -466,7 +466,7 @@ String conversationId = session.getId();
 
 Spring AI 通过 OpenTelemetry / 自定义 Advisor 上报数据。
 
-```
+```text
 Spring AI ──Observation──▶ Micrometer ──▶ OTLP ──▶ Collector
                                                       │
                                         ┌─────────────┼─────────────┐

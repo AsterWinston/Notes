@@ -413,7 +413,7 @@ public void auditChange(String taskId, String filePath,
 
 结论先行：回滚基于 Git 分支与审计记录，可精确还原到变更前状态。
 
-```
+```text
 审计记录 → 定位变更文件 → 应用反向补丁 / 切换分支 → 校验
 ```
 

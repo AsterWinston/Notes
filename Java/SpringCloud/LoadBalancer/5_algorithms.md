@@ -58,7 +58,7 @@ public class RoundRobinLoadBalancer implements ReactorServiceInstanceLoadBalance
 
 ## 2.2 轮询示意图
 
-```
+```text
 请求序号  position   取模结果  选中实例
 ────────────────────────────────────
   1        1           1 % 3 = 1  → 实例 B
@@ -194,7 +194,7 @@ spring:
 
 ## 4.2 加权随机示意图
 
-```
+```text
 实例权重: A=1, B=2, C=3
 
 权重区间: [0,1): A   [1,3): B   [3,6): C

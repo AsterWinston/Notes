@@ -4,7 +4,7 @@
 
 **结论先行**：LLM 应用采用六层架构，每层职责单一，上层依赖下层抽象。
 
-```
+```text
 ┌───────────────────────────────────────────────┐
 │  接入层   Controller / SSE / WebSocket         │
 ├───────────────────────────────────────────────┤
@@ -59,7 +59,7 @@
 
 **结论先行**：依赖必须单向流动，禁止反向依赖与循环依赖。
 
-```
+```text
 Controller → Facade → Service → (ChatClient / VectorStore / Tools)
                          │
                          └── 只依赖抽象，不依赖具体模型
@@ -172,7 +172,7 @@ spring:
 
 **结论先行**：治理能力通过 Advisor 链统一实现，不侵入业务代码。
 
-```
+```text
 Request  → [Log] → [Guardrail] → [Memory] → [RAG] → Model
 Response ← [Log] ← [Guardrail] ← [Memory] ← [RAG] ←
 ```
@@ -438,7 +438,7 @@ app:
 
 ### 9.1.1 目录树
 
-```
+```text
 src/main/java/com/example/ai
 ├── config/             配置类
 │   ├── AiProperties.java

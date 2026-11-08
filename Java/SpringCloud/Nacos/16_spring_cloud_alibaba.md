@@ -3,7 +3,7 @@
 
 Spring Cloud Alibaba 提供了一套完整的微服务解决方案，Nacos 是其中的核心基础设施。
 
-```
+```text
         Spring Cloud Alibaba 微服务体系
 
 ┌─────────────────────────────────────────────────────────┐
@@ -436,7 +436,7 @@ public class CreateOrderService {
 
 # 8. 完整项目结构
 
-```
+```text
 microservice-parent/
 ├── pom.xml (父 POM)
 ├── common/

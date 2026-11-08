@@ -44,7 +44,7 @@ Spring Boot 2.x 之后默认使用 Lettuce 作为 Redis 客户端。如需使用
 
 ## 1.3 Spring Data Redis 整体架构
 
-```
+```text
                                                      Spring Cache 抽象
 ┌────────────────────────────────────────┐     ┌─────────────────────┐
 │         RedisRepository               │     │ @Cacheable          │
@@ -941,7 +941,7 @@ public class UserRedisService {
 
 **Redis Repository 底层存储结构**：
 
-```
+```text
 保存 User{id="u1", name="张三", email="zh@ex.com"} 时，Redis 中实际存储：
 
 1. users:u1  (Hash)
@@ -1261,7 +1261,7 @@ spring:
 ```
 
 哨兵模式原理：
-```
+```text
 客户端先连接 Sentinel → 获取当前 Master 地址 → 直接连接 Master
                                                   ↓
                                           Master 故障 → Sentinel 选举新 Master
@@ -1573,7 +1573,7 @@ public class ReactiveRedisService {
 
 # 14. 最佳实践总结
 
-```
+```text
 1. 序列化器选择
    - 对象缓存：GenericJackson2JsonRedisSerializer（或 FastJson）
    - 纯字符串：StringRedisTemplate

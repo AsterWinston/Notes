@@ -6,7 +6,7 @@
 
 结论先行：编码 Agent 由检索、理解、修改、执行、修复五个能力域组成，向上暴露统一任务接口，向下依赖代码库、Git、沙箱与测试框架。
 
-```
+```text
 ┌────────────────────────────────────────┐
 │  编码 Agent                             │
 │  ├── 代码检索（混合检索）                │
@@ -26,7 +26,7 @@
 
 ### 1.1.2 数据流
 
-```
+```text
 任务文本 → 检索器 → 上下文片段 → LLM → 补丁
    → 写工具 → 仓库副本 → 沙箱测试 → 结果
    → 失败回灌 LLM / 成功生成说明
@@ -64,7 +64,7 @@ Agent 服务与沙箱运行在同一主机，通过 Docker 启动隔离容器。
 
 ## 1.4 组件交互时序
 
-```
+```text
 用户   接口层   编排层   检索器   工具    沙箱
  │       │        │        │       │       │
  │─提交─▶│        │        │       │       │
@@ -88,7 +88,7 @@ Agent 服务与沙箱运行在同一主机，通过 Docker 启动隔离容器。
 
 结论先行：按函数/类为单位切分，比按固定长度切分更契合代码语义。
 
-```
+```text
 代码库 → 按函数/类切分 → 向量化 + 关键词索引
 
 查询："处理认证失败"
@@ -165,7 +165,7 @@ private List<CodeSnippet> fuse(List<Document> a, List<Document> b, int k) {
 
 ## 3.1 循环概览
 
-```
+```text
 ① 理解任务
 ② 检索相关代码
 ③ 生成修改方案
@@ -192,7 +192,7 @@ private List<CodeSnippet> fuse(List<Document> a, List<Document> b, int k) {
 
 ### 3.2.2 转移条件
 
-```
+```text
 PLANNING → PATCHING : 上下文就绪
 PATCHING → TESTING  : 补丁已应用
 TESTING  → DONE     : 测试通过
@@ -347,7 +347,7 @@ public TestResult runTests() {
 
 ## 5.4 结果解析
 
-```
+```text
 mvn 输出 → 判定 BUILD SUCCESS / FAILURE
    → 提取失败测试与堆栈 → 截断至上限 → 回灌
 ```
@@ -360,7 +360,7 @@ mvn 输出 → 判定 BUILD SUCCESS / FAILURE
 
 结论先行：每个任务分配独立工作目录与容器，任务结束即销毁容器并清理副本。
 
-```
+```text
 准备仓库副本 → 启动容器 → 执行命令 → 采集输出
    → 销毁容器 → 清理副本 → 归档日志
 ```
@@ -455,13 +455,13 @@ POST /api/coding/task
 
 ### 7.1.2 查询与 diff
 
-```
+```text
 GET /api/coding/task/{id}/diff   // 查看变更
 ```
 
 ### 7.1.3 应用与回滚
 
-```
+```text
 POST /api/coding/task/{id}/apply // 人工确认后应用
 POST /api/coding/task/{id}/revert // 回滚
 ```

@@ -4,7 +4,7 @@
 
 ## 1.1 从 HTML 到首屏
 
-```
+```text
 下载 HTML → 解析 HTML → 构建 DOM
                 │
           遇到 <script> ──▶ 阻塞解析,下载并执行脚本(可能改 DOM)

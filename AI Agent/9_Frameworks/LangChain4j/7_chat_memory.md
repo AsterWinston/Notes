@@ -8,7 +8,7 @@
 
 模型只对"本次请求里携带的 token"负责。请求里没有历史，模型就只能凭空回答。
 
-```
+```text
 无记忆：用户说"我叫张三"，下一轮"我叫什么？" → 模型不知道
 有记忆：历史消息自动带入 → 模型记得"你叫张三"
 ```
@@ -19,7 +19,7 @@
 
 每一轮对话，框架把历史消息与新消息拼成一条完整的消息列表，再发给模型：
 
-```
+```text
 用户第 1 轮: "我叫张三"
         │
         ▼
@@ -104,7 +104,7 @@ public interface ChatMemoryStore {
 
 ### 2.2.2 策略与存储分离
 
-```
+```text
    ChatMemory（策略层）
    ├─ MessageWindowChatMemory   保留最近 N 条
    ├─ TokenWindowChatMemory     按 token 预算保留
@@ -380,7 +380,7 @@ public class RedisChatMemoryStore implements ChatMemoryStore {
 
 ## 6.1 消息序列组成
 
-```
+```text
 SystemMessage（一般由 @SystemMessage 提供，不重复存入）
 UserMessage
 AiMessage（含 toolExecutionRequests）
@@ -391,7 +391,7 @@ ToolExecutionResultMessage
 
 当模型决定调用工具时，会产生 `AiMessage`（携带 `toolExecutionRequests`），随后产生 `ToolExecutionResultMessage`。这两类消息必须成对保留。
 
-```
+```text
 UserMessage "北京天气？"
       │
       ▼
@@ -478,7 +478,7 @@ public List<ChatMessage> compress(List<ChatMessage> messages, int keepRecent) {
 
 ## 8.2 组合模式
 
-```
+```text
 用户问题
    │
    ├─▶ ChatMemory ── 历史消息 ──┐

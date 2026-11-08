@@ -3,7 +3,7 @@
 
 Transport 层是 Dubbo 的网络传输抽象层，封装了底层 NIO 框架（Netty/Mina/Grizzly），向上层提供统一的通道（Channel）模型。
 
-```
+```text
 Exchange Layer (请求/响应模型)
     │
     ▼
@@ -242,7 +242,7 @@ public abstract class AbstractServer extends AbstractPeer
 
 # 6. 编解码 Pipeline
 
-```
+```text
 Netty Pipeline:
 ┌─────────────────────────────────────┐
 │  DubboCountCodec (帧解码器)           │  ← 处理 TCP 粘包/拆包
@@ -316,7 +316,7 @@ public class DubboCodec extends ExchangeCodec {
 
 ## 7.1 心跳检测模型
 
-```
+```text
 Consumer ←──→ Provider
    │             │
    │  每 60s     │
@@ -490,6 +490,6 @@ public class MyTransporter implements Transporter {
 
 SPI 注册（`META-INF/dubbo/org.apache.dubbo.remoting.Transporter`）：
 
-```
+```text
 my=com.example.MyTransporter
 ```

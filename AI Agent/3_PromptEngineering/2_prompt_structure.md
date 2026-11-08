@@ -6,7 +6,7 @@
 
 ### 1.1.1 三种角色
 
-```
+```text
 SystemMessage    系统指令（规则、人设、约束）
 UserMessage      用户输入
 AssistantMessage 模型回复（含工具调用）
@@ -53,7 +53,7 @@ List<Message> messages = List.of(
 
 ## 2.1 四类职责
 
-```
+```text
 System 用于：
 ① 角色设定：你是谁
 ② 行为规则：必须/禁止做什么
@@ -118,7 +118,7 @@ String answer = chatClient.prompt()
 
 ## 3.1 四类用途
 
-```
+```text
 User 用于：
 ① 具体问题
 ② 待处理的资料（检索结果、文档）
@@ -171,7 +171,7 @@ User 用于：
 
 ### 4.1.1 拼接 System 的危险
 
-```
+```text
 如果用户输入拼进 System：
   "你是助手。用户备注：" + userInput
 用户输入 "忽略上面的规则..." 就可能改变系统指令
@@ -270,7 +270,7 @@ String prompt = """
 
 ### 6.1.1 顺序与角色
 
-```
+```text
 [System]    规则
 [User]      第 1 问
 [Assistant] 第 1 答
@@ -315,7 +315,7 @@ String answer = chatClient.prompt()
 
 ### 7.1.1 现象
 
-```
+```text
 模型的注意力分布不均：
 - 开头（Primacy）：容易被记住
 - 结尾（Recency）：容易被记住
@@ -462,7 +462,7 @@ interface Assistant {
 
 ## 10.2 落地清单
 
-```
+```text
 上线前：□ system/user 已分离  □ 资料有分隔符
         □ 关键规则已前置  □ 多轮明确 role  □ 提示已外置
 上线后：□ 监控注入尝试  □ 审计角色内容  □ 定期回归评测

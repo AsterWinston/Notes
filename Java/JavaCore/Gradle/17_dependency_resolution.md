@@ -5,7 +5,7 @@
 
 ## 1.1 依赖解析全貌
 
-```
+```text
 依赖解析架构
 ┌──────────────────────────────────────────────────────────────┐
 │ 配置文件 (Configuration)                                      │
@@ -87,7 +87,7 @@ configurations {
 
 ## 2.3 内置标准配置
 
-```
+```text
 Java 插件标准配置
 ┌────────────────────────────────────────┐
 │ compileClasspath (解析，仅编译)          │
@@ -286,7 +286,7 @@ configurations.all {
 
 ## 4.2 版本冲突解决算法
 
-```
+```text
 版本冲突解决流程
 ┌──────────────────────────────────────────────┐
 │ 1. 收集所有版本请求                           │
@@ -437,7 +437,7 @@ rm -rf %USERPROFILE%\.gradle\caches
 
 ## 6.3 内部机制：缓存键
 
-```
+```text
 缓存键组成 (ModuleResolutionCacheKey)
 ┌──────────────────────────────────────┐
 │ 1. 仓库 URL                          │
@@ -582,7 +582,7 @@ abstract class TargetJvmVersionDisambiguationRule
 
 ## 8.2 变体选择流程
 
-```
+```text
 变体选择流程
 ┌──────────────────────────────────────────────┐
 │ 1. 消费者声明所需属性                        │
@@ -687,7 +687,7 @@ dependencyLocking {
 
 生成的文件位于 `gradle/dependency-locks/` 目录下：
 
-```
+```text
 gradle/dependency-locks/
   compileClasspath.lockfile
   runtimeClasspath.lockfile
@@ -697,7 +697,7 @@ gradle/dependency-locks/
 
 ## 10.2 锁文件格式
 
-```
+```text
 # This is a Gradle generated file for dependency locking.
 # Manual edits can break the build and are not advised.
 com.fasterxml.jackson.core:jackson-annotations:2.17.0=compileClasspath,runtimeClasspath
@@ -727,7 +727,7 @@ gradle dependencies --update-locks 'com.google.guava:*' --write-locks
 
 ## 10.4 内部机制
 
-```
+```text
 依赖锁定流程
 ┌──────────────────────────────────────────────┐
 │ 1. 解析依赖图（应用所有 resolutionStrategy） │
@@ -790,7 +790,7 @@ dependencies {
 
 ## 11.3 平台内部机制
 
-```
+```text
 平台对齐流程
 ┌──────────────────────────────────────────────┐
 │ 1. 识别 platform/enforcedPlatform 声明       │
@@ -862,7 +862,7 @@ dependencies {
 
 ## 12.3 排除的内部机制
 
-```
+```text
 排除规则处理流程
 ┌──────────────────────────────────────────────┐
 │ 1. 构建依赖图（包含所有传递依赖）            │
@@ -899,7 +899,7 @@ gradle dependencies --configuration runtimeClasspath > deps.txt
 
 输出示例：
 
-```
+```text
 runtimeClasspath - 运行时依赖
 +--- com.google.guava:guava:33.0.0-jre
 |    +--- com.google.guava:failureaccess:1.0.2
@@ -928,7 +928,7 @@ gradle dependencyInsight --dependency spring-core --configuration compileClasspa
 
 输出示例：
 
-```
+```text
 com.google.guava:guava:33.0.0-jre
   变体 "jreRuntimeElements" [
     org.gradle.category            = library
@@ -978,7 +978,7 @@ task analyzeDependencies {
 
 ## 14.1 缓存存储结构
 
-```
+```text
 .gradle/caches/
 ├── modules-2/
 │   ├── metadata-2.110/             ← 元数据缓存

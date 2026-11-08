@@ -53,7 +53,7 @@ Qdrant 的差异化不在"更大"，而在"更准"——它把过滤当作一等
 
 ## 2.2 数据模型
 
-```
+```text
 Collection: knowledge_base
    └── Point(id=uuid)
           ├── vector: [0.12, -0.03, ...]   (1024 维)

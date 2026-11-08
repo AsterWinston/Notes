@@ -99,7 +99,7 @@ gradle --version
 ```
 
 Windows 手动安装步骤：
-```
+```text
 1. 下载 gradle-8.5-bin.zip
 2. 解压到 C:\gradle\gradle-8.5
 3. 创建环境变量 GRADLE_HOME = C:\gradle\gradle-8.5
@@ -112,7 +112,7 @@ Windows 手动安装步骤：
 在实际项目开发中，**完全不推荐全局安装 Gradle**。最佳实践是使用 Gradle Wrapper，它是项目捆绑的一个小脚本，确保每个项目使用精确的 Gradle 版本。
 
 Wrapper 的核心文件：
-```
+```text
 project/
 ├── gradlew                    ← Unix shell 脚本
 ├── gradlew.bat                ← Windows 批处理脚本
@@ -333,7 +333,7 @@ tasks.named('test') {
 
 ## 3.2 项目目录结构约定
 
-```
+```text
 my-app/
 ├── build.gradle.kts              ← 构建脚本（项目级）
 ├── settings.gradle.kts           ← 设置脚本
@@ -393,7 +393,7 @@ my-app/
 ```
 
 典型输出：
-```
+```text
 Build tasks
 -----------
 assemble - Assembles the outputs of this project.
@@ -513,7 +513,7 @@ test - Runs the test suite.
 ```
 
 典型输出：
-```
+```text
 Root project 'my-app'
 -------------------------------------------------------------
 allprojects: [root project 'my-app']
@@ -578,7 +578,7 @@ if defined JAVA_HOME goto findJavaFromJavaHome
 - `Logger.java`：日志组件
 
 工作流程：
-```
+```text
 ./gradlew build
     │
     ├─► gradlew 脚本
@@ -599,7 +599,7 @@ if defined JAVA_HOME goto findJavaFromJavaHome
 
 `GRADLE_USER_HOME`（默认 `~/.gradle`）存储了 Gradle 的所有全局缓存：
 
-```
+```text
 ~/.gradle/
 ├── caches/                          ← 全局缓存
 │   ├── modules-2/                    ← 依赖 JAR 缓存
@@ -730,7 +730,7 @@ systemProp.https.proxyPort=8443
 
 Gradle 按以下优先级查找属性（高 → 低）：
 
-```
+```text
 1. 命令行 -D 参数（-Dorg.gradle.daemon=false）
 2. 命令行 -P 参数（-Pversion=2.0）→ 项目属性
 3. 项目根目录 gradle.properties（版本控制）

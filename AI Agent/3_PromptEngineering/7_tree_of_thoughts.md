@@ -13,7 +13,7 @@ ToT = 把推理组织成树，探索多条路径并回溯。
 | 分支因子 | Breadth | 每层生成的候选数量 |
 | 剪枝 | Prune | 按评分保留 top-k，丢弃低分分支 |
 
-```
+```text
                问题
                 |
       +---------+---------+
@@ -48,7 +48,7 @@ ToT = 把推理组织成树，探索多条路径并回溯。
 
 ToT 把一次大推理拆成四类可独立优化的操作：
 
-```
+```text
 (1) 生成（Generate）：产生多个候选思路
 (2) 评估（Evaluate）：给每个思路打分
 (3) 选择（Select）：保留最优的几个
@@ -381,7 +381,7 @@ TotAssistant assistant = AiServices.create(TotAssistant.class, chatModel);
 
 ## 4.1 成本模型
 
-```
+```text
 成本 ≈ 生成次数 × 每次调用成本
 生成次数 ≈ breadth^depth（指数增长）
 

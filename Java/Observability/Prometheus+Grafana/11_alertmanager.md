@@ -3,7 +3,7 @@
 
 Alertmanager 是 Prometheus 生态中的**告警管理组件**，负责接收 Prometheus Server 发送的告警，进行去重、分组、路由、抑制、静默处理后，通过多种渠道发送通知。
 
-```
+```text
 Prometheus Server     Alertmanager                       Notification
 +-------------+     +------------------+              +---------------+
 | Alert Rule  |     | 接收告警          |              | Email         |
@@ -130,7 +130,7 @@ route:
 
 ## 5.1 分组流程
 
-```
+```text
 原始告警流：
   HostA: CPU > 80%
   HostB: CPU > 80%

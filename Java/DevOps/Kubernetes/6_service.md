@@ -18,7 +18,7 @@
 
 举个具体例子来感受严重性：
 
-```
+```text
 初始状态:
   Pod A: IP=10.244.1.5
   Pod B: IP=10.244.2.8
@@ -56,7 +56,7 @@ Node 2 宕机，Pod B 漂移到 Node 3:
 
 在没有 Kubernetes 的经典架构中，通常会使用独立的外部服务发现系统（如 Consul、ZooKeeper、etcd）来管理服务注册与发现。工作流程是：
 
-```
+```text
 应用启动 → 注册到服务发现 → 定期心跳
 客户端 → 查询服务发现 → 获取后端列表 → 客户端负载均衡 → 发起请求
 ```
@@ -72,7 +72,7 @@ Kubernetes 的目标是将这些基础设施能力**下沉到平台层**，让�
 
 假设一个电商系统的订单服务部署了 5 个 Pod 副本：
 
-```
+```text
 订单服务Pod: 10.244.1.10, 10.244.2.11, 10.244.3.12, 10.244.1.13, 10.244.2.14
 ```
 
@@ -104,7 +104,7 @@ Service 提供了以下核心能力：
 
 从概念上理解，Service 扮演了以下角色：
 
-```
+```text
                      ┌──────────────┐
                      │   Client     │
                      │  (任意Pod)   │
@@ -332,7 +332,7 @@ spec:
 
 Service 与 Pod 解耦的背后，是 Endpoints Controller 的持续工作。完整流程如下：
 
-```
+```text
 1. 用户创建 Service（指定 selector: app=order）
        │
        ▼
@@ -379,7 +379,7 @@ ClusterIP 是 Service 最核心的设计概念之一。它本质上是一个**�
 
 以 iptables 模式为例，发往 ClusterIP 的数据包经过的规则链如下（Node 上的规则）：
 
-```
+```text
 PREROUTING → KUBE-SERVICES → KUBE-SVC-XXXX → KUBE-SEP-XXXX → DNAT to Pod IP
 ```
 
@@ -419,7 +419,7 @@ Service 的 ClusterIP 由 `kube-apiserver` 中的 `ServiceClusterIPAllocator` �
 
 4. **分配流程**：
 
-```
+```text
 创建 Service 请求到达 API Server
   │
   ▼
@@ -540,7 +540,7 @@ ClusterIP Service 可以从以下位置访问：
 
 ### 2.1.4 内部访问模式的流量路径
 
-```
+```text
 客户端 Pod (10.244.1.5)
     │
     │ 目标: 10.96.100.42:80
@@ -615,7 +615,7 @@ spec:
 
 NodePort 的端口范围默认为 **30000-32767**，可以通过 `kube-apiserver` 的 `--service-node-port-range` 参数配置：
 
-```
+```text
 --service-node-port-range=30000-32767
 ```
 
@@ -636,7 +636,7 @@ PORT(S) 列显示为 `80:30080/TCP`，含义是：
 
 ### 2.2.4 外部访问的流量路径
 
-```
+```text
 外部客户端 (192.168.1.100)
     │
     │ 目标: Node1的IP:30080 (如 10.0.0.1:30080)
@@ -660,7 +660,7 @@ Node1 网络栈
 
 NodePort 请求经历了**两次 DNAT**：
 
-```
+```text
 第一次 DNAT: 目标 IP:NodeIP, Port:30080 → 目标 IP:ClusterIP, Port:80
 第二次 DNAT: 目标 IP:ClusterIP, Port:80 → 目标 IP:PodIP, Port:8080
 ```
@@ -729,7 +729,7 @@ LoadBalancer Service 的自动创建依赖 **Cloud Controller Manager (CCM)**，
 
 Service Controller 的工作流程：
 
-```
+```text
 1. 用户创建 LoadBalancer 类型的 Service
        │
        ▼
@@ -767,7 +767,7 @@ EXTERNAL-IP 列显示了一个公网可访问的 IP 地址。这个 IP 是云负
 
 ### 2.3.4 流量路径
 
-```
+```text
 外部客户端 (Internet)
     │
     │ 目标: LB EXTERNAL-IP:80 (203.0.113.50:80)
@@ -874,7 +874,7 @@ spec:
 
 创建上述 Service 后，集群内的 Pod 访问 `external-database.production.svc.cluster.local` 时：
 
-```
+```text
 Pod 内应用解析 external-database.production.svc.cluster.local
     │
     ▼
@@ -910,7 +910,7 @@ Pod 内应用配置 `external-redis:6379` 即可连接，无需硬编码 AWS Ela
 2. **跨命名空间访问的灵活性**：
 
 常规跨命名空间访问：
-```
+```text
 Service名称.命名空间.svc.cluster.local
 例如: database.production.svc.cluster.local
 ```
@@ -1046,7 +1046,7 @@ spec:
 
 ### 2.6.2 选择决策树
 
-```
+```text
 需要访问集群外部服务？
   └── 是 → 使用 ExternalName 或 Headless Service (手动管理 Endpoints)
 
@@ -1151,7 +1151,7 @@ status:
 
 ### 3.1.1 各字段层级关系
 
-```
+```text
 Service
 ├── metadata (标准资源元数据)
 │   ├── name
@@ -1195,7 +1195,7 @@ Service 配置中有多个端口相关的字段，它们之间的关系经常让
 
 **定义**：Service 对外暴露的端口，即客户端连接 Service 时使用的端口。
 
-```
+```text
 客户端 → Service_IP:port → ...
 ```
 
@@ -1205,7 +1205,7 @@ Service 配置中有多个端口相关的字段，它们之间的关系经常让
 
 **定义**：后端 Pod 上容器监听的实际端口。Service 将流量转发到 Pod 的 `targetPort`。
 
-```
+```text
 ... → Service(port) → DNAT → Pod_IP:targetPort
 ```
 
@@ -1230,7 +1230,7 @@ ports:
 
 **定义**：在集群每个 Node 上暴露的端口，用以接收来自集群外部的流量。仅在 `type: NodePort` 或 `type: LoadBalancer` 时有效。
 
-```
+```text
 外部客户端 → Node_IP:nodePort → Service_IP:port → DNAT → Pod_IP:targetPort
 ```
 
@@ -1263,7 +1263,7 @@ spec:
 
 ### 3.2.5 四种端口的关系图
 
-```
+```text
                      ┌──────────────────────────────────┐
                      │          Service                  │
                      │                                  │
@@ -1364,7 +1364,7 @@ spec:
 
 **iptables 模式**：kube-proxy 使用 iptables 的 `recent` 模块来实现 ClientIP 会话亲和性。规则逻辑如下：
 
-```
+```text
 1. 新连接到达 KUBE-SVC-XXXX 链
 2. 检查 recent 模块中的 "已记录客户端" 列表
 3. 如果该源 IP 在列表中且未超时：
@@ -1478,7 +1478,7 @@ StatefulSet 默认按序启动（从 0 到 N-1）。Pod-1 的启动可能依赖 
 
 **流量路径**：
 
-```
+```text
 外部客户端 (10.0.1.100)
     │
     │ 连接到 Node2:30080
@@ -1515,7 +1515,7 @@ Pod 响应 → Node2 → 外部客户端
 
 **流量路径**：
 
-```
+```text
 外部客户端 (10.0.1.100)
     │
     │ 连接到 Node1:30080
@@ -1700,20 +1700,20 @@ spec:
 要启用双栈支持，kube-apiserver、kube-controller-manager 和 kube-proxy 都需要配置双网段：
 
 **kube-apiserver**:
-```
+```text
 --service-cluster-ip-range=10.96.0.0/12,2001:db8::/108
 --feature-gates=IPv6DualStack=true
 ```
 
 **kube-controller-manager**:
-```
+```text
 --cluster-cidr=10.244.0.0/16,2001:db8:1::/48
 --service-cluster-ip-range=10.96.0.0/12,2001:db8::/108
 --feature-gates=IPv6DualStack=true
 ```
 
 **kube-proxy**:
-```
+```text
 --cluster-cidr=10.244.0.0/16,2001:db8:1::/48
 --feature-gates=IPv6DualStack=true
 ```
@@ -1784,7 +1784,7 @@ kube-proxy 的核心职责包括：
 
 kube-proxy 的内部架构包含以下关键组件：
 
-```
+```text
 +-----------------------------------------------------+
 |                   kube-proxy                         |
 |                                                      |
@@ -1853,7 +1853,7 @@ iptables 是 Linux 内核的 netfilter 框架的用户态管理工具。它通�
 
 netfilter 提供了 5 个钩子（Hook）点：
 
-```
+```text
 网络层数据包路径:
 
 -> [NF_IP_PRE_ROUTING] -> [路由决策] -> [NF_IP_FORWARD] -> [NF_IP_POST_ROUTING] ->
@@ -1871,7 +1871,7 @@ kube-proxy 主要在 `PREROUTING`、`OUTPUT` 和 `POSTROUTING` 链上添加规�
 
 kube-proxy 在 iptables 的 `nat` 表中创建了一系列自定义链：
 
-```
+```text
 nat 表结构（kube-proxy 部分）:
 
 PREROUTING
@@ -1909,7 +1909,7 @@ kube-proxy 使用 Service 名称和 Namespace 的哈希值来命名自定义链�
 
 iptables 本身不支持加权轮询或真正的负载均衡。kube-proxy 使用 iptables 的 `statistic` 模块来实现概率性随机负载均衡：
 
-```
+```text
 对于 N 个后端 Pod，kube-proxy 创建 N 条规则，每条规则有不同的匹配概率：
 
 Pod A: 概率 1/3 (33.33%)
@@ -1928,7 +1928,7 @@ Pod C: 概率 1/1 (100% 的剩余流量 = 33.33%)
 
 单个 KUBE-SEP 链包含以下规则：
 
-```
+```text
 KUBE-SEP-XXXX:
   1. 如果数据包被标记为 LOCAL（本地生成）且目标地址与源地址相同:
      MARK 0x4000 (标记为需要 MASQUERADE，解决 hairpin NAT 问题)
@@ -1939,7 +1939,7 @@ KUBE-SEP-XXXX:
 
 以集群内 Pod A（10.244.1.5）访问 ClusterIP（10.96.100.42:80）-> 后端 Pod B（10.244.2.8:8080）为例：
 
-```
+```text
 源 Pod: 10.244.1.5:45678
 目标: 10.96.100.42:80
 
@@ -1974,7 +1974,7 @@ KUBE-SEP-XXXX:
 
 当一个 Pod 通过 Service ClusterIP 访问同一个 Service，而负载均衡恰好选中了该 Pod 自己时，会产生 Hairpin NAT 问题：
 
-```
+```text
 Pod A (10.244.1.5:45678) -> ClusterIP (10.96.100.42:80) -> DNAT -> Pod A (10.244.1.5:8080)
 
 问题: 目标 IP 变成了 Pod 自己的 IP，且目标端口与源端口不同。
@@ -2022,7 +2022,7 @@ IPVS 有三个核心概念：
 2. **真实服务器（Real Server）**：对应 Kubernetes 的后端 Pod（Pod IP + Port）
 3. **调度算法（Scheduler）**：决定将请求分配给哪个真实服务器的算法
 
-```
+```text
 虚拟服务器 (VIP:VPort)
   +-----------------+
   | 10.96.100.42:80 |  <- ClusterIP:Port
@@ -2065,7 +2065,7 @@ IPVS 支持多种调度算法，通过 `kube-proxy` 的 `--ipvs-scheduler` 参�
 
 IPVS 原生支持持久连接（Persistence），对应 Kubernetes 的 `sessionAffinity: ClientIP`。kube-proxy 将 `sessionAffinityConfig.clientIP.timeoutSeconds` 翻译为 IPVS 的持久超时参数。
 
-```
+```text
 ipvsadm -L -n --persistent-conn
 IP Virtual Server version 1.2.1
 Prot LocalAddress:Port            Flags    -> RemoteAddress:Port
@@ -2117,7 +2117,7 @@ ipvsadm -L -n --rate
 
 **iptables 模式**的规则数量与服务数量和后端 Pod 数量强相关：
 
-```
+```text
 # iptables 规则数量 ≈ O(N_Services x M_Pods)
 # 1000 个 Service，每个 Service 10 个 Pod
 # 规则数量约: 1000 x 10 x 2(NAT链 + 跳转链) = 20000+ 条规则
@@ -2127,7 +2127,7 @@ iptables 使用链表结构存储规则。每个数据包需要**线性遍历**�
 
 **IPVS 模式**使用哈希表存储虚拟服务器和真实服务器：
 
-```
+```text
 # IPVS 数据结构的复杂度
 # 虚拟服务器查找: O(1) 哈希查找
 # 真实服务器调度: O(1) (基于调度算法的常数时间选择)
@@ -2210,7 +2210,7 @@ eBPF 程序可以挂载到内核的各种钩子点（如网络数据包处理路
 
 Cilium 使用 eBPF 程序直接在内核中处理 Service 的 DNAT：
 
-```
+```text
 传统路径（kube-proxy）:
   数据包 -> iptables/IPVS (内核) <- 规则由 kube-proxy 用户态进程管理
 
@@ -2409,7 +2409,7 @@ subsets:
 
 Endpoints Controller 是 `kube-controller-manager` 中的一个组件，它负责根据 Service 的 Selector 自动管理 Endpoints 对象：
 
-```
+```text
 Endpoints Controller 的控制循环:
 for each Service:
     1. 获取 Service 的 selector (如 app=my-app)
@@ -2455,7 +2455,7 @@ for each Service:
 
 核心设计思想：**将一个 Service 的后端 Pod 按组切分为多个 EndpointSlice 对象，每个 Slice 最多包含指定数量的端点**。
 
-```
+```text
 传统 Endpoints:
 +--------------------------------------+
 |              Endpoints               |
@@ -2562,7 +2562,7 @@ EndpointSlice 控制器（EndpointSlice Controller）是 `kube-controller-manage
 
 ### 5.3.2 控制器工作流程
 
-```
+```text
 EndpointSlice Controller 控制循环:
 for each Service (event-driven):
     1. 获取 Service 的 selector
@@ -2724,7 +2724,7 @@ ports:
 
 对于需要动态管理外部端点的高级场景，可以编写自定义控制器（Operator）来自动维护 Endpoints/EndpointSlice：
 
-```
+```text
 自定义控制器:
   1. 定期查询外部服务的健康端点或服务发现系统（如 Consul）
   2. 对比当前 Endpoints 中的 IP 列表
@@ -2765,7 +2765,7 @@ REDIS_PORT_6379_TCP_ADDR=10.96.100.42
 
 环境变量**只在容器启动时注入一次**。如果 Pod A 启动时 Service B 还未创建，那么 Pod A 中不会有 Service B 的环境变量。即使后来 Service B 创建了，Pod A 也不会感知到。
 
-```
+```text
 时间线:
   T1: 创建 Pod A (应用容器启动)
   T2: 创建 Service B
@@ -2820,7 +2820,7 @@ DNS 服务发现的优势：
 
 Kubernetes 为 Service 自动创建的 FQDN 格式：
 
-```
+```text
 <service-name>.<namespace>.svc.<cluster-domain>
 
 例如:
@@ -2831,7 +2831,7 @@ Kubernetes 为 Service 自动创建的 FQDN 格式：
 
 DNS 解析层级：
 
-```
+```text
 redis.default.svc.cluster.local
 |      |       |   |       |
 |      |       |   |       +-- 集群域名 (默认 cluster.local)
@@ -2845,7 +2845,7 @@ redis.default.svc.cluster.local
 
 在 Pod 内部，DNS 解析器配置了搜索域（search domain），使得可以使用短名称来访问 Service：
 
-```
+```text
 Pod 的 /etc/resolv.conf:
 nameserver 10.96.0.10                       # CoreDNS Service ClusterIP
 search default.svc.cluster.local \           # 搜索域（多个）
@@ -3032,7 +3032,7 @@ Corefile 是 CoreDNS 的核心配置文件，定义了插件链。一个典型�
 
 CoreDNS 的每个 DNS 请求按配置顺序经过每个插件：
 
-```
+```text
 DNS 请求 -> errors -> health -> kubernetes 插件 -> prometheus -> forward -> cache -> loop
 ```
 
@@ -3124,7 +3124,7 @@ spec:
 
 此策略下 `/etc/resolv.conf` 的内容大致为：
 
-```
+```text
 nameserver 10.96.0.10           # CoreDNS Service IP
 search default.svc.cluster.local svc.cluster.local cluster.local
 options ndots:5
@@ -3222,7 +3222,7 @@ spec:
 
 kubelet 根据以上配置生成的 `/etc/resolv.conf`：
 
-```
+```text
 nameserver 8.8.8.8
 nameserver 1.1.1.1
 search my-app.svc.cluster.local svc.cluster.local cluster.local
@@ -3282,7 +3282,7 @@ Headless Service 的核心标志是 `clusterIP: None`。当这个字段被设置
 
 ### 7.1.1 与普通 Service 的本质区别
 
-```
+```text
 普通 Service (ClusterIP: 10.96.100.42):
   DNS 查询 -> 返回一个 A 记录: 10.96.100.42
   客户端 -> 连接到 ClusterIP -> kube-proxy 负载均衡 -> 后端 Pod
@@ -3352,7 +3352,7 @@ DNS 记录是动态的：当 Pod 增加、删除或就绪状态变化时，DNS �
 
 当 Headless Service 配合 StatefulSet 使用时，每个 Pod 还有独立的 DNS 名称（A 记录）：
 
-```
+```text
 <pod-name>.<service-name>.<namespace>.svc.<cluster-domain>
 
 例如:
@@ -3463,7 +3463,7 @@ Topology Aware Hints（v1.21 Alpha -> v1.23 Beta -> v1.27 GA 更名为 Topology 
 
 Topology Aware Routing 改进了 EndpointSlice 的分配方式：
 
-```
+```text
 传统分配:
   EndpointSlice 按 IP 哈希分组，不考虑拓扑位置
 
@@ -3505,7 +3505,7 @@ spec:
 
 系统使用以下逻辑判断分布是否均匀：
 
-```
+```text
 # 给定阈值为 sl = 0.2（可配置）
 
 总端点总数: N
@@ -3536,7 +3536,7 @@ endpoints:
 
 kube-proxy 在选择后端 Pod 时的优先级逻辑：
 
-```
+```text
 1. 遍历本 Zone 的 EndpointSlice
 2. 如果本 Zone 有 Ready 的端点 -> 仅对本 Zone 的端点负载均衡
 3. 如果本 Zone 没有 Ready 的端点 -> 对所有 Zone 的端点负载均衡（自动降级）
@@ -3546,7 +3546,7 @@ kube-proxy 在选择后端 Pod 时的优先级逻辑：
 
 在 iptables 模式下，kube-proxy 为每个 Service 生成两组规则链：
 
-```
+```text
 KUBE-SVC-XXXX:
   (优先) KUBE-SVL-YYYY (本 Zone 的 Local 端点) 
          -> KUBE-SEP-AAAA (本 Zone Pod A)
@@ -3558,7 +3558,7 @@ KUBE-SVC-XXXX:
 
 ### 8.3.4 端到端流量路径
 
-```
+```text
 Pod A (us-east-1a)
     | DNS查询: my-service.default.svc.cluster.local
     v
@@ -3594,7 +3594,7 @@ Pod A 收到响应
 
 **流量路径**：
 
-```
+```text
 外部客户端 (10.0.1.100)
     | 连接到 Node2:30080
     v
@@ -3614,7 +3614,7 @@ Pod 收到请求，源 IP = 10.0.0.2 (Node2 的 IP)  <- 源 IP 丢失！
 
 **行为**：外部流量到达某个 Node 后，**只能**转发到该 Node 上的后端 Pod。如果接收请求的 Node 上没有后端 Pod，连接被拒绝。不会进行 SNAT，后端 Pod 可以直接看到客户端的真实 IP。
 
-```
+```text
 外部客户端 (10.0.1.100)
     | 连接到 Node1:30080
     v
@@ -3890,7 +3890,7 @@ spec:
 
 ### 10.3.1 延迟的组成
 
-```
+```text
 总延迟 = API 延迟 + 规则同步延迟 + 规则生效延迟
 
 API 延迟: API Server 接收变更 + etcd 持久化 + Watch 推送 = 通常 < 500ms

@@ -42,7 +42,7 @@ public interface Protocol {
 
 ## 3.2 帧格式（Dubbo 协议帧）
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │  0-1   │   2   │   3    │  4-11  │ 12-15 │   16-...          │
 ├────────┼───────┼───────┼────────┼───────┼──────────────────┤
@@ -101,7 +101,7 @@ public class DubboCodec extends ExchangeCodec {
 
 ## 3.4 线程模型
 
-```
+```text
 Netty IO Worker Thread
     │
     ├── 接收 TCP 数据 → 解码 → Request
@@ -178,7 +178,7 @@ public class DubboProtocol extends AbstractProtocol {
 
 ## 5.1 场景适配
 
-```
+```text
                长连接 → dubbo 协议（默认推荐）
 高并发小数据量
                连接复用 → dubbo 协议
@@ -332,7 +332,7 @@ public interface Serialization {
 
 可通过 SPI 自定义协议：
 
-```
+```text
 META-INF/dubbo/org.apache.dubbo.rpc.Protocol
 myprotocol=com.example.MyProtocol
 ```

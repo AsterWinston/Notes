@@ -16,7 +16,7 @@
 
 从MongoDB官网下载MSI安装包，选择对应版本（推荐7.0+或最新稳定版）：
 
-```
+```text
 https://www.mongodb.com/try/download/community
 ```
 
@@ -304,7 +304,7 @@ WiredTiger使用MVCC（多版本并发控制）实现文档级并发：
 - 通过事务ID和快照来管理可见性
 
 核心数据结构：
-```
+```text
 ┌─────────────────┐
 │  WiredTiger      │
 │  Cache (内存)    │  ← 热数据、索引
@@ -339,7 +339,7 @@ WiredTiger使用MVCC（多版本并发控制）实现文档级并发：
 - 崩溃恢复时从最近checkpoint开始，重放journal中的操作
 - 最多丢失100ms的数据（默认commitIntervalMs配置）
 
-```
+```text
 写操作流程：
   客户端写入 → 内存更新 → Journal日志 → (异步) → Checkpoint到磁盘
                                               ↑
@@ -378,7 +378,7 @@ storage:
 
 ## 6.2 内存使用构成
 
-```
+```text
 总内存占用 = WiredTiger缓存 
            + 连接内存（每个连接 ~1MB）
            + 操作系统文件系统缓存

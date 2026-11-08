@@ -73,7 +73,7 @@ public class DiscoveryController {
 
 ## 3.1 整体发现流程
 
-```
+```text
 ┌────────────┐                              ┌──────────────┐
 │  Consumer  │                              │ Nacos Server │
 │  App       │                              │              │
@@ -137,7 +137,7 @@ public void subscribe(Service service, Subscriber subscriber) {
 
 ## 4.1 Nacos 1.x 推送模型（UDP + HTTP）
 
-```
+```text
 Nacos Server                         Consumer Client
      │                                      │
      │  InstanceChanged                    │
@@ -156,7 +156,7 @@ Nacos Server                         Consumer Client
 
 ## 4.2 Nacos 2.x 推送模型（gRPC Stream）
 
-```
+```text
 Nacos Server                         Consumer Client
      │                                      │
      │  InstanceChanged                     │
@@ -239,7 +239,7 @@ private ServiceInfo readDiskCache(String key) {
 
 ## 5.3 缓存文件结构
 
-```
+```text
 ~/
 └── nacos/
     └── naming/

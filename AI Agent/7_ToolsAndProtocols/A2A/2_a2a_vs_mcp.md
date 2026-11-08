@@ -4,7 +4,7 @@ MCP 与 A2A 是当下 Agent 生态中最常被同时提及的两个协议。它�
 
 ## 1.1 定位口诀
 
-```
+```text
 MCP：让 Agent 用上工具（Agent → 工具）
 A2A：让 Agent 之间协作（Agent → Agent）
 ```
@@ -19,7 +19,7 @@ A2A：让 Agent 之间协作（Agent → Agent）
 
 ## 1.3 一张图记住
 
-```
+```text
         A2A（水平、平级）
    ┌──────────┐         ┌──────────┐
    │ Agent A  │◀───────▶│ Agent B  │
@@ -90,7 +90,7 @@ A2A：让 Agent 之间协作（Agent → Agent）
 
 ## 3.1 分层架构
 
-```
+```text
 ┌──────────────────────────────────────────────────┐
 │  Agent A（Supervisor）                            │
 │  ┌────────────┐  A2A   ┌────────────┐            │
@@ -108,7 +108,7 @@ A2A：让 Agent 之间协作（Agent → Agent）
 
 ### 3.1.1 垂直连接与水平连接
 
-```
+```text
 垂直（MCP）：Agent 依赖工具，方向向下，调用-返回。
 水平（A2A）：Agent 协作 Agent，方向平级，任务-状态。
 ```
@@ -127,7 +127,7 @@ A2A：让 Agent 之间协作（Agent → Agent）
 
 ## 3.2 数据流
 
-```
+```text
 用户请求
   │
   ▼
@@ -182,7 +182,7 @@ public final class SupervisorAgent {
 
 ## 4.1 旅行预订场景
 
-```
+```text
 用户："帮我订一张明天去东京的机票并安排行程"
 
 Supervisor Agent
@@ -196,7 +196,7 @@ Supervisor Agent
 
 ## 4.2 代码仓库维护场景
 
-```
+```text
 用户："修复 issue #42 并提 PR"
 
 Supervisor Agent
@@ -214,7 +214,7 @@ Supervisor Agent
 
 ## 4.3 端到端时序
 
-```
+```text
 用户      Supervisor    机票Agent     航司API
  │            │             │            │
  │─订机票+行程▶│             │            │
@@ -306,7 +306,7 @@ Supervisor Agent
 
 ## 7.1 四条原则
 
-```
+```text
 ① 工具能力用 MCP 暴露
 ② Agent 能力用 A2A 暴露
 ③ 内部工具直接用 @Tool（无需 MCP）
@@ -345,7 +345,7 @@ public final class LocalTools {
 
 ## 8.1 决策树
 
-```
+```text
 需要让模型调用某个能力？
    │
    ├── 是工具（无状态、单次调用）？

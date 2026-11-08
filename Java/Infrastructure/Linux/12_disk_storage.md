@@ -12,7 +12,7 @@
 
 ## 1.2 接口与协议
 
-```
+```text
 SATA      → AHCI 协议     → 传统 HDD/SSD
 SAS       → SCSI 协议     → 企业级磁盘
 NVMe      → PCIe 协议     → 高性能 SSD
@@ -20,7 +20,7 @@ NVMe      → PCIe 协议     → 高性能 SSD
 
 ## 1.3 磁盘命名规则（Linux）
 
-```
+```text
 传统命名：
 /dev/sda      # 第一块 SCSI/SATA 磁盘
 /dev/sdb      # 第二块
@@ -107,7 +107,7 @@ sudo fdisk /dev/sdb
 ```
 
 **fdisk 创建分区的典型步骤**：
-```
+```text
 fdisk /dev/sdb
   → g    (创建 GPT 分区表)
   → n    (新建分区)

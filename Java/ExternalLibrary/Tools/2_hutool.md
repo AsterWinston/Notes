@@ -755,7 +755,7 @@ public class IdUtilExample {
 
 Snowflake 生成的 ID 是一个 64 位的 long，结构如下：
 
-```
+```text
 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000
 |       |                  |                |        |            |
 1bit    41bit 时间戳       5bit 数据中心ID  5bit 机器ID   12bit 序列号
@@ -930,7 +930,7 @@ HttpRequest.post(url)
 
 ## 4.3 Hutool 的分层架构
 
-```
+```text
 应用程序代码
      ↑  ↓
 ┌────────────────┐

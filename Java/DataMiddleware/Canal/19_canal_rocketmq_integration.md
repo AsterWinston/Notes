@@ -3,7 +3,7 @@
 
 Canal 支持将增量数据投递到 RocketMQ，适用于使用 RocketMQ 作为消息中间件的架构体系（尤其是阿里云生态）。
 
-```
+```text
 ┌──────────┐    ┌──────────────┐    ┌─────────────┐    ┌──────────────┐
 │  MySQL   │───>│ Canal Server │───>│  RocketMQ    │───>│   Consumers  │
 │          │    │ (Producer)   │    │   Cluster    │    │ (下游业务)    │

@@ -34,7 +34,7 @@ public interface VectorStore extends DocumentWriter {
 
 ### 1.2.1 文本到向量的转换
 
-```
+```text
 add(text)                       similaritySearch(query)
    │                                     │
    ▼                                     ▼
@@ -303,7 +303,7 @@ String expr = "tenantId == 'acme' && year >= 2024 && dept in ['HR','FIN']";
 
 ## 6.3 调优实战
 
-```
+```text
 调优顺序：
 1. 先确定距离度量与维度（不可随意改）
 2. 调 m（16~48）：影响内存与精度
@@ -343,7 +343,7 @@ public void reindex(Resource resource, String source) {
 
 ### 7.2.2 别名切换
 
-```
+```text
 建新索引 index_v2 ──▶ 灌数据 ──▶ 校验 ──▶ 别名 alias 指向 index_v2
                                               │
                                      旧索引 index_v1 保留一段时间后删除

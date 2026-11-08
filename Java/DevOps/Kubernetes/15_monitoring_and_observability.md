@@ -4,7 +4,7 @@
 
 在云原生生态中，可观测性（Observability）通常被定义为三大支柱：
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │                    可观测性                           │
 │                                                       │
@@ -27,7 +27,7 @@
 
 ## 1.2 Kubernetes 监控的层次
 
-```
+```text
 层次 1: 基础设施层
 ├── 节点资源: CPU, Memory, Disk, Network
 ├── etcd 状态: 延迟、存储大小、Raft 状态
@@ -60,7 +60,7 @@ Prometheus 是 CNCF 继 Kubernetes 之后的第二个毕业项目，已成为云
 
 ## 2.2 Prometheus 架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                     Prometheus 生态                       │
 │                                                           │
@@ -191,7 +191,7 @@ spec:
 
 Node Exporter 以 DaemonSet 方式部署在每个节点上，暴露节点级别的硬件和内核指标：
 
-```
+```text
 常见指标：
 node_cpu_seconds_total              # CPU 使用时间
 node_memory_MemAvailable_bytes      # 可用内存

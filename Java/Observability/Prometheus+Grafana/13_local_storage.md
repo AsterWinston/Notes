@@ -12,7 +12,7 @@ Prometheus 2.x 使用自研的 **TSDB（Time Series Database）** 作为本地�
 
 # 2. 存储架构
 
-```
+```text
 Prometheus TSDB
 ├── WAL (Write-Ahead Log)
 │   ├── wal/
@@ -51,7 +51,7 @@ Prometheus 每 **2 小时** 生成一个 Block，每个 Block 是数据的一个
 
 ## 3.1 Block 生命周期
 
-```
+```text
 内存中数据
     |
     |-- 每 2h 落盘
@@ -93,7 +93,7 @@ WAL 是 TSDB 的**预写日志**，确保数据持久性。
 
 ## 4.1 WAL 工作流程
 
-```
+```text
 1. 样本数据到达 TSDB
 2. 写入 WAL（顺序写，高性能）
 3. 写入内存中的 Head Block
@@ -104,7 +104,7 @@ WAL 是 TSDB 的**预写日志**，确保数据持久性。
 
 ## 4.2 WAL 恢复流程
 
-```
+```text
 Prometheus 崩溃重启：
 1. 读取 WAL 目录下的所有段
 2. 从最近的 checkpoint 开始恢复
@@ -144,7 +144,7 @@ Compaction 负责将多个小 Block 合并为更大的 Block，并执行数据�
 
 ## 6.1 Compaction 级别
 
-```
+```text
 Level 0: Head Block → 初始 Block (2h)
 Level 1: 10个 2h Block → 20h Block
 Level 2: 3个 20h Block → 60h Block
@@ -193,7 +193,7 @@ TSDB 使用**倒排索引（Inverted Index）** 加速查询。
 
 ## 8.1 索引结构
 
-```
+```text
 Postings List（倒排表）:
   {__name__="http_requests_total"} → [series_id1, series_id2, ...]
   {method="GET"}                  → [series_id1, series_id3, ...]
@@ -219,7 +219,7 @@ Postings List（倒排表）:
 
 Head Block 大部分数据在内存中，内存使用量约：
 
-```
+```text
 内存 ≈ 序列数 × 每个序列的样本数 × 1.37 字节
 ```
 

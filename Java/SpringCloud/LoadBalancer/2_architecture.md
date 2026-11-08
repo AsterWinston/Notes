@@ -3,7 +3,7 @@
 
 Spring Cloud LoadBalancer 采用**分层可组合**架构设计，核心分为四层：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                    集成层 (Integration)                  │
 │  LoadBalancerInterceptor  │  ReactorLoadBalancerExch...  │
@@ -103,7 +103,7 @@ public interface ReactorServiceInstanceLoadBalancer
 
 `ServiceInstanceListSupplier` 采用**装饰器模式**，通过链式组合实现多种功能：
 
-```
+```text
 DiscoveryClientServiceInstanceListSupplier     ← 从注册中心获取原始列表
     │              (每次调用触发服务发现)
     ▼
@@ -266,7 +266,7 @@ public interface LoadBalancerLifecycle<RC, RES, T> {
 
 **生命周期触发顺序**：
 
-```
+```text
 ① onStart(request)        ← 开始选择
 ② choose(request)         ← 执行负载均衡
 ③ onComplete(context)     ← 选择完成
@@ -294,7 +294,7 @@ public abstract class NamedContextFactory<C extends NamedContextFactory.Specific
 
 **容器隔离示意图**：
 
-```
+```text
 LoadBalancerClientFactory（父容器）
   │
   ├── "user-service" 子容器
@@ -322,7 +322,7 @@ LoadBalancerClientFactory（父容器）
 
 # 9. 响应式与阻塞双通道
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │                  响应式（Reactive）                    │
 │                                                       │

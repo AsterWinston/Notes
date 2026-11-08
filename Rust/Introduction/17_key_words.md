@@ -4,7 +4,7 @@ Rust 的关键字分三类：**保留关键字**（当前使用）、**保留未
 
 这些是 Rust 当前正在使用的关键字，不能用作标识符（变量/函数/类型名）。
 
-```
+```text
 as       类型转换 / 重命名导入
 break    跳出循环
 const    常量 / 常量指针
@@ -59,7 +59,7 @@ dyn      动态分发 trait 对象（2018+）
 
 ## 1.1 按用途分组速查
 
-```
+```text
 多态与抽象   dyn（运行时 vtable）/ impl（编译期单态）/ trait / auto trait（Send/Sync）
 并发与异步   async / await / move / gen（已重新保留，见第 2 节）
 内存与契约   unsafe / extern / static / const
@@ -82,7 +82,7 @@ let a: &dyn Animal = &Dog;                          // dyn：运行期查 vtable
 let c: Box<dyn Animal + Send> = Box::new(Dog);      // trait 对象 + auto trait bound
 ```
 
-```
+```text
 &dyn Animal 是胖指针（16 字节）：
 ┌──────────────┬──────────────┐
 │   数据指针   │  vtable 指针 │
@@ -171,7 +171,7 @@ mod inner {
 
 ## 2.1 关键字演进时间线（2015 → 2024）
 
-```
+```text
 2015 edition   初版清单；become/virtual/override/abstract 等早期设计残留被保留未用
 2018 edition   async / await 升格保留；dyn 从上下文关键字升为保留字；
                try 块只走 unstable 路线（? 运算符定于一尊）
@@ -207,7 +207,7 @@ let union = 1;      // 合法：不在 union Foo {} 语法位置就是普通标�
 
 ## 4.1 弱关键字
 
-```
+```text
 safe      只在特定语境有含义（如未来 safe extern fn 的标注）
 default   只在 impl 中（specialization）有含义
 ```

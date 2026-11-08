@@ -3,7 +3,7 @@
 
 Binlog 解析是 Canal 最核心的技术环节。MySQL 所产生的 Binlog 事件是以高效的二进制格式编码的，Canal 需要将其解码为结构化的 Java 对象，还原出用户能够理解的行级数据变更信息。
 
-```
+```text
 MySQL Binlog (二进制字节流)
         │
         ▼
@@ -33,7 +33,7 @@ MySQL Binlog (二进制字节流)
 
 每个 Binlog Event 都有一个公共的 19 字节事件头（V4 格式）：
 
-```
+```text
 Event Header (19 bytes, V4):
 
 Offset  Size    Description
@@ -670,7 +670,7 @@ public class CharsetHandler {
 
 MySQL 5.6+ 支持 Binlog 校验和，确保数据完整性：
 
-```
+```text
 Binlog Event 末尾附加：
 
 ┌──────────────────────────────────────────┐

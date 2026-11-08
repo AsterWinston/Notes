@@ -282,7 +282,7 @@ Stream<DynamicContainer> grouped_by_type() {
 }
 ```
 
-```
+```text
 CodecTest
  └─ grouped_by_type()
      ├─ 图片

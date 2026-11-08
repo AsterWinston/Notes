@@ -1,7 +1,7 @@
 
 # 1. 容器是什么：镜像的运行时实例
 
-容器是镜像运行后的实例。它不是“轻量 VM”，而是宿主机上的一组进程：
+容器是镜像运行后的实例。它不是"轻量 VM"，而是宿主机上的一组进程：
 
 1. 通过 **Namespace** 获得隔离视图（PID/NET/MNT/UTS/IPC/USER 等）。
 2. 通过 **Cgroups** 获得资源上限（CPU/内存/IO/PIDs 等）。
@@ -9,7 +9,7 @@
 
 工程理解：
 
-1. 容器的“存活”取决于主进程是否存活。
+1. 容器的"存活"取决于主进程是否存活。
 2. 容器可写层不是用来长期存储业务数据的（数据要用 volume/bind mount）。
 
 # 2. 容器生命周期与状态
@@ -64,7 +64,7 @@ docker run -p 8080:8080 my-app:1.0
 docker run --network my-net my-app:1.0
 ```
 
-提示：端口映射解决的是“外部访问容器”；容器间通信更推荐使用自定义 bridge 网络，通过容器名 DNS 互访。
+提示：端口映射解决的是"外部访问容器"；容器间通信更推荐使用自定义 bridge 网络，通过容器名 DNS 互访。
 
 ## 3.3 挂载与数据
 
@@ -91,7 +91,7 @@ docker run --restart=always my-app:1.0
 docker run --restart=unless-stopped my-app:1.0
 ```
 
-注意：重启策略能提高“进程级”健壮性，但不能替代健康检查与依赖治理。
+注意：重启策略能提高"进程级"健壮性，但不能替代健康检查与依赖治理。
 
 # 4. PID 1、信号与优雅停止（非常关键）
 
@@ -192,7 +192,7 @@ docker export my-app > my-app_fs.tar
 docker import my-app_fs.tar my-app:snapshot
 ```
 
-`export/import` 处理的是“容器文件系统快照”，会丢失镜像层历史与元数据。正式离线分发应使用 `save/load`（见 `4_image.md`）。
+`export/import` 处理的是"容器文件系统快照"，会丢失镜像层历史与元数据。正式离线分发应使用 `save/load`（见 `4_image.md`）。
 
 # 7. 容器清理与资源回收
 
@@ -205,7 +205,7 @@ docker system prune -a --volumes
 
 # 8. 常见坑与排障提示
 
-## 8.1 容器“一启动就退出”
+## 8.1 容器"一启动就退出"
 
 常见原因：
 

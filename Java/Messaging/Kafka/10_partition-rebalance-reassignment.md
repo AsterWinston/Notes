@@ -14,7 +14,7 @@
 
 ## 1.2 重平衡的范围
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │              Partition Reassignment 操作粒度                 │
 │                                                             │
@@ -110,7 +110,7 @@ bin/kafka-reassign-partitions.sh --bootstrap-server localhost:9092 \
 
 ## 3.1 迁移三阶段
 
-```
+```text
 Partition P0 副本从 [0,1,2] 迁移到 [2,3,4]:
 
 阶段 1: 添加新副本
@@ -134,7 +134,7 @@ Partition P0 副本从 [0,1,2] 迁移到 [2,3,4]:
 
 ## 3.2 迁移时的数据一致性
 
-```
+```text
 迁移过程中如何保证消息不丢？
 
 场景: P0 从 [0,1,2] → [2,3,4]，Leader 还是 Broker 0
@@ -238,7 +238,7 @@ def assignReplicasToBrokers(
 
 Cruise Control 是 LinkedIn 开源的 Kafka 集群自动运维系统：
 
-```
+```text
 Cruise Control 通过分析以下指标进行自动 Rebalance:
   - CPU 利用率
   - 网络入/出吞吐
@@ -282,7 +282,7 @@ props.put("group.instance.id", "consumer-instance-1");
 
 ### 6.2.1 Static Membership 工作原理
 
-```
+```text
 场景: Consumer 滚动重启
 
 传统模式（无 Static Membership）:
@@ -349,7 +349,7 @@ kafka-topics.sh --bootstrap-server localhost:9092 \
 
 ## 7.4 迁移失败排查
 
-```
+```text
 常见迁移失败原因:
 
 ① 磁盘空间不足

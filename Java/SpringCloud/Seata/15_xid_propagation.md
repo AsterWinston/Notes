@@ -44,7 +44,7 @@ public class RootContext {
 
 # 2. xid 在 Seata 流程中的完整路径
 
-```
+```text
 TM (@GlobalTransactional 方法)
   │
   ├── TransactionalTemplate.execute()

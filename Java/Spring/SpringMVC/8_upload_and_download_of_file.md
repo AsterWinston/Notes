@@ -1,5 +1,5 @@
 # 1. 文件上传
-```
+```text
 使用SpringMVC6版本，不需要添加以下依赖：
 <dependency>
     <groupId>commons-fileupload</groupId>
@@ -108,7 +108,7 @@ public class FileController {
 
 ```
 # 2. 文件下载
-```
+```java
 <!--文件下载-->
 <a th:href="@{/download}">文件下载</a>
 文件下载核心程序，使用ResponseEntity：

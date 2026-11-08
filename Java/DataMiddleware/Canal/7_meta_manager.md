@@ -3,7 +3,7 @@
 
 MetaManager 是 Canal 的**元数据管理器**，核心职责是管理 Canal 的消费位点（Cursor），确保 Canal 在重启、HA 切换等场景下能够从正确的位置继续消费 Binlog，不丢数据、不重复数据。
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │                  MetaManager                         │
 │                                                     │
@@ -89,7 +89,7 @@ public class EntryPosition extends Position {
 
 ## 2.3 实现类层次
 
-```
+```text
 CanalMetaManager (接口)
     │
     ├── MemoryMetaManager (内存模式，不持久化)
@@ -316,7 +316,7 @@ public class ZooKeeperMetaManager extends AbstractCanalLifeCycle
 
 **ZK 中的位点节点结构**：
 
-```
+```text
 /otter/canal/
 ├── cluster/
 │   └── ... 
@@ -379,7 +379,7 @@ public class PeriodMixedMetaManager extends MemoryMetaManager {
 
 Canal 在启动时，通过以下优先级查找起始位点：
 
-```
+```text
 1. MetaManager 中持久化的位点
    ↓ 不存在
 2. Instance 配置中指定的 journalName + position
@@ -391,7 +391,7 @@ Canal 在启动时，通过以下优先级查找起始位点：
 
 ## 7.2 位点更新时机
 
-```
+```text
 EventParser 拉取 Binlog Event
         │
         ▼
@@ -414,7 +414,7 @@ MetaManager.updateCursor()  ← 这里才持久化位点
 
 ## 7.3 位点一致性问题
 
-```
+```text
 时间线：
 t1: Parser 拉取事件 E1 (pos=100) → Store
 t2: Parser 拉取事件 E2 (pos=200) → Store
@@ -427,7 +427,7 @@ MetaManager 中的 cursor = pos=200
 从 pos=200 开始拉取 → 不会丢数据
 ```
 
-```
+```text
 时间线（异常情况）：
 t1: Parser 拉取事件 E1 (pos=100) → Store
 t2: Client 消费 E1 → MetaManager 更新位点 (pos=100)
@@ -515,7 +515,7 @@ protected EntryPosition findStartPosition() {
 
 **传统位点的 HA 切换困境**：
 
-```
+```text
 Master A (mysql-bin.000001)  ←→  Master B (mysql-bin.000005)
          ↓                                    ↓
     pos=12345                              pos=?
@@ -527,7 +527,7 @@ Master B 的 binlog 文件和位置完全不同
 
 **GTID 模式解决**：
 
-```
+```text
 Master A: uuid_a:1-100
 Master B: uuid_b:1-50
 

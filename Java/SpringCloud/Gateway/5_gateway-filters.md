@@ -634,7 +634,7 @@ return chain.filter(exchange)
 
 完整过滤器链执行顺序：
 
-```
+```text
 Order = -∞                          Order = +∞
     │                                   ▲
     │   PRE 阶段（正向执行）             │

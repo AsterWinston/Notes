@@ -926,7 +926,7 @@ ratelimit:sms:phone:13800138000 # 短信验证码限流
    - 在 RedisInsight 中按前缀分组浏览
    - 配置淘汰策略时区分 `volatile-lru` vs `allkeys-lru`
 7. **反例**：
-   ```
+   ```text
    key1 = "user1"                         # 不直观，不知道是什么业务
    key2 = "product_1001"                  # 分隔符不统一
    key3 = "Order:2024:Status"             # 大小写不一致
@@ -3170,7 +3170,7 @@ public class RedisUserCacheApplication {
 ### 3.10.8 项目结构与测试
 
 项目目录结构：
-```
+```text
 redis-user-cache/
 ├── pom.xml
 └── src/main/

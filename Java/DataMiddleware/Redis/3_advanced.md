@@ -248,7 +248,7 @@ aof-use-rdb-preamble yes
 
 ### 1.1.6 持久化选型决策树
 
-```
+```text
 需要持久化吗？
 +-- 否 -> 不开启任何持久化（纯缓存场景，数据可接受全部丢失）
 +-- 是 -> 对数据丢失容忍度？
@@ -424,12 +424,12 @@ repl-backlog-ttl 3600
 **repl-backlog size 计算指南**
 
 估算公式：
-```
+```text
 backlog_size = 主节点 QPS x 平均命令大小 x 允许断线时间(秒)
 ```
 
 示例：主节点 QPS 5000，平均命令大小 100 字节，允许断开 60 秒：
-```
+```text
 backlog_size = 5000 x 100 x 60 = 30,000,000 字节 ~ 30MB
 ```
 建议设置 `repl-backlog-size 64mb` 留有余量。
@@ -725,7 +725,7 @@ sentinel parallel-syncs cluster-master 1
 
 使用docker的pause/unpause命令而不是stop/start，否则会导致域名解析问题
 
-```
+```text
 docker pause <container_id> // 模拟节点故障
 doker unpause <container_id> // 模拟节点恢复
 docker kill <container_id>
@@ -1300,7 +1300,7 @@ redis-cli -p 7001 CLUSTER FORGET <node-id>
 - 本地缓存命中快，Redis 兜底，DB 最后。
 
 多级缓存的完整链路：
-```
+```text
 请求 > Nginx 本地缓存(lua_shared_dict) > Redis 缓存 > JVM 进程缓存(Caffeine) > 数据库
 ```
 
@@ -2223,7 +2223,7 @@ location /invalidate {
 
 ### 2.6.1 项目结构
 
-```
+```text
 shop-cache-demo/
 |-- src/main/java/com/example/shop/
 |   |-- ShopApplication.java
@@ -2779,7 +2779,7 @@ redis-cli ACL SAVE
 
 **ACL 用户/角色体系**
 
-```
+```text
 ACL 命令格式: ACL SETUSER <username> [rule [rule ...]]
 
 规则类型:
@@ -3244,7 +3244,7 @@ redis-benchmark -h 127.0.0.1 -p 6379 -c 100 -n 100000 -t set,get,lpush,lpop --cs
 
 **解读压测结果**
 
-```
+```text
 ====== SET ======
   100000 requests completed in 0.72 seconds
   100 parallel clients
@@ -3406,7 +3406,7 @@ redis-cli -h target-host -p 6379 DBSIZE
 
 **迁移前检查**
 
-```
+```text
 [x] 源端和目标端 Redis 版本兼容性确认
 [x] 目标端内存 >= 源端 used_memory
 [x] 目标端 maxmemory-policy 确认
@@ -3419,7 +3419,7 @@ redis-cli -h target-host -p 6379 DBSIZE
 
 **回滚计划**
 
-```
+```text
 [x] 迁移前备份源端 RDB（cp dump.rdb backup.rdb）
 [x] 记录源端配置（redis-cli CONFIG GET '*' > config_backup.txt）
 [x] 切换流量到目标端

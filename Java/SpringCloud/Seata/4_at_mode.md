@@ -3,7 +3,7 @@
 
 AT（Automatic Transaction）模式是 Seata 的**默认模式**，对业务代码**零侵入**，通过代理数据源自动生成 undo_log 实现回滚。
 
-```
+```text
 Phase 1 (执行 + 记录 undo_log):
   ┌──────────────────────────────────┐
   │ 1. DataSourceProxy 拦截 SQL      │
@@ -116,7 +116,7 @@ public class PreparedStatementProxy extends AbstractPreparedStatementProxy {
 
 AT 模式在 Phase 1 本地事务提交后释放了数据库锁，这可能导致并发事务之间的**脏写**问题。Seata 通过**全局锁**解决：
 
-```
+```text
 事务A                       事务B
   │                           │
   │ UPDATE account SET        │

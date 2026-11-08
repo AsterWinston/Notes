@@ -3,7 +3,7 @@
 
 Linux 系统的完整启动分为以下主要阶段：
 
-```
+```text
 硬件上电
     ↓
 BIOS / UEFI（固件阶段）
@@ -35,7 +35,7 @@ init 进程启动（systemd）
 
 ## 2.3 二者的启动流程对比
 
-```
+```text
 BIOS:
 POST → BIOS → 读取 MBR → 引导加载程序阶段1 → 阶段2 → 内核
 
@@ -51,7 +51,7 @@ GRUB（GRand Unified Bootloader）是目前 Linux 发行版最常用的引导程
 
 ## 3.2 GRUB 启动过程
 
-```
+```text
 BIOS/UEFI 加载 boot.img（512 字节，位于 MBR 或 GPT 的专用分区）
     ↓
 boot.img 加载 core.img（位于 MBR 后的扇区或 BIOS Boot Partition）
@@ -113,7 +113,7 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 **作用**：在真正的根文件系统挂载前，提供一个最小的临时文件系统，包含加载根文件系统所需的驱动模块（如磁盘控制器驱动、文件系统驱动、LVM 等）。
 
 **机制**：
-```
+```text
 内核 → 解压 initramfs-<version>.img 为 tmpfs
      → 执行 /init 脚本
      → 加载必要内核模块（磁盘、文件系统、加密等）
@@ -149,7 +149,7 @@ zcat /boot/initrd.img-$(uname -r) | cpio -idmv
 
 systemd 启动目标的默认目标（target）：
 
-```
+```text
 systemd
     ↓
 default.target（通常链接到 graphical.target 或 multi-user.target）

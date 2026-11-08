@@ -4,7 +4,7 @@
 
 ## 1.1 解析在 RAG 流水线中的位置
 
-```
+```text
 加载 Loading ──► 解析 Parsing ──► 清洗 Cleaning
                                    │
                                    ▼
@@ -17,7 +17,7 @@
 
 合格的解析输出不只是纯文本，还应带上结构信息，供后续分块使用。
 
-```
+```text
 PDF/Word/Excel/PPT/HTML/Markdown
         │  Parser
         ▼
@@ -59,7 +59,7 @@ PDF/Word/Excel/PPT/HTML/Markdown
 
 PDF 内部是按"绘制指令"存储的，并没有逻辑阅读顺序。双栏排版若按坐标从左到右读，会把两栏内容交错在一起，语义完全错乱。专业解析器会用版面分析（layout analysis）判断栏边界。
 
-```
+```text
 双栏 PDF 的坐标流：
 [左栏行1] [右栏行1] [左栏行2] [右栏行2] ...
 错误：左1 右1 左2 右2      正确：左1 左2 右1 右2
@@ -157,7 +157,7 @@ PagePdfDocumentReader reader = new PagePdfDocumentReader(
 
 生产解析应设计降级链：优先用质量最高的解析器，失败或质量不达标时逐级降级到兜底方案。
 
-```
+```text
 Docling（复杂版面）
    │ 失败/结果过短
    ▼

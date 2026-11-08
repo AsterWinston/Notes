@@ -6,7 +6,7 @@
 
 Advisor 是 Spring AI 的**拦截器链**机制，类似 Servlet Filter 或 Spring AOP：
 
-```
+```text
 ChatClient.prompt()
       │
       ▼
@@ -93,7 +93,7 @@ ChatClientResponse adviseCall(
 
 ### 2.2.1 责任链语义
 
-```
+```text
 adviseCall(req)
    ├─ 前置逻辑
    ├─ chain.nextCall(req)  → 下一环/模型
@@ -454,7 +454,7 @@ public class StreamLoggingAdvisor implements StreamAdvisor {
 
 ## 8.1 参考顺序
 
-```
+```text
 order 0    LoggingAdvisor          记录原始请求
 order 50   GuardrailAdvisor        输入校验/拦截
 order 100  MessageChatMemoryAdvisor 注入历史

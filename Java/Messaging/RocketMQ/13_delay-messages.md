@@ -3,7 +3,7 @@
 
 RocketMQ 支持**18 个固定的延迟级别**，让消息在指定时间后才被消费者可见。
 
-```
+```text
 应用场景：
 - 订单超时未支付自动关闭 (30分钟后)
 - 会议开始前提醒 (5分钟前)
@@ -86,7 +86,7 @@ consumer.start();
 
 ## 3.3 运行结果
 
-```
+```text
 # Producer 输出：
 发送时间: Mon Jan 01 10:00:00 CST 2024
 
@@ -98,7 +98,7 @@ consumer.start();
 
 ## 4.1 整体流程
 
-```
+```text
 Producer 发送延迟消息 (msg.setDelayTimeLevel(3) → 10s)
     │
     ▼
@@ -132,7 +132,7 @@ Consumer 正常消费
 
 ## 4.2 延迟消息存储
 
-```
+```text
 SCHEDULE_TOPIC_XXXX = 包含了 18 个 Queue（对应 18 个延迟级别）
   ├── Queue-0 → delayLevel 1 的消息
   ├── Queue-1 → delayLevel 2 的消息

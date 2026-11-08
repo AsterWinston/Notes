@@ -4,7 +4,7 @@
 
 ## 1.1 bundle 太大的问题
 
-```
+```text
 不分割:整个应用打成一个巨大的 main.js,用户首屏全要下载
 分割:按路由/组件切成多个 chunk,首屏只加载"当前页面需要的那部分"
 
@@ -30,7 +30,7 @@ import(`./pages/${x}`)                    // ✗ 不可用/整目录进一个懒
 import('./pages/' + x + '.js')            // ✓ 带目录前缀的"模板",只切该目录
 ```
 
-```
+```text
 构建产物与运行时:
   dist/assets/main-a1b2.js    ← 静态图:入口 + 所有静态 import 链
   dist/assets/chart-c3d4.js   ← 每个动态 import() 各自一块(文件名带内容哈希)
@@ -140,7 +140,7 @@ export default {
 
 ## 4.2 首屏指纹
 
-```
+```text
 首屏 chunk:
   主 bundle(框架 + 路由 + 首页代码)
   核心第三方库(React 本身、首页依赖)

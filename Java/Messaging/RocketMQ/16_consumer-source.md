@@ -6,7 +6,7 @@
 
 ## 1.1 类层次结构
 
-```
+```text
 MQPushConsumer (接口)
     └── DefaultMQPushConsumer (用户 API)
          └── DefaultMQPushConsumerImpl (核心实现)
@@ -93,7 +93,7 @@ public synchronized void start() throws MQClientException {
 
 ## 2.1 "Push" 的真面目
 
-```
+```text
 *** "Push 消费" 本质上也是 Pull ***
 
 DefaultMQPushConsumer 内部：
@@ -356,7 +356,7 @@ public class ConsumeMessageOrderlyService implements ConsumeMessageService {
 
 # 6. 完整调用链路
 
-```
+```text
 DefaultMQPushConsumer.start()
     │
     ├── DefaultMQPushConsumerImpl.start()

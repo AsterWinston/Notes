@@ -16,13 +16,13 @@
 
 ## 2.1 错误信息
 
-```
+```text
 java.lang.IllegalStateException: No instances available for user-service
 ```
 
 ## 2.2 排查步骤
 
-```
+```text
 ① 检查提供者是否注册成功
    curl http://localhost:8848/nacos/v1/ns/instance/list?serviceName=user-service
 
@@ -234,7 +234,7 @@ logging:
 
 关键日志输出：
 
-```
+```text
 # 服务发现
 DEBUG o.s.c.d.DiscoveryClient - Getting instances for user-service
 DEBUG o.s.c.d.DiscoveryClient - Found 3 instances

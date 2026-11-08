@@ -6,7 +6,7 @@ LLM 应用的配置变化频繁，**如果每次都要改代码 + 发版，迭�
 
 ## 1.2 为什么变化频繁
 
-```
+```text
 模型切换、Prompt 调整、阈值调优、灰度比例、限流阈值...
 ```
 
@@ -65,7 +65,7 @@ LLM 应用的配置变化频繁，**如果每次都要改代码 + 发版，迭�
 
 ## 3.2 分层模型
 
-```
+```text
 ① 代码默认值（兜底）
 ② 配置文件（application.yml）
 ③ 配置中心（Nacos/Apollo/Consul）  ← 可热更新
@@ -279,7 +279,7 @@ public void onConfigChanged(String config) {
 
 ## 6.3 热更新流程
 
-```
+```text
 配置中心变更
       │
       ▼
@@ -434,7 +434,7 @@ public void onConfigChanged(ConfigChangedEvent event) {
 
 ## 10.3 灰度与回滚
 
-```
+```text
 变更提交 → 灰度 1% → 观察指标 → 放量 10% → 观察 → 全量
                      │
                      └─ 指标异常 → 立即回滚

@@ -175,7 +175,7 @@ mvn -v
 
 - 默认路径：`~/.m2/repository`
 - 目录结构示例：
-```
+```text
 ~/.m2/repository
 └── com
 		└── example

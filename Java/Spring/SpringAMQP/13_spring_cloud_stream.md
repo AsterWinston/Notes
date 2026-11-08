@@ -6,7 +6,7 @@ Spring Cloud Stream是Spring Cloud生态中用于构建**消息驱动微服务**
 核心设计理念：**开发者只需要关注业务逻辑，消息中间件的细节由框架处理**。
 
 ## 1.2 与Spring AMQP的关系
-```
+```text
 Spring Cloud Stream（高层抽象，统一的编程模型）
           ↓
 Spring AMQP          Spring Kafka       Spring Pulsar
@@ -53,7 +53,7 @@ Binder是Spring Cloud Stream最核心的概念，它是与具体消息中间件�
 ## 2.2 Binding（绑定）
 Binding是应用程序和Binder之间的桥梁：
 
-```
+```text
 Application
   ├── @Input (Sink)    → Binding → Binder → [Broker Topic/Queue]
   └── @Output (Source) → Binding → Binder → [Broker Topic/Queue]

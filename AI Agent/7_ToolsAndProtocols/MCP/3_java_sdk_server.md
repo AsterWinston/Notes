@@ -53,7 +53,7 @@
 
 ### 1.2.2 包结构建议
 
-```
+```text
 server/
   config/      Server 构建与传输配置
   tools/       @Tool 工具实现
@@ -78,7 +78,7 @@ server/
 
 ### 2.1.1 启动流程
 
-```
+```text
 Host(Client)              Server(子进程)
     |  spawn                |
     |---------------------->|  进程启动

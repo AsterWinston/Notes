@@ -4,7 +4,7 @@
 - JVM 的执行引擎负责执行字节码指令。
 - 主要方式：解释执行 + 即时编译（JIT）+ 垃圾回收。
 
-```
+```text
 字节码(bytecode) → 执行引擎 → 本地机器码 → CPU 执行
                       │
          ┌────────────┼────────────┐
@@ -29,7 +29,7 @@
 
 ## 2.3 混合模式（默认）
 
-```
+```text
 启动阶段：解释器快速响应
      ↓
 运行时发现热点代码
@@ -95,7 +95,7 @@ HotSpot 包含两个 JIT 编译器：
 ```
 
 C1 的编译层次（Tier 1-3）：
-```
+```text
 Level 0: 纯解释执行
 Level 1: C1 编译，无 profiling（全速）
 Level 2: C1 编译，简单 profiling（方法调用次数、回边次数）
@@ -114,7 +114,7 @@ Level 4: C2 编译（最深度优化）
 - JDK 7+ 引入，JDK 8 默认开启。
 - 结合了 C1 的快速启动和 C2 的深度优化。
 
-```
+```text
 分层编译的工作流：
     
 方法被多次调用：
@@ -128,7 +128,7 @@ Level 4: C2 编译（最深度优化）
 ```
 
 **各层说明：**
-```
+```text
 0: 解释器执行
 1: C1 不带 profiling（简单方法快速编译）
 2: C1 带简单 profiling（方法计数 + 回边计数）
@@ -206,7 +206,7 @@ java -XX:+PrintFlagsFinal -version | grep CICompilerCount
 
 ## 9.1 代码缓存满
 
-```
+```text
 Java HotSpot(TM) 64-Bit Server VM warning: 
 CodeCache is full. Compiler has been disabled.
 ```

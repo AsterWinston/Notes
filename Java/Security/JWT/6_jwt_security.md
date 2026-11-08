@@ -42,7 +42,7 @@ graph TD
 
 攻击者修改 JWT Header，将 `alg` 改为 `none`，表示此 JWT 不需要签名验证。如果服务端实现没有正确限制算法，可能错误地接受未签名的 JWT。
 
-```
+```text
 原始 JWT（合法）:
 Header:  {"alg":"HS256","typ":"JWT"}
 Payload: {"sub":"user123","role":"USER"}
@@ -104,7 +104,7 @@ public class SafeJwtParser {
 
 某些实现会在同一个接口中根据 `alg` 字段动态选择密钥，导致使用 RSA 公钥验证 HS256 签名。
 
-```
+```text
 服务端逻辑（有漏洞）:
 if (alg == "RS256") → 用 RSA 公钥验证
 if (alg == "HS256") → 用 HMAC 密钥验证
@@ -149,7 +149,7 @@ public JwtParser getParser(String algorithm) {
 
 攻击者拦截 JWT 后修改 Payload（如提升权限），但无法生成有效签名。如果服务端**跳过或不正确验证签名**，攻击即可成功。
 
-```
+```text
 原始:  {"sub":"user","role":"USER"} + 有效签名
 篡改:  {"sub":"user","role":"ADMIN"} + 无效签名
 
@@ -313,7 +313,7 @@ trufflehog git file://. --only-verified
 
 ### 2.7.1 攻击链
 
-```
+```text
 存在 XSS 漏洞 → 攻击者注入脚本 → 脚本读取 localStorage 中的 JWT 
 → 发送到攻击者服务器 → 攻击者使用 JWT 冒充用户
 ```
@@ -366,7 +366,7 @@ cookie.setPath("/api/auth");
 
 每次收到 JWT 时必须验证以下内容：
 
-```
+```text
 □ 签名是否有效？
 □ 算法是否在白名单中？
 □ 令牌是否已过期？（exp）
@@ -455,7 +455,7 @@ public class RobustJwtValidator {
 
 ## 4.2 BFF（Backend For Frontend）模式
 
-```
+```text
 浏览器 ←→ BFF（后端API） ←→ 微服务
 
 BFF 持有 JWT，浏览器使用传统 Session Cookie
@@ -531,7 +531,7 @@ public class SecurityHeadersConfig {
 
 ## 6.1 配置检查
 
-```
+```text
 □ 强制 HTTPS
 □ 算法白名单（拒绝 none）
 □ 密钥强度满足要求（HMAC ≥ 256 位，RSA ≥ 2048 位）
@@ -572,7 +572,7 @@ grep -r "parseClaimsJws" | grep -v "requireIssuer\|requireAudience"
 
 ## 7.1 密钥泄漏应急流程
 
-```
+```text
 1. 立即轮换泄漏的密钥（生成新密钥，更新配置）
 2. 递增所有用户的 Token 版本号（强制全量重新登录）
 3. 将新密钥部署到所有服务节点

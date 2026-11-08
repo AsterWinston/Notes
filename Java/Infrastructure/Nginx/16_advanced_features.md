@@ -7,7 +7,7 @@
 
 Stream 模块工作于 **OSI 第四层（传输层）**，不解析 HTTP，直接转发 TCP/UDP 数据包。
 
-```
+```text
 客户端 ── TCP 连接 ──→ Nginx（Stream）──→ 上游 MySQL/Redis/Kafka
 ```
 

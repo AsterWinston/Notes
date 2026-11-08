@@ -28,7 +28,7 @@ LlmAgent（大模型智能体，Large Language Model Agent）是 Google ADK Java
 
 ### 1.2.2 执行循环
 
-```
+```text
 用户输入
    |
    v
@@ -438,7 +438,7 @@ public String reply(@ToolParam(description = "文本") String text) {
 
 ### 6.2.2 回调执行顺序
 
-```
+```text
 BeforeAgent -> (BeforeModel -> 模型 -> AfterModel -> BeforeTool -> 工具 -> AfterTool)* -> AfterAgent
 ```
 

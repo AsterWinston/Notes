@@ -229,7 +229,7 @@ public class ArrayMetric implements Metric {
 
 # 8. 时间窗口示意图
 
-```
+```text
 intervalInMs = 1000ms, sampleCount = 2
 
 时间线 ──────────────────────────────────►

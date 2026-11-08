@@ -1,5 +1,5 @@
 # 1. 什么是跨域（CORS）
-```
+```text
 跨域，全称Cross-Origin Resource Sharing（跨域资源共享），是浏览器的一种安全机制。
 
 1.1 同源策略（Same-Origin Policy）：
@@ -30,7 +30,7 @@
 ```
 
 # 2. CORS的工作原理
-```
+```text
 2.1 简单请求和预检请求：
 浏览器将跨域请求分为两类：
 
@@ -71,7 +71,7 @@
 ```
 
 # 3. @CrossOrigin注解（局部跨域配置）
-```
+```text
 SpringMVC提供了@CrossOrigin注解，可以在Controller类或方法上配置跨域策略。
 
 3.1 注解在方法上（只针对该接口）：
@@ -119,7 +119,7 @@ public class UserController {
 ```
 
 # 4. 全局CORS配置（推荐）
-```
+```text
 当项目中有很多Controller需要配置跨域时，逐个添加@CrossOrigin会很繁琐。
 推荐使用全局CORS配置，一次性为所有接口设置跨域策略。
 
@@ -169,7 +169,7 @@ public class CorsConfig implements WebMvcConfigurer {
 ```
 
 # 5. 跨域问题常见场景和解决方案
-```
+```text
 5.1 场景一：前端Axios请求携带Cookie
 默认情况下，Axios的跨域请求不会携带Cookie。
 如果需要携带Cookie（如Session认证），需要前后端同时配置：
@@ -224,7 +224,7 @@ registry.addInterceptor(authInterceptor)
 ```
 
 # 6. 生产环境的CORS建议
-```
+```java
 1. 不要使用 allowedOrigins("*")：
    生产环境必须明确指定允许的域名，如："https://www.yourdomain.com"
 

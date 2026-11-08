@@ -60,7 +60,7 @@
 
 ## 2.2 推荐阅读顺序
 
-```
+```text
 1_Foundations → 2_LLM → 3_PromptEngineering → 4_LLMEngineering
       → 5_RAG → 6_AgentCore → 7_ToolsAndProtocols → 8_Memory
       → 9_Frameworks（Spring AI 与 LangChain4j 为主线）
@@ -125,7 +125,7 @@
 
 ## 3.3 目录依赖关系
 
-```
+```text
   1_Foundations → 2_LLM → 3_PromptEngineering → 4_LLMEngineering
         │
         ▼

@@ -2,7 +2,7 @@
 
 ## 1.1 后端存储选择
 
-```
+```text
 决策树：
 需要存储 Session？
   ├── 是 → 选什么存储？
@@ -24,7 +24,7 @@
 
 ## 1.2 序列化选择
 
-```
+```text
 推荐优先级：
 1. Jackson JSON（推荐） — 可读、可调试、足够快
 2. Kryo（优化）         — 极高性能场景
@@ -213,7 +213,7 @@ public class SessionValidator {
 
 ## 4.1 Session 与微服务
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │                API Gateway                    │
 │  (统一入口，处理 Session 验证和路由)           │
@@ -361,7 +361,7 @@ redis-cli --scan --pattern "spring:session:expirations:*" | wc -l
 
 ## 6.2 发布与回滚策略
 
-```
+```text
 发布前检查清单：
 □ Session 序列化对象是否兼容新旧版本
 □ Cookie 配置是否一致

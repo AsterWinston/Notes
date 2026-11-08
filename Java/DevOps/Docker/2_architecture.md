@@ -81,7 +81,7 @@ docker -H tcp://192.168.1.100:2376 --tls ps
 
 # 4. Namespace：隔离系统视图
 
-Linux Namespace 负责让容器进程“看起来”运行在独立环境中。不同 Namespace 隔离不同系统资源，组合起来形成容器的隔离视图。
+Linux Namespace 负责让容器进程"看起来"运行在独立环境中。不同 Namespace 隔离不同系统资源，组合起来形成容器的隔离视图。
 
 | Namespace | 隔离内容 | 效果 |
 |-----------|----------|------|
@@ -100,7 +100,7 @@ docker inspect <container> | jq '.[0].State.Pid'
 ls -la /proc/<pid>/ns/
 ```
 
-Namespace 解决的是“看见什么”的问题。例如 PID Namespace 让容器内只能看到自己的进程，NET Namespace 让容器拥有独立网卡和路由表。但 Namespace 并不限制容器“能用多少资源”，资源限制由 Cgroups 负责。
+Namespace 解决的是"看见什么"的问题。例如 PID Namespace 让容器内只能看到自己的进程，NET Namespace 让容器拥有独立网卡和路由表。但 Namespace 并不限制容器"能用多少资源"，资源限制由 Cgroups 负责。
 
 # 5. Cgroups：限制资源使用
 
@@ -126,7 +126,7 @@ docker run --pids-limit=200 my-app
 | blkio | 块设备 IO 权重和限制 |
 | pids | 进程数量上限 |
 
-Cgroups 解决的是“最多能用多少”的问题。对于 Java 应用尤其重要，因为 JVM 堆、Metaspace、线程栈、Direct Buffer 等都会消耗容器内存。如果只设置 `-Xmx` 而不考虑堆外内存，很容易触发容器 OOM。
+Cgroups 解决的是"最多能用多少"的问题。对于 Java 应用尤其重要，因为 JVM 堆、Metaspace、线程栈、Direct Buffer 等都会消耗容器内存。如果只设置 `-Xmx` 而不考虑堆外内存，很容易触发容器 OOM。
 
 # 6. UnionFS：镜像分层和写时复制
 

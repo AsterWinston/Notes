@@ -3,7 +3,7 @@
 
 ## 1.1 标准生产部署
 
-```
+```text
                         ┌─────────────────────┐
                         │      ZooKeeper      │
                         │      Cluster         │
@@ -126,7 +126,7 @@ canal.mq.partitionHash = order_db\\.order:order_id,user_db\\.user:user_id
 
 ## 3.1 经典架构：Canal + MQ + 缓存更新
 
-```
+```text
                      ┌─────────┐
                      │  MySQL  │
                      └────┬────┘
@@ -247,7 +247,7 @@ public class DelayedDoubleDelete {
 
 ## 4.1 MySQL 异构数据同步
 
-```
+```text
 场景：将 MySQL 数据同步到 OLAP 数据库（ClickHouse/Doris）
 
 MySQL (OLTP) ──> Canal ──> Kafka ──> Flink ──> ClickHouse (OLAP)
@@ -269,7 +269,7 @@ WHERE `table` = 'user_behavior'
 
 ## 4.2 微服务数据同步
 
-```
+```text
 场景：多个微服务之间的数据同步
 
 Service A 写入 MySQL-A ──> Canal ──> Kafka
@@ -315,7 +315,7 @@ kafka.sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule
 
 ## 6.1 日常检查清单
 
-```
+```text
 每日检查：
 ├── Canal Server 运行状态（进程是否存在）
 ├── Instance 运行状态（消费是否正常）
@@ -334,7 +334,7 @@ kafka.sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule
 
 ## 6.2 升级流程
 
-```
+```text
 1. 【测试环境验证】
    - 搭建与生产一致的 Canal 版本
    - 验证功能正常
@@ -376,28 +376,28 @@ mv canal.bak.20240101 canal
 
 ## 7.1 模式 1：同构数据同步
 
-```
+```text
 MySQL (源) ──> Canal ──> MySQL (目标)
 用途：读写分离、跨机房同步、数据库迁移
 ```
 
 ## 7.2 模式 2：实时数仓
 
-```
+```text
 MySQL (OLTP) ──> Canal ──> Kafka ──> Flink ──> 数仓 (Hudi/Iceberg)
 用途：实时数据入湖、ODS 层构建
 ```
 
 ## 7.3 模式 3：搜索索引
 
-```
+```text
 MySQL ──> Canal ──> Kafka ──> Consumer ──> Elasticsearch
 用途：商品搜索、日志检索、全文检索
 ```
 
 ## 7.4 模式 4：事件驱动解耦
 
-```
+```text
 MySQL ──> Canal ──> Kafka ──> 多个下游微服务
 用途：订单状态变更通知、库存扣减、积分计算等
 ```

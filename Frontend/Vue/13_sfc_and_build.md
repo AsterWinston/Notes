@@ -26,7 +26,7 @@ button { color: #42b883; }
 
 ## 1.2 三块如何协同
 
-```
+```text
                     MyButton.vue
     ┌─────────────────┼─────────────────┐
     ▼                 ▼                 ▼
@@ -87,7 +87,7 @@ const emit = defineEmits<{ (e: 'go'): void }>()
 
 ## 3.1 开发模式：按需即时编译
 
-```
+```text
 浏览器请求 /src/App.vue
         │
         ▼
@@ -104,7 +104,7 @@ const emit = defineEmits<{ (e: 'go'): void }>()
 
 ## 3.2 生产模式：Rollup 打包
 
-```
+```text
 源码文件们（.vue/.ts/.css）
         │
         ▼
@@ -122,7 +122,7 @@ const emit = defineEmits<{ (e: 'go'): void }>()
 
 ## 4.1 一个典型构建产物
 
-```
+```text
 dist/
 ├── index.html
 ├── assets/

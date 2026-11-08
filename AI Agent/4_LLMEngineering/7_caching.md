@@ -8,7 +8,7 @@
 
 ### 1.1.1 各层定义
 
-```
+```text
 ① 结果缓存    相同问题直接返回答案        应用侧  最省，风险最高
 ② 语义缓存    相似问题返回缓存答案        应用侧  省，有误命中风险
 ③ 检索缓存    相同查询返回检索结果        应用侧  安全
@@ -18,7 +18,7 @@
 
 ### 1.1.2 命中路径
 
-```
+```text
 用户问题
    │
    ▼
@@ -48,7 +48,7 @@
 
 收益评估公式（近似）：
 
-```
+```text
 单次节省成本 = 命中率 × 单次调用成本
 净收益      = 单次节省成本 - 缓存维护成本 - 误命中返工成本
 ```
@@ -324,7 +324,7 @@ public class CachedEmbeddingModel {
 
 ### 5.1.2 Anthropic 显式标记
 
-```
+```text
 厂商侧缓存提示前缀：
 - OpenAI：自动缓存长前缀（约 1024 token 以上）
 - Anthropic：显式标记 cache_control
@@ -455,7 +455,7 @@ public String chatWithCache(String question, UserContext user) {
 
 ### 8.1.1 两级结构
 
-```
+```text
 请求 ──► [Caffeine 本地] ──miss──► [Redis 分布式] ──miss──► 模型
               ▲                          ▲
               └──── 回填 ────────────────┘

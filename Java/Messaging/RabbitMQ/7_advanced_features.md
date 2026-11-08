@@ -9,7 +9,7 @@
 
 默认队列先进先出（FIFO）。启用优先级后，消息按**优先级从高到低**出队。
 
-```
+```text
 普通队列（FIFO）:     H → M → L → 出队: H → M → L
 优先级队列:           H(m), L(m), M(m) → 出队: H → M → L
 ```
@@ -50,7 +50,7 @@ channel.basicPublish("", "priority.queue", lowPriority, "普通消息".getBytes(
 
 普通队列的消息尽可能存储在**内存**中，内存不足时换出到磁盘。惰性队列的消息**尽可能存储在磁盘**中，仅在消费时加载到内存。
 
-```
+```text
 普通队列：消息 → 内存（不足→磁盘）
 惰性队列：消息 → 磁盘（消费时→内存）
 ```
@@ -92,7 +92,7 @@ channel.queueDeclare("lazy.queue", true, false, false, args);
 
 Quorum Queue 是 RabbitMQ 3.8 引入的**基于 Raft 共识协议**的持久化、高可用队列类型，是 Mirror Queue 的现代替代方案。
 
-```
+```text
                     Quorum Queue (3 Nodes)
             ┌─────────────────────────────────┐
             │  ┌────────┐            Leader   │
@@ -147,7 +147,7 @@ channel.queueDeclare("order.quorum.queue", true, false, false, args);
 
 当主交换机无法路由消息（无匹配 Queue）时，消息转发到备用交换机，而不是直接丢弃。
 
-```
+```text
 ┌───────────┐  无法路由  ┌────────────────┐
 │ 主交换机   │──────────→│ 备用交换机(AE)  │
 │(order.dir)│            │ (order.ae)     │
@@ -234,7 +234,7 @@ channel.basicQos(0, 64000, false);  // prefetchSize=0(不限制), prefetchCount=
 
 ## 6.2 保证顺序的方案
 
-```
+```text
 方案一：全局有序
   → 单 Producer + 单 Queue + 单 Consumer + autoAck=false
   → 缺点：无法水平扩展，吞吐量低

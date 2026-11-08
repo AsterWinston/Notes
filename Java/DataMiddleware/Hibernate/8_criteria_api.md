@@ -1140,7 +1140,7 @@ Expression<Double> score = cb.function(
 
 静态元模型（JPA Static Metamodel）是 JPA 规范定义的一种机制，为每个实体类生成对应的元模型类（canonical metamodel class）。元模型类将实体属性映射为类型安全的 `SingularAttribute`、`ListAttribute` 等对象，使得 Criteria API 查询中可以使用强类型属性引用替代字符串。
 
-```
+```text
 实体类：          元模型类：
 User.java    →   User_.java
   id: Long         id: SingularAttribute<User, Long>

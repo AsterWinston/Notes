@@ -45,7 +45,7 @@ function Good({ data }) {
 }
 ```
 
-```
+```text
 HOC 与 class 继承对照(它是"组合"不是"继承"):
   class Enhanced extends Base    ✗ React 不推荐
   Enhanced = props => <Base …/>  ✓ 包一层"兄弟组件",黑盒增强

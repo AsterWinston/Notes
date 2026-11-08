@@ -6,7 +6,7 @@
 
 ### 1.1.1 问题
 
-```
+```text
 消息窗口：只能保留最近 N 条，早期信息丢失
 向量记忆：按相关性召回任意历史，不受位置限制
 ```
@@ -145,7 +145,7 @@ public void store(MemoryEntry entry) {
 
 **结论先行**：召回 = 问题向量化 + 相似度检索 + 元数据过滤 + 阈值裁剪。
 
-```
+```text
 query ──embed──> 向量 ──search──> 候选 ──filter──> 结果
 ```
 
@@ -206,7 +206,7 @@ public List<MemoryEntry> recall(UserContext user, String query, int topK) {
 
 ### 4.1.1 公式
 
-```
+```text
 score = similarity * 0.6 + importance * 0.25 + recency * 0.15
 recency = exp(-daysOld / 30)   # 30 天半衰期
 ```
@@ -267,7 +267,7 @@ public List<MemoryEntry> recallRanked(UserContext user, String query, int topK) 
 
 **结论先行**：相似记忆不应重复存储，写入前用高阈值查重。
 
-```
+```text
 新记忆 ──embed──> 检索相似 ──命中──> 更新
                           └─未命中──> 新增
 ```
@@ -398,7 +398,7 @@ public List<MemoryEntry> recallWithTouch(UserContext user, String query, int top
 
 ### 7.2.1 衰减公式
 
-```
+```text
 importance_new = importance_old * 0.95 ^ daysSinceLastAccess
 ```
 
@@ -432,7 +432,7 @@ public void decay() {
 
 **结论先行**：生产用"窗口 + 向量"混合：近期全量带入，远期按相关性召回。
 
-```
+```text
 当前会话：
   ├── 窗口记忆（最近 20 条）    ← 全量带入
   └── 向量记忆（早期重要内容）  ← 按相关性召回

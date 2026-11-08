@@ -5,7 +5,7 @@ Spring6 倡导全注解开发
 注解其实就是一个标记
 
 # 2. 回顾自定义注解
-```
+```text
 元注解：标注注解的注解
 @Target注解：用来修饰注解可以出现的位置
 @Target(value = {ElementType.TYPE, ElementType.FIELD})，Target标注的注解可以出现在类或字段上
@@ -48,7 +48,7 @@ public @interface Component {
 ```
 
 # 3. 回顾自定义注解的使用
-```
+```java
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Component {
@@ -61,7 +61,7 @@ public class User {}
 ```
 
 # 4. 通过反射获取注解
-```
+```java
 @org.junit.Test
 public void testGetAnnotationByReflect() throws Exception{
     // 将类加载到JVM中
@@ -78,7 +78,7 @@ public void testGetAnnotationByReflect() throws Exception{
 ```
 
 # 5. 组件扫描原理
-```
+```java
 需求：给定一个包名，将这个包下的所有的带@Component注解的类进行实例化
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -141,7 +141,7 @@ public void componentScan() {
 ```
 
 # 6. 声明Bean的注解
-```
+```text
 负责声明Bean的注解，常见的包括四个：
 @Component：组件
 @Controller：控制器
@@ -155,7 +155,7 @@ dao类上使用：Repository（持久层）
 上面四个注解中，都是只有一个value属性，用来指定 bean 的 id
 ```
 ## 6.1 @Component
-```
+```text
 @Target({ElementType.TYPE}) // 只能使用在类上
 @Retention(RetentionPolicy.RUNTIME) // 可以通过反射获取该注解
 @Documented
@@ -165,7 +165,7 @@ public @interface Component {
 }
 ```
 ## 6.2 @Controller
-```
+```text
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -179,7 +179,7 @@ public @interface Controller {
 }
 ```
 ## 6.3 @Service
-```
+```text
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -193,7 +193,7 @@ public @interface Service {
 }
 ```
 ## 6.4 Repository
-```
+```text
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -209,7 +209,7 @@ public @interface Repository {
 ```
 
 # 7. Spring注解的使用
-```
+```text
 第一步：加入aop的依赖
 当加入spring-context依赖之后，会自动关联加入aop的依赖
 
@@ -269,7 +269,7 @@ public void test01() {
 ```
 
 # 8. 选择性实例化Bean
-```
+```text
 选择性实例化 Bean，就是只选择满足某些条件的类进行 bean 的实例化，或者排除满足某些条件的类，对这些类不进行 Bean 的实例化
 package cw.spring.bean;
 
@@ -322,13 +322,13 @@ class E {
     }
 }
 
-方式一：use-default-filters=“false” + context:include-filter
-	use-default-filters=“false”：不使用 spring 默认的实例化规则，即所有带有声明 bean 的注解全部失效，用注解 Component、Controller、Service、Repository 标注的 bean 都不进行实例化（让所有的声明 bean 的注解失效）
+方式一：use-default-filters="false" + context:include-filter
+	use-default-filters="false"：不使用 spring 默认的实例化规则，即所有带有声明 bean 的注解全部失效，用注解 Component、Controller、Service、Repository 标注的 bean 都不进行实例化（让所有的声明 bean 的注解失效）
 		use-default-filters 的默认值为 true
 	<context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>：
         表示被 Component 注解标注的 bean 进行实例化
-        type 属性用于指定过滤类的条件的类型，即根据什么进行过滤，type=“annotation”，根据类的注解进行过滤
-        expression 属性用于指定过滤的条件，expression=“org.springframework.stereotype.Component”，只有被Component注解标注的类才进行实例化
+        type 属性用于指定过滤类的条件的类型，即根据什么进行过滤，type="annotation"，根据类的注解进行过滤
+        expression 属性用于指定过滤的条件，expression="org.springframework.stereotype.Component"，只有被Component注解标注的类才进行实例化
 	由于其他三个注解只是 Component 的别名，所以包含 Component 也就包含其他三种注解
 	注意：使用context:include-filter，use-default-filters的属性值必须为false，否则context:include-filter无效
 <!-- 指定要进行扫描的包 -->
@@ -340,8 +340,8 @@ class E {
   <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 </context:component-scan>
 
-方式二：**use-default-filters=“true” + **context:exclude-filter
-	use-default-filters=“true”：使用 spring 默认的实例化规则，即所有带有声明 bean 的注解全部生效，用注解 Component、Controller、Service、Repository 标注的 bean 都进行实例化
+方式二：**use-default-filters="true" + **context:exclude-filter
+	use-default-filters="true"：使用 spring 默认的实例化规则，即所有带有声明 bean 的注解全部生效，用注解 Component、Controller、Service、Repository 标注的 bean 都进行实例化
 		use-default-filters 的默认值为 true
 	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Component"/>：
 		表示被 Component 注解标注的 bean 不进行实例化，排除被 Component 注解标注的 bean
@@ -359,7 +359,7 @@ class E {
 ```
 
 # 9. 负责注入的注解
-```
+```text
 @Component @Controller @Service @Repository 这四个注解只是用来声明 Bean 的，声明后，这些 Bean 将会被实例化。
 给 Bean 的属性赋值，使用如下注解：
     @Value：org.springframework.beans.factory.annotation.Value
@@ -368,7 +368,7 @@ class E {
     @Resource：javax.annotation.Resource
 ```
 ## 9.1 @Value：注入配置文件中的值（字符串、表达式等）
-```
+```text
 用于简单类型注入
 import org.springframework.beans.factory.annotation.Value;
 使用的是反射机制直接注入的，并不属于set/construct注入
@@ -507,7 +507,7 @@ public class MyDataSource {
 }
 ```
 ## 9.2 @Autowired：按类型自动装配 Bean
-```
+```java
 @Autowired 注解用来注入非简单类型。
 	Autowired：自动连线，或自动装配
     @Autowired，通过注解的方式进行自动装配
@@ -604,7 +604,7 @@ public class OrderService {
 }
 ```
 ## 9.3 @Qualifier：与 `@Autowired` 配合，按名称指定注入 Bean
-```
+```java
 @Autowired 注解和 @Qualifier 注解联合起来才可以根据名称进行装配，在@Qualifier注解中指定Bean名称。
 
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
@@ -655,7 +655,7 @@ public class OrderService {
 }
 ```
 ## 9.4 @Resource：JDK 提供的注解，按名称注入 Bean（也可按类型）
-```
+```text
     @Resource注解可以完成非简单类型注入。
     @Resource注解是JDK扩展包中的，也就是说属于JDK的一部分，而@Autowired注解是Spring框架自己的。
     @Resource是JDK标准规范中的，更具有通用性，更推荐使用
@@ -759,7 +759,7 @@ public class StudentService {
 ```
 
 # 10. 全注解开发
-```
+```text
 全注解开发就是不再使用 spring 配置文件，写一个配置类来代替配置文件。
 
 @Configuration 注解标注配置类（org.springframework.context.annotation.Configuration）
@@ -792,7 +792,7 @@ public void test03() {
 
 ## 11.1 AnnotationConfigApplicationContext 的构造链路
 
-```
+```text
 当我们执行 new AnnotationConfigApplicationContext(Spring6Config.class) 时，
 内部发生了什么？
 
@@ -843,7 +843,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 ### 11.1.1 AnnotatedBeanDefinitionReader 注册配置类
 
-```
+```java
 public void register(Class<?>... componentClasses) {
     for (Class<?> componentClass : componentClasses) {
         registerBean(componentClass);
@@ -886,7 +886,7 @@ private <T> void doRegisterBean(
 
 ## 11.2 ConfigurationClassPostProcessor — 注解配置处理的核心
 
-```
+```text
 ConfigurationClassPostProcessor 是整个注解驱动的核心处理器！
 它实现了 BeanDefinitionRegistryPostProcessor，优先级为 Ordered.HIGHEST_PRECEDENCE。
 
@@ -984,7 +984,7 @@ public class ConfigurationClassPostProcessor
 
 ## 11.3 ConfigurationClassParser.parse() — 注解解析过程
 
-```
+```java
 ConfigurationClassParser 负责解析配置类上的关键注解：
 
 protected final SourceClass doProcessConfigurationClass(
@@ -1084,7 +1084,7 @@ protected final SourceClass doProcessConfigurationClass(
 
 ## 11.4 ClassPathBeanDefinitionScanner — 组件扫描源码
 
-```
+```java
 ComponentScanAnnotationParser 调用 ClassPathBeanDefinitionScanner.doScan()：
 
 protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
@@ -1132,7 +1132,7 @@ protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
 
 ## 11.5 AutowiredAnnotationBeanPostProcessor — @Autowired 注入源码
 
-```
+```java
 AutowiredAnnotationBeanPostProcessor 是注解驱动 DI 的核心 BeanPostProcessor：
 
 public class AutowiredAnnotationBeanPostProcessor
@@ -1246,7 +1246,7 @@ public class AutowiredAnnotationBeanPostProcessor
 
 ### 11.5.1 @Autowired 注入的实际执行：AutowiredFieldElement.inject()
 
-```
+```java
 // AutowiredAnnotationBeanPostProcessor 内部类 AutowiredFieldElement
 private class AutowiredFieldElement extends InjectionMetadata.InjectedElement {
 
@@ -1319,7 +1319,7 @@ private class AutowiredFieldElement extends InjectionMetadata.InjectedElement {
 
 ## 11.6 @Configuration 的 CGLIB 代理机制
 
-```
+```text
 问题：为什么 @Configuration 类需要 CGLIB 代理？
 
 @Configuration
@@ -1387,7 +1387,7 @@ private static class BeanMethodInterceptor implements MethodInterceptor, Conditi
 
 ### 11.6.1 Full vs Lite 模式的判定
 
-```
+```java
 ConfigurationClassUtils.checkConfigurationClassCandidate() 中：
 
 public static boolean checkConfigurationClassCandidate(
@@ -1422,7 +1422,7 @@ public static boolean isFullConfigurationCandidate(AnnotationMetadata metadata) 
 
 ## 11.7 注解驱动容器启动完整流程图
 
-```
+```text
 new AnnotationConfigApplicationContext(Spring6Config.class)
     │
     ├── 1. this() — 创建 AnnotatedBeanDefinitionReader + ClassPathBeanDefinitionScanner
@@ -1488,7 +1488,7 @@ new AnnotationConfigApplicationContext(Spring6Config.class)
 
 ## 11.8 设计思想总结
 
-```
+```text
 1. BeanFactoryPostProcessor 扩展点：
    ConfigurationClassPostProcessor 是 Spring 最核心的 BFPP，它利用了 BFPP 可以修改
    BeanDefinition 的特性，在 Bean 创建之前完成：

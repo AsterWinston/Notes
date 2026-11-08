@@ -14,7 +14,7 @@
 
 同一个 prompt（提示词）下，贪心永远给出同一条输出。对创意写作、头脑风暴、对话等任务，这等于浪费了模型分布里的大量可能性。
 
-```
+```text
 贪心（每次取最大概率）的问题：
 
   - 输出重复、死板
@@ -30,7 +30,7 @@
 
 设模型在第 t 步输出 logits（未归一化得分）z，经过 softmax（归一化指数函数）得到概率 p：
 
-```
+```text
 p_i = exp(z_i) / sum_j exp(z_j)
 ```
 
@@ -40,7 +40,7 @@ p_i = exp(z_i) / sum_j exp(z_j)
 
 自回归生成把整句概率分解为条件概率的连乘：
 
-```
+```text
 P(x_1, ..., x_T) = prod_t P(x_t | x_1, ..., x_{t-1})
 ```
 
@@ -48,7 +48,7 @@ P(x_1, ..., x_T) = prod_t P(x_t | x_1, ..., x_{t-1})
 
 ## 1.3 自回归生成流程
 
-```
+```text
 输入 prompt
      |
      v
@@ -74,7 +74,7 @@ P(x_1, ..., x_T) = prod_t P(x_t | x_1, ..., x_{t-1})
 
 原始分布由 logits 经 softmax 得到。温度在 softmax 之前对 logits 做除法：
 
-```
+```text
 probs = softmax(logits / T)
 ```
 
@@ -86,7 +86,7 @@ probs = softmax(logits / T)
 
 从信息论看，温度单调地改变分布的熵（entropy，不确定性度量）：T 越大熵越高，T 越小熵越低。温度本质上是在"确定"和"随机"之间连续调节。
 
-```
+```text
 logits = [2.0, 1.0, 0.0]
 
 T = 0.5: [0.867, 0.117, 0.016]  尖锐
@@ -96,7 +96,7 @@ T = 2.0: [0.506, 0.307, 0.187]  平坦
 
 ## 2.2 温度区间效果
 
-```
+```text
 T < 1：分布更尖锐 → 更确定
 T = 1：原始分布
 T > 1：分布更平坦 → 更随机
@@ -160,14 +160,14 @@ static int argmax(double[] a) {
 
 只在概率最高的 k 个候选里采样，其余置为负无穷，再在截断集合上重新归一化。
 
-```
+```text
 原始分布: [0.3, 0.2, 0.15, 0.1, 0.08, ...]
 Top-k=3:  [0.3, 0.2, 0.15] → 重新归一化后采样
 ```
 
 重归一化公式：
 
-```
+```text
 p'_i = p_i / sum_{j in TopK} p_j
 ```
 
@@ -225,7 +225,7 @@ static void topKFilter(double[] logits, int k) {
 
 把概率从大到小排序，累加直到超过阈值 p，取这一段作为候选集（核）：
 
-```
+```text
 排序后概率: [0.4, 0.3, 0.15, 0.1, 0.05]
 Top-p=0.9: 累积到 0.4+0.3+0.15+0.1=0.95 > 0.9
            → 取前 4 个
@@ -296,7 +296,7 @@ static void topPFilter(double[] logits, double p) {
 
 ## 5.1 推荐组合
 
-```
+```text
 推荐组合：temperature + top_p
   事实任务：T=0.2, top_p=0.9
   通用对话：T=0.7, top_p=0.9
@@ -371,7 +371,7 @@ static void applyRepetitionPenalty(double[] logits,
 
 frequency / presence 惩罚通常直接减去与出现次数成正比的量：
 
-```
+```text
 z'_i = z_i - alpha * count(i)          // frequency
 z'_i = z_i - beta  * 1[count(i) > 0]   // presence
 ```
@@ -398,7 +398,7 @@ z'_i = z_i - beta  * 1[count(i) > 0]   // presence
 
 每一步对当前 k 条路径分别扩展，保留累计对数概率最高的 k 条，最后取全局最优序列。
 
-```
+```text
 Beam=2:
   step1: [今天] [天气]
   step2: [今天天气] [天气真] ...
@@ -407,7 +407,7 @@ Beam=2:
 
 用对数概率避免下溢：
 
-```
+```text
 score(x_1..x_t) = sum_{s=1}^{t} log P(x_s | x_1..x_{s-1})
 ```
 
@@ -415,7 +415,7 @@ score(x_1..x_t) = sum_{s=1}^{t} log P(x_s | x_1..x_{s-1})
 
 连乘概率天然偏向短句，需除以长度做归一化：
 
-```
+```text
 normalized = score / t^alpha     (alpha 常用 0.6~1.0)
 ```
 
@@ -453,7 +453,7 @@ normalized = score / t^alpha     (alpha 常用 0.6~1.0)
 
 用大模型与小模型的 logits 之差放大"大模型独有"的信号，提升连贯性，常用于缓解小模型重复问题：
 
-```
+```text
 score = log p_large - alpha * log p_small
 ```
 
@@ -502,7 +502,7 @@ static void constrain(double[] logits, boolean[] allowedMask) {
 
 ## 9.2 选择决策
 
-```
+```text
 需要唯一确定输出? ── 是 ──> 贪心 / 约束解码
         │
         否

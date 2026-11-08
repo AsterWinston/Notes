@@ -6,7 +6,7 @@
 
 ★ **关键认知**：`unsafe` **不是"关闭安全检查"**，而是解锁**五项编译器无法验证的操作**。在 `unsafe` 块中，所有其他安全检查（类型检查、借用检查）**照常进行**：
 
-```
+```text
 unsafe 解锁的五项能力：
 1. 解引用裸指针（*const T / *mut T）
 2. 调用 unsafe 函数或方法
@@ -93,7 +93,7 @@ pub fn split_at_mut<T>(slice: &mut [T], mid: usize) -> (&mut [T], &mut [T]) {
 
 ★ **关键认知**：Rust 的宏分两大类：
 
-```
+```text
 1. 声明宏（Declarative Macro）：macro_rules!，基于模式匹配
 2. 过程宏（Procedural Macro）：
    - 派生宏（derive）：#[derive(MyMacro)]
@@ -132,7 +132,7 @@ foo();
 
 ## 2.3 常用片段类型
 
-```
+```text
 $name:ident     标识符
 $name:expr      表达式
 $name:ty        类型
@@ -182,7 +182,7 @@ let sql = sql!(SELECT * FROM posts);
 
 ★ **关键认知**：
 
-```
+```text
 使用 unsafe：
   - 与 C 库交互（FFI）
   - 实现底层数据结构（跳过冗余检查）

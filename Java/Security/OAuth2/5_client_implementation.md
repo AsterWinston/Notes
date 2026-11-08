@@ -4,7 +4,7 @@ OAuth2 客户端（Client）是代表资源拥有者请求受保护资源的应�
 
 ## 1.1 客户端类型与安全分类
 
-```
+```text
                     OAuth2 客户端分类
                          │
           ┌──────────────┴──────────────┐
@@ -31,7 +31,7 @@ OAuth2 客户端（Client）是代表资源拥有者请求受保护资源的应�
 
 ## 2.1 整体架构
 
-```
+```text
 ┌─────────┐   Browser     ┌─────────────┐   Backend    ┌─────────────┐
 │ Browser │<─────────────>│  Web Server  │<───────────>│ Auth Server │
 │         │  Session Cookie│ (Backend)   │ API Call    │             │
@@ -219,7 +219,7 @@ CREATE TABLE oauth2_tokens (
 
 ## 3.1 SPA 的安全挑战
 
-```
+```text
 SPA 的核心困境：
   - 代码在浏览器中执行 → 无法安全存储密钥
   - JS 可访问 localStorage/sessionStorage → Token 易被盗取
@@ -229,7 +229,7 @@ SPA 的核心困境：
 
 ## 3.2 推荐方案：BFF（Backend For Frontend）模式
 
-```
+```text
                     BFF 架构
                     
 ┌──────────┐     ┌──────────────────┐     ┌─────────────┐
@@ -248,7 +248,7 @@ SPA 的核心困境：
   SameSite)
 ```
 
-```
+```text
 BFF 模式的优势：
 
 1. Access Token 不出浏览器 — SPA 只持有 HttpOnly Session Cookie
@@ -351,7 +351,7 @@ class OAuth2Client {
 
 移动端 OAuth2 推荐使用 **AppAuth** 模式（通过系统浏览器完成授权，而非应用内 WebView）。
 
-```
+```text
 为什么不推荐 WebView？
 
 1. 安全考虑：
@@ -371,7 +371,7 @@ class OAuth2Client {
 
 ### 4.1.1 AppAuth 回调方式
 
-```
+```text
 方式一：Custom URL Scheme（不推荐）
   myapp://callback?code=xxx
   问题：多 App 可注册同一 scheme
@@ -423,7 +423,7 @@ authService.performAuthorizationRequest(
 
 ## 4.3 Token 安全存储
 
-```
+```text
 Android Token 存储最佳实践：
 
 1. Access Token → EncryptedSharedPreferences
@@ -495,7 +495,7 @@ class CachedToken {
 
 ## 5.2 M2M Token 缓存策略
 
-```
+```text
 M2M Token 缓存的最佳实践：
 
 1. 使用 Guava Cache / Caffeine
@@ -523,7 +523,7 @@ LoadingCache<String, String> tokenCache = Caffeine.newBuilder()
 
 ## 6.1 客户端元数据
 
-```
+```text
 注册时需要提供的信息：
 
 核心信息：
@@ -547,7 +547,7 @@ LoadingCache<String, String> tokenCache = Caffeine.newBuilder()
 
 ## 6.2 客户端认证方式
 
-```
+```text
 方式一：client_secret_basic（最常用）
   Authorization: Basic base64(client_id:client_secret)
   

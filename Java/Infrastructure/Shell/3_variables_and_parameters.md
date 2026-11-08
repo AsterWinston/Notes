@@ -355,7 +355,7 @@ declare -p PATH          # declare -x PATH="..."
 
 这是理解 Shell 行为的关键。以下展开依序发生：
 
-```
+```text
 1. 大括号展开    echo {1..3}      → 1 2 3
 2. 波浪号展开    echo ~/dir       → /home/user/dir
 3. 参数/变量展开  echo $var       → value

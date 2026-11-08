@@ -3,7 +3,7 @@
 
 Nacos 是目前唯一一个可以在服务发现和配置管理场景中根据不同需求**灵活切换 CAP 模式**的注册中心。
 
-```
+```text
           Nacos 一致性模型
 
   ┌─────────────────────────────────┐
@@ -38,7 +38,7 @@ Distro 协议是阿里巴巴自研的 AP（可用性 + 分区容错）协议，�
 
 ## 2.2 Distro 数据分片策略
 
-```
+```text
                      Distro 数据分片
 
   ┌──────────────────────────────────────────────────────┐
@@ -159,7 +159,7 @@ public class DistroVerifyTask implements Runnable {
 
 ## 2.5 Distro 数据同步总览
 
-```
+```text
 Client Request (写入)
      │
      ▼
@@ -272,7 +272,7 @@ public class NacosStateMachine extends StateMachineAdapter {
 
 ## 3.3 Raft 写入流程
 
-```
+```text
 Client (配置写入)
     │
     ▼
@@ -340,7 +340,7 @@ public Datum get(String key) {
 
 Distro 协议采用**节点对等 + 最终一致**的方式，天然不会脑裂：
 
-```
+```text
 网络分区前:
   ┌────┐ ┌────┐ ┌────┐
   │ N1 │ │ N2 │ │ N3 │
@@ -364,7 +364,7 @@ Raft 通过以下机制防止脑裂：
 2. **多数派选举**：必须获得 N/2+1 节点投票才能成为 Leader
 3. **预投票（Pre-Vote）**：网络恢复后，旧 Leader 发起预投票，发现已经有新 Leader 后自动降级
 
-```
+```text
 Raft 集群 3 节点，网络分区:
 
 ┌────┐           ┌────┐ ┌────┐

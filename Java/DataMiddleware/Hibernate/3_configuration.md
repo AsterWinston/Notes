@@ -4,7 +4,7 @@ Hibernate 提供了三种主要的配置方式：**XML 配置**、**注解配置
 
 历史演变路径：
 
-```
+```text
 hbm.xml 映射文件（Hibernate 2/3）
 → hibernate.cfg.xml + hbm.xml（Hibernate 3 主流）
 → JPA 注解（Hibernate 3.5+，JPA 1.0）
@@ -283,7 +283,7 @@ spring.jpa.hibernate.ddl-auto=validate
 
 Hibernate 5+ 将命名策略拆分为**隐式命名**和**物理命名**两个阶段：
 
-```
+```text
 Java 实体字段名 → ImplicitNamingStrategy → 逻辑列名 → PhysicalNamingStrategy → 数据库物理列名
 ```
 
@@ -1550,7 +1550,7 @@ public class MultiTenancyConfig {
 
 按环境划分配置文件：
 
-```
+```text
 resources/
 ├── application.properties           # 公共 + 开发默认配置
 ├── application-dev.properties       # 开发环境

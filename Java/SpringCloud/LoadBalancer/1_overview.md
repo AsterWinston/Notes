@@ -3,7 +3,7 @@
 
 Spring Cloud LoadBalancer 是 Spring Cloud 官方提供的**客户端负载均衡器**，用以替代进入维护模式的 Netflix Ribbon。它从 Spring Cloud 2020.0（Ilford）版本开始成为默认的负载均衡实现。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │                      服务消费者                           │
 │  ┌────────────────────────────────────────────────────┐  │
@@ -62,7 +62,7 @@ Netflix Ribbon 曾是 Spring Cloud 生态中客户端负载均衡的事实标准
 
 # 4. 架构概览
 
-```
+```text
                         ┌──────────────────────┐
                         │   Service Discovery  │  ← Nacos / Eureka / Consul
                         │   (注册中心)          │
@@ -91,7 +91,7 @@ Netflix Ribbon 曾是 Spring Cloud 生态中客户端负载均衡的事实标准
 
 Spring Cloud LoadBalancer 使用 `lb://service-id` 协议标识需要负载均衡的请求：
 
-```
+```text
 请求: http://order-service/api/orders
   │
   ▼

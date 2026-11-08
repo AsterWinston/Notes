@@ -4,7 +4,7 @@
 
 系统设计题考察的是"在信息不完整时如何做工程决策"，答题要遵循固定框架，先对齐边界再给方案。
 
-```
+```text
 ① 澄清需求（功能 + 非功能）
 ② 估算规模（用户、QPS、数据量）
 ③ 高层设计（架构图）
@@ -38,7 +38,7 @@
 
 用"假设 + 数量级"而非精确值，典型口径如下：
 
-```
+```text
 日请求 = 日活 × 人均请求
 平均 QPS = 日请求 / 86400
 峰值 QPS = 平均 QPS × (3 ~ 10)
@@ -91,7 +91,7 @@
 
 ### 2.3.1 架构图
 
-```
+```text
 上传 → 索引服务（解析/切分/向量化）→ PGVector
 用户 → 问答服务（检索/重排/生成）→ 模型
 ```
@@ -200,7 +200,7 @@ public String answer(String question, String tenantId) {
 
 ### 3.3.1 架构图
 
-```
+```text
 用户 → 情绪识别 → 意图识别 → RAG/工具 → 置信度 → 转人工
 ```
 
@@ -274,7 +274,7 @@ public String answer(String question, String tenantId) {
 
 ### 4.3.1 架构图
 
-```
+```text
 API → 任务分发 → 消息队列 → Worker → 状态存储
 ```
 
@@ -358,7 +358,7 @@ public void checkpoint(String taskId, int step, Object state) {
 
 ### 5.3.1 架构图
 
-```
+```text
 Supervisor → [检索/分析/写作 Agent] → 共享状态 → 汇总
 ```
 
@@ -430,7 +430,7 @@ Supervisor 负责分解与汇总，子 Agent 各司其职。
 
 ### 6.3.1 架构图
 
-```
+```text
 应用 → 网关 → [路由/限流/缓存/熔断] → 多模型
 ```
 

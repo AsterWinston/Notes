@@ -1,7 +1,7 @@
 
 # 1. 安装的是什么：Docker 组件与版本关系
 
-很多人以为“安装 Docker = 安装一个命令”，但实际是一组组件协作：
+很多人以为"安装 Docker = 安装一个命令"，但实际是一组组件协作：
 
 1. **Docker CLI**：`docker` 命令行工具。
 2. **dockerd（Docker Engine）**：守护进程，负责镜像、网络、卷、容器生命周期管理。
@@ -10,8 +10,8 @@
 
 工程结论：
 
-1. 出现“客户端有版本但运行不了”时，优先检查 dockerd 是否启动、socket 权限是否正确。
-2. Buildx/Compose 常见问题来自“插件未安装/版本不匹配/使用了旧版 docker-compose 二进制”。
+1. 出现"客户端有版本但运行不了"时，优先检查 dockerd 是否启动、socket 权限是否正确。
+2. Buildx/Compose 常见问题来自"插件未安装/版本不匹配/使用了旧版 docker-compose 二进制"。
 
 # 2. Linux 安装
 

@@ -1,5 +1,5 @@
 # 1. 页面生命周期：DOMContentLoaded, load, beforeunload, unload
-```
+```html
 HTML 页面的生命周期包含三个重要事件：
 
 DOMContentLoaded —— 浏览器已完全加载 HTML，并构建了 DOM 树，但像 <img> 和样式表之类的外部资源可能尚未加载完成。
@@ -56,7 +56,7 @@ DOMContentLoaded 和脚本
 <script>
   alert("Library loaded, inline script executed");
 </script>
-在上面这个例子中，我们首先会看到 “Library loaded…”，然后才会看到 “DOM ready!”（所有脚本都已经执行结束）。
+在上面这个例子中，我们首先会看到 "Library loaded…"，然后才会看到 "DOM ready!"（所有脚本都已经执行结束）。
 
 不会阻塞 DOMContentLoaded 的脚本
 此规则有两个例外：
@@ -125,7 +125,7 @@ window.addEventListener("unload", function() {
 数据大小限制在 64kb。
 当 sendBeacon 请求完成时，浏览器可能已经离开了文档，所以就无法获取服务器响应（对于分析数据来说通常为空）。
 
-还有一个 keep-alive 标志，该标志用于在 fetch 方法中为通用的网络请求执行此类“离开页面后”的请求。你可以在 Fetch API 一章中找到更多相关信息。
+还有一个 keep-alive 标志，该标志用于在 fetch 方法中为通用的网络请求执行此类"离开页面后"的请求。你可以在 Fetch API 一章中找到更多相关信息。
 
 如果我们要取消跳转到另一页面的操作，在这里做不到。但是我们可以使用另一个事件 —— onbeforeunload。
 ```
@@ -155,7 +155,7 @@ window.addEventListener("unload", function() {
 数据大小限制在 64kb。
 当 sendBeacon 请求完成时，浏览器可能已经离开了文档，所以就无法获取服务器响应（对于分析数据来说通常为空）。
 
-还有一个 keep-alive 标志，该标志用于在 fetch 方法中为通用的网络请求执行此类“离开页面后”的请求。你可以在 Fetch API 一章中找到更多相关信息。
+还有一个 keep-alive 标志，该标志用于在 fetch 方法中为通用的网络请求执行此类"离开页面后"的请求。你可以在 Fetch API 一章中找到更多相关信息。
 
 如果我们要取消跳转到另一页面的操作，在这里做不到。但是我们可以使用另一个事件 —— onbeforeunload。
 ```
@@ -284,15 +284,15 @@ complete —— 文档和资源均已加载完成，与 window.onload 几乎同�
 ```
 
 # 2. 脚本：async, defer
-```
-现代的网站中，脚本往往比 HTML 更“重”：它们的大小通常更大，处理时间也更长。
+```html
+现代的网站中，脚本往往比 HTML 更"重"：它们的大小通常更大，处理时间也更长。
 
 当浏览器加载 HTML 时遇到 <script>...</script> 标签，浏览器就不能继续构建 DOM。它必须立刻执行此脚本。对于外部脚本 <script src="..."></script> 也是一样的：浏览器必须等脚本下载完，并执行结束，之后才能继续处理剩余的页面。
 
 这会导致两个重要的问题：
 
 脚本不能访问到位于它们下面的 DOM 元素，因此，脚本无法给它们添加处理程序等。
-如果页面顶部有一个笨重的脚本，它会“阻塞页面”。在该脚本下载并执行结束前，用户都不能看到页面内容：
+如果页面顶部有一个笨重的脚本，它会"阻塞页面"。在该脚本下载并执行结束前，用户都不能看到页面内容：
 <p>...content before script...</p>
 
 <script src="https://javascript.info/article/script-async-defer/long.js?speed=1"></script>
@@ -314,7 +314,7 @@ complete —— 文档和资源均已加载完成，与 window.onload 几乎同�
 ```
 ## 2.1 defer
 ```javascript
-defer 特性告诉浏览器不要等待脚本。相反，浏览器将继续处理 HTML，构建 DOM。脚本会“在后台”下载，然后等 DOM 构建完成后，脚本才会执行。
+defer 特性告诉浏览器不要等待脚本。相反，浏览器将继续处理 HTML，构建 DOM。脚本会"在后台"下载，然后等 DOM 构建完成后，脚本才会执行。
 
 这是与上面那个相同的示例，但是带有 defer 特性：
 
@@ -349,7 +349,7 @@ DOMContentLoaded 事件处理程序等待具有 defer 特性的脚本执行完�
 <script defer src="https://javascript.info/article/script-async-defer/small.js"></script>
 浏览器扫描页面寻找脚本，然后并行下载它们，以提高性能。因此，在上面的示例中，两个脚本是并行下载的。small.js 可能会先下载完成。
 
-……但是，defer 特性除了告诉浏览器“不要阻塞页面”之外，还可以确保脚本执行的相对顺序。因此，即使 small.js 先加载完成，它也需要等到 long.js 执行结束才会被执行。
+……但是，defer 特性除了告诉浏览器"不要阻塞页面"之外，还可以确保脚本执行的相对顺序。因此，即使 small.js 先加载完成，它也需要等到 long.js 执行结束才会被执行。
 
 当我们需要先加载 JavaScript 库，然后再加载依赖于它的脚本时，这可能会很有用。
 
@@ -385,7 +385,7 @@ DOMContentLoaded 也可能发生在异步脚本之后（如果异步脚本很短
 <p>...content after scripts...</p>
 页面内容立刻显示出来：加载写有 async 的脚本不会阻塞页面渲染。
 DOMContentLoaded 可能在 async 之前或之后触发，不能保证谁先谁后。
-较小的脚本 small.js 排在第二位，但可能会比 long.js 这个长脚本先加载完成，所以 small.js 会先执行。虽然，可能是 long.js 先加载完成，如果它被缓存了的话，那么它就会先执行。换句话说，异步脚本以“加载优先”的顺序执行。
+较小的脚本 small.js 排在第二位，但可能会比 long.js 这个长脚本先加载完成，所以 small.js 会先执行。虽然，可能是 long.js 先加载完成，如果它被缓存了的话，那么它就会先执行。换句话说，异步脚本以"加载优先"的顺序执行。
 当我们将独立的第三方脚本集成到页面时，此时采用异步加载方式是非常棒的：计数器，广告等，因为它们不依赖于我们的脚本，我们的脚本也不应该等待它们：
 
 <!-- Google Analytics 脚本通常是这样嵌入页面的 -->
@@ -404,12 +404,12 @@ script.src = "/article/script-async-defer/long.js";
 document.body.append(script); // (*)
 当脚本被附加到文档 (*) 时，脚本就会立即开始加载。
 
-默认情况下，动态脚本的行为是“异步”的。
+默认情况下，动态脚本的行为是"异步"的。
 
 也就是说：
 
 它们不会等待任何东西，也没有什么东西会等它们。
-先加载完成的脚本先执行（“加载优先”顺序）。
+先加载完成的脚本先执行（"加载优先"顺序）。
 如果我们显式地设置了 script.async=false，则可以改变这个规则。然后脚本将按照脚本在文档中的顺序执行，就像 defer 那样。
 
 在下面这个例子中，loadScript(src) 函数添加了一个脚本，并将 async 设置为了 false。
@@ -432,7 +432,7 @@ loadScript("/article/script-async-defer/small.js");
 ```
 
 # 3. 资源加载：onload, onerror
-```
+```text
 浏览器允许我们跟踪外部资源的加载 —— 脚本，iframe，图片等。
 
 这里有两个事件：
@@ -571,7 +571,7 @@ crossorigin="use-credentials" —— 如果服务器发送回带有我们的源�
 请注意：
 你可以在 Fetch：跨源请求 一章中了解有关跨源访问的更多信息。这一章描述了用于网络请求的 fetch 方法，但策略是完全相同的。
 
-诸如 “cookie” 之类的内容超出了本章的范围，但你可以在 Cookie，document.cookie 一章学习它们。
+诸如 "cookie" 之类的内容超出了本章的范围，但你可以在 Cookie，document.cookie 一章学习它们。
 
 在我们的示例中没有任何跨源特性（attribute）。因此，跨源访问被禁止。让我们来添加它吧。
 

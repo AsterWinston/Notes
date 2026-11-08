@@ -3,7 +3,7 @@
 
 Spring Cloud LoadBalancer 的重试机制基于 Spring Retry，当请求失败时自动选择**下一个**服务实例重试，提高调用成功率。
 
-```
+```text
 请求 user-service
   │
   ▼
@@ -189,7 +189,7 @@ private RetryTemplate createRetryTemplate(String serviceId) {
 
 ## 4.2 重试决策流程
 
-```
+```text
 请求失败 (503)
   │
   ▼

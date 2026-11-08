@@ -3,7 +3,7 @@
 
 **OpenID Connect 1.0**（OIDC）是建立在 OAuth 2.0 之上的**身份认证层**。OAuth 2.0 解决的是"授权"问题（允许应用访问你的资源），OIDC 解决的是"认证"问题（你是谁）。OIDC 通过引入 **ID Token**（JWT 格式）来承载用户身份信息。
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │              OAuth 2.0  ←→  OIDC                     │
 │                                                       │
@@ -28,7 +28,7 @@
 
 ## 2.1 ID Token 结构
 
-```
+```text
 ID Token = JWT（JSON Web Token）
 = Header.Payload.Signature
 
@@ -257,7 +257,7 @@ public class IdTokenValidator {
 
 这是 OIDC 中最常用、最安全的流程，实际上就是 OAuth 2.0 授权码模式 + ID Token。
 
-```
+```text
 GET /authorize?
     response_type=code            ← 授权码模式
     &client_id=my-app
@@ -372,7 +372,7 @@ eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIyNDgyODk3NjEwMDEi...
 
 # 6. 登出（RP-Initiated Logout）
 
-```
+```text
 OIDC Session Management + RP-Initiated Logout:
 
 1. RP-Initiated Logout（主动登出）：
@@ -415,7 +415,7 @@ public class OidcLogoutConfig {
 
 # 7. Subject 类型：public vs pairwise
 
-```
+```text
 public sub（默认）:
 - 所有 RP 看到的 sub 相同
 - 例如：所有应用都看到 sub=248289761001

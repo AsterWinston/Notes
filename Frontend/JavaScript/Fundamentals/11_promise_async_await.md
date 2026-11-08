@@ -28,7 +28,7 @@ function loadScript(src) {
 
 // 在给定路径下加载并执行脚本
 loadScript('/my/script.js');
-脚本是“异步”调用的，因为它从现在开始加载，但是在这个加载函数执行完成后才运行。
+脚本是"异步"调用的，因为它从现在开始加载，但是在这个加载函数执行完成后才运行。
 
 如果在 loadScript(…) 下面有任何其他代码，它们不会等到脚本加载完成才执行。
 
@@ -79,12 +79,12 @@ loadScript('https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js', s
   alert(`酷，脚本 ${script.src} 加载完成`);
   alert( _ ); // _ 是所加载的脚本中声明的一个函数
 });
-这被称为“基于回调”的异步编程风格。异步执行某项功能的函数应该提供一个 callback 参数用于在相应事件完成时调用。（译注：上面这个例子中的相应事件是指脚本加载）
+这被称为"基于回调"的异步编程风格。异步执行某项功能的函数应该提供一个 callback 参数用于在相应事件完成时调用。（译注：上面这个例子中的相应事件是指脚本加载）
 
 这里我们在 loadScript 中就是这么做的，但当然这是一种通用方法。
 ```
 ## 1.1 在回调中回调
-```
+```javascript
 我们如何依次加载两个脚本：第一个，然后是第二个？
 
 自然的解决方案是将第二个 loadScript 调用放入回调中，如下所示：
@@ -116,7 +116,7 @@ loadScript('/my/script.js', function(script) {
 因此，每一个新行为（action）都在回调内部。这对于几个行为来说还好，但对于许多行为来说就不好了，所以我们很快就会看到其他变体。
 ```
 ## 1.2 处理Error
-```
+```javascript
 在上述示例中，我们并没有考虑出现 error 的情况。如果脚本加载失败怎么办？我们的回调应该能够对此作出反应。
 
 这是 loadScript 的改进版本，可以跟踪加载错误：
@@ -141,7 +141,7 @@ loadScript('/my/script.js', function(error, script) {
     // 脚本加载成功
   }
 });
-再次强调，我们在 loadScript 中所使用的方案其实很普遍。它被称为“Error 优先回调（error-first callback）”风格。
+再次强调，我们在 loadScript 中所使用的方案其实很普遍。它被称为"Error 优先回调（error-first callback）"风格。
 
 约定是：
 
@@ -150,7 +150,7 @@ callback 的第一个参数是为 error 而保留的。一旦出现 error，call
 因此，单一的 callback 函数可以同时具有报告 error 和传递返回结果的作用。
 ```
 ## 1.3 厄运金字塔
-```
+```javascript
 乍一看，它像是一种可行的异步编程方式。的确如此，对于一个或两个嵌套的调用看起来还不错。
 
 但对于一个接一个的多个异步行为，代码将会变成这样：
@@ -185,10 +185,10 @@ loadScript('1.js', function(error, script) {
 我们加载 3.js，如果没有发生错误 —— 做其他操作 (*)。
 随着调用嵌套的增加，代码层次变得更深，维护难度也随之增加，尤其是我们使用的是可能包含了很多循环和条件语句的真实代码，而不是例子中的 ...。
 
-有时这些被称为“回调地狱”或“厄运金字塔”。
+有时这些被称为"回调地狱"或"厄运金字塔"。
 
 
-嵌套调用的“金字塔”随着每个异步行为会向右增长。很快它就失控了。
+嵌套调用的"金字塔"随着每个异步行为会向右增长。很快它就失控了。
 
 所以这种编码方式不是很好。
 
@@ -225,11 +225,11 @@ function step3(error, script) {
 
 它可以工作，但是代码看起来就像是一个被撕裂的表格。你可能已经注意到了，它的可读性很差，在阅读时你需要在各个代码块之间跳转。这很不方便，特别是如果读者对代码不熟悉，他们甚至不知道应该跳转到什么地方。
 
-此外，名为 step* 的函数都是一次性使用的，创建它们就是为了避免“厄运金字塔”。没有人会在行为链之外重用它们。因此，这里的命名空间有点混乱。
+此外，名为 step* 的函数都是一次性使用的，创建它们就是为了避免"厄运金字塔"。没有人会在行为链之外重用它们。因此，这里的命名空间有点混乱。
 
 我们希望还有更好的方法。
 
-幸运的是，有其他方法可以避免此类金字塔。最好的方法之一就是 “promise”，我们将在下一章中介绍它。
+幸运的是，有其他方法可以避免此类金字塔。最好的方法之一就是 "promise"，我们将在下一章中介绍它。
 ```
 
 
@@ -243,17 +243,17 @@ function step3(error, script) {
 
 这是我们在编程中经常遇到的事儿与真实生活的类比：
 
-“生产者代码（producing code）”会做一些事儿，并且会需要一些时间。例如，通过网络加载数据的代码。它就像一位“歌手”。
-“消费者代码（consuming code）”想要在“生产者代码”完成工作的第一时间就能获得其工作成果。许多函数可能都需要这个结果。这些就是“粉丝”。
-Promise 是将“生产者代码”和“消费者代码”连接在一起的一个特殊的 JavaScript 对象。用我们的类比来说：这就是就像是“订阅列表”。“生产者代码”花费它所需的任意长度时间来产出所承诺的结果，而 “promise” 将在它（译注：指的是“生产者代码”，也就是下文所说的 executor）准备好时，将结果向所有订阅了的代码开放。
+"生产者代码（producing code）"会做一些事儿，并且会需要一些时间。例如，通过网络加载数据的代码。它就像一位"歌手"。
+"消费者代码（consuming code）"想要在"生产者代码"完成工作的第一时间就能获得其工作成果。许多函数可能都需要这个结果。这些就是"粉丝"。
+Promise 是将"生产者代码"和"消费者代码"连接在一起的一个特殊的 JavaScript 对象。用我们的类比来说：这就是就像是"订阅列表"。"生产者代码"花费它所需的任意长度时间来产出所承诺的结果，而 "promise" 将在它（译注：指的是"生产者代码"，也就是下文所说的 executor）准备好时，将结果向所有订阅了的代码开放。
 这种类比并不十分准确，因为 JavaScript 的 promise 比简单的订阅列表更加复杂：它们还拥有其他的功能和局限性。但以此开始挺好的。
 
 Promise 对象的构造器（constructor）语法如下：
 
 let promise = new Promise(function(resolve, reject) {
-  // executor（生产者代码，“歌手”）
+  // executor（生产者代码，"歌手"）
 });
-传递给 new Promise 的函数被称为 executor。当 new Promise 被创建，executor 会自动运行。它包含最终应产出结果的生产者代码。按照上面的类比：executor 就是“歌手”。
+传递给 new Promise 的函数被称为 executor。当 new Promise 被创建，executor 会自动运行。它包含最终应产出结果的生产者代码。按照上面的类比：executor 就是"歌手"。
 
 它的参数 resolve 和 reject 是由 JavaScript 自身提供的回调。我们的代码仅在 executor 的内部。
 
@@ -270,9 +270,9 @@ result —— 最初是 undefined，然后在 resolve(value) 被调用时变为 
 所以，executor 最终将 promise 移至以下状态之一：
 
 
-稍后我们将看到“粉丝”如何订阅这些更改。
+稍后我们将看到"粉丝"如何订阅这些更改。
 
-下面是一个 promise 构造器和一个简单的 executor 函数，该 executor 函数具有包含时间（即 setTimeout）的“生产者代码”：
+下面是一个 promise 构造器和一个简单的 executor 函数，该 executor 函数具有包含时间（即 setTimeout）的"生产者代码"：
 
 let promise = new Promise(function(resolve, reject) {
   // 当 promise 被构造完成时，自动执行此函数
@@ -286,10 +286,10 @@ executor 被自动且立即调用（通过 new Promise）。
 
 executor 接受两个参数：resolve 和 reject。这些函数由 JavaScript 引擎预先定义，因此我们不需要创建它们。我们只需要在准备好（译注：指的是 executor 准备好）时调用其中之一即可。
 
-经过 1 秒的“处理”后，executor 调用 resolve("done") 来产生结果。这将改变 promise 对象的状态：
+经过 1 秒的"处理"后，executor 调用 resolve("done") 来产生结果。这将改变 promise 对象的状态：
 
 
-这是一个成功完成任务的例子，一个“成功实现了的诺言”。
+这是一个成功完成任务的例子，一个"成功实现了的诺言"。
 
 下面则是一个 executor 以 error 拒绝 promise 的示例：
 
@@ -302,7 +302,7 @@ let promise = new Promise(function(resolve, reject) {
 
 总而言之，executor 应该执行一项工作（通常是需要花费一些时间的事儿），然后调用 resolve 或 reject 来改变对应的 promise 对象的状态。
 
-与最初的 “pending” promise 相反，一个 resolved 或 rejected 的 promise 都会被称为 “settled”。
+与最初的 "pending" promise 相反，一个 resolved 或 rejected 的 promise 都会被称为 "settled"。
 
 只有一个结果或一个 error
 executor 只能调用一个 resolve 或一个 reject。任何状态的更改都是最终的。
@@ -337,8 +337,8 @@ state 和 result 都是内部的
 Promise 对象的 state 和 result 属性都是内部的。我们无法直接访问它们。但我们可以对它们使用 .then/.catch/.finally 方法。我们在下面对这些方法进行了描述。
 ```
 ## 2.1 消费者：then, catch
-```
-Promise 对象充当的是 executor（“生产者代码”或“歌手”）和消费函数（“粉丝”）之间的连接，后者将接收结果或 error。可以通过使用 .then 和 .catch 方法注册消费函数。
+```javascript
+Promise 对象充当的是 executor（"生产者代码"或"歌手"）和消费函数（"粉丝"）之间的连接，后者将接收结果或 error。可以通过使用 .then 和 .catch 方法注册消费函数。
 
 then
 最重要最基础的一个就是 .then。
@@ -396,7 +396,7 @@ promise.catch(alert); // 1 秒后显示 "Error: Whoops!"
 .catch(f) 调用是 .then(null, f) 的完全的模拟，它只是一个简写形式。
 ```
 ## 2.2 清理：finally
-```
+```text
 就像常规 try {...} catch {...} 中的 finally 子句一样，promise 中也有 finally。
 
 调用 .finally(f) 类似于 .then(f, f)，因为当 promise settled 时 f 就会执行：无论 promise 被 resolve 还是 reject。
@@ -420,11 +420,11 @@ new Promise((resolve, reject) => {
 
 它们之间有重要的区别：
 
-finally 处理程序（handler）没有参数。在 finally 中，我们不知道 promise 是否成功。没关系，因为我们的任务通常是执行“常规”的完成程序（finalizing procedures）。
+finally 处理程序（handler）没有参数。在 finally 中，我们不知道 promise 是否成功。没关系，因为我们的任务通常是执行"常规"的完成程序（finalizing procedures）。
 
 请看上面的例子：如你所见，finally 处理程序没有参数，promise 的结果由下一个处理程序处理。
 
-finally 处理程序将结果或 error “传递”给下一个合适的处理程序。
+finally 处理程序将结果或 error "传递"给下一个合适的处理程序。
 
 例如，在这结果被从 finally 传递给了 then：
 
@@ -466,12 +466,12 @@ finally 处理程序没有得到前一个处理程序的结果（它没有参数
 let promise = new Promise(resolve => resolve("done!"));
 
 promise.then(alert); // done!（立刻显示）
-请注意这使得 promise 比现实生活中的“订阅列表”方案强大得多。如果歌手已经发布了他们的单曲，然后某个人在订阅列表上进行了注册，则他们很可能不会收到该单曲。实际生活中的订阅必须在活动开始之前进行。
+请注意这使得 promise 比现实生活中的"订阅列表"方案强大得多。如果歌手已经发布了他们的单曲，然后某个人在订阅列表上进行了注册，则他们很可能不会收到该单曲。实际生活中的订阅必须在活动开始之前进行。
 
 Promise 则更加灵活。我们可以随时添加处理程序（handler）：如果结果已经在了，它们就会执行。
 ```
 ## 2.3 示例：loadScript
-```
+```javascript
 接下来，让我们看一下关于 promise 如何帮助我们编写异步代码的更多实际示例。
 
 我们从上一章获得了用于加载脚本的 loadScript 函数。
@@ -516,7 +516,7 @@ promise.then(script => alert('Another handler...'));
 
 promise	callback
 promise 允许我们按照自然顺序进行编码。首先，我们运行 loadScript，之后，用 .then 来处理结果。	在调用 loadScript(script, callback) 时，我们必须有一个 callback 函数可供使用。换句话说，在调用 loadScript 之前，我们必须知道如何处理结果。
-我们可以根据需要，在 promise 上多次调用 .then。每次调用，我们都会在“订阅列表”中添加一个新的“粉丝”，一个新的订阅函数。在下一章将对此内容进行详细介绍：Promise 链。	只能有一个回调。
+我们可以根据需要，在 promise 上多次调用 .then。每次调用，我们都会在"订阅列表"中添加一个新的"粉丝"，一个新的订阅函数。在下一章将对此内容进行详细介绍：Promise 链。	只能有一个回调。
 因此，promise 为我们提供了更好的代码流和灵活性。但其实还有更多相关内容。我们将在下一章看到。
 ```
 
@@ -597,7 +597,7 @@ promise.then(function(result) {
 实际上我们极少遇到一个 promise 需要多个处理程序的情况。使用链式调用的频率更高。
 ```
 ## 3.1 返回promise
-```
+```javascript
 .then(handler) 中所使用的处理程序（handler）可以创建并返回一个 promise。
 
 在这种情况下，其他的处理程序将等待它 settled 后再获得其结果。
@@ -636,7 +636,7 @@ new Promise(function(resolve, reject) {
 返回 promise 使我们能够构建异步行为链。
 ```
 ## 3.2 示例：loadScript
-```
+```javascript
 让我们将本章所讲的这个特性与在 上一章 中定义的 promise 化的 loadScript 结合使用，按顺序依次加载脚本：
 
 loadScript("/article/promise-chaining/one.js")
@@ -666,7 +666,7 @@ loadScript("/article/promise-chaining/one.js")
   });
 在这儿，每个 loadScript 调用都返回一个 promise，并且在它 resolve 时下一个 .then 开始运行。然后，它启动下一个脚本的加载。所以，脚本是一个接一个地加载的。
 
-我们可以向链中添加更多的异步行为。请注意，代码仍然是“扁平”的 —— 它向下增长，而不是向右。这里没有“厄运金字塔”的迹象。
+我们可以向链中添加更多的异步行为。请注意，代码仍然是"扁平"的 —— 它向下增长，而不是向右。这里没有"厄运金字塔"的迹象。
 
 从技术上讲，我们可以向每个 loadScript 直接添加 .then，就像这样：
 
@@ -680,16 +680,16 @@ loadScript("/article/promise-chaining/one.js").then(script1 => {
     });
   });
 });
-这段代码做了相同的事儿：按顺序加载 3 个脚本。但它是“向右增长”的。所以会有和使用回调函数一样的问题。
+这段代码做了相同的事儿：按顺序加载 3 个脚本。但它是"向右增长"的。所以会有和使用回调函数一样的问题。
 
 刚开始使用 promise 的人可能不知道 promise 链，所以他们就这样写了。通常，链式是首选。
 
 有时候直接写 .then 也是可以的，因为嵌套的函数可以访问外部作用域。在上面的例子中，嵌套在最深层的那个回调（callback）可以访问所有变量 script1，script2 和 script3。但这是一个例外，而不是一条规则。
 
 Thenables
-确切地说，处理程序返回的不完全是一个 promise，而是返回的被称为 “thenable” 对象 —— 一个具有方法 .then 的任意对象。它会被当做一个 promise 来对待。
+确切地说，处理程序返回的不完全是一个 promise，而是返回的被称为 "thenable" 对象 —— 一个具有方法 .then 的任意对象。它会被当做一个 promise 来对待。
 
-这个想法是，第三方库可以实现自己的“promise 兼容（promise-compatible）”对象。它们可以具有扩展的方法集，但也与原生的 promise 兼容，因为它们实现了 .then 方法。
+这个想法是，第三方库可以实现自己的"promise 兼容（promise-compatible）"对象。它们可以具有扩展的方法集，但也与原生的 promise 兼容，因为它们实现了 .then 方法。
 
 这是一个 thenable 对象的示例：
 
@@ -714,7 +714,7 @@ JavaScript 检查在 (*) 行中由 .then 处理程序返回的对象：如果它
 这个特性允许我们将自定义的对象与 promise 链集成在一起，而不必继承自 Promise。
 ```
 ## 3.3 更复杂的示例：fetch
-```
+```javascript
 在前端编程中，promise 通常被用于网络请求。那么，让我们一起来看一个相关的扩展示例吧。
 
 我们将使用 fetch 方法从远程服务器加载用户信息。它有很多可选的参数，我们在 单独的一章 中对其进行了详细介绍，但基本语法很简单：
@@ -860,8 +860,8 @@ fetch('/article/promise-chaining/user.json')
 通常情况下，这样的 .catch 根本不会被触发。但是如果上述任意一个 promise rejected（网络问题或者无效的 json 或其他），.catch 就会捕获它。
 ```
 ## 4.1 隐式try...catch
-```
-promise 的执行者（executor）和 promise 的处理程序周围有一个“隐式的 try..catch”。如果发生异常，它就会被捕获，并被视为 rejection 进行处理。
+```javascript
+promise 的执行者（executor）和 promise 的处理程序周围有一个"隐式的 try..catch"。如果发生异常，它就会被捕获，并被视为 rejection 进行处理。
 
 例如，下面这段代码：
 
@@ -873,7 +873,7 @@ new Promise((resolve, reject) => {
 new Promise((resolve, reject) => {
   reject(new Error("Whoops!"));
 }).catch(alert); // Error: Whoops!
-在 executor 周围的“隐式 try..catch”自动捕获了 error，并将其变为 rejected promise。
+在 executor 周围的"隐式 try..catch"自动捕获了 error，并将其变为 rejected promise。
 
 这不仅仅发生在 executor 函数中，同样也发生在其处理程序中。如果我们在 .then 处理程序中 throw，这意味着 promise rejected，因此控制权移交至最近的 error 处理程序。
 
@@ -894,7 +894,7 @@ new Promise((resolve, reject) => {
 最后的 .catch 不仅会捕获显式的 rejection，还会捕获它上面的处理程序中意外出现的 error。
 ```
 ## 4.2 再次抛出
-```
+```javascript
 正如我们已经注意到的，链尾端的 .catch 的表现有点像 try..catch。我们可能有许多个 .then 处理程序，然后在尾端使用一个 .catch 处理上面的所有 error。
 
 在常规的 try..catch 中，我们可以分析 error，如果我们无法处理它，可以将其再次抛出。对于 promise 来说，这也是可以的。
@@ -943,7 +943,7 @@ new Promise((resolve, reject) => {
 执行从第一个 .catch (*) 沿着链跳转至下一个 (**)。
 ```
 ## 4.3 未处理的rejection
-```
+```javascript
 当一个 error 没有被处理会发生什么？例如，我们忘了在链的尾端附加 .catch，像这样：
 
 new Promise(function() {
@@ -952,7 +952,7 @@ new Promise(function() {
   .then(() => {
     // 一个或多个成功的 promise 处理程序
   }); // 尾端没有 .catch！
-如果出现 error，promise 的状态将变为 “rejected”，然后执行应该跳转至最近的 rejection 处理程序。但上面这个例子中并没有这样的处理程序。因此 error 会“卡住”。没有代码来处理它。
+如果出现 error，promise 的状态将变为 "rejected"，然后执行应该跳转至最近的 rejection 处理程序。但上面这个例子中并没有这样的处理程序。因此 error 会"卡住"。没有代码来处理它。
 
 在实际开发中，就像代码中常规的未处理的 error 一样，这意味着某些东西出了问题。
 
@@ -985,7 +985,7 @@ new Promise(function() {
 在 Promise 类中，有 6 种静态方法。我们在这里简单介绍下它们的使用场景。
 ```
 ## 5.1 Promise.all
-```
+```javascript
 假设我们希望并行执行多个 promise，并等待所有 promise 都准备就绪。
 
 例如，并行下载几个 URL，并等到所有内容都下载完毕后再对它们进行处理。
@@ -1061,10 +1061,10 @@ Promise.all([
 
 例如，像上面那个例子，如果有多个同时进行的 fetch 调用，其中一个失败，其他的 fetch 操作仍然会继续执行，但是 Promise.all 将不会再关心（watch）它们。它们可能会 settle，但是它们的结果将被忽略。
 
-Promise.all 没有采取任何措施来取消它们，因为 promise 中没有“取消”的概念。在 另一个章节 中，我们将介绍可以帮助我们解决这个问题（译注：指的是“取消” promise）的 AbortController，但它不是 Promise API 的一部分。
+Promise.all 没有采取任何措施来取消它们，因为 promise 中没有"取消"的概念。在 另一个章节 中，我们将介绍可以帮助我们解决这个问题（译注：指的是"取消" promise）的 AbortController，但它不是 Promise API 的一部分。
 
-Promise.all(iterable) 允许在 iterable 中使用非 promise 的“常规”值
-通常，Promise.all(...) 接受含有 promise 项的可迭代对象（大多数情况下是数组）作为参数。但是，如果这些对象中的任何一个不是 promise，那么它将被“按原样”传递给结果数组。
+Promise.all(iterable) 允许在 iterable 中使用非 promise 的"常规"值
+通常，Promise.all(...) 接受含有 promise 项的可迭代对象（大多数情况下是数组）作为参数。但是，如果这些对象中的任何一个不是 promise，那么它将被"按原样"传递给结果数组。
 
 例如，这里的结果是 [1, 2, 3]：
 
@@ -1078,10 +1078,10 @@ Promise.all([
 所以我们可以在方便的地方将准备好的值传递给 Promise.all。
 ```
 ## 5.2 Promise.allSettled
-```
+```javascript
 最近新增的特性
 这是一个最近添加到 JavaScript 的特性。 旧式浏览器可能需要 polyfills.
-如果任意的 promise reject，则 Promise.all 整个将会 reject。当我们需要 所有 结果都成功时，它对这种“全有或全无”的情况很有用：
+如果任意的 promise reject，则 Promise.all 整个将会 reject。当我们需要 所有 结果都成功时，它对这种"全有或全无"的情况很有用：
 
 Promise.all([
   fetch('/template.html'),
@@ -1142,7 +1142,7 @@ if (!Promise.allSettled) {
 然后我们就可以使用 Promise.allSettled 来获取 所有 给定的 promise 的结果，即使其中一些被 reject。
 ```
 ## 5.3 Promise.race
-```
+```javascript
 与 Promise.all 类似，但只等待第一个 settled 的 promise 并获取其结果（或 error）。
 
 语法：
@@ -1155,10 +1155,10 @@ Promise.race([
   new Promise((resolve, reject) => setTimeout(() => reject(new Error("Whoops!")), 2000)),
   new Promise((resolve, reject) => setTimeout(() => resolve(3), 3000))
 ]).then(alert); // 1
-这里第一个 promise 最快，所以它变成了结果。第一个 settled 的 promise “赢得了比赛”之后，所有进一步的 result/error 都会被忽略。
+这里第一个 promise 最快，所以它变成了结果。第一个 settled 的 promise "赢得了比赛"之后，所有进一步的 result/error 都会被忽略。
 ```
 ## 5.4 Promise.any
-```
+```javascript
 与 Promise.race 类似，区别在于 Promise.any 只等待第一个 fulfilled 的 promise，并将这个 fulfilled 的 promise 返回。如果给出的 promise 都 rejected，那么返回的 promise 会带有 AggregateError —— 一个特殊的 error 对象，在其 errors 属性中存储着所有 promise error。
 
 语法如下：
@@ -1171,7 +1171,7 @@ Promise.any([
   new Promise((resolve, reject) => setTimeout(() => resolve(1), 2000)),
   new Promise((resolve, reject) => setTimeout(() => resolve(3), 3000))
 ]).then(alert); // 1
-这里的第一个 promise 是最快的，但 rejected 了，所以第二个 promise 则成为了结果。在第一个 fulfilled 的 promise “赢得比赛”后，所有进一步的结果都将被忽略。
+这里的第一个 promise 是最快的，但 rejected 了，所以第二个 promise 则成为了结果。在第一个 fulfilled 的 promise "赢得比赛"后，所有进一步的结果都将被忽略。
 
 这是一个所有 promise 都失败的例子：
 
@@ -1186,7 +1186,7 @@ Promise.any([
 正如你所看到的，我们在 AggregateError 错误类型的 error 实例的 errors 属性中可以访问到失败的 promise 的 error 对象。
 ```
 ## 5.5 Promise.resolve/reject
-```
+```javascript
 在现代的代码中，很少需要使用 Promise.resolve 和 Promise.reject 方法，因为 async/await 语法（我们会在 稍后 讲到）使它们变得有些过时了。
 
 完整起见，以及考虑到那些出于某些原因而无法使用 async/await 的人，我们在这里对它们进行介绍。
@@ -1197,7 +1197,7 @@ Promise.resolve(value) 用结果 value 创建一个 resolved 的 promise。
 如同：
 
 let promise = new Promise(resolve => resolve(value));
-当一个函数被期望返回一个 promise 时，这个方法用于兼容性。（译注：这里的兼容性是指，我们直接从缓存中获取了当前操作的结果 value，但是期望返回的是一个 promise，所以可以使用 Promise.resolve(value) 将 value “封装”进 promise，以满足期望返回一个 promise 的这个需求。）
+当一个函数被期望返回一个 promise 时，这个方法用于兼容性。（译注：这里的兼容性是指，我们直接从缓存中获取了当前操作的结果 value，但是期望返回的是一个 promise，所以可以使用 Promise.resolve(value) 将 value "封装"进 promise，以满足期望返回一个 promise 的这个需求。）
 
 例如，下面的 loadCached 函数获取（fetch）一个 URL 并记住其内容。以便将来对使用相同 URL 的调用，它能立即从缓存中获取先前的内容，但使用 Promise.resolve 创建了一个该内容的 promise，所以返回的值始终是一个 promise。
 
@@ -1228,7 +1228,7 @@ let promise = new Promise((resolve, reject) => reject(error));
 
 # 6. Promisification
 ```javascript
-对于一个简单的转换来说 “Promisification” 是一个长单词。它指将一个接受回调的函数转换为一个返回 promise 的函数。
+对于一个简单的转换来说 "Promisification" 是一个长单词。它指将一个接受回调的函数转换为一个返回 promise 的函数。
 
 由于许多函数和库都是基于回调的，因此，在实际开发中经常会需要进行这种转换。因为使用 promise 更加方便，所以将基于回调的函数和库 promise 化是有意义的。
 
@@ -1367,8 +1367,8 @@ alert("code finished"); // 这个 alert 先显示
 为什么 .then 会在之后才被触发？这是怎么回事？
 ```
 ## 7.1 微任务队列
-```
-异步任务需要适当的管理。为此，ECMA 标准规定了一个内部队列 PromiseJobs，通常被称为“微任务队列（microtask queue）”（V8 术语）。
+```text
+异步任务需要适当的管理。为此，ECMA 标准规定了一个内部队列 PromiseJobs，通常被称为"微任务队列（microtask queue）"（V8 术语）。
 
 如 规范 中所述：
 
@@ -1376,7 +1376,7 @@ alert("code finished"); // 这个 alert 先显示
 只有在 JavaScript 引擎中没有其它任务在运行时，才开始执行任务队列中的任务。
 或者，简单地说，当一个 promise 准备就绪时，它的 .then/catch/finally 处理程序就会被放入队列中：但是它们不会立即被执行。当 JavaScript 引擎执行完当前的代码，它会从队列中获取任务并执行它。
 
-这就是为什么在上面那个示例中 “code finished” 会先显示。
+这就是为什么在上面那个示例中 "code finished" 会先显示。
 
 
 promise 的处理程序总是会经过这个内部队列。
@@ -1393,12 +1393,12 @@ Promise.resolve()
 现在代码就是按照预期执行的。
 ```
 ## 7.2 未处理的rejection
-```
+```text
 还记得 使用 promise 进行错误处理 一章中的 unhandledrejection 事件吗？
 
 现在，我们可以确切地看到 JavaScript 是如何发现未处理的 rejection 的。
 
-如果一个 promise 的 error 未被在微任务队列的末尾进行处理，则会出现“未处理的 rejection”。
+如果一个 promise 的 error 未被在微任务队列的末尾进行处理，则会出现"未处理的 rejection"。
 
 正常来说，如果我们预期可能会发生错误，我们会在 promise 链上添加 .catch 来处理 error：
 
@@ -1422,9 +1422,9 @@ setTimeout(() => promise.catch(err => alert('caught')), 1000);
 window.addEventListener('unhandledrejection', event => alert(event.reason));
 现在，如果我们运行上面这段代码，我们会先看到 Promise Failed!，然后才是 caught。
 
-如果我们并不了解微任务队列，我们可能会想：“为什么 unhandledrejection 处理程序会运行？我们已经捕获（catch）并处理了 error！”
+如果我们并不了解微任务队列，我们可能会想："为什么 unhandledrejection 处理程序会运行？我们已经捕获（catch）并处理了 error！"
 
-但是现在我们知道了，当微任务队列中的任务都完成时，才会生成 unhandledrejection：引擎会检查 promise，如果 promise 中的任意一个出现 “rejected” 状态，unhandledrejection 事件就会被触发。
+但是现在我们知道了，当微任务队列中的任务都完成时，才会生成 unhandledrejection：引擎会检查 promise，如果 promise 中的任意一个出现 "rejected" 状态，unhandledrejection 事件就会被触发。
 
 在上面这个例子中，被添加到 setTimeout 中的 .catch 也会被触发。只是会在 unhandledrejection 事件出现之后才会被触发，所以它并没有改变什么（没有发挥作用）。
 ```
@@ -1434,13 +1434,13 @@ window.addEventListener('unhandledrejection', event => alert(event.reason));
 async/await 是以更舒适的方式使用 promise 的一种特殊语法，同时它也非常易于理解和使用。
 ```
 ## 8.1 async function
-```
+```javascript
 让我们以 async 这个关键字开始。它可以被放置在一个函数前面，如下所示：
 
 async function f() {
   return 1;
 }
-在函数前面的 “async” 这个单词表达了一个简单的事情：即这个函数总是返回一个 promise。其他值将自动被包装在一个 resolved 的 promise 中。
+在函数前面的 "async" 这个单词表达了一个简单的事情：即这个函数总是返回一个 promise。其他值将自动被包装在一个 resolved 的 promise 中。
 
 例如，下面这个函数返回一个结果为 1 的 resolved promise，让我们测试一下：
 
@@ -1459,7 +1459,7 @@ f().then(alert); // 1
 所以说，async 确保了函数返回一个 promise，也会将非 promise 的值包装进去。很简单，对吧？但不仅仅这些。还有另外一个叫 await 的关键词，它只在 async 函数内工作，也非常酷。
 ```
 ## 8.2 await
-```
+```javascript
 语法如下：
 
 // 只在 async 函数内工作
@@ -1480,7 +1480,7 @@ async function f() {
 }
 
 f();
-这个函数在执行的时候，“暂停”在了 (*) 那一行，并在 promise settle 时，拿到 result 作为结果继续往下执行。所以上面这段代码在一秒后显示 “done!”。
+这个函数在执行的时候，"暂停"在了 (*) 那一行，并在 promise settle 时，拿到 result 作为结果继续往下执行。所以上面这段代码在一秒后显示 "done!"。
 
 让我们强调一下：await 实际上会暂停函数的执行，直到 promise 状态变为 settled，然后以 promise 的结果继续执行。这个行为不会耗费任何 CPU 资源，因为 JavaScript 引擎可以同时处理其他任务：执行其他脚本，处理事件等。
 
@@ -1545,7 +1545,7 @@ console.log(user);
   let user = await response.json();
   ...
 })();
-await 接受 “thenables”
+await 接受 "thenables"
 像 promise.then 那样，await 允许我们使用 thenable 对象（那些具有可调用的 then 方法的对象）。这里的想法是，第三方对象可能不是一个 promise，但却是 promise 兼容的：如果这些对象支持 .then，那么就可以对它们使用 await。
 
 这有一个用于演示的 Thenable 类，下面的 await 接受了该类的实例：
@@ -1585,7 +1585,7 @@ new Waiter()
 这里的含义是一样的：它确保了方法的返回值是一个 promise 并且可以在方法中使用 await。
 ```
 ## 8.3 Error处理
-```
+```javascript
 如果一个 promise 正常 resolve，await promise 返回的就是其结果。但是如果 promise 被 reject，它将 throw 这个 error，就像在这一行有一个 throw 语句那样。
 
 这个代码：

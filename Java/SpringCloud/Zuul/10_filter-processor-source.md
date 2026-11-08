@@ -83,7 +83,7 @@ public Object processZuulFilter(ZuulFilter filter) throws ZuulException {
 
 该方法的执行流程：
 
-```
+```text
 processZuulFilter(zuulFilter)
     │
     ├─ step 1: shouldFilter() == false? → 返回 null（跳过）
@@ -343,7 +343,7 @@ public class ZuulServerAutoConfiguration {
 
 ## 5.2 ConcurrentHashMap 的线程安全保证
 
-```
+```text
 FilterRegistry.filters: ConcurrentHashMap<String, ZuulFilter>
 
 多线程并发场景：
@@ -450,7 +450,7 @@ public class DebugFilter extends ZuulFilter {
 
 启用方式：
 
-```
+```text
 GET http://gateway:8080/api/user/list?debug=true
 ```
 

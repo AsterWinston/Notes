@@ -101,7 +101,7 @@ let subject = AlwaysEqual;
 
 ## 2.1 格式化 trait：Display 与 Debug
 
-```
+```text
 2.1 std::fmt::Display     // 面向用户的格式化，用 {} 打印
 2.2 std::fmt::Debug       // 面向调试的格式化，用 {:?} 打印
 2.3 #[derive(Debug)]      // 自动为结构体实现 Debug
@@ -172,7 +172,7 @@ impl Point {
 
 ## 3.2 self 的三种形式
 
-```
+```text
 &self       不可变借用（只读，最常用）
 &mut self   可变借用（可修改字段）
 self        获取所有权（消耗实例，方法调用后实例失效）
@@ -221,7 +221,7 @@ let o = Point::origin();
 
 # 5. impl block —— impl 块
 
-```
+```text
 5.1 每个结构体可以有多个 impl 块（Rust 允许分开书写）
 5.2 可以为类型实现方法（impl Type）或实现 trait（impl Trait for Type）
 ```

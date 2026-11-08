@@ -3,7 +3,7 @@
 
 Zuul 的 Header 处理分为三个阶段：
 
-```
+```text
 请求到达 → Pre 过滤器（修改请求头）
                │
                ▼
@@ -256,7 +256,7 @@ zuul:
 
 开启后自动添加标准代理头：
 
-```
+```text
 X-Forwarded-Host:  原始请求的 Host
 X-Forwarded-Port:  原始请求的端口
 X-Forwarded-Proto: 原始请求的协议（http/https）

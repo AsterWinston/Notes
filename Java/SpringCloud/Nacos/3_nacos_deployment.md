@@ -75,7 +75,7 @@ db.password.0=your_password
 
 ## 2.1 集群架构图
 
-```
+```text
                     ┌──────────────┐
                     │   Nginx/VIP  │
                     │   (SLB)      │

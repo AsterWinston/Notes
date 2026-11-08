@@ -10,7 +10,7 @@
 
 ## 1.2 与其他模块关系
 
-```
+```text
   5_RAG ─┐
   6_AgentCore ─┤
   7_ToolsAndProtocols ─┼─► 16_Applications ─► 17_Interview
@@ -102,7 +102,7 @@
 
 ## 4.1 推荐路径
 
-```
+```text
 先做 KnowledgeBase（RAG 打底） → Chatbot（加记忆与流式）
       → CodingAgent / DataAnalysisAgent（加工具）
       → ResearchAgent（加多轮与规划）

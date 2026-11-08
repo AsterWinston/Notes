@@ -4,7 +4,7 @@
 
 浏览器的**同源策略**限制跨域请求。CORS (Cross-Origin Resource Sharing) 允许服务端声明哪些源可以访问。
 
-```
+```text
 前端: http://localhost:3000
 后端: http://localhost:8080
 → 协议、域名、端口任一不同即为跨域

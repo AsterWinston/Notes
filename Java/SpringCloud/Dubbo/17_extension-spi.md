@@ -3,7 +3,7 @@
 
 SPI（Service Provider Interface）是 Dubbo 微内核 + 全插件架构的基石。几乎所有功能模块都通过 SPI 实现可插拔，包括 Protocol、Filter、LoadBalance、Registry 等。
 
-```
+```text
 ┌─────────────────────────────────────┐
 │         Dubbo Core (Microkernel)     │
 │  ExtensionLoader (SPI 引擎)           │
@@ -341,7 +341,7 @@ public class ProtocolFilterWrapper implements Protocol {
 
 **Wrapper 包装链**：
 
-```
+```text
 原始 Protocol 实例
     │
     ▼
@@ -361,7 +361,7 @@ QosProtocolWrapper (包装 QOS 逻辑)
 
 文件位置：`META-INF/dubbo/org.apache.dubbo.rpc.Protocol`
 
-```
+```properties
 # 扩展名=全限定类名
 dubbo=org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol
 registry=org.apache.dubbo.registry.integration.RegistryProtocol
@@ -407,7 +407,7 @@ public class TokenBucketRateLimiter implements RateLimiter {
 
 `META-INF/dubbo/com.example.RateLimiter`：
 
-```
+```text
 default=com.example.DefaultRateLimiter
 tokenbucket=com.example.TokenBucketRateLimiter
 ```

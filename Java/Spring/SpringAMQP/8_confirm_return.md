@@ -2,7 +2,7 @@
 
 在分布式系统中，消息的可靠传递是核心问题。一条消息从生产者到消费者的完整旅程中，可能在多个环节丢失：
 
-```
+```text
 生产者 → [网络] → RabbitMQ Broker → [网络] → 消费者
   ↓                  ↓                    ↓
  发送阶段            存储阶段             消费阶段
@@ -32,7 +32,7 @@ AMQP协议中确认的粒度有两种：
 ## 2.2 底层AMQP原理
 在AMQP协议层面，Publisher Confirm通过以下机制实现：
 
-```
+```text
 1. 生产者调用 channel.confirmSelect() 将Channel设置为Confirm模式
 2. 发送消息时，Broker为每条消息分配一个 deliveryTag（递增序号）
 3. Broker接收消息后，异步发送 basic.ack(deliveryTag, multiple) 或 basic.nack(deliveryTag, multiple)
@@ -228,7 +228,7 @@ rabbitTemplate.convertAndSend("order.exchange", "invalid.key", order);
 ## 4.1 消息落库+定时任务补偿
 这是工业界常用的方案，确保消息100%投递成功：
 
-```
+```text
 1. 发送消息前：将消息记录存入数据库（状态=待发送）
 2. 发送消息：使用Publisher Confirm确认
 3. 发送成功：更新数据库状态=已发送
@@ -374,7 +374,7 @@ spring:
 ```
 
 ## 5.2 消费端的可靠性保障
-```
+```text
 1. auto模式（默认）：方法正常返回 = Ack；抛出异常 = Nack
 2. manual模式：显式调用 channel.basicAck / channel.basicNack
 3. 重试机制：在消费端配置重试策略，容忍临时性错误
@@ -386,7 +386,7 @@ spring:
 ## 6.1 消息可靠性的完整链路
 要保证消息不丢失，需要从端到端的全链路考虑：
 
-```
+```text
 1. 生产者端：
    - 消息落库（业务操作 + 消息记录在同一事务中）
    - Publisher Confirm（确认Broker已接收）

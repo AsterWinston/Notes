@@ -4,7 +4,7 @@
 
 **结论先行**：SFT（Supervised Fine-Tuning，监督微调）的核心是把"指令-回答"数据灌入模型，使其学会遵循指令，全流程为数据、基座、配置、训练、评估、部署六步。
 
-```
+```text
 ① 准备数据（指令-回答）
 ② 选择基座模型
 ③ 配置训练（LoRA + 超参）
@@ -171,7 +171,7 @@ trainer.save_model("./lora-adapter")
 
 **结论先行**：保存适配器之外，还要保存训练配置与数据版本，才能复现。
 
-```
+```text
 ./lora-adapter/
   adapter_config.json
   adapter_model.safetensors
@@ -275,7 +275,7 @@ args = TrainingArguments(
 
 **结论先行**：先上 LoRA/QLoRA，再开梯度检查点与 bf16，最后才考虑分布式。
 
-```
+```text
 1. LoRA / QLoRA        （最大收益）
 2. 梯度检查点          （约省一半激活）
 3. bf16                （约省一半精度显存）
@@ -303,7 +303,7 @@ args = TrainingArguments(
 
 **结论先行**：训练损失、验证损失、学习率与梯度范数是判断训练健康度的四项核心指标。
 
-```
+```text
 关键指标：
   训练损失（应平稳下降）
   验证损失（应同步下降，回升即过拟合）

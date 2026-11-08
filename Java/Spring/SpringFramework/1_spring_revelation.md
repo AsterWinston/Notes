@@ -14,10 +14,10 @@ OCP 开闭原则是最核心的、最基本的，其他的六个开发原则都�
 依赖倒置原则的目的：降低程序的耦合度，提高程序的扩展力，增强代码复用性
 是否符合依赖倒置原则：
 上 不依赖 下，就是符合，即类的实例对象之间没有明确固定在代码中的依赖关系
-上 依赖 下，就是违背。只要“下”一改动，“上”就受到牵连。
+上 依赖 下，就是违背。只要"下"一改动，"上"就受到牵连。
 符合依赖倒置原则的编程思想：控制反转
 # 3. IoC控制反转
-当前程序的设计，显然既违背OCP，又违背DIP，可以采用“控制反转”这种编程思想来解决这个问题。
+当前程序的设计，显然既违背OCP，又违背DIP，可以采用"控制反转"这种编程思想来解决这个问题。
 控制反转（Inversion of Control，缩写为IoC），是面向对象编程中的一种设计思想，可以用来降低代码之间的耦合度，符合依赖倒置原则。
 由于控制反转思想出现的比较新，所以没有被纳入GoF23种设计模式范围内。
 控制反转的核心思想：
@@ -35,7 +35,7 @@ OCP 开闭原则是最核心的、最基本的，其他的六个开发原则都�
 依赖注入DI，又包括常见的两种方式：
 第一种：set注入（执行set方法给属性赋值）
 第二种：构造方法注入（执行构造方法给属性赋值）
-依赖注入 中 “依赖”是什么意思？ “注入”是什么意思？
+依赖注入 中 "依赖"是什么意思？ "注入"是什么意思？
 依赖：A对象和B对象的关系。
 注入：是一种手段，通过这种手段，可以让A对象和B对象产生关系。
 依赖注入：对象A和对象B之间的关系，靠注入的手段来维护。而注入包括：set注入和构造注入。
@@ -49,7 +49,7 @@ DI：依赖注入（控制反转思想的具体实现方式）
 
 ## 6.1 OCP 开闭原则 — BeanPostProcessor 扩展点
 
-```
+```text
 Spring 中对扩展开放、对修改闭合的典型体现是 BeanPostProcessor 扩展点：
 
 // 核心流程是"闭合"的 —— doCreateBean 不需要修改
@@ -85,7 +85,7 @@ public class MyCustomProcessor implements BeanPostProcessor {
 
 ## 6.2 DIP 依赖倒置原则 — 面向接口编程
 
-```
+```text
 Spring 中所有的核心组件都通过接口定义契约，具体实现可以灵活切换：
 
 // 依赖接口（抽象），不依赖具体实现
@@ -113,7 +113,7 @@ public class OrderService {
 
 ## 6.3 IoC 控制反转 — 容器管理对象
 
-```
+```text
 传统方式（控制正转）：
   OrderService service = new OrderService();        // 自己 new
   service.setOrderDao(new OrderDaoImplForMySQL());   // 自己组装依赖
@@ -143,7 +143,7 @@ private final Map<String, BeanDefinition> beanDefinitionMap;  // 创建规则
 
 ## 6.4 DI 依赖注入 — 两种注入方式的源码实现
 
-```
+```text
 // Setter 注入（BeanWrapperImpl.setPropertyValue）：
 // 通过 JavaBean 的 setter 方法注入
 PropertyHandler ph = beanWrapper.getLocalPropertyHandler("orderDao");
@@ -166,7 +166,7 @@ field.set(bean, value);                     // ★ 直接设置字段
 
 ## 6.5 设计原则关系图
 
-```
+```text
     OCP（开闭原则）
     ┌──────────────────────────────────────┐
     │  对扩展开放，对修改闭合                 │

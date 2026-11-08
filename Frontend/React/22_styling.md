@@ -13,7 +13,7 @@ React 不管样式,于是样式方案百花齐放:**CSS Modules**(作用域隔�
 
 ## 1.2 选择器的权重战争
 
-```
+```text
 全局 CSS 的隐性成本不止撞名,还有权重叠加:
   .card .title (0,2,0) / .title (0,1,0) / #nav .title (1,1,0)
   同一元素命中多条,谁赢看"权重+书写顺序"——改一条,要猜其余几条叠加结果
@@ -150,7 +150,7 @@ export const Card = ({ className = '', ...p }) => <div className={cn(card, class
 @theme { --color-brand: oklch(0.7 0.15 160); }   /* 设计 token = CSS 变量 */
 ```
 
-```
+```text
 产物对比(为什么原子化体积可控):
   200 个组件 → 实际用过的工具类约 150 条
   最终 CSS ≈ 150 条极短规则,跨组件 100% 复用,样式成本不随组件数增长

@@ -5,7 +5,7 @@ Jenkins Configuration as Code（JCasC）是一种以 YAML 文件声明 Jenkins �
 
 核心目标：**将 Jenkins 配置从点击 UI 转向声明式 YAML 文件管理**。
 
-```
+```text
 传统方式（UI 配置）：
 ├── 手动点击 Manage Jenkins > Configure System
 ├── 填写表单
@@ -23,7 +23,7 @@ JCasC 方式（代码配置）：
 
 ## 2.1 插件安装
 
-```
+```text
 必需插件：
 ├── Configuration as Code Plugin（核心）
 ├── Configuration as Code Support Plugin（辅助）
@@ -185,7 +185,7 @@ slack:
 
 可以将 JCasC 配置拆分为多个文件（通过目录方式组织）：
 
-```
+```text
 casc_configs/
 ├── jenkins.yaml          # 主入口（引用其他片段）
 ├── credentials.yaml      # 凭据配置
@@ -772,7 +772,7 @@ credentials:
 
 JCasC 支持在不重启 Jenkins 的情况下重载配置：
 
-```
+```text
 方式一：通过 UI
 Manage Jenkins > Reload Configuration as Code
 

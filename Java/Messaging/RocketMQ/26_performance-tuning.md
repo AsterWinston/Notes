@@ -1,7 +1,7 @@
 ﻿
 # 1. 性能调优全景
 
-```
+```text
 调优目标：
 ┌────────────────────────────────────────────┐
 │ 吞吐 (Throughput)  │ TPS 越高越好          │
@@ -206,7 +206,7 @@ consumer.setConsumeThreadMax(20);     // 控制消费并发
 
 ## 7.1 Queue 数量建议
 
-```
+```text
 读 Queue=4, 写 Queue=8, Broker=1
 ↓
 Consumer 最多 4 个实例活跃（平均分配）

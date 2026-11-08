@@ -3,7 +3,7 @@
 
 Spring Cloud OpenFeign 支持多级配置：
 
-```
+```text
 全局默认配置
   ├── 指定 FeignClient 名称配置
   │     └── 指定 contextId 配置（部分版本支持）
@@ -149,7 +149,7 @@ public class UserFeignConfig {
 
 # 6. 代码配置 vs YAML 配置优先级
 
-```
+```text
 @FeignClient(configuration = ...) @Bean 配置  (最高)
     ↑ 覆盖
 指定服务名 YAML 配置 (spring.cloud.openfeign.client.config.user-service)

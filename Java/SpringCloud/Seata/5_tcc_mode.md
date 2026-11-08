@@ -3,7 +3,7 @@
 
 TCC（Try-Confirm-Cancel）是**手动实现**的分布式事务模式，将每个参与方的业务操作拆分为三个阶段：
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │                    TCC 三阶段                          │
 │                                                       │
@@ -146,7 +146,7 @@ public class AccountTccServiceImpl implements AccountTccService {
 
 **场景**：Try 阶段网络超时，TM 认为 Try 失败发起 Cancel，但 RM 实际上收到了 Try 请求并执行。
 
-```
+```text
 TM 发起 Try ──×──（网络超时）──→ RM
 TM 认为 Try 失败，发起 Cancel ──→ RM (Cancel 先到达)
                                     ├── RM 尚未执行 Try
@@ -159,7 +159,7 @@ TM 认为 Try 失败，发起 Cancel ──→ RM (Cancel 先到达)
 
 **场景**：空回滚之后，延迟的 Try 请求到达。
 
-```
+```text
 TM 发起 Try ────────（网络延迟）──────→ RM (Try 晚到达)
 TM 发起 Cancel ──→ RM (Cancel 先到达，空回滚)
                    ├── RM 记录 Cancel 日志

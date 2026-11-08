@@ -96,7 +96,7 @@ if (!gotLock) {
 
 ## 4.2 一个典型交互的链路
 
-```
+```text
 用户点击"保存文件"按钮(渲染进程)
   → ipcRenderer 发消息(第 5 篇)
   → 主进程 ipcMain 收到 → 调 dialog.showSaveDialog(系统对话框)

@@ -29,7 +29,7 @@
 
 ## 1.4 整体架构
 
-```
+```text
 用户 -> ChatClient -> 模型
                  |
                  | 工具调用
@@ -110,7 +110,7 @@ public class McpServerConfig {
 
 ## 2.3 传输模式
 
-```
+```text
 STREAMABLE  单端点，支持流式，推荐远程
 STATELESS   无会话状态，易水平扩展
 STDIO       本地子进程，无网络

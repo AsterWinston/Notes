@@ -24,7 +24,7 @@
 
 ### 1.1.3 单 Agent 与多 Agent 示意
 
-```
+```text
 单 Agent：task → [一个模型 + 全部工具] → answer
 
 多 Agent：task → [Supervisor]
@@ -94,7 +94,7 @@ Scenario market = new Scenario(
 
 ## 2.3 使用旅程
 
-```
+```text
 ① 用户提交任务
 ② 系统分解并展示计划
 ③ 子 Agent 执行，进度可见
@@ -112,7 +112,7 @@ Scenario market = new Scenario(
 
 ## 3.1 核心功能
 
-```
+```text
 核心功能：
 ├── 任务分解与分配
 ├── 多 Agent 协作（Supervisor）
@@ -133,7 +133,7 @@ Scenario market = new Scenario(
 
 ## 3.2 非目标
 
-```
+```text
 非目标：
 ├── 无限自主
 ├── 无人工监督
@@ -387,7 +387,7 @@ public class RiskGuard {
 
 ## 9.3 决策流程
 
-```
+```text
 任务是否可分解？
  ├─ 否 → 单 Agent
  └─ 是 → 是否需要多能力？

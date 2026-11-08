@@ -11,7 +11,7 @@
 
 ## 1.2 三层视角：原理 / 运行 / 企业
 
-```
+```text
 原理层（本模块 1~14）
    ↓
 运行层（本模块 15 + 14_ProductionEngineering）
@@ -31,7 +31,7 @@
 
 ## 2.1 分层架构总览
 
-```
+```text
 ┌────────────────────────────────────────────────────────────┐
 │                         接入层                              │
 │    REST / SSE / WebSocket / 消息队列                        │
@@ -77,7 +77,7 @@
 
 ## 2.3 数据流与调用链
 
-```
+```text
 请求 → 接入 → 编排(鉴权/幂等) → 运行时(加载状态)
      → 能力层(模型/工具) → 可靠性包装 → 观测埋点
      → 运行时(保存状态) → 响应
@@ -98,7 +98,7 @@
 
 ## 2.5 从单体到分层的演进
 
-```
+```text
 阶段一：一个类里跑通循环
 阶段二：抽出状态存储与工具注册
 阶段三：引入可靠性包装与观测
@@ -111,7 +111,7 @@
 
 ## 3.1 九个阶段
 
-```
+```text
 1. 接入      接收请求，鉴权，生成 traceId / taskId
 2. 会话      加载会话状态与记忆
 3. 规划      组装上下文，模型规划
@@ -278,7 +278,7 @@ public interface ReliableInvoker {
 
 ### 5.4.2 策略组合
 
-```
+```text
 请求 → 限流 → 熔断判断 → 超时控制 → 重试(幂等) → 降级
 ```
 
@@ -304,7 +304,7 @@ public interface AgentObserver {
 
 ## 5.6 组件协作
 
-```
+```text
 Dispatcher ──► StateStore ◄── Runtime
      │              ▲
      ▼              │
@@ -350,7 +350,7 @@ ToolRegistry ──► Executor ──► ReliableInvoker
 
 ## 6.3 演进路径
 
-```
+```text
 单体 → 无状态多实例 → 异步队列 → 弹性伸缩 + 灰度
 ```
 
@@ -430,7 +430,7 @@ state = StateMigrator.migrate(state, CURRENT_VERSION);
 
 以"重复扣款"为例：
 
-```
+```text
 用户请求 → 模型调用支付工具 → 网络超时(实际已扣款)
          → 重试机制再次调用 → 重复扣款
 ```
@@ -439,7 +439,7 @@ state = StateMigrator.migrate(state, CURRENT_VERSION);
 
 ### 8.2.1 成本暴涨复盘
 
-```
+```text
 一个循环 Bug → 每步都重新检索全量文档
             → Token 消耗线性放大
             → 无预算告警，直到账单出来才发现
@@ -449,7 +449,7 @@ state = StateMigrator.migrate(state, CURRENT_VERSION);
 
 ### 8.2.2 越权访问复盘
 
-```
+```text
 用户 A 提问 → 检索未按租户过滤 → 召回用户 B 的文档
            → 模型"如实"回答 → 数据泄露
 ```
@@ -480,7 +480,7 @@ state = StateMigrator.migrate(state, CURRENT_VERSION);
 
 ## 9.2 学习路径
 
-```
+```text
 本篇(全局图) → Runtime(状态) → Reliability(可靠)
              → Performance(成本) → Observability(观测) → Security(安全)
 ```

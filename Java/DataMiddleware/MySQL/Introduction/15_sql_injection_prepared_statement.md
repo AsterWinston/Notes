@@ -42,7 +42,7 @@ ps.setString(1, username);  // 参数绑定
 
 预编译语句（Prepared Statement）将 SQL 语句的**结构**和**数据**分两次发送到 MySQL 服务器：
 
-```
+```text
 步骤 1：发送 SQL 模板 → 服务器解析 & 编译
 步骤 2：发送参数值 → 服务器执行
 ```

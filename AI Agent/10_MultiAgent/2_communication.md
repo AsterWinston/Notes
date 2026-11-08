@@ -54,7 +54,7 @@ public class DirectMessaging {
 
 **原理**：所有 Agent 读写同一块"黑板"，各自只关心自己需要的字段，产物逐层叠加。
 
-```
+```text
 所有 Agent 读写同一块"黑板"：
 
   ┌─────────────────────────────┐
@@ -397,7 +397,7 @@ public record ProtocolMessage(Envelope envelope, Payload payload) {}
 
 ## 5.1 三种传递策略
 
-```
+```text
 多 Agent 传递什么？
 ① 完整对话历史（昂贵）
 ② 摘要 + 关键信息（推荐）
@@ -463,7 +463,7 @@ public String summarize(List<AgentMessage> history) {
 
 ## 6.1 Trace 结构
 
-```
+```text
 Trace: 复杂任务
 ├── Span: Supervisor 决策
 ├── Span: -> Agent A（消息）

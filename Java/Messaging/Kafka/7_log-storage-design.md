@@ -2,7 +2,7 @@
 
 ## 1.1 从 Topic 到文件
 
-```
+```text
 Topic "orders" (3 Partitions, 2 Replicas)
 │
 ├── Partition 0 (Broker 1 = Leader, Broker 2 = Follower)
@@ -40,7 +40,7 @@ Topic "orders" (3 Partitions, 2 Replicas)
 
 ## 2.2 .log 文件内部结构
 
-```
+```text
 00000000000000001024.log
 │
 ├── Offset=1024, MsgSize=N, RecordBatch
@@ -87,7 +87,7 @@ Magic 2 的 RecordBatch 关键变化：
 
 Kafka 使用**稀疏索引**而非密集索引，每隔一定字节数才记录一个索引项。
 
-```
+```text
 .index 文件结构:
 每个条目 8 bytes = RelativeOffset(4B) + Position(4B)
 
@@ -107,7 +107,7 @@ index entry 2: RelativeOffset=20,  Position=1526 → Offset=1044 在文件位置
 
 ## 3.2 Offset 查找流程
 
-```
+```text
 查找 offset=1037 的消息:
 │
 ├── ① 二分查找 Segment 列表
@@ -135,7 +135,7 @@ index entry 2: RelativeOffset=20,  Position=1526 → Offset=1044 在文件位置
 
 ## 3.3 .timeindex 时间戳索引
 
-```
+```text
 .timeindex 文件结构:
 每个条目 12 bytes = Timestamp(8B) + RelativeOffset(4B)
 
@@ -183,7 +183,7 @@ segment.bytes=1073741824     # Segment 最大大小 (1GB, 默认)
 
 ## 4.3 Compact 策略
 
-```
+```text
 压缩前:
 Key="user_001" → Value="Alice"
 Key="user_002" → Value="Bob"
@@ -201,7 +201,7 @@ Key="user_003" → Value="Charlie"
 
 ### 4.3.1 Compact 机制
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │              Log Compaction 流程                  │
 │                                                  │
@@ -270,7 +270,7 @@ log.cleaner.backoff.ms=15000
 
 ## 5.1 传统 I/O vs sendfile
 
-```
+```text
 传统 I/O（4 次拷贝 + 4 次上下文切换）:
 ┌─────────┐  copy 1   ┌─────────┐  copy 2   ┌─────────┐
 │  Disk   │ ────────▶ │ Kernel  │ ────────▶ │  User   │
@@ -410,7 +410,7 @@ long timestamp = result.timestamp(); // 实际的时间戳
 
 当 Broker 崩溃时，最后一个 Segment 可能有不完整写入：
 
-```
+```text
 ✅ 完整 Batch: [Header + Records + CRC]  ← CRC 校验通过
 ❌ 不完整 Batch: [Header + 部分 Records]  ← CRC 校验失败 → 截断
 ```
@@ -424,7 +424,7 @@ long timestamp = result.timestamp(); // 实际的时间戳
 
 由于 ISR 不一致导致 Leader 比 Follower 多写了部分数据，但新 Leader 选举后需要截断到 HW（High Watermark）：
 
-```
+```text
 场景：
   Leader 写入了 offset=100,101,102 （但 101,102 只有 Leader 确认）
   Follower 只复制到 offset=100

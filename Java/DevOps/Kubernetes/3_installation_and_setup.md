@@ -609,7 +609,7 @@ Kubernetes HA 有两种拓扑模式：
 
 ### 3.1.1 Stacked etcd（堆叠式 etcd）
 
-```
+```text
      Load Balancer
       /    |    \
    CP-1   CP-2   CP-3
@@ -626,7 +626,7 @@ Kubernetes HA 有两种拓扑模式：
 
 ### 3.1.2 External etcd（外部 etcd）
 
-```
+```text
      Load Balancer
       /    |    \
    CP-1   CP-2   CP-3
@@ -659,7 +659,7 @@ apt-get install -y haproxy keepalived
 
 **HAProxy 配置**（`/etc/haproxy/haproxy.cfg`）：
 
-```
+```text
 global
     log /dev/log local0
     maxconn 4096
@@ -690,7 +690,7 @@ backend kubernetes-apiserver-backend
 
 **Keepalived 配置**（`/etc/keepalived/keepalived.conf`）：
 
-```
+```text
 vrrp_script check_haproxy {
     script "killall -0 haproxy"
     interval 2

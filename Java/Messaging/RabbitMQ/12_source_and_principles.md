@@ -9,7 +9,7 @@ RabbitMQ 运行在 **Erlang/OTP** 虚拟机上，充分利用 OTP 的 Actor 并�
 
 ## 1.1 Erlang/OTP 进程模型
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                     BEAM VM (Erlang)                     │
 │                                                         │
@@ -39,7 +39,7 @@ RabbitMQ 运行在 **Erlang/OTP** 虚拟机上，充分利用 OTP 的 Actor 并�
 
 ## 2.1 模块架构
 
-```
+```text
 rabbitmq-server (Erlang/OTP)
 │
 ├── rabbit_common        # 核心数据结构与通用逻辑（AMQP 帧编解码、类型定义）
@@ -78,7 +78,7 @@ rabbitmq-server (Erlang/OTP)
 
 ## 3.1 从 Publisher 发布到消息落盘
 
-```
+```text
 Publisher                              RabbitMQ Broker
    │                                        │
    │──── TCP Connect ──────────────────────→│ rabbit_reader 创建
@@ -109,7 +109,7 @@ Publisher                              RabbitMQ Broker
 
 ## 3.2 从 Consumer 消费到消息删除
 
-```
+```text
 Consumer                               RabbitMQ Broker
    │                                        │
    │──── AMQP Basic.Consume ───────────────→│ 注册消费者
@@ -127,7 +127,7 @@ Consumer                               RabbitMQ Broker
 
 ## 3.3 Queue 进程内部状态
 
-```
+```text
 rabbit_amqqueue 进程内部：
 ┌────────────────────────────────────┐
 │  Queue State                       │
@@ -148,7 +148,7 @@ rabbit_amqqueue 进程内部：
 
 ## 4.1 Classic Queue 存储架构
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │              Classic Queue 存储               │
 │                                              │
@@ -176,7 +176,7 @@ rabbit_amqqueue 进程内部：
 
 ## 4.2 消息持久化流程
 
-```
+```text
 消息发布
     │
     ▼
@@ -189,7 +189,7 @@ rabbit_amqqueue 进程内部：
 
 ## 4.3 Quorum Queue 存储（Raft Log）
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │             Quorum Queue 存储                  │
 │                                              │
@@ -218,7 +218,7 @@ RabbitMQ 使用基于**信用（Credit）**的流量控制，防止生产者和�
 
 ## 5.1 信用流控模型
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │          Credit Flow Control            │
 │                                         │
@@ -246,7 +246,7 @@ RabbitMQ 使用基于**信用（Credit）**的流量控制，防止生产者和�
 
 ## 5.3 内存流控详细流程
 
-```
+```text
 监控进程定期检查内存使用
     │
     ▼
@@ -275,7 +275,7 @@ RabbitMQ 使用基于**信用（Credit）**的流量控制，防止生产者和�
 
 ## 6.2 RabbitMQ 检测机制
 
-```
+```text
 心跳检测（默认 60s）
     ↓
 节点 A 15s 内无法收到节点 B 的心跳
@@ -287,7 +287,7 @@ RabbitMQ 使用基于**信用（Credit）**的流量控制，防止生产者和�
 
 ## 6.3 Pause-Minority 策略（推荐）
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │        分区前: 3 个节点                    │
 │    [Node1]──[Node2]──[Node3]             │
@@ -310,7 +310,7 @@ RabbitMQ 使用基于**信用（Credit）**的流量控制，防止生产者和�
 
 ## 6.5 Ignore 策略（不推荐）
 
-```
+```text
 节点各自独立运行，分区恢复后会出现：
   - 消息重复（两边都认为自己是正确的）
   - 数据不一致
@@ -363,7 +363,7 @@ Khepri 是 RabbitMQ 团队开发的基于 **Raft 共识协议**的分布式元�
 
 RabbitMQ 的原生协议是 AMQP 0-9-1。AMQP 帧结构如下：
 
-```
+```text
 ┌────────────────────────────────────────────────────────┐
 │  AMQP Frame                                            │
 │                                                        │
@@ -485,7 +485,7 @@ handle_publish(ExchangeName, RoutingKey, Properties, Body, ChannelState) ->
 
 ## 11.2 消息如何保证不丢失？（三层保障）
 
-```
+```text
 1. Publisher Confirm  → 生产者知道消息是否到达 Broker
 2. 持久化（Queue/Exch/Persistent） → Broker 重启后消息仍在
 3. Consumer Manual ACK → 消费者确认后才删除消息

@@ -1,6 +1,6 @@
 # 1. 单个简单类型参数
 
-```
+```text
 简单类型包括：
 
 byte short int long float double char
@@ -129,17 +129,17 @@ parameterType：可以省略
 ```
 
 # 2. map参数
-```
+```text
 这种方式是手动封装Map集合，将每个条件以key和value的形式存放到集合中。然后在使用的时候通过#{map集合的key}来取值。
 ```
 
 # 3. 实体类参数
-```
+```text
 这里需要注意的是：#{} 里面写的是属性名字。这个属性名其本质上是：set/get方法名去掉set/get之后的名字。
 ```
 
 # 4. 多参数
-```
+```text
 对于多个参数，mybatis底层会创建一个map集合，以arg0/param1为key，传入的参数为 value
 例如：
 List<Student> students = mapper.selectByNameAndSex("张三", '女')
@@ -158,7 +158,7 @@ map.put("param2", sex);
 ```
 
 # 5. @Param注解（命名参数）
-```
+```text
 mybatis提供的key可读性太差，可以使用@Param注解自己指定key的名字
 
 List<Student> selectByNameAndAge(@Param(value="name") String name, @Param("age") int age);
@@ -171,14 +171,14 @@ List<Student> selectByNameAndAge(@Param(value="name") String name, @Param("age")
 ```
 
 # 6. @Param源码分析
-```
+```text
 反射机制可以做到获取方法的形参名字，但是为何Mybatis使用注解标注形参的原因：MyBatis 早期版本发布时，Java 8 的 -parameters 编译选项还不存在，所以它必须依赖于其他机制。即使在 Java 8 普及之后，MyBatis 仍然选择继续使用注解和约定（例如 param1, param2），主要是出于以下原因
 
 历史兼容性与可靠性（Historical Compatibility & Reliability）
 诞生时间早于 Java 8: MyBatis (及其前身 iBATIS) 在 Java 8 发布之前就已经成熟并广泛使用了。在 Java 8 之前，获取形参名称的唯一标准方法是使用复杂的字节码操作库或特殊的调试信息，这既不可靠也不跨平台。因此，MyBatis 必须采用基于注解的显式命名方案。
 
 首先，不依赖编译参数: Java 8 的反射机制依赖于开发者在编译时设置 -parameters 标志。如果开发者忘记设置这个标志，那么 MyBatis 运行时将无法获取到正确的参数名，导致参数绑定静默失败或抛出令人困惑的异常。
-注解是明确的契约: 使用 @Param("userId") 是一种明确的编程契约，它明确告诉 MyBatis：“请使用 userId 这个名字来绑定 SQL 中的参数。”这比依赖外部的编译设置要可靠得多。
+注解是明确的契约: 使用 @Param("userId") 是一种明确的编程契约，它明确告诉 MyBatis："请使用 userId 这个名字来绑定 SQL 中的参数。"这比依赖外部的编译设置要可靠得多。
 
 其次，避免代码混淆（Avoid Obfuscation Issues）
 在许多生产环境中，代码会经过**混淆（Obfuscation）**处理，以保护知识产权或减小体积。

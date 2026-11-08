@@ -6,7 +6,7 @@
 
 ### 1.1.1 六类典型失败
 
-```
+```text
 - 该调用工具却没调用（漏调，Miss）
 - 不该调用却调用了（误调，Spurious）
 - 调用了错误的工具（错选，Wrong Selection）
@@ -92,13 +92,13 @@ public record AgentTrace(List<Step> steps, AgentStatus finalState) { }
 
 设第 i 个用例的期望工具集合为 $E_i$，实际调用集合为 $A_i$，则：
 
-```
+```text
 SelectionAccuracy = (1/N) * Σ 1[ set(A_i) == set(E_i) ]
 ```
 
 若使用精确率与召回率，则分别定义为：
 
-```
+```text
 Precision = |A ∩ E| / |A|
 Recall    = |A ∩ E| / |E|
 F1        = 2 * P * R / (P + R)
@@ -158,7 +158,7 @@ public double sequenceAccuracy(EvalCase c, Assistant agent) {
 
 对每个期望调用（工具 + 参数），判断轨迹中是否存在一次调用，其工具名相同且期望参数均被满足：
 
-```
+```text
 ParamAccuracy = (1/M) * Σ 1[ ∃ step: name(step)=tool_k ∧ params(step) ⊇ params_k ]
 ```
 
@@ -233,7 +233,7 @@ private boolean deepMatch(Object actual, Object expected) {
 
 ## 5.1 三类时机偏差
 
-```
+```text
 漏调  ：期望动作缺失
 误调  ：出现禁止动作
 不收敛：步数达到上限仍未结束

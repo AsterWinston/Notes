@@ -21,7 +21,7 @@ SHOW VARIABLES LIKE 'log_error_verbosity';
 
 **my.cnf 配置**：
 
-```
+```text
 [mysqld]
 log_error = /var/log/mysql/mysqld.log
 log_error_verbosity = 3
@@ -55,7 +55,7 @@ Binlog 记录了所有 DDL 和 DML 操作（但不包括 SELECT 和 SHOW），�
 
 MySQL 8.0 默认开启 binlog（`log_bin = ON`）。生产环境务必确认已开启。
 
-```
+```text
 [mysqld]
 # 开启 binlog（必须指定文件名前缀）
 log_bin = /var/lib/mysql/binlog/mysql-bin
@@ -200,7 +200,7 @@ SET GLOBAL long_query_time = 1;  -- 阈值设为 1 秒
 -- 永久配置（my.cnf）
 ```
 
-```
+```text
 [mysqld]
 # 开启慢查询
 slow_query_log = 1
@@ -256,7 +256,7 @@ pt-query-digest --type tcpdump /path/to/tcpdump.out
 
 ## 4.3 日志分析流程
 
-```
+```text
 1. 开启慢查询日志
        ↓
 2. 运行一段时间（至少 1 天，覆盖业务高低峰）
@@ -282,7 +282,7 @@ pt-query-digest --type tcpdump /path/to/tcpdump.out
 
 **写入顺序**（WAL）：
 
-```
+```text
 1. 修改 Buffer Pool 中的数据页
 2. 写 Undo Log（记录修改前的值）
 3. 写 Redo Log（记录修改后的值，先写 Log Buffer）

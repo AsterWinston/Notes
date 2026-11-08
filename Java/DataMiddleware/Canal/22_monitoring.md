@@ -3,7 +3,7 @@
 
 Canal 提供了内置的监控指标，并支持通过 Prometheus + Grafana 进行可视化监控。监控体系覆盖了 Server 运行状态、Instance 消费延迟、系统资源等多个维度。
 
-```
+```text
 Canal Server ──> Prometheus Exporter ──> Prometheus ──> Grafana
                                                            │
                                                     ┌──────▼──────┐
@@ -26,7 +26,7 @@ canal.metrics.enabled = true
 
 Canal 内置了以下指标（`http://localhost:11112/metrics`）：
 
-```
+```text
 # HELP canal_instance_subscribe_delay 订阅延迟
 # TYPE canal_instance_subscribe_delay gauge
 canal_instance_subscribe_delay{instance="example",} 0.0
@@ -234,7 +234,7 @@ groups:
 
 Canal Admin 提供了基础的可视化监控：
 
-```
+```text
 Admin UI → 系统监控 → 选择 Instance
 
 展示指标：
@@ -405,7 +405,7 @@ public class CanalLogMonitor {
 
 ## 7.2 日志聚合（ELK）
 
-```
+```text
 Canal Server 日志 ──> Filebeat ──> Logstash ──> Elasticsearch ──> Kibana
 ```
 

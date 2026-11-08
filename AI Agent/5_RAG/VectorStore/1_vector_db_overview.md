@@ -6,7 +6,7 @@
 
 向量库的所有能力都可以归结为两条链路：
 
-```
+```text
 写入：向量 + 元数据 + 原文  ->  持久化存储
 查询：查询向量 + 过滤条件   ->  Top-K 相似结果
 ```
@@ -28,7 +28,7 @@
 
 ## 1.3 在 RAG 链路中的位置
 
-```
+```text
 问题 -> 嵌入模型 -> 查询向量 ┐
                               ├-> 向量库(过滤+ANN) -> Top-K -> 重排 -> LLM
 文档 -> 切块 -> 嵌入模型 -> 写入 ┘
@@ -154,7 +154,7 @@ Java（JDK 17/21）项目重点看：是否有官方 SDK、是否被 Spring AI /
 
 ## 4.1 决策流程
 
-```
+```text
 已有 PostgreSQL？
    ├── 是 且规模 < 千万 -> PGVector（最省事）
    └── 否
@@ -238,7 +238,7 @@ Collections.VectorParams.newBuilder().setDistance(Collections.Distance.Cosine);
 | PQ | 乘积量化 | 压缩，精度损失 |
 | DiskANN | 磁盘索引 | 超大规模、低内存 |
 
-```
+```text
 HNSW 分层结构（简化）：
 
 Layer 2:        A ---------- B
@@ -290,7 +290,7 @@ Layer 0: A-C-E-F-D-G-H-B-I-J  (全量节点)
 
 ## 7.1 机制差异
 
-```
+```text
 预过滤（Pre-filter）：先按条件筛，再在子集里做向量检索
 后过滤（Post-filter）：先向量检索，再按条件筛
 

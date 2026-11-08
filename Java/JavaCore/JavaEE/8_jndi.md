@@ -5,7 +5,7 @@
 
 JNDI（Java Naming and Directory Interface，Java 命名与目录接口）是 JavaEE 的**命名/目录服务规范**，为 Java 应用提供统一的**按名称查找对象**的机制。参考实现由各应用服务器提供。
 
-```
+```text
 应用代码
    │  lookup("java:comp/env/jdbc/MyDS")
    ▼

@@ -3,7 +3,7 @@
 
 ## 1.1 发送端保证
 
-```
+```text
 端到端可靠性链：
 Producer → Broker → Consumer
 
@@ -45,7 +45,7 @@ public boolean sendWithRetry(String topic, String body, String key) {
 
 ## 1.2 消费端保证
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │ 消费端保证：                                  │
 │ 1. 消费幂等 (去重)                            │
@@ -60,7 +60,7 @@ public boolean sendWithRetry(String topic, String body, String key) {
 
 ## 2.1 Topic 规划原则
 
-```
+```text
 1. 一个业务域一个 Topic
    ✗ orderTopic, userTopic, paymentTopic → 混在一个 Topic
    ✓ order-create-topic, order-pay-topic, user-register-topic
@@ -83,7 +83,7 @@ public boolean sendWithRetry(String topic, String body, String key) {
 
 ## 2.2 Consumer 设计原则
 
-```
+```text
 原则 1: 拆分粒度
   ✗ 一个 Consumer 消费所有业务
   ✓ 每个业务有独立的 Consumer Group
@@ -104,7 +104,7 @@ public boolean sendWithRetry(String topic, String body, String key) {
 
 ## 2.3 分布式事务设计
 
-```
+```text
 使用事务消息处理跨服务数据一致性：
 
 订单服务:
@@ -159,7 +159,7 @@ public boolean sendWithRetry(String topic, String body, String key) {
 
 ## 4.1 消息发送失败排查
 
-```
+```text
 1. 检查 NameServer 是否可达
    telnet {ns-ip} 9876
 
@@ -180,7 +180,7 @@ public boolean sendWithRetry(String topic, String body, String key) {
 
 ## 4.2 消费堆积排查
 
-```
+```text
 1. 查看消费堆积量
    sh bin/mqadmin consumerProgress -n {ns-ip}:9876 -g {group}
 
@@ -204,7 +204,7 @@ public boolean sendWithRetry(String topic, String body, String key) {
 
 ## 4.3 消息丢失排查
 
-```
+```text
 1. Producer 端
    - sendResult 是否判断成功
    - 是否使用 Oneway 发送
@@ -228,7 +228,7 @@ public boolean sendWithRetry(String topic, String body, String key) {
 
 # 5. 生产环境检查清单
 
-```
+```text
 部署前检查：
 □ Namesrv 至少 2 台（高可用）
 □ Broker Master + Slave（主从部署）

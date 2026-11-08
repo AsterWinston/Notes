@@ -3,7 +3,7 @@
 
 # 1. 高可用总体思路
 
-```
+```text
              虚拟 IP (VIP)
             ┌─────────────┐
             │  Keepalived  │
@@ -164,7 +164,7 @@ kill -QUIT $(cat /var/run/nginx.pid.oldbin)
 
 # 4. 多活架构（DNS 轮询）
 
-```
+```text
               DNS 轮询 / 智能 DNS
          ┌─────────┴──────────┐
          ▼                    ▼
@@ -192,7 +192,7 @@ kill -QUIT $(cat /var/run/nginx.pid.oldbin)
 
 云上推荐架构：
 
-```
+```text
 SLB/CLB/ALB → Nginx 集群（Auto Scaling）→ 后端（K8s / ECS)
 ```
 

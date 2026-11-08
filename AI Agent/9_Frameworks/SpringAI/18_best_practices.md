@@ -62,7 +62,7 @@ spring:
 - 禁止在代码中拼接大段提示字符串。
 - 模板变更需走评测回归，而非直接上线。
 
-```
+```text
 src/main/resources/prompts/
 ├── system/assistant-v1.txt
 ├── system/assistant-v2.txt
@@ -272,7 +272,7 @@ public class SafeLoggingAdvisor implements CallAdvisor {
 
 ## 8.1 五件套
 
-```
+```text
 超时 → 重试 → 幂等 → 限流 → 熔断 → 降级
 ```
 
@@ -319,7 +319,7 @@ public ChatClient chatClient(ChatModel model,
 - **Token 与成本是一等公民**，必须监控；
 - Trace 要能"回放"完整链路（含工具与检索）。
 
-```
+```text
 Trace: 用户提问
 ├── Span: 记忆读取
 ├── Span: 模型调用

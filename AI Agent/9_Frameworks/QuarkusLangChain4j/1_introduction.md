@@ -10,7 +10,7 @@
 
 ### 1.1.2 分层机制
 
-```
+```text
 LangChain4j（能力层）
   ├── ChatLanguageModel / StreamingChatLanguageModel
   ├── EmbeddingModel / EmbeddingStore
@@ -113,7 +113,7 @@ Quarkus（运行时层）
 
 传统框架在启动时扫描类路径、解析注解、创建 Bean；Quarkus 在构建期生成字节码记录这些元数据，运行期直接读取。
 
-```
+```text
 构建期（build-time）          运行期（runtime）
   扫描注解                       读取已生成的元数据
   解析配置                       按需实例化
@@ -188,7 +188,7 @@ public interface Assistant {
 
 ### 2.4.2 与容器平台的契合
 
-```
+```text
 Serverless 平台
   ├── 冷启动敏感  → 原生镜像毫秒级启动
   ├── 内存计费    → 常驻内存低

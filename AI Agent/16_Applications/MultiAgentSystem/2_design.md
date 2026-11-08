@@ -6,7 +6,7 @@
 
 ### 1.1.1 组件
 
-```
+```text
                  用户任务
                     │
                     ▼
@@ -36,7 +36,7 @@
 
 ### 1.1.2 数据流
 
-```
+```text
 task → supervisor.decide → handoff → agent.handle
      → state.put → trace.record → supervisor.decide ...
      → finish → synthesize → result

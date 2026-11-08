@@ -54,7 +54,7 @@ public void createOrder(Order order) {
 
 XA 的执行时序（两阶段提交）：
 
-```
+```text
 1. XA START ──→ ds0.t_order_0   INSERT
 2. XA START ──→ ds1.t_order_1   INSERT
 3. 本地业务完成 → 各连接 XA END + XA PREPARE
@@ -98,7 +98,7 @@ seata.config.nacos.server-addr=localhost:8848
 
 ## 3.2 工作方式
 
-```
+```text
 @GlobalTransactional
 public void createOrder(Order order) {
     // ShardingSphere + Seata 内部链路：
@@ -141,7 +141,7 @@ rules:
 
 Proxy 形态下客户端发的是标准 MySQL 协议事务语句，转换由服务端完成：
 
-```
+```text
 客户端                          Proxy                        后端库
   BEGIN     ────►  开启事务上下文（LOCAL/XA）
   INSERT×N  ────►  按规则路由多分片执行
@@ -165,7 +165,7 @@ Proxy 形态下客户端发的是标准 MySQL 协议事务语句，转换由服�
 | **Saga 编排** | 正向链+补偿链 | 长流程（履约、售后） |
 | **TCC**（Seata TCC） | Try/Confirm/Cancel 手工实现 | 账务、券核销 |
 
-```
+```text
 下单事务（单分片 LOCAL）
   │  同事务写：order + 本地消息表
   ▼

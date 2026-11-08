@@ -4,7 +4,7 @@
 
 **原理**：多 Agent 流程本质上是一个状态机。LangGraph4j 把状态机显式化：节点是处理步骤，边是流转规则，状态是共享数据。显式化的好处是——流程可画、可测、可断点续跑。
 
-```
+```text
 节点（Node）+ 边（Edge）+ 状态（State） = 图
 ```
 
@@ -268,7 +268,7 @@ private String shouldRevise(AgentState state) {
 
 ## 7.1 机制
 
-```
+```text
 threadId=session-1
   step0: {question}                 ← checkpoint
   step1: {question, documents}      ← checkpoint
@@ -322,7 +322,7 @@ AgentState resumed = compiled.invoke(null,
 
 ## 8.1 中断机制
 
-```
+```text
 执行 ──▶ [retrieve] ──▶ [analyze] ──║ 中断 ║──▶ 人工确认 ──▶ [write] ──▶ END
                                      ↑
                               状态已持久化
@@ -386,7 +386,7 @@ compiled.stream(input, config)
 
 ## 10.1 Supervisor 图
 
-```
+```text
             ┌────────────┐
      START ─▶│ supervisor │◀────────┐
             └─────┬──────┘         │

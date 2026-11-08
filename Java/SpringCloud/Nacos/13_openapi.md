@@ -27,7 +27,7 @@ Nacos 提供了完整的 REST API，支持所有核心功能的程序化操作�
 
 ## 2.1 服务注册
 
-```
+```text
 POST /nacos/v1/ns/instance
 ```
 
@@ -60,7 +60,7 @@ curl -X POST 'http://127.0.0.1:8848/nacos/v1/ns/instance' \
 
 ## 2.2 服务发现
 
-```
+```text
 GET /nacos/v1/ns/instance/list
 ```
 
@@ -122,7 +122,7 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/ns/instance/list?serviceName=order-s
 
 ## 2.3 服务注销
 
-```
+```text
 DELETE /nacos/v1/ns/instance
 ```
 
@@ -133,7 +133,7 @@ curl -X DELETE 'http://127.0.0.1:8848/nacos/v1/ns/instance' \
 
 ## 2.4 实例健康检查心跳
 
-```
+```text
 PUT /nacos/v1/ns/instance/beat
 ```
 
@@ -144,7 +144,7 @@ curl -X PUT 'http://127.0.0.1:8848/nacos/v1/ns/instance/beat' \
 
 ## 2.5 实例详情查询
 
-```
+```text
 GET /nacos/v1/ns/instance
 ```
 
@@ -154,7 +154,7 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=order-servic
 
 ## 2.6 服务列表查询
 
-```
+```text
 GET /nacos/v1/ns/service/list
 ```
 
@@ -168,7 +168,7 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/ns/service/list?namespaceId=dev&grou
 
 ## 2.7 服务详情查询
 
-```
+```text
 GET /nacos/v1/ns/service
 ```
 
@@ -178,7 +178,7 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/ns/service?serviceName=order-service
 
 ## 2.8 更新实例
 
-```
+```text
 PUT /nacos/v1/ns/instance
 ```
 
@@ -192,7 +192,7 @@ curl -X PUT 'http://127.0.0.1:8848/nacos/v1/ns/instance' \
 
 ## 3.1 发布/更新配置
 
-```
+```text
 POST /nacos/v1/cs/configs
 ```
 
@@ -203,7 +203,7 @@ curl -X POST 'http://127.0.0.1:8848/nacos/v1/cs/configs' \
 
 ## 3.2 获取配置
 
-```
+```text
 GET /nacos/v1/cs/configs
 ```
 
@@ -213,7 +213,7 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=order-service-dev.
 
 ## 3.3 删除配置
 
-```
+```text
 DELETE /nacos/v1/cs/configs
 ```
 
@@ -223,7 +223,7 @@ curl -X DELETE 'http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=order-service-d
 
 ## 3.4 监听配置变更（长轮询）
 
-```
+```text
 POST /nacos/v1/cs/configs/listener
 ```
 
@@ -238,7 +238,7 @@ curl -X POST 'http://127.0.0.1:8848/nacos/v1/cs/configs/listener' \
 
 ## 3.5 查询配置历史版本
 
-```
+```text
 GET /nacos/v1/cs/history
 ```
 
@@ -248,7 +248,7 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/cs/history?dataId=order-service-dev.
 
 ## 3.6 查询配置详情（含历史版本）
 
-```
+```text
 GET /nacos/v1/cs/history/config
 ```
 
@@ -260,7 +260,7 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/cs/history/config?nid=12345&dataId=o
 
 ## 4.1 获取集群节点
 
-```
+```text
 GET /nacos/v1/core/cluster/nodes
 ```
 
@@ -294,7 +294,7 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/core/cluster/nodes'
 
 ## 4.2 查看自身节点
 
-```
+```text
 GET /nacos/v1/core/cluster/self
 ```
 
@@ -304,7 +304,7 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/core/cluster/self'
 
 ## 4.3 更新集群节点
 
-```
+```text
 PUT /nacos/v1/core/cluster/nodes
 ```
 
@@ -315,7 +315,7 @@ curl -X PUT 'http://127.0.0.1:8848/nacos/v1/core/cluster/nodes' \
 
 ## 4.4 健康检查
 
-```
+```text
 GET /nacos/v1/console/health/readiness
 GET /nacos/v1/console/health/liveness
 ```
@@ -324,7 +324,7 @@ GET /nacos/v1/console/health/liveness
 
 ## 5.1 查询命名空间列表
 
-```
+```text
 GET /nacos/v1/console/namespaces
 ```
 
@@ -334,7 +334,7 @@ curl -X GET 'http://127.0.0.1:8848/nacos/v1/console/namespaces'
 
 ## 5.2 创建命名空间
 
-```
+```text
 POST /nacos/v1/console/namespaces
 ```
 

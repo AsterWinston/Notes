@@ -10,7 +10,7 @@ InnoDB 按以下层级组织数据存储：
 | **页（Page）** | 最小 IO 单元 | 默认 16KB，每次从磁盘申请 4~5 个区（保证页连续性） |
 | **行（Row）** | 最小存储单元 | 每行数据按行格式（COMPACT / DYNAMIC 等）存储 |
 
-```
+```text
 表空间 (Tablespace)
   └── 段 (Segment)
         └── 区 (Extent) = 64 × 页
@@ -102,7 +102,7 @@ SHOW VARIABLES LIKE 'innodb_flush_log_at_trx_commit';  -- 刷盘策略
 
 存储 Change Buffer 的数据。可通过 `innodb_data_file_path` 配置：
 
-```
+```text
 [mysqld]
 innodb_data_file_path = ibdata1:128M:autoextend:max:10G
 ```
@@ -224,7 +224,7 @@ SHOW VARIABLES LIKE 'innodb_flush_log_at_trx_commit';
 
 Redo Log 是**循环写入**的固定大小文件组。当写满时触发 Checkpoint，将脏页刷新到磁盘，释放 redo log 空间。
 
-```
+```text
 [ ib_logfile0 ] → [ ib_logfile1 ] → [ ib_logfile0 ] → ...
 ```
 
@@ -242,7 +242,7 @@ Undo Log 记录数据**修改前**的逻辑信息，实现**原子性**和**MVCC
 
 ### 3.2.2 Undo Log 版本链
 
-```
+```text
 ┌──────────────────────────────────────────────────┐
 │ 当前行: name='C' (trx_id=300)                     │
 │   DB_ROLL_PTR ──────────────────────────┐         │
@@ -266,7 +266,7 @@ Undo Log 记录数据**修改前**的逻辑信息，实现**原子性**和**MVCC
 | **快照读（Snapshot Read）** | 数据的某个历史版本 | 不加锁 | 普通 `SELECT` |
 | **当前读（Current Read）** | 数据的最新版本 | 加锁 | `SELECT ... FOR UPDATE`、`INSERT`、`UPDATE`、`DELETE` |
 
-```
+```text
 快照读 = 无锁非阻塞，基于 MVCC 的 ReadView + undo log 版本链
 当前读 = 保证读到最新数据并防止并发修改
 ```
@@ -337,7 +337,7 @@ ReadView 是快照读 SQL 执行时 MVCC 提取数据的依据，记录并维护
 
 **每次 SELECT 都生成新的 ReadView**，所以能读到其他事务已提交的修改。
 
-```
+```text
 事务 A：                        事务 B：
 START TRANSACTION;              START TRANSACTION;
 SELECT name → '张三'(快照1)      UPDATE SET name='李四';
@@ -350,7 +350,7 @@ COMMIT;
 
 **仅在第一次 SELECT 时生成 ReadView，后续复用**，所以保证可重复读。
 
-```
+```text
 事务 A：                        事务 B：
 START TRANSACTION;              START TRANSACTION;
 SELECT name → '张三'(快照唯一)    UPDATE SET name='李四';

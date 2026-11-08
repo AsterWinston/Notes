@@ -310,7 +310,7 @@ dependencyResolutionManagement {
 
 ## 4.4 多文件 Catalog 组织
 
-```
+```text
 gradle/
 ├── libs.versions.toml        # 主 catalog
 ├── test-libs.versions.toml   # 测试依赖 catalog
@@ -359,7 +359,7 @@ dependencies {
 
 ## 5.1 跨项目共享策略
 
-```
+```text
 # 项目结构
 root-project/
 ├── settings.gradle

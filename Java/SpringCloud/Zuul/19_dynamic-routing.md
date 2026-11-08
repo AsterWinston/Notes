@@ -24,7 +24,7 @@ public interface RefreshableRouteLocator extends RouteLocator {
 
 ## 3.1 配置中心 + Bus 架构
 
-```
+```text
 配置中心 (Config Server)
     │
     ├── 推送变更

@@ -3,7 +3,7 @@
 
 RocketMQ 通过以下机制保证高可用和数据可靠性：
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │                    Producer                          │
 │    (sendLatencyFaultEnable + 重试 = 自动切换)         │
@@ -29,7 +29,7 @@ RocketMQ 通过以下机制保证高可用和数据可靠性：
 ```
 
 **可靠性保证层级**：
-```
+```text
 Level 0: Producer 发送重试 → 网络故障容错
 Level 1: 同步刷盘 → 单机数据不丢失
 Level 2: 主从同步复制 → 机器故障不丢数据
@@ -49,7 +49,7 @@ Level 3: DLedger 自动选主 → 自动化故障转移
 
 ## 2.2 同步复制流程
 
-```
+```text
 Producer 发送消息
     │
     ▼
@@ -75,7 +75,7 @@ Master 收到 ack
 
 ## 2.3 主从复制协议
 
-```
+```text
 Master → Slave 通讯协议 (HAService)：
 
 报文格式：
@@ -107,7 +107,7 @@ consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
 
 ## 3.1 为什么需要 DLedger？
 
-```
+```text
 传统主从模式的问题：
 1. Master 宕机 → 需要人工介入切换 Slave → Master
 2. 切换期间不可写 (服务中断)
@@ -121,7 +121,7 @@ DLedger (Distributed Ledger) 解决：
 
 ## 3.2 DLedger 架构
 
-```
+```text
 DLedger Group (Raft Group)
 ┌────────────────────────────────────────┐
 │  Node-0 (Leader)                       │
@@ -156,7 +156,7 @@ sendMessageThreadPoolNums = 16
 
 ## 3.4 DLedger 存储结构
 
-```
+```text
 DLedger 将 CommitLog 替换为 DLedgerCommitLog：
 
 CommitLog ──→ DLedgerCommitLog
@@ -171,7 +171,7 @@ CommitLog ──→ DLedgerCommitLog
 
 ## 3.5 选主过程
 
-```
+```text
 1. 每个节点有随机选举超时 (150ms ~ 300ms)
 2. 超时后发起选举 → RequestVote RPC
 3. 获得多数票 (> N/2) → 成为 Leader
@@ -183,7 +183,7 @@ CommitLog ──→ DLedgerCommitLog
 
 ## 4.1 同步刷盘 vs 异步刷盘
 
-```
+```text
 同步刷盘 (SYNC_FLUSH)：
   写入 PageCache → MappedByteBuffer.force() → 返回成功
   每条消息都确保持久化到磁盘
@@ -195,7 +195,7 @@ CommitLog ──→ DLedgerCommitLog
 
 ## 4.2 刷盘 vs 主从复制 —— 组合矩阵
 
-```
+```text
                     同步刷盘          异步刷盘
                 ┌───────────────┬──────────────┐
   同步复制      │ 最高可靠       │ 高可靠         │
@@ -246,7 +246,7 @@ producer.setNamesrvAddr("ns1:9876;ns2:9876;ns3:9876");
 
 ## 7.1 Master 宕机
 
-```
+```text
 场景: Master 宕机，Slave 存活
 
 生产端：
@@ -265,7 +265,7 @@ producer.setNamesrvAddr("ns1:9876;ns2:9876;ns3:9876");
 
 ## 7.2 DLedger 模式自动故障转移
 
-```
+```text
 场景: Leader Node-0 宕机
 
 1. Follower 检测心跳超时 → 发起选举

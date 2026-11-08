@@ -16,7 +16,7 @@ Jenkinsfile 是一个文本文件，使用 Groovy DSL 定义 Jenkins Pipeline �
 
 ## 2.1 创建多分支 Pipeline
 
-```
+```text
 1. Jenkins > New Item > Multibranch Pipeline
 2. Branch Sources:
    - Git: https://github.com/myorg/myrepo.git
@@ -498,7 +498,7 @@ stage('Debug Info') {
 
 ## 6.3 Pipeline 重放
 
-```
+```text
 在构建历史页面，点击任意构建：
 1. 进入构建详情页
 2. 点击左侧 "Replay" 按钮
@@ -620,7 +620,7 @@ pipeline {
 
 ## 8.1 多版本 Jenkinsfile
 
-```
+```text
 # 在仓库中的位置
 repo/
 ├── Jenkinsfile              # 标准 Pipeline

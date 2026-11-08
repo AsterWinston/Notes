@@ -4,7 +4,7 @@ OAuth2 的安全性不是协议本身保证的，而是由**实现质量**和**�
 
 ## 1.1 威胁分类
 
-```
+```text
 OAuth2 威胁全景图：
 
 ┌──────────────────────────────────────────────────────────────────┐
@@ -26,7 +26,7 @@ OAuth2 威胁全景图：
 
 ## 2.1 Authorize Code + PKCE（所有用户参与的场景）
 
-```
+```text
 必须执行的检查项：
 
 1. response_type 必须是 "code"（禁止 "token"）
@@ -153,7 +153,7 @@ public class RedirectUriValidator {
 
 ## 3.3 Sender-Constrained Token（DPoP / mTLS）
 
-```
+```text
 Bearer Token 的固有问题：持有 Token 的任何人就可以使用它
 解决方案：Sender-Constrained Token（绑定发送方）
 
@@ -184,7 +184,7 @@ Bearer Token 的固有问题：持有 Token 的任何人就可以使用它
 
 ## 4.1 不同客户端的存储规范
 
-```
+```text
                     Token 存储安全指南
 
 机密客户端 (Web 后端)：
@@ -215,7 +215,7 @@ Bearer Token 的固有问题：持有 Token 的任何人就可以使用它
 
 ## 4.2 client_secret 管理
 
-```
+```text
 client_secret 全生命周期管理：
 
 1. 生成：高熵随机字符串（≥ 128 bit）
@@ -331,7 +331,7 @@ public class TokenEndpointRateLimiter {
 
 ## 6.1 关键审计日志
 
-```
+```text
 必须记录的审计事件：
 
 1. 授权事件
@@ -369,7 +369,7 @@ public class TokenEndpointRateLimiter {
 
 ## 6.2 安全告警规则
 
-```
+```text
 实时告警条件：
 
 危险级别 - 立即响应：
@@ -396,7 +396,7 @@ public class TokenEndpointRateLimiter {
 
 ## 7.1 算法降级攻击
 
-```
+```text
 攻击场景：
 1. 授权服务器支持 RS256 和 HS256 签名算法
 2. client_secret 是已知值（公开客户端）
@@ -425,7 +425,7 @@ private static final Set<String> BLOCKED_ALGORITHMS = Set.of(
 
 ## 7.2 Grant Type 降级攻击
 
-```
+```text
 防御：
 - 每个客户端明确配置允许的 grant_types
 - 不允许客户端在 Token 请求中使用未注册的 grant_type
@@ -436,7 +436,7 @@ private static final Set<String> BLOCKED_ALGORITHMS = Set.of(
 
 # 8. 混合模式（Hybrid Flow）安全
 
-```
+```text
 混合模式的风险：
 response_type=code id_token
 
@@ -454,7 +454,7 @@ response_type=code id_token
 
 # 9. 生产环境部署检查清单
 
-```
+```text
 OAuth2 生产环境安全检查清单
 
 部署前必检：

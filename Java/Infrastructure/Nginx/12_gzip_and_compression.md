@@ -111,7 +111,7 @@ http {
 
 **三者关系**：
 
-```
+```text
 sendfile on  → 减少内核-用户空间拷贝
 tcp_nopush  → 配合 sendfile，数据积累后一次性推送（大文件友好）
 tcp_nodelay → keepalive 下小包即时发送（低延迟场景）

@@ -5,7 +5,7 @@ Git Hooks 是 Git 在特定事件发生时自动执行的脚本。它们存储�
 
 ## 1.1 Hook 的位置与生命周期
 
-```
+```text
 .git/hooks/
 ├── applypatch-msg.sample       # git am 应用补丁时
 ├── pre-applypatch.sample       # git am 应用补丁后（提交前）

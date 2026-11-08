@@ -2,7 +2,7 @@
 
 **答**：自注意力机制（Self-Attention）。
 
-```
+```text
 Attention(Q,K,V) = softmax(QKᵀ/√d_k)V
 ```
 
@@ -154,7 +154,7 @@ public record SamplingConfig(
 
 **答**：缓存历史 token 的 K、V，避免重复计算。
 
-```
+```text
 显存 ≈ 2 × L × n_kv_heads × head_dim × seq_len × batch × bytes
 ```
 
@@ -370,7 +370,7 @@ KV 头越少，显存与带宽越省，但表达力下降。GQA 的经验比例�
 
 **答**：混合专家，用多个专家子网络 + 路由器，每次只激活 top-k 个。
 
-```
+```text
 参数量 >> 激活参数量
 推理成本看激活参数，显存看总参数
 ```
@@ -466,7 +466,7 @@ RLHF 用人类偏好训练奖励模型再强化学习；DPO 直接用偏好数�
 
 **答**：DPO 跳过奖励模型与强化学习，直接用偏好数据优化：
 
-```
+```text
 提高 chosen 概率，降低 rejected 概率
 ```
 

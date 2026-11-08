@@ -133,12 +133,12 @@ zuul:
 ## 3.2 自动路由机制
 
 当注册中心（如 Eureka）中存在服务时，Zuul 会**自动创建默认路由规则**，规则为：
-```
+```text
 /{serviceId}/** → serviceId
 ```
 
 例如，Eureka 中注册了 `user-service`，则自动生成路由：
-```
+```text
 /user-service/** → user-service
 ```
 
@@ -277,7 +277,7 @@ curl http://localhost:8080/actuator/routes
 
 # 6. 项目目录结构
 
-```
+```text
 zuul-gateway/
 ├── pom.xml
 ├── src/
@@ -307,7 +307,7 @@ zuul-gateway/
 
 在 IDE 中直接运行各服务的 `main()` 方法，注意修改各服务端口避免冲突：
 
-```
+```text
 Eureka Server   → localhost:8761
 Zuul Gateway    → localhost:8080
 User Service    → localhost:8081

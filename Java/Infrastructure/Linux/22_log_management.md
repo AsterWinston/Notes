@@ -3,7 +3,7 @@
 
 ## 1.1 日志架构演进
 
-```
+```text
 传统（Syslog）:
 Application → syslogd/rsyslogd → /var/log/*.log
 
@@ -25,7 +25,7 @@ Application → systemd-journald → /var/log/journal/ (结构化二进制)
 
 ## 2.1 基本架构
 
-```
+```text
 输入模块（inputs）
     ↓
 处理管道（rules）
@@ -39,7 +39,7 @@ Application → systemd-journald → /var/log/journal/ (结构化二进制)
 扩展配置：`/etc/rsyslog.d/*.conf`
 
 **选择器（Selector）语法**：
-```
+```text
 facility.priority          action
 设施.优先级                操作（文件/远程/用户）
 ```
@@ -349,7 +349,7 @@ $template RemoteLogs,"/var/log/remote/%HOSTNAME%/%PROGRAMNAME%.log"
 
 ## 6.2 ELK 栈
 
-```
+```text
 Filebeat/Logstash → Elasticsearch → Kibana
         ↑
    日志文件

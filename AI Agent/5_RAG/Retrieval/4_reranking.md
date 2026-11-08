@@ -10,7 +10,7 @@
 
 双塔模型把查询和文档**分别**送入编码器，得到两个独立向量，再用余弦相似度或点积计算分数。文档向量可以离线预计算并建立索引，因此在线检索只需编码查询一次，再做近似最近邻（ANN，Approximate Nearest Neighbor）搜索。
 
-```
+```text
 双塔（Bi-Encoder）：
   query → [E] → q_vec ┐
                        ├─ cosine(q_vec, d_vec) → score
@@ -24,7 +24,7 @@
 
 交叉编码器把查询与文档**拼接后一起**送入编码器，让自注意力（Self-Attention，自注意力）在两者 token 之间充分交互，最后输出一个相关性分数。它无法预计算文档向量，每对 (query, doc) 都要完整前向一次。
 
-```
+```text
 交叉编码（Cross-Encoder）：
   [query + doc] → [E] → score
   两者一起编码，token 级充分交互
@@ -37,13 +37,13 @@
 
 双塔的相似度可以写成：
 
-```
+```text
 s(q, d) = cos(E_q(q), E_d(d)) = <E_q(q), E_d(d)> / (||E_q(q)||·||E_d(d)||)
 ```
 
 交叉编码则直接建模条件概率或回归分数：
 
-```
+```text
 s(q, d) = f_θ([CLS] q [SEP] d [SEP])
 ```
 
@@ -77,7 +77,7 @@ s(q, d) = f_θ([CLS] q [SEP] d [SEP])
 
 ## 1.4 何时重排收益最大
 
-```
+```text
 开始
   │
   ▼
@@ -104,7 +104,7 @@ s(q, d) = f_θ([CLS] q [SEP] d [SEP])
 
 ## 2.1 整体流程
 
-```
+```text
 查询
   │
   ▼
@@ -387,7 +387,7 @@ Encoding enc = tokenizer.encode(query, doc,
 
 nDCG 的核心思想是"越靠前的相关文档权重越高"：
 
-```
+```text
 DCG@K  = Σ  (2^rel_i - 1) / log2(i + 1)
         i=1..K
 nDCG@K = DCG@K / IDCG@K     （IDCG 为理想排序的 DCG）
@@ -413,7 +413,7 @@ nDCG@K = DCG@K / IDCG@K     （IDCG 为理想排序的 DCG）
 
 粗略估算公式：
 
-```
+```text
 日费用 ≈ 日均查询数 × 每次文档数 × 单文档单价
 ```
 
@@ -438,7 +438,7 @@ nDCG@K = DCG@K / IDCG@K     （IDCG 为理想排序的 DCG）
 
 RRF（Reciprocal Rank Fusion，倒数排名融合）只依赖排名而非分数，天然规避了不同检索器分数量纲不一致的问题：
 
-```
+```text
 score(d) = Σ  1 / (k + rank_i(d))
           i
 ```
@@ -447,7 +447,7 @@ score(d) = Σ  1 / (k + rank_i(d))
 
 ## 8.2 完整链路
 
-```
+```text
 稠密检索 Top-20  ┐
                   ├─ RRF 融合 → Top-20 → 重排 → Top-5 → 模型
 稀疏检索 Top-20  ┘

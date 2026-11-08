@@ -40,7 +40,7 @@ public interface UserClient {
 
 # 4. 发展历史
 
-```
+```text
 Netflix Feign (9.x, 停止维护)
     → OpenFeign (9.x → 10.x → 11.x → 12.x+)
         → Spring Cloud OpenFeign (2.x → 3.x → 4.x)
@@ -63,7 +63,7 @@ Netflix Feign (9.x, 停止维护)
 
 # 6. 架构全景
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                      业务代码 (@FeignClient 接口)                  │
 ├─────────────────────────────────────────────────────────────────┤
@@ -111,7 +111,7 @@ Netflix Feign (9.x, 停止维护)
 
 # 8. 依赖关系
 
-```
+```text
 spring-cloud-starter-openfeign
     ├── spring-cloud-openfeign-core
     │       ├── io.github.openfeign:feign-core

@@ -243,7 +243,7 @@ HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
   CMD curl -f http://localhost:8080/actuator/health || exit 1
 ```
 
-生产环境需要区分“进程存活”和“服务可接流量”。例如应用进程启动后，依赖数据库、Redis 或配置中心还未准备好，此时不能直接接收流量。Kubernetes 中通常使用 readinessProbe 和 livenessProbe 分别表达这两种状态；单机 Docker 或 Compose 中可以用 `HEALTHCHECK` 辅助判断依赖启动顺序。
+生产环境需要区分"进程存活"和"服务可接流量"。例如应用进程启动后，依赖数据库、Redis 或配置中心还未准备好，此时不能直接接收流量。Kubernetes 中通常使用 readinessProbe 和 livenessProbe 分别表达这两种状态；单机 Docker 或 Compose 中可以用 `HEALTHCHECK` 辅助判断依赖启动顺序。
 
 # 11. 常见问题排查
 

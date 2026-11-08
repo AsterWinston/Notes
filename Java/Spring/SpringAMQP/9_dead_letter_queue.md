@@ -13,7 +13,7 @@
 | 队列达到最大长度 | 队列中的消息数量超过max-length限制 | 流量控制，防止队列无限增长 |
 
 ## 1.3 死信队列的工作流程
-```
+```text
 正常流程:
   生产者 → Exchange → Queue → Consumer（正常消费、Ack）
 
@@ -317,7 +317,7 @@ public Queue orderQueue() {
 ## 4.4 消息生命周期追踪
 死信队列可以用来追踪消息的完整生命周期：
 
-```
+```text
 业务Queue → 死信Exchange → 死信Queue → 死信消费者:
   - 记录到数据库
   - 发送告警

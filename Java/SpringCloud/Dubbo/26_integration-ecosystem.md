@@ -1,7 +1,7 @@
 
 # 1. Spring Cloud Alibaba 体系
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │               Spring Cloud Alibaba                     │
 ├──────────────────────────────────────────────────────┤
@@ -209,7 +209,7 @@ public class OrderService {
 
 ## 3.4 Seata AT 模式与 Dubbo 集成原理
 
-```
+```text
 BusinessService (TM)
     │
     ├── OrderService.insert()       → 本地 RM, 写 undo_log
@@ -460,7 +460,7 @@ SkyWalking Agent 自动拦截 Dubbo 的以下组件：
 
 ## 8.3 Dubbo 调用链示例
 
-```
+```text
 traceId: 1a2b3c4d5e6f
 
 HTTP Request (gateway)

@@ -26,7 +26,7 @@ go tool compile -S main.go          # 直接对单文件编译并输出汇编
 
 ★ **关键认知**：Go 使用 **Plan 9 汇编**（来自贝尔实验室的 Plan 9 操作系统），语法与 x86 AT&T/Intel 风格都不同：
 
-```
+```text
 Plan 9 汇编特点：
 1. 操作数顺序：源操作数在前，目的操作数在后（和 Intel 相反）
 2. 寄存器名：用伪寄存器（AX, BX, SP, FP...），跨平台统一
@@ -39,7 +39,7 @@ ADDQ BX, AX      // AX = AX + BX
 
 ## 2.2 关键伪寄存器
 
-```
+```text
 SB（Static Base）：静态基址，全局符号的基址
 FP（Frame Pointer）：函数参数区
 SP（Stack Pointer）：栈指针
@@ -58,7 +58,7 @@ func add(a, b int) int {
 }
 ```
 
-```
+```text
 对应汇编（amd64，简化）：
 TEXT main.add(SB), NOSPLIT, $0-24    // 函数符号、栈大小 0、参数+返回 24 字节
     MOVQ a+0(FP), AX    // 加载参数 a（FP 偏移 0）
@@ -87,7 +87,7 @@ f := (*float64)(p)              // unsafe.Pointer → *float64（危险！）
 
 ★ **关键认知**：官方允许的 unsafe.Pointer 转换模式（`unsafe` 包文档明确列出）：
 
-```
+```text
 1. *T → unsafe.Pointer → *T（往返）
 2. unsafe.Pointer → uintptr（指针转整数）
 3. uintptr → unsafe.Pointer（整数转指针）
@@ -160,7 +160,7 @@ func main() {
 
 ★ **关键认知**：cgo 是"万不得已才用"的手段，因为：
 
-```
+```text
 1. 性能损失：C 调用需跨越 Go/C 边界，有显著开销
 2. 破坏并发：C 调用期间占用 OS 线程，影响调度
 3. 失去可移植性：依赖 C 编译器和目标平台
@@ -173,7 +173,7 @@ func main() {
 
 ★ **关键认知**：汇编和 unsafe 的使用原则——**能不用就不用**：
 
-```
+```text
 使用时机：
 1. 性能关键且编译器优化已达瓶颈（如 crypto、math 库）
 2. 需要访问 Go 未暴露的底层能力

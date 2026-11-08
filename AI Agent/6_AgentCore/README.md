@@ -11,7 +11,7 @@
 
 ## 1.2 在整个笔记中的位置
 
-```
+```text
 PromptEngineering → LLMEngineering → AgentCore(本模块)
                                         ↓
         ToolsAndProtocols / Memory / Frameworks / MultiAgent
@@ -153,7 +153,7 @@ PromptEngineering → LLMEngineering → AgentCore(本模块)
 
 ## 4.1 推荐顺序
 
-```
+```text
 概念（1→3） → 循环与规划（4→6） → 推理范式（7→9） → 状态与协同（10→11）
       → 架构与失败模式（12→14） → 运行时全景（15）
 ```
@@ -225,7 +225,7 @@ PromptEngineering → LLMEngineering → AgentCore(本模块)
 
 ## 5.4 概念速查图
 
-```
+```text
               ┌──────────────┐
               │   LLM 大脑    │
               └──────┬───────┘

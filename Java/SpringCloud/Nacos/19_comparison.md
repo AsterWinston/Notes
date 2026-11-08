@@ -28,7 +28,7 @@ Eureka 是 Netflix 开源的基于 REST 的服务注册与发现组件，Spring 
 ## 2.2 架构对比
 
 **Eureka 架构**：
-```
+```text
 Eureka Server (集群)
   ├── 节点间采用 P2P 复制
   ├── 自我保护模式（默认开启）
@@ -41,7 +41,7 @@ Eureka Client
 ```
 
 **Nacos 架构**：
-```
+```text
 Nacos Server (集群)
   ├── 节点间 Distro (AP) / Raft (CP)
   ├── 保护阈值机制

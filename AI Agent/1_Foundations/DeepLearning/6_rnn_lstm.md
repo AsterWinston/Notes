@@ -4,7 +4,7 @@
 
 ## 1.1 序列数据的特点
 
-```
+```text
 序列数据：文本、语音、时间序列
 特点：有顺序、变长、前后依赖
 ```
@@ -33,7 +33,7 @@
 
 任何序列模型都可抽象为"编码—记忆—解码"三段：
 
-```
+```text
 输入序列 → [编码] → [记忆/状态] → [解码] → 输出序列
 ```
 
@@ -47,7 +47,7 @@
 
 ## 2.1 展开图
 
-```
+```text
       h0 ──▶ h1 ──▶ h2 ──▶ h3
              │      │      │
              ▼      ▼      ▼
@@ -58,7 +58,7 @@
 
 ## 2.2 前向公式
 
-```
+```text
 h_t = tanh(W_h · h_{t-1} + W_x · x_t + b)
 y_t = W_y · h_t
 ```
@@ -85,7 +85,7 @@ y_t = W_y · h_t
 
 ### 2.5.1 结构
 
-```
+```text
 编码器 RNN: x1..xn → 上下文向量 c = h_n
 解码器 RNN: 以 c 为初始状态，逐步生成 y1..ym
 ```
@@ -113,14 +113,14 @@ y_t = W_y · h_t
 
 沿时间反向传播（BPTT）中，跨越 `k` 步的梯度含因子：
 
-```
+```text
 ∂h_t / ∂h_{t-k} = ∏_{i=0}^{k-1} ∂h_{t-i} / ∂h_{t-i-1}
                 = ∏ (W_h^T · diag(1 - tanh^2(·)))
 ```
 
 ### 3.1.2 连乘直觉
 
-```
+```text
 梯度消失的直觉：
   反向传播要连乘很多个 W_h
   若 ||W_h|| < 1 → 指数衰减 → 早期信息丢失
@@ -166,7 +166,7 @@ torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=5.0)
 
 ## 4.1 门控思想
 
-```
+```text
 ┌─────────────────────────────────────┐
 │  遗忘门：决定丢弃哪些旧信息          │
 │  输入门：决定写入哪些新信息          │
@@ -181,7 +181,7 @@ torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=5.0)
 
 ### 4.2.1 遗忘门
 
-```
+```text
 f_t = sigmoid(W_f @ [h_{t-1}, x_t] + b_f)
 ```
 
@@ -189,7 +189,7 @@ f_t = sigmoid(W_f @ [h_{t-1}, x_t] + b_f)
 
 ### 4.2.2 输入门与候选
 
-```
+```text
 i_t = sigmoid(W_i @ [h_{t-1}, x_t] + b_i)
 c̃_t = tanh(W_c @ [h_{t-1}, x_t] + b_c)
 c_t = f_t * c_{t-1} + i_t * c̃_t
@@ -197,7 +197,7 @@ c_t = f_t * c_{t-1} + i_t * c̃_t
 
 ### 4.2.3 输出门
 
-```
+```text
 o_t = sigmoid(W_o @ [h_{t-1}, x_t] + b_o)
 h_t = o_t * tanh(c_t)
 ```
@@ -230,7 +230,7 @@ out, (h_n, c_n) = self.lstm(x)
 
 对 `c_t = f_t ⊙ c_{t-1} + i_t ⊙ c̃_t` 求偏导：
 
-```
+```text
 ∂c_t / ∂c_{t-1} = f_t + (其他项对 c_{t-1} 的依赖)
 ```
 
@@ -257,14 +257,14 @@ out, (h_n, c_n) = self.lstm(x)
 
 ## 5.1 结构
 
-```
+```text
 重置门：控制忽略多少历史
 更新门：控制保留多少历史
 ```
 
 ## 5.2 公式
 
-```
+```text
 z_t = sigmoid(W_z @ [h_{t-1}, x_t])          # 更新门
 r_t = sigmoid(W_r @ [h_{t-1}, x_t])          # 重置门
 h̃_t = tanh(W @ [r_t * h_{t-1}, x_t])        # 候选状态
@@ -303,7 +303,7 @@ out, h_n = self.gru(x)
 
 ## 6.1 结构
 
-```
+```text
 正向：x1 → x2 → x3 → x4
 反向：x1 ← x2 ← x3 ← x4
         └──── 拼接 ────┘
@@ -323,7 +323,7 @@ out, h_n = self.gru(x)
 
 ## 6.4 堆叠与深层 RNN
 
-```
+```text
 输入 → RNN层1 → RNN层2 → ... → 输出
 ```
 
@@ -385,14 +385,14 @@ out, h_n = self.gru(x)
 
 ## 8.1 动机
 
-```
+```text
 RNN：逐步传递隐状态 → 串行、长依赖弱
 Transformer：全局注意力 → 并行、长依赖强
 ```
 
 ## 8.2 注意力对比
 
-```
+```text
 RNN:          h1 → h2 → h3 → h4
 Transformer:  x1 ↔ x2 ↔ x3 ↔ x4  （任意两两直接交互）
 ```
@@ -414,7 +414,7 @@ Transformer:  x1 ↔ x2 ↔ x3 ↔ x4  （任意两两直接交互）
 
 ### 8.4.1 缩放点积注意力
 
-```
+```text
 Attention(Q, K, V) = softmax(Q K^T / sqrt(d_k)) V
 ```
 
@@ -424,7 +424,7 @@ Attention(Q, K, V) = softmax(Q K^T / sqrt(d_k)) V
 
 把 `Q/K/V` 拆成多个子空间并行做注意力，再拼接，使模型能同时关注不同位置的不同关系。
 
-```
+```text
 MultiHead = Concat(head_1, ..., head_h) W_O
 ```
 

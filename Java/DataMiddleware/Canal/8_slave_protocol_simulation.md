@@ -3,7 +3,7 @@
 
 Canal 的核心能力之一是**模拟 MySQL Slave（从库）的复制协议**，让 MySQL Master 将其视为一个合法的 Slave，从而持续推送 Binlog 事件流。这个过程涉及 MySQL 客户端-服务器协议中的多个关键命令。
 
-```
+```text
 ┌────────────────┐                          ┌────────────────┐
 │  MySQL Master  │                          │  Canal Server   │
 │                │                          │  (伪装 Slave)   │
@@ -37,7 +37,7 @@ Canal 的核心能力之一是**模拟 MySQL Slave（从库）的复制协议**�
 
 MySQL 协议中的每个数据包由一个 4 字节的包头 + 有效载荷组成：
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │           MySQL Protocol Packet           │
 │                                          │
@@ -292,7 +292,7 @@ public class HandshakeResponse41 {
 
 ## 4.1 命令格式
 
-```
+```text
 COM_REGISTER_SLAVE (0x15)
 
 Payload:
@@ -369,7 +369,7 @@ public void registerSlave(MysqlConnection connection, long slaveId) {
 
 ## 4.3 注册的意义
 
-```
+```text
 mysql> SHOW SLAVE HOSTS;
 +-----------+------+------+-----------+--------------------------------------+
 | Server_id | Host | Port | Master_id | Slave_UUID                           |
@@ -389,7 +389,7 @@ mysql> SHOW SLAVE HOSTS;
 
 这是 Canal 最核心的命令，向 MySQL Master 请求订阅 Binlog 事件流：
 
-```
+```text
 COM_BINLOG_DUMP (0x12)
 
 Payload (传统模式):
@@ -527,7 +527,7 @@ public void sendBinlogDump(String binlogFilename, long binlogPosition,
 
 发送 `COM_BINLOG_DUMP` 后，MySQL Master 将持续推送 Binlog Event，每个 Event 的包结构如下：
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │  MySQL Packet Header (4 bytes)                            │
 │  ├─ Payload Length (3 bytes)                              │
@@ -609,7 +609,7 @@ public class BinlogEventReceiver {
 
 ## 7.1 半同步复制原理
 
-```
+```text
 标准复制 (异步)：
 Master 写 Binlog ──> 返回 Client OK
                 └──> 推送 Binlog 给 Slave（异步，可能丢失）

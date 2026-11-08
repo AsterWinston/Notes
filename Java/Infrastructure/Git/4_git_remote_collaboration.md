@@ -112,7 +112,7 @@ git clone git@github.com:user/repo.git
 
 `fetch` 从远程仓库下载提交和引用，但**不修改本地分支**：
 
-```
+```text
 fetch 前：
 本地        main: A──B──C
 远程 origin/main: A──B──D──E
@@ -162,7 +162,7 @@ git config pull.ff only        # 仅允许 fast-forward
 
 **pull 的三种策略对比**：
 
-```
+```text
 场景：本地 main 有提交 C，远程 main 有提交 D
 
 pull (merge)：
@@ -476,7 +476,7 @@ Git 支持两种传输协议：
 
 智能协议工作流程：
 
-```
+```text
 客户端：服务器，我有 commit A，缺少哪些？
 服务器：你需要 B、C、D，这里有个 pack
 客户端：收到，解包并更新引用

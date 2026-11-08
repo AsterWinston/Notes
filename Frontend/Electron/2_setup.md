@@ -18,7 +18,7 @@ npm run dev          # 启动开发(打开 Electron 窗口 + 热更新)
 
 ## 1.2 三个目录
 
-```
+```text
 my-app/
 ├── src/
 │   ├── main/          # 主进程代码(main.ts:创建窗口)
@@ -34,7 +34,7 @@ my-app/
 
 ## 2.1 dev 时发生了什么
 
-```
+```text
 npm run dev
   → Vite 起服务(renderer 走 HMR 热更新)
   → 构建 main/preload

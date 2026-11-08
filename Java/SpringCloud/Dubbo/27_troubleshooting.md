@@ -4,7 +4,7 @@
 ## 1.1 Provider 找不到
 
 **现象**：
-```
+```text
 No provider available for the service org.example.UserService:1.0.0
 ```
 
@@ -41,7 +41,7 @@ telnet <provider-ip> <provider-port>
 ## 1.2 序列化异常
 
 **现象**：
-```
+```text
 SerializationException: Cannot deserialize class xxx
 HessianProtocolException: xxx cannot be cast to xxx
 ```
@@ -69,7 +69,7 @@ javap -verbose com.example.api.User | grep Serializable
 ## 1.3 超时异常
 
 **现象**：
-```
+```text
 RpcException: Invoke remote method timeout
 ```
 
@@ -102,7 +102,7 @@ curl http://localhost:22222/jvm
 ## 1.4 线程池耗尽
 
 **现象**：
-```
+```text
 RejectedExecutionException: Thread pool is EXHAUSTED!
 ```
 
@@ -166,7 +166,7 @@ tcpdump -i eth0 -w dubbo.pcap tcp port 20880
 
 ## 2.3 粘包/拆包问题
 
-```
+```text
 Dubbo 帧格式:
   [2B Magic][1B Flag][1B Status][8B ID][4B Length][NB Body]
 
@@ -323,7 +323,7 @@ public class UserServiceStub implements UserService {
 
 # 9. 快速自检清单
 
-```
+```text
 □ Provider 已启动且注册中心可见
 □ Consumer 日志中有 SUBSCRIBE 成功记录
 □ Consumer 和 Provider 的 interface/version/group 一致

@@ -2,13 +2,13 @@
 
 JWT 由三部分组成，使用点号（`.`）分隔：
 
-```
+```text
 header.payload.signature
 ```
 
 每部分先经过 JSON 序列化，再进行 Base64URL 编码。最终形式如下：
 
-```
+```text
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
 eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
 SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
@@ -18,7 +18,7 @@ SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
 根据 RFC 7519，JWT 的正式语法定义如下：
 
-```
+```text
 JWT = [header] "." [payload] "." [signature]
 
 header    = BASE64URL(UTF8(JSON(Header)))
@@ -81,7 +81,7 @@ Header 是一个 JSON 对象，描述令牌的元信息，主要包含两个字�
 
 对应的 Base64URL 编码过程：
 
-```
+```text
 原始 JSON → Base64URL 编码 → "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIwMjUtMDEta2V5LTAwMSJ9"
 ```
 
@@ -125,7 +125,7 @@ Signature 用于验证消息在传输过程中未被篡改，对于使用非对�
 
 对于 JWS（签名令牌），签名的生成公式为：
 
-```
+```text
 签名 = HMAC-SHA256(
     base64UrlEncode(header) + "." + base64UrlEncode(payload),
     secret
@@ -134,7 +134,7 @@ Signature 用于验证消息在传输过程中未被篡改，对于使用非对�
 
 或对于非对称算法：
 
-```
+```text
 签名 = RSA-SHA256(
     base64UrlEncode(header) + "." + base64UrlEncode(payload),
     privateKey
@@ -143,7 +143,7 @@ Signature 用于验证消息在传输过程中未被篡改，对于使用非对�
 
 ### 4.1.1 签名过程详解
 
-```
+```text
 步骤1：构建签名字符串
   signingInput = BASE64URL(UTF8(Header)) + "." + BASE64URL(UTF8(Payload))
 
@@ -159,7 +159,7 @@ Signature 用于验证消息在传输过程中未被篡改，对于使用非对�
 
 ## 4.2 验证过程
 
-```
+```text
 接收方拿到 JWT：
 1. 按 "." 拆分为 header、payload、signature
 2. 用 header 中的 alg 参数确定算法
@@ -231,7 +231,7 @@ echo "eyJzdWIiOiIxMjM0NTY3ODkwIn0=" | base64 -d | python3 -m json.tool
 
 最常见的形式：三个 Base64URL 编码段以 `.` 连接。
 
-```
+```text
 header.payload.signature
 ```
 
@@ -280,7 +280,7 @@ JWS 和 JWE 支持 JSON 序列化，用于多签名或多接收者场景。
 
 先对 JWT 签名生成 JWS，再将整个 JWS 作为 Payload 进行加密生成 JWE：
 
-```
+```text
 原始 JWT → 签名（JWS） → 加密（JWE）
 ```
 
@@ -342,7 +342,7 @@ String nestedToken = jweObject.serialize();
 
 ## 9.1 编码（签发）
 
-```
+```text
 步骤1：构建 Header JSON
 {
   "alg": "HS256",
@@ -376,7 +376,7 @@ HMAC-SHA256(签名字符串, "your-256-bit-secret") → 32 字节二进制
 
 ## 9.2 解码（验证）
 
-```
+```text
 步骤1：按 "." 拆分 JWT → [header, payload, signature]
 
 步骤2：解码 Header JSON

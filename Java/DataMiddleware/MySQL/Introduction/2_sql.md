@@ -220,7 +220,7 @@ FROM table_references
 
 **SQL 解析和执行顺序**（非常关键！）：
 
-```
+```text
 FROM  →  WHERE  →  GROUP BY  →  HAVING  →  SELECT  →  ORDER BY  →  LIMIT
 ```
 

@@ -237,7 +237,7 @@ Jenkins 初次启动时自动完成以下流程：
 
 目录结构：
 
-```
+```text
 JENKINS_HOME/
 ├── config.xml                    # 全局配置文件
 ├── secrets/                      # 密钥存储目录
@@ -648,7 +648,7 @@ echo "Backup completed: $BACKUP_FILE"
 
 推荐使用 `thinBackup` 插件自动备份：
 
-```
+```text
 1. 安装 thinBackup 插件
 2. Manage Jenkins > ThinBackup > Settings
    - Backup directory: /data/backup/jenkins

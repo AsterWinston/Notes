@@ -1620,7 +1620,7 @@ public class Mammal extends Animal { ... }
 
 ### 7.2.1 决策流程图
 
-```
+```text
                            ┌──────────────────────────────┐
                            │ 需要以父类类型进行多态查询？   │
                            └──────────────┬───────────────┘
@@ -1696,7 +1696,7 @@ Hibernate 内部为每种继承策略提供了不同的 `EntityPersister` 实现
 
 **SINGLE_TABLE 加载**：
 
-```
+```text
 Session.get(Vehicle.class, id)
   → SingleTableEntityPersister.load(id)
     → SELECT * FROM vehicle WHERE id = ?  -- 单表直接查询
@@ -1705,7 +1705,7 @@ Session.get(Vehicle.class, id)
 
 **JOINED 加载**：
 
-```
+```text
 Session.get(Car.class, id)
   → JoinedSubclassEntityPersister.load(id)
     → SELECT v.*, c.*
@@ -1716,7 +1716,7 @@ Session.get(Car.class, id)
 
 **JOINED 多态加载**：
 
-```
+```text
 Session.get(Vehicle.class, id)  -- 父类多态加载
   → SELECT v.*, c.*, t.*
     FROM vehicle v
@@ -1728,7 +1728,7 @@ Session.get(Vehicle.class, id)  -- 父类多态加载
 
 **TABLE_PER_CLASS 加载**：
 
-```
+```text
 Session.get(Car.class, id)
   → UnionSubclassEntityPersister.load(id)
     → SELECT * FROM car WHERE id = ?  -- 单表直接查询

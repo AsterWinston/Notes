@@ -6,7 +6,7 @@
 spring.main.banner-mode=off
 ### 1.1.2 代码方式
 第一种代码：
-```
+```java
 @SpringBootApplication
 public class Springboot322WebServerApplication {
     public static void main(String[] args) {
@@ -17,7 +17,7 @@ public class Springboot322WebServerApplication {
 }
 ```
 第二种代码：流式编程/链式编程
-```
+```text
 new SpringApplicationBuilder()
                 .sources(Springboot322WebServerApplication.class)
                 .bannerMode(Banner.Mode.OFF)
@@ -35,7 +35,7 @@ https://www.degraeve.com/img2txt.php （只支持图片）
 官网地址：https://pagehelper.github.io/
 
 ## 2.1 引入依赖
-```
+```xml
 <dependency>
     <groupId>com.github.pagehelper</groupId>
 
@@ -47,7 +47,7 @@ https://www.degraeve.com/img2txt.php （只支持图片）
 
 ```
 ## 2.2 编写代码
-```
+```java
 @RestController
 public class VipController {
     @Autowired
@@ -71,7 +71,7 @@ public class VipController {
 对于前后端分离的系统来说，为了降低沟通成本，我们有必要给前端系统开发人员返回统一格式的JSON数据。多数开发团队一般都会封装一个`R`对象来解决统一响应格式的问题。
 
 ## 3.1 封装R对象
-```
+```java
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -139,7 +139,7 @@ public class R<T> {
 以上R对象存在的问题是，难以维护，项目中可能会出现很多这样的代码：R.FAIL(400, "修改失败")。
 
 引入枚举类型进行改进：
-```
+```java
 @NoArgsConstructor
 @AllArgsConstructor
 public enum CodeEnum {
@@ -163,7 +163,7 @@ public enum CodeEnum {
 }
 ```
 改进R：
-```
+```java
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -212,7 +212,7 @@ public class R<T> {
 
 # 4. 事务管理
 SpringBoot中的事务管理仍然使用的Spring框架中的事务管理机制，在代码实现上更为简单了。不需要手动配置事务管理器，SpringBoot自动配置完成了。我们只需要使用@Transactional注解标注需要控制事务的方法即可。另外事务的特性等仍然延用Spring框架。大家可以在老杜发布的Spring视频教程中详细学习事务管理机制。以下代码是在SpringBoot框架中进行的事务控制：
-```
+```java
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -245,12 +245,12 @@ public class AccountServiceImpl implements AccountService {
 
 # 5. SpringBoot打war包
 第一步：将打包方式设置为war
-```
+```text
 <packaging>war</packaging>
 
 ```
 第二步：排除内嵌tomcat
-```
+```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
 
@@ -271,7 +271,7 @@ public class AccountServiceImpl implements AccountService {
 
 ```
 第三步：添加servlet api依赖（引入tomcat，但scope设置为provided，这样这个tomcat服务器就不会打入war包了）
-```
+```text
 <!--额外添加一个tomcat服务器，实际上是为了添加servlet api。scope设置为provided表示这个不会被打入war包当中。-->
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -284,7 +284,7 @@ public class AccountServiceImpl implements AccountService {
 
 ```
 第四步：修改主类
-```
+```java
 @MapperScan(basePackages = "com.powernode.transaction.repository")
 @SpringBootApplication
 public class Springboot324TransactionApplication extends SpringBootServletInitializer{
@@ -375,7 +375,7 @@ SpringBoot 默认将日志打印到控制台。（通过配置可以改变打印
 配置文件中：logging.level.root=...配置级别（全局生效）
 
 ## 6.5 丰富启动日志
-```
+```text
 trace=true
 debug=true
 ```
@@ -386,7 +386,7 @@ debug=true
 
 ## 6.6 日志的粗细粒度
 
-```
+```text
 # 设置根日志级别为 INFO
 logging.level.root=INFO
 
@@ -399,11 +399,11 @@ logging.level.com.powernode.MyService=TRACE
 
 ## 6.7 日志输出到文件
 如果日志要输出文件，可以进行如下配置：
-```
+```properties
 logging.file.path=./log/
 ```
 以上配置表示将日志文件输出到当前工程根目录下的 log 目录当中，文件名默认叫做 spring.log，并且文件名不可设置。
-```
+```properties
 logging.file.name=my.log
 ```
 以上的配置表示在工程的根目录下直接生成 my.log 文件，并且路径不可设置。
@@ -411,7 +411,7 @@ logging.file.name=my.log
 
 ## 6.8 滚动日志
 滚动日志是一种日志管理机制，用于防止日志文件无限增长，通过将日志文件分割成多个文件，每个文件只包含一定时间段或大小的日志记录。滚动日志可以帮助你更好地管理和维护日志文件，避免单个日志文件过大导致难以处理。
-```
+```text
 # 日志文件达到多大时进行归档
 logging.logback.rollingpolicy.max-file-size=100MB
 
@@ -430,7 +430,7 @@ logging.logback.rollingpolicy.file-name-pattern=${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
 
 ## 6.9 日志框架切换
 在实际开发中也可能会切换日志框架，按照如下配置进行切换：先排除掉，再添加
-```
+```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
@@ -503,7 +503,7 @@ public class MyApplicationRunner implements ApplicationRunner {
 | 使用场景 | 简单场景 | 需要解析命名参数时 |
 
 示例--不同参数格式：
-```
+```text
 # 启动参数
 java -jar app.jar hello world --server.port=9090 --env=dev
 

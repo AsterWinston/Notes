@@ -3,12 +3,12 @@
 ## 1.1 为什么需要MessageConverter
 在AMQP协议中，消息体是**二进制的字节数组**（`byte[]`），而Java应用程序中使用的是**对象**。`MessageConverter`的职责就是在这两者之间进行转换：
 
-```
+```text
 Java对象  ←→  MessageConverter  ←→  byte[]（AMQP消息体）
 ```
 
 ## 1.2 Spring AMQP的转换体系
-```
+```text
 MessageConverter（接口）
   ├── SimpleMessageConverter（默认实现）
   ├── Jackson2JsonMessageConverter（JSON转换，最常用）

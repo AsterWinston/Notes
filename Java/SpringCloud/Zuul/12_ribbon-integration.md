@@ -3,7 +3,7 @@
 
 Ribbon 是一个客户端负载均衡器，在 Zuul 中用于 **serviceId 路由**场景下选择具体的后端服务实例。配合 Eureka 服务发现，构成了 Zuul 中最核心的路由能力。
 
-```
+```text
 客户端 → Zuul 网关 → Ribbon 负载均衡器 → 后端服务实例列表
                               │
                     ┌─────────┼─────────┐
@@ -189,7 +189,7 @@ user-service:
 
 ## 4.2 重试流程
 
-```
+```text
 第 1 次请求 → 实例 A → 超时（重试）
 第 2 次请求 → 实例 A → 超时（MaxAutoRetries=1，切换到下个实例）
 第 3 次请求 → 实例 B → 超时（MaxAutoRetriesNextServer=2，继续）
@@ -207,7 +207,7 @@ user-service:
 
 ## 4.3 重试源码链路
 
-```
+```text
 RibbonRoutingFilter.run()
     │
     ▼
@@ -293,7 +293,7 @@ public class SpringClientFactory extends NamedContextFactory<RibbonClientSpecifi
 
 `NamedContextFactory` 的设计让每个服务拥有独立的配置空间：
 
-```
+```text
 SpringClientFactory
     │
     ├── "user-service"  → ApplicationContext(user-service)
@@ -312,7 +312,7 @@ SpringClientFactory
 
 # 7. 服务实例选择流程
 
-```
+```text
 RibbonRoutingFilter.run()
     │
     ▼

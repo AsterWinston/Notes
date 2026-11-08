@@ -1,6 +1,6 @@
 # 1. 继承 Spring AI 的抽象
 
-结论先行：Spring AI Alibaba 不重复造轮子，它在 Spring AI 的抽象之上做“适配、编排、可观测”三层增强，因此掌握 Spring AI 的核心抽象是理解本框架的前提。
+结论先行：Spring AI Alibaba 不重复造轮子，它在 Spring AI 的抽象之上做"适配、编排、可观测"三层增强，因此掌握 Spring AI 的核心抽象是理解本框架的前提。
 
 ## 1.1 复用与增强的分层
 
@@ -18,7 +18,7 @@ Spring AI 定义了与模型供应商无关的编程接口，主要抽象如下�
 | VectorStore | 向量存储与相似检索 | SimpleVectorStore |
 | ToolCallback | 工具/函数调用回调 | FunctionToolCallback |
 
-这些抽象的共同特征是“面向接口编程”：业务只依赖接口，具体供应商实现由自动装配注入，从而做到可替换、可测试。
+这些抽象的共同特征是"面向接口编程"：业务只依赖接口，具体供应商实现由自动装配注入，从而做到可替换、可测试。
 
 ```java
 @Service
@@ -40,7 +40,7 @@ public class AssistantService {
 
 ### 1.1.2 Spring AI Alibaba 的增强点
 
-```
+```text
 Spring AI 抽象（复用）
 ├── ChatModel / ChatClient
 ├── Prompt / Message
@@ -56,7 +56,7 @@ Spring AI Alibaba 增强
 ```
 
 - DashScope 模型适配：通义千问（Qwen）、text-embedding 系列开箱即用。
-- Graph 编排：以“节点 + 边 + 状态”描述多步 Agent 流程。
+- Graph 编排：以"节点 + 边 + 状态"描述多步 Agent 流程。
 - 可观测增强：与阿里云 ARMS（应用实时监控服务）打通。
 - 国内生态工具：搜索、地图、RAG 等本土化工具接入。
 
@@ -101,7 +101,7 @@ public class AiConfig {
 
 # 2. 模型适配
 
-结论先行：模型适配把“供应商差异”收敛到统一接口，理想状态下切换模型时业务代码零改动。
+结论先行：模型适配把"供应商差异"收敛到统一接口，理想状态下切换模型时业务代码零改动。
 
 ## 2.1 DashScope ChatModel
 
@@ -167,7 +167,7 @@ ChatClient fastClient(ChatModel model) {
 
 三者常组合成 RAG 流水线：先用 Embedding 召回候选，再用 Rerank 精排，最后交给对话模型生成。
 
-```
+```text
 用户问题 ──▶ Embedding ──▶ 向量召回 Top-K
                               │
                               ▼
@@ -182,7 +182,7 @@ ChatClient fastClient(ChatModel model) {
 
 # 3. 配置驱动
 
-结论先行：框架遵循 Spring Boot“约定优于配置”，绝大多数参数通过 `application.yml` 声明，便于多环境治理。
+结论先行：框架遵循 Spring Boot"约定优于配置"，绝大多数参数通过 `application.yml` 声明，便于多环境治理。
 
 ## 3.1 核心配置项
 
@@ -240,7 +240,7 @@ String answer = client.prompt()
 
 # 4. Graph 编排（核心增强）
 
-结论先行：Graph 是本框架相对 Spring AI 最核心的增强，用有向图显式描述多步流程，把“控制流”从代码中抽离出来。
+结论先行：Graph 是本框架相对 Spring AI 最核心的增强，用有向图显式描述多步流程，把"控制流"从代码中抽离出来。
 
 ## 4.1 Graph 三要素
 
@@ -262,7 +262,7 @@ String answer = client.prompt()
 
 状态（State）是节点间传递的数据载体，通常是一个 POJO 或 record。
 
-```
+```text
 Graph = 节点 + 边 + 状态
 
 节点：一个处理步骤（LLM 调用、工具调用、逻辑）
@@ -328,7 +328,7 @@ System.out.println(result.getAnswer());
 
 # 5. 状态传递
 
-结论先行：状态是 Graph 的“血脉”，设计好状态结构与合并策略，编排才能清晰可控。
+结论先行：状态是 Graph 的"血脉"，设计好状态结构与合并策略，编排才能清晰可控。
 
 ## 5.1 状态模型
 
@@ -344,7 +344,7 @@ System.out.println(result.getAnswer());
 | 追加 | 列表累加 | 消息、文档 |
 | 归并 | 自定义合并 | 计数、去重 |
 
-以“消息追加”为例，合并函数把新消息并入已有列表：
+以"消息追加"为例，合并函数把新消息并入已有列表：
 
 ```java
 public static AgentState mergeMessages(AgentState a, AgentState b) {
@@ -373,7 +373,7 @@ public static AgentState mergeMessages(AgentState a, AgentState b) {
 
 # 6. 条件路由
 
-结论先行：条件路由（Conditional Routing）让流程按运行时状态动态选路，是 Agent“自主决策”的落点。
+结论先行：条件路由（Conditional Routing）让流程按运行时状态动态选路，是 Agent"自主决策"的落点。
 
 ## 6.1 路由函数
 
@@ -427,7 +427,7 @@ graph.addConditionalEdges(
 
 # 7. 与 Spring AI Advisor 的关系
 
-结论先行：Advisor 与 Graph 不在同一层次——Advisor 管“单次调用的横切”，Graph 管“多步流程的编排”，二者互补而非替代。
+结论先行：Advisor 与 Graph 不在同一层次——Advisor 管"单次调用的横切"，Graph 管"多步流程的编排"，二者互补而非替代。
 
 ## 7.1 对比
 
@@ -442,7 +442,7 @@ graph.addConditionalEdges(
 
 ### 7.1.2 组合使用
 
-在 Graph 的每个节点内部仍可使用带 Advisor 的 ChatClient，实现“编排 + 横切”叠加。
+在 Graph 的每个节点内部仍可使用带 Advisor 的 ChatClient，实现"编排 + 横切"叠加。
 
 ```java
 NodeAction generateNode = state -> {
@@ -469,7 +469,7 @@ NodeAction generateNode = state -> {
 
 - Advisor 无跨调用状态，做不了多步记忆。
 - Graph 不替代 Advisor 的横切能力，日志等仍需 Advisor。
-- 不要混淆“链顺序”与“图拓扑”两种语义。
+- 不要混淆"链顺序"与"图拓扑"两种语义。
 
 # 8. 可观测增强
 
@@ -524,13 +524,13 @@ Observation.createNotStarted("agent.node", observationRegistry)
 
 # 9. 核心概念关系
 
-结论先行：所有概念围绕“一次对话”与“一次流程”两条主线组织，理解调用链即可正确选型。
+结论先行：所有概念围绕"一次对话"与"一次流程"两条主线组织，理解调用链即可正确选型。
 
 ## 9.1 概念关系图
 
 ### 9.1.1 全景图
 
-```
+```text
 ChatClient ──▶ ChatModel ──▶ DashScope（通义）
     │
     ├── Advisor（横切）

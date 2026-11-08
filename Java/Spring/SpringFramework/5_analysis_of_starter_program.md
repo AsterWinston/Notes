@@ -1,5 +1,5 @@
 # 1. 入门程序分析
-```
+```text
 在spring的配置文件中，每个bean的id是不能重名，因为id是每个bean的唯一表示，用于通过容器对象获取相应的bean
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -97,7 +97,7 @@ spring不是在调用getBean()方法的时候创建对象，执行new ClassPathX
 
 ## 2.1 构造器调用链
 
-```
+```text
 new ClassPathXmlApplicationContext("spring.xml")
     │
     ├── 调用 ClassPathXmlApplicationContext(String... configLocations)
@@ -119,7 +119,7 @@ new ClassPathXmlApplicationContext("spring.xml")
 
 ## 2.2 refresh() → obtainFreshBeanFactory()
 
-```
+```java
 refresh() 是 AbstractApplicationContext 的核心方法，包含 13 个子步骤。
 obtainFreshBeanFactory() 是第 2 步，负责创建 BeanFactory 并加载 Bean 定义：
 
@@ -172,7 +172,7 @@ protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throw
 
 ## 2.3 getBean() — 如何从容器中获取 Bean
 
-```
+```text
 applicationContext.getBean("user", User.class)
     │
     └── AbstractApplicationContext.getBean(String, Class<T>)
@@ -196,7 +196,7 @@ applicationContext.getBean("user", User.class)
 
 ## 2.4 DefaultListableBeanFactory 的存储结构
 
-```
+```text
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
         implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
 
@@ -221,7 +221,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 ## 2.5 BeanDefinition 是什么
 
-```
+```text
 <bean id="user" class="cw.spring.study.pojo.User"> 
     <property name="name" value="张三"/> 
 </bean>
@@ -246,7 +246,7 @@ BeanDefinition 对象包含：
 
 ## 2.6 初始化时序总结
 
-```
+```text
 new ClassPathXmlApplicationContext("spring.xml")
     │
     ├── 1. 调用父类构造器，初始化上下文环境

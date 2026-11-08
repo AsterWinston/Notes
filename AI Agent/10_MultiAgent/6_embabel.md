@@ -2,7 +2,7 @@
 
 Embabel 是一个面向 JVM 的 Agent 框架，其最大特点是采用 **GOAP**（Goal-Oriented Action Planning，面向目标的动作规划）来组织多 Agent 协作。与"由主管显式分配任务"的传统模式不同，Embabel 让开发者只声明"每个 Agent 能做什么、需要什么前置条件、会产生什么效果"，由规划器在运行时自动搜索出一条从当前状态到目标的动作序列。
 
-```
+```text
 传统多 Agent：主管显式分配任务
 Embabel：     用 GOAP 从目标自动规划，选择合适的 Agent/动作
 ```
@@ -48,7 +48,7 @@ GOAP 的核心概念：
 
 ## 2.1 从目标到路径
 
-```
+```text
 目标：完成一份市场分析报告
   ↓ GOAP 规划
 需要：数据 + 分析 + 撰写
@@ -58,7 +58,7 @@ GOAP 的核心概念：
 
 规划过程可展开为：
 
-```
+```text
 目标断言：reportReady = true
         ▲
         │ 效果：reportReady
@@ -247,7 +247,7 @@ AgentResult result = runner.run(marketAnalysisAgent, goal, ctx);
 
 一次成功执行的轨迹可以记录为：
 
-```
+```text
 Trace: goal=reportReady
 ├── Plan: [收集数据, 分析数据, 撰写报告]
 ├── Step 1: 收集数据  → 效果 hasData
@@ -263,7 +263,7 @@ Trace: goal=reportReady
 
 ## 5.1 失败后的替代路径
 
-```
+```text
 若"收集数据"失败：
   GOAP 自动寻找替代路径
   （如：换数据源、跳过、降级）
@@ -493,7 +493,7 @@ if (result.success()) {
 
 实践中常见"外层用图、内层用 GOAP"的混合模式：
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │  StateGraph（稳定骨架）                  │
 │  ① 鉴权 → ② 意图识别 → ③ GOAP 子任务   │

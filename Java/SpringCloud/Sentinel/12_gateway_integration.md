@@ -3,7 +3,7 @@
 
 Sentinel 提供了专为 Spring Cloud Gateway 设计的适配模块，支持**路由级别**和**API 分组级别**的流控与降级。
 
-```
+```text
 HTTP 请求 → Gateway
   → SentinelGatewayFilter（全局）
     → 路由匹配

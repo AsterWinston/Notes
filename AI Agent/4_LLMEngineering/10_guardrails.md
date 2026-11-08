@@ -25,7 +25,7 @@
 
 ### 1.2.1 四道防线
 
-```
+```text
 用户输入
    │
    ▼
@@ -258,7 +258,7 @@ public class OutputGuardrail {
 - 请求进入时按 `order` 从小到大执行前置逻辑；响应返回时按逆序执行后置逻辑。
 - 与 Servlet Filter 类似，但作用于 LLM 调用。
 
-```
+```text
 Request --> [order 0] -> [order 50] -> [order 100] -> Model
 Response <-- [order 0] <- [order 50] <- [order 100] <-
 ```

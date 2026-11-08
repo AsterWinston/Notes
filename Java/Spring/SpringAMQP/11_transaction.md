@@ -4,7 +4,7 @@
 AMQP协议提供了事务机制，允许生产者将多条消息的发送操作放入一个事务中，**要么全部成功，要么全部失败**。这与数据库的事务概念类似，但实现方式不同。
 
 AMQP事务的工作流程：
-```
+```text
 1. txSelect()    → 将Channel设置为事务模式
 2. basicPublish() → 发送消息1（暂存）
 3. basicPublish() → 发送消息2（暂存）
@@ -125,7 +125,7 @@ public class ProgrammaticTxService {
 ## 3.1 问题场景
 常见的分布式事务场景：
 
-```
+```text
 用户下单 → 写入数据库（订单表） + 发送MQ消息（通知库存系统）
 ```
 
@@ -137,7 +137,7 @@ public class ProgrammaticTxService {
 RocketMQ原生支持事务消息，RabbitMQ没有这种能力。可以用以下方案替代。
 
 ### 3.2.2 本地消息表（最经典的方案）
-```
+```text
 1. 在数据库中创建一个"消息发送表"（message_log）
 2. 同一事务中操作：
    - 插入业务数据（订单）
@@ -289,7 +289,7 @@ AMQP协议定义了以下事务相关命令：
 | tx.rollback | 回滚当前事务 |
 
 ## 4.2 事务的底层流程
-```
+```text
 Client (Producer)                    Broker (RabbitMQ)
       |                                    |
       |------- tx.select() -------------->|  Channel进入事务模式

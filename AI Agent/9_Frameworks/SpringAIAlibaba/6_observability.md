@@ -4,7 +4,7 @@
 
 结论先行：AI 应用的不确定性远高于普通服务，没有可观测性就无法定位"是模型问题、检索问题还是编排问题"。
 
-```
+```text
 Spring AI Alibaba 提供：
 ├── Trace（全链路）
 ├── 指标（Token、延迟、成本）
@@ -31,7 +31,7 @@ Spring AI Alibaba 提供：
 
 ## 1.3 与 Spring AI 的关系
 
-```
+```text
 Spring AI 的 Observation（Micrometer）
         +
 Spring AI Alibaba 的增强
@@ -130,7 +130,7 @@ management:
 
 结论先行：一次用户请求对应一个 Trace，内部每个处理步骤是一个 Span。
 
-```
+```text
 Trace（一次请求）
  ├── Span: HTTP 接入
  ├── Span: Graph 执行
@@ -158,7 +158,7 @@ Trace（一次请求）
 
 机制：Graph 执行时为每个节点自动创建 Span，无需手写埋点。
 
-```
+```text
 Trace: 用户请求
 ├── Span: classify 节点
 ├── Span: retrieve 节点
@@ -300,7 +300,7 @@ public class GraphLoggingListener {
 
 机制：在日志中带上 `traceId`，即可从一条日志跳转到完整调用链。
 
-```
+```text
 log.info("graph.node traceId={} node={} duration={}ms",
         currentTraceId(), node, durationMs);
 ```
@@ -332,7 +332,7 @@ log.info("graph.node traceId={} node={} duration={}ms",
 
 结论先行：成本 = 输入 Token 单价 × 输入量 + 输出 Token 单价 × 输出量，按模型档位不同。
 
-```
+```text
 成本 = Σ (inTokens × priceIn + outTokens × priceOut)
 ```
 

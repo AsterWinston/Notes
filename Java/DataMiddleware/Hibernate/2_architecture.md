@@ -4,7 +4,7 @@
 
 Hibernate 采用了经典的分层架构设计，从上到下依次划分为五个主要层次：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                   应用层 (Application)                     │
 │         业务代码 / Service / Repository / DAO             │
@@ -44,7 +44,7 @@ Hibernate 采用了经典的分层架构设计，从上到下依次划分为五�
 
 ### 1.2.1 组件关系总览
 
-```
+```text
                      ┌──────────────┐
                      │ Configuration │  (或 MetadataSources)
                      └──────┬───────┘
@@ -74,7 +74,7 @@ Hibernate 采用了经典的分层架构设计，从上到下依次划分为五�
 
 应用代码通过 Session API 发起持久化操作，经过拦截器/事件系统拦截后，进入映射层将实体状态变更转换为 SQL 语句，再经 Dialect 方言适配后，通过 JDBC 驱动执行 SQL 并返回结果：
 
-```
+```text
 应用代码 → Session API → Interceptor / Event → Mapping (EntityPersister)
 → SQL Generation (Dialect) → JDBC → Database
 ```
@@ -173,7 +173,7 @@ Configuration cfg = new Configuration()
 
 ### 2.2.2 层次结构
 
-```
+```text
 BootstrapServiceRegistry（引导服务注册中心）
     ├── ClassLoaderService          —— 类加载服务
     ├── IntegratorService           —— 集成器（Envers、Bean Validation 等）
@@ -208,7 +208,7 @@ StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
 
 Hibernate 使用 Java 标准 `java.util.ServiceLoader` 机制发现扩展服务实现：
 
-```
+```text
 META-INF/services/org.hibernate.integrator.spi.Integrator
 META-INF/services/org.hibernate.boot.registry.selector.StrategyRegistrationProvider
 ```
@@ -323,7 +323,7 @@ Metadata metadata = new MetadataSources(serviceRegistry)
 
 ### 2.3.6 启动流程（Hibernate 5+）
 
-```
+```text
 MetadataSources → MetadataBuilder → Metadata → SessionFactoryBuilder → SessionFactory
 ```
 
@@ -363,7 +363,7 @@ SessionFactory sessionFactory = metadata
 
 ### 2.4.2 内部结构
 
-```
+```text
 SessionFactory
 ├── EntityPersister 缓存（每个实体类一个）
 │   ├── SingleTableEntityPersister（单表实体）
@@ -483,7 +483,7 @@ System.out.println(user1 == user2);         // true，同一引用
 
 ### 2.5.3 Session 内部结构
 
-```
+```text
 SessionImpl (SessionImplementor)
 ├── PersistenceContext（持久化上下文 - 一级缓存）
 │   ├── EntityEntryContext  —— 实体状态条目（managed/detached/deleted）
@@ -518,7 +518,7 @@ public interface SessionImplementor extends Session {
 
 ### 2.5.5 openSession() 内部流程详解
 
-```
+```text
 SessionFactoryImpl.openSession()
     │
     ├── 1. 从 ConnectionProvider 获取 JDBC 连接（延迟获取，此时可能为 null）
@@ -614,7 +614,7 @@ session.persist(new User("张三"));
 
 ### 2.6.4 Transaction 的生命周期
 
-```
+```text
 NOT_ACTIVE ──begin()──► ACTIVE ──commit()/rollback()──► NOT_ACTIVE
 ```
 
@@ -672,7 +672,7 @@ session.close();
 
 ### 2.7.1 org.hibernate.query.Query 接口体系
 
-```
+```text
 Query<R>（Hibernate 原生接口，继承 JPA TypedQuery & Query）
 ├── SelectionQuery<R>     —— 查询操作（list, uniqueResult, stream）
 ├── MutationQuery         —— 变更操作（executeUpdate） Hibernate 6+
@@ -941,7 +941,7 @@ public class User$HibernateProxy$xyz extends User implements HibernateProxy {
 
 ### 3.2.2 代理拦截原理
 
-```
+```text
 应用代码: user.getOrders()
     │
     ▼
@@ -1062,7 +1062,7 @@ public class AuditInterceptor implements Interceptor {
 
 相比 `Interceptor`，Event/Listener 系统更细粒度、更灵活，是 Hibernate 内部使用的主要扩展机制：
 
-```
+```text
        事件触发（如 persist(entity)）
                 │
                 ▼
@@ -1219,7 +1219,7 @@ hibernate.order_updates=true
 
 Hibernate 允许通过装饰器模式在 Session 上动态附加行为（如拦截器、统计收集等）：
 
-```
+```text
 调用链: Client → SessionWrapper → SessionWrapper → SessionImpl → JDBC
 ```
 
@@ -1270,7 +1270,7 @@ Session session = sessionFactory.withOptions()
 
 HQL/JPQL 查询的解析和 SQL 生成是计算密集型操作。通过享元模式，Hibernate 将查询计划（QueryPlan）缓存并共享：
 
-```
+```text
 SessionFactory
 └── QueryPlanCache（全局单例，跨 Session 共享）
     ├── "from User"          → QueryPlan_A（HQL AST + SQL 模板）
@@ -1300,7 +1300,7 @@ public class QueryPlanCache {
 
 实体类型的映射元数据（`EntityPersister`、`Type`）在 `SessionFactory` 级别共享，所有 `Session` 共享同一份，避免重复解析：
 
-```
+```text
 SessionFactory（共享）
 ├── EntityPersister[User]  ── 所有 Session 共享这一份
 ├── EntityPersister[Order] ── 所有 Session 共享这一份
@@ -1319,7 +1319,7 @@ Hibernate 的启动过程是一个多阶段的初始化流水线，每一阶段�
 
 ### 4.1.1 完整启动时序
 
-```
+```text
 1. 引导阶段
    │
    ├── BootstrapServiceRegistryBuilder.build()
@@ -1429,7 +1429,7 @@ public class CustomPhysicalNamingStrategy extends PhysicalNamingStrategyStandard
 
 ### 4.2.1 完整流程图
 
-```
+```text
 Client Code: session.persist(user)
     │
     ▼
@@ -1589,7 +1589,7 @@ for (EntityEntry entry : persistenceContext.reentrantSafeEntityEntries()) {
 
 **步骤 2：确定 SQL 执行顺序**
 
-```
+```text
 1. EntityInsertAction         ← 最先执行（插入）
 2. EntityUpdateAction         ← 更新已有记录
 3. CollectionRecreateAction   ← 集合重建
@@ -1648,7 +1648,7 @@ jdbcCoordinator.executeBatch();  // 一次性提交所有 INSERT
 
 ### 4.3.4 ActionQueue 的结构与排序算法
 
-```
+```text
 ActionQueue
 ├── InsertAction[]           —— ArrayList + 排序
 ├── UpdateAction[]           —— ArrayList + 排序
@@ -1914,7 +1914,7 @@ public class CustomMySQL8Dialect extends MySQL8Dialect {
 
 ### 5.3.7 多数据库适配时的 Dialect 自动选择原理
 
-```
+```text
 Hibernate 启动
     │
     ├── 获取 JDBC Connection
@@ -1952,7 +1952,7 @@ public interface Type extends Serializable {
 
 ### 6.1.2 Type 实现体系
 
-```
+```text
 Type（顶层接口）
 ├── BasicType           —— 基本类型映射（String ↔ VARCHAR, int ↔ INTEGER）
 │   ├── StringType      —— java.lang.String ↔ VARCHAR
@@ -2000,7 +2000,7 @@ public interface SqlTypeDescriptor {
 
 ### 6.2.1 注解扫描 → TypeResolver → Dialect → SQL
 
-```
+```text
 实体属性 int age;
     │
     ▼

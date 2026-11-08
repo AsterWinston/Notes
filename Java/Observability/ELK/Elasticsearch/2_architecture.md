@@ -2,7 +2,7 @@
 
 理解 ES 集群要从外向内建立四层心智模型：**Cluster 由 Node 组成，Node 承载 Shard，Shard 就是一个 Lucene 索引**。一切分布式行为（扩容、容错、路由）都发生在 Shard 这一层。
 
-```
+```text
 Cluster (集群)
   └── Node (节点, 1-N)
         └── Index (索引, 1-N)
@@ -49,7 +49,7 @@ node.roles: []
 
 # 3. 分片模型
 
-```
+```text
 Index: orders (3 主分片, 1 副本)
 ┌──────────────────────────────────────────────────────┐
 │  Node A: Primary 0        Node B: Replica 0           │
@@ -76,7 +76,7 @@ Index: orders (3 主分片, 1 副本)
 
 一条 `PUT /index/_doc/1` 在集群内的完整旅程：
 
-```
+```text
 Client → Node 1 (Coordinating)
   │
   │ 1. 解析请求，读取索引元数据，计算路由:
@@ -103,7 +103,7 @@ Client → Node 1 (Coordinating)
 
 ## 4.1 Refresh — 数据可搜索
 
-```
+```text
 Refresh: 内存 Buffer → 打开(Lucene Writer) → 生成新 Segment → 可被搜索
 
 间隔: index.refresh_interval (默认 1s)
@@ -115,7 +115,7 @@ refresh 这个名字极易误导：它**不写磁盘、不刷数据**，只是�
 
 ## 4.2 Flush — 持久化到磁盘
 
-```
+```text
 Flush: 内存 Segment → OS 文件缓存 → fsync 磁盘, 然后 truncate translog
 
 触发条件:
@@ -128,7 +128,7 @@ flush 才对应直觉里的"落盘"：落的是 **segment 文件**，落盘后 E
 
 # 5. 读取流程
 
-```
+```text
 Client → Node 1 (Coordinating)
   │
   │ 1. Query Phase: 向所有相关分片并发发送查询
@@ -149,7 +149,7 @@ Client → Node 1 (Coordinating)
 
 Lucene 每 refresh 生成一个 Segment，多个 Segment 需要合并：
 
-```
+```text
 Segments: [S1] [S2] [S3] [S4] ...
                ↓ merge
           [S12]  [S3]  [S4] ...
@@ -170,7 +170,7 @@ merge 同时干两件事：**减少段数量**（每段对应一组文件句柄�
 
 # 7. Master 选举
 
-```
+```text
 # 选举流程（8.x 基于 Zen 2 / 内置协调算法，不再依赖外部组件）
 1. Master-eligible 节点定期互相 ping，维护存活视图
 2. 达到初始选举资格(initial election quorum)的节点开始拉票
@@ -192,7 +192,7 @@ Master 故障的表现分两种：短暂停顿触发重新选举，集群只是�
 
 最后把镜头拉到最小的存储单元：一个 Shard 内部，文档如何变成可搜索的结构。字段的处理方式由 mapping 决定（第 6 篇），核心是两类互补结构：
 
-```
+```text
 原文档: { "title": "iPhone 15 Pro 手机", "price": 8999 }
 
 title 经 analyzer 分词: [iphone, 15, pro, 手, 机]

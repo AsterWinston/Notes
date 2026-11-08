@@ -2,7 +2,7 @@
 
 结论先行：RAG（Retrieval-Augmented Generation，检索增强生成）系统的质量由"检索"与"生成"两段共同决定，必须分层评测，否则出现问题时无法判断是"没找到"还是"找到了但答错"。
 
-```
+```text
 ① 检索评测：能否召回正确答案所在的文档
 ② 生成评测：基于检索内容，回答是否忠实、相关、正确
 ```
@@ -24,7 +24,7 @@ RAG 的失败模式（failure mode）可归为两类：检索失败与生成失�
 
 一条完整的 RAG 评测流水线包含：数据集、检索器、生成器、判官（Judge）、报告五部分。
 
-```
+```text
  评测集(问题+标准答案+相关文档ID)
             │
             ▼
@@ -138,7 +138,7 @@ public double mrr(List<EvalCase> cases, Retriever retriever) {
 
 机制：相关性有等级（0/1/2/3），越靠前权重越大，再做理想排序归一化。
 
-```
+```text
 DCG@K  = Σ_{i=1..K} (2^rel_i - 1) / log2(i + 1)
 IDCG@K = 理想排序下的 DCG@K
 nDCG@K = DCG@K / IDCG@K
@@ -245,7 +245,7 @@ public double answerRelevance(String question, String answer) {
 
 机制：上下文精确率衡量检索到的片段里有多少与答案相关；上下文召回率衡量回答所需信息有多少出现在上下文中。
 
-```
+```text
 Context Precision = 相关片段数 / 检索片段总数
 Context Recall    = 被上下文覆盖的答案句数 / 答案句总数
 ```
@@ -320,7 +320,7 @@ public EndToEndReport evaluateEndToEnd(List<EvalCase> cases) {
 
 结论先行：分块（chunking）直接决定召回上限，必须通过对比实验选择，而不是拍脑袋定参数。
 
-```
+```text
 方法：准备问答对，标注"答案所在块"
 对比不同分块策略下"答案块是否被召回"
 ```
@@ -424,7 +424,7 @@ public void compareRetrievalStrategies(List<EvalCase> cases) {
 
 混合检索常用 RRF（Reciprocal Rank Fusion，倒数排名融合）：
 
-```
+```text
 RRF(d) = Σ_r 1 / (k + rank_r(d))     k 常取 60
 ```
 
@@ -494,7 +494,7 @@ public record RagEvalReport(
 
 ### 9.1.1 症状映射规则
 
-```
+```text
 答不出 ──► 查 Recall@K 低 ──► 分块/检索参数/索引
 答错 ────► 查 Faithfulness 低 ──► 提示约束/上下文顺序
 答偏 ────► 查 Relevance 低 ──► 提示词/问题改写

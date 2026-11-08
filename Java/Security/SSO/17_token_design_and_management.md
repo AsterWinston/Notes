@@ -18,7 +18,7 @@ Token 是现代 SSO 的核心凭证。好的 Token 设计需要平衡安全性�
 
 ## 2.2 Token 生命周期状态机
 
-```
+```text
                     ┌──────────┐
                     │  创建     │ ← 登录 / 授权
                     └────┬─────┘
@@ -151,7 +151,7 @@ public class OpaqueTokenService {
 
 ## 4.1 Refresh Token 模式
 
-```
+```text
 模式 1：长期 Refresh Token（简单，安全性低）
   Refresh Token = 随机UUID → 存 Redis，7-30天有效期
   每次用到都不过期，只返回新 Access Token

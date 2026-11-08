@@ -13,7 +13,7 @@ Prometheus 是一个开源的系统监控和告警工具集，核心设计理念
 
 ## 1.2 Q2：Prometheus 的数据模型是怎样的？
 
-```
+```text
 <metric_name>{<label_name>=<label_value>, ...}
 ```
 

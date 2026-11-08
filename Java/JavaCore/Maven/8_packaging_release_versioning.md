@@ -48,7 +48,7 @@
 ## 1.2 Spring Boot 可执行 JAR
 
 - `spring-boot-maven-plugin` 的 `repackage` 目标生成可执行 JAR，结构如下：
-```
+```text
 boot-app.jar
 ├── META-INF/
 ├── BOOT-INF/

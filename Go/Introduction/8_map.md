@@ -60,7 +60,7 @@ type bmap struct {        // 每个桶（bucket）能存 8 个键值对
 }
 ```
 
-```
+```text
 hmap
  └── buckets → [bucket0][bucket1][bucket2]...（2^B 个桶）
                     │
@@ -72,7 +72,7 @@ hmap
 
 ★ **关键认知**：查找一个键时，Go 的流程是：
 
-```
+```text
 1. 计算 key 的哈希值 hash(key)（混合了随机种子 hash0，防哈希碰撞攻击）
 2. 取哈希低 B 位，定位到目标桶
 3. 取哈希高 8 位作为 tophash，与桶内 8 个 tophash 快速比对
@@ -124,7 +124,7 @@ len(m1)       // 合法，返回 0
 
 ★ **关键认知**：map 扩容发生在桶装载因子过高或溢出桶过多时，分两种：
 
-```
+```text
 1. 等量扩容：桶数量不变，但把溢出桶的元素重新整理进主桶
    （触发条件：溢出桶太多，说明大量删除导致空洞）
 2. 翻倍扩容：桶数量 × 2，元素重新哈希分布
@@ -139,7 +139,7 @@ len(m1)       // 合法，返回 0
 
 ★ **关键认知**：Go 的 map **不是并发安全的**。多个 goroutine 同时读写同一个 map，会触发运行时检测并直接 **fatal error**（不是普通 panic，无法 recover）：
 
-```
+```text
 fatal error: concurrent map read and map write
 ```
 

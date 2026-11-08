@@ -282,7 +282,7 @@ java -jar rabbitmq-perf-test-2.19.0.jar \
 
 ## 6.2 压测结果解读
 
-```
+```text
 id: test-123, time: 30.0s
     sent:   50000 msg/s     → Producer 发送速率
     recv:   48000 msg/s     → Consumer 消费速率
@@ -320,7 +320,7 @@ rabbitmq-diagnostics memory_breakdown
 
 ## 7.3 问题三：吞吐量突然下降
 
-```
+```text
 诊断步骤：
 1. rabbitmq-diagnostics status → 查看报警状态
 2. rabbitmqctl environment → 查看配置

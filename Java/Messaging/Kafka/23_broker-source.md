@@ -2,7 +2,7 @@
 
 ## 1.1 Broker 核心类图
 
-```
+```text
 KafkaServer
 │
 ├── SocketServer (网络层)
@@ -573,7 +573,7 @@ class DelayedProduce(delayMs: Long,
 
 # 8. 请求处理完整时序
 
-```
+```text
 Client Produce Request 的完整路径:
 
 ① 网络数据到达

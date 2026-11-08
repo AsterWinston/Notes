@@ -8,7 +8,7 @@
 | **JSON-P** | JSON Processing | **低层 API**：解析、生成 JSON（流式 + 树模型） |
 | **JSON-B** | JSON Binding | **高层 API**：Java 对象 ↔ JSON 双向绑定（类似 JAXB for JSON） |
 
-```
+```text
 JSON-P：JsonParser / JsonGenerator / JsonObject / JsonArray
 JSON-B：@JsonbProperty 注解 + Jsonb 对象
 ```

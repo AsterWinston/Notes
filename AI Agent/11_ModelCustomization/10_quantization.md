@@ -4,7 +4,7 @@
 
 ## 1.1 显存瓶颈
 
-```
+```text
 显存不足是最常见的部署瓶颈：
   70B FP16 需要 140GB → 单卡装不下
   INT4 量化后 35GB → 单卡可跑
@@ -12,7 +12,7 @@
 
 模型权重的显存占用可用下式估算：
 
-```
+```text
 权重显存 ≈ 参数量 × 每参数字节数
 
   70B × 2 字节（FP16）  = 140 GB
@@ -81,7 +81,7 @@
 
 对称量化把浮点值线性映射到以 0 为中心的整数区间：
 
-```
+```text
 q = round(x / s)          # 量化
 x̂ = q × s                 # 反量化
 s = max(|x|) / (2^(b-1) - 1)
@@ -93,7 +93,7 @@ s = max(|x|) / (2^(b-1) - 1)
 
 非对称量化引入零点 `z`，以覆盖非对称分布：
 
-```
+```text
 q = round(x / s) + z
 x̂ = (q - z) × s
 s = (max(x) - min(x)) / (2^b - 1)
@@ -106,7 +106,7 @@ z = round(-min(x) / s)
 
 整层共享一个 `s` 时，个别离群值（outlier）会拉大动态范围，导致其余数值精度崩塌。分组量化（Group-wise Quantization）把权重按固定长度分组，每组独立计算 `s` 与 `z`：
 
-```
+```text
 q_group_size = 128   # 每 128 个权重共享一组量化参数
 ```
 
@@ -123,7 +123,7 @@ q_group_size = 128   # 每 128 个权重共享一组量化参数
 
 ## 2.4 PTQ 与 QAT
 
-```
+```text
 PTQ（Post-Training Quantization，训练后量化）
   - 不需要重新训练，只需少量校准数据
   - AWQ / GPTQ / GGUF 均属此类
@@ -170,7 +170,7 @@ QAT（Quantization-Aware Training，量化感知训练）
 
 ## 3.2 格式选择决策
 
-```
+```text
 部署硬件是什么？
 ├─ NVIDIA GPU（数据中心）
 │   ├─ 追求精度 → AWQ
@@ -186,7 +186,7 @@ QAT（Quantization-Aware Training，量化感知训练）
 
 不同格式之间一般不能直接互转，常见路径是"回到 FP16 再重新量化"：
 
-```
+```text
 HF FP16 ──→ AWQ ──→ vLLM
         ──→ GPTQ ─→ vLLM
         ──→ GGUF ─→ llama.cpp / Ollama
@@ -374,7 +374,7 @@ ollama run my-model
 
 逐层替换为 FP16，观察指标恢复情况，找出贡献最大的层：
 
-```
+```text
 for layer in model.layers:
     mixed = quantized_with_fp16(layer)
     delta = evaluate(mixed) - evaluate(quantized)
@@ -389,7 +389,7 @@ for layer in model.layers:
 
 ## 8.1 校准数据的作用
 
-```
+```text
 PTQ（训练后量化）需要校准数据：
   - 从训练/业务数据中采样
   - 通常 128~512 条
@@ -425,7 +425,7 @@ model.quantize(calibration_data)
 
 长上下文推理中，KV Cache 可能成为主要显存消耗，其大小近似为：
 
-```
+```text
 KV Cache ≈ 2 × 层数 × 头数 × 头维度 × 序列长度 × batch × 字节数
 ```
 
@@ -467,7 +467,7 @@ out = llm.generate(["你好"], SamplingParams(max_tokens=64))
 
 ## 10.1 评测流程
 
-```
+```text
 1. 准备业务评测集（含目标、通用、安全样本）
 2. 分别评测 FP16 与量化版本
 3. 计算各项指标差值
@@ -513,7 +513,7 @@ def evaluate_quantized(original, quantized, test_cases):
 
 ## 11.2 工程实践
 
-```
+```text
 - 保留 FP16 母版权重，量化版本全部派生
 - 量化脚本纳入版本管理，参数写死在配置中
 - 上线前在灰度环境对比 FP16 与量化版

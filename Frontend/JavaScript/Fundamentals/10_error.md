@@ -2,12 +2,12 @@
 ```javascript
 不管你多么精通编程，有时我们的脚本总还是会出现错误。可能是因为我们的编写出错，或是与预期不同的用户输入，或是错误的服务端响应以及其他数千种原因。
 
-通常，如果发生错误，脚本就会“死亡”（立即停止），并在控制台将错误打印出来。
+通常，如果发生错误，脚本就会"死亡"（立即停止），并在控制台将错误打印出来。
 
-但是有一种语法结构 try...catch，它使我们可以“捕获（catch）”错误，因此脚本可以执行更合理的操作，而不是死掉。
+但是有一种语法结构 try...catch，它使我们可以"捕获（catch）"错误，因此脚本可以执行更合理的操作，而不是死掉。
 ```
-## 1.1 “try...catch"语法
-```
+## 1.1 "try...catch"语法
+```javascript
 try...catch 结构由两部分组成：try 和 catch：
 
 try {
@@ -69,12 +69,12 @@ try {
 } catch (err) {
   alert("引擎无法理解这段代码，它是无效的");
 }
-JavaScript 引擎首先会读取代码，然后运行它。在读取阶段发生的错误被称为“解析时间（parse-time）”错误，并且无法恢复（从该代码内部）。这是因为引擎无法理解该代码。
+JavaScript 引擎首先会读取代码，然后运行它。在读取阶段发生的错误被称为"解析时间（parse-time）"错误，并且无法恢复（从该代码内部）。这是因为引擎无法理解该代码。
 
-所以，try...catch 只能处理有效代码中出现的错误。这类错误被称为“运行时的错误（runtime errors）”，有时被称为“异常（exceptions）”。
+所以，try...catch 只能处理有效代码中出现的错误。这类错误被称为"运行时的错误（runtime errors）"，有时被称为"异常（exceptions）"。
 
 try...catch 同步执行
-如果在“计划的（scheduled）”代码中发生异常，例如在 setTimeout 中，则 try...catch 不会捕获到异常：
+如果在"计划的（scheduled）"代码中发生异常，例如在 setTimeout 中，则 try...catch 不会捕获到异常：
 
 try {
   setTimeout(function() {
@@ -96,12 +96,12 @@ setTimeout(function() {
 }, 1000);
 ```
 ## 1.2 Error对象
-```
+```text
 发生错误时，JavaScript 会生成一个包含有关此 error 详细信息的对象。然后将该对象作为参数传递给 catch：
 
 try {
   // ...
-} catch (err) { // <-- “error 对象”，也可以用其他参数名代替 err
+} catch (err) { // <-- "error 对象"，也可以用其他参数名代替 err
   // ...
 }
 对于所有内建的 error，error 对象具有两个主要属性：
@@ -129,7 +129,7 @@ try {
 }
 ```
 ## 1.3 可选的"catch"绑定"
-```
+```text
 最近新增的特性
 这是一个最近添加到 JavaScript 的特性。 旧式浏览器可能需要 polyfills.
 如果我们不需要 error 的详细信息，catch 也可以忽略它：
@@ -141,7 +141,7 @@ try {
 }
 ```
 ## 1.4 使用"try...catch"
-```
+```javascript
 让我们一起探究一下真实场景中 try...catch 的用例。
 
 正如我们所知道的，JavaScript 支持 JSON.parse(str) 方法来解析 JSON 编码的值。
@@ -159,7 +159,7 @@ alert( user.name ); // John
 alert( user.age );  // 30
 你可以在 JSON 方法，toJSON 一章中找到更多关于 JSON 的详细内容。
 
-如果 json 格式错误，JSON.parse 就会生成一个 error，因此脚本就会“死亡”。
+如果 json 格式错误，JSON.parse 就会生成一个 error，因此脚本就会"死亡"。
 
 我们对此满意吗？当然不！
 
@@ -180,10 +180,10 @@ try {
   alert( err.name );
   alert( err.message );
 }
-在这儿，我们将 catch 块仅仅用于显示信息，但我们可以做更多的事：发送一个新的网络请求，向访问者建议一个替代方案，将有关错误的信息发送给记录日志的设备，……。所有这些都比代码“死掉”好得多。
+在这儿，我们将 catch 块仅仅用于显示信息，但我们可以做更多的事：发送一个新的网络请求，向访问者建议一个替代方案，将有关错误的信息发送给记录日志的设备，……。所有这些都比代码"死掉"好得多。
 ```
 ## 1.5 抛出我们自定义的error
-```
+```javascript
 如果这个 json 在语法上是正确的，但是没有所必须的 name 属性该怎么办？
 
 像这样：
@@ -202,7 +202,7 @@ try {
 
 为了统一进行 error 处理，我们将使用 throw 操作符。
 
-“throw” 操作符
+"throw" 操作符
 throw 操作符会生成一个 error 对象。
 
 语法如下：
@@ -261,8 +261,8 @@ try {
 现在，catch 成为了所有 error 处理的唯一场所：对于 JSON.parse 和其他情况都适用。
 ```
 ## 1.6 再次抛出(rethrowing)
-```
-在上面的例子中，我们使用 try...catch 来处理不正确的数据。但是在 try {...} 块中是否可能发生 另一个预料之外的 error？例如编程错误（未定义变量）或其他错误，而不仅仅是这种“不正确的数据”。
+```javascript
+在上面的例子中，我们使用 try...catch 来处理不正确的数据。但是在 try {...} 块中是否可能发生 另一个预料之外的 error？例如编程错误（未定义变量）或其他错误，而不仅仅是这种"不正确的数据"。
 
 例如：
 
@@ -278,13 +278,13 @@ try {
 }
 当然，一切皆有可能！程序员也会犯错。即使是被数百万人使用了几十年的开源项目中，也可能突然被发现了一个漏洞，并导致可怕的黑客入侵。
 
-在我们的例子中，try...catch 旨在捕获“数据不正确”的 error。但实际上，catch 会捕获到 所有 来自于 try 的 error。在这儿，它捕获到了一个预料之外的 error，但仍然抛出的是同样的 "JSON Error" 信息。这是不正确的，并且也会使代码变得更难以调试。
+在我们的例子中，try...catch 旨在捕获"数据不正确"的 error。但实际上，catch 会捕获到 所有 来自于 try 的 error。在这儿，它捕获到了一个预料之外的 error，但仍然抛出的是同样的 "JSON Error" 信息。这是不正确的，并且也会使代码变得更难以调试。
 
-为了避免此类问题，我们可以采用“重新抛出”技术。规则很简单：
+为了避免此类问题，我们可以采用"重新抛出"技术。规则很简单：
 
-catch 应该只处理它知道的 error，并“抛出”所有其他 error。
+catch 应该只处理它知道的 error，并"抛出"所有其他 error。
 
-“再次抛出（rethrowing）”技术可以被更详细地解释为：
+"再次抛出（rethrowing）"技术可以被更详细地解释为：
 
 Catch 捕获所有 error。
 在 catch (err) {...} 块中，我们对 error 对象 err 进行分析。
@@ -300,7 +300,7 @@ try {
 }
 我们还可以从 err.name 属性中获取错误的类名。所有原生的错误都有这个属性。另一种方式是读取 err.constructor.name。
 
-在下面的代码中，我们使用“再次抛出”，以达到在 catch 中只处理 SyntaxError 的目的：
+在下面的代码中，我们使用"再次抛出"，以达到在 catch 中只处理 SyntaxError 的目的：
 
 let json = '{ "age": 30 }'; // 不完整的数据
 try {
@@ -324,9 +324,9 @@ try {
   }
 
 }
-如果 (*) 标记的这行 catch 块中的 error 从 try...catch 中“掉了出来”，那么它也可以被外部的 try...catch 结构（如果存在）捕获到，如果外部不存在这种结构，那么脚本就会被杀死。
+如果 (*) 标记的这行 catch 块中的 error 从 try...catch 中"掉了出来"，那么它也可以被外部的 try...catch 结构（如果存在）捕获到，如果外部不存在这种结构，那么脚本就会被杀死。
 
-所以，catch 块实际上只处理它知道该如何处理的 error，并“跳过”所有其他的 error。
+所以，catch 块实际上只处理它知道该如何处理的 error，并"跳过"所有其他的 error。
 
 下面这个示例演示了这种类型的 error 是如何被另外一级 try...catch 捕获的：
 
@@ -352,7 +352,7 @@ try {
 上面这个例子中的 readData 只知道如何处理 SyntaxError，而外部的 try...catch 知道如何处理任意的 error。
 ```
 ## 1.7 try...catch...finally
-```
+```javascript
 等一下，以上并不是所有内容。
 
 try...catch 结构可能还有一个代码子句（clause）：finally。
@@ -382,8 +382,8 @@ try {
 }
 这段代码有两种执行方式：
 
-如果你对于 “Make an error?” 的回答是 “Yes”，那么执行 try -> catch -> finally。
-如果你的回答是 “No”，那么执行 try -> finally。
+如果你对于 "Make an error?" 的回答是 "Yes"，那么执行 try -> catch -> finally。
+如果你的回答是 "No"，那么执行 try -> finally。
 finally 子句（clause）通常用在：当我们开始做某事的时候，希望无论出现什么情况都要完成某个任务。
 
 例如，我们想要测量一个斐波那契数字函数 fib(n) 执行所需要花费的时间。通常，我们可以在运行它之前开始测量，并在运行完成时结束测量。但是，如果在该函数调用期间出现 error 该怎么办？特别是，下面这段 fib(n) 的实现代码在遇到负数或非整数数字时会返回一个 error。
@@ -457,7 +457,7 @@ function func() {
 上面的代码中，由于没有 catch，所以 try 中的 error 总是会使代码执行跳转至函数 func() 外。但是，在跳出之前需要执行 finally 中的代码。
 ```
 ## 1.8 全局catch
-```
+```html
 环境特定
 这个部分的内容并不是 JavaScript 核心的一部分。
 
@@ -516,7 +516,7 @@ JavaScript 允许将 throw 与任何参数一起使用，所以从技术上讲�
 随着开发的应用程序的增长，我们自己的 error 自然会形成形成一个层次结构（hierarchy）。例如，HttpTimeoutError 可能继承自 HttpError，等等。
 ```
 ## 2.1 扩展Error
-```
+```javascript
 例如，让我们考虑一个函数 readUser(json)，该函数应该读取带有用户数据的 JSON。
 
 这里是一个可用的 json 的例子：
@@ -524,13 +524,13 @@ JavaScript 允许将 throw 与任何参数一起使用，所以从技术上讲�
 let json = `{ "name": "John", "age": 30 }`;
 在函数内部，我们将使用 JSON.parse。如果它接收到格式不正确的 json，就会抛出 SyntaxError。但是，即使 json 在语法上是正确的，也不意味着该数据是有效的用户数据，对吧？因为它可能丢失了某些必要的数据。例如，对用户来说，必不可少的是 name 和 age 属性。
 
-我们的函数 readUser(json) 不仅会读取 JSON，还会检查（“验证”）数据。如果没有所必须的字段，或者（字段的）格式错误，那么就会出现一个 error。并且这些并不是 SyntaxError，因为这些数据在语法上是正确的，这些是另一种错误。我们称之为 ValidationError，并为之创建一个类。这种类型的错误也应该包含有关违规字段的信息。
+我们的函数 readUser(json) 不仅会读取 JSON，还会检查（"验证"）数据。如果没有所必须的字段，或者（字段的）格式错误，那么就会出现一个 error。并且这些并不是 SyntaxError，因为这些数据在语法上是正确的，这些是另一种错误。我们称之为 ValidationError，并为之创建一个类。这种类型的错误也应该包含有关违规字段的信息。
 
 我们的 ValidationError 类应该继承自 Error 类。
 
 Error 类是内建的，但我们可以通过下面这段近似代码理解我们要扩展的内容：
 
-// JavaScript 自身定义的内建的 Error 类的“伪代码”
+// JavaScript 自身定义的内建的 Error 类的"伪代码"
 class Error {
   constructor(message) {
     this.message = message;
@@ -613,7 +613,7 @@ try {
 还有一点很重要，在 catch 遇到了未知的错误，它会在 (**) 行将该错误再次抛出。catch 块只知道如何处理 validation 错误和语法错误，而其他错误（由代码中的拼写错误或其他未知原因导致的）应该被扔出（fall through）。
 ```
 ## 2.2 深入继承
-```
+```javascript
 ValidationError 类是非常通用的。很多东西都可能出错。对象的属性可能缺失或者属性可能有格式错误（例如 age 属性的值为一个字符串而不是数字）。让我们针对缺少属性的错误来制作一个更具体的 PropertyRequiredError 类。它将携带有关缺少的属性的相关信息。
 
 class ValidationError extends Error {
@@ -662,7 +662,7 @@ try {
 }
 这个新的类 PropertyRequiredError 使用起来很简单：我们只需要传递属性名：new PropertyRequiredError(property)。人类可读的 message 是由 constructor 生成的。
 
-请注意，在 PropertyRequiredError constructor 中的 this.name 是通过手动重新赋值的。这可能会变得有些乏味 —— 在每个自定义 error 类中都要进行 this.name = <class name> 赋值操作。我们可以通过创建自己的“基础错误（basic error）”类来避免这种情况，该类进行了 this.name = this.constructor.name 赋值。然后让所有我们自定义的 error 都从这个“基础错误”类进行继承。
+请注意，在 PropertyRequiredError constructor 中的 this.name 是通过手动重新赋值的。这可能会变得有些乏味 —— 在每个自定义 error 类中都要进行 this.name = <class name> 赋值操作。我们可以通过创建自己的"基础错误（basic error）"类来避免这种情况，该类进行了 this.name = this.constructor.name 赋值。然后让所有我们自定义的 error 都从这个"基础错误"类进行继承。
 
 让我们称之为 MyError。
 
@@ -689,8 +689,8 @@ alert( new PropertyRequiredError("field").name ); // PropertyRequiredError
 现在自定义的 error 短了很多，特别是 ValidationError，因为我们摆脱了 constructor 中的 "this.name = ..." 这一行。
 ```
 ## 2.3 包装异常
-```
-在上面代码中的函数 readUser 的目的就是“读取用户数据”。在这个过程中可能会出现不同类型的 error。目前我们有了 SyntaxError 和 ValidationError，但是将来，函数 readUser 可能会不断壮大，并可能会产生其他类型的 error。
+```javascript
+在上面代码中的函数 readUser 的目的就是"读取用户数据"。在这个过程中可能会出现不同类型的 error。目前我们有了 SyntaxError 和 ValidationError，但是将来，函数 readUser 可能会不断壮大，并可能会产生其他类型的 error。
 
 调用 readUser 的代码应该处理这些 error。现在它在 catch 块中使用了多个 if 语句来检查 error 类，处理已知的 error，并再次抛出未知的 error。
 
@@ -713,11 +713,11 @@ try {
 
 如果 readUser 函数会产生多种 error，那么我们应该问问自己：我们是否真的想每次都一一检查所有的 error 类型？
 
-通常答案是 “No”：我们希望能够“比它高一个级别”。我们只想知道这里是否是“数据读取异常” —— 为什么发生了这样的 error 通常是无关紧要的（error 信息描述了它）。或者，如果我们有一种方式能够获取 error 的详细信息那就更好了，但前提是我们需要。
+通常答案是 "No"：我们希望能够"比它高一个级别"。我们只想知道这里是否是"数据读取异常" —— 为什么发生了这样的 error 通常是无关紧要的（error 信息描述了它）。或者，如果我们有一种方式能够获取 error 的详细信息那就更好了，但前提是我们需要。
 
-我们所描述的这项技术被称为“包装异常”。
+我们所描述的这项技术被称为"包装异常"。
 
-我们将创建一个新的类 ReadError 来表示一般的“数据读取” error。
+我们将创建一个新的类 ReadError 来表示一般的"数据读取" error。
 函数readUser 将捕获内部发生的数据读取 error，例如 ValidationError 和 SyntaxError，并生成一个 ReadError 来进行替代。
 对象 ReadError 会把对原始 error 的引用保存在其 cause 属性中。
 之后，调用 readUser 的代码只需要检查 ReadError，而不必检查每种数据读取 error。并且，如果需要更多 error 细节，那么可以检查 ReadError 对象的 cause 属性。
@@ -785,5 +785,5 @@ try {
 
 所以外部代码检查 instanceof ReadError，并且它的确是。不必列出所有可能的 error 类型。
 
-这种方法被称为“包装异常（wrapping exceptions）”，因为我们将“低级别”的异常“包装”到了更抽象的 ReadError 中。它被广泛应用于面向对象的编程中。
+这种方法被称为"包装异常（wrapping exceptions）"，因为我们将"低级别"的异常"包装"到了更抽象的 ReadError 中。它被广泛应用于面向对象的编程中。
 ```

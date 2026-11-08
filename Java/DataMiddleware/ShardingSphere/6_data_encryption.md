@@ -4,7 +4,7 @@
 
 ShardingSphere 提供**字段级透明加密**，数据在存储时加密，读取时解密，应用层无感知。
 
-```
+```text
 Application                    ShardingSphere                    MySQL
    │                                │                              │
    │ INSERT name='Alice'            │                              │
@@ -133,7 +133,7 @@ columns:
 
 # 5. 加解密的处理流程
 
-```
+```text
 SELECT * FROM t_user WHERE email = 'alice@example.com'
 
 1. Parse：解析 WHERE 条件

@@ -271,7 +271,7 @@ spring:
 
 缓存工作流程：
 
-```
+```text
 请求 serviceId = "user-service"
   │
   ▼
@@ -313,7 +313,7 @@ spring:
 
 **重试流程**：
 
-```
+```text
 ① serviceId = "user-service"
 ② choose() → 实例 A
 ③ 请求 实例 A → 返回 503

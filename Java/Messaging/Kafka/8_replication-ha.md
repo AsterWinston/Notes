@@ -2,7 +2,7 @@
 
 ## 1.1 副本拓扑
 
-```
+```text
 Topic "orders", Partitions=3, Replication Factor=3
 
            Broker 1              Broker 2              Broker 3
@@ -34,7 +34,7 @@ Topic "orders", Partitions=3, Replication Factor=3
 
 ## 2.1 同步过程
 
-```
+```text
 时间 ──────────────────────────────────────────────────▶
 
 Leader (Broker 1, P0)               Follower (Broker 2, P0)
@@ -73,7 +73,7 @@ Leader (Broker 1, P0)               Follower (Broker 2, P0)
 
 ## 2.2 HW 与 LEO 的更新机制
 
-```
+```text
 场景: 单 Leader (broker 0), 单 Follower (broker 1)
 
 第 1 步: Leader 收到消息 offset=100
@@ -103,7 +103,7 @@ Leader (Broker 1, P0)               Follower (Broker 2, P0)
 
 ## 3.1 ISR 收缩与扩展
 
-```
+```text
 ISR 收缩条件 (shrink):
   Follower 超过 replica.lag.time.max.ms 未拉取消息
   或 Follower LEO 落后太多 (replica.lag.max.messages, 已废弃)
@@ -115,7 +115,7 @@ ISR 扩展条件 (expand):
 
 ### 3.1.1 收缩流程
 
-```
+```text
 时间线:
 t=0s:    ISR = [0, 1, 2],  Follower 2 正常同步
 t=10s:   Follower 2 宕机（不再发送 FetchRequest）
@@ -130,7 +130,7 @@ t=100s:  Follower 2 持续拉取并追赶，且 30s 内未落后
 
 ISR 变更后需要持久化到 ZooKeeper：
 
-```
+```text
 /brokers/topics/{topicName}/partitions/{partitionId}/state
 
 {
@@ -159,7 +159,7 @@ replica.lag.time.max.ms=30000  # 默认 30s
 
 ## 4.1 问题背景：HW 截断的不安全性
 
-```
+```text
 场景: acks=1, min.insync.replicas=1
 
 第 1 步: Leader A 写入 offset=100,101 → LEO_A=102, HW_A=100
@@ -186,7 +186,7 @@ A 重启后恢复为 Follower:
 
 Leader Epoch 是一个单调递增的整数，每次 Leader 变更时递增。通过 (LeaderEpoch, Offset) 绑定来安全截断。
 
-```
+```text
 LeaderEpochCache 记录每次 Leader 变更时的起始 Offset:
 
 Leader Epoch=0: start_offset=0
@@ -223,7 +223,7 @@ class LeaderEpochCache {
 
 当 ISR 中所有副本都宕机时，是否允许从 OSR（非同步副本）中选举 Leader。
 
-```
+```text
 场景:
   ISR = [0, 1]
   Follower 1 宕机 30s+ → ISR = [0]
@@ -253,7 +253,7 @@ Kafka 为每个 Partition 分配副本时，遵循以下原则：
 1. **均匀分布**：Partition 均匀分布到不同 Broker
 2. **机架感知**：副本尽量分布在不同 Rack
 
-```
+```text
 假设: 3 个 Broker, 6 个 Partition, RF=3
 
 Step 1: 随机选 Broke 的起始索引（例如 random = broker2）
@@ -276,7 +276,7 @@ P5: Leader=1, Replicas=[1, 0, 2]
 broker.rack=rack-1
 ```
 
-```
+```text
 数据中心:
   Rack-1: Broker 0, Broker 1
   Rack-2: Broker 2, Broker 3
@@ -366,7 +366,7 @@ kafka-configs.sh --alter --add-config \
 
 每个 Partition 的副本列表的第一个副本被称为 **Preferred Leader**。
 
-```
+```text
 P0: Replicas=[0, 1, 2]  → Preferred Leader = Broker 0
 ```
 
@@ -400,7 +400,7 @@ leader.imbalance.check.interval.seconds=300
 
 ## 9.1 ISR 频繁收缩/扩展（ISR 抖动）
 
-```
+```text
 症状:
   [2024-01-01 10:00:00] ISR shrink: [0,1,2] → [0,1]
   [2024-01-01 10:00:05] ISR expand: [0,1] → [0,1,2]
@@ -420,7 +420,7 @@ leader.imbalance.check.interval.seconds=300
 
 ## 9.2 Under-Replicated Partitions
 
-```
+```text
 症状: kafka-topics.sh --describe 显示 "Isr: 1,2" (缺少 3)
       持续存在 Under-Replicated Partition
 

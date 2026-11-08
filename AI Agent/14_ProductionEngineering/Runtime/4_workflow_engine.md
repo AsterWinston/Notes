@@ -36,7 +36,7 @@ Agent 处理长流程时会遇到工作流领域的经典问题：
 
 一个"长流程"的典型时间线：
 
-```
+```text
 T+0s    受理
 T+2s    Agent 风险判断
 T+5s    进入人工复核（挂起）
@@ -53,7 +53,7 @@ T+6h10s 完成并通知
 
 ## 2.1 三种结合模式
 
-```
+```text
 方式一：Agent 作为工作流的一个节点
   工作流：受理 → [Agent 智能处理] → 复核 → 归档
 
@@ -330,7 +330,7 @@ public class AgentActivitiesImpl implements AgentActivities {
 
 ## 6.1 补偿模式
 
-```
+```text
 步骤1：扣款    ✅
 步骤2：扣库存  ✅
 步骤3：发货    ❌ 失败

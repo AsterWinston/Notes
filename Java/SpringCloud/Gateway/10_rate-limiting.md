@@ -5,7 +5,7 @@
 
 Spring Cloud Gateway 内置的 Redis 限流基于令牌桶算法（Token Bucket）。
 
-```
+```text
             ┌─────────────────────┐
             │   令牌桶（容量 N）    │
             │                     │
@@ -26,7 +26,7 @@ Spring Cloud Gateway 内置的 Redis 限流基于令牌桶算法（Token Bucket�
 
 漏桶算法的流出速率固定，适合平滑流量：
 
-```
+```text
     请求 → ║ ║ ║ ║ ║ ║  → 恒定速率流出
           ────────────
 ```
@@ -481,7 +481,7 @@ logging:
 
 启用 `include-headers: true` 后，响应头会包含限流信息：
 
-```
+```yaml
 X-RateLimit-Replenish-Rate: 100
 X-RateLimit-Burst-Capacity: 200
 X-RateLimit-Remaining: 45

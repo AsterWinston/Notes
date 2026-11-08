@@ -26,7 +26,7 @@ zuul:
 
 请求示例：
 
-```
+```text
 客户端请求:  GET http://gateway:8080/legacy/api/v1/orders
 
 Zuul 转发:  GET http://legacy-server.example.com:8080/api/v1/orders
@@ -143,7 +143,7 @@ zuul:
 
 spring.application.name 与 serviceId 之间的关系：
 
-```
+```text
 Eureka 注册名: USER-SERVICE (默认大写)
 Zuul 配置:     serviceId: user-service (不区分大小写)
 ```
@@ -352,7 +352,7 @@ zuul:
 
 **stripPrefix = true（默认）**：
 
-```
+```text
 客户端请求:  /user/profile/123
 Zuul 匹配:   /user/** → user-service
 转发到后端:  /profile/123          ← /user 前缀被剥除
@@ -360,7 +360,7 @@ Zuul 匹配:   /user/** → user-service
 
 **stripPrefix = false**：
 
-```
+```text
 客户端请求:  /user/profile/123
 Zuul 匹配:   /user/** → user-service
 转发到后端:  /user/profile/123     ← /user 前缀保留

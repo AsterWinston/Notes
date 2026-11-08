@@ -1,6 +1,6 @@
 # 1. RESTFul编程风格
 ## 1.1 RESTFul是什么
-```
+```text
 RESTFul是WEB服务接口的一种设计风格。
 RESTFul定义了一组约束条件和规范，可以让WEB服务接口更加简洁、易于理解、易于扩展、安全可靠。
 RESTFul对一个WEB服务接口都规定了哪些东西？
@@ -26,7 +26,7 @@ RESTful 的英文全称是 Representational State Transfer（表述性状态转�
 表述性状态转移是指：通过 URI + 请求方式 来控制服务器端数据的变化。
 ```
 ## 1.2 RESTFul风格与传统方式对比
-```
+```text
 传统的 URL 与 RESTful URL 的区别是传统的 URL 是基于方法名进行资源访问和操作，而 RESTful URL 是基于资源的结构和状态进行操作的。下面是一张表格，展示两者之间的具体区别：
 传统的 URL	RESTful URL
 GET /getUserById?id=1	GET /user/1
@@ -37,11 +37,11 @@ GET /deleteUserById?id=1	DELETE /user/1
 从上表中我们可以看出，传统的URL是基于动作的，而 RESTful URL 是基于资源和状态的，因此 RESTful URL 更加清晰和易于理解，这也是 REST 架构风格被广泛使用的主要原因之一。
 ```
 ## 1.3 RESTFul方式演示查询
-```
+```text
 RESTFul规范中规定，如果要查询数据，需要发送GET请求。
 ```
 ### 1.3.1 根据id查询(GET /api/user/1)
-```
+```text
 首先是springmvc.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -131,7 +131,7 @@ public class UserController {
 最后启动测试
 ```
 ### 1.3.2 查询所有(GET /api/user)
-```
+```java
 index.html
 <!--查询所有-->
 <a th:href="@{/api/user}">查询所有</a><br>
@@ -147,7 +147,7 @@ public String getAll(){
 
 ```
 ## 1.4 RESTFul方式演示增加（POST/api/user）
-```
+```java
 RESTFul规范中规定，如果要进行保存操作，需要发送POST请求
 index.html
 <!--保存用户-->
@@ -163,8 +163,8 @@ public String save(){
 }
 ```
 ## 1.5 RESTFul方式演示修改
-```
-RESTFul规范中规定，如果要进行保存操作，需要发送PUT请求。（但是实际上RESTful 规范里从来没有“PUT 要先 POST，再靠 _method=PUT”这种规定。这一套，不是 REST 规范，而是 Spring MVC 为 HTML 表单提供的“兼容方案”）
+```text
+RESTFul规范中规定，如果要进行保存操作，需要发送PUT请求。（但是实际上RESTful 规范里从来没有"PUT 要先 POST，再靠 _method=PUT"这种规定。这一套，不是 REST 规范，而是 Spring MVC 为 HTML 表单提供的"兼容方案"）
 如何发送PUT请求？
 第一步：首先你必须是一个POST请求。
 第二步：在发送POST请求的时候，提交这样的数据：_method=PUT
@@ -222,7 +222,7 @@ pom.xml添加如下配置
 
 ```
 ## 1.6 HiddenHttpMethodFilter
-```
+```text
 HiddenHttpMethodFilter是Spring MVC框架提供的，专门用于RESTFul编程风格。
 实现原理可以通过源码查看：
 ...
@@ -235,7 +235,7 @@ HiddenHttpMethodFilter是Spring MVC框架提供的，专门用于RESTFul编程�
 大家是否还记得，字符编码过滤器执行之前不能调用 request.getParameter方法，如果提前调用了，乱码问题就无法解决了。因为request.setCharacterEncoding()方法的执行必须在所有request.getParameter()方法之前执行。因此这两个过滤器就有先后顺序的要求，在web.xml文件中，应该先配置CharacterEncodingFilter，然后再配置HiddenHttpMethodFilter。
 ```
 ## 1.7 RESTFul方式演示删除（DELETE /api/user/1）
-```
+```text
 RESTFul规范中规定，如果要删除数据，需要发送DELETE请求。
 在浏览器中，HTML表单只原生支持GET和POST请求方式。和PUT请求一样，发送DELETE请求也需要使用POST表单 + HiddenHttpMethodFilter的配合。
 

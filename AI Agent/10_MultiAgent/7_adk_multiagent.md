@@ -2,7 +2,7 @@
 
 **ADK**（Agent Development Kit，智能体开发套件）是 Google 推出的 Agent 框架，其 Java 版把多 Agent 协作抽象为两种机制：**委托（Delegation）**与**工作流 Agent（Workflow Agent）**。委托用于"根 Agent 把任务转交给子 Agent"，工作流 Agent 用于"用顺序/并行/循环把多个 Agent 固定组合起来"。
 
-```
+```text
 Root Agent 根据 description 决定委托给哪个子 Agent
 ```
 
@@ -72,13 +72,13 @@ LlmAgent rootAgent = LlmAgent.builder()
 
 好的描述：
 
-```
+```text
 处理订单查询、取消、催单。输入：订单号或用户 ID。不处理退款。
 ```
 
 差的描述：
 
-```
+```text
 订单相关。
 ```
 
@@ -91,7 +91,7 @@ LlmAgent rootAgent = LlmAgent.builder()
 
 ### 1.3.2 委托的运行时行为
 
-```
+```text
 用户请求
    │
    ▼
@@ -219,7 +219,7 @@ SequentialAgent workflow = SequentialAgent.builder()
 
 结构示意：
 
-```
+```text
 full-workflow (Sequential)
 ├── research (Parallel)
 │   ├── webSearchAgent
@@ -318,7 +318,7 @@ session.state().put("research.doc.result", docData);
 
 ## 5.1 Trace 结构
 
-```
+```text
 Trace: 用户请求
 ├── Span: root（决策委托）
 ├── Span: order-agent
@@ -450,7 +450,7 @@ runner.runAsync(userId, sessionId, userMessage)
 
 ## 8.1 目标与结构
 
-```
+```text
 customer-service (Sequential)
 ├── triage (LlmAgent, 委托)
 │   ├── faq-agent      常见问题

@@ -1,7 +1,7 @@
 Spring还可以完成自动化的注入，自动化注入又被称为自动装配。
 它可以根据名字进行自动装配，也可以根据类型进行自动装配。
 # 1. 根据名称自动装配
-```
+```java
 如果根据名称装配(byName)，底层会调用set方法进行注入。
 例如：setAge() 对应的名字是age，setPassword()对应的名字是password，setEmail()对应的名字是email。
 
@@ -40,12 +40,12 @@ public class OrderService {
             set方法的方法名去掉set，剩下单词首字母小写。-->
     <bean id="orderDao" class="com.powernode.spring6.dao.OrderDao"/>
 
-    OrderService Bean中需要添加autowire=“byName”，表示通过名称自动进行装配。
+    OrderService Bean中需要添加autowire="byName"，表示通过名称自动进行装配。
     OrderService 类中有一个OrderDao属性，而OrderDao属性的名字是orderDao，对应的set方法是setOrderDao()，正好和OrderDao Bean的id是一样的，可以根据名称自动装配。
 
 ```
 # 2. 根据类型自动装配
-```
+```text
 无论是byName还是byType，在装配的时候都是基于set方法的，所以set方法是必须要提供的，提供构造方法是不行的
 如果byType，根据类型装配时，如果配置文件中有两个类型一样的bean会报错
 当byType进行自动装配的时候，配置文件中某种类型的Bean必须是唯一的，不能出现多个。
@@ -86,7 +86,7 @@ public class CustomerService {
 
 ## 3.1 XML autowire 属性如何驱动自动装配
 
-```
+```text
 XML 中的 autowire="byName" 或 autowire="byType" 最终会被解析并存储在
 BeanDefinition 的 autowireMode 属性中。
 
@@ -107,7 +107,7 @@ getAutowireMode() 将字符串映射为 int 常量：
 
 ## 3.2 populateBean() 中的自动装配触发
 
-```
+```java
 在 doCreateBean() → populateBean() 中，会自动装配逻辑被触发：
 
 protected void populateBean(String beanName, RootBeanDefinition mbd,
@@ -142,7 +142,7 @@ protected void populateBean(String beanName, RootBeanDefinition mbd,
 
 ## 3.3 autowireByName() — 按名称自动装配源码
 
-```
+```java
 protected void autowireByName(
         String beanName, AbstractBeanDefinition mbd, BeanWrapper bw,
         MutablePropertyValues pvs) {
@@ -182,7 +182,7 @@ protected void autowireByName(
 
 ## 3.4 autowireByType() — 按类型自动装配源码
 
-```
+```java
 protected void autowireByType(
         String beanName, AbstractBeanDefinition mbd, BeanWrapper bw,
         MutablePropertyValues pvs) {
@@ -234,7 +234,7 @@ protected void autowireByType(
 
 ## 3.5 自动装配与显式注入的执行顺序
 
-```
+```text
 在 populateBean() 中，执行顺序是：
 
 1. hasInstantiationAwareBeanPostProcessors?

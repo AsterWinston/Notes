@@ -3,7 +3,7 @@
 
 Zuul 自身无状态，天然支持水平扩展。典型的 HA 架构：
 
-```
+```text
                         DNS / LVS / SLB
                               │
               ┌───────────────┼───────────────┐
@@ -221,7 +221,7 @@ public class GrayscaleFilter extends ZuulFilter {
 
 ## 4.1 启动前检查
 
-```
+```text
 □ 依赖的 Eureka / Nacos 注册中心已启动
 □ 后端服务至少有一个实例已注册
 □ 配置文件（application.yml）中的路由规则已确认
@@ -234,7 +234,7 @@ public class GrayscaleFilter extends ZuulFilter {
 
 ## 4.2 运行中检查
 
-```
+```text
 □ /actuator/health 返回 UP
 □ /actuator/routes 显示的路由规则正确
 □ /actuator/filters 显示的过滤器顺序正确
@@ -245,7 +245,7 @@ public class GrayscaleFilter extends ZuulFilter {
 
 ## 4.3 灰度上线策略
 
-```
+```text
 □ 先在 1 台实例上部署新版本
 □ 观察 N 分钟，确认无异常
 □ 逐步替换其他实例（每次 1 台）

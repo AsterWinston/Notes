@@ -5,7 +5,7 @@
 
 VFS（Virtual File System）是 Linux 内核中的抽象层，使得用户空间的程序可以用统一的系统调用接口操作不同类型的文件系统：
 
-```
+```text
 User Space (read/write/open/close)
         ↓ 系统调用
 VFS Layer (vfs_read / vfs_write / vfs_open)
@@ -30,7 +30,7 @@ Hardware
 
 **inode 和 dentry 的关系**：
 
-```
+```text
 用户看到：/home/alice/file.txt
                 ↓
 dentry 链："/" → "home" → "alice" → "file.txt"
@@ -70,7 +70,7 @@ struct inode {
 
 ## 2.2 ext4 数据块寻址
 
-```
+```text
 inode 数据块指针（15 个条目，每个 4 字节）：
 ┌────────────┐
 │ block[0]   │ ──→ 直接数据块（12KB）
@@ -223,7 +223,7 @@ mount -o compress=zstd /dev/sdb1 /mnt/data
 
 文件系统操作（如写文件）通常涉及多个步骤，系统崩溃可能导致不一致。日志（Journal）通过预写日志来解决：
 
-```
+```text
 写操作步骤：
 1. 更新 inode（记录新大小）
 2. 更新数据块

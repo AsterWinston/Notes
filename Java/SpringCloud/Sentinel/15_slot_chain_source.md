@@ -8,7 +8,7 @@ SlotChain 是 Sentinel 的**核心执行引擎**，所有规则检查通过责�
 
 # 2. 类层次结构
 
-```
+```text
 ProcessorSlot<T> (接口)
   └── AbstractLinkedProcessorSlot<T> (抽象基类)
         ├── NodeSelectorSlot        # 构建 Node 调用树
@@ -135,7 +135,7 @@ public class CtSph implements Sph {
 
 # 7. 责任链执行流程图
 
-```
+```text
 CtSph.entry("getUser")
   │
   ├── 1. NodeSelectorSlot.entry()

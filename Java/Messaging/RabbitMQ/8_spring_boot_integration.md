@@ -359,7 +359,7 @@ public void handle(OrderDTO order) {
 
 ## 5.2 配置死信队列完整方案
 
-```
+```text
 order.create.queue ──(死信)──→ order.dlx ──→ order.dlx.queue
 ```
 

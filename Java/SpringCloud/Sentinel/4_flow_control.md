@@ -3,7 +3,7 @@
 
 流量控制（Flow Control）是 Sentinel 最核心的能力，通过**QPS**或**并发线程数**两个维度限制资源访问。
 
-```
+```text
                     ┌───────────────┐
    请求 ──────────→ │   FlowSlot    │
                     │               │
@@ -57,7 +57,7 @@ rule.setCount(20);   // 最多 20 个并发线程
 
 对当前资源直接限流，**默认模式**：
 
-```
+```text
 请求 → getUser → FlowSlot 检查 → 通过/拒绝
 ```
 
@@ -69,7 +69,7 @@ rule.setStrategy(RuleConstant.STRATEGY_DIRECT);
 
 当关联资源达到阈值时，限流当前资源：
 
-```
+```text
 /order/create (触发资源) → 达到 100 QPS
     → 限流 /order/query (被保护资源)
 ```
@@ -88,7 +88,7 @@ rule.setCount(100);
 
 只限制从某个入口链路进入的请求：
 
-```
+```text
 入口A → getUser → (被限流)
 入口B → getUser → (正常放行)
 ```
@@ -109,7 +109,7 @@ rule.setRefResource("orderEntrance");  // 入口资源名
 
 超过阈值直接拒绝，**默认效果**：
 
-```
+```text
 请求 → 检查 QPS → 超过阈值 → BlockException
                   → 未超过 → PASS
 ```
@@ -122,7 +122,7 @@ rule.setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_DEFAULT);
 
 系统启动初期允许的 QPS 从 `count/coldFactor` 缓慢增长到 `count`，避免冷系统被高峰流量击垮：
 
-```
+```text
 QPS
  ▲
  │                          ╭────────────
@@ -147,7 +147,7 @@ rule.setCount(100);           // 稳定后阈值 100 QPS
 
 以恒定速率通过请求，超过阈值的请求排队等待（而非直接拒绝）：
 
-```
+```text
 请求到达时刻：
 t0: ●         → 立即通过
 t1:     ●     → 立即通过（在速率内）

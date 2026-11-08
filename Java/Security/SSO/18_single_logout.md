@@ -3,7 +3,7 @@
 
 单点登出（SLO）是指用户在一个系统登出后，所有已登录的系统同时失效登录态。SLO 是 SSO 的配套能力，也是实现中最容易被忽视和最难完美实现的部分。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                    SLO 场景要求                                  │
 │                                                                   │
@@ -33,7 +33,7 @@
 
 ## 2.2 方案选择建议
 
-```
+```text
 场景 1: CAS 协议 → 使用 CAS SLO（原生支持，最完善）
 场景 2: SAML 协议 → 使用 SAML SLO
 场景 3: OIDC 协议 → 使用 RP-Initiated Logout（OIDC 标准）
@@ -45,7 +45,7 @@
 
 ## 3.1 CAS SLO 流程
 
-```
+```text
 SP-Initiated SLO（用户在 SP 点击登出）:
 
 SP A              CAS Server              SP B              SP C
@@ -138,7 +138,7 @@ public class CasSloConfig {
 
 ## 4.1 流程
 
-```
+```text
 用户点击登出
      │
      ▼
@@ -193,7 +193,7 @@ public class OidcLogoutConfig {
 
 ## 5.1 架构
 
-```
+```text
 认证中心
   │
   │ 用户登出事件
@@ -285,7 +285,7 @@ public class LogoutEventConsumer {
 
 ## 6.1 原理
 
-```
+```text
 JWT 无法主动失效 → 引入黑名单机制
 
 登出时：
@@ -358,7 +358,7 @@ public class BatchLogoutService {
 
 ## 7.1 协议规范
 
-```
+```text
 OIDC Back-Channel Logout 规范：
 
 IdP 在用户登出时，向后端直接 POST 登出通知到 RP：

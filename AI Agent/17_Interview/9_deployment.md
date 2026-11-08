@@ -64,7 +64,7 @@ record ToolCall(String tool, Map<String, Object> args) {
 
 ## 3.1 标准答案
 
-```
+```text
 超时 → 重试 → 幂等 → 限流 → 熔断 → 降级
 ```
 
@@ -103,7 +103,7 @@ Duration backoff(int n, Duration base) {
 
 ## 4.1 标准答案
 
-```
+```text
 熔断（外）→ 限流 → 重试（内）→ 实际调用
 ```
 
@@ -169,7 +169,7 @@ boolean firstTime(String key) { return redis.setIfAbsent(key, "1", Duration.ofMi
 
 ## 6.1 标准答案
 
-```
+```text
 上下文按比例分配：
   System 5% + 工具 10% + 检索 40% + 历史 30% + 输出预留 10%+
 ```
@@ -235,7 +235,7 @@ interface ModelRouter { String route(Query q); }
 
 ## 8.1 标准答案
 
-```
+```text
 ① 结果缓存（相同问题）
 ② 语义缓存（相似问题）
 ③ 检索缓存（相同查询）
@@ -273,7 +273,7 @@ String key(String tenant, String q) { return "qa:" + tenant + ":" + sha256(q); }
 
 ## 9.1 标准答案
 
-```
+```text
 六样东西必须隔离：
 ① 数据（向量、记忆、会话）
 ② 模型与配额
@@ -309,7 +309,7 @@ Filter f(SecurityContext c) { return Filter.eq("tenant_id", c.tenantId()); }
 
 ## 10.1 标准答案
 
-```
+```text
 三大支柱：
   Trace（调用链）
   Metrics（指标）
@@ -405,7 +405,7 @@ interface IndexAlias { void pointTo(String alias, String index); }
 
 ## 13.1 标准答案
 
-```
+```text
 吞吐 = 并发 / 平均延迟
 并发 = 吞吐 × 平均延迟
 ```

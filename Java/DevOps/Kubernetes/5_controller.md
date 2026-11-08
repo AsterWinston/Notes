@@ -39,7 +39,7 @@ spec:
 
 控制器的核心是一个无限循环，称为控制循环（Control Loop）或调谐循环（Reconciliation Loop）。其伪代码逻辑非常简单：
 
-```
+```text
 for {
     期望状态 = 从 API Server 获取资源的 spec 字段
     当前状态 = 从 API Server 获取资源对应的实际状态（Pod 运行情况等）
@@ -91,7 +91,7 @@ for {
 
 Kubernetes 的解决方案是 **Informer 机制**，它基于 API Server 的 Watch 接口，实现了高效的"事件驱动 + 本地缓存"模型。
 
-```
+```text
                      ┌──────────────┐
                      │  API Server  │
                      └──────┬───────┘
@@ -395,7 +395,7 @@ ReplicaSet Controller 是 kube-controller-manager 中的一个独立 goroutine�
 
 RS Controller 通过 Informer 机制监听 ReplicaSet 和 Pod 的变更事件：
 
-```
+```text
 事件源                            触发的调谐
 ─────────────────────────────────────────────────
 新的 RS 被创建                    → 按 RS 的 template 创建 Pod
@@ -410,7 +410,7 @@ Pod 变为 Ready/NotReady          → 更新 RS 的 readyReplicas
 
 RS 控制器的核心逻辑可以概括为以下伪代码：
 
-```
+```text
 func reconcile(rs) {
     活跃Pod = 筛选所有 OwnerReference 指向该 RS 且 phase != Failed/Succeeded 的 Pod
     多余Pod = 活跃Pod中labels不匹配selector的（被接管或被手动修改了labels）
@@ -580,7 +580,7 @@ Deployment 自动保存每次更新的历史记录（通过保留旧 ReplicaSet�
 
 Deployment 的核心工作模型是"多代 ReplicaSet 并存"：
 
-```
+```text
 Deployment (replicas: 3)
 ├── ReplicaSet v1 (replicas: 0)    ← 旧版本，已缩容至 0，保留以备回滚
 ├── ReplicaSet v2 (replicas: 1)    ← 中间版本，逐步缩容中
@@ -745,7 +745,7 @@ maxSurge 和 maxUnavailable 的不同组合决定了滚动更新的行为模式�
 
 假设 replicas = 10，maxSurge = 25%，maxUnavailable = 25%：
 
-```
+```text
 maxSurge = ceil(10 × 25%) = ceil(2.5) = 3
 maxUnavailable = floor(10 × 25%) = floor(2.5) = 2
 
@@ -783,7 +783,7 @@ maxUnavailable = floor(10 × 25%) = floor(2.5) = 2
 
 Recreate 策略的逻辑非常简单：先删除所有旧版本 Pod，等它们完全终止后，再创建新版本 Pod。
 
-```
+```text
 步骤：
 1. 将旧 RS 的 replicas 缩减至 0（删除所有旧 Pod）
 2. 等待所有旧 Pod 完全终止
@@ -824,7 +824,7 @@ spec:
 
 当用户更新 Deployment 的 Pod Template（例如修改镜像版本）时，以下事件按顺序发生：
 
-```
+```text
 时间线
 │
 ├─ T0: kubectl set image deploy/nginx nginx=nginx:1.22
@@ -1109,7 +1109,7 @@ kubectl describe limitrange -n <namespace>
 
 ### 3.8.5 状态转换图
 
-```
+```text
 Deployment 更新状态机：
 
   Progressing=True              Progressing=True
@@ -1361,13 +1361,13 @@ StatefulSet 不会在 `spec.template.spec.volumes` 中定义卷，而是通过 `
 
 StatefulSet 中每个 Pod 有一个稳定、可预测的 DNS 名称，格式为：
 
-```
+```text
 <Pod名称>.<Headless Service名称>.<Namespace>.svc.<clusterDomain>
 ```
 
 例如，名为 `mysql` 的 StatefulSet 在 `default` 命名空间：
 
-```
+```text
 mysql-0.mysql-headless.default.svc.cluster.local
 mysql-1.mysql-headless.default.svc.cluster.local
 mysql-2.mysql-headless.default.svc.cluster.local
@@ -1420,7 +1420,7 @@ env:
 
 **创建过程（0 → N-1）**
 
-```
+```text
 T0: StatefulSet 创建，replicas=3
 T1: 创建 mysql-0 → 等待调度 → 等待容器启动 → 等待 Readiness Probe 通过
 T2: mysql-0 Ready 后，创建 mysql-1 → 等待 Ready
@@ -1434,7 +1434,7 @@ T4: 全部 Ready，StatefulSet 状态变为 Complete
 
 缩容是逆序的。例如 replicas: 3 → 1：
 
-```
+```text
 T0: 删除 mysql-2 → 等待终止 → 等待 PVC 清理策略
 T1: mysql-2 终止后，删除 mysql-1 → 等待终止
 T2: mysql-1 终止后，完成缩容。mysql-0 继续运行。
@@ -1468,7 +1468,7 @@ T2: mysql-1 终止后，完成缩容。mysql-0 继续运行。
 
 StatefulSet 的 `volumeClaimTemplates` 字段定义了 PVC 模板。当 StatefulSet 创建 Pod 时，会自动为每个 Pod 创建一个独立的 PVC。
 
-```
+```text
 StatefulSet: mysql
 ├── Pod: mysql-0
 │   └── PVC: data-mysql-0  (自动创建)
@@ -1538,7 +1538,7 @@ StatefulSet 的滚动更新与 Deployment 不同：
 
 更新过程：
 
-```
+```text
 初始: mysql-0 (v1), mysql-1 (v1), mysql-2 (v1)
 Step 1: mysql-2 删除（v1） → 创建 mysql-2 (v2) → 等待 Ready
 Step 2: mysql-1 删除（v1） → 创建 mysql-1 (v2) → 等待 Ready
@@ -1581,7 +1581,7 @@ spec:
 
 ### 4.7.2 实现金丝雀发布
 
-```
+```text
 StatefulSet replicas=5, partition=4:
 
 mysql-4: 新版本(v2) ✓  ← 金丝雀 Pod
@@ -1843,7 +1843,7 @@ spec:
 
 更新过程：
 
-```
+```text
 初始: Node1(旧), Node2(旧), Node3(旧), Node4(旧), Node5(旧)
 Step 1: 删除 Node1, Node2, Node3 上的旧 Pod (maxUnavailable=3)
         → 创建新 Pod (新)
@@ -2251,7 +2251,7 @@ spec:
 
 ### 6.4.3 重试机制
 
-```
+```text
 Job 生命周期中的重试逻辑：
 
 Pod 1 失败 → backoffLimit 计数器 + 1
@@ -2498,7 +2498,7 @@ spec:
 
 如果 CronJob Controller 因故（如 Controller Manager 宕机、网络分区）错过了触发时间，它会检查从错过的时间到现在是否超过了 `startingDeadlineSeconds`。如果未超过，它仍然触发该 Job；如果超过，则跳过此次触发。
 
-```
+```text
 错过了 2 次触发：
   第1次：错过 200 秒 → within 300s → 仍然触发
   第2次：错过 400 秒 → exceed 300s → 跳过
@@ -2553,7 +2553,7 @@ kubectl patch cronjob db-backup -p '{"spec":{"suspend":false}}'
 
 Kubernetes CronJob 的 `schedule` 字段使用标准的 Unix Cron 格式，包含 5 个字段：
 
-```
+```text
 ┌─────────── 分钟 (0 - 59)
 │ ┌─────────── 小时 (0 - 23)
 │ │ ┌─────────── 日 (1 - 31)
@@ -2598,7 +2598,7 @@ Kubernetes CronJob 的 `schedule` 字段使用标准的 Unix Cron 格式，包�
 
 ### 7.4.1 Allow（默认）
 
-```
+```text
 Timeline:
   12:00 → Job-1 开始执行
   12:30 → CronJob 再次触发 → Job-2 开始执行（Job-1 仍在运行）
@@ -2619,7 +2619,7 @@ Timeline:
 
 ### 7.4.2 Forbid
 
-```
+```text
 Timeline:
   12:00 → Job-1 开始执行
   12:30 → CronJob 触发 → 检测 Job-1 仍在运行 → 跳过本次触发
@@ -2638,7 +2638,7 @@ Timeline:
 
 ### 7.4.3 Replace
 
-```
+```text
 Timeline:
   12:00 → Job-1 开始执行
   12:30 → CronJob 触发 → 检测 Job-1 仍在运行
@@ -2701,7 +2701,7 @@ HPA 是 Kubernetes 实现"弹性伸缩"的核心控制器。它根据 Pod 的资
 
 ### 8.1.1 完整工作流程
 
-```
+```text
                         ┌──────────────────┐
                         │   Metrics Server  │  (集群内)
                         │   或 Prometheus   │  (自定义指标)
@@ -2734,7 +2734,7 @@ HPA 是 Kubernetes 实现"弹性伸缩"的核心控制器。它根据 Pod 的资
 
 HPA 通过冷却期（Stabilization Window）避免"震荡"（Thrashing）。如果没有冷却期，可能出现：
 
-```
+```text
 T+0s:  负载飙升，HPA 扩容 3 → 10
 T+30s: 负载回落，HPA 缩容 10 → 3
 T+60s: 负载再次飙升，HPA 扩容 3 → 10
@@ -2815,7 +2815,7 @@ HPA 可以作用于任何拥有 Scale 子资源（`/scale`）的资源类型：
 
 - **scaleDown.stabilizationWindowSeconds**：缩容前查看的历史窗口（秒）。HPA 会收集该时间窗口内的所有缩容建议，取最大值。默认 300 秒（5 分钟）。
 
-  ```
+  ```text
   T+0:   建议 replica=10
   T+60:  建议 replica=8
   T+120: 建议 replica=4
@@ -2949,7 +2949,7 @@ metrics:
 
 ### 8.4.1 核心公式
 
-```
+```text
 desiredReplicas = ceil[currentReplicas * (currentMetricValue / desiredMetricValue)]
 ```
 
@@ -2962,7 +2962,7 @@ desiredReplicas = ceil[currentReplicas * (currentMetricValue / desiredMetricValu
 - 当前总 CPU 使用：Pod-A 使用 150m，Pod-B 使用 180m，Pod-C 使用 90m
 - HPA 目标：CPU 利用率 50%
 
-```
+```text
 当前总使用量 = 150 + 180 + 90 = 420m
 当前平均使用量 = 420m / 3 = 140m = 0.14 核
 
@@ -2980,7 +2980,7 @@ HPA 将 replicas 调整为 5。
 - HPA 目标：平均内存 256Mi
 - 3 个 Pod，当前平均内存 512Mi
 
-```
+```text
 desiredReplicas = ceil[3 * (512 / 256)] = ceil[3 * 2] = 6
 ```
 
@@ -2988,7 +2988,7 @@ desiredReplicas = ceil[3 * (512 / 256)] = ceil[3 * 2] = 6
 
 如果当前指标值为 0 或接近 0：
 
-```
+```text
 desiredReplicas = ceil[3 * (0 / 50)] = 0
 → 但 0 < minReplicas(2)
 → 实际 replicas = 2 (保底)
@@ -2996,7 +2996,7 @@ desiredReplicas = ceil[3 * (0 / 50)] = 0
 
 如果期望指标值为 0（不合理设置）：
 
-```
+```text
 desiredReplicas = ceil[3 * (70 / 0)] = ∞
 → 截断到 maxReplicas(10)
 → 实际 replicas = 10
@@ -3006,7 +3006,7 @@ desiredReplicas = ceil[3 * (70 / 0)] = ∞
 
 HPA 内置了一个 10% 的容差（Tolerance）来避免过度敏感的伸缩：
 
-```
+```text
 如果 |1 - (currentMetric / desiredMetric)| < 0.1
 → 不进行调整（认为当前状态已经足够接近目标）
 ```
@@ -3107,7 +3107,7 @@ Metrics Server 的数据有约 30~60 秒的延迟（采集间隔 + 聚合 + API 
 
 HPA 负责增加 Pod 副本数，但当集群节点资源不足时，新增的 Pod 会处于 Pending 状态无法调度。此时需要 Cluster Autoscaler（CA）介入，自动增加节点。
 
-```
+```text
 负载上升
   → HPA 检测到 CPU 使用率 > 目标值
   → HPA 增加 Deployment replicas: 5 → 8
@@ -3151,7 +3151,7 @@ CA 从检测到 Pending Pod 到新节点就绪，通常需要 2~5 分钟（取�
 
 **4. 缩容时的协同**
 
-```
+```text
 负载下降
   → HPA 检测到 CPU 使用率 < 目标值
   → HPA 减少 Deployment replicas: 8 → 5
@@ -3181,7 +3181,7 @@ TTL Controller（Time-To-Live Controller）是 kube-controller-manager 中的一
 
 TTL Controller 定期扫描集群中设置了 TTL 的资源：
 
-```
+```text
 1. 扫描所有 Job 对象
 2. 如果 Job 的 .spec.ttlSecondsAfterFinished 已设置
 3. 且 Job 已完成（.status.conditions 中包含 Complete 或 Failed）
@@ -3255,7 +3255,7 @@ Garbage Collector（GC）是 Kubernetes 中负责级联删除的控制器。它�
 
 在没有 GC 的情况下：
 
-```
+```text
 删除 Deployment → Deployment 对象消失
 但 ReplicaSet 仍然存在 → RS 管理的 Pod 仍然运行
 → 造成"僵尸"Pod
@@ -3263,7 +3263,7 @@ Garbage Collector（GC）是 Kubernetes 中负责级联删除的控制器。它�
 
 GC 通过级联删除解决此问题：
 
-```
+```text
 删除 Deployment → GC 自动删除所有子 RS → GC 自动删除所有子 Pod
 ```
 
@@ -3291,7 +3291,7 @@ metadata:
 
 **Foreground Deletion（前台删除）**
 
-```
+```text
 1. 用户删除父资源
 2. API Server 设置父资源的 deletionTimestamp 和 deletionGracePeriodSeconds
 3. GC 首先删除所有 blockOwnerDeletion=true 的子资源
@@ -3303,7 +3303,7 @@ metadata:
 
 **Background Deletion（默认，后台删除）**
 
-```
+```text
 1. 用户删除父资源
 2. API Server 立即删除父资源对象
 3. GC 在后台异步删除所有子资源
@@ -3313,7 +3313,7 @@ metadata:
 
 **Orphan Deletion（孤立删除）**
 
-```
+```text
 1. 用户使用 --cascade=orphan 删除父资源
 2. API Server 移除子资源的 ownerReferences
 3. 父资源被删除，子资源保留
@@ -3330,7 +3330,7 @@ kubectl delete deployment nginx --cascade=orphan
 
 GC 的扫描周期是动态的，基于集群中资源的变更频率。大致流程：
 
-```
+```text
 1. GC 维护一个"脏资源"集合（有变更的资源）
 2. 定期扫描脏资源集合
 3. 对每个脏资源：

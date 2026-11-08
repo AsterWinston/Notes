@@ -3,7 +3,7 @@
 
 Java Agent 是 JVM 提供的**运行时字节码增强**机制，允许在类加载时修改字节码。SkyWalking Agent 基于此实现零侵入监控。
 
-```
+```text
 JVM 启动
   │
   ├── 1. premain() → 注册 ClassFileTransformer
@@ -56,7 +56,7 @@ public class SkyWalkingAgent {
 
 # 3. 插件体系架构
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │              Plugin System                │
 │                                           │
@@ -80,7 +80,7 @@ public class SkyWalkingAgent {
 
 ## 3.1 插件定义文件
 
-```
+```properties
 # resources/skywalking-plugin.def
 spring-webmvc=org.apache.skywalking.apm.plugin.spring.mvc.define.RestControllerInstrumentation
 spring-mvc-annotation=org.apache.skywalking.apm.plugin.spring.mvc.define.RestControllerAdviceInstrumentation
@@ -179,7 +179,7 @@ public class RestControllerInterceptor implements InstanceMethodsAroundIntercept
 
 SkyWalking Agent 的类使用独立 ClassLoader 加载，避免与应用类冲突：
 
-```
+```text
 Bootstrap ClassLoader (JVM)
   │
   ├── SkyWalking Agent JAR 在此加载

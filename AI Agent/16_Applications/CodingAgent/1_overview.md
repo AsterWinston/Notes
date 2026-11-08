@@ -14,7 +14,7 @@
 
 一个典型任务的原始工单可能长这样：
 
-```
+```text
 标题：登录接口在 token 过期时返回 500
 现象：携带过期 token 调用 /api/user/profile 返回 500，期望 401
 线索：认证过滤器、JWT 解析、全局异常处理
@@ -39,7 +39,7 @@
 
 能力分层可用下图表示：
 
-```
+```text
 补全工具      单文件  ─┐
 聊天助手      单轮    ─┤ 无执行
 静态分析      规则    ─┘
@@ -130,7 +130,7 @@
 
 ## 2.3 用户旅程
 
-```
+```text
 用户提交任务 → 检索相关代码 → 生成方案(人工可预览)
    → 应用补丁 → 沙箱执行测试 → 失败则修复 → 通过
    → 生成变更说明 → 人工确认 → 提交
@@ -167,7 +167,7 @@
 
 核心功能清单：
 
-```
+```text
 核心功能：
 ├── 代码检索与理解
 ├── 代码修改（多文件）
@@ -178,7 +178,7 @@
 
 ## 3.2 非目标
 
-```
+```text
 非目标：
 ├── 自动提交代码（需人工确认）
 ├── 部署
@@ -306,7 +306,7 @@ public double evaluate(List<EvalCase> cases, CodingAgent agent) {
 
 ## 5.5 验收流程
 
-```
+```text
 提交评测任务 → 自动跑评测集 → 汇总通过率与安全用例
    → 人工抽检 → 签署验收 → 进入灰度
 ```
@@ -372,7 +372,7 @@ public double evaluate(List<EvalCase> cases, CodingAgent agent) {
 
 ## 6.4 选型决策树
 
-```
+```text
 需要与 Spring 集成?
 ├── 是 → Spring AI / LangChain4j
 └── 否 → 直接调用厂商 SDK
@@ -497,7 +497,7 @@ public CodingResult guardedSolve(String task, Path repoDir) {
 
 单任务成本可近似为：
 
-```
+```text
 cost ≈ tokens_in * price_in + tokens_out * price_out
       + sandbox_minutes * price_per_minute
 ```

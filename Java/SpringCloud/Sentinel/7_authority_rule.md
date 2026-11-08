@@ -47,14 +47,14 @@ rule.setStrategy(RuleConstant.AUTHORITY_WHITE);    // 白名单模式
 
 **白名单模式**：
 
-```
+```text
 请求来源 = appA → getUser → 在白名单中 → 通过 ✓
 请求来源 = appC → getUser → 不在白名单中 → 拒绝 ✗
 ```
 
 **黑名单模式**：
 
-```
+```text
 请求来源 = appB → getUser → 在黑名单中 → 拒绝 ✗
 请求来源 = appC → getUser → 不在黑名单中 → 通过 ✓
 ```

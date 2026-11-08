@@ -107,7 +107,7 @@ match 家族的共同前提：**查询串先过字段自己的 analyzer 分词�
 
 **term vs match：ES 面试题第一名，也是线上事故第一名。** 判别方法只有一句话——**match 会把输入分词后去查，term 拿输入原样去查**。于是出现四象限：keyword 字段 + term = 正确（订单号、状态、枚举值精确匹配）；text 字段 + term = **查不到**（term "iPhone 15 Pro" 在倒排里不存在，那里只有 iphone/15/pro 三个碎词）；text 字段 + match = 正确（全文搜索）；keyword 字段 + match = 表面能用但语义错误（不分词，整串比对，且多词查询必挂）。
 
-```
+```text
              term("iphone 手机")          match("iphone 手机")
 text 字段    ✗ 倒排里没有这个整串 term      ✓ 分成 iphone/手机 两个词去查
 keyword 字段 ✓ 值本身不分词，整串比对        ⚠ 同样整串比对，但会诱导你写出分词幻觉
@@ -146,7 +146,7 @@ should 的语义陷阱在于它的角色随邻居变化：**当 bool 里存在�
 
 ## 5.1 BM25（默认）
 
-```
+```text
 score(q, d) = Σ IDF(qi) × TF(qi, d) / (TF(qi, d) + k1 × (1 - b + b × |d| / avgDL))
 
 IDF: 逆文档频率（词越稀有权重越高）

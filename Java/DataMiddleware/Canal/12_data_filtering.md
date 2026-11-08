@@ -5,7 +5,7 @@ Canal 的数据过滤分为两个层面：
 1. **Server 端过滤**：在 EventParser/EventSink 层面对 binlog 事件进行过滤，减少不必要的数据传输
 2. **Client 端过滤**：通过订阅规则，只在客户端接收感兴趣的数据
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                    过滤层次                              │
 │                                                         │
@@ -409,7 +409,7 @@ for (Entry entry : message.getEntries()) {
 
 Canal Admin 提供了 Web 界面动态修改过滤规则的能力：
 
-```
+```text
 1. 登录 Canal Admin
 2. 进入 Instance 管理 → 选择目标 Instance
 3. 修改 "过滤规则" 字段
@@ -442,7 +442,7 @@ connector.subscribe("test\\.user");  // 重新订阅
 
 ## 7.1 过滤时机优化
 
-```
+```text
 过滤时机对性能的影响：
 
 EventParser 层过滤 ── 最早，最省资源（避免后续所有处理）

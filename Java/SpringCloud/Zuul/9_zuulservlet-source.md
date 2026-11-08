@@ -145,7 +145,7 @@ public void service(ServletRequest servletRequest, ServletResponse servletRespon
 
 ## 3.1 异常处理路径分析
 
-```
+```text
 正常路径：
   preRoute() 成功 → route() 成功 → postRoute() 成功
 

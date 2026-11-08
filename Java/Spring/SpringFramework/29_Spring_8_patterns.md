@@ -36,7 +36,7 @@ HttpServlet中的service方法中已经编写请求的核心处理流程，相�
 
 ## 9.1 简单工厂模式 — BeanFactory.getBean()
 
-```
+```text
 // BeanFactory 根据 beanName 返回不同的 Bean 实例
 BeanFactory factory = new ClassPathXmlApplicationContext("spring.xml");
 Object user = factory.getBean("user");    // 返回 User 实例
@@ -50,7 +50,7 @@ private final Map<String, BeanDefinition> beanDefinitionMap =
 
 ## 9.2 工厂方法模式 — FactoryBean
 
-```
+```java
 // FactoryBean 接口定义了工厂方法 getObject()
 public interface FactoryBean<T> {
     T getObject() throws Exception;       // 工厂方法：创建产品
@@ -72,7 +72,7 @@ if (beanInstance instanceof FactoryBean<?> factoryBean) {
 
 ## 9.3 单例模式 — 双重检查锁定
 
-```
+```java
 // DefaultSingletonBeanRegistry.getSingleton()：
 protected Object getSingleton(String beanName, boolean allowEarlyReference) {
     // ★ 第一次检查（不加锁）— 一级缓存
@@ -103,7 +103,7 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 
 ## 9.4 代理模式 — JdkDynamicAopProxy
 
-```
+```java
 // JDK 动态代理的核心：InvocationHandler.invoke()
 final class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
     @Override
@@ -125,7 +125,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
 
 ## 9.5 装饰器模式 — TransactionAwareDataSourceProxy
 
-```
+```java
 // 类名带 Decorator/Wrapper 的都是装饰器模式
 public class TransactionAwareDataSourceProxy extends DelegatingDataSource {
     @Override
@@ -146,7 +146,7 @@ public class TransactionAwareDataSourceProxy extends DelegatingDataSource {
 
 ## 9.6 观察者模式 — ApplicationEvent 机制
 
-```
+```java
 // 1. 自定义事件
 public class OrderCreatedEvent extends ApplicationEvent {
     private final Long orderId;
@@ -180,7 +180,7 @@ public class OrderEventListener
 
 ## 9.7 策略模式 — 接口切换
 
-```
+```text
 // 数据访问层策略
 public interface AccountDao { void insert(); }
 @Repository("mysqlDao")
@@ -202,7 +202,7 @@ public class AccountService {
 
 ## 9.8 模板方法模式 — JdbcTemplate.execute()
 
-```
+```java
 // 模板方法：定义"获取连接→创建语句→执行→释放资源"的骨架
 public <T> T execute(PreparedStatementCreator psc,
         PreparedStatementCallback<T> action) {

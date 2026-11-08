@@ -196,7 +196,7 @@ IntelliJ IDEA 提供 "Migrate to JUnit 5" 的 intention 与批量 inspection，�
 
 **迁移按阶段推进，每个阶段都保持 CI 绿色**，任何一步出问题都可以停在原地而不阻塞业务：
 
-```
+```text
 ┌────────────────────────────────────────────────────┐
 │ 阶段 1：基础设施                                     │
 │   引入 junit-bom + jupiter + vintage               │

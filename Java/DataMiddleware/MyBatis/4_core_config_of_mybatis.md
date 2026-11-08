@@ -1,5 +1,5 @@
 # 1. environment
-```
+```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
@@ -47,7 +47,7 @@ public void configTest() throws IOException {
 ```
 
 # 2. transactionManager
-```
+```xml
 <environment id="development">
     <!--
         transactionManager标签：
@@ -75,7 +75,7 @@ public void configTest() throws IOException {
 </environment>
 ```
 # 3. dataSource
-```
+```xml
 <environment id="development">
     <transactionManager type="JDBC"/>
     <!--
@@ -108,7 +108,7 @@ public void configTest() throws IOException {
 ```
 
 # 4. properties
-```
+```text
 mybatis提供了更加灵活的配置，连接数据库的信息可以单独写到一个属性资源文件中，假设在类的根路
 径下创建jdbc.properties文件，配置如下：
 jdbc.driver=com.mysql.cj.jdbc.Driver
@@ -138,7 +138,7 @@ url：从指定的url加载，假设文件放在d:/jdbc.properties，这个url�
 ```
 
 # 5. mapper
-```
+```text
 mapper标签用来指定SQL映射文件的路径，包含多种指定方式，这里先主要看其中两种：
 
 第一种：resource，从类的根路径下开始加载【比url常用】
@@ -233,7 +233,7 @@ mapper还有其他的指定方式，后面再看！！！
 </configuration>
 ```
 # 6. order of all kinds of config
-```
+```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
@@ -386,7 +386,7 @@ private DataSourceFactory dataSourceElement(XNode context) throws Exception {
 
 ## 7.4 Configuration 中 settings 对应的源码字段
 
-```
+```text
 以下是 settings 中每个配置项在 Configuration 中的对应字段：
 
 ┌───────────────────────────────────┬──────────────────────────────────────┐

@@ -22,7 +22,7 @@ Dubbo 和 Spring Cloud **不是替代关系，而是互补关系**：
 - Dubbo 是 Spring Cloud 体系中的 **RPC 通信组件**，可替换 Feign
 - Dubbo 通过 Spring Cloud Alibaba 融入 Spring Cloud 生态
 
-```
+```text
 Spring Cloud 生态
 ├── 注册中心: Nacos / Eureka / Consul
 ├── RPC 通信: Feign (HTTP) / Dubbo (RPC)     ← Dubbo 在这里
@@ -69,7 +69,7 @@ Spring Cloud 生态
 
 Provider 启动时的服务导出流程（以 Dubbo 协议为例）：
 
-```
+```text
 1. ServiceConfig.doExport()
    ├── 检查/组装配置参数
    └── doExportUrls()
@@ -110,7 +110,7 @@ Provider 启动时的服务导出流程（以 Dubbo 协议为例）：
 
 Consumer 端的服务引用流程：
 
-```
+```text
 1. ReferenceConfig.get()
    │
    ├── 检查/组装配置参数
@@ -177,7 +177,7 @@ public interface Invoker<T> {
 2. **组合模式**：Filter 链、Cluster、Router 都通过包装 Invoker 实现
 3. **责任链解耦**：每个 Invoker 只关注自己的职责，通过链式组合实现复杂功能
 
-```
+```text
 Proxy (用户看到的接口)
   └── InvokerInvocationHandler
       └── MockClusterInvoker
@@ -192,7 +192,7 @@ Proxy (用户看到的接口)
 
 Dubbo 使用 `org.apache.dubbo.common.URL`（非 HTTP URL）作为配置的传递载体：
 
-```
+```text
 dubbo://192.168.1.100:20880/com.example.UserService
   ?timeout=3000
   &version=1.0.0
@@ -282,7 +282,7 @@ dubbo:
 
 **分组策略**：
 
-```
+```text
 group: prod      → 正式环境
 group: dev       → 开发环境
 group: stable    → 稳定节点
@@ -349,7 +349,7 @@ dubbo:
 
 ## 3.6 如何排查 Dubbo 调用超时？
 
-```
+```text
 排查顺序：
 1. Provider 日志 → 确认请求是否到达
 2. Provider 线程池 → 是否满（active == max）
@@ -381,7 +381,7 @@ curl http://localhost:22222/ls
 3. **隔离性**：扩展点之间无硬编码依赖，替换实现无需修改核心代码
 4. **易测试**：每个扩展点可独立单元测试
 
-```
+```text
 Dubbo Core (Microkernel)
 ├── SPI: Protocol      → DubboProtocol / TripleProtocol / HttpProtocol
 ├── SPI: Registry      → NacosRegistry / ZookeeperRegistry / K8sRegistry
@@ -431,7 +431,7 @@ Dubbo Core (Microkernel)
 
 ## 5.1 Dubbo 性能优化的关键维度？
 
-```
+```text
 性能优化金字塔
 ▲ ┌─────────┐
 │ │ 业务优化  │ 减少调用次数、批量接口、缓存
@@ -448,7 +448,7 @@ Dubbo Core (Microkernel)
 
 ## 5.2 一次 Dubbo 调用经历了多少次拷贝？
 
-```
+```text
 业务线程（堆内存）
   → 序列化为 byte[]（堆内存）
     → Netty 写缓冲（堆外内存，DirectBuffer）

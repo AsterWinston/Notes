@@ -99,7 +99,7 @@ String build(String data) {
 
 越狱与注入无法 100% 防御。
 
-```
+```text
 提高攻击成本 + 降低攻击收益
 ```
 
@@ -135,7 +135,7 @@ Set<String> toolsFor(Role r) {
 
 ## 5.1 标准答案
 
-```
+```text
 双层防护：
 ① 挂载时按权限裁剪（不挂载 = 不可能被调用）
 ② 工具内部校验（角色 + 数据归属）
@@ -170,7 +170,7 @@ void updateDoc(User u, String docId, String content) {
 
 ## 6.1 标准答案
 
-```
+```text
 三层：
 ① Server 级（不同租户不同 Server 实例）
 ② 工具级（按权限裁剪工具）
@@ -240,7 +240,7 @@ boolean allowed(InetAddress a) {
 
 ## 8.1 标准答案
 
-```
+```text
 容器隔离：
   --network none        禁网
   --memory 256m         内存限制
@@ -505,7 +505,7 @@ interface SecuritySuite { void runAll(Assistant assistant); }
 
 ## 15.1 标准答案
 
-```
+```text
 ① 接入层  鉴权、限流、WAF
 ② 输入层  注入检测、长度限制
 ③ 提示层  内容隔离、规则不可覆盖

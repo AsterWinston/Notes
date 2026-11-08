@@ -15,7 +15,7 @@ Change Data Capture（CDC）是一种捕获数据库变更数据的技术。当�
 
 ## 2.1 核心特点
 
-```
+```text
 Canal: Alibaba 开源，专注 MySQL Binlog 解析
 ├── 架构: Server-Client 模式
 ├── 协议: 自研 Binlog Dump + Protobuf
@@ -43,7 +43,7 @@ Canal: Alibaba 开源，专注 MySQL Binlog 解析
 
 ## 3.1 核心特点
 
-```
+```text
 Debezium: Red Hat 维护，Kafka Connect 生态
 ├── 架构: Kafka Connect Source Connector
 ├── 协议: 自研数据库连接协议
@@ -72,7 +72,7 @@ Debezium: Red Hat 维护，Kafka Connect 生态
 
 ## 4.1 核心特点
 
-```
+```text
 Maxwell: Zendesk 开发，轻量级 Binlog 解析
 ├── 架构: 单进程 Standalone 模式
 ├── 协议: 基于 open-replicator
@@ -100,7 +100,7 @@ Maxwell: Zendesk 开发，轻量级 Binlog 解析
 
 ## 5.1 核心特点
 
-```
+```text
 Flink CDC: Apache Flink 生态的 CDC 连接器
 ├── 架构: Flink Source Connector
 ├── 协议: 基于 Debezium Engine
@@ -164,7 +164,7 @@ Flink CDC: Apache Flink 生态的 CDC 连接器
 
 ## 7.1 按场景选型
 
-```
+```text
 场景: 阿里云/国内生产环境
 推荐: Canal
 理由: 阿里云支持、国内文档丰富、Admin 管理平台、社区活跃
@@ -188,7 +188,7 @@ Flink CDC: Apache Flink 生态的 CDC 连接器
 
 ## 7.2 架构决策树
 
-```
+```text
 需要多数据库支持？
 ├── 是 → Debezium 或 Flink CDC
 └── 否 → 继续

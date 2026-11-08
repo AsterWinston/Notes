@@ -13,7 +13,7 @@
 
 共享库仓库的标准目录结构：
 
-```
+```text
 jenkins-shared-library/
 ├── vars/                    # 全局变量目录（最常用）
 │   ├── buildJava.groovy    # 定义 buildJava 步骤
@@ -147,7 +147,7 @@ def loadTemplate() {
 
 **配置路径**：Manage Jenkins > System > Global Pipeline Libraries
 
-```
+```text
 Name: my-shared-library
 Default version: main
 Load implicitly: true|false
@@ -182,7 +182,7 @@ pipeline { /* ... */ }
 
 **配置路径**：进入文件夹 > Configuration > Pipeline Libraries
 
-```
+```text
 Name: folder-library
 Default version: main
 Load implicitly: false
@@ -529,7 +529,7 @@ pipeline {
 
 ## 7.2 Semantic Versioning
 
-```
+```text
 v<major>.<minor>.<patch>
 
 major: 不兼容的 API 修改
@@ -560,7 +560,7 @@ v2.0.0 - 不兼容变更
 
 ## 8.1 目录组织
 
-```
+```text
 # 推荐目录结构
 jenkins-shared-library/
 ├── vars/

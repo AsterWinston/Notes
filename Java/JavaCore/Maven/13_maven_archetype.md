@@ -54,7 +54,7 @@ mvn archetype:generate \
 
 # 4. Archetype 目录结构
 
-```
+```text
 archetype-project
 ├── pom.xml
 ├── src

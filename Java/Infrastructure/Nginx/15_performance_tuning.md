@@ -33,7 +33,7 @@ events {
 ```
 
 **最大连接数**：
-```
+```text
 连接数 = worker_processes × worker_connections
 
 系统级限制需同步调整：
@@ -149,7 +149,7 @@ sysctl -p
 
 # 8. 静态资源分离架构
 
-```
+```text
                          ┌─→ Nginx 静态（static.example.com）→ 静态文件
 用户 → CDN → Nginx 主入口─┤
                          └─→ Nginx 代理 → upstream → Spring Boot（api.example.com）

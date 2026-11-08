@@ -701,7 +701,7 @@ String json = mapper.writer(filters).writeValueAsString(user);
 
 Jackson 采用模块化设计，核心是 `jackson-core`，上层通过 `ObjectMapper` 整合所有功能：
 
-```
+```text
 +------------------------------------------+
 |          jackson-databind                 |
 |   ObjectMapper, ObjectReader,            |

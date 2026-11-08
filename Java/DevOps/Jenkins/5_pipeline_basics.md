@@ -722,7 +722,7 @@ withCredentials([file(
 
 Jenkins 内置 **Snippet Generator**（片段生成器），帮助生成步骤代码：
 
-```
+```text
 访问路径：Jenkins URL > <任意 Pipeline Job> > Pipeline Syntax
 功能：
 1. Sample Step：选择步骤 → 填写参数 → 生成 Groovy 代码
@@ -735,7 +735,7 @@ Jenkins 内置 **Snippet Generator**（片段生成器），帮助生成步骤�
 
 ## 7.1 执行流程
 
-```
+```text
 1. Jenkins 解析 Jenkinsfile → 构建 Pipeline 模型
 2. 分配 Agent → 创建工作空间
 3. 顺序执行 stages
@@ -758,7 +758,7 @@ Jenkins Pipeline 使用"飞行中"（flyweight）持久化机制：
 
 传统 UI 中的阶段视图：
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │ Pipeline Job                                    │
 ├─────────────────────────────────────────────────┤
@@ -778,7 +778,7 @@ Jenkins Pipeline 使用"飞行中"（flyweight）持久化机制：
 
 Blue Ocean 提供现代化的 Pipeline 可视化界面：
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │ Blue Ocean Dashboard                        │
 │                                             │

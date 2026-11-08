@@ -165,7 +165,7 @@ jconsole <pid>
 
 # 8. 快速自检清单
 
-```
+```text
 □ 1. curl localhost:8719/health → success?
 □ 2. Dashboard 能看到应用?
 □ 3. 规则已加载? curl localhost:8719/getRules?type=flow

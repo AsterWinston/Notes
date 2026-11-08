@@ -1,5 +1,5 @@
 # 1. 弹窗和window的方法
-```
+```html
 弹窗（popup）是向用户显示其他文档的最古老的方法之一。
 
 基本上，你只需要运行：
@@ -46,7 +46,7 @@ setTimeout(() => window.open('http://google.com'), 3000);
 
 // 1 秒后打开弹窗
 setTimeout(() => window.open('http://google.com'), 1000);
-区别在于 Firefox 可以接受 2000ms 或更短的延迟，但是超过这个时间 —— 则移除“信任”。所以，第一个弹窗被阻止，而第二个却没有。
+区别在于 Firefox 可以接受 2000ms 或更短的延迟，但是超过这个时间 —— 则移除"信任"。所以，第一个弹窗被阻止，而第二个却没有。
 ```
 ## 1.2 window.open
 ```javascript
@@ -80,7 +80,7 @@ let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menuba
 width=0,height=0,left=-1000,top=-1000`;
 
 open('/', 'test', params);
-在这里，大多数“窗口功能”都被禁用了，并且窗口位于屏幕外。运行它，看看会发生什么。大多数浏览器都会“修复”奇怪的东西，例如 width/height 为零以及脱离屏幕（offscreen）的 left/top 设置。例如，Chrome 打开了一个全 width/height 的窗口，使其占满整个屏幕。
+在这里，大多数"窗口功能"都被禁用了，并且窗口位于屏幕外。运行它，看看会发生什么。大多数浏览器都会"修复"奇怪的东西，例如 width/height 为零以及脱离屏幕（offscreen）的 left/top 设置。例如，Chrome 打开了一个全 width/height 的窗口，使其占满整个屏幕。
 
 让我们添加正常的定位选项和合理的 width、height、left 和 top 坐标：
 
@@ -128,7 +128,7 @@ newWindow.onload = function() {
 ```javascript
 弹窗也可以使用 window.opener 来访问 opener 窗口。除了弹窗之外，对其他所有窗口来说，window.opener 均为 null。
 
-如果你运行下面这段代码，它将用 “Test” 替换 opener（也就是当前的）窗口的内容：
+如果你运行下面这段代码，它将用 "Test" 替换 opener（也就是当前的）窗口的内容：
 
 let newWin = window.open("about:blank", "hello", "width=200,height=200");
 
@@ -199,7 +199,7 @@ elem.scrollIntoView(top = true)
 例如，看下面这段代码:
 
 window.onblur = () => window.focus();
-当用户尝试从窗口切换出去（window.onblur）时，这段代码又让窗口重新获得了焦点。目的是将用户“锁定”在 window 中。
+当用户尝试从窗口切换出去（window.onblur）时，这段代码又让窗口重新获得了焦点。目的是将用户"锁定"在 window 中。
 
 因此，浏览器必须引入很多限制，以禁用此类代码并保护用户免受广告和恶意页面的侵害。具体则取决于浏览器。
 
@@ -216,7 +216,7 @@ window.onblur = () => window.focus();
 ```javascript
 弹窗很少使用，因为有其他选择：在页面内或在 iframe 中加载和显示信息。
 
-如果我们要打开一个弹窗，将其告知用户是一个好的实践。在链接或按钮附近的“打开窗口”图标可以让用户免受焦点转移的困扰，并使用户知道点击它会弹出一个新窗口。
+如果我们要打开一个弹窗，将其告知用户是一个好的实践。在链接或按钮附近的"打开窗口"图标可以让用户免受焦点转移的困扰，并使用户知道点击它会弹出一个新窗口。
 
 可以通过 open(url, name, params) 调用打开一个弹窗。它会返回对新打开的窗口的引用。
 浏览器会阻止来自用户行为之外的代码中的 open 调用。通常会显示一条通知，以便用户可以允许它们。
@@ -230,14 +230,14 @@ focus和 blur 事件允许跟踪窗口的切换。但是请注意，在 blur 之
 ```
 
 # 2. 跨窗口通信
-```
-“同源（Same Origin）”策略限制了窗口（window）和 frame 之间的相互访问。
+```text
+"同源（Same Origin）"策略限制了窗口（window）和 frame 之间的相互访问。
 
-这个想法出于这样的考虑，如果一个用户有两个打开的页面：一个来自 john-smith.com，另一个是 gmail.com，那么用户将不希望 john-smith.com 的脚本可以读取 gmail.com 中的邮件。所以，“同源”策略的目的是保护用户免遭信息盗窃。
+这个想法出于这样的考虑，如果一个用户有两个打开的页面：一个来自 john-smith.com，另一个是 gmail.com，那么用户将不希望 john-smith.com 的脚本可以读取 gmail.com 中的邮件。所以，"同源"策略的目的是保护用户免遭信息盗窃。
 ```
 ## 2.1 同源
 ```javascript
-如果两个 URL 具有相同的协议，域和端口，则称它们是“同源”的。
+如果两个 URL 具有相同的协议，域和端口，则称它们是"同源"的。
 
 以下的几个 URL 都是同源的：
 
@@ -250,7 +250,7 @@ http://www.site.com（另一个域：www. 影响）
 http://site.org（另一个域：.org 影响）
 https://site.com（另一个协议：https）
 http://site.com:8080（另一个端口：8080）
-“同源”策略规定：
+"同源"策略规定：
 
 如果我们有对另外一个窗口（例如，一个使用 window.open 创建的弹窗，或者一个窗口中的 iframe）的引用，并且该窗口是同源的，那么我们就具有对该窗口的全部访问权限。
 否则，如果该窗口不是同源的，那么我们就无法访问该窗口中的内容：变量，文档，任何东西。唯一的例外是 location：我们可以修改它（进而重定向用户）。但是我们无法读取 location（因此，我们无法看到用户当前所处的位置，也就不会泄漏任何信息）。
@@ -316,7 +316,7 @@ iframe.onload 事件（在 <iframe> 标签上）与 iframe.contentWindow.onload�
 ```javascript
 根据定义，两个具有不同域的 URL 具有不同的源。
 
-但是，如果窗口的二级域相同，例如 john.site.com，peter.site.com 和 site.com（它们共同的二级域是 site.com），我们可以使浏览器忽略该差异，使得它们可以被作为“同源”的来对待，以便进行跨窗口通信。
+但是，如果窗口的二级域相同，例如 john.site.com，peter.site.com 和 site.com（它们共同的二级域是 site.com），我们可以使浏览器忽略该差异，使得它们可以被作为"同源"的来对待，以便进行跨窗口通信。
 
 为了做到这一点，每个这样的窗口都应该执行下面这行代码：
 
@@ -390,8 +390,8 @@ document.domain 属性正在被从 规范 中删除。跨窗口通信（下面�
 
 可以通过以下方式获取：
 
-window.frames —— “子”窗口的集合（用于嵌套的 iframe）。
-window.parent —— 对“父”（外部）窗口的引用。
+window.frames —— "子"窗口的集合（用于嵌套的 iframe）。
+window.parent —— 对"父"（外部）窗口的引用。
 window.top —— 对最顶级父窗口的引用。
 例如：
 
@@ -406,7 +406,7 @@ if (window == top) { // 当前 window == window.top?
 ```
 ## 2.5 "sandbox" iframe特性
 ```javascript
-sandbox 特性（attribute）允许在 <iframe> 中禁止某些特定行为，以防止其执行不被信任的代码。它通过将 iframe 视为非同源的，或者应用其他限制来实现 iframe 的“沙盒化”。
+sandbox 特性（attribute）允许在 <iframe> 中禁止某些特定行为，以防止其执行不被信任的代码。它通过将 iframe 视为非同源的，或者应用其他限制来实现 iframe 的"沙盒化"。
 
 对于 <iframe sandbox src="...">，有一个应用于其上的默认的限制集。但是，我们可以通过提供一个以空格分隔的限制列表作为特性的值，来放宽这些限制，该列表中的各项为不应该应用于这个 iframe 的限制，例如：<iframe sandbox="allow-forms allow-popups">。
 
@@ -415,7 +415,7 @@ sandbox 特性（attribute）允许在 <iframe> 中禁止某些特定行为，�
 以下是限制的列表：
 
 allow-same-origin
-默认情况下，"sandbox" 会为 iframe 强制实施“不同来源”的策略。换句话说，它使浏览器将 iframe 视为来自另一个源，即使其 src 指向的是同一个网站也是如此。具有所有隐含的脚本限制。此选项会移除这些限制。
+默认情况下，"sandbox" 会为 iframe 强制实施"不同来源"的策略。换句话说，它使浏览器将 iframe 视为来自另一个源，即使其 src 指向的是同一个网站也是如此。具有所有隐含的脚本限制。此选项会移除这些限制。
 allow-top-navigation
 允许 iframe 更改 parent.location。
 allow-forms
@@ -439,7 +439,7 @@ allow-popups
 ```javascript
 postMessage 接口允许窗口之间相互通信，无论它们来自什么源。
 
-因此，这是解决“同源”策略的方式之一。它允许来自于 john-smith.com 的窗口与来自于 gmail.com 的窗口进行通信，并交换信息，但前提是它们双方必须均同意并调用相应的 JavaScript 函数。这可以保护用户的安全。
+因此，这是解决"同源"策略的方式之一。它允许来自于 john-smith.com 的窗口与来自于 gmail.com 的窗口进行通信，并交换信息，但前提是它们双方必须均同意并调用相应的 JavaScript 函数。这可以保护用户的安全。
 
 这个接口有两个部分。
 
@@ -449,7 +449,7 @@ postMessage
 参数：
 
 data
-要发送的数据。可以是任何对象，数据会被通过使用“结构化序列化算法（structured serialization algorithm）”进行克隆。IE 浏览器只支持字符串，因此我们需要对复杂的对象调用 JSON.stringify 方法进行处理，以支持该浏览器。
+要发送的数据。可以是任何对象，数据会被通过使用"结构化序列化算法（structured serialization algorithm）"进行克隆。IE 浏览器只支持字符串，因此我们需要对复杂的对象调用 JSON.stringify 方法进行处理，以支持该浏览器。
 targetOrigin
 指定目标窗口的源，以便只有来自给定的源的窗口才能获得该消息。
 targetOrigin 是一种安全措施。请记住，如果目标窗口是非同源的，我们无法在发送方窗口读取它的 location。因此，我们无法确定当前在预期的窗口中打开的是哪个网站：用户随时可以导航离开，并且发送方窗口对此一无所知。
@@ -521,8 +521,8 @@ iframe.contentWindow 是 <iframe> 标签内的 window 对象。
 向其发送一条消息。
 例外情况：
 
-对于二级域相同的窗口：a.site.com 和 b.site.com。通过在这些窗口中均设置 document.domain='site.com'，可以使它们处于“同源”状态。
-如果一个 iframe 具有 sandbox 特性（attribute），则它会被强制处于“非同源”状态，除非在其特性值中指定了 allow-same-origin。这可用于在同一网站的 iframe 中运行不受信任的代码。
+对于二级域相同的窗口：a.site.com 和 b.site.com。通过在这些窗口中均设置 document.domain='site.com'，可以使它们处于"同源"状态。
+如果一个 iframe 具有 sandbox 特性（attribute），则它会被强制处于"非同源"状态，除非在其特性值中指定了 allow-same-origin。这可用于在同一网站的 iframe 中运行不受信任的代码。
 postMessage 接口允许两个具有任何源的窗口之间进行通信：
 
 发送方调用 targetWin.postMessage(data, targetOrigin)。
@@ -538,8 +538,8 @@ data —— 数据，可以是任何对象。但是 IE 浏览器只支持字符�
 ```
 
 # 3. 点击劫持攻击
-```
-“点击劫持”攻击允许恶意页面 以用户的名义 点击“受害网站”。
+```text
+"点击劫持"攻击允许恶意页面 以用户的名义 点击"受害网站"。
 
 许多网站都被黑客以这种方式攻击过，包括 Twitter、Facebook 和 Paypal 等许多网站。当然，它们都已经被修复了。
 ```
@@ -550,9 +550,9 @@ data —— 数据，可以是任何对象。但是 IE 浏览器只支持字符�
 我们以 Facebook 为例，解释点击劫持是如何完成的：
 
 访问者被恶意页面吸引。怎样吸引的不重要。
-页面上有一个看起来无害的链接（例如：“变得富有”或者“点我，超好玩！”）。
-恶意页面在该链接上方放置了一个透明的 <iframe>，其 src 来自于 facebook.com，这使得“点赞”按钮恰好位于该链接上面。这通常是通过 z-index 实现的。
-用户尝试点击该链接时，实际上点击的是“点赞”按钮。
+页面上有一个看起来无害的链接（例如："变得富有"或者"点我，超好玩！"）。
+恶意页面在该链接上方放置了一个透明的 <iframe>，其 src 来自于 facebook.com，这使得"点赞"按钮恰好位于该链接上面。这通常是通过 z-index 实现的。
+用户尝试点击该链接时，实际上点击的是"点赞"按钮。
 ```
 ## 3.2 示例
 ```javascript
@@ -584,7 +584,7 @@ iframe { /* 来自受害网站的 iframe */
 
 在上面这个示例中，我们有一个半透明的 <iframe src="facebook.html">，我们可以看到，它位于按钮之上。点击按钮实际上会点击在 iframe 上，但这对用户不可见，因为 iframe 是透明的。
 
-结果，如果访问者登陆了 Facebook（“记住我”通常是打开的），那么这个行为就会点一个“赞”。Twitter 上是 “Follow” 按钮。
+结果，如果访问者登陆了 Facebook（"记住我"通常是打开的），那么这个行为就会点一个"赞"。Twitter 上是 "Follow" 按钮。
 
 下面是相同的示例，但 iframe 的透明度设置为了 opacity:0，更符合实际情况：
 
@@ -603,7 +603,7 @@ iframe { /* 来自受害网站的 iframe */
 ```
 ## 3.3 传统防御（弱）
 ```javascript
-最古老的防御措施是一段用于禁止在 frame 中打开页面的 JavaScript 代码（所谓的 “framebusting”）。
+最古老的防御措施是一段用于禁止在 frame 中打开页面的 JavaScript 代码（所谓的 "framebusting"）。
 
 它看起来像这样：
 
@@ -666,7 +666,7 @@ ALLOW-FROM domain
 ```javascript
 X-Frame-Options 有一个副作用。其他的网站即使有充分的理由也无法在 frame 中显示我们的页面。
 
-因此，还有其他解决方案……例如，我们可以用一个样式为 height: 100%; width: 100%; 的 <div> “覆盖”页面，这样它就能拦截所有点击。如果 window == top 或者我们确定不需要保护时，再将该 <div> 移除。
+因此，还有其他解决方案……例如，我们可以用一个样式为 height: 100%; width: 100%; 的 <div> "覆盖"页面，这样它就能拦截所有点击。如果 window == top 或者我们确定不需要保护时，再将该 <div> 移除。
 
 像这样：
 
@@ -710,11 +710,11 @@ Set-Cookie: authorization=secret; samesite
 ```
 ## 3.7 总结
 ```javascript
-点击劫持是一种“诱骗”用户在不知情的情况下点击恶意网站的方式。如果是重要的点击操作，这是非常危险的。
+点击劫持是一种"诱骗"用户在不知情的情况下点击恶意网站的方式。如果是重要的点击操作，这是非常危险的。
 
 黑客可以通过信息发布指向他的恶意页面的链接，或者通过某些手段引诱访问者访问他的页面。当然还有很多其他变体。
 
-一方面 —— 这种攻击方式是“浅层”的：黑客所做的只是拦截一次点击。但另一方面，如果黑客知道在点击之后将出现另一个控件，则他们可能还会使用狡猾的消息来迫使用户也点击它们。
+一方面 —— 这种攻击方式是"浅层"的：黑客所做的只是拦截一次点击。但另一方面，如果黑客知道在点击之后将出现另一个控件，则他们可能还会使用狡猾的消息来迫使用户也点击它们。
 
 这种攻击相当危险，因为在设计交互界面时，我们通常不会考虑到可能会有黑客代表用户点击界面。所以，在许多意想不到的地方可能发现攻击漏洞。
 

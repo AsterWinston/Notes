@@ -2,7 +2,7 @@
 
 容器化把应用与其运行时依赖一起打包为不可变镜像（Immutable Image），从根本上解决"环境一致、依赖隔离、快速部署、弹性伸缩"四类问题。对 LLM（大语言模型，Large Language Model）应用而言，容器化还额外承担 JVM/Python 运行时版本统一、CPU 与内存隔离、镜像分层缓存复用等职责。
 
-```
+```text
 容器化解决：环境一致、依赖隔离、快速部署、弹性伸缩
 ```
 
@@ -169,7 +169,7 @@ env:
 
 Netty 的 `DirectByteBuffer`、向量库的原生内存、gRPC/HTTP 客户端的缓冲区都属于堆外。`-XX:MaxDirectMemorySize` 只约束 `DirectByteBuffer`，不约束 JNI 分配，因此预算要留足。
 
-```
+```text
 容器内存 limit 4Gi 预算示例：
   堆（-Xmx）        ~2.8Gi  (70%)
   直接内存          ~0.5Gi

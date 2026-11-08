@@ -9,7 +9,7 @@ Cookie 和 Session 是 SSO 的基石。理解它们的底层机制，才能深�
 
 HTTP 协议本身是无状态的：每一个请求都是独立的，服务端不会自动关联两个请求是否来自同一用户。
 
-```
+```text
 请求 1: GET /index    → 服务端：不知道你是谁
 请求 2: POST /login   → 服务端：验证用户名密码，知道了
 请求 3: GET /profile  → 服务端：又不知道你是谁了！
@@ -19,7 +19,7 @@ HTTP 协议本身是无状态的：每一个请求都是独立的，服务端不
 
 ## 2.2 Session 的生命周期
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                       Session 生命周期                        │
 │                                                               │
@@ -144,7 +144,7 @@ protected void onAuthenticationSuccess(HttpServletRequest request,
 
 ## 3.1 Cookie 的属性详解
 
-```
+```text
 Set-Cookie: JSESSIONID=A1B2C3D4E5F6A7B8;        ← 键值对
              Path=/app;                            ← 路径范围
              Domain=.example.com;                   ← 域名范围
@@ -169,7 +169,7 @@ Set-Cookie: JSESSIONID=A1B2C3D4E5F6A7B8;        ← 键值对
 
 SameSite 是 SSO 实现中最关键也最容易出问题的 Cookie 属性：
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │               SameSite 属性详解                               │
 │                                                               │
@@ -247,7 +247,7 @@ server:
 
 同一父域名下的不同子域名应用共享 Cookie：
 
-```
+```text
 app1.example.com  ────┐
 app2.example.com  ────┼── 共享 Cookie（Domain=.example.com）
 app3.example.com  ────┘
@@ -339,7 +339,7 @@ public CookieSerializer cookieSerializer() {
 
 ## 4.3 同域 SSO 流程示意
 
-```
+```text
 用户登录 login.example.com
          │
          │ Set-Cookie: SSO_TOKEN=xxx; Domain=.example.com
@@ -367,7 +367,7 @@ app2 Filter 验证 Token ✓ → 已登录，无需跳转
 
 ## 5.1 会话固定攻击防护
 
-```
+```text
 攻击流程：
 1. 攻击者访问 login.example.com，获得 JSESSIONID=ATTACKER123
 2. 攻击者构造链接：https://login.example.com/login?JSESSIONID=ATTACKER123

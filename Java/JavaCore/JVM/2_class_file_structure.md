@@ -22,7 +22,7 @@ public class Hello {
 
 Class 文件是一组以 8 字节为单位的二进制流，严格按照以下结构排列：
 
-```
+```text
 ClassFile {
     u4             magic;               // 魔数
     u2             minor_version;       // 次版本号
@@ -89,7 +89,7 @@ ClassFile {
 - 常量池大小 = `constant_pool_count - 1`（常量池索引从 1 开始，0 表示"不引用任何常量"）。
 
 示例，`Hello.java` 编译后的常量池部分：
-```
+```text
 #1 = Methodref    #6.#15   // java/lang/Object."<init>":()V
 #2 = Fieldref     #16.#17  // java/lang/System.out:Ljava/io/PrintStream;
 #3 = String       #18      // "Hello JVM"
@@ -119,7 +119,7 @@ static String name;
 ```
 
 编译后对应两个 `field_info` 结构：
-```
+```text
 field_info {
     u2 access_flags;      // ACC_PRIVATE(0x0002)
     u2 name_index;        // 指向常量池 "count"
@@ -148,7 +148,7 @@ public int add(int a, int b) { return a + b; }
 ```
 描述符为：`(II)I` —— 两个 int 参数，返回 int。
 
-```
+```text
 method_info {
     u2 access_flags;       // ACC_PUBLIC
     u2 name_index;         // 指向 "add"
@@ -186,7 +186,7 @@ javap -c -p -v Hello.class
 ```
 
 **输出关键部分解读：**
-```
+```text
 Classfile /path/to/Hello.class
   Last modified 2024-01-01; size 318 bytes
   MD5 checksum ...

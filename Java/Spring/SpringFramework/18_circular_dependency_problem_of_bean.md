@@ -1,5 +1,5 @@
 # 1. 什么是Bean的循环依赖
-```
+```text
 Bean的循环依赖，就是A对象中有B属性，B对象中有A属性。即我依赖你，你也依赖我。
 比如：丈夫类Husband，妻子类Wife，Husband中有Wife的引用，Wife中有Husband的引用。
 
@@ -73,7 +73,7 @@ public class Husband {
 
 # 2. 单例模式+set注入
 ## 2.1 单例模式 + set 注入情况下的循环依赖
-```
+```text
 在单例模式 + set 注入的情况下，循环依赖是没有问题的，Spring 可以解决这个问题。
 <bean id="husband" class="cw.spring.bean.Husband" scope="singleton">
   <property name="name" value="张三"/>
@@ -95,14 +95,14 @@ public void test01() {
 ```
 ## 2.2 分析单例模式 + set 注入情况下的循环依赖
 在 set + singleton 模式下 Spring 对 Bean 的管理主要分为两个阶段：
-第一个阶段：在 Spring 容器加载的时候，实例化 Bean，只要其中任意一个 Bean 实例化之后，马上进行“曝光”，不等属性赋值就曝光
+第一个阶段：在 Spring 容器加载的时候，实例化 Bean，只要其中任意一个 Bean 实例化之后，马上进行"曝光"，不等属性赋值就曝光
 提前曝光，不等属性赋值就可以使用，因为单例下就只会创建该类型的对象一个，早曝光和晚曝光一样，都是这个对象
-第二个阶段：Bean“曝光”之后，再进行属性的赋值，调用set方法。
+第二个阶段：Bean"曝光"之后，再进行属性的赋值，调用set方法。
 解决单例模式 + set 注入情况下的循环依赖的核心解决方案是：实例化对象和对象的属性赋值分为两个阶段来完成的。
-注意：只有在 scope 是 singleton 的情况下，Bean 才会采取提前“曝光”的措施。prototype 下不会进行提前曝光，如果多例模式下多个对象进行提前曝光，则Spring在使用对象的时候，不知道要使用哪个对象
+注意：只有在 scope 是 singleton 的情况下，Bean 才会采取提前"曝光"的措施。prototype 下不会进行提前曝光，如果多例模式下多个对象进行提前曝光，则Spring在使用对象的时候，不知道要使用哪个对象
 
 # 3. 多例模式+set注入
-```
+```xml
 <bean id="husband" class="cw.spring.bean.Husband" scope="prototype">
   <property name="name" value="张三"/>
   <property name="wife" ref="wife"/>
@@ -114,13 +114,13 @@ public void test01() {
 
 当循环依赖的两个 bean 的 scope 都是 prototype 的时候，在 prototype + setter 模式下的循环依赖，存在问题，会出现异常 BeanCurrentlyInCreationException（当前的 Bean 正处于创建中异常）。
 因为都是多例模式，所以每次需要对象的时候都会new新的对象出来，A对象中需要B对象，会new一个新的B对象，B对象中需要A对象，会new一个新的A对象，新的A对象中需要B对象，会再new一个新的B对象…最终导致对象永远创建不完
-如果其中任意一个是 singleton 的，就不会出现异常（因为单例模式下的 bean 实例化完成就会进行“曝光”，“曝光”后就可以停止死循环依赖）
+如果其中任意一个是 singleton 的，就不会出现异常（因为单例模式下的 bean 实例化完成就会进行"曝光"，"曝光"后就可以停止死循环依赖）
 singleton 在解析配置文件时就创建对象，当需要 prototype 时可以马上创建一个 prototype 对象赋值给singleton，而 prototype 对象所需的 singleton 只有唯一的一个，从而可以让依赖停止下来，所以没有问题，prototype 对象和 singleton 对象的创建时机反过来也是类似。
 
 ```
 
 # 4. 单例模式+构造注入
-```
+```text
 单例模式 + 构造注入的方式下产生的循环依赖是无法解决的
 
 package cw.spring.pojo;
@@ -213,10 +213,10 @@ Requested bean is currently in creation: Is there an unresolvable circular refer
 ```
 
 # 5. Spring解决循环依赖的机理
-```
+```text
 Spring 可以解决 set + singleton 模式下循环依赖：
-根本的原因在于：这种方式可以做到将“实例化Bean”和“给Bean属性赋值”这两个动作分开去完成。
-实例化Bean的时候：调用无参数构造方法来完成。此时可以先不给属性赋值，可以提前将该Bean对象“曝光”给外界。
+根本的原因在于：这种方式可以做到将"实例化Bean"和"给Bean属性赋值"这两个动作分开去完成。
+实例化Bean的时候：调用无参数构造方法来完成。此时可以先不给属性赋值，可以提前将该Bean对象"曝光"给外界。
 给Bean属性赋值的时候：调用setter方法来完成。
 两个步骤是完全可以分离开去完成的，并且这两步不要求在同一个时间点上完成。 也就是说，Bean都是单例的，我们可以先把所有的单例Bean实例化出来，放到一个集合当中（我们可以称之为缓存），所有的单例Bean全部实例化完成之后，以后我们再慢慢的调用setter方法给属性赋值。这样就解决了循环依赖的问题。
 
@@ -232,7 +232,7 @@ addSingletonFactory 为 DefaultSingletonBeanRegistry(默认单例Bean注册) 类
 	Map集合的key存储的都是bean的name（bean id）：
         一级缓存存储的是：单例Bean对象。完整的单例Bean对象，也就是说这个缓存中的Bean对象的属性都已经赋值了。是一个完整的Bean对象。
         二级缓存存储的是：早期的单例Bean对象。这个缓存中的单例Bean对象的属性没有赋值。只是一个早期的实例对象。
-        三级缓存存储的是：单例工厂对象。这个里面存储了大量的“工厂对象”，每一个单例Bean对象都会对应一个单例工厂对象。这个集合中存储的是，创建该单例对象时对应的那个单例工厂对象。
+        三级缓存存储的是：单例工厂对象。这个里面存储了大量的"工厂对象"，每一个单例Bean对象都会对应一个单例工厂对象。这个集合中存储的是，创建该单例对象时对应的那个单例工厂对象。
 
 DefaultSingletonBeanRegistry 类中有 getSingleton 方法，用于获取单例 Bean 对象
 
@@ -250,7 +250,7 @@ Spring只能解决setter方法注入的单例bean之间的循环依赖。ClassA�
 
 ## 6.1 三级缓存的数据结构
 
-```
+```text
 Spring 的三级缓存定义在 DefaultSingletonBeanRegistry 中：
 
 public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements SingletonBeanRegistry {
@@ -311,7 +311,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 ## 6.2 从缓存获取 Bean：getSingleton() 源码逐行解读
 
-```
+```java
 DefaultSingletonBeanRegistry.getSingleton(String beanName, boolean allowEarlyReference)：
 
 /**
@@ -370,7 +370,7 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 
 ### 6.2.1 流程图：getSingleton 的三级缓存查询
 
-```
+```text
                   getSingleton(beanName, true)
                           │
                           ▼
@@ -422,7 +422,7 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 
 ## 6.3 加入缓存：addSingletonFactory() 和 addSingleton()
 
-```
+```java
 // =========== addSingletonFactory: 将 Bean 的 ObjectFactory 放入三级缓存 ===========
 // 调用时机：doCreateBean() 中，实例化完成后、属性赋值之前
 protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
@@ -460,7 +460,7 @@ protected void addSingleton(String beanName, Object singletonObject) {
 
 ## 6.4 完整流程时序：Husband 和 Wife 循环依赖如何解决
 
-```
+```text
 假设先创建 Husband，Husband 构造器注入 name，setter 注入 Wife：
 
 === Step 1: getBean("husband") ===
@@ -528,7 +528,7 @@ doGetBean("husband")
 
 ## 6.5 为什么构造注入不能解决循环依赖
 
-```
+```text
 构造注入无法解决的根本原因在于：实例化和属性赋值无法分离。
 
 Spring doCreateBean() 的流程是：
@@ -566,7 +566,7 @@ return instantiateBean(beanName, mbd);
 
 ## 6.6 getEarlyBeanReference() — AOP 代理的提前曝光
 
-```
+```java
 在 addSingletonFactory() 中传入的 ObjectFactory 实际上调用了 getEarlyBeanReference()：
 
 protected Object getEarlyBeanReference(String beanName, RootBeanDefinition mbd, Object bean) {

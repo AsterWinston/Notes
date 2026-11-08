@@ -61,7 +61,7 @@ AMQP不是简单的消息入队/出队协议，而是一个**完整消息传递�
 ## 2.3 AMQP 0-9-1 核心模型
 AMQP 0-9-1的模型由以下核心组件构成：
 
-```
+```text
 Publisher --> Exchange --> [Binding规则] --> Queue --> Consumer
                 |
                 +-------> [Routing Key匹配]
@@ -155,7 +155,7 @@ Spring AMQP 3.x 相比 2.x 的主要变化：
 ## 4.1 消息结构
 AMQP中的消息由以下部分组成：
 
-```
+```text
 Message
 ├── MessageProperties（消息属性/元数据）
 │   ├── contentType（内容类型，如 application/json）
@@ -181,7 +181,7 @@ Message
 ### 4.2.1 Direct Exchange（直连交换机）
 工作原理：Exchange根据Routing Key**精确匹配**Binding Key，将消息投递到对应的Queue。
 
-```
+```text
 Binding: queue.order  --> Binding Key = "order.create"
 Binding: queue.payment --> Binding Key = "order.pay"
 
@@ -195,7 +195,7 @@ Binding: queue.payment --> Binding Key = "order.pay"
 ### 4.2.2 Fanout Exchange（扇形交换机）
 工作原理：Exchange**忽略Routing Key**，将消息广播到所有绑定的Queue。类似于发布/订阅模式。
 
-```
+```text
 Binding: queue.email  --> (无需Binding Key)
 Binding: queue.sms    --> (无需Binding Key)
 Binding: queue.push   --> (无需Binding Key)
@@ -210,7 +210,7 @@ Binding: queue.push   --> (无需Binding Key)
 - `*`：匹配**一个**单词
 - `#`：匹配**零个或多个**单词
 
-```
+```text
 Binding: queue.store --> Binding Key = "store.#"
 Binding: queue.news   --> Binding Key = "#.news"
 
@@ -258,7 +258,7 @@ rabbitTemplate.convertAndSend("my.queue", message);
 ## 5.1 架构分层
 Spring AMQP的架构分为以下几个层次：
 
-```
+```text
 +------------------------------------------+
 |             应用层（业务代码）              |
 |   @RabbitListener / RabbitTemplate       |

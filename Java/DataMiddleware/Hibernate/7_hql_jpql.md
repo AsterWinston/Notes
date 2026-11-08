@@ -63,7 +63,7 @@ JPQL 的局限性（HQL 具备但 JPQL 不支持）：
 - **类型扩展函数**：HQL 提供更多内置函数（100+）
 
 HQL 额外保留字（JPQL 无）：
-```
+```text
 BETWEEN, CASE, ELSE, END, ESCAPE, FULL, INNER, KEY, LEFT, LOAD, REPLACE, RIGHT, 
 TRAILING, UNION, WHEN, WITH
 ```
@@ -1414,7 +1414,7 @@ Hibernate 6 引入了全新的查询引擎 **SQM（Semantic Query Model）**，�
 - **查询优化器**：SQM 层面做语义优化（如隐式 JOIN 合并、冗余子查询消除）
 - **更好的错误信息**：提供带有源位置的精确错误报告
 
-```
+```text
 旧架构（Hibernate 5）：
   HQL String -> ANTLR AST -> HQLSqlWalker -> SQL
   JPQL String -> ANTLR AST -> HQLSqlWalker -> SQL
@@ -1759,7 +1759,7 @@ logging.level.org.hibernate.stat=DEBUG
 
 **日志输出示例：**
 
-```
+```text
 -- Hibernate SQL 日志
 Hibernate:
     select

@@ -62,7 +62,7 @@ Agent（智能体）是由大模型驱动的多步决策系统。它的调用链
 
 ## 2.1 五步法
 
-```
+```text
 ① 复现：能否稳定复现？
 ② 定位：失败在检索、生成还是工具？
 ③ 归因：属于哪类失败模式？
@@ -180,7 +180,7 @@ public void replay(String traceId) {
 
 ## 4.1 归因判定逻辑
 
-```
+```text
                     开始
                      │
                      ▼
@@ -286,7 +286,7 @@ private boolean isCorrect(String answer, String expected) {
 
 ## 5.3 快速排查流程
 
-```
+```text
 现象
  │
  ├─ 没有答案？ ──▶ 看检索结果 → 命中率低？改检索

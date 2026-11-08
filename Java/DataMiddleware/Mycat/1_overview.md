@@ -15,7 +15,7 @@
 
 **Mycat 官方把自己描述为"大数据分库分表中间件"，社区最常用的说法是"Mycat 不是数据库，是一个代理"**。它对上完整实现了 MySQL Server 协议——握手、认证、COM_QUERY、预编译语句都以假装的"MySQL 5.x/8.0 服务端"身份应答；对下以 MySQL Client 的身份维护到各个后端实例的连接池。应用侧把 `jdbc:mysql://真实库:3306` 改成 `jdbc:mysql://mycat:8066`，驱动、ORM、连接池全都不用动：
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │                   Application                    │
 │      (JDBC/ODBC，连接 Mycat 就像连接 MySQL)        │
@@ -53,7 +53,7 @@
 
 理解 Mycat，必须理解它身上流着两代阿里的血、一代京东的血：
 
-```
+```text
 2009  淘宝 TDDL (Client JAR 路线，Trantor 分层架构：Matrix/Group/Atom)
         │  闭源，随阿里去 IOE 一路演进
         ▼

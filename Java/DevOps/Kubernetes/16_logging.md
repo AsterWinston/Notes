@@ -4,7 +4,7 @@
 
 在 Kubernetes 中，日志分布在多个层面：
 
-```
+```text
 层面 1: 应用日志
 ├── 业务日志: 请求日志、操作日志、业务事件
 └── 框架日志: Spring Boot、Django、Express 等框架输出
@@ -31,7 +31,7 @@
 
 Kubernetes 推荐使用**节点级日志代理**（Node-level Logging Agent）模式：
 
-```
+```text
 ┌──────────────────────────────────────────────────┐
 │                   Worker Node                      │
 │                                                    │
@@ -80,7 +80,7 @@ kubectl logs -l app=my-app --all-containers  # 按标签查看所有容器日志
 ```
 
 `kubectl logs` 的交互流程：
-```
+```text
 kubectl → API Server → kubelet (Log endpoint) → 读取 /var/log/containers/<pod>_<ns>_<container>*.log
 ```
 
@@ -168,7 +168,7 @@ data:
 
 ## 2.3 日志管道处理
 
-```
+```text
 原始文本日志
      │
      ▼
@@ -192,7 +192,7 @@ data:
 
 ## 3.1 Elasticsearch + Fluentd + Kibana
 
-```
+```text
 Pod stdout/stderr
      │
      ▼
@@ -244,7 +244,7 @@ spec:
 
 ## 3.2 Kibana 查询示例
 
-```
+```text
 # 查看特定 Pod 的最新日志
 kubernetes.pod_name: "my-app-7d5c8f-" AND kubernetes.namespace_name: "production"
 
@@ -277,7 +277,7 @@ Loki 的设计哲学：**"不索引日志内容，只索引元数据标签"**。
 
 ## 4.2 Loki 架构
 
-```
+```text
 ┌────────────┐   ┌──────────────┐
 │ Promtail    │   │  Grafana Agent│  ← 日志收集代理（DaemonSet）
 │ (每个Node)  │   │               │
@@ -447,7 +447,7 @@ kubectl get events -A -o json > events-$(date +%Y%m%d).json
 
 ## 6.1 应用日志规范
 
-```
+```text
 推荐的日志格式 (JSON):
 {
   "timestamp": "2024-01-15T10:30:00Z",
@@ -474,7 +474,7 @@ kubectl get events -A -o json > events-$(date +%Y%m%d).json
 
 ## 6.2 日志保留策略
 
-```
+```text
 热数据 (Elasticsearch/Loki): 7-14 天
   ├── 用于日常排查和实时告警
   │
@@ -487,7 +487,7 @@ kubectl get events -A -o json > events-$(date +%Y%m%d).json
 
 ### 6.2.1 存储估算
 
-```
+```text
 日日志量估算:
   每个 Pod 平均 100MB/天 × 100 个 Pod = 10GB/天
   保留 30 天 = 300GB (压缩后约 100GB)

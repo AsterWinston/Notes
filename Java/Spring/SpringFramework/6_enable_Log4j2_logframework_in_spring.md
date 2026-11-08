@@ -1,5 +1,5 @@
 ﻿# 1. 引入Log4j2日志框架
-```
+```text
 <!--log4j2的依赖-->
 <dependency>
   <groupId>org.apache.logging.log4j</groupId>
@@ -14,7 +14,7 @@
 
 ```
 # 2. 提供log4j2.xml配置文件
-```
+```text
 在类根路径下提供 log4j2.xml 配置文件
 配置文件的文件名固定为：log4j2.xml，且文件必须放到类根路径下
 配置文件的文件名是固定的，位置也是固定的，必须在类的根目录及其子目录下。
@@ -48,7 +48,7 @@
 
 ```
 # 3. 使用日志框架
-```
+```java
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +72,7 @@ public void testLog() {
 
 ## 4.1 SLF4J + 桥接模式
 
-```
+```text
 Spring 本身不实现日志功能，而是通过 SLF4J（Simple Logging Facade for Java）来桥接：
 
 ┌─────────────────────────────────────────┐
@@ -101,7 +101,7 @@ Spring 本身不实现日志功能，而是通过 SLF4J（Simple Logging Facade 
 
 ## 4.2 Spring 内部日志的实现：Spring-JCL 桥
 
-```
+```java
 Spring 5+ 内部将 JCL 调用桥接到 SLF4J：
 
 // Spring 的 spring-jcl 模块中：
@@ -131,7 +131,7 @@ final class LogAdapter {
 
 ## 4.3 日志级别映射
 
-```
+```text
 SLF4J 的日志级别与 Log4j2 日志级别的对应关系：
 
 SLF4J Level    │ Log4j2 Level  │ 用途

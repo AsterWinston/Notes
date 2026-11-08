@@ -8,7 +8,7 @@
 
 ### 1.1.1 显存构成拆解
 
-```
+```text
 全量微调 70B 模型：
   参数        140GB   (bf16, 70B x 2B)
   梯度        140GB   (bf16)
@@ -26,7 +26,7 @@
 
 **结论先行**：LoRA 冻结基座权重，只训练低秩矩阵，可训练参数约占 0.1%~1%，单卡即可完成微调。
 
-```
+```text
 LoRA：
   只训练低秩矩阵，参数量 0.1%~1%
   → 单卡可微调
@@ -70,7 +70,7 @@ LoRA：
 
 **机制**：对原始权重 `W`，冻结不动，引入低秩更新 `ΔW = B × A`。
 
-```
+```text
 原始权重 W（冻结） + 低秩更新 ΔW = B × A
 
   W' = W + ΔW = W + B·A
@@ -80,7 +80,7 @@ A: d × r    B: r × d    r << d
 
 ### 2.1.2 参数量估算
 
-```
+```text
 例：d=4096, r=8
   ΔW 参数量 = 4096×8 + 8×4096 = 65536
   原 W 参数量 = 4096×4096 = 16.7M
@@ -91,7 +91,7 @@ A: d × r    B: r × d    r << d
 
 **结论先行**：LoRA 分支与冻结主分支并行，输出相加，因此训练时多一条小分支，合并后无额外开销。
 
-```
+```text
         ┌─────────────┐
 输入 x ─▶│  W (冻结)    │─▶ Wx
         └─────────────┘
@@ -123,7 +123,7 @@ W_merged = W + (alpha / r) * (B @ A)
 
 **机制**：实际缩放系数为 `alpha / r`，与 `BAx` 相乘。调大 alpha 相当于放大适配器影响，是除学习率外最有效的调节手段之一。
 
-```
+```text
 h = Wx + (alpha / r) · BAx
 ```
 
@@ -284,7 +284,7 @@ LoRA 的学习率通常比全量高一个数量级（1e-4~2e-4）；梯度累积
 
 **结论先行**：默认只保存适配器，务必确认保存目录中包含 `adapter_config.json`。
 
-```
+```text
 ./lora-adapter/
   adapter_config.json     # 适配器配置
   adapter_model.safetensors  # LoRA 权重（几十 MB）
@@ -346,7 +346,7 @@ model = AutoModelForCausalLM.from_pretrained(
 | LoRA | 中 | 接近全量 |
 | QLoRA | 低 | 略低于 LoRA |
 
-```
+```text
 QLoRA = 4bit 量化的基座 + LoRA
 
 效果：
@@ -386,7 +386,7 @@ model = PeftModel.from_pretrained(base, "./lora-adapter")
 
 **结论先行**：独立加载时基座先加载、适配器后注入，二者版本必须匹配。
 
-```
+```text
 加载基座 → 读取 adapter_config.json → 注入适配器 → 推理
 ```
 
@@ -417,7 +417,7 @@ merged.save_pretrained("./merged-model")
 
 **结论先行**：一个基座可挂载多个 LoRA 适配器，按业务切换，显著节省存储与加载时间。
 
-```
+```text
 一个基座 + 多个 LoRA 适配器：
   base + lora-domain-A
   base + lora-domain-B

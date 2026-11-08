@@ -16,7 +16,7 @@ JTA（Java Transaction API，Java 事务 API）是 JavaEE 的**分布式事务�
 
 ## 1.3 事务类型对比
 
-```
+```text
 JDBC 本地事务：单个数据源，Connection.commit()/rollback()
 JTA 全局事务：多个资源，由事务管理器统一协调（XA 两阶段提交）
 ```
@@ -57,7 +57,7 @@ public void doWork() {
 
 ## 2.3 事务状态
 
-```
+```text
 ACTIVE → MARKED_ROLLBACK → ...
    ↓
   COMMITTING → COMMITTED
@@ -94,7 +94,7 @@ public class TransferService {
 
 ## 3.3 事务边界
 
-```
+```text
 调用链：A（REQUIRED）→ B（REQUIRED）→ C（REQUIRES_NEW）
                   └──────── 同一事务 ────────┘
                                                └── 独立新事务（B 的回滚不影响 C）
@@ -172,7 +172,7 @@ public class ManualService {
 
 XA 是 X/Open 组织定义的**分布式事务处理规范**，JavaEE 通过 `javax.transaction.xa` 实现：
 
-```
+```text
 ┌────────────┐         ┌────────────────┐
 │ 事务管理器  │ ──────► │ 资源管理器 A(XA)│  ──► 数据库A
 │ (TM)       │         ├────────────────┤
@@ -190,7 +190,7 @@ XA 是 X/Open 组织定义的**分布式事务处理规范**，JavaEE 通过 `ja
 
 ## 6.3 两阶段提交（2PC）
 
-```
+```text
 准备阶段（Prepare）：
   TM 通知所有资源 prepare()，各资源锁定资源并回报就绪
 

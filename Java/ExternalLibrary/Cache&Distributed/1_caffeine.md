@@ -4,7 +4,7 @@
 
 Caffeine 是一个基于 Java 8+ 的高性能本地缓存库，由 Ben Manes 开发，深受 Google Guava Cache 的设计启发。在 Guava Cache 的基础上，Caffeine 引入了全新的 Window TinyLFU（W-TinyLFU）淘汰算法，在吞吐量和命中率上全面超越了 Guava Cache，目前已成为 Spring Boot 5.x 默认的本地缓存实现。
 
-```
+```text
 ├─ Caffeine
 │   ├─ 本地缓存（进程内缓存）
 │   ├─ 高性能（接近 ConcurrentHashMap 的读写性能）
@@ -362,7 +362,7 @@ stats.snapshot();  // 获取当前快照，不影响统计继续累积
 
 W-TinyLFU（Window Tiny Least Frequently Used）是 Caffeine 的核心竞争力，由三个组件构成：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                    W-TinyLFU 架构                         │
 ├─────────────────────────────────────────────────────────┤
@@ -411,7 +411,7 @@ W-TinyLFU（Window Tiny Least Frequently Used）是 Caffeine 的核心竞争力�
 
 **CountMin Sketch 原理**：
 
-```
+```text
 插入元素 key：对 key 计算多个哈希函数 h1(key), h2(key), h3(key), h4(key)
 分别映射到 4 个数组的对应位置，将计数 +1。
 
@@ -420,7 +420,7 @@ W-TinyLFU（Window Tiny Least Frequently Used）是 Caffeine 的核心竞争力�
 
 ### 4.1.4 淘汰决策流程
 
-```
+```text
 1. 新数据进入 Admission Window（LRU）
 2. Window 满 → 窗口尾部的数据（最久未访问）被驱逐
 3. 驱逐候选者与 Main Space（Probation 区）的尾部数据竞争
@@ -446,7 +446,7 @@ W-TinyLFU（Window Tiny Least Frequently Used）是 Caffeine 的核心竞争力�
 
 Caffeine 使用 `@jdk.internal.vm.annotation.Contended` 或 `sun.misc.Contended` 注解，确保频繁修改的计数器和状态变量位于独立的缓存行中，避免多核 CPU 缓存一致性协议（MESI）导致的性能下降。
 
-```
+```text
 ┌──── 64 字节 ────┬──── 64 字节 ────┬──── 64 字节 ────┐
 │   Core 1 数据    │  padding        │   Core 2 数据    │
 │   (修改频繁)      │  (填充物)       │   (修改频繁)      │
@@ -1068,7 +1068,7 @@ public class TwoLevelCache<K, V> {
 
 ### 9.1.8 Q8：如何在 Spring Boot 中配置 Caffeine 缓存？
 
-```
+```text
 // Maven:
 spring-boot-starter-cache
 // yml:

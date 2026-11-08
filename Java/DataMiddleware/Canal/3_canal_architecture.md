@@ -3,7 +3,7 @@
 
 Canal 的架构设计遵循**管道-过滤器（Pipeline-Filter）**模式，将 Binlog 的订阅、解析、存储、消费划分为独立的处理阶段：
 
-```
+```text
 ┌───────────────────────────────────────────────────────────────────────┐
 │                          MySQL Master                                 │
 │                     (binlog_format=ROW)                               │
@@ -45,7 +45,7 @@ Canal 的架构设计遵循**管道-过滤器（Pipeline-Filter）**模式，将
 
 Canal 将 Binlog 处理流程抽象为一条管道，每个阶段都是独立的过滤器：
 
-```
+```text
 Input: Binlog Event Stream
   │
   ├── [Parser]    → 从 MySQL Master 拉取 Binlog，解析为结构化事件
@@ -65,7 +65,7 @@ Output: Structured Data Change Event
 
 一个 Canal Server 可以同时管理多个 Canal Instance，每个 Instance 对应一个独立的 MySQL 数据源：
 
-```
+```text
 ┌────────────────────────────────────────────┐
 │             Canal Server                   │
 │                                            │
@@ -87,7 +87,7 @@ Output: Structured Data Change Event
 
 Canal 采用**事件驱动**的编程模型，通过 Disruptor（高性能无锁队列）在各阶段之间传递事件：
 
-```
+```text
 ┌──────────┐  RingBuffer  ┌──────────┐  RingBuffer  ┌──────────┐
 │  Parser  │─────────────>│   Sink   │─────────────>│  Store   │
 │ (Producer)              │(Consumer/ │             │ (Consumer)
@@ -203,7 +203,7 @@ public interface CanalEventStore<T> extends CanalLifeCycle {
 
 **MemoryEventStoreWithBuffer 的核心设计**：
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │                  Disruptor RingBuffer                     │
 │                                                          │
@@ -271,7 +271,7 @@ Canal Server 将 Store 中的事件通过不同方式投递出去：
 
 以一条 `UPDATE` 语句为例，追踪数据在 Canal 中的完整流转：
 
-```
+```text
 1. MySQL Master 执行 UPDATE users SET name='Bob' WHERE id=1
                                     │
 2. 写入 Binlog (ROW格式)           │
@@ -329,7 +329,7 @@ Canal Server 将 Store 中的事件通过不同方式投递出去：
 
 ## 4.2 数据序列化链路
 
-```
+```text
 MySQL Binlog Event (binary)
         │
         ▼ (dbsync 驱动解析)
@@ -351,7 +351,7 @@ CanalEntry.Entry (Java Object in memory)
 
 ## 5.1 Canal Server 线程架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                       Canal Server JVM                           │
 │                                                                  │
@@ -553,7 +553,7 @@ DELETE 操作：
 
 ## 7.1 两层配置结构
 
-```
+```text
 canal.properties        ← Server 级别配置（全局）
     │
     └── instance/
@@ -608,7 +608,7 @@ canal.instance.tsdb.enable = true
 
 ## 7.2 配置优先级
 
-```
+```text
 命令行参数 (-Dxxx=yyy)
     │
     ▼

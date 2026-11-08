@@ -232,7 +232,7 @@ public class SentinelWebAutoConfiguration {
 
 # 9. 注解声明与执行流程
 
-```
+```text
 @SentinelResource("getUser")
 public User getUser(Long id)
   │

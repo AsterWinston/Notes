@@ -3,7 +3,7 @@
 
 Feign 的请求处理管道是一个**链式处理模型**，从用户方法调用到最终 HTTP 响应经过多个处理阶段：
 
-```
+```text
 用户调用 (proxy.method(args))
     │
     ▼
@@ -237,7 +237,7 @@ try {
 
 # 8. 请求/响应生命周期（完整时间线）
 
-```
+```text
 T1: userClient.getUser(1L)                    ← 用户代码调用
 T2: FeignInvocationHandler.invoke(...)          ← JDK 代理拦截
 T3: SynchronousMethodHandler.invoke([1L])       ← 方法处理器

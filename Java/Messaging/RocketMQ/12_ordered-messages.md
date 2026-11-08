@@ -10,7 +10,7 @@
 
 ## 1.1 为什么消息会乱序？
 
-```
+```text
 原因1: 多 MessageQueue 并行发送
   ┌─ Queue-0 → 消息1, 消息4
   └─ Queue-1 → 消息2, 消息3
@@ -69,7 +69,7 @@ consumer.start();
 
 ## 2.3 顺序消费的线程模型
 
-```
+```text
 MessageListenerConcurrently (并发)：
   Queue-0 → Thread-1 → msg1
           → Thread-2 → msg2
@@ -151,7 +151,7 @@ public class OrderedConsumer {
 
 ## 3.3 输出结果
 
-```
+```text
 # Producer:
 发送: orderId=1, step=创建订单, queue=0
 发送: orderId=1, step=支付订单, queue=0
@@ -212,7 +212,7 @@ public enum ConsumeOrderlyStatus {
 
 ## 5.1 SUSPEND_CURRENT_QUEUE_A_MOMENT 机制
 
-```
+```text
 消费失败 → 返回 SUSPEND_CURRENT_QUEUE_A_MOMENT
     │
     ├── 当前 Queue 的消费暂停 (suspendCurrentQueueTimeMillis, 默认 1s)

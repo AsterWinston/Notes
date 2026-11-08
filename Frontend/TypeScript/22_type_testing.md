@@ -178,7 +178,7 @@ npx tsc --noEmit          # 退出码 0 = 全部类型测试通过；非 0 = 有
 
 ## 4.3 类型测试的组织与运行
 
-```
+```text
  src/
  ├─ index.ts          库源码
  ├─ index.test.ts     运行时测试（验证值与行为）
@@ -218,7 +218,7 @@ npx tsc --noEmit --strict        # 显式带 --strict，保证本地与 CI 检�
 
 ## 5.1 .d.ts 快照与公共 API 报告
 
-```
+```text
  提交代码 ──► tsc --noEmit（类型测试）──► 产出 .d.ts ──► 与基线快照 diff
                  │                              │
                  ▼                              ▼

@@ -8,7 +8,7 @@
 
 机制拆解：一次用户请求从入口到出口经过多个服务与组件，每经过一个组件就产生一个 Span；所有 Span 共享同一 `traceId`，从而在存储中被还原成一棵树。
 
-```
+```text
 Trace   一次完整请求的调用链（有唯一 traceId）
   └── Span  链路上的一个操作（有唯一 spanId + parentSpanId）
         └── Span
@@ -38,7 +38,7 @@ public record SpanId(String traceId, String spanId, String parentSpanId) {
 
 机制拆解：根 Span 的 `parentSpanId` 为空；其余 Span 的父 ID 指向产生它的当前 Span。
 
-```
+```text
 Trace (traceId=abc)
 ├── Span A (spanId=1, parent=null)
 │   ├── Span B (spanId=2, parent=1)
@@ -144,7 +144,7 @@ span.setAttribute("llm.model", "gpt-4o");
 
 机制拆解：进程内通过 `Context.current()` 与 `makeCurrent()` 维护；跨进程通过注入/提取（inject/extract）写入载体。
 
-```
+```text
 HTTP Header: traceparent: 00-{traceId}-{spanId}-01
 （W3C Trace Context 标准）
 ```
@@ -312,7 +312,7 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 
 机制拆解：`makeCurrent()` 把 Span 设为当前，后续创建的 Span 自动成为其子。
 
-```
+```text
 正确：
 Span A (模型调用)
 └── Span B (工具调用)     parent = A

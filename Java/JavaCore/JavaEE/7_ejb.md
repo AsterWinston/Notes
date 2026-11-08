@@ -7,7 +7,7 @@ EJB（Enterprise JavaBeans）是 JavaEE 的**服务器端业务组件规范**，
 
 ## 1.2 EJB 解决的痛点
 
-```
+```text
 没有 EJB 前（手写）：
   业务方法 + 手动开启事务 + 手动鉴权 + 手动管理并发 + 手动连接池...
 
@@ -43,7 +43,7 @@ EJB（Enterprise JavaBeans）是 JavaEE 的**服务器端业务组件规范**，
 
 ## 2.1 类型选择
 
-```
+```text
 需要无状态服务、高并发（如查询、计算）  → @Stateless
 需要客户端会话状态（如购物车）          → @Stateful
 需要全局共享状态（如计数器、配置缓存）  → @Singleton
@@ -200,7 +200,7 @@ public class OrderMessageListener implements MessageListener {
 
 ## 7.1 无状态 Bean 生命周期
 
-```
+```text
 不存在
   │ 容器创建（池中）
   ▼
@@ -214,7 +214,7 @@ public class OrderMessageListener implements MessageListener {
 
 ## 7.2 有状态 Bean 生命周期
 
-```
+```text
 不存在
   │ @PostConstruct
   ▼
@@ -232,7 +232,7 @@ public class OrderMessageListener implements MessageListener {
 
 ## 7.3 单例 Bean 生命周期
 
-```
+```text
 不存在 → @PostConstruct → 就绪 → @PreDestroy → 不存在
 ```
 

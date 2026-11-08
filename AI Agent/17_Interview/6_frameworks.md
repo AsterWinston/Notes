@@ -86,7 +86,7 @@ A：前者是门面，提供流式、记忆、Advisor；后者只负责一次模
 
 **答**：类似 Servlet Filter / AOP 的拦截器链。
 
-```
+```text
 用户请求 → [Advisor1] → [Advisor2] → ChatModel → 反向返回
 ```
 

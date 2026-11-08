@@ -5,7 +5,7 @@
 
 应用服务器（Application Server）是**完整实现 JavaEE/Jakarta EE 全部规范**的服务端软件。它既是 WEB 服务器，也是 EJB 容器、CDI 容器、JPA 容器、事务管理器等。
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │              应用服务器                      │
 │  ┌─────────┐ ┌─────────┐ ┌──────────────┐   │
@@ -51,7 +51,7 @@
 
 ## 2.1 选型建议
 
-```
+```text
 学习/验证规范   → GlassFish、TomEE
 企业开源部署    → WildFly、Payara
 传统大企业      → WebLogic、WebSphere（存量系统）
@@ -85,7 +85,7 @@
 
 应用服务器启动时会把各种资源（数据源、JMS 连接工厂、EJB 等）注册到 JNDI 命名空间中，应用通过名称查找：
 
-```
+```text
 java:comp/env/jdbc/MyDS      # 数据源
 java:global/MyApp/HelloEJB   # 全局 EJB
 java:app/...                 # 应用级
@@ -123,7 +123,7 @@ Connection conn = ds.getConnection();
 | JAR | `.jar` | EJB 模块 / 普通类库 | 业务逻辑模块 |
 | EAR | `.ear` | 企业应用归档，包含多个 WAR/JAR + application.xml | 完整企业应用 |
 
-```
+```text
 myapp.ear
 ├── META-INF/
 │   └── application.xml       # EAR 部署描述符
@@ -163,7 +163,7 @@ myapp.ear
 
 ## 6.3 企业实践趋势
 
-```
+```text
 传统模式：  独立应用服务器 + 手工部署 EAR/WAR
 现代模式：  可执行 JAR + 内嵌容器 + 容器编排（Docker/K8s）
 ```

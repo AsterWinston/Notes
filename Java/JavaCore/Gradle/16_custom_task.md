@@ -7,7 +7,7 @@
 
 在 Gradle 中，每个 Task 本质上是一个实现了 `org.gradle.api.Task` 接口的 Java 类。Gradle 的内部实现中，`DefaultTask` 是所有自定义任务的推荐基类，它由 `TaskContainer` 通过 `ObjectFactory` 或反射机制进行实例化。
 
-```
+```text
 Gradle 任务生命周期
 ┌──────────────────────────────────────────────────┐
 │  1. 配置阶段 (Configuration Phase)                │
@@ -85,7 +85,7 @@ tasks.register<GreetingTask>("greet") {
 
 `DefaultTask` 内部维护了一个 `TaskStateInternal` 对象来跟踪任务执行状态，以及一个 `TaskActions` 列表来存储所有注册的动作。当任务被执行时，Gradle 会依次调用所有已注册的 `@TaskAction` 方法。
 
-```
+```text
 DefaultTask 内部结构
 ┌─────────────────────────────────────┐
 │ DefaultTask                         │
@@ -134,7 +134,7 @@ abstract class MultiStepTask extends DefaultTask {
 
 通过 DSL 注册的 `doFirst` 和 `doLast` 闭包与 `@TaskAction` 注解的执行顺序：
 
-```
+```text
 执行顺序 (由上到下):
 ┌──────────────────────────────┐
 │ doFirst { }                  │  ← DSL 注册，最先执行
@@ -246,7 +246,7 @@ Gradle 内部维护了一个 `InputChanges` 系统。当任务执行前，Gradle
 3. 将所有输入哈希组合为任务的缓存键
 4. 将缓存键与上一次构建的状态比较
 
-```
+```text
 缓存键计算流程
 ┌─────────────────────────────────────┐
 │ 1. 收集所有 @Input/@InputFile 属性   │
@@ -548,7 +548,7 @@ abstract class ModernIncrementalTask extends DefaultTask {
 
 ## 10.3 增量任务的内部机制
 
-```
+```text
 增量任务执行流程
 ┌────────────────────────────────────────┐
 │ 1. Gradle 检测 @Incremental 注解        │
@@ -640,7 +640,7 @@ abstract class TransformationTask extends DefaultTask {
 
 Property 接口定义在 `org.gradle.api.provider` 包中，其实现类（如 `DefaultProperty`）内部使用 `Provider` 来支持延迟求值。当 `get()` 被调用时，Property 会触发其内部的惰性计算链。
 
-```
+```text
 Property 延迟求值机制
 ┌──────────────────────────────────┐
 │ Property<String>                 │
@@ -829,7 +829,7 @@ abstract class WorkerModesTask extends DefaultTask {
 
 ## 13.4 Worker API 内部机制
 
-```
+```text
 Worker 执行流程
 ┌─────────────────────────────────────────────┐
 │ 主构建进程                                    │

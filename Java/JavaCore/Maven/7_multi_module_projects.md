@@ -73,7 +73,7 @@ mvn -N clean package
 ## 3.1 企业分层模块模式
 
 常见分层模式：
-```
+```text
 parent (pom, 聚合 + 父工程)
 ├── common          (公共工具、基础实体、异常)
 ├── domain          (领域模型、DDD 聚合根)
@@ -84,7 +84,7 @@ parent (pom, 聚合 + 父工程)
 ```
 
 依赖方向：
-```
+```text
 web -> service-api -> service-impl -> domain
                      service-impl -> repository -> domain
                                                repository -> common
@@ -111,7 +111,7 @@ mvn dependency:tree
 ```
 
 常见报错：
-```
+```text
 [ERROR] The projects in the reactor contain a cyclic reference: ...
 ```
 
@@ -197,7 +197,7 @@ mvn -T 1C install
 目标：构建一个典型的企业分层结构。
 
 模块示例：
-```
+```text
 company-parent
 ├── common
 ├── service-api

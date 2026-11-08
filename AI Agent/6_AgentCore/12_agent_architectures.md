@@ -29,7 +29,7 @@ Agent 架构回答三个根本问题：**谁来决定下一步（控制流归属
 
 ### 1.3.1 控制流的三种归属
 
-```
+```text
 控制流归属
 ├── 代码（Workflow）      路径预先写死，模型只在节点内做局部判断
 ├── 模型（Agent）         每一步由模型决定，路径运行时生成
@@ -56,7 +56,7 @@ Agent 架构回答三个根本问题：**谁来决定下一步（控制流归属
 
 结论先行：单体 Agent 把**规划、决策、执行、记忆**全部压进一次模型调用循环。
 
-```
+```text
 目标 → [LLM + 工具 + 记忆] → 结果
 ```
 
@@ -116,7 +116,7 @@ String answer = agent.chat("订单 A123 能退款吗？");
 
 结论先行：把"想"和"做"拆成两个角色——规划器产出步骤序列，执行器逐步执行，最后由汇总器整合。
 
-```
+```text
         ┌──────────┐
 目标 ──▶│  Planner │──▶ 步骤序列
         └──────────┘
@@ -211,7 +211,7 @@ if (isFailure(result) && replanBudget-- > 0) {
 
 结论先行：**上层定策略、下层做执行**，每层只对相邻层负责。
 
-```
+```text
 ┌─────────────────────────────┐
 │  决策层（Strategy Agent）    │  定目标、定策略
 └──────────────┬──────────────┘
@@ -276,7 +276,7 @@ public String run(String goal) {
 
 用节点和边显式描述控制流，兼顾确定性与灵活性：
 
-```
+```text
         ┌─────────┐
         │  START  │
         └────┬────┘
@@ -404,7 +404,7 @@ public String supervise(String goal) {
 
 ## 7.1 决策树
 
-```
+```text
 工具数量 < 10 且步骤短？
     ├── 是 → 单体 Agent
     └── 否 → 步骤能否预先规划？
@@ -436,7 +436,7 @@ public String supervise(String goal) {
 
 无论哪种架构，都应按组件拆分：
 
-```
+```text
 AgentService
 ├── Planner          规划
 ├── Executor         执行
@@ -463,7 +463,7 @@ public interface ToolRegistry {
 
 ## 8.3 依赖方向
 
-```
+```text
 AgentService → Planner / Executor / ToolRegistry / MemoryManager
      │                     │
      └──────────────► Observer（旁路，不反向依赖）

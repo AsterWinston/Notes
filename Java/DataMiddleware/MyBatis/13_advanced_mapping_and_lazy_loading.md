@@ -1,5 +1,5 @@
 # 1. 多对一
-```
+```text
 多种方式，常见的包括三种：
 
 第一种方式：一条SQL语句，级联属性映射。
@@ -7,7 +7,7 @@
 第三种方式：两条SQL语句，分步查询。（这种方式常用：优点一是可复用。优点二是支持懒加载。）
 ```
 ## 1.1 级联属性映射（cascade）
-```
+```text
 pojo类Student中添加一个属性：Clazz clazz; 表示学生关联的班级对象。
 
 编写sql语句：
@@ -40,7 +40,7 @@ public void testSelectById(){
 
 ```
 ## 1.2 association（resultMap配置中使用association）
-```
+```text
 其他位置都不需要修改，只需要修改resultMap中的配置：association即可。
 <resultMap id="studentResultMapAssociation" type="Student">
     <id property="sid" column="sid"/>
@@ -67,7 +67,7 @@ public void testSelectById(){
 ```
 
 ## 1.3 分步查询
-```
+```text
 其他位置不需要修改，只需要修改以及添加以下三处：
 第一处：association中select位置填写sqlId。sqlId=namespace+id。其中column属性作为这条子sql语句的条件。
 <!--两天SQl语句完成多对一的分步查询-->
@@ -127,7 +127,7 @@ public interface ClazzMapper {
 ```
 
 # 2. 多对一延迟加载
-```
+```text
 要想支持延迟加载，非常简单，只需要在association标签中添加fetchType="lazy"即可。
 修改StudentMapper.xml文件：
 <resultMap id="selectResultMapByStep" type="Student">
@@ -152,16 +152,16 @@ public void testSelectByIdStepOne(){
     sqlSession.close();
 }
 
-在association标签中设置fetchType=“lazy”，只在当前association关联的sql语句中生效，如果需要添加全局设置，则需要在mybatis-config.xml中配置一下：
+在association标签中设置fetchType="lazy"，只在当前association关联的sql语句中生效，如果需要添加全局设置，则需要在mybatis-config.xml中配置一下：
 <settings>
     <setting name="lazyLoadingEnabled" value="true"/>
 </settings>
-如果开启了全局懒加载配置，但是在某个association中不希望使用懒加载，则在association中设置属性：fetchType=“eager”
+如果开启了全局懒加载配置，但是在某个association中不希望使用懒加载，则在association中设置属性：fetchType="eager"
 
 启动 MyBatis 的懒加载（lazy loading）后返回的对象是一个代理对象（Proxy）。这时候，只有当使用getXxx()方法获取该对象属性里的级联对象时，才会执行相应的SQL，这就是反射机制的功劳了
 ```
 # 3. 一对多
-```
+```text
 一对多的实现，通常是在一的一方中有List集合属性。
 在Clazz类中添加List stus; 属性。
 
@@ -172,7 +172,7 @@ public void testSelectByIdStepOne(){
 ```
 
 ## 3.1 collection
-```
+```xml
 <resultMap id="clazzResultMap" type="Clazz">
     <id property="cid" column="cid"/>
     <result property="cname" column="cname"/>
@@ -194,7 +194,7 @@ public void testSelectByIdStepOne(){
 
 ```
 ## 3.2 分步查询
-```
+```text
 与多对一的分步查询类似
 <resultMap id="clazzResultMapByStep" type="Clazz">
     <id property="cid" column="cid"/>
@@ -214,6 +214,6 @@ public void testSelectByIdStepOne(){
 
 ```
 # 4. 一对多延迟加载
-```
+```text
 与多对一相同
 ```

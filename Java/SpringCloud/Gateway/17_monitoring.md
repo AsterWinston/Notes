@@ -3,7 +3,7 @@
 
 Spring Cloud Gateway 的可观测性包括三个支柱：指标（Metrics）、日志（Logging）、追踪（Tracing）。
 
-```
+```text
 可观测性
     ├── Metrics（指标）
     │       ├── 请求量、成功率、延迟
@@ -205,7 +205,7 @@ scrape_configs:
 
 推荐监控面板指标：
 
-```
+```text
 1. 请求总览
    - 总请求速率（QPS）
    - 各路由请求速率

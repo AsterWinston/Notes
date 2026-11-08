@@ -9,7 +9,7 @@
 
 ## 1.2 纵深防御
 
-```
+```text
 网络层：防火墙（iptables/nftables）
 主机层：SELinux/AppArmor、文件权限
 应用层：运行非 root 用户、沙箱
@@ -157,7 +157,7 @@ sudo chattr +a /var/log/auth.log
 
 PAM（Pluggable Authentication Modules）提供可插拔的认证模块体系：
 
-```
+```text
 应用程序（login, sshd, sudo...）
     ↓
 PAM 配置（/etc/pam.d/）

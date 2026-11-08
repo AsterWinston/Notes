@@ -34,7 +34,7 @@ Sentinel 作为 Spring Cloud Alibaba 的核心组件，通过 `spring-cloud-star
 
 `SentinelWebInterceptor` 自动将所有 Spring MVC 请求作为 Sentinel 资源保护：
 
-```
+```text
 HTTP 请求 → DispatcherServlet
   → SentinelWebInterceptor.preHandle()
     → SphU.entry("GET:/api/user/{id}")

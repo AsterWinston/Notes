@@ -232,7 +232,7 @@ public class FormEncoder implements Encoder {
 
 # 8. MultipartFile 传递原理
 
-```
+```text
 调用方：
   @RequestPart("file") MultipartFile file
     │

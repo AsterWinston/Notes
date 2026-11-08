@@ -6,7 +6,7 @@
 
 **原理**：注意力输出是值向量（Value）按注意力权重的加权和，而权重由查询（Query）与键（Key）的点积决定。若把输入序列的位置 i、j 互换，注意力矩阵相应行列互换，输出也只是同一组向量的重新排列，语义不发生变化。
 
-```
+```text
 置换不变性示意：
 
 输入顺序 A：我  爱  你
@@ -25,7 +25,7 @@
 
 ### 1.1.2 一个具体反例
 
-```
+```text
 句子："狗 咬 人" vs "人 咬 狗"
 
 词袋相同 {狗, 咬, 人}
@@ -77,7 +77,7 @@
 
 **公式**：设位置为 pos、维度下标为 i、模型维度为 d_model：
 
-```
+```text
 PE(pos, 2i)   = sin(pos / 10000^(2i/d_model))
 PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))
 ```
@@ -90,7 +90,7 @@ PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))
 
 频率按几何级数排列：
 
-```
+```text
 波长_i = 2π · 10000^(2i/d_model)
 
 i = 0    → 波长最短（变化最快，负责精细位置）
@@ -129,7 +129,7 @@ def positional_encoding(seq_len, d_model):
 
 **公式**：对任意固定位移 k，存在与 pos 无关的矩阵 M_k，使得：
 
-```
+```text
 PE(pos + k) = M_k · PE(pos)
 ```
 
@@ -137,7 +137,7 @@ PE(pos + k) = M_k · PE(pos)
 
 ### 2.3.1 推导示意
 
-```
+```text
 sin(pos+k) = sin(pos)cos(k) + cos(pos)sin(k)
 cos(pos+k) = cos(pos)cos(k) - sin(pos)sin(k)
 
@@ -208,7 +208,7 @@ x = token_embedding + self.pos_embedding(positions)
 
 ## 4.1 核心思想
 
-```
+```text
 核心思想：
   把位置信息编码为"旋转角度"
   两个位置的相对角度决定它们的相对位置
@@ -221,7 +221,7 @@ x = token_embedding + self.pos_embedding(positions)
 
 **公式**：二维向量 (x1, x2) 旋转角度 θ：
 
-```
+```text
 [x1']   [cosθ  -sinθ] [x1]
 [x2'] = [sinθ   cosθ] [x2]
 ```
@@ -230,7 +230,7 @@ x = token_embedding + self.pos_embedding(positions)
 
 ### 4.1.2 高维分组
 
-```
+```text
 d 维向量 → d/2 个二维子空间
 第 i 组旋转角 θ_i(pos) = pos · base^(-2i/d)
 base 通常取 10000
@@ -242,7 +242,7 @@ base 通常取 10000
 
 **公式**：设旋转频率 ω_i = base^(-2i/d)，位置 pos 的旋转矩阵为分块对角矩阵 R(pos)，则：
 
-```
+```text
 (R(m)q)ᵀ (R(n)k) = qᵀ R(m)ᵀ R(n) k
                  = qᵀ R(n - m) k
 ```
@@ -312,7 +312,7 @@ RoPE 只旋转 Q、K，不改变 V，因此缓存 K 时通常缓存"旋转后"�
 
 ## 5.1 核心思想
 
-```
+```text
 不加位置编码，而是在注意力分数上加一个与距离成正比的惩罚：
 
   score(i, j) = q_i · k_j - m × |i - j|
@@ -330,7 +330,7 @@ RoPE 只旋转 Q、K，不改变 V，因此缓存 K 时通常缓存"旋转后"�
 
 **公式**：不同头使用几何级数的斜率 m_h：
 
-```
+```text
 m_h = 2^(-(h+1)/H),  h = 0, 1, ..., H-1
 ```
 
@@ -380,7 +380,7 @@ def alibi_bias(num_heads, seq_len):
 
 ## 6.1 问题来源
 
-```
+```text
 训练长度 4K，推理要用 32K → 直接外推效果会崩
 ```
 
@@ -394,7 +394,7 @@ def alibi_bias(num_heads, seq_len):
 
 **公式**：把推理位置压缩回训练范围：
 
-```
+```text
 scaled_positions = positions * (train_len / inference_len)
 ```
 
@@ -412,7 +412,7 @@ scaled_positions = positions * (train_len / inference_len)
 
 **原理**：不压缩位置，而是调整 RoPE 的 base，让低频分量变化更慢、高频基本不变，从频域上缓解失配。
 
-```
+```text
 base' = base × (inference_len / train_len)^(d/(d-2))
 ```
 
@@ -533,7 +533,7 @@ base' = base × (inference_len / train_len)^(d/(d-2))
 
 ## 9.2 记忆口诀
 
-```
+```text
 正弦无参但有界，学习灵活难外推
 RoPE 旋转看相对，主流 LLM 都在用
 ALiBi 线性加偏置，斜率多尺度外推

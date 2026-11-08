@@ -4,7 +4,7 @@
 
 Redisson 是一个基于 Java 的 Redis 智能客户端，提供了众多丰富的分布式服务和数据结构，远不止是一个 Redis 客户端。它构建在 Redis 核心之上，将 Redis 从键值存储升级为具有内存数据网格（IMDG）能力的全功能分布式系统。
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                         Redisson 生态                             │
 ├─────────────────────────────────────────────────────────────────┤
@@ -21,7 +21,7 @@ Redisson 是一个基于 Java 的 Redis 智能客户端，提供了众多丰富�
 
 Redisson 采用分层的架构设计：
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │  用户应用（业务代码）                                    │
 ├──────────────────────────────────────────────────────┤
@@ -580,7 +580,7 @@ Redisson 的分布式锁默认启用看门狗（Watchdog）机制，自动续期
 
 **工作原理**：
 
-```
+```text
 1. 调用 lock() 加锁（不含 leaseTime 参数）
 2. Redis 中创建 key，默认过期时间 30 秒
 3. Redisson 启动一个后台定时任务（每 10 秒执行一次）
@@ -736,7 +736,7 @@ BatchResult<?> result = batch.execute();
 
 Redisson 基于 Netty 框架构建异步客户端。连接管理器（ConnectionManager）维护到 Redis 服务器的连接池。
 
-```
+```text
 ┌────────────┐     ┌───────────────────┐     ┌────────────┐
 │  业务线程   │────►│   CommandAsync    │────►│   Channel  │
 │            │     │   Service         │     │   (Netty)  │
@@ -753,7 +753,7 @@ Redisson 基于 Netty 框架构建异步客户端。连接管理器（Connection
 
 ### 4.2.1 加锁流程（简化）
 
-```
+```text
 lock.lock()
     │
     ├─ 1. 尝试加锁（Lua 脚本）
@@ -770,7 +770,7 @@ lock.lock()
 
 ### 4.2.2 解锁流程
 
-```
+```text
 unlock()
     │
     ├─ 1. Lua 脚本检查持有者
@@ -786,7 +786,7 @@ unlock()
 
 Redisson 的锁使用 Redis Hash 存储：
 
-```
+```text
 key: "mylock"
 field: "UUID:ThreadId" (持有者标识)
 value: 重入计数
@@ -801,7 +801,7 @@ mylock = {
 
 Redisson 的 RedLock 遵循 Martin Kleppmann 和 Redis 作者 antirez 讨论的 RedLock 算法：
 
-```
+```text
 客户端获取当前时间 T1
 对于 N 个 Redis 节点（N=3 或 5，通常 5）：
     for node in nodes:
@@ -820,7 +820,7 @@ Redisson 的 RedLock 遵循 Martin Kleppmann 和 Redis 作者 antirez 讨论的 
 
 Redisson 利用 Redis 的 Pub/Sub 实现分布式锁的等待通知：
 
-```
+```text
 加锁失败时：
 1. 订阅频道 "__keyevent@db__:2:__:mylock"
 2. 阻塞等待信号量 Semaphore

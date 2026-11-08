@@ -28,7 +28,7 @@ panic = "abort"    # 直接终止，不展开栈（体积更小、性能略好�
 
 ## 1.3 何时用 panic
 
-```
+```text
 应该 panic：
   - 程序 bug（逻辑上不可能发生的状态）
   - 测试代码、原型、示例
@@ -179,7 +179,7 @@ fn work() -> Result<(), Box<dyn Error>> {
 
 ## 4.3 thiserror 与 anyhow
 
-```
+```text
 thiserror      // 为库定义结构化错误枚举（derive 自动实现 Error/From）
 anyhow         // 为应用简化错误处理（anyhow::Result<T>、context 附加信息）
 ```

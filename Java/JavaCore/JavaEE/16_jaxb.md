@@ -5,7 +5,7 @@
 
 JAXB（Java Architecture for XML Binding）是 JavaEE 的 **XML 绑定规范**，实现 **Java 对象 ↔ XML 文档** 的双向映射：
 
-```
+```text
 Java 对象 ──marshal──► XML 文档
 Java 对象 ◄──unmarshal── XML 文档
 ```

@@ -179,7 +179,7 @@ public UserClient userClient() {
 
 # 7. 多个拦截器的执行顺序
 
-```
+```text
 RequestTemplate 创建
     │
     ├── RequestInterceptor A  (先注册的先执行)
@@ -209,7 +209,7 @@ public class AuthInterceptor implements RequestInterceptor { }
 
 # 8. 源码流程
 
-```
+```text
 SynchronousMethodHandler.invoke(args)
   │
   ├── 构建 RequestTemplate

@@ -80,7 +80,7 @@ Kafka 重度依赖操作系统的页缓存来缓存最近写入和读取的数�
 
 Kafka 使用 `sendfile()` 系统调用，数据直接从磁盘文件传输到网卡，不经过用户态内存拷贝：
 
-```
+```text
 传统路径：Disk → Kernel Buffer → User Buffer → Socket Buffer → NIC
 零拷贝：Disk → Kernel Buffer → Socket Buffer → NIC (sendfile)
 ```
@@ -98,19 +98,19 @@ Topic 被分割为多个 Partition，生产者和消费者可以在不同分区�
 
 ### 1.5.1 日志收集与聚合
 
-```
+```text
 App → FileBeat/Kafka Producer → Kafka Cluster → Logstash/Flume → Elasticsearch
 ```
 
 ### 1.5.2 消息系统（解耦、削峰、异步）
 
-```
+```text
 Order Service → Kafka → Inventory Service / Payment Service / Notification Service
 ```
 
 ### 1.5.3 流处理
 
-```
+```text
 User Click Stream → Kafka → Kafka Streams → Real-time Dashboard
 ```
 
@@ -120,19 +120,19 @@ Kafka 作为不可变事件日志，记录所有状态变更事件，系统可�
 
 ### 1.5.5 CDC（Change Data Capture）
 
-```
+```text
 MySQL Binlog → Debezium (Kafka Connect) → Kafka → Hive/HBase/ClickHouse
 ```
 
 ### 1.5.6 指标与监控
 
-```
+```text
 Metrics Agent → Kafka → Flink/Spark Streaming → Time-series DB (InfluxDB/Prometheus)
 ```
 
 ## 1.6 Kafka 生态体系
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    Kafka Ecosystem                          │
 ├───────────────┬──────────────┬───────────────┬──────────────┤

@@ -203,7 +203,7 @@ configurations {
 
 Spring Boot 可执行 JAR 的目录布局：
 
-```
+```text
 myapp-1.0.0.jar
 │
 ├── META-INF/
@@ -243,7 +243,7 @@ myapp-1.0.0.jar
 
 MANIFEST.MF 内容示例：
 
-```
+```text
 Manifest-Version: 1.0
 Created-By: Gradle 8.7
 Main-Class: org.springframework.boot.loader.JarLauncher
@@ -257,7 +257,7 @@ Spring-Boot-Layers-Index: BOOT-INF/layers.idx
 
 ## 2.4 Spring Boot Loader 启动机制
 
-```
+```text
 用户执行: java -jar myapp.jar
     │
     ▼
@@ -302,7 +302,7 @@ Spring-Boot-Layers-Index: BOOT-INF/layers.idx
 
 分层 JAR 将应用内容按变更频率分成不同层级，最大化 Docker 层缓存利用率：
 
-```
+```text
 ┌─────────────────────────────────────┐
 │  Layer: dependencies                │ ← 变更频率: 极低
 │  (SNAPSHOT 之外的第三方依赖)         │    缓存命中率: 很高
@@ -414,7 +414,7 @@ ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
 
 分层 JAR 提取后的目录：
 
-```
+```text
 /app/
 ├── dependencies/
 │   └── BOOT-INF/lib/  (不含 SNAPSHOT 的第三方 JAR)
@@ -432,7 +432,7 @@ ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
 
 `BOOT-INF/layers.idx` 是分层信息的索引文件：
 
-```
+```text
 - "dependencies":
   - "BOOT-INF/lib/spring-beans-6.1.8.jar"
   - "BOOT-INF/lib/spring-core-6.1.8.jar"
@@ -556,7 +556,7 @@ bootBuildImage {
 
 ## 4.3 构建包原理
 
-```
+```text
 ┌──────────────────────────────────────────────────┐
 │              bootBuildImage 任务                  │
 ├──────────────────────────────────────────────────┤
@@ -682,7 +682,7 @@ tasks.named('compileAot') {
 
 AOT 生成的源码位于：
 
-```
+```text
 build/generated/aotSources/
 ├── com/example/
 │   └── Application__ApplicationContextInitializer.java
@@ -698,7 +698,7 @@ build/generated/aotSources/
 
 ## 5.2 AOT 工作流程
 
-```
+```text
 执行 ./gradlew processAot
     │
     ▼
@@ -917,7 +917,7 @@ publishing {
 
 ## 8.1 多模块项目结构
 
-```
+```text
 spring-boot-multi-module/
 ├── settings.gradle.kts
 ├── build.gradle.kts

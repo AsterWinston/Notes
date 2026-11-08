@@ -6,7 +6,7 @@
 
 ## 1.1 三要素
 
-```
+```text
 Embabel Agent = 目标 + 动作 + 条件
   ├── 目标：要达成什么
   ├── 动作：能做什么
@@ -46,7 +46,7 @@ Agent 本身不实现搜索算法，它把动作与目标注册到规划器，�
 
 ### 1.2.2 Agent 是动作的容器
 
-```
+```text
 Agent
   ├── Action A (Pre, Effect)
   ├── Action B (Pre, Effect)
@@ -150,7 +150,7 @@ public class TravelAgent {
 
 前置条件是动作执行的前提，必须是确定状态才能执行；规划器据此搜索路径。
 
-```
+```text
 Precondition（前置条件）：动作执行的前提
   - 必须是确定状态才能执行
   - 规划器据此搜索路径
@@ -170,7 +170,7 @@ Precondition（前置条件）：动作执行的前提
 
 效果是声明式的：规划器不理解动作内部逻辑，只信任你声明的状态变化。
 
-```
+```text
 Effect（效果）：动作执行后的状态变化
   - 声明式，规划器据此推演
 ```
@@ -241,7 +241,7 @@ public void retrieve(AgentContext ctx, String question) {
 | LLM 动作 | 调用模型 | 非确定 | 分析、生成 |
 | 工具动作 | 调用外部 API | 依赖外部 | 检索、集成 |
 
-```
+```text
 原生动作 ── 确定逻辑
 LLM 动作 ── 判断/生成
 工具动作 ── 外部世界

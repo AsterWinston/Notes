@@ -23,7 +23,7 @@ SLF4J 由 Log4j 创始人 Ceki Gülcü 创建。他在设计 Logback 时意识�
 
 SLF4J 的架构分为三层：
 
-```
+```text
 +-------------------+     +------------------+
 |   应用程序代码      |     |   遗留日志调用     |
 |   (使用 SLF4J API) |     | (JCL, Log4j, JUL)|
@@ -313,7 +313,7 @@ SLF4JBridgeHandler.install();
 
 ### 4.4.4 桥接关系总览
 
-```
+```text
 +----------------+      +-------------------+
 | commons-logging| ---> | jcl-over-slf4j     |
 | 调用方         |      | (替代 commons-log) |
@@ -650,7 +650,7 @@ log.info("Credit card: {}", creditCard);  // NEVER DO THIS
 ### 8.2.1 类路径上有多个 SLF4J 绑定
 
 错误信息：
-```
+```text
 SLF4J: Class path contains multiple SLF4J bindings.
 SLF4J: Found binding in [jar:file:.../logback-classic-1.2.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
 SLF4J: Found binding in [jar:file:.../log4j-slf4j-impl-2.14.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
@@ -661,7 +661,7 @@ SLF4J: Found binding in [jar:file:.../log4j-slf4j-impl-2.14.0.jar!/org/slf4j/imp
 ### 8.2.2 SLF4J 绑定失败（NOP Logger）
 
 错误信息：
-```
+```text
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 ```
@@ -670,7 +670,7 @@ SLF4J: Defaulting to no-operation (NOP) logger implementation
 
 ### 8.2.3 桥接循环导致栈溢出
 
-```
+```text
 Exception in thread "main" java.lang.StackOverflowError
     at org.slf4j.LoggerFactory.getLogger(...)
     at org.apache.log4j.Logger.getLogger(...)
@@ -678,7 +678,7 @@ Exception in thread "main" java.lang.StackOverflowError
 ```
 
 原因：同时存在 `log4j-over-slf4j` 和 `slf4j-log4j12`，形成调用循环：
-```
+```text
 SLF4J -> log4j-over-slf4j -> SLF4J -> slf4j-log4j12 -> Log4j -> log4j-over-slf4j -> ...
 ```
 

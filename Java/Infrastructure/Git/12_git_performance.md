@@ -153,7 +153,7 @@ git sparse-checkout set src/app
 
 Git LFS 将大文件替换为指针文件，实际内容存储在远程 LFS 服务器：
 
-```
+```text
 仓库中存储（指针文件）：
 version https://git-lfs.github.com/spec/v1
 oid sha256:abc123def456...

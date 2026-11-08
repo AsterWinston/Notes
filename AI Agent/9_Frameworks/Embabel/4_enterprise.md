@@ -82,7 +82,7 @@ public AgentContext agentContext() {
 
 ## 2.1 分层职责
 
-```
+```text
 Controller → Service → AgentRunner → Agent（GOAP）
                           │
                           └── ChatClient / Tools
@@ -159,7 +159,7 @@ public class TravelService {
 
 ## 3.1 职责划分
 
-```
+```text
 Embabel 负责"目标规划"
 Spring AI 负责"模型调用与 RAG"
 

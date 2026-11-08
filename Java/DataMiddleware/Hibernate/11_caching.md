@@ -11,7 +11,7 @@
 
 典型的缓存分层架构如下：
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │              应用层缓存                    │
 │   (Spring Cache / Caffeine / Redis)      │
@@ -60,7 +60,7 @@ Hibernate 提供了三个层次的缓存机制：
 
 当调用 `session.find()`、`session.get()` 或 `session.byId().load()` 等方法时，Hibernate 的执行流程如下：
 
-```
+```text
 1. 计算 EntityKey = (实体Class, id值)
 2. 查找 PersistenceContext Map 中是否存在该 EntityKey
    ├─ 存在 → 直接返回缓存的实体引用（不执行 SQL）
@@ -254,7 +254,7 @@ statelessSession.close();
 - **按实体类型组织**：每种实体类型对应一个独立的缓存区域（Cache Region）
 - **数据结构**：`CacheKey → 缓存值`，CacheKey 由实体类型 + ID + 某些上下文信息组成
 
-```
+```text
 SessionFactory
   ├── 二级缓存
   │    ├── Region: com.example.Book
@@ -448,7 +448,7 @@ public class ConfigParam {
 
 **更新流程**：
 
-```
+```text
 1. 事务开始
 2. 从缓存中读取实体
 3. 修改实体属性
@@ -570,7 +570,7 @@ public class Book {
 
 **决策参考**：
 
-```
+```text
 读取频率 / 写入频率 > 10 → 强烈推荐缓存
 读取频率 / 写入频率 在 3~10 之间 → 值得缓存
 读取频率 / 写入频率 < 3 → 不建议缓存
@@ -743,7 +743,7 @@ public class Employee {
 
 **工作流程**：
 
-```
+```text
 第一次执行查询：
   ┌─────────────────────────────────────────────┐
   │ 1. 执行 SQL，获取结果集                        │
@@ -766,7 +766,7 @@ public class Employee {
 
 **关键关系**：查询缓存**依赖二级缓存**。如果实体没有启用二级缓存，查询缓存的作用非常有限：
 
-```
+```text
 无二级缓存时的查询缓存：
   → 从查询缓存拿到 ID 列表
   → 每个 ID 都无法从二级缓存拿到实体
@@ -872,7 +872,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
 Hibernate 内部维护一个 `TimestampsCache` 区域，结构如下：
 
-```
+```text
 TimestampsCache = {
     "com.example.Book"    → 1716000000000 (该表最近更新时间戳)
     "com.example.Author"  → 1716000000000
@@ -883,7 +883,7 @@ TimestampsCache = {
 
 每个查询缓存条目存储时记录：
 
-```
+```text
 QueryCacheEntry {
     queryKey: "from Book where price > ?__[50.00]",
     result: [1L, 5L, 8L, 12L],
@@ -2214,7 +2214,7 @@ public class HibernateCacheMetricsBinder {
 
 ## 7.2 缓存策略选择决策树
 
-```
+```text
 开始
   │
   ├─ 数据是否会被修改？
@@ -2270,7 +2270,7 @@ public class HibernateCacheMetricsBinder {
 
 ### 7.3.2 内存估算公式
 
-```
+```text
 缓存内存占用 ≈ 条目数 × (实体序列化后大小 + 缓存 Key 开销)
               + 集合缓存条目数 × (ID 列表大小)
               + 查询缓存条目数 × (ID 列表大小 + 查询键大小)
@@ -2329,7 +2329,7 @@ System.out.println("磁盘条目数: " + regionStats.getElementCountOnDisk());
 
 在多节点集群中，每个节点可能持有同一实体的旧版本缓存数据：
 
-```
+```text
 节点 A：缓存中 Book#1.title = "旧版本"
 节点 B：缓存中 Book#1.title = "新版本"（刚更新了数据库）
 用户请求负载到节点 A → 读到旧数据
@@ -2339,7 +2339,7 @@ System.out.println("磁盘条目数: " + regionStats.getElementCountOnDisk());
 
 **策略一：失效广播（Invalidation Broadcasting）**
 
-```
+```text
 更新流程：
   节点A 更新 Book#1
     → 更新数据库
@@ -2355,7 +2355,7 @@ System.out.println("磁盘条目数: " + regionStats.getElementCountOnDisk());
 
 **策略二：更新广播（Update Broadcasting）**
 
-```
+```text
 更新流程：
   节点A 更新 Book#1
     → 更新数据库
@@ -2368,7 +2368,7 @@ System.out.println("磁盘条目数: " + regionStats.getElementCountOnDisk());
 
 **策略三：外部消息队列通知**
 
-```
+```text
 更新流程：
   节点A 更新 Book#1
     → 更新数据库
@@ -2406,7 +2406,7 @@ public class DebeziumEventListener {
 
 对于大多数场景，推荐以下组合：
 
-```
+```text
 数据库变更 → Debezium CDC → Kafka → 消费者 → 调用 Cache.evict()
                                        ↓
                                所有节点清除缓存
@@ -2414,7 +2414,7 @@ public class DebeziumEventListener {
 
 或更简单的方案（单数据源 + 多应用节点）：
 
-```
+```text
 应用节点 A 写入成功 → 发送缓存失效事件（Redis Pub/Sub / MQ）
                     → 所有节点（包括自身）清除相关缓存
 ```
@@ -2521,7 +2521,7 @@ public class HibernateCacheEndpoint {
 
 **定义**：查询的数据在缓存和数据库中都不存在，每次请求都穿透缓存直接查询数据库。
 
-```
+```text
 客户端 → 查询不存在的数据 → 缓存未命中 → 查询数据库 → 也不存在 → 返回空
                                                                     ↓
 客户端 → 再次查询相同不存在数据 → 缓存仍未命中 → 再次查询数据库（穿透！）
@@ -2604,7 +2604,7 @@ public class BookExistenceFilter {
 
 **定义**：热点数据缓存到期，大量并发请求同时涌入数据库。
 
-```
+```text
 时间线：
   T0: 热门 Book#1 的缓存在 TTL 到期后被清除
   T1: 1000 个并发请求同时查询 Book#1
@@ -2726,7 +2726,7 @@ public class NeverExpireCacheService {
 
 **定义**：大量缓存 key 在同一时间点过期，所有请求同时涌向数据库。
 
-```
+```text
 原因：
   - 缓存预热时所有 key 设置了相同的 TTL
   - 缓存服务重启导致所有 key 同时失效
@@ -2822,7 +2822,7 @@ public class AvalancheProtectionService {
 
 **Cache-Aside（旁路缓存）——最常用**
 
-```
+```text
 读流程：
   1. 查询缓存
   2. 命中 → 返回
@@ -2853,7 +2853,7 @@ public Book updateBook(Long id, BookDto dto) {
 
 **Read-Through（读穿透）**
 
-```
+```text
 读流程：
   1. 查询缓存
   2. 命中 → 返回
@@ -2866,7 +2866,7 @@ Hibernate 的二级缓存+实体缓存近似实现了 Read-Through 模式（通�
 
 **Write-Through（写穿透）**
 
-```
+```text
 写流程：
   1. 更新缓存
   2. 缓存层自动同步更新数据库
@@ -2879,7 +2879,7 @@ Hibernate 的 `READ_WRITE` 策略部分近似（先更新 DB，再更新缓存�
 
 **Write-Behind（异步写回）**
 
-```
+```text
 写流程：
   1. 只更新缓存
   2. 异步批量同步到数据库

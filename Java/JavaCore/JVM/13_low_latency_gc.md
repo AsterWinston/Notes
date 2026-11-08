@@ -30,7 +30,7 @@
 
 ZGC 的 64 位指针利用高位 bit 存储元数据：
 
-```
+```text
 64位指针布局：
 ┌────────────┬──────────┬───────────────────┐
 │ 42位地址   │ 4位状态  │ 18位保留          │
@@ -48,7 +48,7 @@ ZGC 的 64 位指针利用高位 bit 存储元数据：
 
 ## 2.3 ZGC 回收阶段
 
-```
+```text
 ┌─────────────┐   ┌────────────┐   ┌─────────────┐
 │   标记       │   │   转移      │   │   重定位     │
 │  (Mark)     │ → │ (Relocate) │ → │  (Remap)    │
@@ -71,7 +71,7 @@ ZGC 的 64 位指针利用高位 bit 存储元数据：
 - ZGC 使用读屏障（而非写屏障），在读取对象引用时检查指针颜色。
 - 如果读到"已转移"的指针，自修复——更新引用指向新位置。
 
-```
+```text
 读屏障伪代码：
 oop load_barrier(oop* field, oop value) {
     if (is_bad_color(value)) {
@@ -138,7 +138,7 @@ oop load_barrier(oop* field, oop value) {
 - 并发转移时，先在旧对象的前向指针处写入新地址。
 - 其他线程通过这个指针自动找到新位置。
 
-```
+```text
 并发转移过程：
 1. 拷贝对象到新位置
 2. CAS 设置旧对象前向指针指向新位置
@@ -148,7 +148,7 @@ oop load_barrier(oop* field, oop value) {
 
 ## 3.4 Shenandoah 回收阶段
 
-```
+```text
 初始标记 [STW, 极短] → 扫描 GC Roots 直接引用
 并发标记 [并发]       → 遍历整个堆
 最终标记 [STW, 短]    → 处理标记队列（SATB）+ 计算回收区域
@@ -186,7 +186,7 @@ oop load_barrier(oop* field, oop value) {
 
 # 5. GC 选择建议
 
-```
+```text
 你是客户端/小堆（<100MB）？
   → -XX:+UseSerialGC
 
@@ -210,7 +210,7 @@ java -XX:+UseZGC -Xmx16g -Xlog:gc* -jar app.jar
 ```
 
 日志示例：
-```
+```text
 [0.123s] GC(0) G1 Pause Young (Normal) (G1 Evacuation Pause) 
 [0.123s] GC(1) ZGC Pause Mark Start 0.143ms
 [15.234s] GC(1) ZGC Concurrent Mark 1456.789ms

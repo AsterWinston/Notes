@@ -1,7 +1,7 @@
 ﻿
 # 1. 整体架构
 
-```
+```text
                           NameServer 集群
                     /           |           \
               (路由注册)    (路由注册)    (路由注册)
@@ -25,7 +25,7 @@
 
 ## 1.2 核心通信流程
 
-```
+```text
 1. Broker 启动，向所有 NameServer 注册 Topic 路由信息
 2. Producer 从 NameServer 获取 Topic 路由信息，建立长连接
 3. Producer 发送消息到 Broker Master
@@ -55,7 +55,7 @@
 - MessageQueue = BrokerName + QueueId
 - **作用**：并行写入、有序消费、负载均衡
 
-```
+```text
 Topic: order_topic
 ├── MessageQueue-0  [Broker-a, qid=0]
 ├── MessageQueue-1  [Broker-a, qid=1]
@@ -75,7 +75,7 @@ Topic: order_topic
 
 ## 2.5 Offset（偏移量）
 
-```
+```text
 类型          存储位置         描述
 ─────────────────────────────────────
 QueueOffset   消息在队列中位置  消息唯一标识
@@ -85,7 +85,7 @@ MaxOffset     队列最大偏移量    最新消息位置
 
 # 3. 消息生命周期
 
-```
+```text
 [Producer]
     │
     ▼
@@ -112,7 +112,7 @@ MaxOffset     队列最大偏移量    最新消息位置
 
 RocketMQ 4.x 使用自研的 **Netty Remoting** 层：
 
-```
+```text
 ┌──────────────────────────────────────┐
 │          Remoting Protocol           │
 ├──────────┬───────────────────────────┤

@@ -11,7 +11,7 @@ Spring AMQP中的消息发送主要围绕`RabbitTemplate`展开，提供两种�
 `convertAndSend`是实际项目中最常用的方法，因为它会自动调用`MessageConverter`将Java对象转换为`Message`。
 
 ## 1.2 RabbitTemplate的核心架构
-```
+```text
 RabbitTemplate
   ├── ConnectionFactory（获取连接和Channel）
   ├── MessageConverter（对象<->Message转换）
@@ -77,7 +77,7 @@ public class OrderMessageService {
 ```
 
 ## 2.3 convertAndSend的内部流程
-```
+```text
 convertAndSend(exchange, routingKey, object)
   |
   ├── 1. 调用 MessageConverter.toMessage(object)
@@ -214,7 +214,7 @@ public class PullMessageService {
 ## 5.1 什么是RPC模式
 RabbitMQ的RPC模式允许客户端发送请求消息后，等待服务端处理并返回响应消息。
 
-```
+```text
 Client                          Server
   |                                |
   |-- 发送请求到 request.queue --> |

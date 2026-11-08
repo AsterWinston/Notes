@@ -136,7 +136,7 @@ public class HttpsConfig {
 
 ## 4.2 HSTS 响应头
 
-```
+```text
 Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 ```
 

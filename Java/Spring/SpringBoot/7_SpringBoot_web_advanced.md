@@ -227,7 +227,7 @@ public void addInterceptors(InterceptorRegistry registry) {
 ```
 
 执行流程：
-```
+```text
 FirstInterceptor.preHandle()
   → SecondInterceptor.preHandle()
     → Controller.method()
@@ -528,7 +528,7 @@ public class ScheduledTasks {
 ```
 
 ## 6.3 Cron表达式说明
-```
+```text
 ┌────────── 秒 (0-59)
 │ ┌──────── 分 (0-59)
 │ │ ┌────── 时 (0-23)

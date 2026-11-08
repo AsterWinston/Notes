@@ -3,7 +3,7 @@
 
 Canal Adapter 是 Canal 的**数据同步适配器**，负责将 Canal Server 订阅到的增量变更数据同步到各类目标存储系统。它解决了"数据到了 Canal 之后怎么办"的问题。
 
-```
+```text
 ┌──────────┐     ┌──────────────┐     ┌─────────────────────────┐
 │  MySQL   │────>│ Canal Server │────>│     Canal Adapter        │
 │ (Source) │     │  (Binlog)    │     │                          │
@@ -30,7 +30,7 @@ Canal Adapter 是 Canal 的**数据同步适配器**，负责将 Canal Server �
 
 ## 2.1 Adapter 核心组件
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                   Canal Adapter                          │
 │                                                         │

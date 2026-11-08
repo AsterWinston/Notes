@@ -10,7 +10,7 @@
 
 长期记忆的核心特征有三个：持久化（persistence）、用户级隔离（per-user isolation）、按相关性召回（relevance-based recall）。它不依赖当前上下文窗口，而是把信息写进外部存储，在需要时再取回。
 
-```
+```text
 会话1：用户说"我是后端工程师，偏好简洁回答"
 会话2：Agent 直接以简洁风格回答，无需再问
 ```
@@ -58,7 +58,7 @@ public String chat(UserContext user, String question) {
 
 ### 1.3.1 记忆层次
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │  长期记忆（跨会话，用户级）              │
 │   ├── 用户画像 / 事实 / 经验 / 反馈      │
@@ -156,7 +156,7 @@ public interface LongTermMemory {
 
 ## 3.3 全链路
 
-```
+```text
 写入：
   会话结束 / 关键事件
         │
@@ -429,7 +429,7 @@ public MemoryItem merge(MemoryItem oldItem, ExtractedMemory newItem) {
 
 ### 7.2.1 评分公式
 
-```
+```text
 score = similarity * w1 + importance * w2 + recency * w3
 其中 w1 + w2 + w3 = 1
 ```

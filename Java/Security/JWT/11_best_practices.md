@@ -30,7 +30,7 @@ KeyPair edPair = edGen.generateKeyPair();
 
 ## 2.2 黄金法则
 
-```
+```text
 1. 不同环境使用不同密钥（开发 ≠ 测试 ≠ 生产）
 2. 不同用途使用不同密钥（签名 ≠ 加密）
 3. 不同算法使用不同密钥（HMAC ≠ RSA）
@@ -122,7 +122,7 @@ public class TokenLifetimeConfig {
 
 ## 3.2 令牌过期处理策略
 
-```
+```text
 Access Token 过期：
   → 客户端发起 Refresh Token 请求
   → 服务端验证 Refresh Token
@@ -432,7 +432,7 @@ public class JwtExceptionHandler {
 
 ## 8.1 API 网关模式
 
-```
+```text
                        ┌─────────────────────┐
                        │    API Gateway       │
                        │  (JWT 验证 + 路由)    │
@@ -466,7 +466,7 @@ String userId = request.getHeader("X-User-Id");
 
 ## 8.2 BFF（Backend For Frontend）模式
 
-```
+```text
 浏览器 ←─ Session Cookie ─→ BFF ←─ JWT ─→ 微服务
                               ↑
                     持有 JWT，浏览器接触不到 JWT
@@ -476,7 +476,7 @@ String userId = request.getHeader("X-User-Id");
 
 ## 8.3 零信任架构下的 JWT
 
-```
+```text
 每一次请求都独立验证 JWT：
   - 不依赖于"已认证"状态
   - 不依赖于 IP 白名单
@@ -519,7 +519,7 @@ public class JwtMetrics {
 
 ## 9.2 告警规则
 
-```
+```text
 告警触发条件：
 1. JWT 验证失败率 > 5%（可能遭受攻击）
 2. 使用过期密钥的 JWT 数量 > 阈值（密钥轮换后旧密钥仍在大量使用）

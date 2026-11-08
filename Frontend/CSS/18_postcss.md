@@ -4,7 +4,7 @@ Sass 是"换一种写法",**PostCSS** 则是"处理 CSS 本身"——它把 CSS 
 
 ## 1.1 定位:CSS 的处理管线
 
-```
+```text
   CSS(或 SCSS 编译后的 CSS)
         │
         ▼

@@ -111,7 +111,7 @@ git config --global --unset https.proxy
 
 Git 维护着三个核心数据结构，称为"三棵树"：
 
-```
+```text
    Working Directory         Staging Area (Index)            Repository (.git)
   ┌─────────────────┐      ┌──────────────────┐      ┌──────────────────────┐
   │  实际文件系统    │ ──→  │   暂存快照       │ ──→  │  永久历史记录        │
@@ -127,7 +127,7 @@ Git 维护着三个核心数据结构，称为"三棵树"：
 
 ## 3.1 文件状态生命周期
 
-```
+```text
 Untracked（未跟踪）
     │
     │  git add
@@ -411,7 +411,7 @@ git merge --squash feature
 
 ## 6.1 Fast-Forward 合并
 
-```
+```text
 main: A──B──C
 feature:     C──D──E
 结果: A──B──C──D──E（线性，无 merge commit）
@@ -421,7 +421,7 @@ feature:     C──D──E
 
 ## 6.2 Three-Way Merge
 
-```
+```text
 main: A──B──C──F
 feature: A──B──D──E
 结果: A──B──C──F──G──H（G 为 merge commit）
@@ -446,7 +446,7 @@ git commit -m "feat: add feature as single commit"
 
 Git 中的所有数据在存储前都会计算 SHA-1 散列值（40位十六进制数）：
 
-```
+```text
 SHA-1 计算内容 = 对象类型 + 空格 + 内容长度 + 空字节 + 内容
 ```
 

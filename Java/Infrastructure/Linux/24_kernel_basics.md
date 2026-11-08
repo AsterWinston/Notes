@@ -3,7 +3,7 @@
 
 ## 1.1 版本号规则
 
-```
+```text
 主版本.次版本.补丁版本-发行版后缀
   6      8       0      -generic
 
@@ -132,7 +132,7 @@ sudo sysctl --system
 ```
 
 **注意**：sysctl 下的参数对应 `/proc/sys/` 目录结构：
-```
+```text
 sysctl net.ipv4.tcp_tw_reuse
     = /proc/sys/net/ipv4/tcp_tw_reuse
 ```

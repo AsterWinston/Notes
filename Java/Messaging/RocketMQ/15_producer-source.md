@@ -269,7 +269,7 @@ private boolean tryToCompressMessage(final Message msg) {
 
 # 3. 消息发送完整调用链路
 
-```
+```text
 DefaultMQProducer.send(msg)
     │
     ▼

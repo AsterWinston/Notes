@@ -74,7 +74,7 @@ public class UserFeignConfig {
 
 ## 2.2 超时配置原则
 
-```
+```text
 connectTimeout < circuitBreaker.timeoutDuration < readTimeout
   (3s)        < (5s)                            < (10s)
 ```

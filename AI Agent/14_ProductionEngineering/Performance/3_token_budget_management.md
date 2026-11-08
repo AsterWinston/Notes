@@ -2,7 +2,7 @@
 
 **结论先行**：Token（词元）是 LLM（大语言模型）应用唯一同时决定成本、延迟、容量与限流的资源，必须像管理内存一样对它做预算化（budgeting）。
 
-```
+```text
 Token 决定：成本 + 延迟 + 上下文容量 + 限流
 ```
 
@@ -23,7 +23,7 @@ Token 决定：成本 + 延迟 + 上下文容量 + 限流
 
 输出 Token 与首字延迟（TTFT）之后的总时长近似线性相关，输入 Token 主要影响预填充（prefill）阶段。
 
-```
+```text
 总延迟 ≈ 预填充(输入长度) + 输出Token数 / 生成速率
 ```
 
@@ -124,7 +124,7 @@ int n = tokenizer.encode(text).size();
 
 ## 3.1 预算模型
 
-```
+```text
 上下文窗口（如 128K）
 ├── System 提示         5%     （固定）
 ├── 工具定义            10%    （固定）
@@ -237,13 +237,13 @@ List<Message> compact = List.of(system, user("历史摘要：" + summary),
 
 保留最近 N 轮 + 固定摘要槽位，形成可预测的 Token 占用。
 
-```
+```text
 [System] [摘要槽] [最近第3轮] [最近第2轮] [最近第1轮] [当前问题]
 ```
 
 ## 4.2 裁剪优先级
 
-```
+```text
 保留：System 提示 > 当前问题 > 最近对话 > 检索结果 > 早期对话
 ```
 
@@ -455,7 +455,7 @@ public String handleWithBudget(String question, UserContext user) {
 }
 ```
 
-```
+```text
 正常链路：RAG + 工具 + 大模型
    ↓ 预算不足
 降级1：RAG + 小模型

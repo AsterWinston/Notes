@@ -261,7 +261,7 @@ public class TimeoutGlobalFilter implements GlobalFilter, Ordered {
 
 ## 4.1 退避公式
 
-```
+```text
 基于前一次退避（basedOnPreviousValue = false）：
   delay = min(firstBackoff × factor^(attempt - 1), maxBackoff)
 

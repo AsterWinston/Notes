@@ -8,7 +8,7 @@
 
 它提供与厂商无关的 API（应用埋点接口）、SDK（实现）与协议（OTLP），让应用只埋一次点，就能把数据送到任意后端。
 
-```
+```text
 应用（OTel SDK）
    |
    v
@@ -216,7 +216,7 @@ public String chat(@SpanAttribute("llm.model") String model,
 
 结论先行：Span 必须先创建、激活（makeCurrent），业务结束后务必 end；属性（Attribute）是键值对，事件（Event）是时间点标记。
 
-```
+```text
 spanBuilder --> startSpan --> makeCurrent --> 业务 --> end
 ```
 
@@ -292,7 +292,7 @@ public class OTelLlmTracer {
 
 结论先行：OTel 默认用 W3C Trace Context 标准的 `traceparent` 头在服务间传播上下文；入站自动提取、出站自动注入，跨服务链路才能连成一条。
 
-```
+```text
 服务 A --traceparent--> 服务 B --traceparent--> 服务 C
 ```
 

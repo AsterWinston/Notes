@@ -5,7 +5,7 @@
 
 Linux 内核的防火墙功能由 Netfilter 框架提供，它在内核协议栈中嵌入钩子点，允许注册回调函数处理网络包：
 
-```
+```text
 数据包流向：
                      ┌───────────┐
     ┌──→ PREROUTING ─→ ROUTE DECISION ─→ FORWARD ─→ POSTROUTING ──→ 出站
@@ -25,7 +25,7 @@ Linux 内核的防火墙功能由 Netfilter 框架提供，它在内核协议栈
 
 ## 1.2 防火墙工具演进
 
-```
+```text
 iptables (传统，IPv4/IPv6 分开管理)
     ↓
 ip6tables (单独管理 IPv6)
@@ -50,7 +50,7 @@ ufw (基于 iptables/nftables 的简化封装，Ubuntu)
 | raw | 连接跟踪豁免 | PREROUTING, OUTPUT |
 
 **常用链流向**：
-```
+```text
 入站包：PREROUTING (nat/raw/mangle) → INPUT (filter/mangle) → 本地进程
 转发包：PREROUTING (nat/raw/mangle) → FORWARD (filter/mangle) → POSTROUTING (nat/mangle)
 出站包：OUTPUT (raw/nat/mangle/filter) → POSTROUTING (nat/mangle)

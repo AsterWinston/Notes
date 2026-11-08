@@ -5,7 +5,7 @@
 
 ## 1.1 构建缓存的工作原理
 
-```
+```text
 构建缓存核心流程
 ┌─────────────────────────────────────────────────────────┐
 │                      任务执行请求                         │
@@ -83,7 +83,7 @@ gradle build --build-cache --scan
 
 输出示例：
 
-```
+```text
 Build cache key for task ':compileJava' is 8b9e3a2c1d4f5e6a7b8c9d0e1f2a3b4c
   Input property 'classpath' hash: a1b2c3d4e5f6...
   Input property 'source' hash: f6e5d4c3b2a1...
@@ -135,7 +135,7 @@ buildCache {
 
 ## 3.2 本地缓存目录结构
 
-```
+```text
 .gradle/build-cache/
 ├── cache-entries/          ← 缓存条目 (GZip 压缩的 tar 文件)
 │   ├── 01/
@@ -223,7 +223,7 @@ tasks.withType(JavaCompile).configureEach {
 
 ## 4.3 远程缓存协议
 
-```
+```text
 HTTP 缓存协议交互
 ┌────────────────────────────────────────┐
 │ 客户端 (Gradle)    →    服务器         │
@@ -384,7 +384,7 @@ normalization {
 
 ## 6.3 标准化内部机制
 
-```
+```text
 输出标准化流程
 ┌──────────────────────────────────────────────┐
 │ 1. 任务执行后，输出文件被收集                │
@@ -696,7 +696,7 @@ buildCache {
 
 ## 10.2 访问控制
 
-```
+```text
 缓存访问控制矩阵
 ┌─────────────────┬──────────┬──────────┬──────────┐
 │ 角色             │ 读 (PULL)│ 写 (PUSH)│ 管理     │
@@ -786,7 +786,7 @@ gradle.buildFinished {
 
 **估算公式：**
 
-```
+```text
 缓存收益 = (FullBuildTime - CachedBuildTime) × 缓存命中次数
 
 例如:

@@ -3,7 +3,7 @@
 
 Seata 通过 Dubbo SPI 机制自动集成，实现 xid 在 RPC 调用中**透明传播**，无需修改任何 Dubbo 配置。
 
-```
+```text
 Consumer (TM)                         Provider (RM)
       │                                     │
       │ Dubbo RPC Call                      │
@@ -31,7 +31,7 @@ Consumer (TM)                         Provider (RM)
 
 Seata 通过 Dubbo SPI 注册两个 Filter：
 
-```
+```text
 META-INF/dubbo/org.apache.dubbo.rpc.Filter:
 
 seata=org.apache.dubbo.seata.SeataTransactionPropagationFilter
@@ -212,7 +212,7 @@ public class AccountTccServiceImpl implements AccountTccService {
 
 # 7. 嵌套调用 xid 传播
 
-```
+```text
 TM (OrderService)
   │ @GlobalTransactional
   │ xid: 192.168.1.100:8091:2039718144

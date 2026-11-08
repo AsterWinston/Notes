@@ -98,7 +98,7 @@ public class OAuth2ClientConfig {
 
 ## 3.1 自动处理的流程
 
-```
+```text
 Spring Security OAuth2 Client 自动处理以下步骤：
 
 ┌───────────────────────────────────────────────────────────────┐
@@ -127,7 +127,7 @@ Spring Security OAuth2 Client 自动处理以下步骤：
 
 ## 3.2 核心类体系
 
-```
+```text
 OAuth2AuthorizationRequestRedirectFilter     ← 发起授权请求
 OAuth2LoginAuthenticationFilter             ← 处理回调（code → token）
 OAuth2LoginAuthenticationProvider           ← 执行认证逻辑

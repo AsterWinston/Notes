@@ -3,7 +3,7 @@
 
 配置中心的源码主要集中在以下模块：
 
-```
+```text
 nacos-config/               # 配置中心服务端
   ├── ConfigController       # 配置 REST API 控制器
   ├── LongPollingService     # 长轮询服务
@@ -182,7 +182,7 @@ public class CacheData {
 
 Nacos 1.x 配置中心使用 **HTTP 长轮询（Long Polling）** 机制替代传统的短轮询或 WebSocket：
 
-```
+```text
 Client                                          Server
   │                                                │
   │ POST /nacos/v1/cs/configs/listener             │
@@ -606,7 +606,7 @@ public class NacosContextRefresher
 
 # 8. 配置管理关键流程图
 
-```
+```text
                          Nacos 配置中心完整流程
                                
 ┌──────────────┐     注册配置监听        ┌──────────────────┐

@@ -93,7 +93,7 @@ mvn help:effective-pom
 
 # 4. dependencyManagement 与 dependencies
 
-- `dependencyManagement`：只“管理版本”，不引入依赖。
+- `dependencyManagement`：只"管理版本"，不引入依赖。
 - `dependencies`：真正引入依赖。
 - 企业常用做法：
 	- 父 POM 定义 `dependencyManagement`

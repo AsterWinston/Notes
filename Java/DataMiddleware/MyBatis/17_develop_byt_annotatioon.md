@@ -1,4 +1,4 @@
-```
+```text
 mybatis中也提供了注解式开发方式，采用注解可以减少Sql映射文件的配置。
 当然，使用注解式开发的话，sql语句是写在java程序中的，这种方式也会给sql语句的维护带来成本。
 原则：简单sql可以注解。复杂sql使用xml。
@@ -245,7 +245,7 @@ public interface StudentMapper {
 
 ## 6.3 @One/@Many 的延迟加载原理
 
-```
+```text
 当使用 fetchType = FetchType.LAZY 时：
 
   1. MyBatis 创建代理对象（通过 Javassist 或 CGLIB）
@@ -272,7 +272,7 @@ public interface StudentMapper {
 
 # 7. @SelectProvider — Provider 类替代动态 SQL
 
-```
+```text
 @SelectProvider/@InsertProvider/@UpdateProvider/@DeleteProvider 这四个注解，
 允许将 SQL 构建逻辑写在单独的 Provider 类中。
 
@@ -529,7 +529,7 @@ public interface BookMapper {
 
 ## 8.1 二级缓存的注意事项
 
-```
+```text
 1. 所有 select 语句都会被缓存
 2. 所有 insert/update/delete 语句都会刷新缓存
 3. 二级缓存是 namespace 级别的（一个 XxxMapper.xml 或一个 Mapper 接口）
@@ -673,7 +673,7 @@ public interface VehicleMapper {
 
 # 15. 注解 vs XML 选型指南
 
-```
+```text
 ┌────────────────────┬──────────────────────────┬──────────────────────────┐
 │       维度          │        注解方式            │        XML 方式           │
 ├────────────────────┼──────────────────────────┼──────────────────────────┤
@@ -697,7 +697,7 @@ public interface VehicleMapper {
 
 # 16. 注解方式执行原理
 
-```
+```text
 注解方式的 SQL 是如何被加载的？
 
 1. 在 MapperRegistry.addMapper() 时：

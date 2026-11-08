@@ -3,7 +3,7 @@
 
 熔断降级（Circuit Breaking / Degradation）用于在依赖服务不稳定时**快速失败**，避免调用方线程堆积，是防止**雪崩效应**的关键机制。
 
-```
+```text
 正常状态 (CLOSED)                  熔断状态 (OPEN)
    ┌──────────────┐               ┌──────────────┐
    │   请求正常通过  │   触发熔断    │   直接拒绝    │
@@ -55,7 +55,7 @@ rule.setSlowRatioThreshold(0.5);        // 慢调用比例 50%
 
 **熔断逻辑**：
 
-```
+```text
 statIntervalMs = 1000ms 内：
   请求总数 = 10
   慢调用数 (RT > 200ms) = 6
@@ -123,7 +123,7 @@ public class CircuitBreaker {
 
 # 7. 熔断恢复流程
 
-```
+```text
 时间线：
 t0: CLOSED（正常）
 t1: 慢调用比例超过 50% → OPEN（开始熔断）

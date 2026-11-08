@@ -11,7 +11,7 @@ fn it_works() {
 }
 ```
 
-```
+```text
 运行：cargo test
 
 cargo test 会自动：
@@ -28,7 +28,7 @@ cargo test 会自动：
 
 # 2. assert —— 断言宏
 
-```
+```text
 2.1 assert!(condition)               // 条件为 false 则 panic
 2.2 assert_eq!(left, right)          // 相等断言，要求类型实现 PartialEq + Debug
 2.3 assert_ne!(left, right)          // 不等断言
@@ -100,7 +100,7 @@ fn test_result() -> Result<(), String> {
 
 # 6. cargo test 常用选项
 
-```
+```text
 cargo test --help          # 查看 cargo test 的选项
 cargo test -- --help       # 查看测试二进制的选项（-- 后面的参数传给测试运行器）
 
@@ -162,7 +162,7 @@ mod tests {
 
 ## 9.2 集成测试：tests 目录
 
-```
+```text
 项目结构：
 ├── src/
 │   └── lib.rs

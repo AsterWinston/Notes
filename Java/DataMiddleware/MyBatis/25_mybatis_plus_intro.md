@@ -1,6 +1,6 @@
 # 1. MyBatis-Plus 概述
 
-```
+```text
 MyBatis-Plus（简称 MP）是一个 MyBatis 的增强工具，
 在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
 
@@ -17,7 +17,7 @@ MyBatis-Plus（简称 MP）是一个 MyBatis 的增强工具，
 
 # 2. MyBatis-Plus 与 MyBatis 的关系
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                    MyBatis-Plus                          │
 │  ┌───────────────────────────────────────────────────┐  │
@@ -451,7 +451,7 @@ public class CodeGenerator {
 
 # 11. MP 与 MyBatis 的源码衔接点
 
-```
+```text
 MP 如何做到"只增强不做改变"？
 
 1. Mapper 代理增强
@@ -484,7 +484,7 @@ MP 与 MyBatis 的关系总结：
 
 # 12. 什么时候应该使用 MyBatis-Plus
 
-```
+```text
   适合使用 MP 的场景：
     1. 快速开发：不想为每个表写重复的 CRUD SQL
     2. 单表操作多：项目中大量是单表查询

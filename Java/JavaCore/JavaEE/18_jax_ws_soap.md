@@ -5,7 +5,7 @@
 
 JAX-WS（Java API for XML Web Services）是 JavaEE 的 **SOAP Web 服务规范**（JSR-224），用于开发基于 SOAP 协议的 Web 服务。参考实现：Metro（RI）、Apache CXF 等。
 
-```
+```text
 ┌──────────────┐   SOAP/XML    ┌──────────────┐
 │  服务消费者   │ ────────────► │   Web 服务    │
 │  (Client)    │ ◄──────────── │   (Service)  │

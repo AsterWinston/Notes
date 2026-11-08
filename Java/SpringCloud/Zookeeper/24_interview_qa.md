@@ -130,7 +130,7 @@
 ## 6.1 Q14: ZooKeeper 的请求处理链是怎样的？
 
 **回答要点**：
-```
+```text
 Leader 处理链：
 PrepRequestProcessor → ProposalRequestProcessor → CommitProcessor → FinalRequestProcessor
 

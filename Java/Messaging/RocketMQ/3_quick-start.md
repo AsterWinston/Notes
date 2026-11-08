@@ -202,7 +202,7 @@ public class SyncConsumer {
 
 ## 4.4 运行结果
 
-```
+```text
 # Producer 输出：
 发送结果: SendResult [sendStatus=SEND_OK, msgId=..., offsetMsgId=..., messageQueue=..., queueOffset=0]
 

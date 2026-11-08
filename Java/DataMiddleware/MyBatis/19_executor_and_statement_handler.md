@@ -1,6 +1,6 @@
 # 1. Executor 体系概览
 
-```
+```text
 Executor 是 MyBatis 执行层的核心，负责 SQL 的实际执行。
 
 ┌─────────────────────────────────────────────────────────────────┐
@@ -660,7 +660,7 @@ public class CachingExecutor implements Executor {
 
 # 7. StatementHandler 体系
 
-```
+```text
 StatementHandler 负责 JDBC Statement 的创建、参数设置、SQL 执行和结果处理。
 
 ┌──────────────────────────────────────────────────────────────┐
@@ -985,7 +985,7 @@ public Executor newExecutor(Transaction transaction, ExecutorType executorType) 
 
 # 11. 三种 Executor 对比
 
-```
+```text
 ┌───────────────────┬────────────────────┬──────────────────────┬──────────────────────┐
 │      特性          │   SimpleExecutor   │   ReuseExecutor      │   BatchExecutor       │
 ├───────────────────┼────────────────────┼──────────────────────┼──────────────────────┤
@@ -1013,7 +1013,7 @@ ExecutorType 选择示例：
 
 # 12. 一级缓存深入分析
 
-```
+```text
 一级缓存（localCache）是 SqlSession 级别的缓存
 
 数据结构：

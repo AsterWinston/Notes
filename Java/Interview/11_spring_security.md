@@ -58,7 +58,7 @@
 
 ## 2.3 JWT 令牌的结构是什么？有哪些优势和劣势？
 JWT 由三部分组成（用 `.` 分隔）：
-```
+```text
 Header.Payload.Signature
 ```
 
@@ -98,7 +98,7 @@ Header.Payload.Signature
 2. **用户授权**：授权服务器展示授权页面，用户输入凭据并同意授权。
 3. **回调返回授权码**：授权服务器重定向到 `redirect_uri?code=AUTHORIZATION_CODE&state=xxx`。
 4. **换取 Token**：客户端后端用授权码向授权服务器的 `/token` 端点发起 POST 请求：
-```
+```text
 POST /token
 Authorization: Basic base64(client_id:client_secret)
 Content-Type: application/x-www-form-urlencoded
@@ -203,7 +203,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) {
 ## 2.11 Spring Security 的 RBAC 权限模型如何设计？
 RBAC（Role-Based Access Control）权限模型三层结构：
 
-```
+```text
 用户(User) ──多对多──> 角色(Role) ──多对多──> 权限(Permission)
 ```
 

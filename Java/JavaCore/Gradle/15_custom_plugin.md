@@ -17,7 +17,7 @@
 
 ## 1.2 插件实现方式的演进
 
-```
+```text
 Groovy build.gradle 内联逻辑
     │ (简单，但不可测试，不可复用)
     ▼
@@ -38,7 +38,7 @@ buildSrc 中 Precompiled Script Plugin
 
 ## 2.1 buildSrc 方式
 
-```
+```text
 my-project/
 ├── buildSrc/                          # 特殊的自动包含模块
 │   ├── build.gradle.kts               # buildSrc 自身的构建脚本
@@ -86,7 +86,7 @@ implementation-class=com.example.MyPlugin
 
 ## 2.2 独立插件项目
 
-```
+```text
 my-gradle-plugin/
 ├── build.gradle.kts
 ├── settings.gradle.kts
@@ -159,7 +159,7 @@ publishing {
 
 复合构建 (Composite Build) 允许在开发阶段直接引用本地插件项目，无需发布：
 
-```
+```text
 my-application/                       # 主项目
 ├── settings.gradle.kts
 ├── build.gradle.kts
@@ -262,7 +262,7 @@ dependencies {
 
 ## 3.2 多约定插件实践
 
-```
+```text
 buildSrc/src/main/kotlin/
 ├── java-convention.gradle.kts        # Java 基础约定
 ├── spring-boot-convention.gradle.kts # Spring Boot 约定
@@ -334,7 +334,7 @@ plugins {
 
 预编译脚本插件 ID 生成规则：
 
-```
+```text
 文件路径                          -> 插件 ID
 ├── java-convention.gradle.kts    -> java-convention
 ├── spring-boot-convention.gradle.kts -> spring-boot-convention
@@ -1399,7 +1399,7 @@ gradlePlugin {
 
 开发自定义插件时，按以下清单逐项检查：
 
-```
+```text
 [ ] 使用 kotlin-dsl 或 java-gradle-plugin 插件
 [ ] 实现 Plugin<Project> 或 Plugin<Settings> 接口
 [ ] 使用 abstract class 定义扩展和任务 (配置避免)

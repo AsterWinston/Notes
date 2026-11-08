@@ -16,7 +16,7 @@ public interface Router extends Comparable<Router> {
 
 **路由执行链**：
 
-```
+```text
 目录获取的全量 Invoker List
     │
     ├── ConditionRouter     (条件路由)
@@ -35,7 +35,7 @@ public interface Router extends Comparable<Router> {
 
 ## 2.1 规则语法
 
-```
+```text
 条件路由规则字符串:
   "规则1 => 规则2"
   规则1: 匹配条件 (消费端匹配)
@@ -44,7 +44,7 @@ public interface Router extends Comparable<Router> {
 
 ## 2.2 规则格式
 
-```
+```text
 [服务消费者匹配条件] => [服务提供者过滤条件]
 
 # 示例
@@ -148,7 +148,7 @@ rule: "host=192.168.1.10*,host=192.168.1.20*"
 
 标签路由用于**流量分组隔离**，如灰度发布、多套环境隔离。
 
-```
+```text
 Consumer (tag=gray) → TagRouter → 只路由到 Provider (tag=gray)
 Consumer (tag=prod) → TagRouter → 只路由到 Provider (tag=prod)
 ```
@@ -321,7 +321,7 @@ public interface StateRouter<T> {
 
 ## 8.1 发布流程
 
-```
+```text
 1. 管理后台 (Dubbo Admin) 创建路由规则
 2. 持久化到注册中心（如 Nacos/ZK 的 /routers 节点）
 3. RegistryDirectory 通过 notify() 收到变更通知
@@ -438,7 +438,7 @@ public class CustomRouter implements Router {
 
 SPI 注册：
 
-```
+```text
 # META-INF/dubbo/org.apache.dubbo.rpc.cluster.RouterFactory
 custom=com.example.CustomRouterFactory
 ```

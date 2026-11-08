@@ -21,7 +21,7 @@ Spring Cloud OpenFeign 默认使用 `SpringMvcContract`，通过 `FeignClientsRe
 
 # 3. SpringMvcContract 解析流程
 
-```
+```text
 @FeignClient 接口
   │
   ▼

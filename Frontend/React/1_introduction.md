@@ -50,7 +50,7 @@ function App() {
 
 ## 2.2 单向数据流
 
-```
+```text
   state(状态在上层)
       │  props 向下传(只读)
       ▼

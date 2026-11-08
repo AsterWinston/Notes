@@ -22,7 +22,7 @@ SID     # 会话 ID
 
 ## 1.3 进程状态
 
-```
+```text
 R (Running/ Runnable)   # 正在运行或在运行队列中等待
 S (Sleeping)            # 可中断睡眠（等待某事件完成）
 D (Uninterruptible Sleep) # 不可中断睡眠（通常是等待 I/O）
@@ -32,7 +32,7 @@ I (Idle)                # 空闲内核线程（内核 2.6+）
 ```
 
 **进程状态转换**：
-```
+```text
 创建 → 就绪 (R) ↔ 运行 (R) ↔ 睡眠 (S/D)
            ↕               ↕
           停止 (T)    ← 终止 → 僵尸 (Z) → 回收
@@ -123,7 +123,7 @@ top -d 2                      # 刷新间隔为 2 秒
 
 top 界面中各列含义：
 
-```
+```text
 top - 10:30:00 up 30 days,  2:15,  2 users,  load average: 0.15, 0.10, 0.05
 Tasks: 180 total,   1 running, 179 sleeping,   0 stopped,   0 zombie
 %Cpu(s):  2.5 us,  0.8 sy,  0.0 ni, 96.5 id,  0.2 wa,  0.0 hi,  0.0 si,  0.0 st

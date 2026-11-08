@@ -10,7 +10,7 @@
 
 在 Transformer 之前，序列到序列（Seq2Seq）任务主要依赖循环神经网络（RNN）及其变体 LSTM、GRU。它们按时间步（Time Step）串行计算：
 
-```
+```text
 h_t = f(h_{t-1}, x_t)
 ```
 
@@ -24,7 +24,7 @@ h_t = f(h_{t-1}, x_t)
 
 自注意力让序列中任意两个位置直接交互，信息路径长度为 O(1)：
 
-```
+```text
 RNN：  x1 → x2 → x3 → x4     路径长度随距离增长
 Self： x1 ←→ x2 ←→ x3 ←→ x4  任意两位置一步直达
 ```
@@ -35,7 +35,7 @@ Self： x1 ←→ x2 ←→ x3 ←→ x4  任意两位置一步直达
 
 **结论先行**：编码器把输入序列编码为一组上下文表示，解码器在每一步基于已生成内容与该表示逐步输出。
 
-```
+```text
 ┌─────────────┐     ┌─────────────┐
 │   Encoder   │────▶│   Decoder   │
 │  × N 层      │     │  × N 层      │
@@ -71,7 +71,7 @@ Self： x1 ←→ x2 ←→ x3 ←→ x4  任意两位置一步直达
 
 ## 2.1 数据流全景
 
-```
+```text
 输入 → [Embedding + 位置编码]
          │
     ┌────▼────┐
@@ -165,14 +165,14 @@ class EncoderLayer(nn.Module):
 
 **公式**：编码器层的两步可写成（Post-LN 形式）：
 
-```
+```text
 z = LayerNorm(x + SelfAttn(x))
 y = LayerNorm(z + FFN(z))
 ```
 
 若为 Pre-LN，则归一化先于子层：
 
-```
+```text
 z = x + SelfAttn(LayerNorm(x))
 y = z + FFN(LayerNorm(z))
 ```
@@ -195,7 +195,7 @@ y = z + FFN(LayerNorm(z))
 
 ## 4.1 三明治结构
 
-```
+```text
 Decoder Layer
  ├─ ① 掩码多头自注意力   (Q=K=V=解码器输入)
  ├─ ② 交叉注意力         (Q=解码器, K=V=编码器输出)
@@ -207,7 +207,7 @@ Decoder Layer
 
 **原理**：解码时第 i 个位置不能看到 i 之后的位置，否则训练会"偷看答案"。做法是在注意力分数上加一个上三角为负无穷的掩码：
 
-```
+```text
 scores = Q·Kᵀ / √d_k
 scores = scores + mask        # mask 上三角为 -inf
 attn   = softmax(scores)      # 被 -inf 的位置权重为 0
@@ -261,7 +261,7 @@ class DecoderLayer(nn.Module):
 
 **公式**：
 
-```
+```text
 FFN(x) = max(0, xW₁ + b₁)W₂ + b₂
 
 通常 d_ff = 4 × d_model
@@ -308,7 +308,7 @@ FFN 对每个位置独立作用，位置之间不交互，因此可写成矩阵�
 
 **原理**：子层输出与其输入相加：
 
-```
+```text
 y = x + Sublayer(x)
 ```
 
@@ -326,7 +326,7 @@ y = x + Sublayer(x)
 
 **公式**：对单个样本的特征维度做归一化：
 
-```
+```text
 μ = mean(x)          # 对最后一维求均值
 σ² = var(x)          # 对最后一维求方差
 y = γ · (x - μ) / √(σ² + ε) + β
@@ -342,7 +342,7 @@ y = γ · (x - μ) / √(σ² + ε) + β
 
 ## 6.3 Post-LN vs Pre-LN
 
-```
+```text
 Post-LN（原始）：
   x = LayerNorm(x + Sublayer(x))
 
@@ -425,7 +425,7 @@ Pre-LN（现代主流）：
 
 **公式**：
 
-```
+```text
 总参数 ≈ 12 × L × d_model² + V × d_model
 ```
 
@@ -433,7 +433,7 @@ Pre-LN（现代主流）：
 
 ## 8.3 实例对照
 
-```
+```text
 以 Transformer-Base 为例（d_model=512, 6 层）：
   注意力：约 1/3 参数
   前馈网络：约 2/3 参数
@@ -530,7 +530,7 @@ Pre-LN（现代主流）：
 
 ## 11.2 记忆口诀
 
-```
+```text
 理解用 Encoder，生成用 Decoder
 注意换位置，前馈换特征
 残差保梯度，Norm 稳分布

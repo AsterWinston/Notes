@@ -5,7 +5,7 @@
 
 ## 1.1 一句话定义
 
-```
+```text
 角色设定影响：
 (1) 语气与风格（专业/亲切/幽默）
 (2) 知识边界（法律/医疗/技术）
@@ -292,7 +292,7 @@ public ChatSession switchRole(String newRole) {
 
 **结论先行**：越"全知全能"的角色，越容易诱发幻觉。
 
-```
+```text
 强角色设定可能增加幻觉：
 "你是无所不知的专家" -> 模型倾向于编造
 
@@ -372,7 +372,7 @@ public String chat(String role, String question) {
 
 ### 5.2.1 资源目录
 
-```
+```text
 resources/prompts/roles/
 ├── engineer.txt
 ├── teacher.txt
@@ -408,7 +408,7 @@ public class RoleRegistry {
 
 **结论先行**：把"公共规则"与"角色差异"分层，可减少重复维护。
 
-```
+```text
 base.txt        -> 公共安全规则、通用边界
   + engineer.txt -> 工程师专属风格
   = 最终 System

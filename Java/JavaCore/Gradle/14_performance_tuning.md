@@ -7,7 +7,7 @@ Gradle 性能调优是一个系统化工程，涉及 Daemon 配置、并行执�
 
 Gradle Daemon 是一个长时间运行的后台 JVM 进程，它缓存构建脚本信息、类加载信息和任务图，避免每次构建都从头启动 JVM。
 
-```
+```text
 ┌───────────────────────────────────────────────────────┐
 │                    Gradle 客户端 (gradlew)             │
 │                      (短生命周期进程)                   │
@@ -114,7 +114,7 @@ Gradle Daemon 通过以下机制提升性能：
 
 Daemon 与客户端的通信协议：
 
-```
+```text
 客户端进程                    Daemon 进程
     │                             │
     │  1. 通过 DaemonConnector    │
@@ -151,7 +151,7 @@ org.gradle.workers.max=8
 
 并行执行原理图解：
 
-```
+```text
 跨模块依赖图自动并行分析:
 
     :core:compileJava ────────────── 无依赖, 立即执行
@@ -214,7 +214,7 @@ org.gradle.configureondemand=true
 
 `configure-on-demand` 仅配置请求的项目及其下游依赖项目，跳过与当前构建无关的项目：
 
-```
+```text
 仅构建 :service 时, ./gradlew :service:build
 
 configure-on-demand=false (默认):
@@ -239,7 +239,7 @@ org.gradle.caching=true
 
 构建缓存工作原理：
 
-```
+```text
 第一次构建:
     :compileJava
         inputs: src/**/*.java  --hash--> "a3f2b1c4"
@@ -258,7 +258,7 @@ org.gradle.caching=true
 
 缓存键 (Cache Key) 的构成：
 
-```
+```text
 Cache Key = Hash(
     task.class.name          # 任务类名
     + task.path              # 任务路径 (如 :core:compileJava)
@@ -296,7 +296,7 @@ buildCache {
 
 远程缓存层级 (查找优先级):
 
-```
+```text
 任务读取缓存:
     1. 本地缓存查找 (快)
     2. 远程缓存查找 (慢, 需网络) -> 命中 -> 存储到本地缓存
@@ -339,7 +339,7 @@ tasks.named('compileJava') {
 
 配置缓存是 Gradle 7.0+ 引入的重大性能特性，它将"配置阶段"的结果序列化到磁盘，后续构建直接从缓存加载，跳过配置阶段。
 
-```
+```text
 首次构建 (冷缓存):
     [初始化 settings] -> [配置 build.gradle] -> [执行 tasks]
                                 |
@@ -453,7 +453,7 @@ rm -rf .gradle/configuration-cache
 
 Gradle 内置了增量 Java 编译，仅重新编译发生变化的源文件及其传递依赖：
 
-```
+```text
 增量编译判定流程:
 
 源文件 A.java 修改了
@@ -519,7 +519,7 @@ org.gradle.vfs.verbose=false     # 输出详细 VFS 日志
 
 VFS 工作原理：
 
-```
+```text
 Gradle Virtual File System (VFS)
     - 通过 OS 文件监控 API 接收文件事件:
       Linux: inotify
@@ -554,7 +554,7 @@ tasks.register('generateConfig') {
 
 Up-to-Date 判定流程图：
 
-```
+```text
 任务执行前:
     1. 检查 outputs 是否存在?
        └─ 否 -> 必须执行
@@ -627,7 +627,7 @@ dependencyLocking {
 
 生成的锁文件 (gradle/dependency-locks/*.lockfile):
 
-```
+```text
 com.fasterxml.jackson.core:jackson-annotations:2.17.0=compileClasspath,runtimeClasspath
 com.fasterxml.jackson.core:jackson-core:2.17.0=compileClasspath,runtimeClasspath
 com.fasterxml.jackson.core:jackson-databind:2.17.0=compileClasspath,runtimeClasspath
@@ -727,7 +727,7 @@ configurations.all {
 
 编译避免是 Gradle 6.x+ 的核心优化：如果 JAR 的 public API 未改变，依赖它的模块无需重新编译。
 
-```
+```text
 Module A 依赖 Module B
 
 情况 1: B 的方法体修改 (非 public API)
@@ -767,7 +767,7 @@ tasks.withType(JavaCompile) {
 
 ## 9.3 API vs Implementation 的性能影响
 
-```
+```text
 compile 配置 (Gradle 6.x 废弃):
     A 依赖 B 时, B 的所有传递依赖对 A 的编译可见
     任何传递依赖变更都会触发 A 重新编译 -> 编译避免失效
@@ -803,7 +803,7 @@ tasks.withType(JavaCompile) {
 
 注解处理器目录结构：
 
-```
+```text
 build/generated/sources/annotationProcessor/
 ├── java/main/
 │   └── com/example/mapper/
@@ -837,7 +837,7 @@ org.gradle.kotlin.dsl.daemon.jvmargs=-Xmx1g -XX:MaxMetaspaceSize=256m
 
 Kotlin DSL 编译流程：
 
-```
+```text
 *.gradle.kts 文件
         |
         v
@@ -1036,7 +1036,7 @@ org.gradle.configureondemand=true
 
 ## 14.4 推荐的分阶段实施路径
 
-```
+```text
 第一阶段 (立即执行):
     - 启用 Daemon (默认)
     - 启用 parallel

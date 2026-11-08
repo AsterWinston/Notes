@@ -4,7 +4,7 @@
 
 任务分解（Task Decomposition）是把一个复杂目标拆成**若干可独立执行、可验证的子任务**的过程。它是规划的基础。
 
-```
+```text
 "帮我准备一份季度经营分析报告"
         │
         ▼  分解
@@ -33,7 +33,7 @@
 
 ## 1.3 与规划的关系
 
-```
+```text
 任务分解：把目标拆成"做什么"（子任务集合）
 规划    ：把子任务排成"按什么顺序做"（执行序列）
 ```
@@ -101,7 +101,7 @@
 
 ## 3.1 按阶段分解
 
-```
+```text
 收集信息 → 处理信息 → 分析 → 输出
 ```
 
@@ -132,7 +132,7 @@ public List<Stage> decomposeByStage(String goal) {
 
 ## 3.2 按数据分片分解
 
-```
+```text
 把大任务按数据分片：
   处理 1 月数据
   处理 2 月数据
@@ -144,7 +144,7 @@ public List<Stage> decomposeByStage(String goal) {
 
 ## 3.3 按能力分解
 
-```
+```text
 查询类任务 → 交给检索能力
 计算类任务 → 交给代码执行能力
 写作类任务 → 交给生成能力
@@ -204,7 +204,7 @@ public List<String> decompose(String task, int depth) {
 
 子任务之间常有依赖，需排出执行顺序：
 
-```
+```text
      取数
     ┌──┴──┐
     ▼     ▼
@@ -289,7 +289,7 @@ if (hasCycle(tasks)) {
 
 拓扑排序后，同一层的子任务彼此无依赖，可并发执行。
 
-```
+```text
 第 0 层: 取数
 第 1 层: 计算销售  计算成本
 第 2 层: 归因分析
@@ -429,7 +429,7 @@ public void validate(List<SubTask> tasks, Set<String> availableTools) {
 
 **反例一：粒度过粗**
 
-```
+```text
 目标：分析上月销售并给出建议
 分解：["分析销售", "给建议"]      ← "分析销售" 仍无法直接执行
 ```
@@ -438,7 +438,7 @@ public void validate(List<SubTask> tasks, Set<String> availableTools) {
 
 **反例二：依赖遗漏**
 
-```
+```text
 分解：["取数", "计算毛利率", "取成本"]   ← 计算毛利率漏依赖取成本
 ```
 
@@ -446,7 +446,7 @@ public void validate(List<SubTask> tasks, Set<String> availableTools) {
 
 **反例三：伪并行**
 
-```
+```text
 分解：["查询用户", "查询订单"]，但两者都依赖"登录"
 ```
 

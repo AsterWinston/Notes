@@ -17,7 +17,7 @@
 
 ## 2.1 Sticky Session（黏性会话）
 
-```
+```text
 用户请求 → 负载均衡器 → ╔═══════════╗
                          ║ 实例 A    ║
                          ║ (Session) ║ ← 每次路由到同一实例
@@ -47,7 +47,7 @@ upstream backend {
 
 ## 2.2 Session 共享（Spring Session）
 
-```
+```text
 用户请求 → 负载均衡器 → 实例 A ─┐
                                ├→ Redis/DB (Session)
                         实例 B ─┘
@@ -93,7 +93,7 @@ session.setAttribute("cart:timestamp", System.currentTimeMillis());
 
 ## 3.2 跨实例事件一致性
 
-```
+```text
 实例 A 使 Session 过期 → 实例 B 可能在几毫秒后仍认为 Session 有效
 ```
 
@@ -117,7 +117,7 @@ session.setAttribute("cart:timestamp", System.currentTimeMillis());
 
 ## 4.1 架构方案
 
-```
+```text
 ┌────────── 数据中心 A ──────────┐
 │  ┌──────┐  ┌──────┐          │
 │  │ App1 │  │ App2 │          │
@@ -323,7 +323,7 @@ public class SessionHealthIndicator implements HealthIndicator {
 
 ## 7.1 蓝绿部署中的 Session
 
-```
+```text
 蓝环境 (旧版本)              绿环境 (新版本)
 ┌────────────┐              ┌────────────┐
 │  App v1.0  │              │  App v2.0  │
@@ -379,7 +379,7 @@ strategy:
 
 ## 8.2 监控指标
 
-```
+```text
 应监控的关键指标：
 ├── 活跃 Session 总数
 ├── Session 创建速率（create/s）

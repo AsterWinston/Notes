@@ -3,7 +3,7 @@
 
 Linux 系统从顶层到底层可以分为四个层次：
 
-```
+```text
 User Applications（用户应用程序）
         ↕
 System Libraries / Shell（系统库与 Shell，如 glibc、bash）
@@ -30,7 +30,7 @@ CPU 指令集分为**特权指令**和**非特权指令**。如果所有程序�
 
 当用户态程序需要执行特权操作时，通过**系统调用**陷入内核：
 
-```
+```text
 用户态调用函数（如 read()）
     → glibc 封装
     → 触发软中断或 syscall 指令
@@ -63,7 +63,7 @@ CPU 指令集分为**特权指令**和**非特权指令**。如果所有程序�
 
 ## 3.3 系统调用 vs 库函数
 
-```
+```text
 应用程序
     ↓
 库函数（如 printf()） ← glibc
@@ -101,7 +101,7 @@ CPU 指令集分为**特权指令**和**非特权指令**。如果所有程序�
 
 VFS 是 Linux 文件系统的抽象层，使得用户空间可以用同一套 API 操作不同文件系统：
 
-```
+```text
 用户：open() / read() / write()
     ↓
 VFS 层：vfs_open() / vfs_read() / vfs_write()
@@ -136,7 +136,7 @@ VFS 支持以下对象模型：
 
 Linux 内核源码树（Documentation/process/coding-style.rst 有详细说明）：
 
-```
+```text
 arch/           # 架构相关代码（x86, arm, riscv 等）
 block/          # 块层 I/O 调度
 crypto/         # 加密 API

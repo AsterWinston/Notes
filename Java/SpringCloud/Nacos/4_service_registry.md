@@ -7,7 +7,7 @@
 
 ## 2.1 服务分级模型
 
-```
+```text
 Namespace (命名空间 / 租户)
   │
   ├── Group (分组，默认 DEFAULT_GROUP)
@@ -253,7 +253,7 @@ public void addInstance(String namespaceId, String serviceName, boolean ephemera
 
 # 6. 注册流程时序图
 
-```
+```text
 ClientApp          NacosClient        NacosServer        OtherNodes
    │                    │                   │                 │
    │  registerInstance  │                   │                 │

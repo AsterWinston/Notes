@@ -2,7 +2,7 @@
 
 推理优化（Inference Optimization）的目标可以概括为一句话：在给定硬件预算下，让单位成本产出尽可能多的有效 token。
 
-```
+```text
 降低成本、提升吞吐、降低延迟
 ```
 
@@ -20,7 +20,7 @@
 
 吞吐与延迟往往相互冲突：把批（batch）开大能提升吞吐，却会让单个请求排队更久。
 
-```
+```text
 吞吐
  │                    ╱ 大 batch
  │              ╱────╯
@@ -55,13 +55,13 @@
 
 单请求延迟可以近似拆分为：
 
-```
+```text
 总延迟 ≈ TTFT + TPOT × 输出 token 数
 ```
 
 系统吞吐受批大小约束：
 
-```
+```text
 吞吐 ≈ batch_size × (1 / TPOT)
 ```
 
@@ -75,7 +75,7 @@
 
 设显卡时租为 C，单步耗时 T，批大小为 B，则单位 token 成本近似正比于：
 
-```
+```text
 cost_per_token ≈ C × T / (B × tokens_per_step)
 ```
 
@@ -87,7 +87,7 @@ cost_per_token ≈ C × T / (B × tokens_per_step)
 
 ### 2.1.1 静态批处理时序
 
-```
+```text
 静态批处理：等一批请求凑齐才处理，短请求等长请求
 
 静态：
@@ -98,7 +98,7 @@ cost_per_token ≈ C × T / (B × tokens_per_step)
 
 静态批（Static Batching）中，整批必须等最慢的请求完成。若批内序列长度方差大，短请求的算力被浪费在"等待"上。
 
-```
+```text
 浪费比例 ≈ (max_len - avg_len) / max_len
 ```
 
@@ -108,7 +108,7 @@ cost_per_token ≈ C × T / (B × tokens_per_step)
 
 连续批处理（Continuous Batching）在**每个 decode 迭代**后检查：已完成的序列立即退出，排队的请求立即补位。
 
-```
+```text
 连续：
   时间 →
   [请求1][请求2][请求3][请求4]...
@@ -119,7 +119,7 @@ cost_per_token ≈ C × T / (B × tokens_per_step)
 
 设批内序列长度独立同分布，静态批需等最长序列：
 
-```
+```text
 静态步数 ≈ max(len_1, ..., len_B) ≈ B / (B + 1) × L_max
 连续步数 ≈ 总 token 数 / B
 ```
@@ -169,7 +169,7 @@ class ContinuousBatchScheduler {
 
 传统做法为每条序列预留 `max_model_len` 大小的连续 KV 空间，但实际序列往往远短于上限。
 
-```
+```text
 预留 max_len=2048，实际只用了 300：
 [■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□□]
   已用                 浪费（不可复用）
@@ -189,7 +189,7 @@ class ContinuousBatchScheduler {
 
 PagedAttention 借鉴操作系统虚拟内存：把 KV Cache 切成固定大小的**块（block）**，逻辑块按需映射到非连续物理块。
 
-```
+```text
 逻辑序列:   [B0][B1][B2]
               │   │   │
 物理显存:  [B0] ... [B2] [B1] ...
@@ -202,7 +202,7 @@ PagedAttention 借鉴操作系统虚拟内存：把 KV Cache 切成固定大小�
 
 ### 3.2.3 显存利用率提升
 
-```
+```text
 利用率 ≈ 已用 token 数 / 分配块覆盖的 token 数
 ```
 
@@ -212,7 +212,7 @@ PagedAttention 借鉴操作系统虚拟内存：把 KV Cache 切成固定大小�
 
 多个请求若共享同一前缀（系统提示、few-shot 示例），其逻辑块可指向同一物理块，采用写时复制（Copy-on-Write）避免污染。
 
-```
+```text
 请求A: [系统提示块][A 的对话块]
 请求B: [系统提示块][B 的对话块]
             └── 共享同一物理块
@@ -234,13 +234,13 @@ PagedAttention 借鉴操作系统虚拟内存：把 KV Cache 切成固定大小�
 
 ### 4.1.1 草稿-验证流程
 
-```
+```text
 用一个小模型（草稿模型）快速生成多个候选 token
 用大模型一次性验证
 → 大模型一次前向可确认多个 token
 ```
 
-```
+```text
 草稿模型: 生成 [t1 t2 t3 t4]
 大模型:   一次前向验证 → 接受 [t1 t2 t3]，拒绝 t4
 结果:     一次前向生成 3 个 token（加速）
@@ -256,7 +256,7 @@ Decode 阶段是**访存瓶颈（memory-bound）**：每步只生成一个 token
 
 设草稿分布为 q，目标分布为 p。对候选 token x 以概率 `min(1, p(x)/q(x))` 接受；若拒绝，则从残差分布采样。
 
-```
+```text
 接受概率 = min(1, p(x) / q(x))
 ```
 
@@ -288,7 +288,7 @@ Decode 阶段是**访存瓶颈（memory-bound）**：每步只生成一个 token
 
 ### 5.1.1 复用公共前缀的 KV
 
-```
+```text
 多请求共享相同前缀：
   系统提示、few-shot 示例、长文档
   → 只计算一次 KV，多请求复用
@@ -334,7 +334,7 @@ String prompt = stablePrefix + "\n" + userInput;  // 动态部分放最后
 
 张量并行（Tensor Parallelism, TP）把单层权重按列/行切分到多卡，单请求跨多卡计算。
 
-```
+```text
 权重 W 按列切分：
 卡0: W[:, :d]      卡1: W[:, d:]
         └── all-reduce 合并结果
@@ -348,7 +348,7 @@ String prompt = stablePrefix + "\n" + userInput;  // 动态部分放最后
 
 流水线并行（Pipeline Parallelism, PP）按层切分，不同卡负责不同层，形成流水。需要处理气泡（bubble）问题。
 
-```
+```text
 卡0: 层1-8   卡1: 层9-16   卡2: 层17-24
      └── micro-batch 依次流过 ──▶
 ```
@@ -364,7 +364,7 @@ String prompt = stablePrefix + "\n" + userInput;  // 动态部分放最后
 
 ## 6.4 策略选择
 
-```
+```text
 单请求延迟优先 → 张量并行
 吞吐优先 → 数据并行（多副本）
 超大模型放不下 → TP + PP + EP 组合
@@ -472,14 +472,14 @@ outputs = llm.generate(prompts, SamplingParams(temperature=0.7, max_tokens=512))
 
 ### 9.2.1 权重显存
 
-```
+```text
 权重显存 ≈ 参数量 × 每参数字节数
 例：7B × 2 字节（FP16） ≈ 14 GB
 ```
 
 ### 9.2.2 KV Cache 显存
 
-```
+```text
 KV 显存 ≈ 2 × 层数 × 头数 × 头维 × 序列长 × 批大小 × 字节数
 ```
 

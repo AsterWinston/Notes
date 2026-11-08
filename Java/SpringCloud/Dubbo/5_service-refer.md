@@ -3,7 +3,7 @@
 
 服务引用是 Consumer 端获取远程服务代理对象的过程。引用完成后，Consumer 可以像调用本地方法一样调用远程服务。
 
-```
+```text
 @DubboReference                                                   远程 Provider
 UserService userService;   ←── 注入代理对象 ──→  RPC 调用 ──→  UserServiceImpl
         │
@@ -316,7 +316,7 @@ dubbo:
 
 # 11. 引用流程时序图
 
-```
+```text
 ReferenceConfig  RegistryProtocol  RegistryDirectory  Registry  DubboProtocol  ProxyFactory
     │                 │                  │                 │           │               │
     ├─refer()────────→│                  │                 │           │               │

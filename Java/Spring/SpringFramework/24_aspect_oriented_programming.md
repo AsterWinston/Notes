@@ -45,7 +45,7 @@ AOP的优点：
 
 
 # 3. 切点表达式
-```
+```text
 切点是要在其前后织入通知的方法
 切点表达式，可以匹配切点方法的表达式，用于定义通知往哪些方法上切入
 切点表达式语法
@@ -64,7 +64,7 @@ execution([访问控制权限修饰符] 返回值类型 [全限定类名]方法�
 全限定类名：
     带包名的类名
     可选项。
-    两个点“…”代表当前包以及子包下的所有类。com.. 表示com包以及子包下的所有类
+    两个点"…"代表当前包以及子包下的所有类。com.. 表示com包以及子包下的所有类
     全限定类名省略时表示所有的类。
 方法名：
     必填项。
@@ -97,7 +97,7 @@ AspectJ 框架
     Eclipse组织的一个支持AOP的框架。
     AspectJ框架是独立于Spring框架之外的一个框架，Spring框架借助于AspectJ
 ## 4.1 依赖
-```
+```text
 <!--spring context依赖-->
 <dependency>
   <groupId>org.springframework</groupId>
@@ -123,7 +123,7 @@ AspectJ 框架
 </dependency>
 ```
 ## 4.2 Spring 配置文件中添加 context 命名空间和 aop 命名空间
-```
+```text
     基于注解的方式需要组件扫描，需要 context 命名空间
     需要使用aop，需要aop命名空间
 <?xml version="1.0" encoding="UTF-8"?>
@@ -141,7 +141,7 @@ AspectJ 框架
 </beans>
 ```
 ## 4.3 目标类
-```
+```text
 package cw.study.spring.service;
 
 /**
@@ -163,7 +163,7 @@ public class UserService {
 }
 ```
 ## 4.4 切面（切面 = 通知 + 切点）
-```
+```text
 package cw.study.spring.aspect;
 
 import org.aspectj.lang.annotation.Before;
@@ -201,7 +201,7 @@ public class LogAspect {
 }
 ```
 ## 4.5 开启 AspectJ 自动代理
-```
+```text
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -228,7 +228,7 @@ public class LogAspect {
 </beans>
 ```
 ## 4.6 Before 前置通知测试
-```
+```java
 前置通知：@Before 目标方法执行之前的通知
 
 @org.junit.Test
@@ -239,7 +239,7 @@ public void testBeforeAdvice() {
 }
 ```
 ## 4.7 AfterReturning 后置通知
-```
+```java
 后置通知：@AfterReturning 目标方法执行之后的通知
 
 @AfterReturning("execution(* cw.spring.service.UserService.*(..))")
@@ -248,7 +248,7 @@ public void afterReturningAdvice() {
 }
 ```
 ## 4.8 Around 环绕通知
-```
+```text
 环绕通知：@Around 目标方法之前添加通知，同时目标方法执行之后添加通知。
 环绕通知是范围最大的通知，前环绕在前置通知之前，后环绕在所有通知之后
 /**
@@ -267,7 +267,7 @@ public void aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
 }
 ```
 ## 4.9 After 最终通知
-```
+```java
 	最终通知：@After 放在finally语句块中的通知
 // 最终通知
 @After("execution(* cw.spring.service.UserService.*(..))")
@@ -276,7 +276,7 @@ public void afterAdvice() {
 }
 ```
 ## 4.10 AfterThrowing 异常通知
-```
+```text
 	异常通知：@AfterThrowing 发生异常之后执行的通知
 // 异常通知
 @AfterThrowing("execution(* cw.spring.service.UserService.*(..))")
@@ -313,7 +313,7 @@ public void aroundAdvice(ProceedingJoinPoint joinPoint) {
 }
 ```
 ## 4.11 Order 切面顺序
-```
+```text
 使用 @Order 注解可以指定切面的执行顺序
     数字越小，优先级越高
 package cw.spring.service;
@@ -452,7 +452,7 @@ public class LogAspect {
 在切点执行之前执行的通知和在切点执行之后执行的通知，同一优先级执行完，再执行下一级优先级
 ```
 ## 4.12 通用切点表达式
-```
+```java
     使用通用切点表达式可以简化切点表达式，使切点表达式的代码得到复用
     在其他切面类中使用："包名.LogAspect.通用切点表达式对应方法的方法名()"
 @Component
@@ -515,7 +515,7 @@ public class LogAspect {
 ```
 
 ## 4.13 连接点
-```
+```text
 环绕通知，Spring在调用通知方法时，会传入ProceedingJionPoint对象（连接点对象）
     除了环绕通知以外的其他通知，Spring在调用时，会传入JoinPoint对象（连接点对象）
     通过JoinPoint对象（连接点对象），我们可以获取目标方法的相关信息
@@ -546,7 +546,7 @@ public void beforeAdvice(JoinPoint joinPoint) {
 
 ```
 ## 4.14 执行链
-```
+```text
 JdkDynamicAopProxy / CglibAopProxy
         ↓
 ReflectiveMethodInvocation.proceed()
@@ -572,7 +572,7 @@ ReflectiveMethodInvocation.proceed()
 ```
 
 # 5. 全注解式开发
-```
+```java
 @Configuration // 代替spring.xml
 @ComponentScan({"cw.spring.service"}) // 指定组件扫描的包
 // 开启aspectj自动代理
@@ -593,7 +593,7 @@ public void test01() {
 
 # 6. 基于XML配置方式的AOP
 ## 6.1 依赖
-```
+```xml
 <dependencies>
 	<!-- spring 核心依赖 -->
   <dependency>
@@ -617,7 +617,7 @@ public void test01() {
 
 ```
 ## 6.2 目标类
-```
+```java
 public class UserService {
     
     public void logout() {
@@ -628,7 +628,7 @@ public class UserService {
 
 ```
 ## 6.3 切面类
-```
+```java
 public class LogAspect {
     
     /**
@@ -650,7 +650,7 @@ public class LogAspect {
 
 ```
 ## 6.4 spring.xml配置
-```
+```text
 命名空间依然需要
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -686,7 +686,7 @@ public class LogAspect {
 ```
 
 ## 6.5 测试
-```
+```java
 @org.junit.Test
 public void test() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -698,7 +698,7 @@ public void test() {
 
 
 # 7. AOP的实际案例：事务处理
-```
+```text
 项目中的事务控制是在所难免的。在一个业务流程当中，可能需要多条DML语句共同完成，为了保证数据的安全，这多条DML语句要么同时成功，要么同时失败。这就需要添加事务控制的代码。
 在业务类中的每一个业务方法都是需要控制事务的，而控制事务的代码又是固定的格式，都是：
 try{
@@ -714,11 +714,11 @@ try{
     // 回滚事务
     rollbackTransaction();
 }
-这个控制事务的代码就是和业务逻辑没有关系的“交叉业务”。这些交叉业务的代码没有得到复用，在每个业务类的业务方法中，都要开启事务、提交事务以及回滚事务的代码，代码复用低，并且如果这些交叉业务代码需要修改，那必然需要修改多处，难维护，怎么解决？可以采用AOP思想解决。
+这个控制事务的代码就是和业务逻辑没有关系的"交叉业务"。这些交叉业务的代码没有得到复用，在每个业务类的业务方法中，都要开启事务、提交事务以及回滚事务的代码，代码复用低，并且如果这些交叉业务代码需要修改，那必然需要修改多处，难维护，怎么解决？可以采用AOP思想解决。
 可以把以上控制事务的代码作为环绕通知，切入到目标类的方法当中。
 ```
 ## 7.1 依赖
-```
+```xml
 <dependencies>
   <dependency>
     <groupId>org.springframework</groupId>
@@ -739,7 +739,7 @@ try{
 </dependencies>
 ```
 ## 7.2 目标类（业务类）
-```
+```java
 package cw.study.spring.service;
 
 /**
@@ -789,7 +789,7 @@ public class OrderService {
 }
 ```
 ## 7.3 切面类
-```
+```java
 package cw.study.spring.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -831,7 +831,7 @@ public class TransactionAspect {
 }
 ```
 ## 7.4 spring.xml配置
-```
+```text
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -850,7 +850,7 @@ public class TransactionAspect {
 </beans>
 ```
 ## 7.5 测试代码
-```
+```java
 @org.junit.Test
 public void test() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -867,7 +867,7 @@ public void test() {
 # 8. AOP的实际案例：安全日志
 需求是这样的：项目开发结束了，已经上线了。运行正常。客户提出了新的需求：凡是在系统中进行修改操作的，删除操作的，新增操作的，都要把这个人记录下来。因为这几个操作是属于危险行为。
 ## 8.1 目标类
-```
+```java
 package cw.study.spring.service;
 
 import org.springframework.stereotype.Service;
@@ -896,7 +896,7 @@ public class UserService {
 
 ```
 ## 8.2 切面类
-```
+```java
 package cw.study.spring.aspect;
 
 
@@ -955,7 +955,7 @@ public class LogAspect {
 
 ```
 ## 8.3 spring.xml配置
-```
+```text
 <!-- 组件扫描 -->
 <context:component-scan base-package="cw.study.spring"/>
 
@@ -964,7 +964,7 @@ public class LogAspect {
 
 ```
 ## 8.4 测试
-```
+```java
 @org.junit.Test
 public void test() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -978,7 +978,7 @@ public void test() {
 
 ## 9.1 @EnableAspectJAutoProxy 的事件链路
 
-```
+```text
 当我们在配置类上添加 @EnableAspectJAutoProxy 时，发生了什么？
 
 @Target(ElementType.TYPE)
@@ -1031,7 +1031,7 @@ public static BeanDefinition registerAspectJAnnotationAutoProxyCreatorIfNecessar
 
 ## 9.2 AnnotationAwareAspectJAutoProxyCreator 的类继承结构
 
-```
+```text
 AopProxy (Interface)                                 BeanPostProcessor (Interface)
   │                                                    │
   └─── AopProxyFactory (Interface)                      │
@@ -1060,7 +1060,7 @@ AbstractAutoProxyCreator                                 │
 
 ### 9.2.1 关键接口说明
 
-```
+```text
 SmartInstantiationAwareBeanPostProcessor 定义了三个与实例化相关的方法：
 
 1. getEarlyBeanReference(Object bean, String beanName)
@@ -1079,7 +1079,7 @@ SmartInstantiationAwareBeanPostProcessor 定义了三个与实例化相关的方
 
 ## 9.3 AOP 代理创建流程：wrapIfNecessary() 源码
 
-```
+```java
 AbstractAutoProxyCreator.postProcessAfterInitialization() — AOP 代理创建的主入口：
 
 @Override
@@ -1134,7 +1134,7 @@ protected Object wrapIfNecessary(Object bean, String beanName, Object cacheKey) 
 
 ### 9.3.1 AnnotationAwareAspectJAutoProxyCreator.getAdvicesAndAdvisorsForBean()
 
-```
+```java
 该方法位于 AbstractAdvisorAutoProxyCreator，但 findCandidateAdvisors() 和
 findAdvisorsThatCanApply() 由 AnnotationAwareAspectJAutoProxyCreator 实现：
 
@@ -1158,7 +1158,7 @@ protected List<Advisor> findCandidateAdvisors() {
 
 ### 9.3.2 createProxy() 源码
 
-```
+```java
 protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
         @Nullable Object[] specificInterceptors, TargetSource targetSource) {
 
@@ -1211,7 +1211,7 @@ protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
 
 ## 9.4 JDK vs CGLIB 代理决策：DefaultAopProxyFactory
 
-```
+```java
 DefaultAopProxyFactory.createAopProxy() 是决定使用 JDK 动态代理还是 CGLIB 的最终决策点：
 
 public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
@@ -1255,7 +1255,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
 ### 9.4.1 代理选择决策表
 
-```
+```text
                                      ┌─────────────────────────────┐
                                      │ 目标类是否实现了至少一个非    │
                                      │ SpringProxy 的接口？         │
@@ -1280,7 +1280,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
 ## 9.5 通知执行链：ReflectiveMethodInvocation.proceed() 核心源码
 
-```
+```java
 这是整个 AOP 通知调用链的核心！它使用递归 + 责任链模式实现拦截器链的执行。
 
 public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Cloneable {
@@ -1338,7 +1338,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 
 ### 9.5.1 各通知类型对应的 MethodInterceptor 实现
 
-```
+```text
 五种通知类型的注解分别由不同的 MethodInterceptor（也称 Advice）实现：
 
 @Before          → MethodBeforeAdviceInterceptor
@@ -1375,7 +1375,7 @@ ExposeInvocationInterceptor：固定排在第一个的拦截器
 
 ## 9.6 执行链完整调用时序图
 
-```
+```text
 假设有一个方法被 @Around + @Before + @AfterReturning + @After 同时增强：
 
 ReflectiveMethodInvocation.proceed()  —— currentInterceptorIndex = -1
@@ -1425,7 +1425,7 @@ MethodBeforeAdviceInterceptor.invoke(this)
 
 ## 9.7 JdkDynamicAopProxy.invoke() 源码
 
-```
+```java
 JDK 动态代理的核心：InvocationHandler.invoke()
 
 final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializable {
@@ -1499,7 +1499,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 ### 9.7.1 getInterceptorsAndDynamicInterceptionAdvice() — Advisor 与 MethodInterceptor 的转换
 
-```
+```text
 AdvisedSupport.getInterceptorsAndDynamicInterceptionAdvice():
 
 public List<Object> getInterceptorsAndDynamicInterceptionAdvice(Method method,
@@ -1561,7 +1561,7 @@ public List<Object> getInterceptorsAndDynamicInterceptionAdvice(
 
 ## 9.8 CglibAopProxy 的代理创建与执行
 
-```
+```java
 CGLIB 代理使用 Enhancer 创建子类来代理目标对象：
 
 class CglibAopProxy implements AopProxy, Serializable {
@@ -1598,7 +1598,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 ## 9.9 @Aspect 切面类的通知转换过程
 
-```
+```text
 当一个 @Aspect 注解的 Bean 被扫描到后，每个通知方法都会被解析为一个 Advisor：
 
 @Aspect

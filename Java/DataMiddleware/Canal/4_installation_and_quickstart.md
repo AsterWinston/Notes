@@ -673,7 +673,7 @@ DELETE FROM users WHERE name = 'Alice';
 
 运行 SimpleCanalClientExample 后，可以看到：
 
-```
+```text
 ============> binlog[mysql-bin.000001:154], db[test], table[users], eventType[INSERT]
     id(bigint) = 1, updated = true
     name(varchar) = Alice, updated = true
@@ -706,7 +706,7 @@ DELETE FROM users WHERE name = 'Alice';
 ## 9.1 Canal 连接 MySQL 失败
 
 **错误日志**：
-```
+```text
 ERROR c.a.o.c.p.d.rds.RdsBinlogEventParserProxy - connect failed
 java.io.IOException: connect /127.0.0.1:3306 failure
 ```
@@ -725,7 +725,7 @@ SHOW VARIABLES LIKE 'bind_address';
 ## 9.2 Binlog Dump 权限不足
 
 **错误日志**：
-```
+```text
 ERROR c.a.o.c.p.d.rds.RdsBinlogEventParserProxy - dump error
 java.io.IOException: Access denied; you need (at least one of) the SUPER, REPLICATION CLIENT privilege(s)
 ```
@@ -739,7 +739,7 @@ FLUSH PRIVILEGES;
 ## 9.3 Server ID 冲突
 
 **错误日志**：
-```
+```text
 ERROR c.a.o.c.p.d.rds.RdsBinlogEventParserProxy - dump error
 A slave with the same server_uuid/server_id as this slave has connected to the master
 ```
@@ -753,7 +753,7 @@ canal.instance.mysql.slaveId = 5678  # 确保与所有 MySQL Server 的 server-i
 ## 9.4 Binlog 格式不是 ROW
 
 **错误日志**：
-```
+```text
 ERROR c.a.o.c.p.d.rds.RdsBinlogEventParserProxy - dump error
 Cannot replicate because the master has BINLOG_FORMAT = STATEMENT
 ```

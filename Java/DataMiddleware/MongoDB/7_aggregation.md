@@ -8,7 +8,7 @@
 - **Stage（阶段）**：一个数据处理单元，如$match、$group、$sort等
 - **Expression（表达式）**：在阶段内部使用的操作符，如$sum、$avg等
 
-```
+```text
 输入文档 → [$match] → [$group] → [$sort] → [$project] → 输出结果
   doc1        过滤      分组聚合     排序       字段重塑       最终文档
   doc2
@@ -446,7 +446,7 @@ db.orders.aggregate([
 
 ## 5.1 管道顺序优化原则
 
-```
+```text
 1. $match → 尽早过滤，减少数据量
 2. $project → 尽早裁剪字段，减少内存
 3. $sort → 合理利用索引

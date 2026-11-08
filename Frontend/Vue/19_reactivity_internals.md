@@ -4,7 +4,7 @@
 
 ## 1.1 effect：会被重新执行的工作
 
-```
+```text
     effect(fn)          ── 立即执行 fn，并记录"当前 effect = fn"
          │
    fn 里读了 state.count   ── 触发 Proxy 的 get 拦截
@@ -121,7 +121,7 @@ function trigger(target: object, key: PropertyKey) {
 
 ## 3.2 批量更新的来龙去脉
 
-```
+```text
 count.value = 1      ┐
 count.value = 2      ├─ 同步连改三次，每次都 trigger
 count.value = 3      ┘

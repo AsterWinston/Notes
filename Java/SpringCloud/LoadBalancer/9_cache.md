@@ -75,7 +75,7 @@ public class CachingServiceInstanceListSupplier
 
 ## 2.2 缓存生命周期
 
-```
+```text
 t=0s     首次请求 → delegate.get() → 查询注册中心 → 返回 3 个实例 → 写入缓存
 t=5s     请求 → 缓存命中 → 直接返回（不查注册中心）
 t=10s    请求 → 缓存命中 → 直接返回

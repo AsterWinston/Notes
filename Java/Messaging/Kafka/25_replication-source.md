@@ -429,7 +429,7 @@ class Replica(val brokerId: Int,
 
 # 7. 复制相关的时序
 
-```
+```text
 完整 Leader → Follower 同步时序:
 
 Leader (Broker 0)                  Follower (Broker 1)

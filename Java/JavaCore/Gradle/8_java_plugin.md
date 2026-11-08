@@ -21,7 +21,7 @@ plugins {
 
 ## 1.2 Java 插件添加的完整任务图
 
-```
+```text
 build
 ├── assemble
 │   └── jar
@@ -45,7 +45,7 @@ build
 
 `SourceSet` 是 Java 插件的核心抽象，它将一组源文件、资源和输出目录组织成一个逻辑单元。
 
-```
+```text
 SourceSet (如 "main")
 ├── java (SourceDirectorySet)
 │   └── src/main/java/**/*.java
@@ -543,7 +543,7 @@ dependencies {
 
 **内部机制 — 类路径泄露（Classpath Leakage）**：
 
-```
+```text
 Project A (Library)
 ├── api → guava          (暴露，消费者可见)
 └── implementation → commons-lang3  (隐藏，消费者不可见)
@@ -573,7 +573,7 @@ dependencies {
 
 应用 `java-library` 后，除了 `java` 插件的配置，还增加了：
 
-```
+```text
 configurations:
 ├── api (可传递)
 ├── implementation (不可传递)
@@ -624,7 +624,7 @@ application {
 
 ## 9.2 Application Plugin 添加的任务
 
-```
+```text
 application
 ├── run — 直接运行应用（gradle run）
 ├── startScripts — 生成启动脚本（.bat/.sh）
@@ -836,7 +836,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 
 ## 12.4 JVM 语言混合编译的图像
 
-```
+```text
 src/main/
 ├── java/     → compileJava ─────┐
 ├── groovy/   → compileGroovy ───┤

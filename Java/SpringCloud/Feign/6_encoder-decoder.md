@@ -3,7 +3,7 @@
 
 `Encoder` 和 `Decoder` 是 Feign 请求/响应**编解码**的核心接口，负责 Java 对象与 HTTP 报文之间的相互转换。
 
-```
+```text
 请求方向： Java Object  ──[Encoder]──→  HTTP Body (JSON/XML/Form)
 响应方向： HTTP Body    ──[Decoder]──→  Java Object
 ```

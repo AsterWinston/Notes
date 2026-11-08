@@ -2,7 +2,7 @@
 
 ## 1.1 安全威胁与防护维度
 
-```
+```text
 ┌────────────────────────────────────────────────────────┐
 │                   Kafka 安全防护体系                      │
 │                                                        │
@@ -243,7 +243,7 @@ kafka-delegation-tokens.sh --bootstrap-server localhost:9092 --expire \
 
 Kafka ACL（Access Control List）使用 **principal → operation → resource** 模型：
 
-```
+```text
 Principal (身份)     Operation (操作)      Resource (资源)
 ────────────────     ───────────────      ──────────────
 User:alice           READ                 Topic:orders
@@ -349,7 +349,7 @@ kafka-acls.sh --bootstrap-server localhost:9092 \
 
 ## 5.1 常见安全协议堆栈
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │         Kafka 安全协议组合 (Security Protocol)        │
 │                                                     │
@@ -467,7 +467,7 @@ KafkaServer {
 
 ## 6.3 网络隔离
 
-```
+```text
 建议架构:
 
 ┌────────────────────────────────────────────────────┐

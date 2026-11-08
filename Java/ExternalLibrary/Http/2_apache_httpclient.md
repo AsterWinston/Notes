@@ -893,7 +893,7 @@ CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
 
 Apache HttpClient的架构层次清晰，核心组件包括：
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │  User Layer                                  │
 │  (HttpGet, HttpPost, CloseableHttpResponse) │
@@ -925,7 +925,7 @@ Apache HttpClient的架构层次清晰，核心组件包括：
 
 ## 4.2 请求执行流程
 
-```
+```text
 HttpClient.execute(request)
     ↓
 HttpRequestExecutor.execute(request, conn, context)
@@ -992,7 +992,7 @@ public class PoolingHttpClientConnectionManager {
 
 ### 4.3.3 连接生命周期
 
-```
+```text
 创建连接 (ConnectionRequest) 
    ↓
 借出连接 (lease)
@@ -1035,7 +1035,7 @@ connManager.setValidateAfterInactivity(2000); // 2秒
 
 ## 4.4 线程模型
 
-```
+```text
 同步请求线程模型：
 Thread (用户线程) → HttpClient.execute() → 阻塞直到响应返回
 

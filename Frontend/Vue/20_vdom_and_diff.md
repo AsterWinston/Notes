@@ -26,7 +26,7 @@ const vnode = {
 
 ## 2.1 patch 的两大类
 
-```
+```text
             patch(旧 vnode, 新 vnode)
                     │
         ┌───────────┴───────────┐
@@ -40,7 +40,7 @@ const vnode = {
 
 ## 2.2 children 的三种形态
 
-```
+```text
 children 旧 ─┬─ 文本   → 新文本：直接改 textContent
              ├─ 数组   → 新数组：进入"双端 diff"（见第 3 节）
              ├─ 数组   → 新文本：卸载旧全部，设文本
@@ -53,7 +53,7 @@ children 旧 ─┬─ 文本   → 新文本：直接改 textContent
 
 ## 3.1 双端 diff 的思想
 
-```
+```text
  旧: a b c d        新: a b c d
      ▲         ▲       ▲         ▲
    旧头      旧尾     新头      新尾
@@ -80,7 +80,7 @@ const newList = [{ name: 'C' }, { name: 'A' }, { name: 'B' }]
 
 ## 3.3 为什么说"用 index 当 key 是坑"
 
-```
+```text
 旧： [ itemA, itemB ]        key: 0=A, 1=B
 新： [ itemC, itemA, itemB ] key: 0=C, 1=A, 2=B
 

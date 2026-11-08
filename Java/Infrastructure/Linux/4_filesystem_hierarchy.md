@@ -7,7 +7,7 @@ FHS（Filesystem Hierarchy Standard）是 Linux 文件系统目录结构的标�
 
 # 2. 根目录 `/` 结构总览
 
-```
+```text
 /                   # 根文件系统
 ├── bin/            # 基本用户命令二进制文件
 ├── boot/           # 引导加载程序相关文件

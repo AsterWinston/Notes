@@ -3,7 +3,7 @@
 
 RocketMQ 从 **4.4.0** 版本开始支持 ACL（Access Control List），提供认证和授权机制。
 
-```
+```text
 安全机制层次：
 ┌──────────────────────────────────────┐
 │  1. 认证 (Authentication)            │
@@ -208,7 +208,7 @@ public class AclClientRPCHook implements RPCHook {
 
 # 5. ACL 在 Broker 请求处理中的位置
 
-```
+```text
 请求进入 Broker
     │
     ▼

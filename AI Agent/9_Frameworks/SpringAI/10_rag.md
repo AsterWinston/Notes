@@ -33,7 +33,7 @@
 
 离线阶段负责把原始文档转成可检索的向量：
 
-```
+```text
 离线（索引阶段）                      在线（查询阶段）
 ─────────────────                    ─────────────────
 文档 → Reader → Transformer          用户问题
@@ -351,7 +351,7 @@ void tenantCannotSeeOthersDocuments() {
 
 把口语化问题改写成检索友好表述：
 
-```
+```text
 原问题：那个报销要多久来着？
 改写后：员工费用报销的提交时限是多少天？
 ```
@@ -390,7 +390,7 @@ for (String q : subQueries) {
 
 ## 7.1 召回-精排两阶段
 
-```
+```text
 查询 ──▶ 向量召回 Top-20（快，粗）
              │
              ▼
@@ -424,7 +424,7 @@ List<Document> reranked = rerankModel.rerank(q, candidates)
 
 ## 8.1 失败分类
 
-```
+```text
 用户问 → 检索 → 生成
           │       │
           │       └─ 生成失败：上下文有答案但模型答错

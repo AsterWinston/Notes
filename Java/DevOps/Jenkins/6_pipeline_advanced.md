@@ -772,7 +772,7 @@ Jenkins Pipeline 默认在 Groovy 沙箱中执行，限制不安全的操作：
 
 当 Pipeline 使用了签名的 Groovy 方法时，需要管理员审批：
 
-```
+```text
 审批路径：Manage Jenkins > In-process Script Approval
 审批界面显示：
   Method: hudson.model.Run getRawBuild

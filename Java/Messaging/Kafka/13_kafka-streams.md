@@ -4,7 +4,7 @@
 
 Kafka Streams 是 Apache Kafka 官方提供的**流处理库**，允许开发者以 Java/Scala 编写流处理应用，不依赖外部集群（无 Spark/Flink 式的资源管理器）。
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │            Kafka Streams 在生态中的位置               │
 │                                                     │
@@ -48,7 +48,7 @@ Kafka Streams 是 Apache Kafka 官方提供的**流处理库**，允许开发者
 
 Topology 是一个**有向无环图（DAG）**，定义了流处理的逻辑：
 
-```
+```text
 Topology 示例: WordCount
 
 Source: "text-input" Topic
@@ -74,7 +74,7 @@ Sink: "word-count-output" Topic
 | KTable | 变更日志（changelog） | 按 Key 更新（UPSERT） | 用户信息、配置 |
 | GlobalKTable | 全量数据，广播到所有 Task | 按 Key 更新 | 静态维度表 |
 
-```
+```text
 KStream (流):
   Key:user1 → "click"   ← 独立事件
   Key:user2 → "view"
@@ -93,7 +93,7 @@ GlobalKTable:
 
 ## 2.3 StreamThread 与 StreamTask
 
-```
+```text
 Streams 应用 (Application ID: "my-streams-app")
 │
 ├── StreamThread 1 (线程)
@@ -287,7 +287,7 @@ KTable<String, String> joinedTable = leftTable.join(
 
 ## 4.1 本地状态 + Changelog
 
-```
+```text
 ┌────────────────────────────────────────────────────┐
 │            状态存储架构                             │
 │                                                    │
@@ -465,7 +465,7 @@ props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
 
 ## 8.1 状态存储恢复
 
-```
+```text
 问题: 启动慢，需要从 Changelog Topic 重建 State Store
 原因: 
   - 本地 RocksDB 目录丢失
@@ -480,7 +480,7 @@ props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
 
 ## 8.2 反压
 
-```
+```text
 问题: 源 Topic 写入速度 > 处理速度
 表现: Consumer Lag 持续增大
 
@@ -493,7 +493,7 @@ props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
 
 ## 8.3 数据倾斜
 
-```
+```text
 问题: 某些 Partition 数据量远大于其他 → 处理不均衡
 
 优化:

@@ -74,7 +74,7 @@ function render(s: FetchState): string {
 }
 ```
 
-```
+```text
              ┌──────────┐  发起请求  ┌───────────┐
              │   idle   │ ──────────▶ │  loading  │
              └──────────┘            └───────────┘

@@ -314,7 +314,7 @@ vm_memory_high_watermark.relative = 0.4
 # 5. 常见问题排查
 
 ## 5.1 消息丢失
-```
+```text
 现象：消息发送了但消费者没收到
 排查步骤：
 1. 检查ConfirmCallback是否返回ack=false
@@ -327,7 +327,7 @@ vm_memory_high_watermark.relative = 0.4
 ```
 
 ## 5.2 消息重复消费
-```
+```text
 现象：同一条消息被消费多次
 排查步骤：
 1. 检查消费确认模式（acknowledge-mode）
@@ -338,7 +338,7 @@ vm_memory_high_watermark.relative = 0.4
 ```
 
 ## 5.3 消费者不消费
-```
+```text
 现象：队列中有消息但消费者不消费
 排查步骤：
 1. 检查消费者的连接状态（管理界面Connections tab）
@@ -350,7 +350,7 @@ vm_memory_high_watermark.relative = 0.4
 ```
 
 ## 5.4 消息堆积
-```
+```text
 现象：队列中消息数量持续增长
 排查步骤：
 1. 检查消费者处理速度：增加concurrency
@@ -361,7 +361,7 @@ vm_memory_high_watermark.relative = 0.4
 ```
 
 ## 5.5 连接断开
-```
+```text
 现象：应用日志中出现Connection reset
 排查步骤：
 1. 检查RabbitMQ Broker是否重启

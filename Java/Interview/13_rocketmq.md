@@ -160,7 +160,7 @@ RocketMQ Consumer 采用**长轮询（Long Polling）**实现类似 Push 的消�
 | **批量消息的优化** | 更好的批量发送和吞吐 |
 
 **Proxy 模式架构**：
-```
+```text
 Producer/Consumer → [gRPC/Remoting] → Proxy（无状态） → Broker
 ```
 

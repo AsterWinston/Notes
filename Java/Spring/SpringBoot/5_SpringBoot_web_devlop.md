@@ -5,7 +5,7 @@
 ## 1.1 web自动配置的依赖是如何传递的
 1. 首先引入了web启动器，如下：
 
-```
+```xml
 <dependency>
   <groupId>org.springframework.boot</groupId>
 
@@ -16,7 +16,7 @@
 ```
 2. web启动器传递引入了spring-boot-starter，如下：
 
-```
+```xml
 <dependency>
   <groupId>org.springframework.boot</groupId>
 
@@ -31,7 +31,7 @@
 ```
 3. spring-boot-starter会传递引入一个spring-boot-autoconfigure包，如下：
 
-```
+```xml
 <dependency>
   <groupId>org.springframework.boot</groupId>
 
@@ -52,7 +52,7 @@
 ## 1.2 web自动配置的实现原理
 1. 从入口程序开始：
 
-```
+```java
 package com.powernode.sb309web;
 
 import org.springframework.boot.SpringApplication;
@@ -83,7 +83,7 @@ public class Sb309WebApplication {
 <img src="images/68.png" width="100%">
 
 以下就是web自动配置类列表：
-```
+```text
 org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration
 org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration
 org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration
@@ -111,7 +111,7 @@ org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration
 7. EmbeddedWebServerFactoryCustomizerAutoConfiguration
 8. RestTemplateAutoConfiguration
 通过查看源码，得知，web开发时，在application.properties配置文件中可以配置的前缀是：
-```
+```text
 # SpringMVC相关配置
 spring.mvc.
 
@@ -152,7 +152,7 @@ Spring Boot 为 Spring MVC 提供了自动配置，这在大多数应用程序�
 ## 1.5 WebMvcAutoConfiguration原理
 通过源码分析的方式，学习WebMvc的自动配置原理。
 ### 1.5.1 WebMvc自动配置是否生效的条件
-```
+```text
 @AutoConfiguration(after = { DispatcherServletAutoConfiguration.class, TaskExecutionAutoConfiguration.class,
         ValidationAutoConfiguration.class })
 @ConditionalOnWebApplication(type = Type.SERVLET)
@@ -184,7 +184,7 @@ public class WebMvcAutoConfiguration {}
 
 ### 1.5.2 WebMvc自动配置生效后引入了两个Filter Bean
 1. 引入了HiddenHttpMethodFilter Bean
-```
+```java
 @Bean
 @ConditionalOnMissingBean(HiddenHttpMethodFilter.class)
 @ConditionalOnProperty(prefix = "spring.mvc.hiddenmethod.filter", name = "enabled")
@@ -194,7 +194,7 @@ public OrderedHiddenHttpMethodFilter hiddenHttpMethodFilter() {
 ```
 这个过滤器是专门处理Rest请求的。GET POST PUT DELETE请求。
 2. 引入了FormContentFilter Bean
-```
+```java
 @Bean
 @ConditionalOnMissingBean(FormContentFilter.class)
 @ConditionalOnProperty(prefix = "spring.mvc.formcontent.filter", name = "enabled", matchIfMissing = true)
@@ -215,7 +215,7 @@ SpringBoot在这个类WebMvcAutoConfigurationAdapter中进行了一系列的Spri
 关于WebMvcConfigurer接口
 这个接口不是SpringBoot框架提供的，是Spring MVC提供的，在Spring框架4.3版本中引入的。这个接口的作用主要是允许开发者通过实现这个接口来定制Spring MVC的行为。
 在这个接口中提供了很多方法，需要改变Spring MVC的哪个行为，则重写对应的方法即可，下面是这个接口中所有的方法，以及每个方法对应的Spring MVC行为的解释：
-```
+```java
 public interface WebMvcConfigurer {
     // 用于定制 Spring MVC 如何匹配请求路径到控制器
     default void configurePathMatch(PathMatchConfigurer configurer) {}
@@ -271,7 +271,7 @@ web站点中的静态资源指的是：js、css、图片等。
 关于SpringBoot对静态资源处理的默认配置，查看WebMvcAutoConfigurationAdapter源码，核心源码如下：
 <img src="images/81.png" width="100%">
 对以上源码进行解释：
-```
+```java
 @Override
 public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
@@ -317,7 +317,7 @@ WebJars官网：https://www.webjars.org/
 <img src="images/82.png" width="100%">
 
 在官网上可以找到某个webjars的maven依赖，将依赖加入到SpringBoot项目中，例如我们添加vue的依赖：
-```
+```xml
 <dependency>
     <groupId>org.webjars.npm</groupId>
 
@@ -362,7 +362,7 @@ SpringBoot对普通静态资源处理的规则是：
   ○ <font style="color:rgb(44, 44, 54);">Cache-Control</font> HTTP 响应头   是HTTP响应协议的一部分内容。如下图响应协议的响应头信息中即可看到<font style="color:rgb(44, 44, 54);">Cache-Control</font>的字样：
 <img src="images/87.png" width="100%">
 
-```
+```text
 - <font style="color:rgb(44, 44, 54);">常见的 Cache-Control 指令包括：</font>
 
     * <font style="color:rgb(44, 44, 54);">max-age=<seconds>：表示响应在多少秒内有效。</font>
@@ -394,7 +394,7 @@ SpringBoot对普通静态资源处理的规则是：
 <img src="images/91.png" width="100%">
 
 在application.properties文件中对缓存进行如下的配置：
-```
+```text
 # 静态资源缓存设置
 # 1. 缓存有效期
 spring.web.resources.cache.period=100
@@ -421,7 +421,7 @@ spring.web.resources.add-mappings=true
 ### 1.6.6 web应用的欢迎页面
 欢迎页测试
 先说结论：只要在静态资源路径下提供index.html，则被当做欢迎页面。静态资源路径指的是之前的4个路径：
-```
+```text
 { "classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/" }
 ```
 测试一下，在classpath:/static/目录下新建index.html页面
@@ -461,7 +461,7 @@ spring.web.resources.add-mappings=true
 ● EnableWebMvcConfiguration作用是用来：启用配置的
 
 favorite icon
-favicon（也称为“收藏夹图标”或“网站图标”）是大多数现代网页浏览器的默认行为之一。当用户访问一个网站时，浏览器通常会尝试从该网站的根目录下载名为 favicon.ico 的文件，并将其用作标签页的图标。
+favicon（也称为"收藏夹图标"或"网站图标"）是大多数现代网页浏览器的默认行为之一。当用户访问一个网站时，浏览器通常会尝试从该网站的根目录下载名为 favicon.ico 的文件，并将其用作标签页的图标。
 如果网站没有提供 favicon.ico 文件，浏览器可能会显示一个默认图标，或者根本不显示任何图标。为了确保良好的用户体验，网站开发者通常会在网站的根目录下放置一个 favicon.ico 文件。
 
 Spring Boot项目中favicon.ico文件应该放在哪里呢？Spring Boot官方是这样说明的：
@@ -487,7 +487,7 @@ Spring Boot项目中favicon.ico文件应该放在哪里呢？Spring Boot官方�
 
 ## 2.1 配置文件方式
 要修改访问静态资源URL的前缀，这样配置：
-```
+```text
 # Spring MVC的相关配置
 # 1. 设置webjars静态资源的请求路径的前缀
 spring.mvc.webjars-path-pattern=/wjs/**
@@ -495,7 +495,7 @@ spring.mvc.webjars-path-pattern=/wjs/**
 spring.mvc.static-path-pattern=/static/**
 ```
 要修改静态资源的存放位置，这样配置：
-```
+```properties
 spring.web.resources.static-locations=classpath:/static1/,classpath:/static2/
 ```
 进行以上配置之后：
@@ -514,7 +514,7 @@ spring.web.resources.static-locations=classpath:/static1/,classpath:/static2/
 ● 第二种：以组件的形式存在：编写一个方法，用@Bean注解标注。
 ### 2.2.1 第一种方式
 编写配置类，对于web开发来说，配置类一般起名为：WebConfig。配置类一般存放到config包下，因此在SpringBoot主入口程序同级目录下新建config包，在config包下新建WebConfig类：
-```
+```java
 package com.powernode.springboot.config;
 
 import org.springframework.context.annotation.Configuration;
@@ -537,7 +537,7 @@ Spring Boot对Spring MVC的默认自动配置是生效的。
 因此，以上的方式只是在Spring MVC默认行为之外扩展行为。
 
 如果你不想再继续使用SpringBoot提供的默认行为，可以使用@EnableWebMvc进行标注。例如：
-```
+```java
 package com.powernode.springboot.config;
 
 import org.springframework.context.annotation.Configuration;
@@ -559,7 +559,7 @@ public class WebConfig implements WebMvcConfigurer {
 ```
 ### 2.2.2 第二种方式
 采用@Bean注解提供一个WebMvcConfigurer组件，代码如下：
-```
+```java
 package com.powernode.springboot.config;
 
 import org.springframework.context.annotation.Bean;
@@ -589,7 +589,7 @@ public class WebConfig2 {
 
 ### 2.2.3 其他配置也这样做即可
 以上对静态资源处理进行了手动配置，也可以做其他配置，例如拦截器：
-```
+```java
 package com.powernode.springboot.config;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -674,7 +674,7 @@ DelegatingWebMvcConfiguration中的setConfigurers()方法用来设置配置。�
   ○ 效率比Ant高，一般新项目中使用**<font style="color:#DF2A3F;">PathPatternParser</font>**
 
 SpringBoot3中默认使用的是PathPatternParser，不需要任何配置。如果要使用AntPathMatcher，就需要进行如下的配置：
-```
+```properties
 spring.mvc.pathmatch.matching-strategy=ant_path_matcher
 ```
 ## 3.1 AntPathMatcher
@@ -686,11 +686,11 @@ Ant风格的路径匹配规则回顾：
 {}**	**路径变量，用于提取路径的一部分作为参数。示例：/users/{userId} 匹配 /users/123，提取 userId=123。
 
 如果在SpringBoot3中启用Ant风格，记得配置：
-```
+```properties
 spring.mvc.pathmatch.matching-strategy=ant_path_matcher
 ```
 如下代码：请分析以下路径匹配的是什么样的路径。
-```
+```java
 package com.powernode.springboot.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -709,13 +709,13 @@ public class PathController {
 ```
 ## 3.2 PathPatternParser
 项目中不做配置，或者按照以下方式配置，都是PathPatternParser：
-```
+```properties
 spring.mvc.pathmatch.matching-strategy=path_pattern_parser
 ```
 PathPatternParser风格是兼容Ant风格的。只有一个地方PathPatternParser不支持，Ant支持。在Ant风格中，**可以出现在任意位置。在PathPatternParser中只允许**出现在路径的末尾。
 
 可以测试一下，将配置文件中的Ant风格注释掉，采用PathPatternParser风格。然后控制器代码如下：
-```
+```java
 package com.powernode.springboot.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -735,7 +735,7 @@ public class PathController {
 提示你，如果在路径当中出现了**，需要将路径匹配规则替换为Ant风格。因此路径当中如果出现**，那么必须使用Ant风格。除此之外，PathPatternParser均可用。
 
 我们再来测试一下，**放到末尾，对于PathPatternParser是否可用？
-```
+```java
 @GetMapping("/{path:[a-z]+}/a?/*.do/**")
 public String path(HttpServletRequest request, @PathVariable String path){
     return request.getRequestURI() + "," + path;
@@ -777,7 +777,7 @@ SpringBoot框架中，在程序员不做任何配置的情况下，优先考虑�
   ○ 命令行工具：curl
 
 对于我们编写的以下Controller来说：
-```
+```java
 package com.powernode.springboot.controller;
 
 import com.powernode.springboot.bean.User;
@@ -800,7 +800,7 @@ public class UserController {
 ```
 我们使用了@RestController，也就是使用了@ResponseBody。因此默认支持的是返回JSON数据。怎么才能支持返回XML格式的数据呢？需要做以下两步：
 第一步：引入一个依赖
-```
+```xml
 <dependency>
   <groupId>com.fasterxml.jackson.dataformat</groupId>
 
@@ -810,7 +810,7 @@ public class UserController {
 
 ```
 第二步：在实体类上添加一个注解
-```
+```java
 package com.powernode.springboot.bean;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -837,7 +837,7 @@ public class User {
 我们仍然使用curl命令行工具进行测试：
 <img src="images/112.png" width="100%">
 我们可以看到，并没有达到我们想要的效果，这是因为SpringBoot优先考虑的不是通过请求参数format方式。如何优先考虑使用format方式呢？做如下配置：
-```
+```text
 # 内容协商时，优先考虑请求参数format方式。
 spring.mvc.contentnegotiation.favor-parameter=true
 ```
@@ -846,7 +846,7 @@ spring.mvc.contentnegotiation.favor-parameter=true
 可以看到，现在SpringBoot已经优先考虑使用请求参数format方式了。
 
 当然，请求参数的名字可以不使用format吗？支持定制化吗？答案是支持的，例如你希望请求参数的名字为type，可以做如下配置：
-```
+```text
 # 内容协商时，设置请求参数的名字，默认为format
 spring.mvc.contentnegotiation.parameter-name=type
 ```
@@ -901,7 +901,7 @@ DelegatingWebMvcConfiguration继承了WebMvcConfigurationSupport
 3. ResourceHttpMessageConverter:
 用于将Spring的Resource对象与HTTP消息体之间进行转换。Resource是Spring中表示资源的接口，可以读取文件等资源。这个转换器对于下载文件或发送静态资源有用。
 4. ResourceRegionHttpMessageConverter:
-用于处理资源的部分内容（即“Range”请求），特别是当客户端请求大文件的一部分时。这对于实现视频流媒体等功能很有用。
+用于处理资源的部分内容（即"Range"请求），特别是当客户端请求大文件的一部分时。这对于实现视频流媒体等功能很有用。
 5. AllEncompassingFormHttpMessageConverter:
 用于处理表单，是一个比较全面的form消息转换器。处理标准的application/x-www-form-urlencoded格式的数据，以及包含文件上传的multipart/form-data格式的数据。
 6. MappingJackson2HttpMessageConverter:
@@ -916,7 +916,7 @@ DelegatingWebMvcConfiguration继承了WebMvcConfigurationSupport
 可以看到以上6个消息转换器中没有yaml相关的消息转换器，可见，如果要实现yaml格式的内容协商，yaml格式的消息转换器就需要我们自定义了。
 ### 4.4.1 第一步：引入能够处理yaml格式的依赖
 任何一个能够处理yaml格式数据的库都可以，这里选择使用jackson的库，因为它既可以处理json，xml，又可以处理yaml。
-```
+```xml
 <dependency>
   <groupId>com.fasterxml.jackson.dataformat</groupId>
 
@@ -926,7 +926,7 @@ DelegatingWebMvcConfiguration继承了WebMvcConfigurationSupport
 
 ```
 编写测试程序，简单测试一下这个库的用法：
-```
+```java
 package com.powernode.springboot;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -951,14 +951,14 @@ public class Jackson2YamlTest {
 ```
 ### 4.4.2 第二步：新增一种媒体类型yaml
 默认支持xml和json两种媒体类型，要支持yaml格式的，需要新增一个yaml媒体类型，在springboot的配置文件中进行如下配置：
-```
+```properties
 spring.mvc.contentnegotiation.media-types.yaml=text/yaml
 ```
 注意，以上types后面的yaml是媒体类型的名字，名字随意，如果媒体类型起名为xyz，那么发送请求时的路径应该是这样的：http://localhost:8080/detail?format=xyz
 
 ### 4.4.3 第三步：自定义HttpMessageConverter
 编写类YamlHttpMessageConverter继承AbstractHttpMessageConverter，代码如下：
-```
+```java
 package com.powernode.springboot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -1007,7 +1007,7 @@ public class YamlHttpMessageConverter extends AbstractHttpMessageConverter<Objec
 
 ### 4.4.4 配置消息转换器
 重写WebMvcConfigurer接口的configureMessageConverters方法：
-```
+```java
 package com.powernode.springboot.config;
 
 import org.springframework.context.annotation.Configuration;
@@ -1051,7 +1051,7 @@ public class WebConfig implements WebMvcConfigurer {
 ## 5.2 Spring Boot整合Thymeleaf
 
 ### 5.2.1 引入依赖
-```
+```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -1123,7 +1123,7 @@ public class ThymeleafProperties {
 - 缓存（cache）：`true`（生产环境默认开启）
 
 ### 5.3.3 自定义配置示例
-```
+```text
 # 修改模板前缀
 spring.thymeleaf.prefix=classpath:/views/
 # 修改模板后缀
@@ -1204,7 +1204,7 @@ spring.thymeleaf.encoding=UTF-8
 ```
 
 渲染结果示例（假设上下文路径为 /app）：
-```
+```text
 /app/user/detail?id=10&type=admin
 /app/user/10/delete
 ```
@@ -1439,7 +1439,7 @@ springboot会根据请求头的Accept字段来决定错误的响应格式。
 ### 6.2.1 局部控制 @ExceptionHandler
 局部控制 @ExceptionHandler
 在控制器当中编写一个方法，方法使用@ExceptionHandler注解进行标注，凡是这个控制器当中出现了对应的异常，则走这个方法来进行异常的处理。局部生效。
-```
+```java
 package com.powernode.test.controller;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -1466,7 +1466,7 @@ public class UserController {
 
 ```
 可以再编写一个OtherController，让它也发生IllegalArgumentException异常，看看它会不会走局部的错误处理机制。
-```
+```java
 package com.powernode.test.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -1490,7 +1490,7 @@ public class OtherController {
 ### 6.2.2 全局控制 @ControllerAdvice + @ExceptionHadler
 也可以把以上局部生效的方法单独放到一个类当中，这个类使用@ControllerAdvice注解标注，凡是任何控制器当中出现了对应的异常，则走这个方法来进行异常的处理。全局生效。
 将之前的局部处理方案的代码注释掉。使用全局处理方式，编写以下类：
-```
+```java
 package com.powernode.test.controller;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -1530,7 +1530,7 @@ Spring Boot 默认会在模型Model中放置以下信息：
 在thymeleaf中使用 ${message}即可取出信息。
 
 注意：springboot3.3.5版本默认只向Model对象中绑定了timestamp``status``error。如果要保存exception``message``trace，需要开启以下三个配置：
-```
+```properties
 server.error.include-stacktrace=always
 server.error.include-exception=true
 server.error.include-message=always
@@ -1562,20 +1562,20 @@ server.error.include-message=always
 
 每个文件都应包含相同的消息键，但值应对应于相应的语言。例如：
 messages.properties:
-```
+```properties
 welcome.message=Welcome to our application!
 ```
 messages_zh_CN.properties:
-```
+```properties
 welcome.message=欢迎来到我们的应用！
 ```
 messages_fr.properties:
-```
+```properties
 welcome.message=Bienvenue dans notre application !
 ```
 ### 7.1.2 第二步：在模板文件中取出消息
 语法格式为：#{welcome.message}
-```
+```html
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -1598,7 +1598,7 @@ welcome.message=Bienvenue dans notre application !
 <img src="images/118.png" width="100%">
 通过以上源码得知，国际化对应的配置前缀是：spring.message
 例如在application.properties中进行如下配置：
-```
+```text
 # 配置国际化文件命名的基础名称
 spring.messages.basename=messages
 
@@ -1608,7 +1608,7 @@ spring.messages.encoding=UTF-8
 注意：标准标识符：en_US 和 zh_CN 这样的标识符是固定的，不能更改。可以设置的是basename。
 ## 7.3 在程序当中如何获取国际化信息
 在国际化自动配置类中可以看到这样一个Bean：MessageSource，它是专门用来处理国际化的。我们可以将它注入到我们的程序中，然后调用相关方法在程序中获取国际化信息。
-```
+```java
 @Controller
 public class MyController {
 
@@ -1631,7 +1631,7 @@ public class MyController {
 springboot默认嵌入的web服务器是Tomcat，如何切换到jetty服务器？
 实现方式：排除Tomcat，添加Jetty依赖
 修改 pom.xml 文件：在 pom.xml 中，确保你使用 spring-boot-starter-web 并排除 Tomcat，然后添加 Jetty 依赖。
-```
+```text
 <!-- 排除 Tomcat -->
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -1682,14 +1682,14 @@ springboot默认嵌入的web服务器是Tomcat，如何切换到jetty服务器�
 如果要对jetty服务器进行配置，前缀为：server.jetty。
 
 在以后的开发中关于tomcat服务器的常见优化配置有：
-```
+```text
 # 这个参数决定了 Tomcat 在接收请求时，如果在指定的时间内没有收到完整的请求数据，将会关闭连接。这个超时时间是从客户端发送请求开始计算的。
 # 防止长时间占用资源：如果客户端发送请求后，长时间没有发送完所有数据，Tomcat 会在这个超时时间内关闭连接，从而释放资源，避免资源被长时间占用。
 server.tomcat.connection-timeout=20000
 
 # 设置 Tomcat 服务器处理请求的最大线程数为 200。
 # 如果超过这个数量的请求同时到达，Tomcat 会将多余的请求放入一个等待队列中。
-# 如果等待队列也满了（由 server.tomcat.accept-count 配置），新的请求将被拒绝，通常会返回一个“503 Service Unavailable”错误。
+# 如果等待队列也满了（由 server.tomcat.accept-count 配置），新的请求将被拒绝，通常会返回一个"503 Service Unavailable"错误。
 server.tomcat.max-threads=200
 
 # 用来设置等待队列的最大容量

@@ -192,7 +192,7 @@ repositories {
 
 Gradle 中的 Configuration 是一个依赖的集合，代表项目的某个依赖范围。每个 Configuration 都有特定的用途和可见性规则。
 
-```
+```text
 Configuration = 一组依赖声明 + 可见性 + 传递性规则 + 可消耗性规则
 ```
 
@@ -239,7 +239,7 @@ dependencies {
 
 ## 2.3 api vs implementation 的可见性差异
 
-```
+```text
 项目 A（库生产者）:
   src/main/java/
     └── MyLib.java  ← 使用了 Guava 的 ImmutableList
@@ -340,7 +340,7 @@ val conf by configurations.creating {
 ```
 
 **Java Library Plugin 的配置关系图：**
-```
+```text
                          ┌──────────────┐
                          │  api (声明)   │
                          └──────┬───────┘
@@ -461,7 +461,7 @@ dependencies {
 
 当 Gradle 解析一个依赖时，它会：
 
-```
+```text
 1. implementation("com.example:A:1.0")
      │
      ├─► 2. 在配置的仓库中搜索 com.example:A:1.0
@@ -583,7 +583,7 @@ dependencyLocking {
 ```
 
 生成的锁定文件 (`gradle/dependency-locks/compileClasspath.lockfile`)：
-```
+```text
 # This is a Gradle generated file for dependency locking.
 com.google.guava:guava:32.1.3-jre
 com.google.guava:failureaccess:1.0.1

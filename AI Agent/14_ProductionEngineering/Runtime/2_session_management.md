@@ -6,7 +6,7 @@
 
 会话不是一张表，而是一组要素的聚合。下图给出典型组成：
 
-```
+```text
 会话（Session）
 ├── 会话标识：sessionId
 ├── 归属：tenantId + userId
@@ -61,7 +61,7 @@ public record Session(
 | 记忆 | 消息历史 + 摘要 + 长期偏好 | 可跨会话 |
 | 上下文 | 本次请求实际带给模型的内容 | 单次请求 |
 
-```
+```text
 会话 = 容器
 记忆 = 容器内的历史
 上下文 = 从记忆中挑选后喂给模型的部分
@@ -292,7 +292,7 @@ public interface SessionRepository {
 
 ## 5.1 状态与流转
 
-```
+```text
 创建 ──▶ 活跃 ──▶ 空闲（超时）──▶ 归档/删除
           │
           └──▶ 主动关闭
@@ -445,7 +445,7 @@ public void update(String sessionId, long expectedVersion, Session next) {
 | 记忆 | 消息历史 + 摘要 + 长期偏好 |
 | 上下文 | 本次请求实际带给模型的内容 |
 
-```
+```text
 会话 = 容器
 记忆 = 容器内的历史
 上下文 = 从记忆中挑选后喂给模型的部分

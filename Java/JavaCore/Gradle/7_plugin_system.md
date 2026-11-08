@@ -46,7 +46,7 @@ plugins { id 'java' }
 
 Gradle 通过 `PluginResolutionService` 解析插件，流程如下：
 
-```
+```text
 用户声明 plugins { id 'x' version '1.0' }
         │
         ▼
@@ -413,7 +413,7 @@ dependencies {
 
 ## 8.1 目录结构与配置
 
-```
+```text
 buildSrc/
 ├── build.gradle.kts
 │   └── plugins {
@@ -493,7 +493,7 @@ plugins {
 
 ## 8.3 Groovy DSL 预编译插件
 
-```
+```text
 buildSrc/src/main/groovy/my-java-library.gradle
 ```
 
@@ -769,7 +769,7 @@ gradle publishPlugins -Pgradle.publish.key=<key> -Pgradle.publish.secret=<secret
 
 当发布插件时，除了主 JAR，Gradle 会自动生成 Marker Artifact：
 
-```
+```text
 com.mycompany:com.mycompany.myplugin.gradle.plugin:1.0.0
   └── pom 依赖指向: com.mycompany:myplugin:1.0.0
 ```

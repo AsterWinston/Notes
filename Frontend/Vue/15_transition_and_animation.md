@@ -34,7 +34,7 @@ const show = ref(false)
 
 ## 1.2 六类名时间线
 
-```
+```text
 进入进入                       离开
   v-enter-from ──▶ v-enter-to     v-leave-from ──▶ v-leave-to
      （加 v-enter-active 的 transition）

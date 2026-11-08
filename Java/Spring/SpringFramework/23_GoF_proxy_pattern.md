@@ -12,13 +12,13 @@
 		为了使用户察觉不到是由代理对象完成的，使用户感觉还是由目标对象进行完成的
 使用代理模式，对于客户端程序来说，客户端无法察觉，客户端在使用代理对象的时候，就像在使用目标对象。对于客户端程序来说，使用代理对象时就像在使用目标对象一样。
 代理模式是GoF23种设计模式之一。属于结构型设计模式。
-代理模式的作用是：为其他对象提供一种代理以控制对这个对象的访问。在某些情况下，一个客户不想或者不能直接引用一个对象，此时可以通过一个称之为“代理”的第三者来实现间接引用。代理对象可以在客户端和目标对象之间起到中介的作用，并且可以通过代理对象去掉客户不应该看到的内容和服务或者添加客户需要的额外服务。 通过引入一个新的对象来实现对真实对象的操作或者将新的对象作为真实对象的一个替身，这种实现机制即为代理模式，通过引入代理对象来间接访问一个对象，这就是代理模式的模式动机。
+代理模式的作用是：为其他对象提供一种代理以控制对这个对象的访问。在某些情况下，一个客户不想或者不能直接引用一个对象，此时可以通过一个称之为"代理"的第三者来实现间接引用。代理对象可以在客户端和目标对象之间起到中介的作用，并且可以通过代理对象去掉客户不应该看到的内容和服务或者添加客户需要的额外服务。 通过引入一个新的对象来实现对真实对象的操作或者将新的对象作为真实对象的一个替身，这种实现机制即为代理模式，通过引入代理对象来间接访问一个对象，这就是代理模式的模式动机。
 代理模式的代码实现有两种形式：
     静态代理
     动态代理
 
 # 2. 静态代理
-```
+```text
 项目经理提出一个新的需求：要统计所有业务接口中每一个业务方法的耗时。
 解决方案一：硬编码，在每一个业务接口中的每一个业务方法中直接添加统计耗时的程序。
 这种方案的缺点：
@@ -157,7 +157,7 @@ public class Client {
 JDK 动态代理只能代理接口 
 还是使用静态代理中的例子：一个接口和一个实现类。
 ### 3.1.1 公共接口
-```
+```text
 package cw.study.spring.service;
 
 /**
@@ -191,7 +191,7 @@ public interface OrderService {
 }
 ```
 ### 3.1.2 目标对象
-```
+```java
 package cw.study.spring.service;
 
 
@@ -242,7 +242,7 @@ public class OrderSeriveImpl implements OrderService {
 }
 ```
 ### 3.1.3 动态生成代理类分析
-```
+```text
 在动态代理中代理类是可以动态生成的，这个类不需要写，我们直接写客户端程序即可
 需要理解：Object proxyObj = Proxy.newProxyInstance(类加载器, 代理类要实现的接口(公共接口), 调用处理器)
 	newProxyInstance：创建代理对象，调用该方法可以创建代理对象
@@ -253,7 +253,7 @@ public class OrderSeriveImpl implements OrderService {
 		调用处理器 InvocationHandler h：JDK不可能知道我们要代理类增强目标类哪些功能，JDK不知道增强的代码，这个需要我们进行传递，我们可以通过调用处理器告诉JDK代理类的增强代码，调用处理器 InvocationHandler 是一个接口，需要我们进行实现，在需要实现的方法中编写增强代码
 ```
 ### 3.1.4 实现调用处理器接口 InvocationHandler 编写增强代码
-```
+```text
     编写增强代码的调用处理器只需要编写一次即可
     实现调用处理器接口 InvocationHandler，需要实现调用处理器的invoke方法，实现该方法其实就是在实现代理类实现公共接口时需要实现公共接口的方法的方法体
     增强代码在调用处理器接口 InvocationHandler 的invoke方法中编写
@@ -319,7 +319,7 @@ public class TimerInvocationHandler implements InvocationHandler {
 }
 ```
 ### 3.1.5 客户端程序
-```
+```java
 package client;
 
 import client.cw.study.spring.improve.TimerInvocationHandler;
@@ -359,7 +359,7 @@ public class Client {
 }
 ```
 ### 3.1.6 JDK 动态代理工具类封装
-```
+```java
 package client.cw.study.spring.improve;
 
 import cw.study.spring.service.OrderService;
@@ -419,7 +419,7 @@ public class Client {
 CGLIB 动态代理可以代理接口，也可以代理类
 CGLIB 动态代理底层采用继承的方式实现。所以被代理的目标类不能使用final修饰。
 ### 3.2.1 CGLIB依赖
-```
+```xml
 <dependency>
   <groupId>cglib</groupId>
   <artifactId>cglib</artifactId>
@@ -427,7 +427,7 @@ CGLIB 动态代理底层采用继承的方式实现。所以被代理的目标�
 </dependency>
 ```
 ### 3.2.2 目标类
-```
+```java
 package cw.study.spring.service;
 
 /**
@@ -456,7 +456,7 @@ public class UserService {
 
 ```
 ### 3.2.3 方法拦截器MethodInterceptor
-```
+```text
 相当于要执行目标方法的时候，会被拦截器拦截，在执行增强代码的过程中执行目标方法，实现对目标方法的增强
 package client.cw.study.spring.improve;
 
@@ -502,7 +502,7 @@ public class TimerMethodInterceptor implements MethodInterceptor {
 
 ```
 ### 3.2.4 客户端
-```
+```text
 package client;
 
 
@@ -542,7 +542,7 @@ public class Client {
 --add-opens java.base/sun.net.util=ALL-UNNAMED
 ```
 ### 3.2.5 CGLIB代理类名格式
-```
+```text
 cw.study.spring.service.UserService$$EnhancerByCGLIB$$d609db49@2d6a9952
 
 class UserService$$EnhancerByCGLIB$$d609db49 extends UserService {} 
@@ -552,7 +552,7 @@ class UserService$$EnhancerByCGLIB$$d609db49 extends UserService {}
 
 ## 4.1 GoF 代理模式 ↔ Spring AOP 代理的映射
 
-```
+```text
 GoF 代理模式的三大角色在 Spring AOP 中的对应：
 
   GoF 代理模式                        Spring AOP
@@ -579,7 +579,7 @@ GoF 代理模式的三大角色在 Spring AOP 中的对应：
 
 ## 4.2 静态代理 vs 动态代理 在 Spring 中的运用
 
-```
+```text
 手写静态代理：
   public class OrderServiceProxy implements OrderService {
       private OrderService target;  // 持有目标对象
@@ -621,7 +621,7 @@ Spring JDK 动态代理（解决类爆炸）：
 
 ## 4.3 CGLIB 代理在 Spring 中的源码实现
 
-```
+```text
 代理类 UserService$$EnhancerByCGLIB$$d609db49 extends UserService
 
 Spring 的 ObjenesisCglibAopProxy 创建 CGLIB 代理的核心：

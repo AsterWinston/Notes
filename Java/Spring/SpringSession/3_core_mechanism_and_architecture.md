@@ -2,7 +2,7 @@
 
 Spring Session 的整体架构遵循**分层设计**原则，从上到下依次为：
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │                     使用方                                 │
 │  HttpSession API  │  Session API  │  WebSession (WebFlux) │
@@ -28,7 +28,7 @@ Spring Session 的整体架构遵循**分层设计**原则，从上到下依次�
 
 `SessionRepositoryFilter` 是整个 Spring Session 的**核心入口 Filter**，它的核心作用是**替换原生的 HttpSession**。
 
-```
+```text
 请求到达 Tomcat
   │
   ▼
@@ -137,7 +137,7 @@ private final class SessionRepositoryResponseWrapper
 
 **执行流程**：
 
-```
+```text
 请求处理完成，准备写入响应
   │
   ▼
@@ -172,7 +172,7 @@ spring:
 
 ## 3.1 核心类图
 
-```
+```text
                     «interface»
                     SessionRepository<S>
                     ├── createSession(): S
@@ -198,7 +198,7 @@ MapSessionRepository  RedisSessionRepository  JdbcSessionRepository
 
 ### 3.2.1 创建 Session
 
-```
+```text
 createSession()
   │
   ├── 1. 生成 UUID 作为 Session ID
@@ -216,7 +216,7 @@ createSession()
 
 ### 3.2.2 保存 Session
 
-```
+```text
 save(session)
   │
   ├── Redis 实现:
@@ -236,7 +236,7 @@ save(session)
 
 ### 3.2.3 查找 Session
 
-```
+```text
 findById(sessionId)
   │
   ├── 从存储中查询
@@ -257,7 +257,7 @@ findById(sessionId)
 
 ## 4.1 首次请求（创建 Session）
 
-```
+```text
 1. 浏览器 → GET /login → 服务器
 2. SessionRepositoryFilter
    ├── resolveSessionIds(request) → [空]（无 Cookie）
@@ -274,7 +274,7 @@ findById(sessionId)
 
 ## 4.2 后续请求（使用已有 Session）
 
-```
+```text
 1. 浏览器 → GET /home (Cookie: SESSION=abc123) → 服务器
 2. SessionRepositoryFilter
    ├── resolveSessionIds(request) → ["abc123"]
@@ -287,7 +287,7 @@ findById(sessionId)
 
 ## 4.3 Session 过期处理
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │ Redis: 通过 Key 的 TTL 自动过期              │
 │ 过期后 Redis 自动删除 key                    │
@@ -308,7 +308,7 @@ findById(sessionId)
 
 在分布式部署中，同一个用户可能被路由到不同实例。当某个实例上的 Session 变更（创建/删除/过期）时，其他实例需要感知：
 
-```
+```text
 实例 A                              实例 B
   │                                   │
   │  用户登录，创建 Session            │
@@ -359,7 +359,7 @@ Hazelcast 通过其原生的分布式 Topic 机制实现事件传播，无需额
 
 ## 6.1 SecurityContext 持久化
 
-```
+```text
 认证成功
   │
   ├── Spring Security 创建 Authentication
@@ -396,7 +396,7 @@ http.sessionManagement(session -> session
 
 ## 6.3 跨服务 Session 共享
 
-```
+```text
 ┌──────────┐     ┌──────────┐     ┌──────────┐
 │  认证服务  │     │  订单服务  │     │  商品服务  │
 │ (8080)   │     │ (8081)   │     │ (8082)   │

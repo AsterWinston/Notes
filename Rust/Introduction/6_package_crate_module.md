@@ -4,7 +4,7 @@ Rust 的代码组织围绕 **package → crate → module** 三层展开，配�
 
 ★ **关键认知**：`package` 是 cargo 的概念（**不是** Rust 语言概念），用于构建、测试、共享 crate。它是 `Cargo.toml` 所描述的一个整体：
 
-```
+```text
 1.1 每个 package 包含一个 Cargo.toml，描述如何构建这些 crate
 1.2 只能包含 0~1 个 library crate
 1.3 可以包含任意数量的 binary crate
@@ -17,7 +17,7 @@ Rust 的代码组织围绕 **package → crate → module** 三层展开，配�
 
 ★ **关键认知**：`crate` 是编译器眼中的**编译单元**，是一棵模块树，可产生一个 library 或一个可执行文件：
 
-```
+```text
 2.1 分类：
     2.1.1 binary crate（可执行，必须有 main 函数）
     2.1.2 library crate（库，供其他 crate 引用）
@@ -27,7 +27,7 @@ Rust 的代码组织围绕 **package → crate → module** 三层展开，配�
     2.2.3 library crate 的根通常是 src/lib.rs
 ```
 
-```
+```text
 crate 的模块树示意：
 crate (root: src/main.rs 或 src/lib.rs)
  ├── mod front_of_house
@@ -52,7 +52,7 @@ mod front_of_house {
 }
 ```
 
-```
+```text
 3.1 模块可以嵌套
 3.2 模块定义了一个命名空间，其中的项通过路径访问
 3.3 模块可以写在同一个文件里（{ }），也可以写成独立文件
@@ -62,7 +62,7 @@ mod front_of_house {
 
 ## 3.1 模块的文件组织
 
-```
+```text
 src/
 ├── main.rs              // crate root
 ├── garden.rs            // mod garden;  → 内容放这里
@@ -79,7 +79,7 @@ src/
 
 ★ **关键认知**：Rust 中所有项（模块、函数、结构体、字段、枚举变体）**默认私有**：
 
-```
+```text
 4.1 模块内的项默认对父模块私有
 4.2 用 pub 关键字使其公开
 4.3 结构体字段默认私有，需逐个标 pub（或用 pub(crate)）
@@ -122,7 +122,7 @@ pub fn eat_at_restaurant() {
 }
 ```
 
-```
+```text
 5.1 use crate::...        // crate 根开始的绝对路径（crate 是根的关键字）
 5.2 use 可以在模块/函数内局部引入
 5.3 惯用法：引入函数时引入其父模块；引入结构体/枚举时直接引入本身

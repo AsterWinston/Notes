@@ -4,7 +4,7 @@
 
 ## 1.1 JSON-RPC 2.0 消息模型
 
-```
+```text
 MCP 基于 JSON-RPC 2.0：
 - 请求：{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{...}}
 - 响应：{"jsonrpc":"2.0","id":1,"result":{...}}
@@ -49,7 +49,7 @@ MCP 基于 JSON-RPC 2.0：
 
 ## 2.1 三角色
 
-```
+```text
 Host（应用）
   └── Client（每连接一个）
         ↕ 1:1 连接
@@ -121,7 +121,7 @@ Host（应用）
 
 ## 4.1 Tools
 
-```
+```text
 tools/list   → 列出可用工具
 tools/call   → 调用工具
 notifications/tools/list_changed → 工具列表变更通知
@@ -156,7 +156,7 @@ notifications/tools/list_changed → 工具列表变更通知
 
 ## 4.2 Resources
 
-```
+```text
 resources/list     → 列出资源
 resources/read     → 读取资源
 resources/subscribe→ 订阅变更
@@ -178,7 +178,7 @@ resources/subscribe→ 订阅变更
 
 ## 4.3 Prompts
 
-```
+```text
 prompts/list  → 列出提示模板
 prompts/get   → 获取提示（可带参数）
 ```
@@ -234,7 +234,7 @@ SamplingResult result = client.sample(
 
 ## 6.1 四阶段
 
-```
+```text
 ① initialize        能力协商
 ② initialized       通知 Server 就绪
 ③ 正常交互          tools/list、tools/call ...

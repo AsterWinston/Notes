@@ -3,7 +3,7 @@
 
 ## 1.1 整体架构层次
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                      用户构建脚本                            │
 │          build.gradle / build.gradle.kts / settings           │
@@ -32,7 +32,7 @@
 
 ## 1.2 核心组件交互
 
-```
+```text
 用户执行 gradle <task> 命令
          │
          ▼
@@ -92,7 +92,7 @@ public interface BuildOperationListener {
 }
 ```
 
-```
+```text
 BuildOperation 树形结构示例：
 Run main
 ├── Load settings                                (86ms)
@@ -139,7 +139,7 @@ gradle build -Dorg.gradle.internal.operations.trace=build-ops.log
 
 ## 3.1 任务图构建过程
 
-```
+```text
 配置阶段结束
       │
       ▼
@@ -190,7 +190,7 @@ public class DefaultTaskExecutionGraph implements TaskExecutionGraph {
 
 ## 3.2 任务执行管道
 
-```
+```text
 Task Execution Pipeline (每条任务经过的步骤)：
 
 Execute :compileJava
@@ -291,7 +291,7 @@ public class TaskExecution {
 
 ## 4.1 依赖解析流程
 
-```
+```text
 依赖声明 (dependencies { implementation 'g:a:v' })
         │
         ▼
@@ -408,7 +408,7 @@ configurations.all {
 
 ## 5.1 Gradle ClassLoader 架构
 
-```
+```text
 Gradle ClassLoader 层次结构（从下到上）：
 
 ┌──────────────────────────────────────┐
@@ -430,7 +430,7 @@ Gradle ClassLoader 层次结构（从下到上）：
 
 ## 5.2 ClassLoader 隔离的目的
 
-```
+```text
 为什么要 ClassLoader 隔离？
 
 1. 防止版本冲突：
@@ -489,7 +489,7 @@ public class DefaultClassLoaderFactory {
 
 ## 6.1 守护进程生命周期
 
-```
+```text
 Gradle 命令执行
       │
       ▼
@@ -557,7 +557,7 @@ public class DaemonConnector {
 
 ## 6.3 锁文件机制
 
-```
+```text
 ~/.gradle/daemon/<gradle-version>/daemon-<pid>.out.log   # 日志文件
 ~/.gradle/daemon/<gradle-version>/daemon-<pid>.port.lock  # 端口锁文件
 ~/.gradle/daemon/<gradle-version>/registry.bin            # 注册表

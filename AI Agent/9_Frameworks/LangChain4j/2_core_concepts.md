@@ -4,7 +4,7 @@ LangChain4j 的核心概念可以用一张分层图概括。理解这张图，�
 
 ## 1.1 五层结构
 
-```
+```text
 ┌───────────────────────────────────────────────┐
 │  声明式层   AiServices（接口 + 注解）            │
 ├───────────────────────────────────────────────┤
@@ -32,7 +32,7 @@ LangChain4j 的核心概念可以用一张分层图概括。理解这张图，�
 
 依赖方向自上而下，**下层不感知上层**：
 
-```
+```text
 业务代码 ──▶ AiServices ──▶ ChatModel ──▶ 厂商 HTTP API
                  │
                  ├──▶ ChatMemory
@@ -121,7 +121,7 @@ String text = model.chat("你好");
 
 ## 3.1 消息类型
 
-```
+```text
 ChatMessage
 ├── SystemMessage            系统指令
 ├── UserMessage              用户输入（支持多模态）
@@ -330,7 +330,7 @@ ChatMemory memory = MessageWindowChatMemory.builder()
 
 ### 7.1.1 两条链路
 
-```
+```text
 Document ─DocumentSplitter─▶ TextSegment ─EmbeddingModel─▶ Embedding
                                                               │
                                                               ▼
@@ -356,7 +356,7 @@ Document ─DocumentSplitter─▶ TextSegment ─EmbeddingModel─▶ Embedding
 
 ## 7.2 摄取链路
 
-```
+```text
 加载文档 → 解析 → 切分 → 向量化 → 写入 EmbeddingStore
 ```
 
@@ -405,7 +405,7 @@ class Calculator {
 
 ## 8.2 工具调用循环
 
-```
+```text
 模型输出 toolExecutionRequests
         │
         ▼
@@ -524,7 +524,7 @@ ChatModel model = OpenAiChatModel.builder()
 
 ## 11.1 关系图
 
-```
+```text
 AiServices ──uses──▶ ChatModel ──produces──▶ ChatResponse
     │                    │                        │
     │                    └──uses──▶ ChatRequest    └──contains──▶ AiMessage

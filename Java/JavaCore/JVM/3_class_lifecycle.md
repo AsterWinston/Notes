@@ -1,7 +1,7 @@
 
 # 1. 七个阶段
 
-```
+```text
 加载 → 验证 → 准备 → 解析 → 初始化 → 使用 → 卸载
 │        │                 │        │
 │<──────连接─────────>│        │        │
@@ -130,7 +130,7 @@ public class Example {
 ```
 
 编译后生成 `<clinit>` 等效于：
-```
+```text
 static {};
   descriptor: ()V
   Code:
@@ -184,7 +184,7 @@ class Child extends Parent {
 ```
 
 输出：
-```
+```text
 Parent static block, A=1
 Child static block, B=1
 main start

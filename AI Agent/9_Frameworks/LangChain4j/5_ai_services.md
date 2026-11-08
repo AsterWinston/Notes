@@ -47,7 +47,7 @@ String answer = response.aiMessage().text();
 
 ### 1.2.1 代理生成机制
 
-```
+```text
 interface Assistant
         │  AiServices.builder(...).build()
         ▼
@@ -62,7 +62,7 @@ interface Assistant
 
 ### 1.2.2 调用时序
 
-```
+```text
 业务 ──chat("...")──► 代理 ──► 记忆注入 ──► 检索注入
                           │
                           ▼
@@ -324,7 +324,7 @@ String answer = assistant.chat("北京今天天气如何？");
 
 ## 7.2 调用循环
 
-```
+```text
 用户提问 ──► 模型 ──► 工具调用请求
                          │
                          ▼

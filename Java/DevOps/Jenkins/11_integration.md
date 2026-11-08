@@ -6,7 +6,7 @@
 Git 插件是 Jenkins 最基础、最常用的插件，支持从 Git 仓库检出代码。
 
 **插件安装**：
-```
+```text
 插件名称：Git Plugin
 功能：
   - 支持 git://, https://, ssh:// 协议
@@ -84,7 +84,7 @@ GitHub:
 
 **GitHub Webhook 自动配置**：
 
-```
+```text
 GitHub Plugin 支持自动配置 Webhook（需要 Token 有 admin:repo_hook 权限）：
 1. 创建 Multibranch Pipeline
 2. Branch Sources > Add source > GitHub
@@ -151,7 +151,7 @@ GitLab:
 
 **GitLab Webhook 配置**：
 
-```
+```text
 GitLab > 项目 > Settings > Webhooks：
 URL: http://jenkins:8080/project/<job-name>
 Secret Token: <共享密钥>
@@ -467,7 +467,7 @@ stage('Test') {
 ## 5.2 测试报告在 Jenkins 中的展示
 
 JUnit 插件可以提供：
-```
+```text
 - 测试结果趋势图
 - 失败测试列表
 - 测试耗时分析

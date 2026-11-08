@@ -4,7 +4,7 @@ JWT 是 OAuth2 和 OIDC 生态中的核心令牌格式。理解三者的关系�
 
 ## 1.1 三者关系概览
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │                    OpenID Connect                      │
 │               (OAuth2 之上的身份认证层)                 │
@@ -66,7 +66,7 @@ JWT 是 OAuth2 和 OIDC 生态中的核心令牌格式。理解三者的关系�
 
 ### 2.3.1 授权码流程（Authorization Code Flow）
 
-```
+```text
 ┌──────────┐     ┌───────────────┐     ┌────────────────────┐     ┌───────────────┐
 │  User    │     │    Client     │     │ Authorization Server│     │Resource Server│
 │ (Browser)│     │  (Web App)    │     │      (Auth0)         │     │   (API)       │
@@ -162,7 +162,7 @@ public Map<String, Object> introspect(@RequestParam("token") String token) {
 
 OIDC 在 OAuth2 之上增加了 **ID Token** 和 **UserInfo Endpoint**：
 
-```
+```text
 OAuth2: Access Token → 授权（你能访问什么资源）
 OIDC:   ID Token     → 认证（你是谁）
 ```
@@ -207,7 +207,7 @@ ID Token 始终是 JWT 格式：
 
 ### 3.2.3 ID Token 验证清单
 
-```
+```text
 □ 验证签名（使用 JWK Set 中的公钥）
 □ 验证 iss（是否匹配预期的 OIDC Provider）
 □ 验证 aud（是否包含当前 Client ID）
@@ -464,7 +464,7 @@ public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
 
 每个 OIDC Provider 必须提供 Discovery 端点：
 
-```
+```text
 GET /.well-known/openid-configuration
 ```
 
@@ -504,7 +504,7 @@ spring:
 
 ## 8.1 Access Token 安全
 
-```
+```text
 □ Access Token 使用 RSA/ECDSA 非对称签名（RS256/ES256）
 □ Access Token 有效期短（5-30 分钟）
 □ 配合 Refresh Token 使用
@@ -516,7 +516,7 @@ spring:
 
 ## 8.2 ID Token 安全
 
-```
+```text
 □ ID Token 不使用作用 API 调用
 □ ID Token 验证 aud 必须包含 Client ID
 □ 在授权请求中使用 nonce（防重放）

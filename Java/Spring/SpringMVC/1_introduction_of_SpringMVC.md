@@ -1,5 +1,5 @@
 # 1. 学习本章课程的知识储备
-```
+```text
 JavaSE
 HTML+CSS+JS
 Vue
@@ -10,7 +10,7 @@ Maven
 Spring
 ```
 # 2. 什么是MVC
-```
+```text
 MVC架构模式相关课程，在老杜的JavaWeb课程中已经详细的讲解了，如果没有学过的，可以看这个视频：https://www.bilibili.com/video/BV1Z3411C7NZ
 MVC是一种软件架构模式（是一种软件架构设计思想，不止Java开发中用到，其它语言也需要用到），它将应用分为三块：
 	M：Model（模型）
@@ -29,20 +29,20 @@ MVC架构模式如下所示：
 ```
 <img src="images/01.png" width="100%">
 
-```
+```text
 MVC架构模式的描述：前端浏览器发送请求给web服务器，web服务器中的Controller接收到用户的请求，Controller负责将前端提交的数据进行封装，然后Controller调用Model来处理业务，当Model处理完业务后会返回处理之后的数据给Controller，Controller再调用View来完成数据的展示，最终将结果响应给浏览器，浏览器进行渲染展示页面。
 
 面试题：什么是三层模型，并说一说MVC架构模式与三层模型的区别？
 ```
 <img src="images/02.png" width="100%">
 
-```
+```text
 MVC 和三层模型都采用了分层结构来设计应用程序，都是降低耦合度，提高扩展力，提高组件复用性。区别在于：他们的关注点不同，三层模型更加关注业务逻辑组件的划分。
 MVC架构模式关注的是整个应用程序的层次关系和分离思想。现代的开发方式大部分都是MVC架构模式结合三层模型一起用。
 ```
 # 3. 什么是SpringMVC
 ## 3.1 SpringMVC概述
-```
+```text
 SpringMVC是一个实现了MVC架构模式的Web框架，底层基于Servlet实现。
 SpringMVC已经将MVC架构模式实现了，因此只要我们是基于SpringMVC框架写代码，编写的程序就是符合MVC架构模式的。（MVC的架子搭好了，我们只需要添添补补）
 Spring框架中有一个子项目叫做Spring Web，Spring Web子项目当中包含很多模块，例如：
@@ -60,7 +60,7 @@ Spring框架中有一个子项目叫做Spring Web，Spring Web子项目当中包
 <img src="images/03.png" width="100%">
 
 ## 3.2 SpringMVC帮我们做了什么
-```
+```text
 SpringMVC框架帮我们做了什么，与纯粹的Servlet开发有什么区别？
 1.  入口控制：SpringMVC框架通过DispatcherServlet作为入口控制器，负责接收请求和分发请求。而在Servlet开发中，需要自己编写Servlet程序，并在web.xml中进行配置，才能接受和处理请求。 
 2. 在SpringMVC中，表单提交时可以自动将表单数据绑定到相应的JavaBean对象中，只需要在控制器方法的参数列表中声明该JavaBean对象即可，无需手动获取和赋值表单数据。而在纯粹的Servlet开发中，这些都是需要自己手动完成的。
@@ -70,7 +70,7 @@ SpringMVC框架帮我们做了什么，与纯粹的Servlet开发有什么区别�
 总之，与Servlet开发相比，SpringMVC框架可以帮我们节省很多时间和精力，减少代码的复杂度，更加专注于业务开发。同时，也提供了更多的功能和扩展性，可以更好地满足企业级应用的开发需求。
 ```
 ## 3.3 SpringMVC框架的特点
-```
+```text
 1. 	轻量级：相对于其他Web框架，Spring MVC框架比较小巧轻便。（只有几个几百KB左右的Jar包文件） 
 2.  模块化：请求处理过程被分成多个模块，以模块化的方式进行处理。 
   a. 控制器模块：Controller
@@ -86,7 +86,7 @@ SpringMVC框架帮我们做了什么，与纯粹的Servlet开发有什么区别�
 7.  灵活性：Spring MVC框架支持多种视图技术，如JSP、FreeMarker、Thymeleaf、FreeMarker等，针对不同的视图配置不同的视图解析器即可。 
 ```
 # 4. 本套教材相关版本
-```
+```text
 JDK版本：Java21
 Maven版本：3.9.6
 Tomcat版本：10
@@ -98,7 +98,7 @@ Thymeleaf版本：3.1.2
 # 5. 第一个SpringMVC程序
 
 ## 5.1 创建Maven模块
-```
+```text
 第一步：创建Empty Project，起名：springmvc。
 第二步：设置springmvc工程的JDK版本：Java21。
 第三步：设置maven。
@@ -139,13 +139,13 @@ Thymeleaf版本：3.1.2
 </dependencies>
 ```
 ## 5.2 添加web支持（免了）
-```
+```text
 第一步：在main目录下创建一个webapp目录
 第二步：添加web.xml配置文件
 注意 web.xml 文件的位置：E:\Spring MVC\code\springmvc\springmvc-001\src\main\webapp\WEB-INF\web.xml
 ```
 ## 5.3 配置web.xml文件
-```
+```text
 Spring MVC是一个web框架，在javaweb中谁来负责接收请求，处理请求，以及响应呢？当然是Servlet。在SpringMVC框架中已经为我们写好了一个Servlet，它的名字叫做：DispatcherServlet，我们称其为前端控制器。既然是Servlet，那么它就需要在web.xml文件中进行配置：
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -177,7 +177,7 @@ DispatcherServlet是SpringMVC框架为我们提供的最核心的类，它是整
 5.  返回响应给客户端：DispatcherServlet将为用户生成的响应发送回浏览器，响应可以包括表单、JSON、XML、HTML以及其它类型的数据
 ```
 ## 5.4 编写控制器FirstController
-```
+```text
 DispatcherServlet接收到请求之后，会根据请求路径分发到对应的Controller，Controller来负责处理请求的核心业务。在SpringMVC框架中Controller是一个普通的Java类（一个普通的POJO类，不需要继承任何类或实现任何接口），需要注意的是：POJO类要纳入IoC容器来管理，POJO类的生命周期由Spring来管理，因此要使用注解标注：
 package com.powernode.springmvc.controller;
 
@@ -196,7 +196,7 @@ public class FirstController {
 
 ```
 ## 5.5 配置springmvc-servlet.xml文件
-```
+```text
 SpringMVC框架有它自己的配置文件，该配置文件的名字默认为：<servlet-name>-servlet.xml，默认存放的位置是WEB-INF 目录下：
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -249,7 +249,7 @@ SpringMVC框架有它自己的配置文件，该配置文件的名字默认为�
 ```
 
 ## 5.6 提供视图
-```
+```text
 在WEB-INF目录下新建templates目录，在templates目录中新建html文件，例如：first.html，并提供以下代码：
 <!DOCTYPE html>
 <!--指定 th 命名空间，让 Thymeleaf 标准表达式可以被解析和执行-->
@@ -269,7 +269,7 @@ SpringMVC框架有它自己的配置文件，该配置文件的名字默认为�
 ```
 
 ## 5.7 控制器FirstController处理请求返回逻辑视图名称
-```
+```java
 package com.powernode.springmvc.controller;
 
 import org.springframework.stereotype.Controller;
@@ -293,14 +293,14 @@ public class FirstController {
 }
 ```
 ## 5.8 测试
-```
+```text
 第一步：配置Tomcat服务器
 第二步：部署web模块到Tomcat服务器
 第三步：启动Tomcat服务器。如果在控制台输出的信息有中文乱码，请修改tomcat服务器配置文件：apache-tomcat-10.1.19\conf\logging.properties（实则加启动参数-Dfile.encoding=UTF-8即可）
 第四步：打开浏览器，在浏览器地址栏上输入地址：http://localhost:8080/springmvc/haha
 ```
 ## 5.9 执行流程总结
-```
+```text
 1. 浏览器发送请求：http://localhost:8080/springmvc/haha
 2. SpringMVC的前端控制器DispatcherServlet接收到请求
 3. DispatcherServlet根据请求路径 /haha 映射到 FirstController#名字随意()，调用该方法
@@ -310,7 +310,7 @@ public class FirstController {
 7. 前端控制器DispatcherServlet响应结果到浏览器。
 ```
 ## 5.10 一个Controller可以编写多个方法
-```
+```text
 一个Controller可以提供多个方法，每个方法通常是处理对应的请求，例如：
 @Controller
 public class FirstController {
@@ -364,7 +364,7 @@ public class FirstController {
 ```
 # 6. 第二个SpringMVC程序
 ## 6.1 创建Maven模块
-```
+```text
 1. pom.xml文件中添加依赖
   a. springmvc依赖
   b. logback依赖
@@ -374,11 +374,11 @@ public class FirstController {
 ```
 ## 6.2 添加web支持（社区版做梦去）
 
-```
+```text
 webapp目录没有小蓝点怎么办？添加web支持
 ```
 ## 6.3 配置web.xml文件
-```
+```text
 重点：SpringMVC配置文件的名字和路径是可以手动设置的，如下
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
@@ -407,7 +407,7 @@ webapp目录没有小蓝点怎么办？添加web支持
 <load-on-startup>1</load-on-startup>建议加上，这样可以提高用户第一次访问的效率。表示在web服务器启动时初始化DispatcherServlet。
 ```
 ## 6.4 编写IndexController
-```
+```java
 package com.powernode.springmvc.controller;
 
 import org.springframework.stereotype.Controller;
@@ -432,11 +432,11 @@ public class IndexController {
 ```
 
 ## 6.5 在resources目录下配置springmvc.xml文件
-```
+```text
 配置内容和之前一样，一个是视图解析器，一个是组件扫描。
 ```
 ## 6.6 提供视图
-```
+```html
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -449,12 +449,12 @@ public class IndexController {
 </html>
 ```
 ## 6.7 测试
-```
+```text
 部署到web服务器，启动web服务器，打开浏览器，在地址栏上输入：http://localhost:8080/springmvc/
 ```
 
 # 7. SpringMVC核心组件架构
-```
+```text
 SpringMVC框架围绕DispatcherServlet设计了多个核心组件，各组件职责分明、协同工作：
 
 ┌─────────────────────────────────────────────────────┐
@@ -494,7 +494,7 @@ SpringMVC框架围绕DispatcherServlet设计了多个核心组件，各组件职
 ```
 
 # 8. SpringMVC与Spring Boot的关系
-```
+```text
 Spring Boot是对Spring框架的进一步封装，它自动完成了SpringMVC的大部分配置工作。
 
 传统SpringMVC开发（本课程的方式）：
@@ -522,7 +522,7 @@ Spring Boot方式（2个文件）：pom.xml（spring-boot-starter-web） + Contr
 ```
 
 # 9. Jakarta EE与javax命名空间迁移
-```
+```text
 从Spring 6 / Spring Boot 3开始，Spring全面迁移到了Jakarta EE 9+规范。
 
 历史背景：
@@ -552,7 +552,7 @@ Spring Boot方式（2个文件）：pom.xml（spring-boot-starter-web） + Contr
 ```
 
 # 10. Spring根容器与SpringMVC子容器
-```
+```text
 在SpringMVC项目中，存在两层IoC容器架构：
 ● 根容器（Root ApplicationContext）：由ContextLoaderListener创建，管理Service、Dao、数据源等
 ● 子容器（Servlet ApplicationContext）：由DispatcherServlet创建，管理Controller、ViewResolver、HandlerMapping等
@@ -590,7 +590,7 @@ web.xml中：
 ```
 
 # 11. 初学者常见问题与调试技巧
-```
+```text
 11.1 访问404：找不到页面
 原因排查：
 ● 检查@Controller是否被组件扫描到（base-package是否正确）
@@ -623,7 +623,7 @@ web.xml中：
 ```
 
 # 12. SpringMVC执行流程总结
-```
+```text
 一次完整的SpringMVC请求处理流程：
 
 1. 用户发送请求 → 被DispatcherServlet拦截

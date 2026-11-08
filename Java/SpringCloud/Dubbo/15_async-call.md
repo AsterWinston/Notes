@@ -3,7 +3,7 @@
 
 Dubbo 提供全链路异步化能力，从 Consumer 发起调用到 Provider 处理返回，全程支持异步模型。
 
-```
+```text
 同步模型:
   Consumer 线程发起调用 → 阻塞等待 → 收到响应 → 继续执行
 
@@ -246,7 +246,7 @@ public class UserServiceImpl implements UserService {
 
 # 6. 全链路异步架构
 
-```
+```text
 Consumer 线程:
   │
   ├─→ 构建 RpcInvocation (invokeMode=ASYNC)

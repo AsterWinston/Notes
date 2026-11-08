@@ -2,7 +2,7 @@ DistSQL（Distributed SQL）是 ShardingSphere 的**在线运维语言**：用�
 
 # 1. 概述与分类
 
-```
+```text
 DistSQL 四大类：
   ┌──────────────────────────────────────────────┐
   │ RDL (Resource & Rule Definition Language)    │ 增删改资源与规则

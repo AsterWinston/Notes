@@ -8,7 +8,7 @@
 
 ### 1.2.1 认知类比
 
-```
+```text
 人看图片时会聚焦重点区域
 注意力机制：让模型聚焦相关的输入部分
 ```
@@ -21,12 +21,12 @@
 
 ## 1.3 公式/图示：注意力的抽象形式
 
-```
+```text
 output = Σ_i  α_i · value_i
 α_i   = 归一化的相关度（Σ α_i = 1）
 ```
 
-```
+```text
        输入序列
           │
           ▼
@@ -75,7 +75,7 @@ output = Σ_i  α_i · value_i
 
 ### 2.2.1 Q/K/V 的角色
 
-```
+```text
 类比检索：
 Query（查询）：我要找什么
 Key（键）：  每条信息的标签
@@ -99,7 +99,7 @@ Attention = 用 Query 匹配 Key，按匹配度加权 Value
 
 Q、K、V 通常不是原始输入，而是输入经过三个可学习线性投影（projection）得到：
 
-```
+```text
 Q = X · Wq
 K = X · Wk
 V = X · Wv
@@ -109,7 +109,7 @@ V = X · Wv
 
 ## 2.3 公式/图示：计算流程
 
-```
+```text
          Q
          │
     ┌────┼────┐
@@ -156,7 +156,7 @@ Q 与 K 必须维度相同（才能做点积），而 V 的维度可以不同（
 
 ## 3.3 公式/图示：公式与代码
 
-```
+```text
 Attention(Q, K, V) = softmax(QKᵀ / √d_k) V
 ```
 
@@ -177,7 +177,7 @@ def scaled_dot_product_attention(Q, K, V):
 
 ### 3.3.1 矩阵形状
 
-```
+```text
 Q: (..., n, d_k)
 K: (..., m, d_k)
 V: (..., m, d_v)
@@ -221,7 +221,7 @@ output: (..., n, d_v)
 
 ### 4.2.1 点积方差推导
 
-```
+```text
 若 Q、K 各维度独立且方差为 1：
   QKᵀ 的方差 = d_k
   d_k 越大，点积越大
@@ -243,12 +243,12 @@ softmax 的雅可比矩阵含因子 `α_i(1 - α_i)`。当某个 `α_i → 1` �
 
 ## 4.3 公式/图示：缩放前后
 
-```
+```text
 不缩放（d_k 大）：  scores 幅度大 ──▶ softmax 尖锐 ──▶ 梯度≈0
 缩放后：            scores 幅度≈1 ──▶ softmax 平滑 ──▶ 梯度健康
 ```
 
-```
+```text
 softmax 输出分布
   1.0 ┤            ● 不缩放
       │
@@ -281,7 +281,7 @@ softmax 输出分布
 
 ## 5.2 原理：QKV 同源
 
-```
+```text
 Self-Attention：Q、K、V 都来自同一个输入序列
 
 每个位置都能"看到"其他所有位置
@@ -321,7 +321,7 @@ class SelfAttention(nn.Module):
         return scaled_dot_product_attention(Q, K, V)
 ```
 
-```
+```text
 输入 X
  ├──▶ Wq ──▶ Q ┐
  ├──▶ Wk ──▶ K ┼──▶ Attention ──▶ 输出
@@ -354,11 +354,11 @@ class SelfAttention(nn.Module):
 
 ### 6.2.1 为什么多头
 
-```
+```text
 把 d_model 分成 h 个头，各自独立做注意力，再拼接
 ```
 
-```
+```text
 d_model = 512, h = 8 → 每个头 64 维
 
 多头的好处：
@@ -396,7 +396,7 @@ class MultiHeadAttention(nn.Module):
         return self.Wo(out)
 ```
 
-```
+```text
 d_model = 512, h = 8
  ┌───────────────────────────┐
  │ 头1 头2 头3 ... 头8（各64）│
@@ -432,7 +432,7 @@ d_model = 512, h = 8
 
 ### 7.2.1 计算量
 
-```
+```text
 时间与空间复杂度：O(n² · d)
 n = 序列长度，d = 维度
 
@@ -447,7 +447,7 @@ n = 序列长度，d = 维度
 
 ## 7.3 公式/图示：增长曲线
 
-```
+```text
 n    注意力矩阵元素数 (n²)
 8    64
 64   4,096
@@ -481,13 +481,13 @@ n    注意力矩阵元素数 (n²)
 
 ### 8.2.1 指代消解例子
 
-```
+```text
 注意力权重可视化为"关注图"：
   "它" → 指代的对象
   动词 → 主语/宾语
 ```
 
-```
+```text
 The animal didn't cross the street because it was too tired
                                         ↑
                               "it" 高度关注 "animal"
@@ -509,7 +509,7 @@ The animal didn't cross the street because it was too tired
 
 ## 8.3 公式/图示：注意力热图
 
-```
+```text
          The animal didn't ... it ...
 The   [ .9  .02 .01 ... .01 ]
 animal[ .05  .8  .03 ... .02 ]

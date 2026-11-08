@@ -16,7 +16,7 @@ Kubernetes 的架构建立在以下核心设计原则之上：
 
 ## 1.2 宏观架构图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                     Control Plane（控制平面）                       │
 │                                                                   │
@@ -71,7 +71,7 @@ kube-apiserver 是 Kubernetes 控制平面的**前端**，它是整个系统的"
 
 **架构细节**：
 
-```
+```text
 请求 → 认证（AuthN）→ 授权（AuthZ）→ 准入控制（Admission）→ etcd 写入
   │         │              │                │
   │         │              │                │
@@ -195,7 +195,7 @@ kube-controller-manager 是一个**控制器集合**，它将多个独立的控�
 
 **控制器工作模式（以 Deployment Controller 为例）**：
 
-```
+```text
 1. 通过 Informer 监听 Deployment 对象的变更
         ↓
 2. 当 Deployment 被创建/更新，触发 reconcile 函数
@@ -267,7 +267,7 @@ kubelet 是运行在每个 Node 上的核心代理，是 K8s 在节点上的"代
 
 **kubelet 的内部组件**：
 
-```
+```text
 kubelet
 ├── Pod Manager：管理 Pod 生命周期
 ├── Volume Manager：管理 Volume 的挂载/卸载
@@ -299,19 +299,19 @@ kube-proxy 运行在每个节点上，实现了 K8s Service 的网络抽象—�
 - kube-proxy 监听 Service 和 Endpoints 的变化，动态生成 iptables 规则
 - 流量路径：
 
-```
+```text
 客户端 → ClusterIP → iptables DNAT 规则 → 随机选择一个 Pod IP → 转发
 ```
 
 - 转发规则链：
 
-```
+```text
 KUBE-SERVICES → KUBE-SVC-XXXX → KUBE-SEP-XXXX（每个 Endpoint 一条链）
 ```
 
 - 工作原理：
 
-```
+```text
 # Service ClusterIP 到 Endpoints 的随机负载均衡
 -A KUBE-SERVICES -d 10.96.0.1/32 -p tcp -m tcp --dport 443 -j KUBE-SVC-NPX46M4PTMTKRN6Y
 -A KUBE-SVC-NPX46M4PTMTKRN6Y -m statistic --mode random --probability 0.33333 -j KUBE-SEP-AAA
@@ -412,7 +412,7 @@ service ImageService {
 
 CRI 是 kubelet 与容器运行时之间的通信接口。
 
-```
+```text
 kubelet
    │
    │ gRPC (Unix Socket)
@@ -435,7 +435,7 @@ kubelet
 
 CNI 是容器网络插件接口标准，定义了容器网络的配置方式。
 
-```
+```text
 Pod (网络命名空间)
    │
    │ 调用 CNI 插件
@@ -465,7 +465,7 @@ Pod 的网络配置流程：
 
 CSI 是容器存储接口标准，定义了存储系统与容器编排平台的交互方式。
 
-```
+```text
 ┌──────────┐      ┌──────────────────────────────────────┐
 │ kubelet  │      │        CSI 组件                      │
 │          │ gRPC │                                      │
@@ -497,7 +497,7 @@ CSI 是容器存储接口标准，定义了存储系统与容器编排平台的�
 
 以下是一个 Pod 从创建到运行的完整时序：
 
-```
+```text
 Step 1: 用户通过 kubectl 提交 Pod YAML
    │
    ▼
@@ -545,7 +545,7 @@ Step 8: Pod 进入 Running 状态，开始接收流量
 
 ### 1.6.2 Deployment 滚动更新的完整流程
 
-```
+```text
 初始状态:
   Deployment replicas=3
   ReplicaSet-v1 replicas=3 (nginx:1.24)
@@ -579,7 +579,7 @@ Step 8: Pod 进入 Running 状态，开始接收流量
 
 ### 1.6.3 节点心跳与失联处理
 
-```
+```text
 正常运行：
 kubelet → 每 10s → API Server → 更新 Node 的 .status.conditions (Ready 状态)
                                        → 更新 .status.conditions 的 lastHeartbeatTime
@@ -600,7 +600,7 @@ Node Controller → 每 5s → 检查所有 Node 的 lastHeartbeatTime
 
 ### 1.7.1 控制平面内部通信
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │              通信矩阵（Control Plane）         │
 │                                              │
@@ -614,7 +614,7 @@ Node Controller → 每 5s → 检查所有 Node 的 lastHeartbeatTime
 
 ### 1.7.2 工作节点与控制平面通信
 
-```
+```text
 工作节点：
   kubelet → API Server：
     认证：kubelet 客户端证书 或 Bootstrap Token
@@ -631,7 +631,7 @@ Node Controller → 每 5s → 检查所有 Node 的 lastHeartbeatTime
 
 Node Authorizer 是 kubelet 专用的特殊授权机制：
 
-```
+```text
 kubelet 只能操作与自己的节点相关的资源：
   - 读取：Service、Endpoint、Node、Pod、Secret、ConfigMap、PV、PVC
   - 写入：节点状态（Node Status）、Pod 状态（Pod Status）
@@ -642,7 +642,7 @@ kubelet 只能操作与自己的节点相关的资源：
 
 ### 1.8.1 控制平面高可用
 
-```
+```text
                     ┌──────────────┐
                     │   Load       │
                     │   Balancer   │  ← HAProxy / Nginx / 云 LB

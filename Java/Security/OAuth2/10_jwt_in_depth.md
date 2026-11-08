@@ -4,7 +4,7 @@ JWT（JSON Web Token，RFC 7519）是一种紧凑、URL 安全的声明表示方
 
 ## 1.1 JWT 的结构
 
-```
+```text
 JWT = Header.Payload.Signature（三部分，Base64URL 编码，用 . 连接）
 
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0
@@ -70,7 +70,7 @@ JWT 的 Payload 由 Claims（声明）组成。标准的 Registered Claims：
 
 ## 2.2 算法选择指南
 
-```
+```text
 OAuth2 / OIDC 场景算法推荐：
 
 首选：RS256 (RSA + SHA256)
@@ -95,7 +95,7 @@ OAuth2 / OIDC 场景算法推荐：
 
 ## 2.3 "none" 算法攻击与防御
 
-```
+```text
 经典攻击场景（CVE-2015-2951）：
 
 攻击者构造 JWT：
@@ -156,7 +156,7 @@ public class SafeJwtVerifier {
 
 JWT 规范注册了以下 IANA Claims（公开可用）：
 
-```
+```text
 https://www.iana.org/assignments/jwt/jwt.xhtml
 
 部分常见 Public Claims：
@@ -173,7 +173,7 @@ https://www.iana.org/assignments/jwt/jwt.xhtml
 
 Private Claims 是自定义声明，需要双方协商以避免冲突：
 
-```
+```text
 命名规范：
 - 使用命名空间：https://mycompany.com/claims/department
 - 或简短但有意义的前缀：dept_code、org_unit
@@ -191,7 +191,7 @@ Private Claims 是自定义声明，需要双方协商以避免冲突：
 
 ## 3.3 JWT Claims 的大小优化
 
-```
+```text
 JWT 大小优化策略：
 
 1. 使用短键名（协商后的场景）
@@ -219,7 +219,7 @@ JWT 大小优化策略：
 
 ## 4.1 时间相关 Claims 的含义
 
-```
+```text
 时间线示意：
 
   iat                nbf               exp
@@ -237,7 +237,7 @@ JWT 大小优化策略：
 
 ## 4.2 JWT 的撤销问题
 
-```
+```text
 JWT 的根本矛盾：自包含 vs 可撤销
 
 JWT 设计要求自包含（无需查询数据库）
@@ -275,7 +275,7 @@ JWT 设计要求自包含（无需查询数据库）
 
 JWE 提供 JWT 的加密层，将 Claims 加密而非仅签名。
 
-```
+```text
 当需要使用 JWE：
 - Token 中包含敏感信息（身份证号、银行账号）
 - 传输通道不完全可信（即使有 TLS 也需要纵深防御）
@@ -306,7 +306,7 @@ OAuth2 场景建议：
 | 跨域 | 天然支持 | 需要 CORS + 共享存储 |
 | 移动端 | 友好 | 需要 Cookie 支持 |
 
-```
+```text
 选择建议：
 - 微服务 + API Gateway → JWT
 - 传统 MVC Web 应用 → Session

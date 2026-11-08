@@ -52,7 +52,7 @@ public class SessionCheckController {
 
 ## 2.1 连接超时
 
-```
+```text
 错误: Unable to connect to Redis; nested exception is
 io.lettuce.core.RedisConnectionException
 
@@ -65,7 +65,7 @@ io.lettuce.core.RedisConnectionException
 
 ## 2.2 Redis 密码认证失败
 
-```
+```text
 错误: NOAUTH Authentication required
 
 解决方案：
@@ -74,7 +74,7 @@ spring.data.redis.password: your-password
 
 ## 2.3 集群模式配置错误
 
-```
+```text
 错误: MOVED 重定向处理失败
 
 常见原因：
@@ -93,7 +93,7 @@ spring.redis.cluster.max-redirects: 3
 
 ## 3.1 反序列化失败
 
-```
+```text
 错误: Cannot deserialize; nested exception is
 org.springframework.core.serializer.support.SerializationFailedException
 
@@ -119,7 +119,7 @@ mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 ## 3.2 序列化循环引用栈溢出
 
-```
+```text
 错误: java.lang.StackOverflowError at
 com.fasterxml.jackson.databind.ser.BeanSerializer.serialize
 
@@ -313,7 +313,7 @@ redis-cli SLOWLOG GET 100
 
 ## 9.1 建表失败
 
-```
+```text
 错误: Table 'SPRING_SESSION' doesn't exist
 
 解决方案：

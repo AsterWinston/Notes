@@ -21,7 +21,7 @@
 
 ### 1.2.1 轨迹示例
 
-```
+```text
 Thought:  我需要先查订单状态
 Action:   getOrder("A123")
 Observation: 已发货，运单 SF123
@@ -42,14 +42,14 @@ Answer:   您的订单已发货，预计明天送达
 
 ### 1.3.1 纯推理的局限
 
-```
+```text
 纯推理（CoT）：只能基于已有信息推理，无法获取新信息
 → 遇到"实时数据"（库存、天气、订单）就无能为力
 ```
 
 ### 1.3.2 纯行动的局限
 
-```
+```text
 纯行动：盲目调用工具，缺乏规划
 → 不知道何时调用、调用哪个、调用几次
 ```
@@ -68,7 +68,7 @@ Answer:   您的订单已发货，预计明天送达
 
 ### 2.1.1 格式定义
 
-```
+```text
 每次输出以下格式之一：
 
 1. 需要调用工具时：
@@ -141,7 +141,7 @@ Answer:   您的订单已发货，预计明天送达
 
 ### 3.1.1 五个阶段
 
-```
+```text
 ① 生成 Thought + Action
 ② 检查是否给出最终答案
 ③ 解析 Action
@@ -238,7 +238,7 @@ private String extractTool(String output) {
 
 现代框架用**原生函数调用（Native Function Calling）** 替代文本解析，更可靠：模型直接返回结构化的工具调用请求。
 
-```
+```text
 文本 ReAct：模型输出文本 → 应用解析文本
 函数调用：  模型输出结构化 tool_calls → 应用直接执行
 ```
@@ -323,7 +323,7 @@ public class LogisticsTools {
 
 ## 5.2 要素间关系
 
-```
+```text
 Thought ──决定──> Action ──执行──> Observation
    ^                                    │
    └──────────反馈────────────<────────┘
@@ -363,7 +363,7 @@ Thought ──决定──> Action ──执行──> Observation
 
 ## 6.3 防护措施
 
-```
+```text
 签名去重：以 (工具名 + 参数) 为键，命中则跳过并提示"已获取"
 工具白名单：执行前校验工具名是否在注册表内
 步数上限：硬性截断
@@ -402,7 +402,7 @@ private boolean duplicate(String toolName, String args) {
 
 结论先行：ReAct 是最基础的"能行动"范式，其他范式多在其上增强。
 
-```
+```text
 需要行动？ 否 → CoT
          是 → 需要从失败中学习？ 是 → Reflexion
                               否 → 任务步骤固定？ 是 → Plan-and-Execute
@@ -479,7 +479,7 @@ Assistant assistant = AiServices.builder(Assistant.class)
 
 ### 9.1.2 提示注入
 
-```
+```text
 外部数据（如订单备注）可能包含恶意指令，
 需将其视为"数据"而非"指令"，并做转义与隔离。
 ```

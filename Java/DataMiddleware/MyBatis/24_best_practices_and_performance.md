@@ -1,6 +1,6 @@
 # 1. MyBatis 最佳实践与性能调优
 
-```
+```text
 以下是基于源码理解和实战经验总结的 MyBatis 最佳实践和常见问题解决方案。
 ```
 
@@ -27,7 +27,7 @@ public interface ClazzMapper {
 
 ## 2.2 解决方案
 
-```
+```text
 方案1：使用嵌套结果映射（推荐）
   一次性 JOIN 查询出所有数据，通过 ResultMap 的嵌套映射处理
 
@@ -84,7 +84,7 @@ for (Car car : carList) {
 mapper.insertBatch(carList);  // 一次 SQL，一条网络 IO
 ```
 
-```
+```text
 注意：MySQL 默认限制单条 SQL 的最大长度（max_allowed_packet）
     大批量时建议分批，每批 500-1000 条：
     
@@ -343,7 +343,7 @@ public List<Car> findByIds(List<Long> ids) {
 
 # 8. 性能调优清单
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────┐
 │                    MyBatis 性能调优 Checklist                    │
 ├────────────────────────────────────────────────────────────────┤
@@ -382,7 +382,7 @@ public List<Car> findByIds(List<Long> ids) {
 
 # 9. XML vs 注解选型
 
-```
+```text
 ┌──────────────────────────────┬──────────────────────────────────┐
 │           使用 XML            │            使用注解               │
 ├──────────────────────────────┼──────────────────────────────────┤
@@ -476,7 +476,7 @@ public class ThreadSafeSqlSessionManager {
 
 # 12. 总结：MyBatis 实战十大黄金法则
 
-```
+```text
 1.  SQL 写在 XML 中，保持 Java 代码纯粹
 
 2.  能用 #{} 的地方绝不用 ${}，${} 必须做白名单校验

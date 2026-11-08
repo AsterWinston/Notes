@@ -4,7 +4,7 @@
 ## 1.1 Prometheus 无法启动
 
 **现象：**
-```
+```text
 level=error ts=... caller=main.go:... msg="Unable to load configuration file" file=prometheus.yml err="..."
 ```
 
@@ -240,7 +240,7 @@ prometheus_tsdb_blocks_loaded
 ## 5.2 TSDB 损坏
 
 **现象：**
-```
+```text
 level=error ts=... msg="...corruption..." 
 level=error ts=... msg="...checksum mismatch..."
 ```

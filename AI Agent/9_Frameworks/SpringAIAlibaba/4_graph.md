@@ -12,7 +12,7 @@
 
 Graph（图编排）把流程**显式建模**为"节点 + 边 + 状态"：
 
-```
+```text
 Graph = 节点（Node）+ 边（Edge）+ 状态（State）
 ```
 
@@ -100,13 +100,13 @@ public class AgentState {
 
 ## 2.4 三者的关系
 
-```
+```text
 状态：在节点间传递的共享数据
 节点：读写状态的函数
 边  ：决定"下一个节点是谁"
 ```
 
-```
+```text
         START
           │
           ▼
@@ -161,7 +161,7 @@ public class AgentState {
 
 ### 3.3.1 增量更新的语义
 
-```
+```text
 状态 s  = {question:"...", intent:null}
 节点返回 {intent:"POLICY"}
 状态 s' = {question:"...", intent:"POLICY"}   // 其余字段不变

@@ -614,7 +614,7 @@ public Connection getConnection(long timeout) {
 
 计算机界最经典的连接池大小公式：
 
-```
+```text
 connections = ((core_count * 2) + effective_spindle_count)
 ```
 

@@ -5,7 +5,7 @@ Canal 是阿里巴巴开源的一款基于 MySQL 数据库增量日志（Binary 
 
 Canal 的核心工作原理是**模拟 MySQL Slave 的交互协议**，伪装成一个 MySQL 从库，向 MySQL Master 发送 dump 协议请求，MySQL Master 收到请求后开始推送 Binary Log 给 Canal（Slave），Canal 解析 Binary Log 对象，还原出原始 SQL 的变更数据。
 
-```
+```text
 ┌─────────────┐     Binary Log Dump      ┌──────────────┐
 │ MySQL Master │ ──────────────────────> │ Canal Server │
 │  (Source)    │                          │  (Simulated  │
@@ -70,7 +70,7 @@ Canal 支持解析三种 MySQL binlog 格式：
 
 Canal 提供 Client SDK，支持多种消费模式：
 
-```
+```text
 Canal Server (push binlog event)  <----  Canal Client (pull & ack)
 ```
 
@@ -82,7 +82,7 @@ Canal Server (push binlog event)  <----  Canal Client (pull & ack)
 
 Canal Server 可以将解析后的数据投递到多种下游系统：
 
-```
+```text
 ┌──────────┐    ┌──────────┐    ┌───────────┐
 │  Kafka   │    │ RocketMQ │    │ RabbitMQ  │
 └────┬─────┘    └────┬─────┘    └─────┬─────┘
@@ -107,7 +107,7 @@ Canal Server 可以将解析后的数据投递到多种下游系统：
 
 最核心的场景之一。通过 Canal 将源数据库的变更实时同步到目标数据库：
 
-```
+```text
 MySQL (Source) --> Canal --> MySQL (Target)
                          --> Oracle (Target)
                          --> PostgreSQL (Target)
@@ -137,7 +137,7 @@ while (running) {
 ```
 
 **典型架构**：
-```
+```text
 MySQL --> Canal --> Kafka --> 缓存更新服务 --> Redis
 ```
 
@@ -145,7 +145,7 @@ MySQL --> Canal --> Kafka --> 缓存更新服务 --> Redis
 
 将数据库变更同步到搜索引擎，实现准实时搜索：
 
-```
+```text
 MySQL --> Canal --> Elasticsearch/Solr
 ```
 
@@ -155,7 +155,7 @@ MySQL --> Canal --> Elasticsearch/Solr
 
 作为 ETL 的增量数据源：
 
-```
+```text
 MySQL --> Canal --> Kafka --> Flink/Spark Streaming --> Hive/Hudi/Iceberg
 ```
 
@@ -163,7 +163,7 @@ MySQL --> Canal --> Kafka --> Flink/Spark Streaming --> Hive/Hudi/Iceberg
 
 数据库变更是最可靠的事实来源，Canal 将其转化为事件流：
 
-```
+```text
 MySQL (Order表) --> Canal --> Kafka -->  订单通知服务
                                       -->  库存扣减服务
                                       -->  积分计算服务
@@ -196,7 +196,7 @@ Canal 项目包含以下几个核心子模块：
 | **connector** | Kafka/RocketMQ/RabbitMQ 连接器 |
 | **dbsync** | 数据库同步驱动（基于 open-replicator 演化） |
 
-```
+```text
 canal
 ├── canal-server        # 服务端核心
 │   ├── canal-instance  # 实例管理
@@ -230,7 +230,7 @@ Canal 基于 MySQL binlog 工作，不需要修改业务代码，不需要在应
 
 Canal 采用 Netty + 内存队列的架构，从 MySQL binlog 产生到 Canal Client 消费，延迟通常在毫秒级。
 
-```
+```text
 Binlog产生 --> Canal解析 --> Client消费
    < 50ms       < 10ms       < 50ms
          总延迟通常 < 100ms

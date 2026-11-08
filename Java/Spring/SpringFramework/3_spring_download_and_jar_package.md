@@ -1,5 +1,5 @@
 ﻿# 1. Spring下载
-```
+```text
 可以直接用Maven下载，根据坐标在Maven窗口中即可找到Spring源程序
 
 Spring 官网：https://spring.io/
@@ -10,7 +10,7 @@ Spring Framework：https://spring.io/projects/spring-framework
 # 2. Spring官方文档
 
 # 3. Spring的jar文件
-```
+```text
 以核心程序的 jar 包为例：
 spring-core-5.3.9.jar：字节码（这个是支撑程序运行的jar包）
 spring-core-5.3.9-javadoc.jar：代码中的注释
@@ -46,7 +46,7 @@ spring-websocket-5.3.9.jar	Spring集成WebSocket框架时使用
 
 ## 5.1 Maven 依赖传递关系
 
-```
+```text
 spring-context (最常用的入门依赖)
   ├── spring-aop          ← AOP 支持（JDK/CGLIB 动态代理）
   ├── spring-beans        ← IoC 容器核心（BeanFactory、BeanDefinition）
@@ -85,7 +85,7 @@ spring-boot-starter-web 的传递依赖精简版：
 
 ## 5.2 常见 jar 内部的包结构举例
 
-```
+```text
 spring-beans-6.0.x.jar
   ├── org/springframework/beans/factory/
   │   ├── BeanFactory.class                     ← IoC 容器顶级接口

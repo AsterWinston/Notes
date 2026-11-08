@@ -24,7 +24,7 @@ spring 对于事务的支持，底层还是通过动态代理的，是基于面�
 连接数据库的技术采用Spring框架的JdbcTemplate。
 采用三层架构搭建
 ## 3.1 依赖
-```
+```xml
 <dependencies>
   <!-- spring 核心依赖 -->
   <dependency>
@@ -67,7 +67,7 @@ spring 对于事务的支持，底层还是通过动态代理的，是基于面�
 
 ```
 ## 3.2 数据库表
-```
+```sql
 USE dbtest;
 
 DROP TABLE IF EXISTS t_act;
@@ -84,7 +84,7 @@ INSERT INTO t_act(actno, balance) VALUES ('act002', 0);
 ```
 ## 3.3 创建包结构
 ## 3.4 实体类
-```
+```java
 package cw.study.spring.bank.pojo;
 
 /**
@@ -146,7 +146,7 @@ public class Account {
 
 ```
 ## 3.5 DAO
-```
+```text
 package cw.study.spring.bank.dao;
 
 import cw.study.spring.bank.pojo.Account;
@@ -219,7 +219,7 @@ public class AccountDaoImpl implements AccountDao {
 
 ```
 ## 3.6 Service
-```
+```text
 package cw.study.spring.bank.service;
 
 /**
@@ -299,7 +299,7 @@ public class AccountServiceImpl implements AccountService {
 
 ```
 ## 3.7 配置文件spring.xml
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -326,7 +326,7 @@ public class AccountServiceImpl implements AccountService {
 </beans>
 ```
 ## 3.8 客户端
-```
+```java
 @org.junit.Test
 public void test() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -341,7 +341,7 @@ public void test() {
 
 ```
 ## 3.9 模拟异常
-```
+```java
 @Service("accountService")
 public class AccountServiceImpl implements AccountService {
     
@@ -376,7 +376,7 @@ public class AccountServiceImpl implements AccountService {
 声明式事务，spring框架封装的一套用于处理事务的API
 
 # 5. Spring事务管理API
-```
+```text
 Spring对事务的管理底层实现方式是基于AOP实现的。采用AOP的方式进行了封装。所以Spring专门针对事务开发了一套API，API的核心接口如下：
 PlatformTrasactionManager(interface)
   CallbackPerferringPlatformTrasactionManager(interface)
@@ -397,7 +397,7 @@ JtaTransactionManager：支持分布式事务管理。
 
 # 6. 声明式事务之注解实现方式
 ## 6.1 Spring 配置文件配置事务管理器
-```
+```text
 <!-- 
   配置事务管理器
   由于管理事务需要通过数据库连接对象调用setAutoCommit方法
@@ -409,7 +409,7 @@ JtaTransactionManager：支持分布式事务管理。
 
 ```
 ## 6.2 在spring配置文件中引入tx命名空间
-```
+```text
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -421,7 +421,7 @@ JtaTransactionManager：支持分布式事务管理。
 
 ```
 ## 6.3 开启事务注解驱动器
-```
+```text
 在Spring配置文件中配置事务注解驱动器，开启事务注解，告诉Spring采用注解的方式控制事务
 <!-- 开启事务注解驱动器，采用注解的方式控制事务 -->
 <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
@@ -429,7 +429,7 @@ JtaTransactionManager：支持分布式事务管理。
 //当且仅当 Spring 容器中「只有一个」PlatformTransactionManager Bean 时，<tx:annotation-driven/> 才可以省略 transaction-manager 属性。
 ```
 ## 6.4 在Service类上或方法上添加@Transactional注解控制事务
-```
+```text
 在类上添加该注解，该类中所有的方法都有事务。
 在某个方法上添加该注解，表示只有这个方法使用事务。
 @Service("accountService")
@@ -445,7 +445,7 @@ public class AccountServiceImpl implements AccountService {
 ```
 ## 6.5 测试
 ## 6.6 事务实现原理
-```
+```text
 在使用@Transactional注解后
 
 DataSourceTransactionManager：负责事务控制
@@ -455,7 +455,7 @@ ConnectionHolder：负责资源封装
 
 # 7. 事务的属性
 ## 7.1 事务的属性
-```
+```java
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
@@ -490,7 +490,7 @@ public @interface Transactional {
 }
 ```
 ## 7.2 事务传播行为
-```
+```java
 事务的传播行为：在service类中有a()方法和b()方法，a()方法上有事务，b()方法上也有事务，当a()方法执行过程中调用了b()方法，事务是如何传递的？合并到一个事务里？还是开启一个新的事务？这就是事务传播行为。
 事务传播行为在spring框架中被定义为枚举类型：
 public enum Propagation {
@@ -542,11 +542,11 @@ public enum Propagation {
 |NEVER|必无事务，有则抛异常|禁止事务，严格限制|异步通知第三方接口|
 |NESTED|有则建保存点，无则新建|嵌套子事务，子事务仅回滚自身，不影响主事务；主事务回滚，子事务跟着回滚|子操作失败不影响主操作，主操作影响子操作|
 ## 7.3 在代码中设置事务的传播行为
-```
+```text
 @Transactional(propagation = Propagation.REQUIRED)
 ```
 ## 7.4 事务隔离级别
-```
+```text
 事务隔离级别类似于教室A和教室B之间的那道墙，隔离级别越高表示墙体越厚。隔音效果越好。
 事务隔离，防止多事务并发的情况下，多个事务同时操作同一个表时互相干扰的一种机制
 事务隔离级别在Spring中定义为枚举类型：
@@ -570,7 +570,7 @@ public enum Isolation {
 
 ```
 ## 7.5 在Spring代码中如何设置隔离级别
-```
+```text
 设置当前事务的隔离级别
 @Transactional(isolation = Isolation.READ_COMMITTED)
 ```
@@ -603,7 +603,7 @@ public enum Isolation {
 | 序列化 | 无 | 无 | 无 |
 
 ## 7.8 事务超时
-```
+```text
 在Spring代码中如何设置事务超时
 @Transactional(timeout = 10)
     以上代码表示设置事务的超时时间为10秒。
@@ -615,7 +615,7 @@ public enum Isolation {
     如果想把所有代码执行时间都记入超时时间，可以在最后添加一个无关紧要的DML语句。
 ```
 ## 7.9 只读事务
-```
+```text
 代码如下：
 @Transactional(readOnly = true)
 readOnly属性默认值为false
@@ -624,14 +624,14 @@ readOnly属性默认值为false
 如果该事务中确实没有增删改操作，建议设置为只读事务，提高select语句的执行效率
 ```
 ## 7.10 设置哪些异常回滚事务
-```
+```text
 代码如下：
 @Transactional(rollbackFor = RuntimeException.class)
     rollbackFor属性为Class数组类型
     表示只有发生RuntimeException异常或该异常的子类异常才回滚。
 ```
 ## 7.11 设置哪些异常不回滚事务
-```
+```text
 代码如下：
 @Transactional(noRollbackFor = NullPointerException.class)
     noRollbackFor属性为Class数组类型
@@ -641,7 +641,7 @@ readOnly属性默认值为false
 
 # 8. 事务的全注解式开发
 ## 8.1 编写配置类代替配置文件
-```
+```java
 package cw.study.spring.bank;
 
 import com.alibaba.druid.pool.DruidDataSource;
@@ -702,7 +702,7 @@ public class SpringConfig {
 ```
 ## 8.2 测试程序
 
-```
+```text
 使用原先的转账业务进行测试
 @org.junit.Test
 public void test() {
@@ -736,7 +736,7 @@ spring的事务管理是基于AOP实现的
 spring的事务管理是基于AOP实现的
 
 ## 9.2 依赖
-```
+```xml
 <dependencies>
   <!-- spring核心依赖 -->
   <dependency>
@@ -795,7 +795,7 @@ spring的事务管理是基于AOP实现的
 组件的注入使用注解的形式，事务的管理采用xml文件配置的形式
 
 ## 9.4 spring.xml配置文件
-```
+```text
 记得添加context、tx、aop的命名空间
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -865,7 +865,7 @@ spring的事务管理是基于AOP实现的
 ```
 
 ## 9.5 测试程序
-```
+```java
 @org.junit.Test
 public void test() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
@@ -890,7 +890,7 @@ public void test() {
 ## 10.1 没有经过Spring代理（最核心）
 本质：事务是通过代理对象生效的，而不是原对象
 ### 10.1.1 同类内部方法调用（最经典）
-```
+```java
 @Service
 public class UserService {
 
@@ -911,7 +911,7 @@ public class UserService {
 - 没走代理对象
 
 解决：
-```
+```java
 @Autowired
 private UserService userService;
 
@@ -920,7 +920,7 @@ public void methodA() {
 }
 ```
 或者（如果一定要在A这个没有事务的方法里里调用B这个带有事务的方法）
-```
+```java
 import org.springframework.aop.framework.AopContext;
 
 public void methodA() {
@@ -928,7 +928,7 @@ public void methodA() {
 }
 ```
 ### 10.1.2 方法不是 public
-```
+```java
 @Transactional
 private void methodB() {}
 ```
@@ -939,7 +939,7 @@ private void methodB() {}
 - Spring 默认只代理 public方法
 
 ### 10.1.3 使用 final / static 方法
-```
+```java
 @Transactional
 public final void method() {}
 ```
@@ -952,7 +952,7 @@ public final void method() {}
 ## 10.2 事务没有被Spring管理
 
 ### 10.2.1 类没有交给Spring管理
-```
+```text
 public class UserService { ... } // ❌ 没有 @Service
 ```
 原因：
@@ -960,7 +960,7 @@ public class UserService { ... } // ❌ 没有 @Service
 - Spring 根本没创建代理对象
 
 必须：
-```
+```text
 @Service
 ```
 ### 10.2.2 new 出来的对象
@@ -974,7 +974,7 @@ userService.methodB();
 ## 10.3 异常处理导致事务不回滚
 
 ### 10.3.1 捕获异常但不抛出
-```
+```java
 @Transactional
 public void test() {
     try {
@@ -993,7 +993,7 @@ public void test() {
 - Spring 只在 异常抛出到代理层时 才回滚
 
 ### 10.3.2 抛出的是受检异常（默认不回滚）
-```
+```java
 @Transactional
 public void test() throws Exception {
     throw new Exception();
@@ -1010,20 +1010,20 @@ public void test() throws Exception {
 - Error
 
 解决：
-```
+```text
 @Transactional(rollbackFor = Exception.class)
 ```
 
 ## 10.4 事务传播机制问题
 
 ### 10.4.1 事务传播行为设置不当
-```
+```text
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 ```
 
 或
 
-```
+```text
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 ```
 
@@ -1033,7 +1033,7 @@ public void test() throws Exception {
 - 或直接关闭事务
 
 ### 10.4.2 外层没有事务
-```
+```java
 public void outer() {
     inner(); // inner有事务，但调用方式不对
 }
@@ -1044,7 +1044,7 @@ public void outer() {
 
 ## 11.1 @EnableTransactionManagement 的事件链路
 
-```
+```java
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -1084,7 +1084,7 @@ public class TransactionManagementConfigurationSelector
 
 ## 11.2 ProxyTransactionManagementConfiguration 注册了什么
 
-```
+```java
 @Configuration(proxyBeanMethods = false)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 public class ProxyTransactionManagementConfiguration extends AbstractTransactionManagementConfiguration {
@@ -1136,7 +1136,7 @@ public class ProxyTransactionManagementConfiguration extends AbstractTransaction
 
 ### 11.2.1 BeanFactoryTransactionAttributeSourceAdvisor 如何匹配方法
 
-```
+```text
 BeanFactoryTransactionAttributeSourceAdvisor 是一个 PointcutAdvisor，其切入点判断逻辑是：
 
 如果某个类的某个方法上有 @Transactional 注解（或类上有，方法上没有），则匹配成功。
@@ -1150,7 +1150,7 @@ Advisor 内部通过 TransactionAttributeSource.getTransactionAttribute(method, 
 
 ## 11.3 TransactionInterceptor.invoke() — 事务拦截核心源码
 
-```
+```java
 TransactionInterceptor 实现了 MethodInterceptor（AOP 中的 MethodInterceptor），
 它的 invoke() 方法是事务拦截的总入口：
 
@@ -1188,7 +1188,7 @@ public class TransactionInterceptor extends TransactionAspectSupport
 
 ## 11.4 TransactionAspectSupport.invokeWithinTransaction() — 事务管理核心
 
-```
+```java
 这是 Spring 声明式事务最核心的方法！所有事务的创建、提交、回滚逻辑都在这里：
 
 @Nullable
@@ -1258,7 +1258,7 @@ protected Object invokeWithinTransaction(Method method, @Nullable Class<?> targe
 
 ## 11.5 createTransactionIfNecessary() — 事务的创建与传播
 
-```
+```java
 protected TransactionInfo createTransactionIfNecessary(@Nullable PlatformTransactionManager tm,
         @Nullable TransactionAttribute txAttr, final String joinpointIdentification) {
 
@@ -1290,7 +1290,7 @@ protected TransactionInfo createTransactionIfNecessary(@Nullable PlatformTransac
 
 ## 11.6 AbstractPlatformTransactionManager.getTransaction() — 传播行为处理
 
-```
+```java
 这是事务传播行为的真正实现！位于 AbstractPlatformTransactionManager：
 
 @Override
@@ -1360,7 +1360,7 @@ public final TransactionStatus getTransaction(@Nullable TransactionDefinition de
 
 ### 11.6.1 handleExistingTransaction() — 处理已存在事务时的传播
 
-```
+```java
 private TransactionStatus handleExistingTransaction(
         TransactionDefinition definition, Object transaction, boolean debugEnabled)
         throws TransactionException {
@@ -1425,7 +1425,7 @@ private TransactionStatus handleExistingTransaction(
 
 ## 11.7 DataSourceTransactionManager.doBegin() — 真正开启事务
 
-```
+```java
 这是真正开启数据库事务的地方！从 DataSource 获取 Connection，设置 autoCommit=false：
 
 @Override
@@ -1493,7 +1493,7 @@ protected void doBegin(Object transaction, TransactionDefinition definition) {
 
 ## 11.8 事务提交：commit() 和 doCommit()
 
-```
+```java
 // AbstractPlatformTransactionManager.commit()
 @Override
 public final void commit(TransactionStatus status) throws TransactionException {
@@ -1595,7 +1595,7 @@ protected void doCommit(DefaultTransactionStatus status) {
 
 ## 11.9 事务回滚：rollback() 和 doRollback()
 
-```
+```java
 // DataSourceTransactionManager.doRollback() — 真正的 JDBC 回滚
 @Override
 protected void doRollback(DefaultTransactionStatus status) {
@@ -1646,7 +1646,7 @@ protected void completeTransactionAfterThrowing(
 
 ## 11.10 TransactionSynchronizationManager — 线程绑定机制
 
-```
+```text
 TransactionSynchronizationManager 是事务管理的"数据总管"。它使用 ThreadLocal 来存储
 每个线程的事务相关资源，保证同一线程内多个数据库操作共享同一个数据库连接。
 
@@ -1718,7 +1718,7 @@ public abstract class TransactionSynchronizationManager {
 
 ## 11.11 @Transactional 注解解析：SpringTransactionAnnotationParser
 
-```
+```text
 @Transactional 注解的属性如何被解析为 TransactionAttribute？
 
 AnnotationTransactionAttributeSource 内部持有多个 TransactionAnnotationParser：
@@ -1785,7 +1785,7 @@ protected TransactionAttribute parseTransactionAnnotation(AnnotationAttributes a
 
 ## 11.12 事务拦截器完整链路图
 
-```
+```text
 业务方法调用 (orderService.createOrder())
     │
     ▼
@@ -1855,7 +1855,7 @@ TransactionAspectSupport.invokeWithinTransaction()
 
 ## 11.13 设计思想总结
 
-```
+```text
 1. AOP + 拦截器 双重组合模式：
    事务管理由两个层次构成：
    - 外层：BeanFactoryTransactionAttributeSourceAdvisor（切面）

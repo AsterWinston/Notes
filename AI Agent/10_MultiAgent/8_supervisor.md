@@ -11,7 +11,7 @@
 3. 子 Agent 无状态、无全局意识，只按指令执行并返回文本结果。
 4. 结果回填到 history，进入下一轮决策，直到 FINISH 或触达步数上限。
 
-```
+```text
               ┌──────────────┐
               │  Supervisor  │  ← 决定下一步
               └──────┬───────┘
@@ -82,7 +82,7 @@
 2. 每个子 Agent 对外只暴露 `description()` 与 `handle(instruction)`。
 3. 消息只沿"主管→子 Agent→主管"两条边流动。
 
-```
+```text
         ┌───────────────────────────┐
         │        Supervisor         │
         └───┬───────┬───────┬───────┘
@@ -320,7 +320,7 @@ public String describeAgents() {
 }
 ```
 
-```
+```text
 - retriever：检索企业知识库
 - analyzer：分析数据并给出洞察
 - writer：撰写报告

@@ -3,7 +3,7 @@
 
 Sentinel Dashboard（控制台）是一个轻量级的 Web 管理平台，提供**规则管理、实时监控、机器发现**等功能。
 
-```
+```text
 ┌──────────────┐    HTTP/API    ┌─────────────────────┐
 │   Sentinel    │ ←─────────── │  Sentinel Dashboard  │
 │   Client 1    │   心跳+规则   │                      │
@@ -132,7 +132,7 @@ public class SentinelPushConfig {
 
 ## 6.1 原理
 
-```
+```text
                     ┌──────────────┐
                     │  Token Server │  ← 独立部署的令牌服务
                     │  (全局计数)    │

@@ -4,7 +4,7 @@
 
 ## 1.1 它是隔离的中间层
 
-```
+```text
 主进程(系统能力) ←→ preload(预加载,有访问权) ←→ 渲染进程(网页,受限)
                           │
                 用 contextBridge 暴露"白名单 API"
@@ -28,7 +28,7 @@ new BrowserWindow({
 
 ## 2.1 contextIsolation 打开了什么
 
-```
+```text
 contextIsolation: true(默认)
   → preload 和页面是"两个隔离的世界"
   → preload 里的变量页面看不到,反之亦然

@@ -46,7 +46,7 @@ rabbitTemplate.convertAndSend("delay.exchange", "delay.routing", order,
 > **关键限制**：如果同时设置了队列TTL和消息TTL，以**较小的值**为准。消息过期时会被**从队首开始移除**（非严格按过期时间），这意味着队首的消息TTL较长时，会阻塞后面已过期的消息移出队列。
 
 这导致了消息级别TTL的一个重要问题：
-```
+```text
 Queue: [消息A(TTL=5分钟), 消息B(TTL=30秒), 消息C(TTL=30秒)]
        ↑ 队首                                   ↑ 已过期
        
@@ -281,7 +281,7 @@ spring:
 ```
 
 Spring Retry的重试逻辑：
-```
+```text
 第1次调用 → 失败
 等待1秒
 第2次调用 → 失败

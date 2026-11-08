@@ -1,5 +1,5 @@
 # 1. limit分页
-```
+```text
 mysql的limit后面两个数字：
 
 第一个数字：startIndex（起始下标。下标从0开始。）
@@ -13,7 +13,7 @@ limit (pageNum - 1) * pageSize, pageSize
 
 ```
 # 2. 使用mybatis分页
-```
+```text
 CarMapper接口
 List<Car> selectAllByPage(@Param("startIndex") Integer startIndex, @Param("pageSize") Integer pageSize);
 CarMapper.xml
@@ -23,7 +23,7 @@ CarMapper.xml
 
 ```
 # 3. PageHelper插件
-```
+```text
 第一步：引入依赖
 <dependency>
     <groupId>com.github.pagehelper</groupId>
@@ -212,7 +212,7 @@ public class PageHelper {
 
 ## 4.4 PageHelper 核心要点总结
 
-```
+```text
 1. PageHelper 本质是一个 MyBatis 插件（Interceptor）
 2. 拦截 Executor.query() 方法
 3. 分页参数通过 ThreadLocal 传递（startPage → interceptor）

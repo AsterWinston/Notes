@@ -4,7 +4,7 @@
 
 GitOps 是一套以 Git 为核心的操作模型，由 Weaveworks 在 2017 年提出。其核心思想极其简洁：**Git 仓库是集群期望状态的唯一真理源（Single Source of Truth），集群的实际状态由自动化工具持续向 Git 中的期望状态收敛。**
 
-```
+```text
 传统 CI/CD 模式（Push）:
   开发者 → git push → CI 构建镜像 → CI 执行 kubectl apply → 集群变更
   
@@ -62,7 +62,7 @@ GitOps 模式（Pull）:
 
 ArgoCD 是 CNCF 毕业的 GitOps 工具，使用 Go 语言开发。其架构设计清晰：
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │                    ArgoCD                            │
 │                                                       │
@@ -124,7 +124,7 @@ spec:
 
 ArgoCD 每 3 分钟（可配置）检查一次 Git 仓库和集群状态的差异：
 
-```
+```text
 Git (期望)           Cluster (实际)         状态
 ────────────────────────────────────────────────
 replicas: 3          replicas: 3           Synced (已同步)
@@ -198,7 +198,7 @@ spec:
     namespace: argocd
 ```
 
-```
+```text
 argocd-apps/
 ├── apps/
 │   ├── team-a/
@@ -300,7 +300,7 @@ spec:
 
 FluxCD 由 Weaveworks 创建（GitOps 概念的提出者），现已捐赠给 CNCF（孵化阶段）。相比 ArgoCD，FluxCD 更加组件化和模块化：
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │                      FluxCD                               │
 │                                                            │
@@ -385,7 +385,7 @@ flux bootstrap github \
 
 Bootstrap 之后的仓库结构（Monorepo）：
 
-```
+```text
 fleet-infra/
 ├── clusters/
 │   ├── production/
@@ -505,7 +505,7 @@ spec:
 
 ## 4.1 选择建议
 
-```
+```text
 选择 ArgoCD：
 ├── 需要完善的 Web UI
 ├── 有严格的多租户隔离需求
@@ -525,7 +525,7 @@ spec:
 
 ### 5.1.1 Monorepo（单仓）
 
-```
+```text
 fleet-infra/
 └── clusters/
     ├── production/
@@ -536,7 +536,7 @@ fleet-infra/
 
 ### 5.1.2 Repo-per-App（每应用一仓）
 
-```
+```text
 my-app/
 ├── .github/workflows/ci.yaml    # CI Pipeline
 ├── src/                         # 应用源代码
@@ -551,7 +551,7 @@ my-app/
 
 ### 5.1.3 推荐：混合模式
 
-```
+```text
 # 应用仓库（由开发团队管理）
 my-app/
 ├── src/
@@ -674,7 +674,7 @@ spec:
 
 GitOps 的灾难恢复能力是其最大优势之一：
 
-```
+```text
 灾难场景：整个集群被删除
 
 恢复步骤：

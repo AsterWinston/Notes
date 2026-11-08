@@ -1,7 +1,7 @@
 
 # 1. 数据源代理架构
 
-```
+```text
 DataSource (原始)
   └── DataSourceProxy (Seata 代理)
         ├── ConnectionProxy

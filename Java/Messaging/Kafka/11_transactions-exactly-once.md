@@ -12,7 +12,7 @@
 
 ## 1.2 为什么需要事务
 
-```
+```text
 经典场景：转账
 
 操作:
@@ -84,7 +84,7 @@ class ProducerStateManager {
 
 ## 2.2 幂等的局限
 
-```
+```text
 幂等生产者不能解决:
 
 ① Producer 重启后 → PID 重新分配 → 旧 PID 的消息被新 PID 写入
@@ -102,7 +102,7 @@ class ProducerStateManager {
 
 ## 3.1 事务涉及的角色
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │                     Kafka 事务架构                         │
 │                                                          │
@@ -251,7 +251,7 @@ public class TransactionalConsumeProcessProduce {
 
 ## 5.1 两阶段提交协议
 
-```
+```text
 Kafka 事务使用简化的两阶段提交：
 
 阶段 1: PREPARE_COMMIT（准备阶段）
@@ -294,7 +294,7 @@ Kafka 事务使用简化的两阶段提交：
 
 事务消息在磁盘上的特殊标记：
 
-```
+```text
 Partition 日志中的事务消息:
 ┌────────────────────────────────────────────────────────┐
 │ Batch: PID=123, TxnMarker=COMMIT, ...                  │
@@ -318,7 +318,7 @@ Consumer 读取行为 (isolation.level=read_committed):
 
 ## 5.3 Producer Fencing（僵尸隔离）
 
-```
+```text
 场景: 两个 Producer 实例使用相同的 transactional.id
 
 Producer A (epoch=0):
@@ -364,7 +364,7 @@ props.put("isolation.level", "read_committed");
 
 ### 6.1.1 对 LSO (Last Stable Offset) 的影响
 
-```
+```text
 Partition 中:
 
 HW (High Watermark) = 所有 ISR 副本都确认的最大 Offset
@@ -419,7 +419,7 @@ transactional.id.expiration.ms=604800000  # transactional.id 过期时间 (7天)
 
 ## 8.1 精确一次的配置要求
 
-```
+```text
 EOS = 幂等 Producer + 事务 Producer + 事务 Consumer
 
 Producer 端:
@@ -438,7 +438,7 @@ Consumer 端:
 
 ## 8.2 EOS 的完整链路
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │            Exactly-Once Semantic 端到端流程               │
 │                                                          │
@@ -486,7 +486,7 @@ Consumer 端:
 2. **事务尽量短**：减少事务持有时长，避免大量消息在一个事务中
 3. **合理设置超时**：`transaction.timeout.ms` 不宜过大（避免资源占用）也不宜过小（避免超时中止）
 4. **监控事务指标**：
-   ```
+   ```text
    kafka.server:type=TransactionCoordinatorMetrics
    kafka.coordinator.transaction:type=Summary
    ```
@@ -494,7 +494,7 @@ Consumer 端:
 
 ## 9.2 常见问题
 
-```
+```text
 问题 1: ProducerFencedException
 原因: 另一个相同 transactional.id 的 Producer 已注册
 解决: 确保 transactional.id 唯一，关闭旧 Producer 实例

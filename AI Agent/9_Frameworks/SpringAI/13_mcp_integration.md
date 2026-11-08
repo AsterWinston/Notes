@@ -6,7 +6,7 @@
 
 传统集成方式中，若 AI 应用有 N 个、外部工具有 M 个，适配成本是 N×M；引入统一协议后，工具方只需实现一次 MCP Server，AI 应用只需实现一次 MCP Client，成本降为 N+M。
 
-```
+```text
 传统方式：每个 AI 应用为每个工具写一套适配
 MCP 方式：工具方提供 MCP Server，AI 应用作为 MCP Client 统一接入
 ```
@@ -24,7 +24,7 @@ MCP 方式：工具方提供 MCP Server，AI 应用作为 MCP Client 统一接�
 
 MCP 基于 JSON-RPC 2.0（一种轻量远程调用协议），底层传输可以是 stdio（标准输入输出）、SSE（Server-Sent Events，服务端推送）或 Streamable HTTP。
 
-```
+```text
 ┌─────────────┐        MCP        ┌──────────────┐
 │  AI 应用     │ ◀───────────────▶ │  MCP Server  │
 │ (MCP Client)│   JSON-RPC 2.0    │  (工具/资源)  │
@@ -37,7 +37,7 @@ MCP 基于 JSON-RPC 2.0（一种轻量远程调用协议），底层传输可以
 
 一次完整交互大致经历：初始化握手 → 能力协商 → 请求/响应 → 通知。Server 在握手时声明自己支持哪些能力（capabilities），Client 据此决定可用范围。
 
-```
+```text
 Client                          Server
   │  initialize (protocolVersion) │
   │──────────────────────────────▶│
@@ -114,7 +114,7 @@ MCP Client 消费一个或多个 MCP Server 的能力，把远端工具纳入本
 
 常见的三种拓扑：
 
-```
+```text
 1) 单 Client 单 Server    2) 单 Client 多 Server    3) Client 兼 Server
    ┌────┐   ┌────┐          ┌────┐  ┌──┐ ┌──┐        ┌────┐  ┌────┐
    │App │──▶│Srv │          │App │─▶│S1│ │S2│        │App │◀▶│下游│
@@ -385,7 +385,7 @@ public class McpToolService {
 
 ## 6.2 选型建议
 
-```
+```text
 本地同机工具        → stdio（零网络开销、进程隔离）
 远程长连接服务      → Streamable HTTP（推荐）
 已有 SSE 存量系统   → SSE（逐步迁移）

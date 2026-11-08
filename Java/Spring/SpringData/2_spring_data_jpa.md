@@ -4,7 +4,7 @@
 
 理解这三者的关系是学习 Spring Data JPA 的基础：
 
-```
+```text
 Java EE / Jakarta EE 规范层：
   ┌──────────────────────────────┐
   │   JPA (Jakarta Persistence)   │  ← 接口规范（javax.persistence / jakarta.persistence）
@@ -40,7 +40,7 @@ ORM（Object-Relational Mapping）解决的核心问题是面向对象编程与�
 
 ## 1.3 为什么要使用 JPA
 
-```
+```text
 优势：
 - 以面向对象方式操作数据库，开发效率极高
 - 屏蔽不同数据库的 SQL 方言差异（可移植性）
@@ -444,7 +444,7 @@ public class Bike extends Vehicle {
 
 持久化上下文本质上是一个 Map<ID, Entity>，在同一个 EntityManager 生命周期内，相同 ID 的实体只有一个实例：
 
-```
+```text
 用户请求开始
   → EntityManager 创建（@Transactional 范围）
     → 查询 User(id=1) → 从数据库加载 → 放入 PersistenceContext
@@ -482,7 +482,7 @@ entityManager.remove(user);
 
 状态转换：
 
-```
+```text
          new / find
    Transient ──────────→ Managed ←── merge ─── Detached
                             │                       ↑
@@ -507,7 +507,7 @@ Flush 是将 PersistenceContext 中的变更同步到数据库的过程：
 ```
 
 flush 执行顺序（重要）：
-```
+```text
 1. 所有 INSERT
 2. 所有 UPDATE
 3. 集合元素删除
@@ -520,7 +520,7 @@ flush 执行顺序（重要）：
 
 ## 5.1 Repository 接口层级
 
-```
+```text
 Repository<T, ID>                          标记接口
  └── CrudRepository<T, ID>                 基本 CRUD
       └── PagingAndSortingRepository<T, ID> 分页排序
@@ -952,7 +952,7 @@ public class Order {
 
 ## 7.3 加载策略选择指南
 
-```
+```text
 1. 只查父实体，不涉及子实体 → 保持默认 LAZY
 2. 少量数据查询，需要子实体数据 → @EntityGraph 或 JOIN FETCH
 3. 大量数据查询，需要子实体 → @BatchSize 或 FetchMode.SUBSELECT
@@ -966,7 +966,7 @@ public class Order {
 
 与 EntityManager 生命周期绑定，无法关闭：
 
-```
+```text
 特性：
 - 范围：EntityManager 级别（通常等于一次事务）
 - 自动启用，无法禁用
@@ -1231,7 +1231,7 @@ public class SpringSecurityAuditorAware implements AuditorAware<Long> {
 
 ## 12.1 Repository 代理创建流程
 
-```
+```text
 @EnableJpaRepositories (或自动配置)
   → JpaRepositoriesRegistrar
     → JpaRepositoryConfigExtension
@@ -1268,7 +1268,7 @@ public <S extends T> S save(S entity) {
 
 ## 12.3 派生查询解析过程
 
-```
+```text
 findByUserNameAndAgeGreaterThanOrderByCreateTimeDesc
 
 解析为 PartTree：
@@ -1336,7 +1336,7 @@ public class User {
 
 ## 13.3 OpenSessionInView 问题
 
-```
+```text
 默认启用（spring.jpa.open-in-view=true）：
 - 好处：Controller 层可延迟加载关联对象
 - 坏处：数据库连接在整个请求期间保持（影响连接池）

@@ -6,7 +6,7 @@ Electron 是"用 Web 技术写桌面应用"的框架——把 **Chromium(渲染�
 
 Electron 是一个**用 Web 技术构建桌面应用**的框架——它打包了一个精简的 **Chromium** 负责界面,内嵌 **Node.js** 负责访问文件、系统,两相结合,桌面程序 = 网页界面 + 系统能力。
 
-```
+```text
   你的 Electron 应用
     ├─ Chromium ── 渲染界面(HTML/CSS/JS,和写网页一样)
     └─ Node.js ─── 访问文件系统、网络、系统 API(web 做不到的事)
@@ -22,7 +22,7 @@ Electron 是一个**用 Web 技术构建桌面应用**的框架——它打包�
 
 ## 2.1 两个进程的世界
 
-```
+```text
 Electron 应用 = 两种进程:
   主进程(Main Process)   —— 一个,掌管窗口、系统 API、Node 全能力
   渲染进程(Renderer)     —— 每个窗口一个,负责界面(像浏览器标签页,受限)

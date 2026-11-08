@@ -4,7 +4,7 @@
 
 ## 1.1 从模板到 render 函数
 
-```
+```text
    <template> 里的模板字符串
           │
           ▼
@@ -41,7 +41,7 @@
 
 ## 2.1 parse：字符串 → AST
 
-```
+```html
 输入：<p class="x" @click="go">{{ msg }}</p>
 输出：{
   type: 元素节点,
@@ -55,7 +55,7 @@
 
 ## 2.2 transform：优化标注
 
-```
+```html
 在 AST 上做几件事：
 1. 静态提升（hoist）：<p>静态文字</p> 这种永远不变的节点，提到渲染函数外只创建一次
 2. 打 patchFlag：{{ msg }} 标记为"动态文本"，@click 标记为"动态事件"
@@ -66,7 +66,7 @@
 
 ## 2.3 generate：AST → 代码
 
-```
+```text
 把优化后的 AST 转成代码字符串：
 function render(ctx) {
   return h('div', null, [ hoisted1, h('p', { [patchFlag]: 1 }, ctx.msg) ])
@@ -106,7 +106,7 @@ function render(ctx) {
 
 ## 3.3 Block tree
 
-```
+```html
 传统 vnode 树：整棵树是无差别的一层套一层，diff 要全树走一遍
 Block tree：只把"带动态节点的"收进一个扁平的 Block 数组
 

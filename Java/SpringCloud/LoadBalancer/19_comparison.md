@@ -3,7 +3,7 @@
 
 ## 1.1 Ribbon 架构
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │                    Ribbon                        │
 │                                                  │
@@ -22,7 +22,7 @@
 
 ## 1.2 LoadBalancer 架构
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │              Spring Cloud LoadBalancer           │
 │                                                  │
@@ -106,7 +106,7 @@ public class RandomLBConfig {
 
 ## 4.2 超时配置
 
-```
+```text
 Ribbon:
   ribbon.ConnectTimeout=3000
   ribbon.ReadTimeout=5000

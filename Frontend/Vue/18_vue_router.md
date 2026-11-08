@@ -143,7 +143,7 @@ const routes = [
 
 ## 4.2 好处与示意
 
-```
+```text
 首屏：只加载 index.js（含 Home）
    │  用户点"关于"
    ▼

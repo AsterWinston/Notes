@@ -43,7 +43,7 @@
 
 ## 1.3 评测流程
 
-```
+```text
   评测集(JSON)
        │
        ▼
@@ -219,7 +219,7 @@ public record CodingResult(
 
 ## 4.1 整体架构
 
-```
+```text
 EvalRunner
  ├── RepoCheckout     # 生成独立副本
  ├── AgentAdapter     # 适配不同 Agent
@@ -419,7 +419,7 @@ void sandbox_should_limit_memory() {
 
 ## 7.2 灰度策略
 
-```
+```text
 阶段1：内部测试仓库
 阶段2：非核心业务仓库
 阶段3：核心业务仓库（需人工确认）
@@ -460,7 +460,7 @@ void sandbox_should_limit_memory() {
 
 ### 8.2.1 优化闭环
 
-```
+```text
 线上采样 → 失败归因 → 回灌评测集 → 调整策略 → 回归评测 → 发布
 ```
 

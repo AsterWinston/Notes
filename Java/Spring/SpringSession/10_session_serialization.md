@@ -2,7 +2,7 @@
 
 Spring Session 需要将 Session 对象及其属性序列化后存储到外部存储中。序列化的选择和配置直接影响**性能、可读性、存储空间和跨语言兼容性**。
 
-```
+```text
 Java 对象 (内存)
     │
     ▼ 序列化 (Serializer)
@@ -107,7 +107,7 @@ public class JsonSerializationConfig {
 
 **JDK 序列化**（十六进制不可读）：
 
-```
+```text
 \xAC\xED\x00\x05sr\x00\x0ecom.example.User...
 ```
 
@@ -236,7 +236,7 @@ public class KryoRedisSerializer implements RedisSerializer<Object> {
 
 ## 6.1 推荐方案
 
-```
+```text
 大多数应用：Jackson JSON
   - 可读性好，方便排查问题
   - 性能足够

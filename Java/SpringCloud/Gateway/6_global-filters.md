@@ -110,7 +110,7 @@ public class RouteToRequestUrlFilter implements GlobalFilter, Ordered {
 
 **处理流程**：
 
-```
+```text
 路由 URI: lb://user-service
 请求路径: /api/user/profile?id=1
 
@@ -408,7 +408,7 @@ public class RemoveCachedBodyGlobalFilter implements GlobalFilter, Ordered {
 
 ## 3.1 排序规则
 
-```
+```text
 Order 值    →   PRE 阶段执行顺序    →   POST 阶段执行顺序
 负值         先执行                   后执行
 0           中间                     中间
@@ -417,7 +417,7 @@ Order 值    →   PRE 阶段执行顺序    →   POST 阶段执行顺序
 
 ## 3.2 完整的执行序列
 
-```
+```text
 NettyWriteResponseFilter (-1)       ← POST: 写响应
      │
 GatewayMetricsFilter (0)            ← PRE: 开始计时

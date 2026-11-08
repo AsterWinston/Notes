@@ -1,7 +1,7 @@
 
 # 1. 集成架构
 
-```
+```text
 Feign.Builder
     │
     ├── client(FeignBlockingLoadBalancerClient)  ← 装饰底层 HTTP 引擎
@@ -138,7 +138,7 @@ public class LoadBalancerClientFactory extends NamedContextFactory<LoadBalancerC
 
 **NamedContextFactory** 原理：为每个 serviceId 创建独立的 Spring ApplicationContext，实现配置隔离。
 
-```
+```text
 LoadBalancerClientFactory
   ├── user-service → ApplicationContext (user-service)
   │     ├── RoundRobinLoadBalancer
@@ -336,7 +336,7 @@ public class HintBasedLoadBalancer implements ReactorLoadBalancer<ServiceInstanc
 
 # 11. 完整时序图
 
-```
+```text
 Feign 调用
   │
   ▼

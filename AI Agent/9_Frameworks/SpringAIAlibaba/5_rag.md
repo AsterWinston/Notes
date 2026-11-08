@@ -4,7 +4,7 @@
 
 结论先行：Spring AI Alibaba 不自造 RAG 轮子，而是直接复用 Spring AI 的检索增强生成（RAG，Retrieval-Augmented Generation）组件，只在中文与国内生态上做增强。
 
-```
+```text
 Spring AI Alibaba 的 RAG 构建在 Spring AI 之上：
   DocumentReader / Splitter / VectorStore / Advisor
 ```
@@ -31,7 +31,7 @@ ChatClient ragChatClient(ChatModel model, VectorStore vectorStore) {
 
 ## 1.2 RAG 流水线拆解
 
-```
+```text
 文档 ─▶ Reader ─▶ Splitter ─▶ Embedding ─▶ VectorStore
                                                │
 用户问题 ─▶ Embedding ─▶ 相似度检索 ───────────┘
@@ -227,7 +227,7 @@ spring:
 
 RRF（Reciprocal Rank Fusion，倒数排名融合）按"排名的倒数"加权求和：
 
-```
+```text
 score(d) = Σ  1 / (k + rank_i(d))
           i
 ```
@@ -275,7 +275,7 @@ List<Document> rrfFuse(List<Document> a, List<Document> b) {
 
 ## 5.1 托管能力
 
-```
+```text
 百炼平台提供托管的知识库能力：
   ├── 文档上传与解析
   ├── 自动切分与向量化
@@ -404,7 +404,7 @@ StateGraph graph = new StateGraph(AgentState.class)
 
 ## 7.2 检索-重排-生成流水线
 
-```
+```text
 START ─▶ retrieve ─▶ rerank ─▶ generate ─▶ END
            │            │           │
         向量+BM25     精排取前5    带引用生成
@@ -475,7 +475,7 @@ START ─▶ retrieve ─▶ rerank ─▶ generate ─▶ END
 
 ## 9.3 Token 预算
 
-```
+```text
 总预算 = 系统提示 + 检索上下文 + 历史 + 输出预留
 检索上下文占比建议 ≤ 60%
 ```

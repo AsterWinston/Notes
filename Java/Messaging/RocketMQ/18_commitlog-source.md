@@ -4,7 +4,7 @@
 
 # 1. CommitLog 类层次结构
 
-```
+```text
 CommitLog (接口)
     └── CommitLog (默认实现)
          ├── MappedFileQueue           — 管理 MappedFile 列表
@@ -308,7 +308,7 @@ class FlushRealTimeService extends FlushCommitLogService {
 
 ## 6.1 恢复场景
 
-```
+```text
 Broker 异常关闭后重启 → 需要恢复 CommitLog & ConsumeQueue
 
 恢复流程:
@@ -367,7 +367,7 @@ private void recoverNormally(long maxPhyOffsetOfConsumeQueue) {
 
 # 7. 完整写入调用链路
 
-```
+```text
 Producer.send()
     │
     ▼

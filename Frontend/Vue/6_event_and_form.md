@@ -153,7 +153,7 @@ const agree = ref(false)
 
 ## 3.1 v-model 的心智模型
 
-```
+```text
         :value="text"         ←─── 数据 → 视图
   data:text ─────────────────────▶  <input>
                                    │

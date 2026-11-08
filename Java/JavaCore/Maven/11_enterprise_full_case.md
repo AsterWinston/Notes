@@ -6,7 +6,7 @@
 
 # 2. 推荐模块结构
 
-```
+```text
 company-parent
 ├── common
 ├── service-api
@@ -205,7 +205,7 @@ mvn -B clean verify sonar:sonar
 | `hotfix/x.y.z` | 紧急修复 | 增量版本 |
 
 发布流程：
-```
+```text
 develop(1.0.0-SNAPSHOT)
    │
    ├── release/1.0 (mvn versions:set -DnewVersion=1.0.0)
@@ -228,7 +228,7 @@ mvn -Drevision=1.0.0 -Dchangelist= clean deploy
 
 # 11. 端到端 CI/CD 流水线示例
 
-```
+```text
 [代码推送到 develop]
        │
        ▼

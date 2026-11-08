@@ -1,6 +1,6 @@
 # 1. MVC设计模式
 
-```
+```text
 1.1 M: Model（模型层）
   职责：业务逻辑处理 + 数据访问
   包含：Service（业务逻辑）、DAO（数据访问）、实体类（Entity/Bean/Domain）
@@ -33,7 +33,7 @@ MVC的执行流程：
 
 # 2. 三层架构
 
-```
+```text
 三层架构是JavaWeb项目中最经典的分层设计，将整个应用划分为三层：
 
   展示层（Web层 / Controller层）
@@ -83,7 +83,7 @@ MVC的执行流程：
 
 # 3. MVC与三层架构的关系
 
-```
+```text
 MVC 和 三层架构 是两个不同维度的概念：
 
   MVC（设计模式）               三层架构（分层架构）
@@ -105,7 +105,7 @@ MVC 和 三层架构 是两个不同维度的概念：
 
 # 4. 实体类命名规范（PO / VO / DTO / POJO / BO）
 
-```
+```text
 在JavaWeb项目中，实体类有多种叫法，每种有不同的用途：
 
 4.1 PO（Persistent Object 持久化对象）
@@ -141,7 +141,7 @@ MVC 和 三层架构 是两个不同维度的概念：
 
 # 5. 事务控制
 
-```
+```text
 5.1 为什么事务控制要在Service层？
 
 原因：一个业务操作可能涉及多个DAO操作，这些DAO操作必须在同一个事务中。
@@ -328,7 +328,7 @@ public class TransferServlet extends HttpServlet {
 
 # 6. 前端控制器模式（Front Controller Pattern）
 
-```
+```text
 为什么需要前端控制器？
 
 在纯Servlet开发中，一个请求对应一个Servlet，导致：
@@ -360,7 +360,7 @@ SpringMVC的DispatcherServlet就是前端控制器模式的经典实现。
 
 # 7. 总结：标准JavaWeb项目目录结构
 
-```
+```text
 项目名/
   ├─ src/main/java/
   │    ├─ com.xxx.controller/    --- Servlet（控制器）

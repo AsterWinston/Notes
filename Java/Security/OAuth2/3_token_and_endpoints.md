@@ -14,7 +14,7 @@ OAuth2 中涉及多种 Token，每种 Token 有独立的职责、生命周期和
 
 ## 1.2 为什么需要多种 Token？
 
-```
+```text
 设计哲学：职责分离
 
 ┌──────────────────────────────────────────────────┐
@@ -39,7 +39,7 @@ OAuth2 中涉及多种 Token，每种 Token 有独立的职责、生命周期和
 
 ## 1.3 Token 格式对比：Opaque vs JWT
 
-```
+```text
 Opaque Token（不透明 Token）：
   示例：2YotnFZFEjr1zCsicMWpAA
   特点：
@@ -82,7 +82,7 @@ JWT Token（自包含 Token）：
 
 ## 2.1 Access Token 的生命周期
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │          Access Token 生命周期            │
 ├─────────────────────────────────────────┤
@@ -103,7 +103,7 @@ JWT Token（自包含 Token）：
 
 ## 2.2 Access Token 有效期设计
 
-```
+```text
 有效期设计原则：
 
 1. 尽可能短（在不影响用户体验的前提下）
@@ -162,7 +162,7 @@ Authorization: DPoP eyJhbGciOiJSUzI1NiIs...
 DPoP: eyJ0eXAiOiJkcG9wK2p3dCIs...
 ```
 
-```
+```text
 传统 Bearer Token 的问题：
   - 任何人持有 Token 就能访问资源
   - Token 被窃取 = 完全失控
@@ -181,7 +181,7 @@ DPoP 的防护：
 
 Refresh Token 是 OAuth2 中实现**长期访问能力**而**不牺牲安全性**的核心设计。
 
-```
+```text
 为什么需要 Refresh Token？
 
 方案 A：长期 Access Token（24h）
@@ -201,7 +201,7 @@ Refresh Token 是 OAuth2 中实现**长期访问能力**而**不牺牲安全性*
 
 Refresh Token 轮换是 OAuth 2.1 的强制要求：
 
-```
+```text
 传统模式（危险）：
   客户端 ──> /token (refresh_token=RT1)
   授权服务器 ──> {access_token: AT2, refresh_token: RT1}  ← 不换！
@@ -221,7 +221,7 @@ Refresh Token 轮换是 OAuth 2.1 的强制要求：
     结果：攻击者暂时获取访问权限，但用户会被通知
 ```
 
-```
+```text
 实现要点：
 
 1. 轮换触发条件
@@ -240,7 +240,7 @@ Refresh Token 轮换是 OAuth 2.1 的强制要求：
 
 ## 3.3 Refresh Token 的存储与传输
 
-```
+```text
 存储要求（客户端）：
   机密客户端：
   - 加密存储在数据库（AES-256-GCM）
@@ -263,7 +263,7 @@ Refresh Token 轮换是 OAuth 2.1 的强制要求：
 
 ## 4.1 端点全景图
 
-```
+```text
                     OAuth2 核心端点
                     
 ┌─────────────────────────────────────────────────────────────┐
@@ -338,7 +338,7 @@ Refresh Token 轮换是 OAuth 2.1 的强制要求：
 
 ### 4.2.3 授权端点响应
 
-```
+```text
 成功响应（用户同意授权）：
 
 HTTP/1.1 302 Found
@@ -528,7 +528,7 @@ GET /.well-known/oauth-authorization-server
 
 ### 5.1.1 严格匹配 vs 模糊匹配
 
-```
+```text
 授权服务器必须实现严格字符串匹配：
 
 问题案例：
@@ -545,7 +545,7 @@ GET /.well-known/oauth-authorization-server
 
 ### 5.1.2 redirect_uri 的开放重定向攻击
 
-```
+```text
 # 攻击链条：
 1. 攻击者构造：
    https://auth.example.com/authorize?client_id=xxx&redirect_uri=https://client.example.com/callback?next=https://evil.com
@@ -566,7 +566,7 @@ GET /.well-known/oauth-authorization-server
 
 ## 5.2 state 参数的 CSRF 防护机制
 
-```
+```text
 攻击场景（缺少 state 参数）：
 
 1. 攻击者用自己的 GitHub 账号完成 OAuth2 流程
@@ -607,7 +607,7 @@ state 防御：
 
 ## 6.2 SPA Token 存储深度分析
 
-```
+```text
 为什么 SPA 不能用 localStorage？
 
 问题一：XSS 攻击

@@ -24,7 +24,7 @@
 
 `spring-boot-starter-security` 通过 `@EnableAutoConfiguration` 自动注册以下 Bean：
 
-```
+```text
 SecurityAutoConfiguration
 ├── springSecurityFilterChain (DelegatingFilterProxy)
 │   └── 默认 SecurityFilterChain

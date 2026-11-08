@@ -20,7 +20,7 @@ Jenkins 使用 java.util.logging，支持以下日志级别：
 
 **方式一：通过 UI**
 
-```
+```text
 Manage Jenkins > System Log > Log Levels
 ├── 全局日志级别
 └── 特定 Package 日志级别
@@ -58,7 +58,7 @@ java.util.logging.ConsoleHandler.level = ALL
 
 ## 1.3 系统日志查看
 
-```
+```text
 通过 UI 查看日志：
 Manage Jenkins > System Log
 ├── All Jenkins Logs（所有日志）
@@ -98,7 +98,7 @@ EOF
 
 ## 2.1 安装和配置
 
-```
+```text
 插件名称：Metrics Plugin
 功能：
 ├── 暴露 Jenkins 运行指标
@@ -132,7 +132,7 @@ Manage Jenkins > Configure System > Metrics:
 
 **JVM 指标**：
 
-```
+```text
 # 堆内存使用
 jvm_memory_used_bytes{area="heap"} 1.5e9
 jvm_memory_max_bytes{area="heap"} 4.0e9
@@ -152,7 +152,7 @@ jvm_threads_daemon 80
 
 **Jenkins 指标**：
 
-```
+```text
 # 节点/Executor
 jenkins_node_count{node_name="master"} 1
 jenkins_node_count{node_name="agent-1"} 1
@@ -226,7 +226,7 @@ scrape_configs:
 
 推荐使用社区提供的 [Jenkins Dashboard](https://grafana.com/grafana/dashboards/)：
 
-```
+```text
 推荐仪表盘：
 ├── Jenkins Performance and Health Overview
 │   ├── JVM 内存使用趋势
@@ -455,7 +455,7 @@ Datadog:
   Collect Agent Metrics: true
 ```
 
-```
+```text
 Datadog Dashboards 中的 Jenkins Metric 示例：
 ├── jenkins.job.duration（构建耗时）
 ├── jenkins.job.success（成功数）

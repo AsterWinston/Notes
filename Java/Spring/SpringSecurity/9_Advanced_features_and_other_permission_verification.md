@@ -4,7 +4,7 @@
 
 **OAuth2 授权码流程（Authorization Code Grant）：**
 
-```
+```text
 用户          前端         后端(Client)    授权服务器     资源服务器
  │             │              │               │              │
  │──点击登录──→│              │               │              │
@@ -41,7 +41,7 @@
 
 **JWT 结构：**
 
-```
+```text
 eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.abc123...
 └────── Header ──────┘ └── Payload ──┘ └ Signature ┘
 ```
@@ -54,7 +54,7 @@ eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.abc123...
 
 **JWT 验证流程：**
 
-```
+```text
 请求 → Authorization: Bearer eyJ...
     → 提取 Token → 验证签名 → 检查过期 → 解析载荷
     → 构建 Authentication → 存入 SecurityContextHolder
@@ -94,7 +94,7 @@ public class PermissionAspect {
 
 **完整 JWT 项目结构：**
 
-```
+```text
 src/main/java/com/example/
 ├── config/
 │   ├── SecurityConfig.java          // 安全配置
@@ -313,7 +313,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 | 粒度 | 粗粒度 | 细粒度 |
 | 使用建议 | 角色分类 | 操作权限 |
 
-```
+```text
 Role: ROLE_ADMIN, ROLE_USER
 Authority: user:read, user:write, order:delete, report:export
 ```
@@ -340,7 +340,7 @@ http.authorizeHttpRequests(auth -> auth
 
 ## 5.1 CSRF 原理与防护
 
-```
+```text
 CSRF攻击的必要条件：
 1. 用户已登录目标网站（有 Session Cookie）
 2. 用户访问了恶意网站

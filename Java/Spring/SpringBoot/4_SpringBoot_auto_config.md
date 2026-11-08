@@ -1,7 +1,7 @@
 # 1. 自动配置概述
 
 ## 1.1 Spring Boot的两大核心
-Spring Boot 框架的两大核心特性可以概括为“启动器”（Starter）和“自动配置”（Auto-configuration）。
+Spring Boot 框架的两大核心特性可以概括为"启动器"（Starter）和"自动配置"（Auto-configuration）。
 1. 启动器（Starter）：
 Spring Boot 提供了一系列的 Starter POMs，它们是一组预定义的依赖关系。
 当你在项目中引入一个 Starter POM 时，它会自动包含所有必要的 Spring 组件以及合理的默认设置。开发者不需要手动管理复杂的依赖关系，也不需要担心版本冲突的问题，减少了配置上的出错可能。
@@ -16,7 +16,7 @@ Spring Boot 提供了一系列的 Starter POMs，它们是一组预定义的依�
 
 以前，在没有SpringBoot框架的时候，我们用Spring集成MyBatis框架，需要进行如下的配置：
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -68,7 +68,7 @@ Spring Boot 提供了一系列的 Starter POMs，它们是一组预定义的依�
 通过以上的配置可以看到Spring集成MyBatis的时候，需要手动提供BasicDataSource、SqlSessionFactoryBean、MapperScannerConfigurer、DataSourceTransactionManager等Bean的配置。
 
 使用了Spring Boot框架之后，这些配置都不需要提供了，SpringBoot框架的自动配置机制可以全部按照默认的方式自动化完成。减少了大量的配置，在环境方面耗费很少的时间，让程序员更加专注业务逻辑的处理。我们只需要在application.yml中提供以下的配置即可：
-```
+```text
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -82,7 +82,7 @@ spring:
 
 ## 1.3 引入web启动器都会有哪些组件会准备好
 通过以下代码获取spring ioc容器中的所有注册的bean，一个Bean就是一个组件：
-```
+```java
 package com.powernode.test;
 
 import org.springframework.boot.SpringApplication;
@@ -106,7 +106,7 @@ public class TestApplication {
 ```
 在springboot没有引入任何启动器的情况下，默认提供了59bean：
 
-```
+```text
 org.springframework.context.annotation.internalConfigurationAnnotationProcessor
 org.springframework.context.annotation.internalAutowiredAnnotationProcessor
 org.springframework.context.annotation.internalCommonAnnotationProcessor
@@ -168,7 +168,7 @@ spring.task.scheduling-org.springframework.boot.autoconfigure.task.TaskSchedulin
 org.springframework.aop.config.internalAutoProxyCreator
 ```
 引入web启动器：
-```
+```xml
 <dependency>
   <groupId>org.springframework.boot</groupId>
 
@@ -178,7 +178,7 @@ org.springframework.aop.config.internalAutoProxyCreator
 
 ```
 可以发现，ioc容器中注册的bean总数量为160个：
-```
+```text
 org.springframework.context.annotation.internalConfigurationAnnotationProcessor
 org.springframework.context.annotation.internalAutowiredAnnotationProcessor
 org.springframework.context.annotation.internalCommonAnnotationProcessor
@@ -355,7 +355,7 @@ org.springframework.aop.config.internalAutoProxyCreator
 当然，我们也可以打破这个规则，通过以下两种方式：
 ● 第一种：@SpringBootApplication(scanBasePackages = "com")
 ● 第二种：@ComponentScan("com")
-```
+```text
 @SpringBootConfiguration
 @EnableAutoConfiguration
 @ComponentScan("com")
@@ -365,24 +365,24 @@ public class TestApplication {}
 springboot为功能的实现提供了非常多的默认配置.
 例如：tomcat服务器端口号在没有配置的情况下，默认是8080
 当然，也可以在application.properties文件中进行重新配置：
-```
+```properties
 server.port=8081
 ```
 再如，配置thymeleaf的模板引擎时，默认的模板引擎前缀是classpath:/templates/，默认的后缀是.html
 当然，也可以重新配置：
-```
+```properties
 spring.thymeleaf.prefix=classpath:/templates/
 spring.thymeleaf.suffix=.html
 ```
 
 这些配置最终都会通过@ConfigurationProperties(prefix="")注解绑定到对应的bean的属性上。这个Bean我们一般称为属性类。例如：
 ServerProperties：服务器属性类，专门负责配置服务器相关信息。
-```
+```java
 @ConfigurationProperties(prefix = "server", ignoreUnknownFields = true)
 public class ServerProperties {}
 ```
 ThymeleafProperties：Thymeleaf属性类，专门负责配置Thymeleaf模板引擎的。
-```
+```java
 @ConfigurationProperties(prefix = "spring.thymeleaf")
 public class ThymeleafProperties {}
 ```
@@ -411,7 +411,7 @@ Spring Boot框架中的@ConditionalOnXxx系列注解属于条件注解（Conditi
 使用这些注解可以帮助开发者根据不同的运行环境或配置来灵活地控制Bean的创建，从而实现更智能、更自动化的配置过程。这对于构建可插拔的模块化系统特别有用，因为可以根据实际需求选择性地启用或禁用某些功能。
 
 假设我们来实现这样一个功能：如果IoC容器当中存在<font style="color:#DF2A3F;">A</font>Bean，就创建BBean，代码如下：
-```
+```java
 @Configuration
 public class AppConfig {
 
@@ -428,7 +428,7 @@ public class AppConfig {
 }
 ```
 如果IoC容器当中**不存在**<font style="color:#DF2A3F;">A</font>**Bean**，就创建BBean，代码如下：
-```
+```java
 @Configuration
 public class AppConfig {
 
@@ -445,7 +445,7 @@ public class AppConfig {
 }
 ```
 当类路径当中存在DispatcherServlet类，则启用配置，反之则不启用配置，代码如下：
-```
+```java
 @ConditionalOnClass(name = {"org.springframework.web.servlet.DispatcherServlet"})
 @Configuration
 public class MyConfig {
@@ -584,7 +584,7 @@ public class MyConfig {
 ### 2.5.3 查看生效了哪些自动配置类
 启动时添加 `--debug` 参数，控制台会输出 "CONDITIONS EVALUATION REPORT"：
 
-```
+```text
 java -jar app.jar --debug
 ```
 
@@ -594,7 +594,7 @@ debug=true
 ```
 
 输出示例：
-```
+```text
 Positive matches:
 -----------------
    DataSourceAutoConfiguration matched:

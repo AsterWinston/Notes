@@ -84,7 +84,7 @@ public class UserClientFallbackFactory implements FallbackFactory<UserClient> {
 
 # 4. Fallback 执行流程
 
-```
+```text
 Feign 调用
     │
     ├── 正常 → Decoder.decode() → 返回业务对象

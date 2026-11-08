@@ -1,5 +1,5 @@
 # 1. 注入外部Bean
-```
+```text
 外部Bean：要进行注入的bean定义到需要被注入的Bean的外面
 对于外部Bean，在property标签中使用ref属性进行注入，或者使用ref标签进行注入，其中通过ref属性进行注入是常用。
 <!--声明/定义Bean-->
@@ -12,7 +12,7 @@
 
 ```
 # 2. 注入内部Bean
-```
+```text
 内部Bean：在bean标签中嵌套bean标签，即需要进行注入的Bean通过Bean标签声明在需要被注入的Bean中，然后直接注入到需要被注入的Bean中。
 <bean id="orderServiceBean2" class="com.powernode.spring6.service.OrderService">
     <property name="orderDao">
@@ -23,7 +23,7 @@
 
 ```
 # 3. 注入简单类型
-```
+```text
 如果给简单类型赋值，即给属性注入简单类型，使用value属性或value标签，而不是ref。
 public class User {
     private String username; // String是简单类型
@@ -312,7 +312,7 @@ public void testDataSource(){
 
 ```
 # 4. 级联属性赋值
-```
+```text
 // 班级类
 public class Clazz {
     // 班级名称
@@ -397,7 +397,7 @@ public class Student {
 # 5. 注入数组
 
 ## 5.1 数组中的元素是简单类型
-```
+```java
 public class QianDaYe {
     private String[] aiHaos;
 
@@ -426,7 +426,7 @@ public class QianDaYe {
 </bean>
 ```
 ## 5.2 数组中的元素是非简单类型
-```
+```text
 public class Woman {
     private String name;
 
@@ -502,7 +502,7 @@ public class QianDaYe {
 如果数组中是简单类型，使用value标签。
 如果数组中是非简单类型，使用ref标签。
 # 6. 注入List集合与Set集合
-```
+```text
 List集合：有序可重复
 注意：注入List集合的时候使用list标签，如果List集合中是简单类型使用value标签，反之使用ref标签。
 Set集合：无序不可重复
@@ -562,7 +562,7 @@ public class Person {
 
 ```
 # 7. 注入Map集合与注入Porperties
-```
+```text
 Map集合：
 使用<map>标签
 如果key是简单类型，使用 key 属性，反之使用 key-ref 属性。
@@ -628,7 +628,7 @@ public class Person {
 
 ```
 # 8. 注入null和空字符串
-```
+```text
 注入空字符串使用：<value/> 或者 value=""
 注入null使用：<null/> 或者不为该属性赋值
 public class Cat {
@@ -677,7 +677,7 @@ public class Cat {
 
 ```
 # 9. 注入的值中含有特殊符号
-```
+```text
 XML中有5个特殊字符，分别是：<、>、'、"、&
 以上5个特殊符号在XML中会被特殊对待，会被当做XML语法的一部分进行解析，如果这些特殊符号直接出现在注入的字符串当中，会报错。
 解决方案包括两种：
@@ -723,7 +723,7 @@ public class MathBean {
 
 ## 10.1 populateBean() — 属性赋值入口
 
-```
+```java
 在 doCreateBean() 中，createBeanInstance() 完成实例化后，紧接着调用 populateBean()：
 
 protected void populateBean(String beanName, RootBeanDefinition mbd,
@@ -768,7 +768,7 @@ protected void populateBean(String beanName, RootBeanDefinition mbd,
 
 ## 10.2 applyPropertyValues() — 属性值解析与应用
 
-```
+```java
 这是真正将 XML <property> 或自动装配产生的 PropertyValue 设置到 Bean 上的方法：
 
 protected void applyPropertyValues(String beanName, BeanDefinition mbd,
@@ -863,7 +863,7 @@ protected void applyPropertyValues(String beanName, BeanDefinition mbd,
 
 ## 10.3 BeanWrapperImpl.setPropertyValues() — 反射设置属性
 
-```
+```text
 BeanWrapperImpl 是 Spring 中 BeanWrapper 接口的默认实现，
 负责通过反射将属性值设置到 Bean 上。
 
@@ -914,7 +914,7 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor
 
 ### 10.3.1 BeanWrapperImpl.setPropertyValue() 单属性设置
 
-```
+```java
 @SuppressWarnings("unchecked")
 @Override
 public void setPropertyValue(PropertyValue pv) throws BeansException {
@@ -966,7 +966,7 @@ public void setValue(@Nullable Object value) throws Exception {
 
 ## 10.4 TypedStringValue 的值解析流程
 
-```
+```text
 XML 中的 <property name="age" value="20"/> 会产生一个 TypedStringValue("20")：
 
 在 applyPropertyValues() → evaluateBeanDefinitionString() 解析：
@@ -991,7 +991,7 @@ XML 中的 <property name="age" value="20"/> 会产生一个 TypedStringValue("2
 
 ## 10.5 RuntimeBeanReference 解析源码
 
-```
+```java
 XML 中的 <property name="orderDao" ref="orderDaoBean"/>
 产生一个 RuntimeBeanReference("orderDaoBean")：
 
@@ -1012,7 +1012,7 @@ protected Object resolveBeanReference(String beanName, RuntimeBeanReference ref)
 
 ## 10.6 嵌套属性设置源码
 
-```
+```text
 级联赋值如 <property name="clazz.name" value="高三二班"/>：
 
 AbstractNestablePropertyAccessor.getPropertyAccessorForPropertyPath("clazz.name"):
@@ -1050,7 +1050,7 @@ protected AbstractNestablePropertyAccessor getPropertyAccessorForPropertyPath(
 
 ## 10.7 集合属性注入源码
 
-```
+```text
 XML 中的 <list>/<set>/<map>/<array>/<props> 标签被解析为对应的 Managed 类型：
 
 - <array>   → ManagedArray     (继承 ArrayList，标记为数组)

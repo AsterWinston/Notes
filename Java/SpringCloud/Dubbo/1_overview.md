@@ -11,7 +11,7 @@ Dubbo 是阿里巴巴开源的一款**高性能、轻量级的 Java RPC 框架**
 
 # 2. 发展历程
 
-```
+```text
 Alibaba Dubbo 2.x (2011 开源)
   └─→ 2014-2017 停止维护（当当 dubbox 分支）
        └─→ Apache Dubbo 2.7.x (2019 重启，进入 Apache 孵化)
@@ -44,7 +44,7 @@ Alibaba Dubbo 2.x (2011 开源)
 
 **不是替代关系，而是互补**：在 Spring Cloud 体系内，Dubbo 可以作为 Feign 的替代方案进行服务间调用，也可以与 Feign 混合部署。
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │                  Spring Cloud                     │
 │  ┌──────────────┐   ┌──────────────┐             │
@@ -68,7 +68,7 @@ Alibaba Dubbo 2.x (2011 开源)
 
 # 5. 一句话架构
 
-```
+```text
 Provider                              Consumer
 ┌──────────┐                         ┌──────────┐
 │  Service  │ ──── register ───────→ │  Proxy    │

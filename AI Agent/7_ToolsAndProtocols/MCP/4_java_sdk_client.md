@@ -50,7 +50,7 @@
 
 结论先行：一次完整的 MCP 交互可拆成"握手、发现、执行"三阶段，理解它有助于定位问题出在哪一层。
 
-```
+```text
 [握手]  initialize  -> 能力协商 -> initialized 通知
 [发现]  tools/list / resources/list / prompts/list
 [执行]  tools/call / resources/read / prompts/get
@@ -69,7 +69,7 @@
 
 ## 2.1 机制说明
 
-```
+```text
 McpClient(宿主)          Server(子进程)
     |  spawn + 管道          |
     |----------------------->|
@@ -175,7 +175,7 @@ HttpClientStreamableHttpTransport transport =
 
 ## 4.1 调用时序
 
-```
+```text
 listTools  -> 得到工具清单与 inputSchema
 callTool   -> 传入 name + arguments
 result     -> content + isError
@@ -264,7 +264,7 @@ prompt.messages().forEach(m ->
 
 ## 6.1 桥接原理
 
-```
+```text
 MCP Tool(schema)  --->  模型工具定义(schema)
 模型产生 tool_call --->  callMcpTool  --->  MCP callTool
 MCP result        --->  回填为工具消息  --->  模型继续生成

@@ -37,7 +37,7 @@
 
 ## 1.3 评测驱动开发流程
 
-```
+```text
 ① 定义指标与阈值
 ② 构建评测集
 ③ 实现自动化评测
@@ -377,7 +377,7 @@ void compare_chunking_strategies() {
 
 ## 9.1 阶段划分
 
-```
+```text
 阶段1：内部小范围（HR + IT）
 阶段2：5% 员工
 阶段3：20%
@@ -448,7 +448,7 @@ public void diagnose(String traceId) {
 
 ## 11.1 失败案例归因
 
-```
+```text
 ① 收集失败案例（答不出/答错）
 ② 归因：检索失败 or 生成失败
 ③ 优化：分块 / Embedding / 重排 / 提示

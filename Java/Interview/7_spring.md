@@ -164,7 +164,7 @@ public void handleOrderEvent(OrderEvent event) { ... }
 ## 2.11 什么是 Spring 的三级缓存？它如何解决循环依赖？
 Spring 的三级缓存是解决单例 Bean 循环依赖的核心机制：
 
-```
+```text
 singletonObjects          (一级) —> 完全初始化的 Bean
 earlySingletonObjects     (二级) —> 提前暴露的半成品 Bean
 singletonFactories        (三级) —> ObjectFactory，可生成 Bean 的代理/引用

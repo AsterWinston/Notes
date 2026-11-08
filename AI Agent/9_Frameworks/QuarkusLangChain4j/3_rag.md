@@ -8,7 +8,7 @@
 
 ### 1.2.1 链路图
 
-```
+```text
 问题 ──► QueryTransformer（可选改写）
    │
    ▼
@@ -132,7 +132,7 @@ public interface KnowledgeAssistant {
 
 `DefaultRetrievalAugmentor` 是 LangChain4j 提供的默认实现，自动装配检索器与注入器。指定它即启用 RAG 流程。
 
-```
+```text
 ask(question)
   → DefaultRetrievalAugmentor
       → ContentRetriever.retrieve(question)
@@ -164,7 +164,7 @@ ask(question)
 
 ### 3.4.1 约束模板
 
-```
+```text
 只依据检索到的资料回答。
 若资料不足，回答"资料中未提及"。
 引用时标注来源编号。
@@ -220,7 +220,7 @@ public class RetrieverConfig {
 
 对口语化问题先改写为检索友好查询，可显著提升召回。
 
-```
+```text
 原始问题 ──► QueryTransformer ──► 多个检索查询
 ```
 
@@ -244,7 +244,7 @@ public class RetrieverConfig {
 
 ### 5.1.1 链路
 
-```
+```text
 文件 ──► DocumentParser ──► Document
    ──► DocumentSplitter ──► List<TextSegment>
    ──► EmbeddingModel.embedAll ──► List<Embedding>
@@ -350,7 +350,7 @@ EmbeddingStoreContentRetriever.builder()
 
 每次检索时根据当前请求上下文生成过滤条件，向量库在检索阶段即隔离数据。
 
-```
+```text
 请求 ──► TenantContext.current() = "t-42"
    ──► filter: tenantId == "t-42"
    ──► 仅返回该租户片段
@@ -377,7 +377,7 @@ EmbeddingStoreContentRetriever.builder()
 
 ### 7.1.1 问题清单
 
-```
+```text
 注意：原生镜像中：
 - 文档解析器可能依赖反射 → 需配置
 - ONNX Embedding 模型可能不兼容 → 用远程 Embedding
@@ -408,7 +408,7 @@ quarkus.langchain4j.document-parser.tika.enabled=false
 
 把 Embedding 与解析放到独立 JVM 服务，主应用保持原生镜像精简。
 
-```
+```text
 原生应用 ──HTTP──► Embedding 服务（JVM）
         ──HTTP──► 向量库（pgvector）
 ```

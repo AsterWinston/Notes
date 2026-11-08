@@ -12,7 +12,7 @@ Spring其实就是一个管理Bean对象的工厂，它负责对象的创建，�
 我们可能需要在某个特殊的时间点上执行一段特定的代码，只有我们知道了特殊的时间节点都在哪，在该特殊节点会调用什么方法，我们才可以确定代码写到哪，这段代码就可以放到这个节点上，当生命线走到这里的时候，自然会被调用。
 
 # 3. Bean的生命周期-5步
-```
+```text
 Bean生命周期的管理，可以参考Spring的源码：AbstractAutowireCapableBeanFactory类的doCreateBean()方法。
 Bean生命周期可以粗略的划分为五大步：
 第一步：实例化Bean，调用无参构造方法创建对象
@@ -80,16 +80,16 @@ public void testUser() {
 ```
 
 # 4. Bean的生命周期-7步
-```
+```text
 Bean生命周期七步，比Bean生命周期五步，在初始化Bean的前和后，添加了两步。
-在以上的5步中，第3步是初始化Bean，在初始化前和初始化后执行的方法为“Bean后处理器”的before和after方法，通过“Bean后处理器”我们可以在初始化Bean的前后添加需要执行的代码。
-要添加“Bean后处理器”需要类实现BeanPostProcessor接口，并且重写before和after方法
+在以上的5步中，第3步是初始化Bean，在初始化前和初始化后执行的方法为"Bean后处理器"的before和after方法，通过"Bean后处理器"我们可以在初始化Bean的前后添加需要执行的代码。
+要添加"Bean后处理器"需要类实现BeanPostProcessor接口，并且重写before和after方法
 Bean生命周期之7步：
 第一步：实例化Bean
 第二步：Bean属性赋值
-第三步：执行“Bean后处理器”的before方法。
+第三步：执行"Bean后处理器"的before方法。
 第四步：初始化Bean
-第五步：执行“Bean后处理器”的after方法。
+第五步：执行"Bean后处理器"的after方法。
 第六步：使用Bean
 第七步：销毁Bean
 
@@ -146,10 +146,10 @@ Bean 后处理器配置完成后，将会作用于整个配置文件中每个 Be
 ```
 
 # 5. Bean的生命周期-10步
-```
+```text
 Bean生命周期十步比七步多的三步：
-点位1：在“Bean后处理器”before方法之前，在Bean属性赋值之后（检查Bean是否是实现了Aware的相关接口，并设置相关依赖）
-点位2：在“Bean后处理器”before方法之后，在Bean的初始化之前（检查Bean是否实现了InitializingBean接口，并调用接口方法）
+点位1：在"Bean后处理器"before方法之前，在Bean属性赋值之后（检查Bean是否是实现了Aware的相关接口，并设置相关依赖）
+点位2：在"Bean后处理器"before方法之后，在Bean的初始化之前（检查Bean是否实现了InitializingBean接口，并调用接口方法）
 点位3：使用Bean之后，或者说销毁Bean之前（检查Bean是否实现了DisposableBean接口，并调用接口方法）
 添加的这三个点位的特点：都是在检查你这个Bean是否实现了某些特定的接口，如果实现了这些接口，则Spring容器会调用这个接口中的方法。
 Bean生命周期-10步：
@@ -169,7 +169,7 @@ Aware相关的接口包括：BeanNameAware、BeanClassLoaderAware、BeanFactoryA
 当Bean实现了BeanNameAware，Spring会将Bean的名字传递给Bean。
 当Bean实现了BeanClassLoaderAware，Spring会将加载该Bean的类加载器传递给Bean。
 当Bean实现了BeanFactoryAware，Spring会将Bean工厂对象传递给Bean。
-在“Bean后处理器”before方法之前，会检查Bean是否实现了Aware相关的接口，如果实现了接口则调用这些接口中的方法。然后调用这些方法的目的是为了给你传递一些数据，让你更加方便使用。
+在"Bean后处理器"before方法之前，会检查Bean是否实现了Aware相关的接口，如果实现了接口则调用这些接口中的方法。然后调用这些方法的目的是为了给你传递一些数据，让你更加方便使用。
 
 package cw.spring.study.pojo;
 
@@ -261,7 +261,7 @@ public class User implements BeanNameAware, BeanClassLoaderAware, BeanFactoryAwa
 ```
 
 # 6. Bean的作用域不同，管理方式不同
-```
+```text
 Spring 会根据Bean的作用域来选择管理方式
 对于singleton作用域的Bean，Spring 能够精确地知道该Bean何时被创建，何时初始化完成，以及何时被销毁；而对于 prototype 作用域的 Bean，Spring 只负责创建，当容器创建了 Bean 的实例后，对该Bean初始化完毕，等到客户端程序获取到该Bean之后，Bean 的实例就交给客户端代码管理，Spring 容器将不再跟踪其生命周期。
 Spring容器只对singleton的Bean进行完整的生命周期管理，对于prototype的Bean，Spring只进行部分的生命周期管理
@@ -288,7 +288,7 @@ Spring容器只对singleton的Bean进行完整的生命周期管理，对于prot
 ```
 
 # 7. 将自己new的对象交给Spring管理
-```
+```java
 有些时候可能会遇到这样的需求，某个java对象是我们自己new的，然后我们希望这个对象被Spring容器管理
 public class Student {}
 
@@ -312,7 +312,7 @@ public void testRegisterBean() {
 
 ## 8.1 容器刷新入口：AbstractApplicationContext.refresh()
 
-```
+```java
 Spring 容器创建 Bean 并非在 new ClassPathXmlApplicationContext() 时立即执行，而是在容器刷新 (refresh) 过程中完成的。
 refresh() 方法包含了 Spring 容器初始化的全部 13 个步骤，Bean 的创建发生在第 11 步 finishBeanFactoryInitialization()。
 
@@ -378,7 +378,7 @@ public void refresh() throws BeansException, IllegalStateException {
 
 ### 8.1.1 finishBeanFactoryInitialization() → preInstantiateSingletons()
 
-```
+```java
 finishBeanFactoryInitialization() 的核心逻辑是调用 beanFactory.preInstantiateSingletons()：
 
 @Override
@@ -415,7 +415,7 @@ public void preInstantiateSingletons() throws BeansException {
 
 ## 8.2 Bean 获取核心：AbstractBeanFactory.doGetBean()
 
-```
+```java
 getBean(beanName) 经过层层调用最终进入 doGetBean()，这是 Bean 获取/创建的总调度方法。
 位于：org.springframework.beans.factory.support.AbstractBeanFactory
 
@@ -544,7 +544,7 @@ protected <T> T doGetBean(
 
 ## 8.3 Bean 创建三大步：AbstractAutowireCapableBeanFactory.doCreateBean()
 
-```
+```java
 这是 Bean 创建最核心的方法，位于：
 org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory
 
@@ -657,7 +657,7 @@ protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable
 
 ## 8.4 初始化方法 initializeBean() 完整源码
 
-```
+```java
 initializeBean() 是生命周期中初始化阶段的总入口，位于 AbstractAutowireCapableBeanFactory：
 
 protected Object initializeBean(String beanName, Object bean, @Nullable RootBeanDefinition mbd) {
@@ -702,7 +702,7 @@ protected Object initializeBean(String beanName, Object bean, @Nullable RootBean
 
 ### 8.4.1 invokeAwareMethods() 源码
 
-```
+```java
 private void invokeAwareMethods(String beanName, Object bean) {
     if (bean instanceof Aware) {
         if (bean instanceof BeanNameAware beanNameAware) {
@@ -731,7 +731,7 @@ private void invokeAwareMethods(String beanName, Object bean) {
 
 ### 8.4.2 invokeInitMethods() 源码
 
-```
+```java
 protected void invokeInitMethods(String beanName, Object bean, @Nullable RootBeanDefinition mbd)
         throws Throwable {
 
@@ -755,7 +755,7 @@ protected void invokeInitMethods(String beanName, Object bean, @Nullable RootBea
 
 ## 8.5 完整的 Bean 生命周期流程图（15 步）
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                    Bean 生命周期 - 15 步                       │
 ├──────────────────────────────────────────────────────────────┤
@@ -809,7 +809,7 @@ protected void invokeInitMethods(String beanName, Object bean, @Nullable RootBea
 
 ## 8.6 Spring 6 中内置的核心 BeanPostProcessor
 
-```
+```text
 Spring 6 内置了大量 BeanPostProcessor，各有不同的触发时机和职责。
 按照执行阶段分类如下：
 
@@ -887,7 +887,7 @@ Spring 6 内置了大量 BeanPostProcessor，各有不同的触发时机和职�
 
 ## 8.7 Bean 销毁流程源码
 
-```
+```text
 容器关闭时调用 AbstractApplicationContext.close() → doClose() → destroyBeans()：
 
 // DefaultListableBeanFactory.destroySingletons()

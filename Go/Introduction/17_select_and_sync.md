@@ -81,7 +81,7 @@ type Mutex struct {
 }
 ```
 
-```
+```text
 加锁流程（简化）：
 1. 用 CAS 尝试把 state 从"未锁"改为"已锁"
 2. 成功 → 立即获得锁（快路径，无系统调用）
@@ -129,7 +129,7 @@ wg.Wait()              // 阻塞，直到计数器归零
 
 ★ **关键认知**：WaitGroup 用于等待一组 goroutine 全部完成。三条规则：
 
-```
+```text
 1. Add 必须在 goroutine 启动前调用（或至少在 Wait 前）
 2. Done 等价于 Add(-1)，通常用 defer 保证执行
 3. Wait 阻塞直到计数器归零

@@ -3,7 +3,7 @@
 
 Triple 是 Dubbo 3 设计的新一代 RPC 协议，基于 HTTP/2 构建，完全兼容 gRPC 协议。
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │             Triple Protocol               │
 ├──────────────────────────────────────────┤
@@ -34,7 +34,7 @@ Triple 是 Dubbo 3 设计的新一代 RPC 协议，基于 HTTP/2 构建，完全
 
 ## 3.1 请求格式
 
-```
+```text
 HTTP/2 HEADERS Frame:
   :method: POST
   :scheme: http
@@ -56,7 +56,7 @@ HTTP/2 HEADERS Frame (trailers):
 
 不使用 Protobuf 时，Triple 使用 Wrapper 格式支持任意序列化：
 
-```
+```text
 Length-Prefixed Message:
 ┌────────────────┬──────────────────────┐
 │ first byte 0x0 │ 4 bytes length (大端) │ ← 前缀 (5 字节)
@@ -436,7 +436,7 @@ public class UserServiceImpl implements UserService {
 
 调用方式：
 
-```
+```text
 # REST 方式
 curl http://localhost:50051/api/users/1
 

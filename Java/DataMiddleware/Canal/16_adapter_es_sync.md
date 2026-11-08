@@ -3,7 +3,7 @@
 
 ES Adapter 将 MySQL 的数据变更实时同步到 Elasticsearch，常用于构建准实时的搜索引擎、日志分析平台等。
 
-```
+```text
 MySQL (源) ──> Canal Server ──> Adapter ES ──> Elasticsearch
                                                     │
                                               ┌─────▼─────┐

@@ -16,7 +16,7 @@ JUnit 4 的运行模型由五个核心抽象构成，各司其职：
 
 这几个角色的关系可以概括为：**Request 找到 Runner，Runner 把测试组织成 Statement 树，执行 Statement 时通过 RunNotifier 向外广播事件，Description 是事件里标识"这是哪个测试"的元数据**。
 
-```
+```text
 ┌──────────┐  getRunner()   ┌──────────┐  classBlock()  ┌──────────────┐
 │  Request │ ────────────→  │  Runner  │ ────────────→  │  Statement   │
 └──────────┘                └────┬─────┘                │  （装饰器树） │
@@ -54,7 +54,7 @@ public abstract class Statement {
 
 `BlockJUnit4ClassRunner` 继承自 `ParentRunner`，后者提供了"遍历子节点"的模板方法。执行一个测试类的完整链路：
 
-```
+```text
 JUnitCore.run(CalculatorTest.class)
   │
   ▼
@@ -88,7 +88,7 @@ Statement.evaluate() → 结果经 RunNotifier 广播
 
 **要点**：JUnit 4 的生命周期是通过 Statement 的嵌套组合实现的。最终执行的 Statement 是一棵"洋葱"，从外到内大致是：
 
-```
+```text
 ClassRule → AfterClass → BeforeClass
               └─ 对每个方法：
                  Rule → After → Before → Timeout → Expected → invokeMethod

@@ -5,7 +5,7 @@ Exporter 是 Prometheus 生态中负责**暴露指标数据的 Agent 程序**。
 
 ## 1.1 Exporter 工作原理
 
-```
+```text
 Target System          Exporter                 Prometheus
 +----------+   调用   +-----------+    HTTP    +------------+
 |  App     |------->|  Metrics  |<----------|  Scraper   |

@@ -2,7 +2,7 @@
 
 # 1. 观测架构
 
-```
+```text
 ┌───────────────────────────────────────────────────────────┐
 │              ShardingSphere-Agent (premain 增强)           │
 │  ┌────────────┐   ┌──────────────┐   ┌────────────────┐   │
@@ -89,7 +89,7 @@ curl http://localhost:9091/metrics | grep proxy_execute_latency
 
 ## 3.2 Grafana 面板建议
 
-```
+```text
 1. QPS（按 SQL 类型）           — 折线，requests_total rate
 2. P50/P95/P99 延迟             — 直方图 histogram_quantile
 3. 连接数（前端 vs 后端池）      — 折线，容量告警
@@ -105,7 +105,7 @@ curl http://localhost:9091/metrics | grep proxy_execute_latency
 
 Agent 在 SQL 处理各阶段自动建 Span，一条跨分片查询的链路形态：
 
-```
+```text
 Root Span: SQL Route
   ├── Span: SQL Parse
   ├── Span: SQL Rewrite

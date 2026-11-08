@@ -11,7 +11,7 @@ JPA（Java Persistence API，Java 持久化 API）是 JavaEE 的 **ORM（对象�
 
 ## 1.2 JPA 解决的问题
 
-```
+```text
 传统 JDBC：
   写 SQL + ResultSet 手动映射到 Java 对象 + 手动管理批量操作...
 
@@ -21,7 +21,7 @@ JPA：
 
 ## 1.3 JPA 与 Hibernate 的关系
 
-```
+```text
 JPA（规范，接口 + 注解 + JPQL）
    ▲
    │ 实现
@@ -191,7 +191,7 @@ public void delete(Long id) {
 
 ## 6.1 四种状态
 
-```
+```text
                          persist()
               ┌──────────────────────────┐
               │                          ▼

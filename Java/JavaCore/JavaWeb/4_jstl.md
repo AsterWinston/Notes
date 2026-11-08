@@ -1,6 +1,6 @@
 # 1. JSTL标签库
 
-```
+```text
 什么是JSTL标签库？
 
 Java Standard Tag Lib（Java标准的标签库）
@@ -14,7 +14,7 @@ tomcat10之后引入的jar包是：
 jakarta.servlet.jsp.jstl-2.0.0.jar
 jakarta.servlet.jsp.jstl-api-2.0.0.jar
 在IDEA当中怎么引入？
-在WEB-INF下新建lib目录，然后将jar包拷贝到lib当中。然后将其“Add Lib…”
+在WEB-INF下新建lib目录，然后将jar包拷贝到lib当中。然后将其"Add Lib…"
 一定是要和mysql的数据库驱动一样，都是放在WEB-INF/lib目录下的。
 什么时候需要将jar包放到WEB-INF/lib目录下？如果这个jar是tomcat服务器没有的。
 第二步：在JSP中引入要使用标签库。（使用taglib指令引入标签库。）
@@ -28,11 +28,11 @@ prefix="这里随便起一个名字就行了，核心标签库，大家默认的
 
 # 2. JSTL标签的原理
 
-```
+```html
 <%@taglib prefix="c" uri="[http://java.sun.com/jsp/jstl/core](http://java.sun.com/jsp/jstl/core)" %>
 以上uri后面的路径实际上指向了一个xxx.tld文件。
 tld文件实际上是一个xml配置文件。
-在tld文件中描述了“标签”和“java类”之间的关系。
+在tld文件中描述了"标签"和"java类"之间的关系。
 以上核心标签库对应的tld文件是：c.tld文件。它在哪里。
 在jakarta.servlet.jsp.jstl-2.0.0.jar里面META-INF目录下，有一个c.tld文件。
 
@@ -59,11 +59,11 @@ jstl中的核心标签库core当中有哪些常用的标签呢？
 
 c:if
 
-<c:if test=“boolean类型，支持EL表达式”></c: if>
+<c:if test="boolean类型，支持EL表达式"></c: if>
 c:forEach
 
-<c:forEach items=“集合，支持EL表达式” var=“集合中的元素” varStatus=“元素状态对象”> ${元素状态对象.count} </c: forEach>
-<c:forEach var=“i” begin=“1” end=“10” step=“2”> ${i} </c: forEach>
+<c:forEach items="集合，支持EL表达式" var="集合中的元素" varStatus="元素状态对象"> ${元素状态对象.count} </c: forEach>
+<c:forEach var="i" begin="1" end="10" step="2"> ${i} </c: forEach>
 c:choose c:when c:otherwise
 <c:choose>
     <c:when test="${param.age < 18}">
@@ -83,7 +83,7 @@ c:choose c:when c:otherwise
 
 # 3. 核心标签库core的更多标签
 
-```
+```text
 c:set —— 向域中存储数据
 
 <!-- 向pageContext域存（默认） -->
@@ -168,7 +168,7 @@ c:catch —— 捕获异常（类似于try-catch）
 
 # 4. 格式化标签库（fmt）
 
-```
+```text
 fmt标签库主要用来格式化数据（日期、数字）和实现国际化（i18n）。
 
 使用前引入：
@@ -233,7 +233,7 @@ fmt:setTimeZone / fmt:timeZone —— 设置时区
 
 # 5. JSTL函数库（fn）
 
-```
+```text
 fn函数库提供了一系列字符串操作函数，可以配合EL表达式使用。
 
 使用前引入：

@@ -8,7 +8,7 @@
 ## 2.1 无法连接到 MySQL
 
 **现象**：
-```
+```text
 ERROR c.a.o.c.p.d.rds.RdsBinlogEventParserProxy - connect failed
 com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 ```
@@ -47,7 +47,7 @@ ssh -L 3307:localhost:3306 user@mysql-server
 ## 2.2 权限不足
 
 **现象**：
-```
+```text
 Access denied; you need (at least one of) the SUPER, REPLICATION CLIENT privilege(s)
 ```
 
@@ -60,7 +60,7 @@ FLUSH PRIVILEGES;
 ## 2.3 Server ID 冲突
 
 **现象**：
-```
+```text
 A slave with the same server_uuid/server_id as this slave has connected to the master
 ```
 
@@ -80,7 +80,7 @@ mysql> SHOW VARIABLES LIKE 'server_id';
 ## 3.1 Binlog 格式不是 ROW
 
 **现象**：
-```
+```text
 Cannot replicate because the master has BINLOG_FORMAT = STATEMENT
 ```
 
@@ -99,11 +99,11 @@ binlog_row_image = FULL
 ## 3.2 Binlog 文件被删除
 
 **现象**：
-```
+```text
 Could not find first log file name in binary log index file
 ```
 或
-```
+```text
 Client requested master to start replication from position > file size
 ```
 
@@ -147,7 +147,7 @@ canal.instance.master.timestamp =
 ## 3.3 Binlog 损坏
 
 **现象**：
-```
+```text
 Event deserialize error: Failed to deserialize event
 Checksum mismatch
 ```
@@ -169,7 +169,7 @@ mysqlbinlog mysql-bin.000123 --start-position=45678901 --stop-position=45678902
 ## 4.1 消费延迟过大
 
 **现象**：
-```
+```text
 canal_instance_subscribe_delay > 300 秒
 ```
 
@@ -202,7 +202,7 @@ jstat -gcutil <pid> 1000
 ## 4.2 RingBuffer 阻塞
 
 **现象**：
-```
+```text
 canal_instance_publish_blocking_time > 0
 ```
 Parser 等待 Sink/Store 有空位，出现阻塞。
@@ -330,7 +330,7 @@ canal.mq.partitionHash = test\\.user:id
 ## 6.1 ZK 连接断开
 
 **现象**：
-```
+```text
 WARN ... - KeeperErrorCode = ConnectionLoss
 WARN ... - Session expired
 ```
@@ -368,7 +368,7 @@ tail -f /opt/canal/logs/example/example.log
 ## 7.1 目标库连接失败
 
 **现象**：
-```
+```text
 Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException
 ```
 
@@ -398,7 +398,7 @@ canal.conf:
 ## 7.2 ES 写入失败
 
 **现象**：
-```
+```text
 org.elasticsearch.client.ResponseException: Failed to deserialize exception
 ```
 

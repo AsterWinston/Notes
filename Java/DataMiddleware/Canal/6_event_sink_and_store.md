@@ -3,7 +3,7 @@
 
 在 Canal 的数据管道中，EventSink 和 EventStore 位于 Parser 和 Client 之间：
 
-```
+```text
 Parser ──> [EventSink] ──> [EventStore] ──> Client
   │             │               │              │
   │       过滤/转换/聚合     暂存/持久化      拉取消费
@@ -314,7 +314,7 @@ public class MemoryEventStoreWithBuffer extends AbstractCanalStoreScavenge
 
 ## 3.3 RingBuffer 数据结构
 
-```
+```text
 ┌───────────────────────────────────────────────────────────────┐
 │                    Disruptor RingBuffer                       │
 │                      (bufferSize = 16384)                     │
@@ -666,7 +666,7 @@ public class PositionRange {
 
 **位点范围的作用**：
 
-```
+```text
 写指针（Producer）→→→→→→→→→→→→→→→→→
                   │  范围1   │  范围2   │
                   │  (已ACK) │(可消费)  │

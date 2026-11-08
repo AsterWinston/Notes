@@ -12,7 +12,7 @@ Service 解决了 Pod 的 IP 不稳定问题，但它只把问题从"四层"推�
 
 NodePort 的原理是在**每个 Node 上**监听一个 30000–32767 范围内的端口，并把该端口的流量转发到对应的 Service，再由 Service 转发到 Pod：
 
-```
+```text
 外部客户端
     │
     ▼  http://<任一NodeIP>:30080
@@ -96,7 +96,7 @@ Ingress 的思路是把七层路由能力从每个服务里抽出来，集中放
 
 所有外部流量先到同一个入口（通常是一个 LoadBalancer 类型的 Service 背后的 Ingress Controller），再由它按规则分发：
 
-```
+```text
                         ┌──────────────────────────────┐
    用户请求              │      Ingress Controller      │
   api.example.com  ─────▶│  (Nginx / Traefik / ...)     │
@@ -207,7 +207,7 @@ spec:
 
 Kubernetes 把"描述规则"和"实现规则"拆成了两个东西：
 
-```
+```text
 ┌────────────────────────────────────────────────────────┐
 │                    控制平面（API 对象）                  │
 │   Ingress Resource：我要把 api.example.com/v1 转发到    │
@@ -274,7 +274,7 @@ Ingress Controller 本质上是一个运行在集群里的 Pod（通常以 Deplo
 
 以 Nginx Ingress Controller 为例，一个 Pod 里实际跑了两个进程：
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │  ingress-nginx-controller Pod                │
 │                                              │
@@ -305,7 +305,7 @@ Ingress Controller 本质上是一个运行在集群里的 Pod（通常以 Deplo
 
 一次外部请求到达 Pod，中间要穿过好几层。理解这条链路是排障的基础：
 
-```
+```text
  1. 客户端 DNS 解析 api.example.com → 得到 Ingress 入口 IP
         │
         ▼
@@ -350,7 +350,7 @@ Ingress Controller 本质上是一个运行在集群里的 Pod（通常以 Deplo
 
 Controller 不轮询，而是通过 client-go 的 **Informer** 机制与 API Server 建立长连接，监听资源的 Add/Update/Delete 事件：
 
-```
+```text
 ┌──────────────┐   Watch 长连接   ┌──────────────────────┐
 │  API Server  │◀────────────────│ Ingress Controller   │
 └──────────────┘                  │                      │
@@ -667,7 +667,7 @@ spec:
 
 命中逻辑是一个两段判断：先看 Host 有没有匹配的 `server`，再看 Path 有没有匹配的 `location`。任一段不命中，就落到 `defaultBackend`：
 
-```
+```text
 请求 admin.example.com/orders
   │
   ├─ 有 host: admin.example.com 的规则吗？
@@ -1085,7 +1085,7 @@ Ingress 是标准，Controller 是选择。这一节横向对比主流实现的�
 
 Nginx Ingress Controller 由一个 Go 编写的控制器和一个 OpenResty（Nginx + LuaJIT）数据平面组成，二者在同一个 Pod 里：
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │  Pod: ingress-nginx-controller                       │
 │                                                      │
@@ -1314,7 +1314,7 @@ Apache APISIX 基于 OpenResty，用 etcd 存储配置，特点是**配置全动
 
 ### 5.6.2 选型决策树
 
-```
+```text
 需要 API 网关能力（API Key、开发者门户）？
 ├─ 是 ──▶ Kong 或 APISIX
 └─ 否 ──▶ 继续
@@ -1379,7 +1379,7 @@ kubectl get secret example-tls -n production \
 
 TLS Secret 是命名空间级资源，**Ingress 只能引用同命名空间的 Secret**：
 
-```
+```text
 namespace: production          namespace: staging
   ┌────────────┐                 ┌────────────┐
   │ api-tls    │◀── 引用         │ api-tls    │
@@ -1512,7 +1512,7 @@ kubectl get order -n production
 
 ### 6.3.1 核心资源关系
 
-```
+```text
 ┌──────────────────┐        ┌──────────────────┐
 │  ClusterIssuer   │        │     Issuer       │
 │  （集群级）       │        │  （命名空间级）    │
@@ -1577,7 +1577,7 @@ ACME 需要证明"你确实控制这个域名"，两种验证方式各有适用�
 
 CA 请求 `http://<域名>/.well-known/acme-challenge/<token>`，期望返回特定内容：
 
-```
+```text
 1. cert-manager 创建一个临时 Ingress/Pod 承载 token
         │
         ▼
@@ -1597,7 +1597,7 @@ CA 请求 `http://<域名>/.well-known/acme-challenge/<token>`，期望返回特
 
 CA 查询 DNS 记录 `_acme-challenge.<域名>` 的 TXT 值：
 
-```
+```text
 1. cert-manager 通过云厂商 API 写入 TXT 记录
         │   _acme-challenge.example.com = "随机token"
         ▼
@@ -1672,7 +1672,7 @@ TLS 1.3 的密码套件无法单独配置（套件与密钥交换绑定），只
 
 ### 6.5.3 密码套件解析
 
-```
+```text
 ECDHE-ECDSA-AES128-GCM-SHA256
   │      │     │       │      │
   │      │     │       │      └─ 哈希算法：SHA256

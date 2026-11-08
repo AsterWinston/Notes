@@ -3,7 +3,7 @@
 
 Spring Cloud OpenFeign 从**2020.0.x 版本**开始，将熔断支持从 Hystrix 迁移到 **Resilience4j**。当 Feign 调用失败率达到阈值时，熔断器打开，直接走降级逻辑，避免雪崩效应。
 
-```
+```text
 正常状态 (CLOSED): 请求正常通过 → 统计失败率
     │
     │ 失败率 >= 阈值 (如 50%)
@@ -152,7 +152,7 @@ resilience4j:
 
 # 7. CircuitBreaker + TimeLimiter 协同
 
-```
+```text
 Feign 调用
     │
     ├── TimeLimiter  (超时控制)

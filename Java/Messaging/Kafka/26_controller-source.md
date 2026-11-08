@@ -580,7 +580,7 @@ public class QuorumController implements Controller {
 
 # 9. Controller 源码中的关键路径
 
-```
+```text
 Controller 某个Broker下线 → 完整处理流程:
 
 ① ZK Watcher 触发

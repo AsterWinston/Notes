@@ -120,7 +120,7 @@ Jwts.parserBuilder()
 
 防止令牌被用于非预期的服务：
 
-```
+```text
 攻击场景：
 - 用户从 Service A 获得 JWT（aud: Service-A）
 - 用户使用这个 JWT 访问 Service B
@@ -386,7 +386,7 @@ Private Claims 是服务双方协商的自定义声明，不在公共注册表�
 
 ## 5.1 验证流程
 
-```
+```text
 校验 iss → 校验 aud → 校验 exp → 校验 nbf → 校验 jti（防重放）
      ↓           ↓           ↓           ↓                ↓
   在信任列表中  包含自己    未到期      已生效         首次使用
@@ -575,7 +575,7 @@ public String issueToken(User user, TokenType type) {
 
 ## 8.1 过度使用 Claims
 
-```
+```text
 错误：将大量数据放入 JWT
 - 用户的所有权限列表（可能上千条）
 - 用户的完整个人信息

@@ -6,7 +6,7 @@ JUnit 4 使用 Runner 驱动测试类执行，`@RunWith` 可替换默认 Runner�
 
 Runner 的解析发生在 `Request.getRunner()` 阶段，核心逻辑是**注解驱动的反射实例化**：
 
-```
+```text
 JUnitCore.run(TestClass.class)
   │
   ▼
@@ -86,7 +86,7 @@ public class OrderServiceMockTest {
 
 Rule 是 JUnit 4 的可组合扩展点，基于装饰器模式：Rule 的 `apply()` 方法拿到内层 Statement，返回包装后的新 Statement，在调用 `base.evaluate()` 前后注入自己的逻辑。它与 `@Before/@After` 的本质区别是**可复用、可参数化、可叠加**——`@Before` 里的资源管理代码每个测试类都要重写，Rule 写一次、到处 `@Rule` 一标就生效。
 
-```
+```text
 ┌────────────────────────────────────────────────┐
 │           Rule 的装饰器原理                      │
 │                                                │

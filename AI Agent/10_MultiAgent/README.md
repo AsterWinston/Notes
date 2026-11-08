@@ -4,7 +4,7 @@
 
 结论先行：当任务复杂到单个 Agent 难以胜任时，就需要多个 Agent 分工协作；本模块讲清多智能体的通信、编排、协作模式与失败模式，并落到 Java 实现。
 
-```
+```text
 任务复杂度 ↑
    │
    ▼
@@ -163,7 +163,7 @@
 
 结论先行：推荐按"概览 → 实现 → 模式 → 治理 → 最佳实践"的顺序推进。
 
-```
+```text
 概览（1→3） → Java 实现（4→7） → 经典模式（8→9）
       → 风险与治理（10→11） → 最佳实践（12）
 ```
@@ -181,7 +181,7 @@
 - 上游依赖：`6_AgentCore`、`9_Frameworks`。
 - 下游影响：`16_Applications/MultiAgentSystem`。
 
-```
+```text
 6_AgentCore ─┐
              ├─→ 10_MultiAgent ─→ 16_Applications
 9_Frameworks ┘

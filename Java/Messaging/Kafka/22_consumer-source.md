@@ -2,7 +2,7 @@
 
 ## 1.1 Consumer 核心类图
 
-```
+```text
 KafkaConsumer
 │
 ├── ConsumerCoordinator (Group 协调)

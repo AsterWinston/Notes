@@ -2,7 +2,7 @@
 
 ## 1.1 Broker 内部组件拓扑
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                         Kafka Broker                             │
 │                                                                  │
@@ -62,7 +62,7 @@
 
 Kafka 的网络层采用 **1 Acceptor + N Processor** 的 Reactor 模型：
 
-```
+```text
                          Acceptor Thread (1个)
                               │
                    (接受 TCP 连接，分配)
@@ -247,7 +247,7 @@ Purgatory 是 Kafka 用于处理"需要等待条件满足"的延迟操作的机�
 
 ## 4.2 Purgatory 工作原理
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │                  Purgatory（炼狱）                    │
 │                                                     │
@@ -314,7 +314,7 @@ class DelayedProduce(delayMs: Long,
 
 ## 5.1 KafkaServer 启动时序
 
-```
+```text
 KafkaServer.startup()
 │
 ├── ① 初始化 Metrics 指标系统
@@ -360,7 +360,7 @@ KafkaServer.startup()
 
 ## 5.2 Broker 关闭流程
 
-```
+```text
 KafkaServer.shutdown()
 │
 ├── ① 前导操作
@@ -384,7 +384,7 @@ KafkaServer.shutdown()
 
 Kafka **不**依赖 `fsync` 来保证持久性，而是依赖**多副本复制**。原因：
 
-```
+```text
 fsync 的代价：
   同步刷盘 → 每次写入都等待磁盘完成 → 吞吐急剧下降
 
@@ -441,7 +441,7 @@ bin/kafka-configs.sh --bootstrap-server localhost:9092 \
 
 Kafka 使用 **Token Bucket** 算法实现限流：
 
-```
+```text
 令牌桶: 容量=burst 值，填充速率=quota 值
 
 正常: 桶中有足够令牌 → 请求通过

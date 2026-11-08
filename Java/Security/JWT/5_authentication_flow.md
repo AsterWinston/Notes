@@ -8,7 +8,7 @@ JWT 认证的核心思想是**无状态认证**：服务端不保存会话信息
 
 ## 2.1 一次完整的 JWT 认证交互
 
-```
+```text
 ┌──────────┐                          ┌──────────┐                    ┌──────────┐
 │  Client  │                          │  Server  │                    │ Database │
 │ (Browser)│                          │          │                    │          │
@@ -164,7 +164,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 **解决方案：双令牌模式**：
 
-```
+```text
 Access Token（短有效期 5-30 分钟）：
   - 用于访问 API
   - 包含用户信息
@@ -178,7 +178,7 @@ Refresh Token（长有效期 7-30 天）：
 
 ## 3.2 双令牌流程
 
-```
+```text
 客户端                              认证服务                      资源服务
   │                                    │                            │
   │  1. 登录 (user/pass)               │                            │
@@ -411,7 +411,7 @@ public ResponseEntity<AuthResponse> login(
 
 ## 4.3 安全最佳实践
 
-```
+```text
 Access Token:
   - 存储在内存（JavaScript 闭包）
   - 每次页面加载通过 Refresh Token 获取新的
@@ -679,7 +679,7 @@ public class SessionManager {
 
 ## 8.1 微服务间令牌传播
 
-```
+```text
 用户 ──JWT──> API 网关 ──JWT──> 服务 A ──JWT──> 服务 B
 ```
 

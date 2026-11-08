@@ -72,7 +72,7 @@
 
 ## 2.3 分类决策树
 
-```
+```text
 错误发生
    |
    +-- 参数问题? ---- 是 --> INVALID_ARGUMENT（不可重试）
@@ -305,7 +305,7 @@ private String sanitize(String raw) {
 
 **结论先行**：错误返回给模型后，模型会尝试自我纠正，`suggestion` 是引导纠正的关键。
 
-```
+```text
 模型收到：{"success":false,"error":{"code":"NOT_FOUND","message":"订单不存在：A123",
           "suggestion":"请确认订单号是否正确"}}
 
@@ -404,7 +404,7 @@ public class RetryingToolExecutor {
 
 **结论先行**：熔断器在错误率超阈值时打开，快速失败，避免线程被拖垮；冷却后进入半开探测。
 
-```
+```text
     错误率超阈值          冷却时间到
 CLOSED ---------> OPEN -----------> HALF_OPEN
    ^                                  |

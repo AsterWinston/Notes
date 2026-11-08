@@ -3,7 +3,7 @@
 
 ## 1.1 异常处理链路
 
-```
+```text
 请求 → 过滤器链 → 路由转发 → 后端服务
     │                              │
     └── 异常 ──→ ErrorWebExceptionHandler

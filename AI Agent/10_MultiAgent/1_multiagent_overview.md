@@ -10,7 +10,7 @@
 
 ### 1.2.1 单 Agent 工作方式
 
-```
+```text
 单 Agent：一个模型处理所有事
 多 Agent：多个专职 Agent，各司其职
 ```
@@ -32,7 +32,7 @@
 
 ### 1.2.3 典型拓扑
 
-```
+```text
               ┌──────────────┐
               │  Supervisor  │
               └──────┬───────┘
@@ -104,7 +104,7 @@ public record ResearchAgent(ChatClient client) implements Agent {
 
 无依赖的子任务可以并发：检索 A、检索 B、计算 C 三者互不依赖，可同时发起，总延迟近似取最大值而非求和。
 
-```
+```text
 串行：t = t1 + t2 + t3
 并行：t = max(t1, t2, t3)
 ```
@@ -129,7 +129,7 @@ public record ResearchAgent(ChatClient client) implements Agent {
 | 单 Agent | 模型自主循环 | 任务聚焦 | 中 |
 | 多 Agent | 多角色协作 | 任务可分解 | 较低 |
 
-```
+```text
 可控性高 ←────────────────────────→ 灵活性高
 工作流      单 Agent       多 Agent
 成本低 ←────────────────────────→ 成本高
@@ -141,7 +141,7 @@ public record ResearchAgent(ChatClient client) implements Agent {
 
 ## 3.1 四类典型局限
 
-```
+```text
 工具过多 → 选择困难
 上下文过长 → 信息稀释
 职责混杂 → 提示难以兼顾
@@ -190,7 +190,7 @@ String system = """
 
 ### 4.2.1 调用次数放大
 
-```
+```text
 单 Agent：1 次决策 + 若干工具调用
 Supervisor：每轮 1 次主管决策 + 1 次子 Agent 调用
           N 轮 ⇒ 约 2N 次模型调用
@@ -209,7 +209,7 @@ Supervisor：每轮 1 次主管决策 + 1 次子 Agent 调用
 
 ### 4.2.3 成本估算示例
 
-```
+```text
 单 Agent：1 次 × 2K Token = 2K
 多 Agent（3 轮）：
   主管 3 × 3K = 9K
@@ -244,7 +244,7 @@ Supervisor：每轮 1 次主管决策 + 1 次子 Agent 调用
 
 ### 5.2.1 集中式与去中心化
 
-```
+```text
 集中式（Supervisor）        去中心化（Swarm）
    ┌────┐                      A ──→ B
    │ 主管│                      ↑     │
@@ -296,7 +296,7 @@ Supervisor：每轮 1 次主管决策 + 1 次子 Agent 调用
 
 ## 6.1 决策流程
 
-```
+```text
 判断流程：
 ① 任务能否用工作流解决？ → 能则用工作流
 ② 能否用单 Agent 解决？ → 能则用单 Agent
@@ -335,7 +335,7 @@ Supervisor：每轮 1 次主管决策 + 1 次子 Agent 调用
 
 ## 6.3 演进路径
 
-```
+```text
 阶段一：单 Agent（少量工具）
    │  工具 > 10 或上下文过长
    ▼
@@ -460,7 +460,7 @@ while (true) {
 
 ## 8.2 学习路径
 
-```
+```text
 概念（本文） → 通信（2） → 编排（3） → 框架（4–7）
                         → 模式（8–9） → 风险（10–11）
                         → 实践（12）

@@ -21,7 +21,7 @@
 
 ### 1.2.2 工具在 Agent 循环中的位置
 
-```
+```text
 模型输出
    |
    v
@@ -318,7 +318,7 @@ LlmAgent coder = LlmAgent.builder()
 
 ### 5.2.2 执行流程
 
-```
+```text
 模型填参 -> schemaFn 校验/归一化 -> execFn 执行 -> 结果回填
 ```
 
@@ -393,13 +393,13 @@ FunctionTool tool = FunctionTool.create(
 
 ### 6.2.2 最小权限原则
 
-```
+```text
 用户 -> 角色 -> 允许的工具集合 -> 注册给 Agent -> 模型只能调用这些工具
 ```
 
 ### 6.2.3 审批流
 
-```
+```text
 高风险工具被调用
    |
    v

@@ -8,7 +8,7 @@
 
 **自回归** = 逐 token 生成，每次把已生成的内容作为下一次的输入。
 
-```
+```text
 输入:  "今天天气"
   ↓ 前向
 输出:  "真"
@@ -27,20 +27,20 @@
 
 序列的联合概率按链式法则分解为逐步条件概率：
 
-```
+```text
 P(x_1, ..., x_n) = Π_{t=1}^{n} P(x_t | x_1, ..., x_{t-1})
 ```
 
 每一步模型输出词表上的概率分布：
 
-```
+```text
 P(x_t | x_<t) = softmax(W · h_t)
 h_t = 第 t 步的隐状态
 ```
 
 ### 1.2.2 生成算法
 
-```
+```text
 1. 输入 prompt，前向得到第一个 token 分布
 2. 采样/贪心选出 token
 3. 拼接到序列末尾
@@ -61,7 +61,7 @@ h_t = 第 t 步的隐状态
 
 ## 2.1 Prefill（预填充）
 
-```
+```text
 Prefill（预填充）：
   一次处理整个输入 prompt
   计算并缓存所有位置的 K、V
@@ -76,7 +76,7 @@ Prefill（预填充）：
 
 ### 2.1.2 与序列长度的关系
 
-```
+```text
 Prefill 计算量 ∝ L²（注意力部分）
 Prefill 访存量 ∝ 参数量 + L
 长 prompt → 计算量随 L² 增长，成为主要开销
@@ -84,7 +84,7 @@ Prefill 访存量 ∝ 参数量 + L
 
 ## 2.2 Decode（解码）
 
-```
+```text
 Decode（解码）：
   逐 token 生成
   每次只处理 1 个新 token
@@ -98,14 +98,14 @@ Decode（解码）：
 
 ### 2.2.2 单步耗时
 
-```
+```text
 单步耗时 ≈ 模型参数量 / 显存带宽
 与序列长度弱相关，与批次强相关
 ```
 
 ## 2.3 对比与瓶颈
 
-```
+```text
 时间 →
 Prefill: [====输入====]  → 首个 token
 Decode:  [t1][t2][t3][t4]...  → 后续 token
@@ -130,14 +130,14 @@ Decode:  [t1][t2][t3][t4]...  → 后续 token
 | TPS | 每秒生成 Token | Decode 速度 |
 | 总延迟 | 全部生成完 | 两者之和 |
 
-```
+```text
 TTFT = Prefill 时间
 总延迟 ≈ TTFT + (生成 token 数 - 1) / TPS
 ```
 
 ## 3.2 流式输出
 
-```
+```text
 流式输出改善的是"体感延迟"（TTFT）
 实际总时长由 TPS 决定
 ```
@@ -185,14 +185,14 @@ def generate(model, prompt, max_new_tokens=100):
 
 注意力中每个位置需要 Key 与 Value，历史位置的 K、V 不变，可缓存复用。
 
-```
+```text
 无缓存：每步重算全部位置的 K、V → O(L²)
 有缓存：只算新 token 的 K、V，读取缓存 → O(L)
 ```
 
 ### 4.2.2 显存开销
 
-```
+```text
 KV Cache 大小 ≈ 2 × 层数 × 头数 × 头维度 × 序列长度 × 批次 × 字节
 ```
 
@@ -217,7 +217,7 @@ KV Cache 大小 ≈ 2 × 层数 × 头数 × 头维度 × 序列长度 × 批次
 
 ## 5.1 访存瓶颈
 
-```
+```text
 生成 N 个 token 需要 N 次前向
 
 每次前向：
@@ -229,7 +229,7 @@ KV Cache 大小 ≈ 2 × 层数 × 头数 × 头维度 × 序列长度 × 批次
 
 ## 5.2 算术强度
 
-```
+```text
 算术强度 = 计算量 / 访存量（FLOP/Byte）
 
 Decode：计算量极小，访存量巨大 → 算术强度极低
@@ -251,12 +251,12 @@ Prefill：计算量与访存量都大 → 算术强度高
 
 ## 6.1 静态批处理
 
-```
+```text
 无批处理：一次只处理一个请求 → GPU 利用率低
 有批处理：多个请求一起处理 → 提升吞吐
 ```
 
-```
+```text
 请求1: [t1][t2][t3][t4]
 请求2: [t1][t2][t3][t4]     ← 并行
 请求3: [t1][t2][t3][t4]
@@ -279,7 +279,7 @@ Prefill：计算量与访存量都大 → 算术强度高
 
 ## 6.3 PagedAttention
 
-```
+```text
 KV Cache 按页（Block）管理，像操作系统分页
   → 消除碎片，提高显存利用率
   → 支持前缀共享
@@ -318,7 +318,7 @@ next_id = torch.multinomial(softmax(logits), 1)
 | Top-k | 只在概率最高的 k 个中采样 |
 | Top-p | 在累积概率达 p 的最小集合中采样 |
 
-```
+```text
 温度：softmax(z / T)
   T→0 趋近贪心，T=1 原分布，T>1 更随机
 ```
@@ -369,7 +369,7 @@ if any(generated.endswith(s) for s in stop_sequences):
 
 ## 8.2 约束解码
 
-```
+```text
 约束解码（Constrained Decoding）：
   在每步把不满足语法/格式的 token 概率置零
   → 保证输出是合法 JSON、SQL 等
@@ -386,14 +386,14 @@ if any(generated.endswith(s) for s in stop_sequences):
 
 ## 9.1 数值溢出
 
-```
+```text
 logits 过大时 exp 溢出
   → 用 max 减去后再 exp（数值稳定 softmax）
 ```
 
 ### 9.1.1 稳定 softmax
 
-```
+```text
 m = max(logits)
 softmax(z_i) = exp(z_i - m) / Σ_j exp(z_j - m)
 ```
@@ -407,7 +407,7 @@ softmax(z_i) = exp(z_i - m) / Σ_j exp(z_j - m)
 
 ## 9.3 上下文长度
 
-```
+```text
 上下文窗口 = 输入长度 + 生成长度
   超限 → 截断或滑动窗口
 ```
@@ -440,7 +440,7 @@ softmax(z_i) = exp(z_i - m) / Σ_j exp(z_j - m)
 
 ## 10.3 成本
 
-```
+```text
 成本 ≈ (Prefill 计算 + Decode 步数 × 单步访存) × 单价
 优化：缓存前缀、批处理、量化权重
 ```

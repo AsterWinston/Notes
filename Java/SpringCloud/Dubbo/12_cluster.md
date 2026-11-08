@@ -8,7 +8,7 @@
 - **负载均衡（LoadBalance）**：从过滤后的列表中选择一个 Provider
 - **集群容错（Cluster）**：调用失败后的重试/容错策略
 
-```
+```text
 Consumer 调用 userService.getUser(1L)
     │
     ▼
@@ -51,7 +51,7 @@ public interface Directory<T> extends Node {
 
 ## 2.2 实现体系
 
-```
+```text
 Directory (接口)
 ├── AbstractDirectory
 │   ├── StaticDirectory         (静态目录：直连模式下固定 Invoker 列表)

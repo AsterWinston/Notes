@@ -2,7 +2,7 @@
 
 # 1. go 命令体系总览
 
-```
+```text
 go <command> [arguments]
 
 构建相关：  go build / go run / go install / go clean
@@ -38,7 +38,7 @@ go build -trimpath          # 去掉编译机路径，便于可复现构建
 
 ## 2.2 go run —— 编译并运行
 
-```
+```text
 go run main.go         # 编译 + 运行，产物放临时目录，运行后删除
 go run .               # 运行当前目录的 main 包
 go run main.go a b     # a b 会作为 os.Args 传给程序
@@ -48,7 +48,7 @@ go run main.go a b     # a b 会作为 os.Args 传给程序
 
 ## 2.3 go install —— 编译并安装
 
-```
+```text
 go install            # 编译当前包，把可执行文件放进 GOBIN（默认 $GOPATH/bin）
 go install golang.org/x/tools/cmd/gofumpt@latest   # 从远程安装一个工具
 ```
@@ -57,7 +57,7 @@ go install golang.org/x/tools/cmd/gofumpt@latest   # 从远程安装一个工具
 
 ## 2.4 go clean —— 清理缓存
 
-```
+```text
 go clean              # 清理构建缓存
 go clean -cache       # 清理 GOCACHE
 go clean -modcache    # ★ 清理整个模块缓存（GOMODCACHE），慎用
@@ -69,13 +69,13 @@ Go module 是 Go 1.11 引入、1.16 全面启用的依赖管理方案，取代�
 
 ## 3.1 初始化与语义化版本
 
-```
+```text
 go mod init github.com/you/yourproject    # 初始化 module
 ```
 
 生成的 `go.mod` 结构：
 
-```
+```text
 module github.com/you/yourproject    // module 路径，等价于命名空间
 
 go 1.23                              // ★ 声明该模块的 Go 版本（GOTOOLCHAIN 据此切换工具链）
@@ -92,7 +92,7 @@ require (                              // 间接依赖（第三方依赖又依�
 
 ### 3.1.1 go.mod 的全部指令
 
-```
+```text
 module <path>         模块路径
 go <version>          该模块使用的 Go 语言版本
 require <mod> <ver>   依赖声明（可分组）
@@ -106,7 +106,7 @@ toolchain <name>      建议的工具链版本
 
 ## 3.2 最小版本选择（MVS）—— 深入理解
 
-```
+```text
 假设：
 A 依赖 B v1.3.0
 C 依赖 B v1.5.0
@@ -132,7 +132,7 @@ Go MVS 策略：  选 v1.5.0（满足"A>=v1.3.0"和"C>=v1.5.0"两个约束的最
 
 ## 3.3 go.sum —— 校验和清单
 
-```
+```text
 go.sum 记录每个依赖（module + 版本 + go.mod 文件）的哈希，用于完整性校验：
 
 github.com/gin-gonic/gin v1.10.0 h1:XXX...      // 模块 zip 包的哈希（h1:）
@@ -143,7 +143,7 @@ github.com/gin-gonic/gin v1.10.0/go.mod h1:YYY... // go.mod 文件的哈希
 
 ## 3.4 依赖操作命令
 
-```
+```text
 go mod tidy        # ★ 最常用：拉取缺失依赖、移除多余依赖、更新 go.sum
 go mod download    # 只下载依赖到 GOMODCACHE，不修改 go.mod
 go get pkg@v1.2.3  # 添加/升级/降级依赖
@@ -156,7 +156,7 @@ go mod vendor      # 把依赖复制到 ./vendor 目录（离线构建）
 
 ### 3.4.1 go get 的版本语法
 
-```
+```text
 go get pkg               # 取该依赖当前声明的版本
 go get pkg@v1.2.3        # 精确版本
 go get pkg@latest        # 最新版本
@@ -169,7 +169,7 @@ go get pkg@none          # ★ 移除该依赖
 
 ### 3.4.2 vendor 模式
 
-```
+```text
 go mod vendor     # 生成 ./vendor 目录，把依赖源码复制进来
 
 当项目根存在 vendor 目录，且 go 版本 >= 1.14 时，go build 会默认使用 vendor 目录，不联网。
@@ -181,13 +181,13 @@ go mod vendor     # 生成 ./vendor 目录，把依赖源码复制进来
 
 ## 4.1 初始化与使用
 
-```
+```text
 go work init ./moduleA ./moduleB    # 创建 go.work
 ```
 
 `go.work` 让你在**本地同时开发多个 module** 时，无需反复 `replace`，工作区内的模块互相引用会直接指向本地源码：
 
-```
+```text
 go 1.23
 
 use (
@@ -202,7 +202,7 @@ replace example.com/dep => ../dep-local   // 也可以本地替换
 
 # 5. 包与导入路径
 
-```
+```text
 import 的路径 = module 路径 + 模块内相对目录路径
 
 module github.com/you/app
@@ -221,7 +221,7 @@ module github.com/you/app
 
 ## 6.1 go fmt / gofmt
 
-```
+```text
 go fmt ./...      # 格式化代码（底层调用 gofmt -w）
 gofmt -w file.go  # 单个文件格式化
 gofmt -d file.go  # 只打印差异，不写文件
@@ -232,7 +232,7 @@ gofmt -l file.go  # 列出格式不规范的代码
 
 ## 6.2 go vet —— 静态检查
 
-```
+```text
 go vet ./...      # 静态检查：可疑结构、Printf 参数不匹配、锁拷贝等
 ```
 
@@ -240,7 +240,7 @@ go vet ./...      # 静态检查：可疑结构、Printf 参数不匹配、锁�
 
 ## 6.3 go doc —— 文档
 
-```
+```text
 go doc fmt.Println    # 查看函数文档
 go doc -all fmt       # 查看包全部文档
 go doc -src fmt.Println   # 查看实现源码
@@ -250,7 +250,7 @@ Go 的注释即文档：包注释、函数注释遵循固定格式（以声明�
 
 # 7. go tool —— 底层工具链入口
 
-```
+```text
 go tool compile      # 编译器（将 .go 编译为 .o 中间产物）
 go tool asm          # 汇编器
 go tool link         # 链接器

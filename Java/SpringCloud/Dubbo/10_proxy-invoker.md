@@ -15,7 +15,7 @@ public interface Invoker<T> extends Node {
 
 # 2. Invoker 的分类与层级
 
-```
+```text
                              ┌─────────────────┐
                              │  业务接口调用      │
                              └────────┬────────┘
@@ -48,7 +48,7 @@ public interface Invoker<T> extends Node {
 
 **Provider 端**：
 
-```
+```text
 Request → DubboExporter → AbstractProxyInvoker
                                │
                                └── invoke() → 反射调用 ServiceImpl
@@ -230,7 +230,7 @@ public class RpcInvocation implements Invocation, Cloneable {
 
 # 7. Invoker 树形结构
 
-```
+```text
 Invoker (根)
 ├── MockClusterInvoker (如果配置了 mock)
 │   └── AbstractClusterInvoker
@@ -246,7 +246,7 @@ Invoker (根)
 
 # 8. Invoker 的数据流动
 
-```
+```text
 Consumer 调用 userService.getUser(1L)
     │
     ▼

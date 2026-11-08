@@ -13,7 +13,7 @@
 
 **方式一：Spring Initializr (IDEA)**
 
-```
+```text
 File → New → Project → Spring Initializr
   - Project: Maven
   - Language: Java
@@ -367,7 +367,7 @@ async function fetchProfile() {
 
 Spring Boot 通过自动配置检测 classpath 上的依赖，按优先级选择后端：
 
-```
+```text
 检测顺序：
 1. spring-session-data-redis      → RedisSessionRepository
 2. spring-session-jdbc             → JdbcSessionRepository

@@ -5,7 +5,7 @@ Sentinel 支持将规则存储在外部数据源（Nacos、Apollo、ZooKeeper �
 
 # 2. 推送模式对比
 
-```
+```text
 原始模式（内存）:
   Dashboard ──推送──→ Client 内存 ──重启──→ 规则丢失 ✗
 
@@ -239,7 +239,7 @@ FlowRuleManager.register2Property(property);
 
 # 8. 规则推送流程
 
-```
+```text
 ┌──────────┐   变更规则   ┌──────────┐   推送通知    ┌──────────┐
 │  Nacos   │ ──────────→ │  Client  │ ───────────→ │ Sentinel │
 │ Console  │             │  Listener│              │ Property │

@@ -45,7 +45,7 @@ type ReadWriteCloser interface {
 
 ★ **关键认知**：底层 I/O（系统调用）很昂贵，逐字节读写会严重拖慢性能。`bufio` 通过**用户态缓冲区**批量读写，大幅减少系统调用次数：
 
-```
+```text
 无缓冲：读 1000 个字节 → 可能 1000 次系统调用
 bufio：  读 1000 个字节 → 1~2 次系统调用（一次读满 4096 字节缓冲区）
 ```
@@ -101,7 +101,7 @@ json.Unmarshal(b, &u)
 
 ★ **关键认知**：`encoding/json` 的核心是**反射**（见反射章节）。序列化时：
 
-```
+```text
 1. 反射获取结构体的类型信息，遍历字段
 2. 读取每个字段的 json tag，决定输出键名
 3. 反射获取字段值，按类型序列化
@@ -146,7 +146,7 @@ http.ListenAndServe(":8080", nil)
 
 ★ **关键认知**：`net/http` 的高并发来自**每连接一 goroutine**模型——每个 HTTP 请求都在独立的 goroutine 中处理：
 
-```
+```text
 连接处理流程：
 1. listener 接受连接
 2. 每个连接启动一个 goroutine
@@ -160,7 +160,7 @@ http.ListenAndServe(":8080", nil)
 
 ★ **关键认知**：使用 net/http 的几个重要细节：
 
-```
+```text
 1. 必须 defer r.Body.Close()（复用连接时释放资源）
 2. 请求处理应支持 context 取消（r.Context()）
 3. 生产环境应配置超时（Server 的 ReadTimeout/WriteTimeout）
@@ -171,7 +171,7 @@ http.ListenAndServe(":8080", nil)
 
 ★ **关键认知**：从这些包可以总结出 Go 标准库的设计共性：
 
-```
+```text
 1. 小接口：io.Reader、error 都是极小接口
 2. 组合优于继承：接口组合、结构体嵌入
 3. 显式错误：返回值传递 error，而非异常

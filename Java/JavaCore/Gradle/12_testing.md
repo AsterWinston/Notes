@@ -7,7 +7,7 @@ Gradle 提供了强大且灵活的测试框架集成能力。通过 `Test` 任�
 
 Gradle 的 `Test` 任务（`org.gradle.api.tasks.testing.Test`）继承自 `AbstractTestTask`，它通过类路径扫描自动检测测试框架：
 
-```
+```text
 测试框架检测优先级（Gradle 内置的 TestFrameworkDetector）：
     1. 检测 testRuntimeClasspath 中的框架 JAR
     2. 按优先级尝试匹配：
@@ -65,7 +65,7 @@ test {
 
 JUnit 5 引擎架构：
 
-```
+```text
 ┌────────────────────────────────────────────┐
 │              JUnit Platform Launcher        │
 │         (org.junit.platform.launcher)      │
@@ -366,7 +366,7 @@ testing {
 
 测试套件自动生成的源码目录：
 
-```
+```text
 src/
 ├── main/java/...
 ├── test/java/...              # test 套件
@@ -425,7 +425,7 @@ test {
 
 并行执行原理图解：
 
-```
+```text
                      ┌─────────────────┐
                      │   Gradle Daemon  │
                      │   (主进程)        │
@@ -662,7 +662,7 @@ test {
 
 报告目录结构：
 
-```
+```text
 build/
 ├── reports/tests/test/
 │   ├── index.html          # 总览页面
@@ -1068,7 +1068,7 @@ dependencies {
 
 源码目录结构：
 
-```
+```text
 src/
 ├── main/java/                     # 主源码
 ├── test/java/                      # 测试源码

@@ -4,7 +4,7 @@
 
 ## 1.1 标准 MHA 的瓶颈
 
-```
+```text
 标准多头注意力（MHA）的问题：
 - KV Cache 显存占用大（每个头都要存 K、V）
 - 长序列推理慢
@@ -29,7 +29,7 @@ KV Cache 需要在生成全程常驻显存，显存不足会直接限制批大�
 
 **公式**：标准注意力的计算与显存：
 
-```
+```text
 计算量：O(n² · d)
 注意力矩阵显存：O(n² · heads)
 KV Cache 显存：O(n · heads · d)
@@ -53,7 +53,7 @@ KV Cache 显存：O(n · heads · d)
 
 **原理**：把模型维度切成多个头，每个头独立做注意力，最后拼接。查询（Query）、键、值头数相同。
 
-```
+```text
 MHA（多头注意力）：
   Q: 8 头    K: 8 头    V: 8 头
   KV Cache: 大
@@ -61,7 +61,7 @@ MHA（多头注意力）：
 
 **公式**：对每个头 h：
 
-```
+```text
 head_h = softmax(Q_h K_hᵀ / √d_k) V_h
 MHA(x) = Concat(head_1, ..., head_H) W_O
 ```
@@ -74,7 +74,7 @@ MHA(x) = Concat(head_1, ..., head_H) W_O
 
 **原理**：所有查询头共享同一组键与值，KV Cache 缩小到头数的倒数。
 
-```
+```text
 MQA（多查询注意力）：
   Q: 8 头    K: 1 头    V: 1 头
   KV Cache: 小（1/8）
@@ -91,7 +91,7 @@ MQA（多查询注意力）：
 
 **原理**：把查询头分成若干组，每组共享一组 KV，是 MHA 与 MQA 的插值。
 
-```
+```text
 GQA（分组查询注意力）：
   Q: 8 头    K: 2 组    V: 2 组
   KV Cache: 中（1/4）
@@ -102,7 +102,7 @@ GQA（分组查询注意力）：
 
 设查询头数为 H，KV 组数为 G，则每组负责 H/G 个查询头。G = H 时退化为 MHA，G = 1 时退化为 MQA：
 
-```
+```text
 G = H  → MHA
 G = 1  → MQA
 1 < G < H → GQA
@@ -148,7 +148,7 @@ class GroupedQueryAttention(nn.Module):
 
 ## 3.1 标准注意力的显存瓶颈
 
-```
+```text
 标准注意力的问题：
   需要物化 n×n 的注意力矩阵 → 显存 O(n²)
 
@@ -176,7 +176,7 @@ FlashAttention：
 
 **公式**：Softmax 需要全局最大值来数值稳定。在线算法分块处理，边算边更新运行最大值 m 与归一化因子 l：
 
-```
+```text
 m_new = max(m_old, max(块内分数))
 l_new = l_old · exp(m_old - m_new) + Σ exp(块内分数 - m_new)
 O_new = (O_old · l_old · exp(m_old - m_new) + Σ exp(块内分数 - m_new) V) / l_new
@@ -214,12 +214,12 @@ output = flash_attn_func(q, k, v, causal=True)
 
 ## 4.1 局部窗口思想
 
-```
+```text
 标准注意力：每个位置看所有位置 O(n²)
 滑动窗口：每个位置只看前后 w 个位置 O(n·w)
 ```
 
-```
+```text
 位置:  1 2 3 4 5 6 7 8
 窗口=2：
   5 只看 3,4,6,7
@@ -231,7 +231,7 @@ output = flash_attn_func(q, k, v, causal=True)
 
 **公式**：堆叠 L 层、窗口宽度 w 后，有效感受野约为：
 
-```
+```text
 感受野 ≈ L × w
 ```
 
@@ -284,7 +284,7 @@ output = flash_attn_func(q, k, v, causal=True)
 
 **公式**：线性注意力利用核函数把 Softmax 分解，使计算可结合律重排：
 
-```
+```text
 softmax(QKᵀ)V ≈ φ(Q) (φ(K)ᵀ V)
 ```
 
@@ -313,7 +313,7 @@ softmax(QKᵀ)V ≈ φ(Q) (φ(K)ᵀ V)
 
 ## 6.1 KV Cache 原理
 
-```
+```text
 推理时缓存历史 K、V，避免重复计算
 
 显存占用 ≈ 2 × L × n_kv_heads × head_dim × seq_len × batch × 精度
@@ -336,7 +336,7 @@ softmax(QKᵀ)V ≈ φ(Q) (φ(K)ᵀ V)
 
 ### 6.2.1 一个估算示例
 
-```
+```text
 2 × L × n_kv_heads × head_dim × seq_len × batch × 2 字节
 = 2 × 32 × 8 × 128 × 4096 × 1 × 2
 ≈ 512 MB
@@ -384,7 +384,7 @@ softmax(QKᵀ)V ≈ φ(Q) (φ(K)ᵀ V)
 
 **原理**：这些方法大多正交，可以叠加。例如"GQA + FlashAttention + KV 量化 + PagedAttention"是当前高并发推理服务的常见组合。
 
-```
+```text
 GQA（减头数）
   + FlashAttention（省显存、提速）
   + KV 量化（再省显存）
@@ -446,7 +446,7 @@ GQA（减头数）
 
 ## 9.2 记忆口诀
 
-```
+```text
 显存大就减头，MQA 到 GQA
 访存慢上 Flash，分块不物化
 序列长开窗口，局部加全局

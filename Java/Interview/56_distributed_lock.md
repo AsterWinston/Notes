@@ -31,7 +31,7 @@
 
 ## 2.2 Redis分布式锁的Lua脚本解锁为什么有必要？
 解锁时需要：1)检查锁的value是否与自己的value匹配(防止解锁别人的锁) 2)匹配才删除。这两个操作必须是原子的。若先用GET判断再DEL，GET返回自己的value，此时锁恰巧过期，另一个客户端获取锁(set了新value)，自己的DEL就会误删别人的锁。Lua脚本在Redis服务端原子执行，保证检查与删除不被打断：
-```
+```text
 if redis.call('get', KEYS[1]) == ARGV[1] then
     return redis.call('del', KEYS[1])
 else

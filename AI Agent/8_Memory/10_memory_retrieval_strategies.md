@@ -12,7 +12,7 @@
 
 机制上，召回位于"记忆写入"与"上下文组装"之间：
 
-```
+```text
 写入 ──▶ [记忆库] ──▶ 召回 ──▶ 去重/重排 ──▶ 预算裁剪 ──▶ 上下文
                         ▲
                     当前 query
@@ -208,7 +208,7 @@ public record ScoreWeights(
 结论先行：多路召回（hybrid recall）并行发起多路查询，
 合并候选后再统一去重、打分、裁剪。
 
-```
+```text
         ┌─ 核心记忆（全量）──────┐
 query ──┼─ 近期对话（窗口 10）───┼─▶ 合并 ─▶ 去重 ─▶ 评分 ─▶ 裁剪
         ├─ 语义召回（TopK 10）───┤
@@ -347,7 +347,7 @@ public List<MemoryEntry> enforceDiversity(List<MemoryEntry> memories, int max) {
 结论先行：MMR（Maximal Marginal Relevance，最大边际相关性）
 在"相关性"与"多样性"之间显式加权，比硬阈值更平滑。
 
-```
+```text
 MMR = argmax [ λ·sim(d, q) − (1−λ)·max sim(d, s) ]
                    相关          与已选的最大相似
 ```

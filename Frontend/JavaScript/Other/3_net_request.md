@@ -1,5 +1,5 @@
 # 1. Fetch
-```
+```javascript
 JavaScript 可以将网络请求发送到服务器，并在需要时加载新信息。
 
 例如，我们可以使用网络请求来：
@@ -10,7 +10,7 @@ JavaScript 可以将网络请求发送到服务器，并在需要时加载新信
 ……等。
 ……所有这些都没有重新加载页面！
 
-对于来自 JavaScript 的网络请求，有一个总称术语 “AJAX”（Asynchronous JavaScript And XML 的简称）。但是，我们不必使用 XML：这个术语诞生于很久以前，所以这个词一直在那儿。
+对于来自 JavaScript 的网络请求，有一个总称术语 "AJAX"（Asynchronous JavaScript And XML 的简称）。但是，我们不必使用 XML：这个术语诞生于很久以前，所以这个词一直在那儿。
 
 有很多方式可以向服务器发送网络请求，并从服务器获取信息。
 
@@ -77,7 +77,7 @@ let response = await fetch('https://api.github.com/repos/javascript-tutorial/en.
 let text = await response.text(); // 将 response body 读取为文本
 
 alert(text.slice(0, 80) + '...');
-作为一个读取为二进制格式的演示示例，让我们 fetch 并显示一张 “fetch” 规范 中的图片（Blob 操作的有关内容请见 Blob）：
+作为一个读取为二进制格式的演示示例，让我们 fetch 并显示一张 "fetch" 规范 中的图片（Blob 操作的有关内容请见 Blob）：
 
 let response = await fetch('/article/fetch/logo-fetch.svg');
 
@@ -189,7 +189,7 @@ alert(result.message);
 ```javascript
 我们同样可以使用 Blob 或 BufferSource 对象通过 fetch 提交二进制数据。
 
-例如，这里有一个 <canvas>，我们可以通过在其上移动鼠标来进行绘制。点击 “submit” 按钮将图片发送到服务器：
+例如，这里有一个 <canvas>，我们可以通过在其上移动鼠标来进行绘制。点击 "submit" 按钮将图片发送到服务器：
 
 <body style="margin:0">
   <canvas id="canvasElem" width="100" height="80" style="border:1px solid"></canvas>
@@ -265,7 +265,7 @@ body —— 要以 string，FormData，BufferSource，Blob 或 UrlSearchParams �
 ```
 
 # 2. FormData
-```
+```text
 这一章是关于发送 HTML 表单的：带有或不带文件，带有其他字段等。
 
 FormData 对象可以提供帮助。你可能已经猜到了，它是表示 HTML 表单数据的对象。
@@ -306,7 +306,7 @@ FormData 的特殊之处在于网络方法（network methods），例如 fetch �
   };
 </script>
 
-在这个示例中，没有将服务器代码展示出来，因为它超出了我们当前的学习范围。服务器接受 POST 请求并回应 “User saved”。
+在这个示例中，没有将服务器代码展示出来，因为它超出了我们当前的学习范围。服务器接受 POST 请求并回应 "User saved"。
 ```
 ## 2.2 FormData方法
 ```javascript
@@ -365,7 +365,7 @@ for(let [name, value] of formData) {
 ```javascript
 正如我们在 Fetch 一章中所看到的，以 Blob 发送一个动态生成的二进制数据，例如图片，是很简单的。我们可以直接将其作为 fetch 参数的 body。
 
-但在实际中，通常更方便的发送图片的方式不是单独发送，而是将其作为表单的一部分，并带有附加字段（例如 “name” 和其他 metadata）一起发送。
+但在实际中，通常更方便的发送图片的方式不是单独发送，而是将其作为表单的一部分，并带有附加字段（例如 "name" 和其他 metadata）一起发送。
 
 并且，服务器通常更适合接收多部分编码的表单（multipart-encoded form），而不是原始的二进制数据。
 
@@ -431,7 +431,7 @@ formData.has(name)
 ```
 
 # 3. Fetch：下载进度
-```
+```javascript
 fetch 方法允许去跟踪 下载 进度。
 
 请注意：到目前为止，fetch 方法无法跟踪 上传 进度。对于这个目的，请使用 XMLHttpRequest，我们在后面章节会讲到。
@@ -520,7 +520,7 @@ alert(commits[0].author.login);
 
 调用 await reader.read()，直到它完成。
 
-我们将响应块收集到数组 chunks 中。这很重要，因为在使用完（consumed）响应后，我们将无法使用 response.json() 或者其他方式（你可以试试，将会出现 error）去“重新读取”它。
+我们将响应块收集到数组 chunks 中。这很重要，因为在使用完（consumed）响应后，我们将无法使用 response.json() 或者其他方式（你可以试试，将会出现 error）去"重新读取"它。
 
 最后，我们有了一个 chunks —— 一个 Uint8Array 字节块数组。我们需要将这些块合并成一个结果。但不幸的是，没有单个方法可以将它们串联起来，所以这里需要一些代码来实现：
 
@@ -541,8 +541,8 @@ let blob = new Blob(chunks);
 ```
 
 # 4. Fetch：中止（Abort）
-```
-正如我们所知道的，fetch 返回一个 promise。JavaScript 通常并没有“中止” promise 的概念。那么我们怎样才能取消一个正在执行的 fetch 呢？例如，如果用户在我们网站上的操作表明不再需要某个执行中的 fetch。
+```text
+正如我们所知道的，fetch 返回一个 promise。JavaScript 通常并没有"中止" promise 的概念。那么我们怎样才能取消一个正在执行的 fetch 呢？例如，如果用户在我们网站上的操作表明不再需要某个执行中的 fetch。
 
 为此有一个特殊的内建对象：AbortController。它不仅可以中止 fetch，还可以中止其他异步任务。
 
@@ -666,11 +666,11 @@ let results = await Promise.all([...fetchJobs, ourJob]);
 ```javascript
 AbortController 是一个简单的对象，当 abort() 方法被调用时，会在自身的 signal 属性上生成 abort 事件（并将 signal.aborted 设置为 true）。
 fetch 与之集成：我们将 signal 属性作为可选参数（option）进行传递，之后 fetch 会监听它，因此它能够中止 fetch。
-我们可以在我们的代码中使用 AbortController。“调用 abort()” → “监听 abort 事件”交互简单且通用。即使没有 fetch，我们也可以使用它。
+我们可以在我们的代码中使用 AbortController。"调用 abort()" → "监听 abort 事件"交互简单且通用。即使没有 fetch，我们也可以使用它。
 ```
 
 # 5. Fetch：跨源请求
-```
+```text
 如果我们向另一个网站发送 fetch 请求，则该请求可能会失败。
 
 例如，让我们尝试向 http://example.com 发送 fetch 请求：
@@ -686,7 +686,7 @@ try {
 
 跨源请求 —— 那些发送到其他域（即使是子域）、协议或端口的请求 —— 需要来自远程端的特殊 header。
 
-这个策略被称为 “CORS”：跨源资源共享（Cross-Origin Resource Sharing）。
+这个策略被称为 "CORS"：跨源资源共享（Cross-Origin Resource Sharing）。
 ```
 ## 5.1 为什么需要CORS？跨域请求简史
 ```javascript
@@ -719,7 +719,7 @@ CORS 的存在是为了保护互联网免受黑客攻击。
 使用 script
 另一个技巧是使用 script 标签。script 可以具有任何域的 src，例如 <script src="http://another.com/…">。也可以执行来自任何网站的 script。
 
-如果一个网站，例如 another.com 试图公开这种访问方式的数据，则会使用所谓的 “JSONP (JSON with padding)” 协议。
+如果一个网站，例如 another.com 试图公开这种访问方式的数据，则会使用所谓的 "JSONP (JSON with padding)" 协议。
 
 这是它的工作方式。
 
@@ -767,15 +767,15 @@ Accept，
 Accept-Language，
 Content-Language，
 Content-Type 的值为 application/x-www-form-urlencoded，multipart/form-data 或 text/plain。
-任何其他请求都被认为是“非安全”请求。例如，具有 PUT 方法或 API-Key HTTP-header 的请求就不是安全请求。
+任何其他请求都被认为是"非安全"请求。例如，具有 PUT 方法或 API-Key HTTP-header 的请求就不是安全请求。
 
 本质区别在于，可以使用 <form> 或 <script> 进行安全请求，而无需任何其他特殊方法。
 
 因此，即使是非常旧的服务器也能很好地接收安全请求。
 
-与此相反，带有非标准 header 或者例如 DELETE 方法的请求，无法通过这种方式创建。在很长一段时间里，JavaScript 都不能进行这样的请求。所以，旧的服务器可能会认为此类请求来自具有特权的来源（privileged source），“因为网页无法发送它们”。
+与此相反，带有非标准 header 或者例如 DELETE 方法的请求，无法通过这种方式创建。在很长一段时间里，JavaScript 都不能进行这样的请求。所以，旧的服务器可能会认为此类请求来自具有特权的来源（privileged source），"因为网页无法发送它们"。
 
-当我们尝试发送一个非安全请求时，浏览器会发送一个特殊的“预检（preflight）”请求到服务器 —— 询问服务器，你接受此类跨源请求吗？
+当我们尝试发送一个非安全请求时，浏览器会发送一个特殊的"预检（preflight）"请求到服务器 —— 询问服务器，你接受此类跨源请求吗？
 
 并且，除非服务器明确通过 header 进行确认，否则非安全请求不会被发送。
 
@@ -808,7 +808,7 @@ Access-Control-Allow-Origin: https://javascript.info
 ```
 ## 5.4 Response header
 ```javascript
-对于跨源请求，默认情况下，JavaScript 只能访问“安全的” response header：
+对于跨源请求，默认情况下，JavaScript 只能访问"安全的" response header：
 
 Cache-Control
 Content-Language
@@ -835,13 +835,13 @@ Access-Control-Allow-Origin: https://javascript.info
 Access-Control-Expose-Headers: Content-Length,API-Key
 有了这种 Access-Control-Expose-Headers header，此脚本就被允许读取响应的 Content-Length 和 API-Key header。
 ```
-## 5.5 “非安全”请求
+## 5.5 "非安全"请求
 ```javascript
 我们可以使用任何 HTTP 方法：不仅仅是 GET/POST，也可以是 PATCH，DELETE 及其他。
 
-之前，没有人能够设想网页能发出这样的请求。因此，可能仍然存在有些 Web 服务将非标准方法视为一个信号：“这不是浏览器”。它们可以在检查访问权限时将其考虑在内。
+之前，没有人能够设想网页能发出这样的请求。因此，可能仍然存在有些 Web 服务将非标准方法视为一个信号："这不是浏览器"。它们可以在检查访问权限时将其考虑在内。
 
-因此，为了避免误解，任何“非安全”请求 —— 在过去无法完成的，浏览器不会立即发出此类请求。首先，它会先发送一个初步的、所谓的“预检（preflight）”请求，来请求许可。
+因此，为了避免误解，任何"非安全"请求 —— 在过去无法完成的，浏览器不会立即发出此类请求。首先，它会先发送一个初步的、所谓的"预检（preflight）"请求，来请求许可。
 
 预检请求使用 OPTIONS 方法，它没有 body，但是有三个 header：
 
@@ -868,7 +868,7 @@ let response = await fetch('https://site.com/service.json', {
 
 方法 PATCH
 Content-Type 不是这三个中之一：application/x-www-form-urlencoded，multipart/form-data，text/plain。
-“非安全” API-Key header。
+"非安全" API-Key header。
 Step 1 预检请求（preflight request）
 在发送我们的请求前，浏览器会自己发送如下所示的预检请求：
 
@@ -882,7 +882,7 @@ Access-Control-Request-Headers: Content-Type,API-Key
 特殊跨源头：
 Origin —— 来源。
 Access-Control-Request-Method —— 请求方法。
-Access-Control-Request-Headers —— 以逗号分隔的“非安全” header 列表。
+Access-Control-Request-Headers —— 以逗号分隔的"非安全" header 列表。
 Step 2 预检响应（preflight response）
 服务应响应状态 200 和 header：
 
@@ -921,7 +921,7 @@ Access-Control-Allow-Origin: https://javascript.info
 然后，JavaScript 可以读取主服务器响应了。
 
 请注意：
-预检请求发生在“幕后”，它对 JavaScript 不可见。
+预检请求发生在"幕后"，它对 JavaScript 不可见。
 
 JavaScript 仅获取对主请求的响应，如果没有服务器许可，则获得一个 error。
 ```
@@ -957,9 +957,9 @@ Access-Control-Allow-Credentials: true
 ```
 ## 5.7 总结
 ```javascript
-从浏览器角度来看，有两种跨源请求：“安全”请求和其他请求。
+从浏览器角度来看，有两种跨源请求："安全"请求和其他请求。
 
-“安全”请求必须满足以下条件：
+"安全"请求必须满足以下条件：
 
 方法：GET，POST 或 HEAD。
 header —— 我们仅能设置：
@@ -969,7 +969,7 @@ Content-Language
 Content-Type 的值为 application/x-www-form-urlencoded，multipart/form-data 或 text/plain。
 安全请求和其他请求的本质区别在于，自古以来就可以使用 <form> 或 <script> 标签来实现安全请求，而对于浏览器来说，非安全请求在很长一段时间都是不可能的。
 
-所以，实际区别在于，安全请求会立即发送，并带有 Origin header，而对于其他请求，浏览器会发出初步的“预检”请求，以请求许可。
+所以，实际区别在于，安全请求会立即发送，并带有 Origin header，而对于其他请求，浏览器会发出初步的"预检"请求，以请求许可。
 
 对于安全请求：
 
@@ -981,20 +981,20 @@ Access-Control-Allow-Origin 值与 Origin 的相同
 Access-Control-Allow-Credentials 为 true
 此外，要授予 JavaScript 访问除 Cache-Control，Content-Language，Content-Type，Expires，Last-Modified 或 Pragma 外的任何 response header 的权限，服务器应该在 header Access-Control-Expose-Headers 中列出允许的那些 header。
 
-对于非安全请求，会在请求之前发出初步“预检”请求：
+对于非安全请求，会在请求之前发出初步"预检"请求：
 
 → 浏览器将具有以下 header 的 OPTIONS 请求发送到相同的 URL：
 Access-Control-Request-Method 有请求方法。
-Access-Control-Request-Headers 以逗号分隔的“非安全” header 列表。
+Access-Control-Request-Headers 以逗号分隔的"非安全" header 列表。
 ← 服务器应该响应状态码为 200 和 header：
 Access-Control-Allow-Methods 带有允许的方法的列表，
 Access-Control-Allow-Headers 带有允许的 header 的列表，
 Access-Control-Max-Age 带有指定缓存权限的秒数。
-然后，发送实际的请求，并应用之前的“安全”方案。
+然后，发送实际的请求，并应用之前的"安全"方案。
 ```
 
 # 6. Fetch API
-```
+```text
 到目前为止，我们已经对 fetch 相当了解了。
 
 现在让我们来看看 fetch 的剩余 API，来了解它的全部本领吧。
@@ -1112,7 +1112,7 @@ mode 选项是一种安全措施，可以防止偶发的跨源请求：
 "cors" —— 默认值，允许跨源请求，如 Fetch：跨源请求 一章所述，
 "same-origin" —— 禁止跨源请求，
 "no-cors" —— 只允许安全的跨源请求。
-当 fetch 的 URL 来自于第三方，并且我们想要一个“断电开关”来限制跨源能力时，此选项可能很有用。
+当 fetch 的 URL 来自于第三方，并且我们想要一个"断电开关"来限制跨源能力时，此选项可能很有用。
 ```
 ## 6.3 credentials
 ```javascript
@@ -1151,7 +1151,7 @@ integrity 选项允许检查响应是否与已知的预先校验和相匹配。
 
 正如 规范 所描述的，支持的哈希函数有 SHA-256，SHA-384，和 SHA-512，可能还有其他的，这取决于浏览器。
 
-例如，我们下载一个文件，并且我们知道它的 SHA-256 校验和为 “abcdef”（当然，实际校验和会更长）。
+例如，我们下载一个文件，并且我们知道它的 SHA-256 校验和为 "abcdef"（当然，实际校验和会更长）。
 
 我们可以将其放在 integrity 选项中，就像这样:
 
@@ -1191,7 +1191,7 @@ window.onunload = function() {
 ```
 
 # 7. URL对象
-```
+```text
 内建的 URL 类提供了用于创建和解析 URL 的便捷接口。
 
 没有任何一个网络方法一定需要使用 URL 对象，字符串就足够了。所以从技术上讲，我们并不是必须使用 URL。但是有些时候 URL 对象真的很有用。
@@ -1309,7 +1309,7 @@ encodeURI —— 编码整个 URL。
 decodeURI —— 解码为编码前的状态。
 encodeURIComponent —— 编码 URL 组件，例如搜索参数，或者 hash，或者 pathname。
 decodeURIComponent —— 解码为编码前的状态。
-一个自然的问题：“encodeURIComponent 和 encodeURI 之间有什么区别？我们什么时候应该使用哪个？”
+一个自然的问题："encodeURIComponent 和 encodeURI 之间有什么区别？我们什么时候应该使用哪个？"
 
 如果我们看一个 URL，就容易理解了，它被分解为本文上面图中所示的组件形式：
 
@@ -1360,10 +1360,10 @@ alert(new URL(url)); // http://[2607:f8b0:4005:802::1007]/
 ```
 
 # 8. XMLHttpRequest
-```
+```text
 XMLHttpRequest 是一个内建的浏览器对象，它允许使用 JavaScript 发送 HTTP 请求。
 
-虽然它的名字里面有 “XML” 一词，但它可以操作任何数据，而不仅仅是 XML 格式。我们可以用它来上传/下载文件，跟踪进度等。
+虽然它的名字里面有 "XML" 一词，但它可以操作任何数据，而不仅仅是 XML 格式。我们可以用它来上传/下载文件，跟踪进度等。
 
 现如今，我们有一个更为现代的方法叫做 fetch，它的出现使得 XMLHttpRequest 在某种程度上被弃用。
 
@@ -1564,7 +1564,7 @@ try {
 } catch(err) { // 代替 onerror
   alert("Request failed");
 }
-这看起来好像不错，但是很少使用同步调用，因为它们会阻塞页面内的 JavaScript，直到加载完成。在某些浏览器中，滚动可能无法正常进行。如果一个同步调用执行时间过长，浏览器可能会建议关闭“挂起（hanging）”的网页。
+这看起来好像不错，但是很少使用同步调用，因为它们会阻塞页面内的 JavaScript，直到加载完成。在某些浏览器中，滚动可能无法正常进行。如果一个同步调用执行时间过长，浏览器可能会建议关闭"挂起（hanging）"的网页。
 
 XMLHttpRequest 的很多高级功能在同步请求中都不可用，例如向其他域发起请求或者设置超时。并且，正如你所看到的，没有进度指示。
 
@@ -1802,7 +1802,7 @@ error，abort，timeout 和 load 事件是互斥的。其中只有一种可能�
 ```
 
 # 9. 可恢复的文件上传
-```
+```text
 使用 fetch 方法来上传文件相当容易。
 
 连接断开后如何恢复上传？这里没有对此的内建选项，但是我们有实现它的一些方式。
@@ -1880,7 +1880,7 @@ xhr.send(file.slice(startByte));
 ```
 
 # 10. 长轮询（Long polling）
-```
+```text
 长轮询是与服务器保持持久连接的最简单的方式，它不使用任何特定的协议，例如 WebSocket 或者 Server Sent Event。
 
 它很容易实现，在很多场景下也很好用。
@@ -1888,7 +1888,7 @@ xhr.send(file.slice(startByte));
 ```
 ## 10.1 常规轮询
 ```javascript
-从服务器获取新信息的最简单的方式是定期轮询。也就是说，定期向服务器发出请求：“你好，我在这儿，你有关于我的任何信息吗？”例如，每 10 秒一次。
+从服务器获取新信息的最简单的方式是定期轮询。也就是说，定期向服务器发出请求："你好，我在这儿，你有关于我的任何信息吗？"例如，每 10 秒一次。
 
 作为响应，服务器首先通知自己，客户端处于在线状态，然后 —— 发送目前为止的消息包。
 
@@ -1900,7 +1900,7 @@ xhr.send(file.slice(startByte));
 ```
 ## 10.2 长轮询
 ```javascript
-所谓“长轮询”是轮询服务器的一种更好的方式。
+所谓"长轮询"是轮询服务器的一种更好的方式。
 
 它也很容易实现，并且可以无延迟地传递消息。
 
@@ -1976,8 +1976,8 @@ subscribe();
 ```
 
 # 11. WebSocket
-```
-在 RFC 6455 规范中描述的 WebSocket 协议，提供了一种在浏览器和服务器之间建立持久连接来交换数据的方法。数据可以作为“数据包”在两个方向上传递，而无需中断连接也无需额外的 HTTP 请求。
+```text
+在 RFC 6455 规范中描述的 WebSocket 协议，提供了一种在浏览器和服务器之间建立持久连接来交换数据的方法。数据可以作为"数据包"在两个方向上传递，而无需中断连接也无需额外的 HTTP 请求。
 
 对于需要连续数据交换的服务，例如网络游戏，实时交易系统等，WebSocket 尤其有用。
 ```
@@ -1991,7 +1991,7 @@ let socket = new WebSocket("ws://javascript.info");
 始终使用 wss://
 wss:// 协议不仅是被加密的，而且更可靠。
 
-因为 ws:// 数据不是加密的，对于任何中间人来说其数据都是可见的。并且，旧的代理服务器不了解 WebSocket，它们可能会因为看到“奇怪的” header 而中止连接。
+因为 ws:// 数据不是加密的，对于任何中间人来说其数据都是可见的。并且，旧的代理服务器不了解 WebSocket，它们可能会因为看到"奇怪的" header 而中止连接。
 
 另一方面，wss:// 是基于 TLS 的 WebSocket，类似于 HTTPS 是基于 TLS 的 HTTP），传输安全层在发送方对数据进行了加密，在接收方进行解密。因此，数据包是通过代理加密传输的。它们看不到传输的里面的内容，且会让这些数据通过。
 
@@ -2030,7 +2030,7 @@ socket.onclose = function(event) {
 socket.onerror = function(error) {
   alert(`[error] ${error.message}`);
 };
-出于演示目的，在上面的示例中，运行着一个用 Node.js 写的小型服务器 server.js。它响应为 “Hello from server, John”，然后等待 5 秒，关闭连接。
+出于演示目的，在上面的示例中，运行着一个用 Node.js 写的小型服务器 server.js。它响应为 "Hello from server, John"，然后等待 5 秒，关闭连接。
 
 所以你看到的事件顺序为：open → message → close。
 
@@ -2042,7 +2042,7 @@ socket.onerror = function(error) {
 ```javascript
 当 new WebSocket(url) 被创建后，它将立即开始连接。
 
-在连接期间，浏览器（使用 header）问服务器：“你支持 WebSocket 吗？”如果服务器回复说“我支持”，那么通信就以 WebSocket 协议继续进行，该协议根本不是 HTTP。
+在连接期间，浏览器（使用 header）问服务器："你支持 WebSocket 吗？"如果服务器回复说"我支持"，那么通信就以 WebSocket 协议继续进行，该协议根本不是 HTTP。
 
 
 这是由 new WebSocket("wss://javascript.info/chat") 发出的请求的浏览器 header 示例。
@@ -2056,7 +2056,7 @@ Sec-WebSocket-Key: Iv8io/9s+lYFgZWcXczP8Q==
 Sec-WebSocket-Version: 13
 Origin —— 客户端页面的源，例如 https://javascript.info。WebSocket 对象是原生支持跨源的。没有特殊的 header 或其他限制。旧的服务器无法处理 WebSocket，因此不存在兼容性问题。但 Origin header 很重要，因为它允许服务器决定是否使用 WebSocket 与该网站通信。
 Connection: Upgrade —— 表示客户端想要更改协议。
-Upgrade: websocket —— 请求的协议是 “websocket”。
+Upgrade: websocket —— 请求的协议是 "websocket"。
 Sec-WebSocket-Key —— 浏览器随机生成的安全密钥。
 Sec-WebSocket-Version —— WebSocket 协议版本，当前为 13。
 无法模拟 WebSocket 握手
@@ -2070,7 +2070,7 @@ Connection: Upgrade
 Sec-WebSocket-Accept: hsBlbuDTkk24srzEOTBUlZAlC2g=
 这里 Sec-WebSocket-Accept 是 Sec-WebSocket-Key，是使用特殊的算法重新编码的。浏览器使用它来确保响应与请求相对应。
 
-然后，使用 WebSocket 协议传输数据，我们很快就会看到它的结构（“frames”）。它根本不是 HTTP。
+然后，使用 WebSocket 协议传输数据，我们很快就会看到它的结构（"frames"）。它根本不是 HTTP。
 
 扩展和子协议
 WebSocket 可能还有其他 header，Sec-WebSocket-Extensions 和 Sec-WebSocket-Protocol，它们描述了扩展和子协议。
@@ -2079,7 +2079,7 @@ WebSocket 可能还有其他 header，Sec-WebSocket-Extensions 和 Sec-WebSocket
 
 Sec-WebSocket-Extensions: deflate-frame 表示浏览器支持数据压缩。扩展与传输数据有关，扩展了 WebSocket 协议的功能。Sec-WebSocket-Extensions header 由浏览器自动发送，其中包含其支持的所有扩展的列表。
 
-Sec-WebSocket-Protocol: soap, wamp 表示我们不仅要传输任何数据，还要传输 SOAP 或 WAMP（“The WebSocket Application Messaging Protocol”）协议中的数据。WebSocket 子协议已经在 IANA catalogue 中注册。因此，此 header 描述了我们将要使用的数据格式。
+Sec-WebSocket-Protocol: soap, wamp 表示我们不仅要传输任何数据，还要传输 SOAP 或 WAMP（"The WebSocket Application Messaging Protocol"）协议中的数据。WebSocket 子协议已经在 IANA catalogue 中注册。因此，此 header 描述了我们将要使用的数据格式。
 
 这个可选的 header 是使用 new WebSocket 的第二个参数设置的。它是子协议数组，例如，如果我们想使用 SOAP 或 WAMP：
 
@@ -2105,16 +2105,16 @@ Connection: Upgrade
 Sec-WebSocket-Accept: hsBlbuDTkk24srzEOTBUlZAlC2g=
 Sec-WebSocket-Extensions: deflate-frame
 Sec-WebSocket-Protocol: soap
-在这里服务器响应 —— 它支持扩展 “deflate-frame”，并且仅支持所请求的子协议中的 SOAP。
+在这里服务器响应 —— 它支持扩展 "deflate-frame"，并且仅支持所请求的子协议中的 SOAP。
 ```
 ## 11.3 数据传输
 ```javascript
-WebSocket 通信由 “frames”（即数据片段）组成，可以从任何一方发送，并且有以下几种类型：
+WebSocket 通信由 "frames"（即数据片段）组成，可以从任何一方发送，并且有以下几种类型：
 
-“text frames” —— 包含各方发送给彼此的文本数据。
-“binary data frames” —— 包含各方发送给彼此的二进制数据。
-“ping/pong frames” 被用于检查从服务器发送的连接，浏览器会自动响应它们。
-还有 “connection close frame” 以及其他服务 frames。
+"text frames" —— 包含各方发送给彼此的文本数据。
+"binary data frames" —— 包含各方发送给彼此的二进制数据。
+"ping/pong frames" 被用于检查从服务器发送的连接，浏览器会自动响应它们。
+还有 "connection close frame" 以及其他服务 frames。
 在浏览器里，我们仅直接使用文本或二进制 frames。
 
 WebSocket .send() 方法可以发送文本或二进制数据。
@@ -2152,7 +2152,7 @@ setInterval(() => {
 ```
 ## 11.5 连接关闭
 ```javascript
-通常，当一方想要关闭连接时（浏览器和服务器都具有相同的权限），它们会发送一个带有数字码（numeric code）和文本形式的原因的 “connection close frame”。
+通常，当一方想要关闭连接时（浏览器和服务器都具有相同的权限），它们会发送一个带有数字码（numeric code）和文本形式的原因的 "connection close frame"。
 
 它的方法是：
 
@@ -2195,10 +2195,10 @@ socket.onclose = event => {
 ```javascript
 要获取连接状态，可以通过带有值的 socket.readyState 属性：
 
-0 —— “CONNECTING”：连接还未建立，
-1 —— “OPEN”：通信中，
-2 —— “CLOSING”：连接关闭中，
-3 —— “CLOSED”：连接已关闭。
+0 —— "CONNECTING"：连接还未建立，
+1 —— "OPEN"：通信中，
+2 —— "CLOSING"：连接关闭中，
+3 —— "CLOSED"：连接已关闭。
 ```
 ## 11.7 聊天示例
 ```javascript
@@ -2304,7 +2304,7 @@ WebSocket 自身并不包含重新连接（reconnection），身份验证（auth
 当然，其他集成方式也是可行的。
 ```
 # 12. Server Sent Events
-```
+```text
 Server-Sent Events 规范描述了一个内建的类 EventSource，它能保持与服务器的连接，并允许从中接收事件。
 
 与 WebSocket 类似，其连接是持久的。
@@ -2394,7 +2394,7 @@ eventSource.close();
 并且，如果响应具有不正确的 Content-Type 或者其 HTTP 状态码不是 301，307，200 和 204，则不会进行重新连接。在这种情况下，将会发出 "error" 事件，并且浏览器不会重新连接。
 
 请注意：
-当连接最终被关闭时，就无法“重新打开”它。如果我们想要再次连接，只需要创建一个新的 EventSource。
+当连接最终被关闭时，就无法"重新打开"它。如果我们想要再次连接，只需要创建一个新的 EventSource。
 ```
 ## 12.3 消息ID
 ```javascript

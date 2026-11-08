@@ -1,6 +1,6 @@
 # 1. 为什么需要线上 A/B
 
-```
+```text
 离线评测：固定评测集，不能反映真实用户行为
 线上 A/B：真实流量，验证真实效果
 ```
@@ -39,7 +39,7 @@
 
 ## 2.1 六步流程
 
-```
+```text
 ① 提出假设：新版 Prompt 能提升满意度
 ② 定义指标：满意度、任务完成率、成本
 ③ 分流：随机分配到 A（对照）与 B（实验）
@@ -78,7 +78,7 @@
 
 ### 3.1.2 分桶
 
-```
+```text
 bucket = hash(userId + experimentName) % 100
 treatment 若 bucket < treatmentPercentage
 ```
@@ -163,7 +163,7 @@ public record ExperimentMetrics(
 
 ## 4.3 指标计算公式
 
-```
+```text
 taskCompletionRate = 完成任务会话数 / 总会话数
 userSatisfaction   = (点赞 - 点踩) / (点赞 + 点踩)
 followUpRate       = 有追问的会话数 / 总会话数
@@ -221,7 +221,7 @@ public class ExperimentTracker {
 
 # 6. 统计显著性
 
-```
+```text
 核心问题：A 与 B 的差异是真实的，还是随机波动？
 ```
 
@@ -243,7 +243,7 @@ public class ExperimentTracker {
 
 ## 6.2 样本量估算
 
-```
+```text
 n ≈ 16 × σ² / Δ²
 
 σ：指标标准差
@@ -295,7 +295,7 @@ public SignificanceResult welchT(double meanA, double varA, int nA,
 
 ## 6.4 置信区间与效应量
 
-```
+```text
 95% CI = (p2 - p1) ± 1.96 × SE
 效应量 Cohen's h = 2 × arcsin(√p2) - 2 × arcsin(√p1)
 ```
@@ -351,7 +351,7 @@ public enum ExperimentStatus {
 }
 ```
 
-```
+```text
 DRAFT -> RUNNING -> COMPLETED
            |  ^
            v  |
@@ -404,7 +404,7 @@ public void analyze(String experimentName) {
 
 ## 9.2 结合使用
 
-```
+```text
 ① 灰度 1%：验证不崩溃、延迟正常
 ② 灰度 10%：验证错误率与成本
 ③ A/B 50%：验证业务指标显著性

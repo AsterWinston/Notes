@@ -17,7 +17,7 @@
 
 ### 1.1.2 典型故障场景
 
-```
+```text
 用户提问 → 实例A 内存中创建任务 → 实例A 重启
                                         │
 用户追问 → 负载均衡到实例B → 找不到任务 → 从头再来
@@ -116,7 +116,7 @@ public AgentState step(String taskId) {
 
 ### 3.1.2 检查点时机
 
-```
+```text
 Step 1 → 保存 → Step 2 → 保存 → Step 3 → 保存 → ...
                           ↑
                     崩溃后从这里恢复
@@ -425,7 +425,7 @@ AgentState compacted = state.withMessages(
 
 ### 9.1.1 状态流转
 
-```
+```text
 CREATED → EXECUTING → COMPLETED
               │  └──▶ FAILED
               ├──▶ WAITING_HUMAN → EXECUTING
@@ -440,7 +440,7 @@ WAITING_HUMAN 状态让任务可长期挂起，审批后从 EXECUTING 继续，�
 
 ### 9.2.1 分级保留
 
-```
+```text
 保留策略：
 - COMPLETED：保留 7~30 天后归档
 - FAILED：保留更久（用于分析）

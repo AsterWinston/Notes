@@ -143,7 +143,7 @@ OrderAssistant assistant = AiServices.builder(OrderAssistant.class)
 
 ## 3.1 决策树
 
-```
+```text
 团队用 Spring Boot？
   ├── 是
   │    ├── 追求官方支持与统一抽象 → Spring AI
@@ -327,7 +327,7 @@ AI 框架仍处高速演进期，API 破坏性变更并不罕见，选型时需�
 
 ## 7.1 迁移面
 
-```
+```text
 好消息：核心抽象高度相似
   ChatModel / Prompt / Tool / Memory / Retriever
 
@@ -384,7 +384,7 @@ ToolCallback weatherTool() {
 
 ## 8.1 组合模式
 
-```
+```text
 Spring AI（主）+ LangGraph4j（多 Agent 编排）
 LangChain4j（主）+ Spring AI 的 VectorStore
 Spring AI + MCP（工具生态）

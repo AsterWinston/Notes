@@ -3,7 +3,7 @@
 
 采用多模块 Maven 项目，父 POM 统一管理依赖：
 
-```
+```text
 dubbo-demo/
 ├── pom.xml                    (父 POM)
 ├── dubbo-demo-api/

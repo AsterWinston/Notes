@@ -1,6 +1,6 @@
 # 1. MyBatis-Spring 整合概述
 
-```
+```text
 MyBatis-Spring 是将 MyBatis 无缝集成到 Spring 框架中的桥梁模块。
 
 核心目标：
@@ -18,7 +18,7 @@ MyBatis-Spring 是将 MyBatis 无缝集成到 Spring 框架中的桥梁模块。
 
 # 2. 核心组件
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                  MyBatis-Spring 核心组件                          │
 ├─────────────────────────────────────────────────────────────────┤
@@ -644,7 +644,7 @@ public class CarService {
 
 # 9. 整合后的完整数据流
 
-```
+```text
   @Service
   public class TransferService {
       @Autowired private AccountMapper mapper;
@@ -690,7 +690,7 @@ public class CarService {
 
 # 10. 常见问题与解决
 
-```
+```text
 问题 1：Mapper 接口注入失败（NoSuchBeanDefinitionException）
 
   原因：@MapperScan 没有扫描到 Mapper 接口所在包
@@ -794,7 +794,7 @@ public class MybatisAutoConfiguration implements InitializingBean {
 
 # 12. 手动配置 vs Spring Boot 自动配置
 
-```
+```text
 ┌──────────────────────┬─────────────────────────┬───────────────────────────────┐
 │      配置方式          │        手动（XML）        │     Spring Boot（自动配置）     │
 ├──────────────────────┼─────────────────────────┼───────────────────────────────┤

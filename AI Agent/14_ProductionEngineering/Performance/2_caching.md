@@ -6,7 +6,7 @@
 
 ### 1.1.1 层次结构
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │ ① 结果缓存：相同问题直接返回            │  最省
 ├─────────────────────────────────────────┤
@@ -77,7 +77,7 @@ private String cacheKey(String question, UserContext user) {
 
 key 至少应包含租户、问题哈希与版本三部分：
 
-```
+```text
 chat:{tenantId}:{promptVersion}:{sha256(question)}
 ```
 
@@ -123,7 +123,7 @@ private boolean isCacheable(String question) {
 
 ### 3.1.1 相似问题命中
 
-```
+```text
 "如何报销差旅费"  → 缓存命中
 "差旅费用怎么报"  → 语义相似度 0.96 → 命中同一缓存
 ```

@@ -12,7 +12,7 @@ Shell 是一个**命令解释器**，也是用户与操作系统内核之间的*
 
 **五层定位模型：**
 
-```
+```text
 用户层：终端模拟器（iTerm2 / Windows Terminal / GNOME Terminal）
  ↓
 应用层：Shell（bash / zsh / fish）—— 命令解释器
@@ -162,7 +162,7 @@ end
 
 ## 4.2 可移植性层级
 
-```
+```text
 ┌──────────────────────────────────────┐
 │  bashisms   (bash 专有特性)           │  ← 功能最强，可移植性最差
 │  ┌────────────────────────────────┐  │
@@ -201,7 +201,7 @@ end
 
 当用户在终端输入 `ls -l /tmp` 时，Shell 的执行流程：
 
-```
+```text
 输入：ls -l /tmp
   ↓
 1. 词法分析（Lexing）
@@ -270,7 +270,7 @@ command ls
 
 ## 6.1 Bash 启动文件
 
-```
+```text
 登录 Shell:
   /etc/profile
     → ~/.bash_profile  (或 ~/.bash_login 或 ~/.profile，取第一个存在的)
@@ -297,7 +297,7 @@ fi
 
 ## 6.2 Zsh 启动文件
 
-```
+```text
 登录 Shell:
   /etc/zsh/zprofile → ~/.zprofile
 

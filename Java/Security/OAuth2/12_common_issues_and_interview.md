@@ -4,7 +4,7 @@
 
 ### 1.1.1 Q1: redirect_uri 不匹配错误
 
-```
+```text
 错误信息：error=redirect_uri_mismatch
 
 原因：
@@ -23,7 +23,7 @@
 
 ### 1.1.2 Q2: invalid_grant 错误（Token 端点）
 
-```
+```text
 错误信息：error=invalid_grant
 
 常见原因：
@@ -40,7 +40,7 @@
 
 ### 1.1.3 Q3: CORS 错误（SPA 直接请求 Token 端点）
 
-```
+```text
 错误：Access to fetch at 'https://auth.example.com/token' blocked by CORS policy
 
 原因：浏览器阻止了跨域 POST 请求
@@ -60,7 +60,7 @@
 
 ### 1.2.1 Q4: Access Token 总是过期，用户需要频繁登录
 
-```
+```text
 根本原因：没有正确使用 Refresh Token 自动续期
 
 解决方案：
@@ -79,7 +79,7 @@
 
 ### 1.2.2 Q5: JWT 签名验证失败
 
-```
+```text
 错误：JWT signature verification failed
 
 可能原因与排查：
@@ -133,7 +133,7 @@ public void debugJwtValidation(String token) {
 
 ### 1.2.3 Q6: Refresh Token 轮换导致的问题
 
-```
+```text
 问题：开启 Refresh Token 轮换后，某些请求失败
 
 场景一：并发刷新
@@ -162,7 +162,7 @@ public void debugJwtValidation(String token) {
 
 ### 2.1.1 Q: OAuth2 是什么？解决什么问题？
 
-```
+```text
 OAuth2 是一个授权框架协议，允许第三方应用在不知道用户密码的前提下，
 获得用户对受保护资源的有限访问权限。
 
@@ -174,7 +174,7 @@ OAuth2 是一个授权框架协议，允许第三方应用在不知道用户密�
 
 ### 2.1.2 Q: OAuth2 的四种角色？
 
-```
+```text
 1. Resource Owner（资源拥有者）— 通常是用户
 2. Resource Server（资源服务器）— 托管受保护资源
 3. Client（客户端）— 请求访问资源的应用
@@ -183,7 +183,7 @@ OAuth2 是一个授权框架协议，允许第三方应用在不知道用户密�
 
 ### 2.1.3 Q: 四种授权模式及使用场景？
 
-```
+```text
 1. Authorization Code（授权码模式）
    场景：有后端的 Web 应用（机密客户端）
    特点：最安全、推荐；Token 不经过浏览器
@@ -202,7 +202,7 @@ OAuth2 是一个授权框架协议，允许第三方应用在不知道用户密�
 
 ### 2.1.4 Q: OAuth2 和 OIDC 的区别？
 
-```
+```text
 OAuth2：授权协议 — "这个第三方应用可以访问你的什么资源"
 OIDC： 认证协议 — "这个用户是谁"
 
@@ -217,7 +217,7 @@ OIDC 是建立在 OAuth2 之上的身份认证层
 
 ### 2.1.5 Q: PKCE 是什么？为什么需要它？
 
-```
+```text
 PKCE（Proof Key for Code Exchange）是对 Authorization Code 模式的安全增强。
 
 工作原理：
@@ -237,7 +237,7 @@ PKCE（Proof Key for Code Exchange）是对 Authorization Code 模式的安全�
 
 ### 2.2.1 Q: JWT Token 如何保证安全？
 
-```
+```text
 1. 签名验证：使用非对称算法（RS256/ES256），资源服务器验证签名
 2. 短有效期：Access Token 15-30 分钟
 3. HTTPS 传输：防止中间人窃取
@@ -249,7 +249,7 @@ PKCE（Proof Key for Code Exchange）是对 Authorization Code 模式的安全�
 
 ### 2.2.2 Q: Token 存在服务端还是客户端？
 
-```
+```text
 按 Token 类型：
 - JWT Access Token：存储在客户端（HTTP Header），服务端无状态
 - Opaque Access Token：元数据存储在服务端（Redis/DB）
@@ -264,7 +264,7 @@ PKCE（Proof Key for Code Exchange）是对 Authorization Code 模式的安全�
 
 ### 2.2.3 Q: 用户修改密码后，如何让所有已颁发的 Token 失效？
 
-```
+```text
 方案对比：
 
 1. Token 版本号（推荐）
@@ -292,7 +292,7 @@ PKCE（Proof Key for Code Exchange）是对 Authorization Code 模式的安全�
 
 ### 2.2.4 Q: 如何防止 CSRF 攻击？
 
-```
+```text
 OAuth2 中的 CSRF 攻击：
 攻击者诱导受害者使用攻击者的 authorization code 登录
 
@@ -308,7 +308,7 @@ OAuth2 中的 CSRF 攻击：
 
 ### 2.2.5 Q: 如何防止 XSS 窃取 Token？
 
-```
+```text
 问题：如果 Token 存储在 localStorage 中，XSS 可以轻易窃取
 
 防御策略：
@@ -331,7 +331,7 @@ OAuth2 中的 CSRF 攻击：
 
 ### 2.3.1 Q: Spring Security 中 OAuth2 的核心组件有哪些？
 
-```
+```text
 1. ClientRegistration — 客户端配置（client-id, client-secret, 端点等）
 2. ClientRegistrationRepository — 客户端配置仓库
 3. OAuth2AuthorizedClientService — 已授权客户端管理（存储 Token）
@@ -343,7 +343,7 @@ OAuth2 中的 CSRF 攻击：
 
 ### 2.3.2 Q: @EnableWebSecurity vs @EnableMethodSecurity？
 
-```
+```text
 @EnableWebSecurity：启用 Web 安全（URL 级别的访问控制）
   - 配置 SecurityFilterChain
   - URL Pattern 匹配授权
@@ -381,7 +381,7 @@ OAuth2 中的 CSRF 攻击：
 
 ### 2.4.1 Q: 设计一个支持第三方登录的系统
 
-```
+```text
 架构：
 ┌──────────┐     ┌──────────────┐     ┌──────────────┐
 │  SPA/BFF │────>│  应用服务器    │────>│  授权服务器    │
@@ -418,7 +418,7 @@ OAuth2 中的 CSRF 攻击：
 
 ### 2.4.2 Q: 微服务架构中如何传递用户身份？
 
-```
+```text
 方案：
 
 1. Token 转发（Token Relay）
@@ -458,7 +458,7 @@ OAuth2 中的 CSRF 攻击：
 
 # 4. 快速调试检查清单
 
-```
+```text
 OAuth2 问题快速排查：
 
 □ 1. 确认 Token 是否存在

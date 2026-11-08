@@ -8,7 +8,7 @@
 
 同步请求在模型返回前一直占着 Web 线程，线程池很快耗尽，其他请求只能排队。
 
-```
+```text
 - 占满 Web 线程 → 无法处理其他请求
 - 用户长时间等待 → 体验差
 - 突发流量直接压垮服务
@@ -101,7 +101,7 @@ public TaskRef submit(@RequestBody TaskRequest req) {
 
 ### 3.1.1 四步流程
 
-```
+```text
 ① 客户端提交任务 → 立即返回 taskId
 ② 服务端异步执行（队列 + Worker）
 ③ 客户端轮询或接收通知
@@ -175,21 +175,21 @@ public class AsyncTaskController {
 
 ### 4.2.1 削峰填谷
 
-```
+```text
 削峰填谷：
   突发 1000 请求 → 队列缓冲 → Worker 按能力消费
 ```
 
 ### 4.2.2 解耦
 
-```
+```text
 解耦：
   提交方与执行方解耦，各自独立扩缩容
 ```
 
 ### 4.2.3 可靠性
 
-```
+```text
 可靠性：
   消息持久化，Worker 崩溃后重新投递
 ```
@@ -235,7 +235,7 @@ public void consume(ConsumerRecord<String, AgentTask> record) {
 
 ## 5.2 效果示意
 
-```
+```text
 请求速率        消费速率
   ▲               ▲
   │    ╱╲         │ ────────  恒定消费

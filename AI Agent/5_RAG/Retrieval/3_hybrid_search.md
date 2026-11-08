@@ -36,7 +36,7 @@
 
 混合检索的标准流程是"**两路召回 → 融合 → 重排**"。
 
-```
+```text
                     ┌──────────────┐
 查询 ──┬──────────▶│ 稠密检索      │──▶ 候选列表 A（按相似度排序）
        │           └──────────────┘
@@ -74,7 +74,7 @@
 
 ## 2.4 完整数据流
 
-```
+```text
 question
   ├─ 向量化 ─▶ 向量库 ─▶ A[(doc,score)]
   └─ 分词   ─▶ BM25   ─▶ B[(doc,score)]
@@ -92,7 +92,7 @@ question
 
 RRF（Reciprocal Rank Fusion）只依赖**排名**，不依赖分数，因此天然解决"两种检索分数不可比"的问题。
 
-```
+```text
 RRF(d) = Σ   1 / (k + rank_i(d))
         i
 ```
@@ -166,7 +166,7 @@ public List<String> weightedRrf(List<List<String>> rankedLists,
 
 ## 4.1 公式
 
-```
+```text
 finalScore = α × normalize(denseScore) + (1-α) × normalize(sparseScore)
 ```
 
@@ -188,7 +188,7 @@ public List<Result> weightedFuse(List<ScoredDoc> dense,
 
 ### 4.2.1 min-max 归一化
 
-```
+```text
 x' = (x - min) / (max - min)
 ```
 
@@ -196,7 +196,7 @@ x' = (x - min) / (max - min)
 
 ### 4.2.2 z-score 标准化
 
-```
+```text
 x' = (x - mean) / std
 ```
 

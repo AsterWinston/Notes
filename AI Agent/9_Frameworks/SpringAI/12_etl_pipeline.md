@@ -6,7 +6,7 @@
 
 ### 1.1.1 什么是 ETL
 
-```
+```text
 DocumentReader ──▶ DocumentTransformer ──▶ DocumentWriter
    （Extract）         （Transform）          （Load）
    读取文档            切分/清洗/增强         写入 VectorStore
@@ -29,7 +29,7 @@ DocumentReader ──▶ DocumentTransformer ──▶ DocumentWriter
 
 ### 1.2.1 Extract 抽取
 
-```
+```text
 PDF/Word/HTML/JSON/Markdown
         │  Reader
         ▼
@@ -38,7 +38,7 @@ PDF/Word/HTML/JSON/Markdown
 
 ### 1.2.2 Transform 转换
 
-```
+```text
    List<Document>
         │  Transformer（TokenTextSplitter / KeywordMetadataEnricher ...）
         ▼
@@ -47,7 +47,7 @@ PDF/Word/HTML/JSON/Markdown
 
 ### 1.2.3 Load 加载
 
-```
+```text
    List<Document>（带元数据）
         │  Writer（VectorStore）
         ▼
@@ -204,7 +204,7 @@ List<Document> chunks = splitter.apply(docs);
 
 ### 3.2.2 分块参数经验
 
-```
+```text
 经验起点：
 - chunkSize：300~800 Token
 - overlap（重叠）：10%~20% chunkSize，避免答案被切断
@@ -236,7 +236,7 @@ SummaryMetadataEnricher summaryEnricher = new SummaryMetadataEnricher(
 
 ## 3.4 Transformer 组合与顺序
 
-```
+```text
 raw docs
    │ TokenTextSplitter（先分块）
    ▼
@@ -355,7 +355,7 @@ public DocumentReader readerFor(String filename) {
 
 ## 6.1 更新模式
 
-```
+```text
 新增文档 → 直接 add
 修改文档 → 先按 source 删除旧块，再 add 新块
 删除文档 → 按 source 删除
@@ -391,7 +391,7 @@ if (fingerprint.equals(storedFingerprint(source))) {
 
 ## 6.3 别名切换
 
-```
+```text
 1. 建新索引 knowledge_v2
 2. ETL 灌入全部数据
 3. 抽样校验（数量、召回）

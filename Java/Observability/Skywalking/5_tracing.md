@@ -1,7 +1,7 @@
 
 # 1. Trace 数据模型
 
-```
+```text
 Trace (一次请求的完整生命周期)
   │
   ├── TraceId: 全局唯一标识
@@ -24,7 +24,7 @@ Trace (一次请求的完整生命周期)
 
 # 2. 单服务内追踪
 
-```
+```text
 一个 HTTP 请求在 Spring Boot 应用内的 Span 树：
 
 Entry Span (SpanId=0, ParentSpanId=-1)
@@ -42,7 +42,7 @@ Entry Span (SpanId=0, ParentSpanId=-1)
 
 # 3. 跨进程 Trace 传播
 
-```
+```text
 Service A (HTTP Client)                    Service B (HTTP Server)
         │                                         │
         │ 创建 Exit Span                          │
@@ -63,7 +63,7 @@ Service A (HTTP Client)                    Service B (HTTP Server)
 
 ## 3.1 sw8 协议头
 
-```
+```text
 sw8: 1-MyAppA..1-MyAppB..1-/api/user-0-...-...
 
 格式: 1-TRACEID-SEGMENTID-SPANID-SERVICE-INSTANCE-ENDPOINT-PEER
@@ -112,7 +112,7 @@ public class ContextManager {
 
 # 5. Span 生命周期
 
-```
+```text
 1. createEntrySpan/ExitSpan/LocalSpan → Span 入栈
 2. 执行业务逻辑
 3. stopSpan() → Span 出栈，计算耗时

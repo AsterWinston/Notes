@@ -304,7 +304,7 @@ public class OrderService {
 
 MongoDB目前仅支持**快照隔离（Snapshot Isolation）**级别，实现原理：
 
-```
+```text
 快照隔离的工作原理：
 1. 事务开始时获取一个快照时间戳
 2. 事务内所有读操作都看到该时间戳的数据版本
@@ -380,7 +380,7 @@ public void transferWithRetry(String from, String to, long amount) {
 
 MongoDB 4.2支持跨分片的分布式事务，实现基于**两阶段提交（2PC）**：
 
-```
+```text
 分布式事务流程：
 1. Prepare阶段：协调者通知所有参与者准备提交
 2. Commit阶段：协调者通知所有参与者提交
@@ -441,7 +441,7 @@ db.adminCommand({
 
 ## 8.3 事务与性能
 
-```
+```text
 事务性能影响:
 - 单分片事务: 吞吐量降低约 10%~20%
 - 跨分片事务: 吞吐量降低约 20%~40%

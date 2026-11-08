@@ -20,7 +20,7 @@ Gradle 不是简单地替代 Ant 或 Maven，而是在它们的基础之上提�
 
 ## 1.2 Gradle 的架构层次
 
-```
+```text
 ┌───────────────────────────────────────────────────────────┐
 │                    用户构建脚本                          │
 │   build.gradle(.kts)  settings.gradle(.kts)  init script │
@@ -174,7 +174,7 @@ Gradle 的核心创新之一是其增量构建机制。每个 Task 可以声明�
 
 如果输入没有变化且输出仍然存在，Gradle 将该 Task 标记为 `UP-TO-DATE` 并跳过执行。这一机制在大型项目中可以节省大量构建时间。
 
-```
+```text
 Task :compileJava UP-TO-DATE      ← 跳过，因为源文件未修改
 Task :processResources UP-TO-DATE
 Task :classes UP-TO-DATE
@@ -365,7 +365,7 @@ android {
 
 Android Gradle 构建变体（Build Variants）机制允许基于 `buildTypes` 和 `productFlavors` 的笛卡尔积生成多个 APK/AAB。
 
-```
+```text
 buildTypes: debug × release
 productFlavors: free × paid
 结果：freeDebug, freeRelease, paidDebug, paidRelease
@@ -467,7 +467,7 @@ gradle init
 
 Gradle 的每次执行都遵循三个明确的阶段：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │  1. 初始化阶段 (Initialization)                               │
 │  ├── 解析 settings.gradle                                     │
@@ -494,7 +494,7 @@ Gradle 的每次执行都遵循三个明确的阶段：
 
 Gradle 守护进程是一个后台 JVM 进程，在第一次 Gradle 调用时启动，并在后续调用中复用。它避免了每次构建时 JVM 启动、类加载和常见的初始化开销。
 
-```
+```text
 首次调用:
   gradle build → 启动 Daemon (JVM 启动 + 类加载 + 初始化) → 执行构建
 

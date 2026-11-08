@@ -6,7 +6,7 @@ context 是 Go 并发编程里传递"取消信号、超时、请求元数据"的
 
 ★ **关键认知**：在服务端，一个请求往往触发一串调用链（handler → service → 数据库/RPC）。当请求被取消（客户端断开、超时），需要**把取消信号传播给整条调用链**，让所有相关的 goroutine 停止工作、释放资源：
 
-```
+```text
 请求处理链：
 client → handler → service → DB 查询
                     └→ RPC 调用 → 下游服务
@@ -63,7 +63,7 @@ ctx := context.WithValue(parent, key, value)
 
 ★ **关键认知**：context 是**树形结构**，父 context 取消时，所有子 context 自动取消：
 
-```
+```text
         Background
             │
         WithCancel
@@ -93,7 +93,7 @@ type cancelCtx struct {
 }
 ```
 
-```
+```text
 取消流程：
 1. cancel() 被调用 → 关闭 done channel
 2. 遍历 children，递归取消所有子 context
@@ -108,7 +108,7 @@ type cancelCtx struct {
 
 ★ **关键认知**：官方 context 使用规范：
 
-```
+```text
 1. context 作为第一个参数传递，命名通常为 ctx
 2. 不要把 context 存进结构体（作为字段），要显式传递
 3. context 是并发安全的（可同时被多个 goroutine 使用）
@@ -175,7 +175,7 @@ user := ctx.Value(userKey).(string)
 
 ★ **关键认知**：context 传值**只用于请求级元数据**（如用户 ID、trace ID），且必须：
 
-```
+```text
 1. key 使用自定义类型（避免和其他包的字符串 key 冲突）
 2. 不要传可变对象（避免并发问题）
 3. 不要用 context 传"可选参数"（应显式传参）
@@ -187,7 +187,7 @@ user := ctx.Value(userKey).(string)
 
 ★ **关键认知**：context 使用中的常见错误：
 
-```
+```text
 1. 忘记 defer cancel() → 定时器/goroutine 泄漏
 2. 把 context 存进结构体字段 → 违背显式传递原则
 3. 用 string 作 WithValue 的 key → 可能和其他包冲突

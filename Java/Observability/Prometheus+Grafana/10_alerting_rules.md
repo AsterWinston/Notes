@@ -3,7 +3,7 @@
 
 Prometheus 采用**采集与告警分离**的架构：
 
-```
+```text
 Prometheus Server                   Alertmanager
 +-------------------+               +-------------------+
 | Scrape Metrics    |               | Alertmanager      |
@@ -48,7 +48,7 @@ groups:
 
 # 3. 告警状态机
 
-```
+```text
 Inactive (未触发)
     |
     |-- expr 返回 true
@@ -291,7 +291,7 @@ promtool test rules rules_test.yml
 
 ## 9.1 告警命名规范
 
-```
+```text
 <Component><Condition> 或 <Condition><Component>
 
 Good: HighCPUUsage, InstanceDown, HighErrorRate, DiskSpaceFull

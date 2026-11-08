@@ -1,6 +1,6 @@
 Spring IoC 的实现原理：工厂模式 + 解析XML + 反射机制
 # 1. 环境准备
-```
+```text
 打包方式与依赖引入
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -45,7 +45,7 @@ Spring IoC 的实现原理：工厂模式 + 解析XML + 反射机制
 ```
 
 # 2. Spring框架核心接口实现ApplicationContext
-```
+```text
 package org.myspringframework.core;
 
 /**
@@ -73,7 +73,7 @@ public interface ApplicationContext {
 ```
 
 # 3. Spring框架核心接口实现类ClassPathXmlApplicationContext
-```
+```java
 package org.myspringframework.core;
 
 import org.dom4j.*;
@@ -263,7 +263,7 @@ public class ClassPathXmlApplicationContext implements ApplicationContext{
 ```
 
 # 4. MySpring框架测试
-```
+```java
 @org.junit.Test
 public void test01() {
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("myspring.xml");
@@ -279,7 +279,7 @@ public void test01() {
 
 ## 5.1 架构对比
 
-```
+```text
                           手写 MySpring                    真实 Spring 6
 ┌──────────────┐  ┌────────────────────────┐  ┌────────────────────────────┐
 │ 配置加载      │  │ 自定义 dom4j 解析 XML   │  │ XmlBeanDefinitionReader      │
@@ -316,7 +316,7 @@ public void test01() {
 
 ## 5.2 核心代码对比
 
-```
+```text
 手写 MySpring 的"两阶段"创建：
 // 第一阶段：反射创建所有对象
 for (Element beanElement : beanElements) {

@@ -75,7 +75,7 @@ const p: Point = new Vector2(1, 2);
 
 ## 2.1 编译流水线
 
-```
+```text
  .ts 源码
     │
     ▼

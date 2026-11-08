@@ -84,7 +84,7 @@ import fn from "cjs-lib";                     // ✓ esModuleInterop 开启时�
 
 ## 2.1 解析流水线
 
-```
+```text
    import { x } from "@app/utils"
             │
             ▼
@@ -190,7 +190,7 @@ b.clone(2);                      // 匹配有参重载
 
 ## 4.2 namespace 与 class / function / enum 的合并
 
-```
+```text
    class Album ──────────┐   （值空间：构造器 + 实例类型）
                          │  声明合并
    namespace Album ──────┤   （值空间 + 类型空间）

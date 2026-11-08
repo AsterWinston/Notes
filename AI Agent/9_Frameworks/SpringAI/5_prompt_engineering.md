@@ -4,7 +4,7 @@
 
 **结论先行**：Spring AI 把"提示"这件事拆成三类对象——`Message`（内容）、`PromptTemplate`（模板）、`ChatClient`（编排），三者职责清晰，避免把模板字符串硬编码在业务方法里。
 
-```
+```text
 Prompt = List<Message> + ChatOptions
 Message = 角色 + 内容（+ 多模态 Media + 元数据）
 ```
@@ -46,7 +46,7 @@ Prompt prompt = template.create(Map.of("name", "张三"));
 
 **机制**：一次调用的完整输入由"消息序列 + 参数"两部分构成，参数又分生成参数与工具定义。
 
-```
+```text
 Prompt
 ├── messages: List<Message>       消息序列（角色 + 内容）
 └── options: ChatOptions          生成参数（温度、上限等）
@@ -345,7 +345,7 @@ public class PromptRegistry {
 
 **机制**：用目录区分版本，通过配置项切换，实现灰度与快速回滚。
 
-```
+```text
 resources/prompts/
 ├── v1/
 │   ├── qa_system.st
@@ -387,7 +387,7 @@ Prompt prompt = template.create(params);
 
 **结论先行**：提示工程的关键不是"措辞"，而是"给模型看什么"。上下文窗口是有限预算，必须显式分配。
 
-```
+```text
 ┌───────────────────────────┐
 │  上下文窗口（有限预算）      │
 ├───────────────────────────┤

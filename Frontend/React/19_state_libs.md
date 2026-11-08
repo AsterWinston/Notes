@@ -124,7 +124,7 @@ const Counter = observer(function Counter({ store }) {
 
 ## 4.1 共同内核:最小订阅
 
-```
+```text
 传统 Context 的广播:Provider value 一变 → 所有消费者全部重渲染,粗细不分
 现代状态库的定向唤醒:store 一变 → 逐个跑订阅者的 selector → 结果没变就不唤醒
 

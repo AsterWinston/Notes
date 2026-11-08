@@ -2,7 +2,7 @@
 
 # 1. cargo release
 
-```
+```text
 1.1 cargo build              # debug 构建（快，无优化，溢出 panic）
 1.2 cargo build --release    # release 构建（慢，优化，溢出回绕）
 1.3 cargo run --release      # release 模式运行
@@ -27,7 +27,7 @@ strip = true         # 去除符号
 
 ## 2.1 crate 类型
 
-```
+```text
 2.1 binary crate（二进制 crate）
     - 有 src/main.rs，包含 fn main()
     - 编译为可执行文件
@@ -92,7 +92,7 @@ members = [
 serde = "1.0"
 ```
 
-```
+```text
 目录结构：
 workspace/
 ├── Cargo.toml          # workspace 清单

@@ -3,7 +3,7 @@
 
 Spring Security 是 Java 生态下最强大的安全框架，提供认证（Authentication）、授权（Authorization）和攻击防护（CSRF/XSS/Session Fixation 等）能力。理解其架构是掌握 SSO 集成的关键前提。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                Spring Security 核心架构                           │
 │                                                                   │
@@ -212,7 +212,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 ## 3.1 过滤器链结构
 
-```
+```text
 HTTP 请求
     │
     ▼
@@ -591,7 +591,7 @@ spring:
 
 # 7. Spring Security 在 SSO 中的角色
 
-```
+```text
 SSO 场景中 Spring Security 承担的角色：
 
 ┌───────────────────────────────────────────────────────────┐

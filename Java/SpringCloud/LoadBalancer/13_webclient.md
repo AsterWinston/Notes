@@ -106,7 +106,7 @@ public class ReactorLoadBalancerExchangeFilterFunction
 
 ## 3.2 请求流程图
 
-```
+```text
 WebClient.get().uri("http://user-service/api/users/1")
     │
     ▼

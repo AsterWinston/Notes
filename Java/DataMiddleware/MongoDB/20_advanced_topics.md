@@ -7,7 +7,7 @@
 
 Change Streams基于副本集的Oplog实现，从Oplog中读取变更事件并推送给订阅者。
 
-```
+```text
 应用 → watch() → Change Stream Cursor
                          ↓
                      读取Oplog
@@ -158,7 +158,7 @@ GridFS是MongoDB的大文件存储规范，用于存储超过16MB BSON限制的�
 
 ## 2.1 GridFS架构
 
-```
+```text
 GridFS将大文件拆分为两个集合：
 - fs.files: 文件元数据（文件名、大小、上传时间、自定义metadata等）
 - fs.chunks: 文件数据块（每个chunk默认255KB，可配置）
@@ -256,7 +256,7 @@ db.createCollection("sensorData", {
 
 ## 3.2 时序集合存储优化
 
-```
+```text
 时序集合内部实现：
 - 按metaField分组
 - 每组内的测量值按时间排序紧密存储
@@ -354,7 +354,7 @@ db.articles.aggregate([
 
 对于不使用Atlas的场景，可以采用Elasticsearch同步方案：
 
-```
+```text
 MongoDB (主存储) → Change Stream → Elasticsearch (搜索)
                                               ↑
                                         应用搜索请求
@@ -489,7 +489,7 @@ function archiveOldOrders() {
 
 ## 6.3 分片归档
 
-```
+```text
 - 按时间分片，新数据存入快速SSD分片
 - 历史数据迁移到低成本HDD分片
 - 通过Zone分片实现冷热数据物理分离
@@ -547,7 +547,7 @@ public class Article {
 
 ## 8.1 高可用部署架构
 
-```
+```text
 应用层：
 ┌─────────┐ ┌─────────┐ ┌─────────┐
 │  App 1  │ │  App 2  │ │  App 3  │
@@ -567,7 +567,7 @@ public class Article {
 
 ## 8.2 连接字符串最佳配置
 
-```
+```text
 mongodb://mongo1:27017,mongo2:27017,mongo3:27017/admin?
   replicaSet=rs0
   &readPreference=secondaryPreferred

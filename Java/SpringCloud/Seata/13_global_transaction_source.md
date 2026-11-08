@@ -199,7 +199,7 @@ public GlobalStatus rollback(String xid) throws TransactionException {
 
 # 5. 状态机
 
-```
+```text
                             begin()
                                │
                                ▼

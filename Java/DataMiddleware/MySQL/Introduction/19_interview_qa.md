@@ -165,7 +165,7 @@ Write-Ahead Log：先写日志（redo log），再写磁盘（数据页）。崩
 
 ## 7.1 主从复制原理？
 
-```
+```text
 主库事务提交 → 写 binlog → 从库 I/O 线程拉取并写 relay log → 从库 SQL 线程重放
 ```
 

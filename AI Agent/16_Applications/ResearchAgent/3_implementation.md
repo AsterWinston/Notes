@@ -380,7 +380,7 @@ public Flux<ServerSentEvent<String>> stream(@RequestParam String topic) {
 
 结论先行：SSE 经反向代理易被缓冲，需显式关闭缓冲并发送心跳。机制：设置代理缓冲关闭，并周期性发送注释行维持连接。
 
-```
+```text
 Nginx:
   proxy_buffering off;
   proxy_read_timeout 300s;
@@ -394,7 +394,7 @@ Nginx:
 
 结论先行：事件类型要稳定、可扩展、可断线重连。机制：定义 progress、finding、done、error 等事件，附带序号与时间戳。
 
-```
+```text
 event: progress  data: {"stage":"检索子问题1/4"}
 event: finding   data: {"summary":"..."}
 event: progress  data: {"stage":"生成报告"}

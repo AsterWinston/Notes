@@ -3,7 +3,7 @@
 
 Spring Cloud LoadBalancer 通过 `DiscoveryClient` 抽象与注册中心解耦：
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │              Spring Cloud LoadBalancer               │
 │                                                       │
@@ -105,7 +105,7 @@ public ReactorLoadBalancer<ServiceInstance> nacosLoadBalancer(
 
 **多集群路由规则**：
 
-```
+```text
 当前服务 cluster = SH
   │
   ├── 候选列表中有 SH 集群实例 → 仅路由到 SH（加权）

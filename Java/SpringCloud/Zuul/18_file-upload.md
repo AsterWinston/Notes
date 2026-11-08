@@ -3,7 +3,7 @@
 
 Zuul 网关中处理文件上传与普通请求有本质区别：
 
-```
+```text
 普通请求流程：
   DispatcherServlet → ZuulController → ZuulServlet → RouteFilter → 后端
 

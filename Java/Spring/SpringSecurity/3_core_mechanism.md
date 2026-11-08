@@ -60,7 +60,7 @@ public class UsernamePasswordAuthenticationFilter
 
 处理 **HTTP Basic 认证**，从请求头 `Authorization: Basic base64(user:pass)` 提取用户名密码：
 
-```
+```text
 Authorization: Basic YWRtaW46MTIzNDU2
 ```
 
@@ -273,7 +273,7 @@ http.rememberMe(remember -> remember
 ## 4.1 原理与作用
 
 **CSRF 攻击流程：**
-```
+```text
 1. 用户登录银行网站 bank.com
 2. 用户访问恶意网站 evil.com
 3. evil.com 暗藏 <form action="bank.com/transfer" ...>

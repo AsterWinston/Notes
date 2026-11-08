@@ -142,7 +142,7 @@ $primary: #42b883;
 
 ## 5.2 工程结构建议
 
-```
+```text
 src/styles/
 ├── _variables.scss    # 变量(颜色、间距、断点)
 ├── _mixins.scss       # 公共 mixin

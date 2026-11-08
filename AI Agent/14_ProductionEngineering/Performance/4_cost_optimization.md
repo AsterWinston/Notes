@@ -4,7 +4,7 @@
 
 ## 1.1 成本分解模型
 
-```
+```text
 总成本 = 模型调用 + 向量化 + 重排 + 向量库 + 存储 + 基础设施
 ```
 
@@ -78,7 +78,7 @@ public record ModelPrice(BigDecimal inputPer1M, BigDecimal outputPer1M) {
 
 ## 2.2 收益与代价权衡
 
-```
+```text
 高收益 / 低代价  →  立即做（路由、Prompt 缓存）
 高收益 / 高代价  →  规划做（本地 Embedding）
 低收益 / 低代价  →  顺手做（输出限制）
@@ -226,7 +226,7 @@ return answer;
 
 多数厂商按"最长公共前缀"做缓存，前缀不变的部分按折扣价计费。
 
-```
+```text
 [稳定前缀：系统提示 + 知识库] ← 命中缓存，折扣计费
 [可变后缀：用户问题]          ← 全价
 ```
@@ -278,7 +278,7 @@ SearchRequest.builder()
 
 先多召回（保证覆盖），再重排（保证精度），最后只保留 topN（控制成本）。
 
-```
+```text
 召回 topK=50 → 重排 → 取 topN=3~5 → 拼入提示
 ```
 
@@ -425,7 +425,7 @@ EmbeddingStoreContentRetriever.builder()
 
 ## 10.3 混合检索
 
-```
+```text
 稠密检索(语义) + 稀疏检索(关键词) → RRF 融合 → 重排 → topN
 ```
 
@@ -480,7 +480,7 @@ if (dailyCost(tenantId) > budget(tenantId) * 0.8) {
 
 ## 12.1 分阶段落地
 
-```
+```text
 1. 建立成本监控（先能看见）
 2. 模型分层路由（收益最大）
 3. 缓存（结果 + 语义 + 向量）

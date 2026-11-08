@@ -3,7 +3,7 @@
 
 ## 1.1 通用规范
 
-```
+```text
 <namespace>_<subsystem>_<unit>[_<suffix>]
 ```
 

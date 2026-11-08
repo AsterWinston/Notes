@@ -3,7 +3,7 @@
 
 **SAML（Security Assertion Markup Language）** 是 OASIS 制定的基于 XML 的联邦身份认证标准，2005 年发布 2.0 版本，至今仍是企业级 SSO 的事实标准之一。SAML 的核心是通过 **断言（Assertion）** 在 IdP 和 SP 之间传递用户身份信息。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                     SAML 2.0 核心角色                             │
 │                                                                   │
@@ -143,7 +143,7 @@ NameID 是 SAML 中标识用户的核心字段，支持多种格式：
 
 ## 3.1 SP-Initiated SSO（最常用）
 
-```
+```text
 用户              SP (Service)          IdP (Identity Provider)
  │                    │                       │
  │ 1. 访问受保护资源  │                       │
@@ -196,7 +196,7 @@ NameID 是 SAML 中标识用户的核心字段，支持多种格式：
 
 用户先登录 IdP 门户，再点击系统中的链接启动 SSO：
 
-```
+```text
 用户先登录 IdP 门户 → 点击"访问 App A" → IdP 直接签发 Assertion → POST 到 SP
 ```
 
@@ -209,7 +209,7 @@ SAML 协议消息可以通过多种传输方式在 SP 和 IdP 之间传递：
 
 ## 4.1 HTTP Redirect Binding
 
-```
+```text
 GET /SAML2/SSO?SAMLRequest=fZJNT%2BMwEIb…
                &RelayState=https%3A%2F%2Fsp.example.com%2Fapp
                &SigAlg=http%3A%2F%2Fwww.w3.org%2F2001%2F04%2Fxmldsig-more%23rsa-sha256
@@ -264,7 +264,7 @@ String redirectUrl = idpSsoUrl + "?SAMLRequest=" + urlEncoded;
 
 ## 4.3 HTTP Artifact Binding
 
-```
+```text
 流程：
 1. IdP 生成一个短的 Artifact（引用），通过 302 重定向传回 SP
 2. SP 收到 Artifact 后，通过后端 SOAP/HTTP 请求向 IdP 换取完整的 Assertion
@@ -396,7 +396,7 @@ public boolean validateSignature(Response samlResponse) {
 
 ## 6.3 XML 签名包装攻击（XML Signature Wrapping）
 
-```
+```text
 攻击原理：
 原始 Assertion：
 <Response>
@@ -433,7 +433,7 @@ SAML SLO 支持两种模式：
 
 ## 7.1 SP-Initiated SLO
 
-```
+```text
 用户点击 SP 中的登出按钮
   → SP 发送 LogoutRequest 到 IdP
   → IdP 销毁全局会话
@@ -444,7 +444,7 @@ SAML SLO 支持两种模式：
 
 ## 7.2 IdP-Initiated SLO
 
-```
+```text
 用户在 IdP 点击全局登出
   → IdP 向所有已认证的 SP 发送 LogoutRequest
   → 各 SP 销毁局部会话

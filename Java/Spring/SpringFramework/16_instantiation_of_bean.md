@@ -7,7 +7,7 @@ Spring中为Bean对象的创建准备了多种方案，目的是为了能够更�
 
 
 # 1. 通过构造方法实例化
-```
+```text
 我们之前一直使用的就是这种方式。
 在spring配置文件中直接配置类全路径，即在Spring配置文件中配置bean，Spring会自动调用该类的无参数构造方法来实例化Bean
 
@@ -41,7 +41,7 @@ public void test1() {
 ```
 
 # 2. 通过简单工厂模式实例化
-```
+```text
 抽象产品类
 /**
  * ClassName: Fruit
@@ -107,7 +107,7 @@ public void test1() {
 ```
 
 # 3. 通过factory-bean实例化（工厂方法模式实例化）
-```
+```text
 抽象产品类
 /**
  * ClassName: Fruit
@@ -199,13 +199,13 @@ public void test1() {
 
 ```
 # 4. 通过FactoryBean接口实例化
-```
+```text
 以上的第三种方式中，factory-bean（生产bean的工厂bean）是我们自定义的，factory-method（生产bean的工厂方法）也是我们自己定义的。
 在Spring中，当我们编写的类直接实现FactoryBean接口之后，用于创建bean的factory-bean就不需要我们指定了，工厂bean的factory-method也不需要我们指定了。factory-bean会自动指向实现FactoryBean接口的类，factory-method会自动指向该类中的getObject()方法。
 因为我们在配置文件中指定的用于创建bean的类在实现FactoryBean接口之后，Spring就知道这是一个工厂类，并且知道工厂方法是哪个
 这种方式实际上就是第三种方式的简化
-FactoryBean在Spring中是一个接口，被称为“工厂Bean”。
-“工厂Bean”是一种特殊的Bean，所有的“工厂Bean”都是用来协助Spring框架来创建其他Bean对象的。
+FactoryBean在Spring中是一个接口，被称为"工厂Bean"。
+"工厂Bean"是一种特殊的Bean，所有的"工厂Bean"都是用来协助Spring框架来创建其他Bean对象的。
 
 产品类
 /**
@@ -289,7 +289,7 @@ public void test1() {
 # 6. BeanFactory和FactoryBean的区别
 ## 6.1 BeanFactory
 BeanFactory Spring 容器的顶级父接口
-Spring IoC容器的顶级对象，BeanFactory被翻译为“Bean工厂”，在Spring的IoC容器中，“Bean工厂”负责创建Bean对象，即BeanFactory是一个创建bean对象的工厂。
+Spring IoC容器的顶级对象，BeanFactory被翻译为"Bean工厂"，在Spring的IoC容器中，"Bean工厂"负责创建Bean对象，即BeanFactory是一个创建bean对象的工厂。
 BeanFactory是工厂。
 ## 6.2 FactoryBean
 FactoryBean：它是一个Bean，是一个能够辅助Spring实例化其它Bean对象的一个Bean。
@@ -300,7 +300,7 @@ FactoryBean：它是一个Bean，是一个能够辅助Spring实例化其它Bean�
 工厂Bean是一种特殊的Bean，用于获取其他Bean的一种特殊Bean
 
 # 7. FactoryBean练习-注入自定义Date
-```
+```text
 java.util.Date在Spring中被当做简单类型，简单类型在注入的时候可以直接使用value属性或value标签来完成。
 但是对于Date类型来说，采用value属性或value标签赋值的时候，对日期字符串的格式要求非常严格，必须是这种格式的：Mon Oct 10 14:30:26 CST 2022。其他格式是不会被识别的。
 /**
@@ -327,7 +327,7 @@ public class Student {
 
 ```
 ## 7.1 以简单类型的方式注入 Date
-```
+```text
 <bean id="student" class="cw.spring.study.bean.Student">
   <property name="birth" value="Mon Oct 10 14:30:26 CST 2022"/>
 </bean>
@@ -344,7 +344,7 @@ public void test2() {
 ```
 
 ## 7.2 以非简单类型的方式通过 FactoryBean 接口实例化
-```
+```text
 采用工厂方法模式以非简单类型的方式通过 FactoryBean 接口实例化，我们可以在工厂方法中创建Date对象，同时还可以对Date对象进行加工，从而创建我们需要格式的日期对象
 /**
  * ClassName: DateFactoryBean
@@ -391,7 +391,7 @@ public class DateFactoryBean implements FactoryBean<Date> {
 
 ## 8.1 createBeanInstance() — Bean 实例化的决策树
 
-```
+```java
 AbstractAutowireCapableBeanFactory.createBeanInstance() 是实例化的核心入口：
 
 protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd,
@@ -460,7 +460,7 @@ protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd
 
 ## 8.2 InstantiationStrategy — 实例化策略接口
 
-```
+```text
 Spring 提供了两个 InstantiationStrategy 实现，负责实际的反射调用：
 
 public interface InstantiationStrategy {
@@ -488,7 +488,7 @@ public interface InstantiationStrategy {
 
 ### 8.2.1 SimpleInstantiationStrategy.instantiate() 源码
 
-```
+```java
 public Object instantiate(RootBeanDefinition bd, @Nullable String beanName,
         BeanFactory owner, Constructor<?> ctor, Object... args) {
 
@@ -519,7 +519,7 @@ public static <T> T instantiateClass(Constructor<T> ctor, Object... args)
 
 ### 8.2.2 CglibSubclassingInstantiationStrategy.instantiate() 源码
 
-```
+```java
 public Object instantiate(@Nullable Constructor<?> ctor, Object... args) {
 
     Class<?> subclass = createEnhancedSubclass(this.beanDefinition);
@@ -551,7 +551,7 @@ public Object instantiate(@Nullable Constructor<?> ctor, Object... args) {
 
 ## 8.3 FactoryBean 机制源码：getObjectForBeanInstance()
 
-```
+```java
 FactoryBean 的处理在 getBean() 流程中有一个专门的步骤：getObjectForBeanInstance()
 
 AbstractBeanFactory.getObjectForBeanInstance():
@@ -603,7 +603,7 @@ protected Object getObjectForBeanInstance(
 
 ### 8.3.1 FactoryBeanRegistrySupport.getObjectFromFactoryBean()
 
-```
+```java
 // 位于 FactoryBeanRegistrySupport（AbstractBeanFactory 的父类）
 protected Object getObjectFromFactoryBean(FactoryBean<?> factory, String beanName,
         boolean shouldPostProcess) {
@@ -695,7 +695,7 @@ protected Object doGetObjectFromFactoryBean(FactoryBean<?> factory, String beanN
 
 ## 8.4 FactoryBean 单例/原型 与 Bean 的单例/原型 的关系
 
-```
+```text
 两个概念容易混淆，但作用层级不同：
 
 ┌─────────────────────────────────────────────────────┐
@@ -734,7 +734,7 @@ protected Object doGetObjectFromFactoryBean(FactoryBean<?> factory, String beanN
 
 ## 8.5 autowireConstructor() — 构造注入决策源码
 
-```
+```text
 protected BeanWrapper autowireConstructor(
         String beanName, RootBeanDefinition mbd,
         @Nullable Constructor<?>[] chosenCtors, @Nullable Object[] explicitArgs) {
@@ -770,7 +770,7 @@ ConstructorResolver.autowireConstructor() 的主要逻辑：
 
 ## 8.6 设计思想总结
 
-```
+```text
 1. 策略模式（InstantiationStrategy）：
    实例化的"如何创建"通过策略接口与"何时创建"（createBeanInstance）解耦。
    可以在 Simple 和 CGLIB 两个策略之间切换，甚至可以自己实现新的策略。

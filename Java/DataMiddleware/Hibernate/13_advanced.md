@@ -454,7 +454,7 @@ public class AuditEventListenerIntegrator implements Integrator {
 
 文件内容：
 
-```
+```text
 com.example.hibernate.AuditEventListenerIntegrator
 ```
 
@@ -763,7 +763,7 @@ public class ChildEntity extends ParentEntity {
 
 **监听器执行总顺序：**
 
-```
+```text
 1. 默认全局监听器（orm.xml 中定义，按声明顺序）
 2. 排除默认监听器？→ 跳过 1
 3. 父类 @EntityListeners（从顶级父类到当前类，按声明顺序）
@@ -788,7 +788,7 @@ public class ChildEntity extends ParentEntity {
 
 **选用决策流程：**
 
-```
+```text
 需要跨 ORM 框架移植?
 ├─ 是 → EntityListeners（JPA 标准）
 └─ 否 → 需要修改底层 state[] 数组或 SQL?
@@ -1639,7 +1639,7 @@ public class User {
 
 Hibernate 6 重构了类型系统，将 Java 类型和 JDBC 类型的映射分离为两个独立的概念：
 
-```
+```text
 旧模型（Hibernate 5.x）:  UserType（一体两面：既管 Java 类型，又管 JDBC 映射）
                      ↓
 新模型（Hibernate 6.x）:  JavaType（描述 Java 类型） + JdbcType（描述 JDBC 映射）
@@ -2115,7 +2115,7 @@ Hibernate Envers 是 Hibernate 的审计模块，自动为 `@Audited` 实体创�
 
 Envers 的核心概念：
 
-```
+```text
 业务表:                            审计表:
 ┌─ users ─────────┐              ┌─ users_aud ────────────────────┐
 │ id  │ name │ age │              │ id │ rev │ revtype │ name │ age │
@@ -2489,7 +2489,7 @@ public class Document {
 
 增强后，Hibernate 可以通过实体内部的 tracker 精确知道哪些属性被修改，避免全字段对比：
 
-```
+```text
 未增强:    实体 ↔ 加载快照（Object[]）→ 逐字段 equals 比较 → 探测脏字段
 已增强:    属性 setter → tracker 记录 → 仅对比被修改的字段
 ```

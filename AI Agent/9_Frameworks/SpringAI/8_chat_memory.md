@@ -6,7 +6,7 @@
 
 大模型是**无状态**的：每次调用都从零开始。要实现多轮对话，必须把历史消息重新带给模型。
 
-```
+```text
 无记忆：
   用户：我叫张三
   模型：你好张三
@@ -85,7 +85,7 @@ public interface ChatMemory {
 
 ### 2.3.1 一次带记忆的调用
 
-```
+```text
 prompt() 触发
    │
    ▼
@@ -165,7 +165,7 @@ ChatMemory memory = MessageWindowChatMemory.builder()
 
 ## 4.2 截断行为
 
-```
+```text
 消息序列（旧 → 新）：
   M1 M2 M3 M4 M5 M6 M7 M8 M9 M10
                  │
@@ -441,7 +441,7 @@ String conversationId = userId + ":" + sessionId;
 
 ### 9.2.1 窗口 + 摘要
 
-```
+```text
 [摘要消息] 早期对话已被压缩为一段摘要
 [窗口消息] 最近 N 条原始消息
 [本轮消息] 用户最新输入

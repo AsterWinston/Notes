@@ -3,7 +3,7 @@
 
 Sentinel 的架构分为**客户端核心库**和**Dashboard 控制台**两部分：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                    Sentinel Dashboard                    │
 │              (规则管理 / 监控可视化 / 集群流控)           │
@@ -53,7 +53,7 @@ public User getUser(Long id) { ... }
 
 ## 2.2 Context 与 Entry
 
-```
+```text
 Context（调用上下文）
   ├── EntranceNode（入口节点，统计全局流量）
   │     └── Entry (SphU.entry 返回)
@@ -99,7 +99,7 @@ FlowRuleManager.loadRules(Collections.singletonList(rule));
 
 所有规则检查通过**责任链**串联执行，每个 Slot 负责单一职责：
 
-```
+```text
 SphU.entry(resourceName)
   │
   ▼
@@ -148,7 +148,7 @@ public void entry(Context context, ResourceWrapper resourceWrapper,
 
 Sentinel 使用 `LeapArray` 实现高效滑动窗口：
 
-```
+```text
 当前时间线 ────────────────────────────────────►
 ┌──────────┬──────────┬──────────┬──────────┐
 │ Window 0 │ Window 1 │ Window 2 │ Window 3 │  ← 每个窗口 500ms
@@ -193,7 +193,7 @@ ContextUtil.exit();
 
 对应调用树：
 
-```
+```text
 machine-root (EntranceNode)
   └── user-center (EntranceNode)
         └── getUser (DefaultNode)

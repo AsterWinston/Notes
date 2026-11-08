@@ -8,7 +8,7 @@
 
 ### 1.1.1 官方定位
 
-```
+```text
 Spring AI（官方抽象）
       +
 Spring AI Alibaba（国内增强）
@@ -220,7 +220,7 @@ RAG（Retrieval-Augmented Generation，检索增强生成）侧针对国内向�
 
 ## 4.2 工程结构
 
-```
+```text
 src/main/java
   └── com.example
       ├── config      配置类（模型、向量库）
@@ -406,7 +406,7 @@ public interface LlmPort {
 
 ## 8.1 四步路径
 
-```
+```text
 ① 掌握 Spring AI 基础
 ② 接入通义/百炼模型
 ③ 学习 Graph 编排

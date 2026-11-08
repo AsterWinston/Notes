@@ -15,7 +15,7 @@ RocketMQ 支持在 Consumer 端（也支持在 Broker 端）按规则过滤消�
 
 ## 2.1 基本原理
 
-```
+```text
 消息存储时：
   消息的 Tag HashCode 存储在 ConsumeQueue 条目中 (20B 中的后 8B)
 
@@ -152,7 +152,7 @@ consumer.subscribe("TopicTest", "com.example.MyMessageFilter");
 
 # 5. Filter 机制架构
 
-```
+```text
 Broker 端过滤流程：
 
 Consumer 拉取请求

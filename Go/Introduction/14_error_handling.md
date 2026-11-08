@@ -110,7 +110,7 @@ if errors.As(err, &pathErr) {
 }
 ```
 
-```
+```text
 errors.Is  vs  errors.As：
 - Is：判断错误链中是否有"值等于"某错误（哨兵错误用）
 - As：判断错误链中是否有"类型是"某错误（自定义错误类型用）
@@ -122,7 +122,7 @@ errors.Is  vs  errors.As：
 
 ★ **关键认知**：Go 社区的铁律——**panic 只用于真正的"不可恢复"错误**，即程序 bug 或无法继续执行的状态：
 
-```
+```text
 应该 panic：
 1. 数组越界、nil 解引用（Go 自动 panic）
 2. 违反编程契约，如未满足前置条件
@@ -154,7 +154,7 @@ func (s *Server) handle(w http.ResponseWriter, r *http.Request) {
 
 ★ **关键认知**：Go 错误处理的一些经验法则：
 
-```
+```text
 1. 错误信息应小写开头，不以句号结尾（配合日志串联）
 2. 要么处理错误，要么返回错误，不要吞掉错误（至少记录日志）
 3. 包装错误用 %w，并添加"做什么失败了"的上下文

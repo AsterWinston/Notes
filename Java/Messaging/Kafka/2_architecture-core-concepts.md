@@ -2,7 +2,7 @@
 
 ## 1.1 整体架构图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │                       Kafka 集群架构                                │
 │                                                                     │
@@ -36,7 +36,7 @@
 
 Topic 是 Kafka 中消息的逻辑分类单元，类似于数据库中的表或文件系统中的文件夹。
 
-```
+```text
 Topic "order-events"
 ├── Partition 0: [msg0, msg1, msg2, msg3, msg4, ...]
 ├── Partition 1: [msg0, msg1, msg2, msg3, ...]
@@ -52,7 +52,7 @@ Topic "order-events"
 
 ### 1.2.2 Topic 命名建议
 
-```
+```text
 <业务域>.<数据类型>.<环境>
 
 例如：
@@ -69,7 +69,7 @@ Partition 是 Kafka 存储和并行的基本单位，每个 Partition 是一个�
 
 Partition 在磁盘上体现为一个目录，包含多个 Segment 文件：
 
-```
+```text
 /tmp/kafka-logs/
 └── my-topic-0/          ← Partition 0 目录
     ├── 00000000000000000000.log      ← 数据文件
@@ -90,7 +90,7 @@ Partition 在磁盘上体现为一个目录，包含多个 Segment 文件：
 
 ### 1.3.3 分区数规划公式
 
-```
+```text
 期望吞吐量 / 单分区吞吐量 = 分区数
 
 示例：
@@ -110,7 +110,7 @@ Offset 是消息在 Partition 中唯一的顺序编号，从 0 开始递增。
 
 ### 1.4.1 Offset 的三重含义
 
-```
+```text
 "order-events" Partition 0
 ┌─────┬─────┬─────┬─────┬──────────┬─────┐
 │ 100 │ 101 │ 102 │ 103 │   104    │ 105 │
@@ -152,7 +152,7 @@ Broker 是 Kafka 集群中的单个服务节点，负责接收、存储和转发
 
 ### 1.5.1 Broker 的核心职责
 
-```
+```text
 Broker 节点
 ├── SocketServer（网络层）
 │   ├── Acceptor Thread（接收连接）
@@ -179,7 +179,7 @@ Broker 节点
 
 每个 Partition 在多个 Broker 上有副本，其中一个为 Leader，其余为 Follower：
 
-```
+```text
 Topic "orders", 3 Partitions, Replication Factor = 3
 
 Broker 1         Broker 2         Broker 3
@@ -197,7 +197,7 @@ F = Follower（仅同步复制）
 
 ISR 是与 Leader 保持同步的副本集合，包含 Leader 本身。当 Follower 落后超过 `replica.lag.time.max.ms`（默认 30s），会被移出 ISR。
 
-```
+```text
 初始: ISR = [Broker1, Broker2, Broker3]
 Broker2 挂掉 40 秒后: ISR = [Broker1, Broker3]
 Broker2 恢复追赶: ISR = [Broker1, Broker2, Broker3]
@@ -215,7 +215,7 @@ Consumer Group 是 Kafka 实现消息广播和单播的关键机制。
 
 ### 1.7.1 基于 Group 的消费模型
 
-```
+```text
 Topic "orders" (3 Partitions)
 │
 ├── P0 ─────▶ Consumer Group "order-service"
@@ -234,7 +234,7 @@ Topic "orders" (3 Partitions)
 
 ### 1.7.2 Group 内部协调
 
-```
+```text
 Consumer Group "order-service"
 │
 ├── Consumer A (memberId=A)
@@ -267,7 +267,7 @@ Kafka 支持两种 Rebalance 协议：
 - 所有 Consumer 重新加入 Group
 - 缺点：全局暂停，影响较大
 
-```
+```text
 阶段: ① 所有 Consumer 停止消费 → ② 全部重新加入 → ③ 重新分配 → ④ 恢复消费
 ```
 
@@ -275,7 +275,7 @@ Kafka 支持两种 Rebalance 协议：
 - Consumer 不会全部停止，仅涉及变动的分区重新分配
 - 分配分批进行，逐批恢复消费
 
-```
+```text
 阶段: ① 新 Consumer 加入 → ② 仅释放/分配部分分区 → ③ 其余 Consumer 继续消费
 ```
 
@@ -292,7 +292,7 @@ Kafka 支持两种 Rebalance 协议：
 
 每个 Partition 由多个 Segment 文件构成，Segment 是日志分段的最小单位。
 
-```
+```text
 Partition 0
 ├── 00000000000000000000.log  (大小: 1GB)
 │   ├── offset=0,  msg: "hello"

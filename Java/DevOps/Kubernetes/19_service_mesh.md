@@ -18,7 +18,7 @@ Service Mesh 的核心理念是：**将这些通信关注点从应用代码中�
 
 ## 1.2 Service Mesh 的核心架构
 
-```
+```text
 没有 Service Mesh:
   Service A ────直接调用────→ Service B
   (代码中处理重试、超时、TLS、...)
@@ -49,7 +49,7 @@ Service Mesh 的核心理念是：**将这些通信关注点从应用代码中�
 
 ### 1.2.1 数据面 (Data Plane) vs 控制面 (Control Plane)
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │              Control Plane (控制面)            │
 │                                              │
@@ -81,7 +81,7 @@ Service Mesh 的核心理念是：**将这些通信关注点从应用代码中�
 
 Istio 是目前使用最广泛的 Service Mesh 实现，CNCF 毕业项目。其核心组件（v1.5+ 简化为单体的 istiod）：
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │                     istiod                        │
 │                                                    │
@@ -139,7 +139,7 @@ kubectl get pods -n istio-system
 
 Istio 通过 Mutating Admission Webhook 自动在 Pod 中注入 Envoy Sidecar：
 
-```
+```text
 用户创建 Pod
      │
      ▼
@@ -388,7 +388,7 @@ Istio 自动为所有 HTTP/gRPC 请求注入 Trace Headers（`x-b3-traceid` 等�
 
 Istio 自动暴露 Envoy 指标，可通过 Prometheus 抓取并导入 Grafana Dashboard：
 
-```
+```text
 关键指标：
 istio_requests_total                    # 请求总数
 istio_request_duration_milliseconds     # 请求延迟
@@ -462,7 +462,7 @@ linkerd viz profile deployment/my-app --tap deploy/my-app
 
 ## 4.1 何时使用 Service Mesh
 
-```
+```text
 使用 Service Mesh 的明确信号:
 ├── 你需要跨服务统一实施 mTLS
 ├── 你需要金丝雀发布（精确的流量权重控制）
@@ -504,7 +504,7 @@ resources:
 
 ## 4.3 Service Mesh 与 API Gateway 的边界
 
-```
+```text
 外部流量（南北向）
      │
      ▼

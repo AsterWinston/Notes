@@ -7,7 +7,7 @@
 
 ### 1.1.1 定义对照
 
-```
+```text
 提示工程：怎么说（措辞、格式、示例）
 上下文工程：给什么（信息取舍、优先级、组织）
 ```
@@ -87,7 +87,7 @@ String prompt = """
 
 ### 2.1.1 结构图
 
-```
+```text
 ┌───────────────────────────────────┐
 │  上下文窗口（有限预算）             │
 ├───────────────────────────────────┤
@@ -117,7 +117,7 @@ String prompt = """
 
 **结论先行**：越稳定的内容越应靠前，越易变的内容越应靠后，以兼顾缓存与注意力。
 
-```
+```text
 稳定 ──────────────────────────────► 易变
 System 规则 → 工具定义 → 知识库 → 历史 → 当前问题
 ```
@@ -180,7 +180,7 @@ public List<Document> dedupe(List<Document> docs, double threshold) {
 
 ### 3.2.2 去重与排序配合
 
-```
+```text
 检索 TopN → 去重 → 按相关性排序 → 按预算截断
 ```
 
@@ -207,7 +207,7 @@ public List<Document> dedupe(List<Document> docs, double threshold) {
 
 ## 4.1 优先级分层
 
-```
+```text
 必须保留：
 ① System 规则
 ② 当前问题
@@ -302,7 +302,7 @@ public String buildRetrievalContext(List<Document> docs) {
 
 **结论先行**：模型对"开头和结尾"更敏感，最相关的片段应放在两端。
 
-```
+```text
 最相关 ─┐
         ├─ 放首尾（注意力强）
 次相关 ─┘
@@ -372,7 +372,7 @@ public List<Message> compressHistory(List<Message> history, int keepRecent) {
 
 ## 7.1 原理
 
-```
+```text
 把稳定内容放前面，易变内容放后面：
 - 命中厂商侧 Prompt 缓存 → 降本
 - 提高缓存命中率
@@ -396,7 +396,7 @@ String prompt = """
 
 ### 7.2.2 布局对照
 
-```
+```text
 ✅ 稳定 → 易变：[System][Tools][KB][History][Question]
 ❌ 易变 → 稳定：[Question][History][KB][Tools][System]
 ```

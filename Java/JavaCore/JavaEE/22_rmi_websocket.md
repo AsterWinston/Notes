@@ -5,7 +5,7 @@
 
 RMI（Java Remote Method Invocation）是 Java 的**远程方法调用**机制，允许运行在不同 JVM 上的对象互相调用方法，是 JavaEE 远程调用的基础设施（EJB `@Remote` 底层基于 RMI/RMI-IIOP）。
 
-```
+```text
 ┌───────────────┐   序列化+网络    ┌───────────────┐
 │  客户端 JVM    │ ──────────────► │   服务端 JVM   │
 │  Stub（存根）  │ ◄───────────── │  Skeleton     │
@@ -123,7 +123,7 @@ public class Client {
 
 WebSocket 提供浏览器与服务器的**全双工长连接**，实现实时通信（聊天、推送、实时监控）。
 
-```
+```text
 HTTP（请求-响应，半双工）
 浏览器 ──请求──► 服务器
 浏览器 ◄─响应── 服务器

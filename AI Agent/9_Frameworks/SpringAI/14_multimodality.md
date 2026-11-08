@@ -8,7 +8,7 @@
 
 ## 1.2 Spring AI 的模型抽象
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │ ChatModel        文本对话（可含图片/音频输入） │
 │ EmbeddingModel   文本 → 向量                  │
@@ -45,7 +45,7 @@
 
 **结论先行**：Spring AI 的抽象负责"把媒体规范化为模型可接受的格式"，真正决定效果的是模型侧的编码方式。
 
-```
+```text
 Media(Resource)
    │
    ▼
@@ -338,7 +338,7 @@ byte[] audioBytes = speechModel.call(
 
 ## 4.3 语音 Agent 组合
 
-```
+```text
 用户语音 ─▶ ASR ─▶ LLM（含工具调用）─▶ TTS ─▶ 用户
                      │
                      └─▶ 文本记录 / 审计
@@ -367,7 +367,7 @@ byte[] audioBytes = speechModel.call(
 
 图片、扫描件也能进入知识库：
 
-```
+```text
 文档/图片 → 多模态 Embedding（如 CLIP）→ 向量库
 查询文本 → 文本 Embedding → 检索 → 多模态模型生成
 ```
@@ -402,7 +402,7 @@ EmbeddingResponse txtVec = multimodalEmbedding.embed(
 
 ## 5.3 OCR + 文本 RAG 路线
 
-```
+```text
 图片 ─▶ OCR/图注 ─▶ 文本分块 ─▶ 文本 Embedding ─▶ 向量库
 查询 ─▶ 文本 Embedding ─▶ 检索 ─▶ LLM 生成
 ```
@@ -498,7 +498,7 @@ return answer;
 
 ### 7.1.1 上传处理流水线
 
-```
+```text
 上传 ─▶ 大小/MIME 校验 ─▶ 落临时文件 ─▶ 异步任务 ─▶ 结果回调
 ```
 

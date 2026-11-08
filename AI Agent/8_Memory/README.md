@@ -27,7 +27,7 @@
 
 记忆系统不是"存了就好"，而是一条完整流水线：
 
-```
+```text
 写入 → 存储 → 召回 → 注入 → 更新 → 遗忘
 ```
 
@@ -42,7 +42,7 @@
 
 ## 1.2 在整个知识体系中的位置
 
-```
+```text
 PromptEngineering → LLMEngineering → AgentCore
                                         │
                     ┌───────────────────┼───────────────────┐
@@ -58,7 +58,7 @@ PromptEngineering → LLMEngineering → AgentCore
 
 ### 1.2.1 记忆在 Agent 运行时的分层
 
-```
+```text
 上下文窗口（RAM）
   系统提示 + 当前问题 + 召回记忆 + 近期历史
         ▲                    │ 组装 / 压缩
@@ -199,7 +199,7 @@ PromptEngineering → LLMEngineering → AgentCore
 
 ## 4.1 推荐学习路径
 
-```
+```text
 概览（1） → 上下文与会话（2→3） → 长期记忆（4→5）
       → 存储与检索（6→7, 10→11） → 压缩（8, 12） → 借鉴（9）
 ```

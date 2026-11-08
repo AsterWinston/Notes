@@ -3,7 +3,7 @@
 
 Spring Cloud OpenFeign 与**服务注册中心**（Nacos、Eureka、Consul、Zookeeper）深度集成。核心链路：
 
-```
+```text
 @FeignClient(name = "user-service")
     │
     │  1. 从注册中心获取实例列表
@@ -155,7 +155,7 @@ public interface DiscoveryClient {
 
 # 6. ServiceInstanceListSupplier 链
 
-```
+```text
 
 Request
   │

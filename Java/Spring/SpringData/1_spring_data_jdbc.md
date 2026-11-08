@@ -54,7 +54,7 @@ Spring Data JDBC 的设计目标是：
 - 通过聚合根来执行所有 CRUD 操作
 - 聚合内部的对象之间通过引用关联，而不是通过数据库外键
 
-```
+```text
 聚合的设计原则：
 - 聚合根的 ID 是全局唯一标识
 - 聚合内部实体通过聚合根引用，不跨聚合直接引用
@@ -407,7 +407,7 @@ public class CustomNamingStrategy implements NamingStrategy {
 
 Spring Data JDBC 的 save 方法不是简单的 INSERT/UPDATE：
 
-```
+```text
 save(aggregateRoot) 执行流程：
 
 1. 判断聚合根是否为新实体（@Id 是否为 null/默认值）
@@ -508,7 +508,7 @@ public class ProductService {
 
 Spring Data JDBC 支持根据方法名自动生成查询 SQL，规则如下：
 
-```
+```text
 方法名 = 前缀 + 主体 + 后缀
 
 前缀：find / read / get / query / count / exists / delete / remove
@@ -517,7 +517,7 @@ Spring Data JDBC 支持根据方法名自动生成查询 SQL，规则如下：
 
 **完整语法**：
 
-```
+```text
 find...By        — 标准查询
 read...By        — 等同于 find...By
 get...By         — 等同于 find...By
@@ -793,7 +793,7 @@ public class User implements BeforeConvertCallback<User>, BeforeSaveCallback<Use
 
 ## 9.1 整体架构
 
-```
+```text
 ┌──────────────────────────────────────────────────────┐
 │                   Application Code                    │
 │          (UserRepository, UserService, ...)           │
@@ -848,7 +848,7 @@ public class User implements BeforeConvertCallback<User>, BeforeSaveCallback<Use
 
 Spring Data JDBC 在启动时通过 `@EnableJdbcRepositories`（或自动配置）扫描所有 Repository 接口，为每个接口创建 JDK 动态代理：
 
-```
+```text
 @EnableJdbcRepositories 触发
   → JdbcRepositoryConfigExtension
     → JdbcRepositoryFactoryBean
@@ -861,7 +861,7 @@ Spring Data JDBC 在启动时通过 `@EnableJdbcRepositories`（或自动配置�
 
 每个 Repository 方法调用流程：
 
-```
+```text
 userRepository.findByEmail(email)
   → JdkDynamicAopProxy.invoke()
     → RepositoryMethodInvoker
@@ -1004,7 +1004,7 @@ public interface OrderQueryMapper {
 
 ## 11.2 性能优化建议
 
-```
+```text
 1. 避免加载不需要的聚合
    - 对于只需部分数据的查询，使用 @Query 返回投影而非完整聚合
 

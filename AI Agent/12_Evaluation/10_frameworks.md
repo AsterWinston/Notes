@@ -29,7 +29,7 @@
 
 ## 1.3 通用分层
 
-```
+```text
 +-----------+     +-----------+     +-----------+
 |  Dataset  | --> |  Runner   | --> |  Metric   |
 +-----------+     +-----------+     +-----------+
@@ -65,7 +65,7 @@ RAGAS（Retrieval Augmented Generation Assessment）定义了 RAG 评测的标�
 
 ### 2.1.1 指标公式
 
-```
+```text
 faithfulness       = 有依据的论断数 / 论断总数
 answer_relevancy   = mean(cos_sim(生成问题_i, 原问题))
 context_precision  = Σ (precision@k × rel_k) / 相关文档总数
@@ -196,7 +196,7 @@ LLM Judge 是 IO 密集且昂贵，串行跑几百条样本会很慢，需要并
 
 ### 4.1.1 论断分解
 
-```
+```text
 答案: "差旅费需 30 天内报销，需发票。"
         |
         +- Claim1: 差旅费需 30 天内报销 -> 上下文有 -> 支持
@@ -262,7 +262,7 @@ public class RecallAtKMetric implements Metric {
 
 ### 4.2.2 Precision@K 与 MRR
 
-```
+```text
 precision@k = |相关 ∩ 前k| / k
 mrr         = 1 / 第一个相关文档的排名
 ```

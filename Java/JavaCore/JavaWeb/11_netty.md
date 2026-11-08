@@ -42,7 +42,7 @@ JDK 1.4 就有了 NIO，但直接写 NIO 服务端的体验很差。
 
 Netty 的模型可以浓缩成一句话：**一个 Channel 对应一条连接，一条连接绑定一个 EventLoop，一个 Channel 上挂一条 Pipeline，Pipeline 里串着一堆 Handler**。
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │                    EventLoopGroup                   │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐           │
@@ -102,7 +102,7 @@ Netty 支持三种 Reactor 模型，实际项目里几乎只用第三种。
 | 多线程 Reactor | 一个 accept 线程 + 一组 I/O 线程 | 通用服务端 |
 | 主从多线程 Reactor | boss 组 accept，worker 组读写 | 高并发服务端（Netty 默认用法） |
 
-```
+```text
 bossGroup（1~2 个线程）       workerGroup（CPU 核数 × 2）
       │                              │
    接受连接  ────注册 Channel────▶  读写事件 / 编解码 / 业务

@@ -491,7 +491,7 @@ OkHttp是Java端最早支持HTTP/2的客户端之一。HTTP/2的核心优势是*
 
 OkHttp通过ALPN（Application-Layer Protocol Negotiation）自动协商协议版本：
 
-```
+```text
 客户端 -> 服务端: 你好，我支持HTTP/2和HTTP/1.1
 服务端 -> 客户端: 好的，我们使用HTTP/2（如果服务端支持）
 ```
@@ -611,7 +611,7 @@ System.out.println("第二次请求，网络响应: " + response2.networkRespons
 
 OkHttp遵循服务端返回的缓存控制头：
 
-```
+```text
 Cache-Control: max-age=3600         // 缓存1小时
 Cache-Control: no-cache              // 不能直接使用缓存，需先验证
 Cache-Control: no-store              // 禁止缓存
@@ -638,7 +638,7 @@ Request freshRequest = new Request.Builder()
 
 ### 3.5.3 缓存流程
 
-```
+```text
 请求 -> 检查是否有缓存？
    |-- 有缓存且未过期 -> 直接返回缓存响应
    |-- 有缓存但已过期 -> 条件请求（If-Modified-Since / If-None-Match）
@@ -805,7 +805,7 @@ OkHttpClient client2 = new OkHttpClient.Builder()
 
 OkHttp的架构可以看作一个多层处理管道：
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │  Application Layer                              │
 │  (用户代码: OkHttpClient, Request, Call)        │
@@ -866,7 +866,7 @@ public final class RealInterceptorChain implements Interceptor.Chain {
 
 OkHttp内部维护了一个不可见的拦截器链，包含以下核心组件：
 
-```
+```text
 Application Interceptors (用户注册的拦截器)
 
     ↓
@@ -917,7 +917,7 @@ CallServerInterceptor
 
 ### 4.3.1 连接获取流程
 
-```
+```text
 Call.execute() / enqueue()
     ↓
 Dispatcher 调度请求
@@ -1032,7 +1032,7 @@ long cleanup(long now) {
 
 ## 4.5 线程模型
 
-```
+```text
 Dispatcher (调度器)
     ├── executorService: ThreadPoolExecutor      ← 异步执行任务的线程池
     ├── runningAsyncCalls: Deque<AsyncCall>      ← 正在执行的异步请求

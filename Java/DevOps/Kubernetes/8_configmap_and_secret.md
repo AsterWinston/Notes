@@ -128,7 +128,7 @@ ConfigMap 是 Kubernetes 原生的配置管理方案。它直接集成在 Kubern
 
 ConfigMap 不是要取代配置中心，而是提供了另一种轻量级的选择。对于已经深度使用配置中心的组织，可以在 Kubernetes 中继续使用配置中心；对于追求简约和 Kubernetes 原生体验的团队，ConfigMap + Secret 完全够用。实际工程中，也有团队采用混合模式：非敏感配置用 ConfigMap，敏感配置用配置中心的高级加密特性。
 
-```
+```text
 配置管理演进总结：
 
 硬编码 → 配置文件 → 环境变量 → 配置中心 → K8s ConfigMap/Secret
@@ -285,7 +285,7 @@ binaryData:
 
 在实际项目中，ConfigMap 的 YAML 文件应该被纳入版本控制，和应用代码放在一起（或统一的配置仓库中）。典型的目录结构如下：
 
-```
+```text
 my-service/
 ├── src/                    # 应用源代码
 ├── Dockerfile
@@ -934,7 +934,7 @@ kubelet 是每个 Node 上的核心代理进程，负责维护本节点上 Pod �
 
 当 kubelet 为 Pod 挂载 ConfigMap Volume 时，实际的目录结构是这样的：
 
-```
+```text
 容器内的挂载点 /etc/app/config/
       ↓ (挂载传播)
 节点上的 Volume 路径 /var/lib/kubelet/pods/<pod-uid>/volumes/kubernetes.io~configmap/<volume-name>/
@@ -2486,7 +2486,7 @@ Sealed Secrets 是 Bitnami 开发的开源工具，解决了"如何将 Secret �
 
 **工作原理**
 
-```
+```text
 开发者                    Git 仓库                    Kubernetes 集群
   │                         │                              │
   ├─ 1. 编写 Secret YAML    │                              │
@@ -2569,7 +2569,7 @@ External Secrets Operator（ESO）是 CNCF 项目，它将外部密钥管理服�
 
 **架构和工作原理**
 
-```
+```text
 AWS Secrets Manager ──────┐
 GCP Secret Manager ──────┤
 Azure Key Vault ─────────┤  ← External Secrets Operator 定期同步
@@ -2722,7 +2722,7 @@ HashiCorp Vault 是企业级密钥管理平台，提供动态密钥生成、密�
 
 **架构**
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │ Pod                                         │
 │  ┌─────────────────┐  ┌──────────────────┐  │
@@ -2819,7 +2819,7 @@ Secrets Store CSI Driver 是 Kubernetes SIG-Auth 开发的官方方案，通过 
 
 **架构**
 
-```
+```text
 外部密钥管理服务 (Vault / AWS / GCP / Azure)
         │
         ▼
@@ -3152,7 +3152,7 @@ spec:
 
 当暴露整个 label/annotation map 时，文件内容的格式为：
 
-```
+```text
 # /etc/podinfo/labels 文件内容
 app="myapp"
 tier="frontend"
@@ -3254,7 +3254,7 @@ Projected Volume 是 Kubernetes 1.11 引入的特性，它允许将多个 Volume
 
 在 Projected Volume 出现之前，如果需要同时挂载 Secret 和 ConfigMap，需要分别创建两个 Volume 和两个 VolumeMount，挂载到不同的目录。Projected Volume 将多个源聚合到一个目录中，简化了 Pod Spec 并减少了挂载点数量。
 
-```
+```text
 Projected Volume: /etc/app/config/
 ├── [来自 ConfigMap] application.properties
 ├── [来自 ConfigMap] logback.xml
@@ -3329,7 +3329,7 @@ spec:
 
 生成的目录结构：
 
-```
+```text
 /etc/app/config/
 ├── config/
 │   ├── app.properties
@@ -3435,7 +3435,7 @@ spec:
 
 一个清晰一致的命名约定能显著提高可维护性。推荐的命名模式：
 
-```
+```text
 <application-name>-<config-type>
 <application-name>-<config-type>-<version>
 
@@ -3448,7 +3448,7 @@ web-app-jvm           # JVM 配置
 
 对于不可变 ConfigMap，版本号或哈希后缀是必需的：
 
-```
+```text
 web-app-config-v1
 web-app-config-v2
 web-app-config-7g4k2m  # Kustomize 自动生成

@@ -3,7 +3,7 @@
 
 Canal Admin 是 Canal 的 Web 管理平台，提供了对 Canal Server 和 Instance 的集中化管理能力，包括实例的创建、配置修改、运行状态监控、日志查看、HA 管理等。
 
-```
+```text
 ┌───────────────────────────────────────────────────────────────┐
 │                     Canal Admin (Web UI)                       │
 │                        Port: 8089                             │
@@ -197,7 +197,7 @@ curl http://localhost:8089/api/v1/canal/instance/log/192.168.1.10/example
 
 Admin 提供了远程查看 Canal Server 日志的能力：
 
-```
+```text
 Web UI: Instance 详情页 → "查看日志"
 API:    GET /api/v1/canal/instance/log/{serverIp}/{instance}?size=100
 ```
@@ -291,7 +291,7 @@ public class CanalAdminConnector {
 
 Admin 可以管理多个 Canal 集群，每个集群包含多个 Canal Server 节点：
 
-```
+```text
 Canal Admin
     │
     ├── Cluster: "production" (生产集群)
@@ -320,7 +320,7 @@ curl http://localhost:8089/api/v1/canal/cluster/1/instances
 
 当 Canal 集群基于 ZooKeeper 做 HA 时，Admin 可以展示主备状态：
 
-```
+```text
 Instance: example
 ├── Running Server: 192.168.1.10:11111  (Master)
 └── Standby Servers:
@@ -493,7 +493,7 @@ CREATE TABLE canal_user (
 
 ## 11.1 高可用部署
 
-```
+```text
 ┌───────────────────┐    ┌───────────────────┐
 │  Canal Admin 1    │    │  Canal Admin 2    │
 │  (Active)         │    │  (Active)         │

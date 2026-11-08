@@ -27,7 +27,7 @@ public Order createOrder(Order order) { ... }
 
 ## 1.3 支持 RBAC 模型
 
-```
+```text
 用户(User) ───多对多─── 角色(Role) ───多对多─── 权限(Permission)
                                                       │
                       ┌───────────────────────────────┘
@@ -234,7 +234,7 @@ UsernamePasswordAuthenticationToken auth =
 
 ### 3.3.1 RBAC 权限模型
 
-```
+```text
 ┌──────────┐     ┌──────────────┐     ┌────────────────┐
 │   User   │────→│  UserRole    │←────│     Role       │
 │  id      │     │  user_id     │     │  id            │

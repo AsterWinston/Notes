@@ -4,7 +4,7 @@
 
 Controller 是 Kafka 集群中的**大脑**，负责管理所有 Partition 和副本的状态。每个集群同时只有一个活跃的 Controller（Leader Controller），其余为备用（Standby）。
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                    Controller 职责                            │
 │                                                              │
@@ -35,7 +35,7 @@ Controller 是 Kafka 集群中的**大脑**，负责管理所有 Partition 和�
 
 ## 2.1 ZooKeeper 模式下的选举
 
-```
+```text
 Controller 选举基于 ZooKeeper 的临时节点 + Watch 机制：
 
 ┌─────────────────────────────────────────────────────┐
@@ -55,7 +55,7 @@ Controller 选举基于 ZooKeeper 的临时节点 + Watch 机制：
 
 ### 2.1.1 选举流程
 
-```
+```text
 ① 所有 Broker 启动时 → 尝试在 ZooKeeper 创建 /controller 临时节点
 ② 第一个成功创建的 Broker → 成为 Controller
 ③ 失败的 Broker → 在 /controller 上注册 Watcher
@@ -73,7 +73,7 @@ Controller Epoch (controller_epoch):
 
 KRaft 模式下 Controller 不再依赖 ZooKeeper，而是通过 Raft 共识协议选举：
 
-```
+```text
 ┌───────────────────────────────────────────────────┐
 │            KRaft (Kafka Raft)                      │
 │                                                   │
@@ -94,7 +94,7 @@ KRaft 模式下 Controller 不再依赖 ZooKeeper，而是通过 Raft 共识协�
 
 ## 3.1 Partition 状态机
 
-```
+```text
 Partition State Machine:
 
            ┌──────────┐
@@ -121,7 +121,7 @@ Partition State Machine:
 
 ## 3.2 Replica 状态机
 
-```
+```text
 Replica State Machine:
 
            ┌──────────┐
@@ -200,7 +200,7 @@ case class LeaderAndIsrRequest(
 
 ### 4.2.1 Broker 处理 LeaderAndIsr 请求
 
-```
+```text
 Broker 收到 LeaderAndIsr 请求:
 
 ① 检查 controllerEpoch（拒绝旧 Controller 的请求）
@@ -277,7 +277,7 @@ props.put("metadata.max.age.ms", 300000); // 默认 5 分钟刷新一次
 
 ## 6.1 关键 ZK 节点
 
-```
+```text
 ZooKeeper 中 Kafka 的节点结构:
 
 /kafka（或自定义的 chroot）
@@ -357,7 +357,7 @@ class KafkaController {
 
 ## 7.2 KRaft 架构
 
-```
+```text
 ┌───────────────────────────────────────────────────────────┐
 │                    KRaft 架构                              │
 │                                                           │
@@ -403,7 +403,7 @@ controller.quorum.voters=1@node1:9093,2@node2:9093,3@node3:9093
 
 ### 7.2.2 KRaft 元数据快照
 
-```
+```text
 __cluster_metadata Topic:
   ├── Segment 0: [metadata record 1, record 2, ...]
   ├── Segment 1: [record n, record n+1, ...]
@@ -423,7 +423,7 @@ __cluster_metadata Topic:
 
 ## 8.1 Controller 切换
 
-```
+```text
 Controller Broker 0 宕机:
 │
 ├── ZK 模式:
@@ -443,7 +443,7 @@ Controller Broker 0 宕机:
 
 ## 8.2 Split Brain（脑裂）问题
 
-```
+```text
 ZK 模式下如何防止脑裂:
 
 Controller Epoch 机制:
@@ -463,7 +463,7 @@ Controller Epoch 机制:
 
 ## 9.1 Controller 选举慢（ZooKeeper 模式）
 
-```
+```text
 症状: Controller 宕机后，集群长时间无响应
 
 原因:
@@ -480,7 +480,7 @@ Controller Epoch 机制:
 
 ## 9.2 Controller 重启导致集群不可用
 
-```
+```text
 原因: 新 Controller 初始化时，需要从 ZK 拉取所有 Topic 和 Partition 信息
       并处理每一个 Partition 的 Leader 选举
       如果 Topic/Partition 数量很大，这个过程可能需要数分钟

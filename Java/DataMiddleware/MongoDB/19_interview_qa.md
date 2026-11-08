@@ -56,7 +56,7 @@ ObjectId是12字节的BSON类型：
 2. **Sort**（排序字段）放在中间
 3. **Range**（范围查询字段）放在最后
 
-```
+```text
 查询: find({status:"active", age:{$gt:25}}).sort({createTime:-1})
 最佳索引: {status:1, createTime:-1, age:1}
            ↑EQ      ↑Sort          ↑Range
@@ -88,7 +88,7 @@ db.users.find({name: "张三"}, {name: 1, age: 1, _id: 0})
 
 聚合管道是一组数据处理阶段（Stage），文档流经管道逐步处理：
 
-```
+```text
 输入文档 → $match → $group → $sort → $project → 输出
 ```
 

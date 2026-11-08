@@ -18,7 +18,7 @@
 
 # 2. 过滤器链执行顺序
 
-```
+```text
 1.  DisableEncodeUrlFilter          — 禁止 URL JSessionID
 2.  WebAsyncManagerIntegrationFilter — 异步请求传递 SecurityContext
 3.  SecurityContextHolderFilter      — 加载/清空 SecurityContext
@@ -100,7 +100,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 ## 6.1 Q1: Spring Security 的工作原理？
 
-```
+```text
 1. DelegatingFilterProxy 将请求委托给 Spring Security 的 FilterChainProxy
 2. FilterChainProxy 管理多个 SecurityFilterChain
 3. 每个 SecurityFilterChain 包含一系列 Filter
@@ -114,7 +114,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 ## 6.2 Q2: AuthenticationManager、ProviderManager、AuthenticationProvider 的关系？
 
-```
+```text
 AuthenticationManager (顶层接口)
     └── ProviderManager (持有多个 Provider)
             ├── DaoAuthenticationProvider
@@ -143,7 +143,7 @@ ProviderManager 遍历所有 Provider：
 
 ## 6.4 Q4: 如何实现"记住我"功能？
 
-```
+```text
 方案一：Hash 方式（简单，不推荐生产）
   Cookie = base64(username + ":" + expiry + ":" + MD5(username + expiry + password + key))
   

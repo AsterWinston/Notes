@@ -49,7 +49,7 @@ function Input() {
 
 ## 1.4 value + onChange 为什么必须成对
 
-```
+```text
 受控闭环拆解:
 用户敲一个键 → DOM 值先变了(浏览器原生行为,拦不住这一步)
   → onChange 触发 → setValue → 重渲染

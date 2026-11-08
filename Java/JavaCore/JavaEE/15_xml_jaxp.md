@@ -5,7 +5,7 @@
 
 JAXP（Java API for XML Processing）是 Java 处理 XML 的**标准 API**，提供统一的 XML 解析、转换接口，屏蔽具体解析器差异。
 
-```
+```text
 ┌──────────────────────────────┐
 │      JAXP API               │
 │  SAX / DOM / StAX / XSLT    │

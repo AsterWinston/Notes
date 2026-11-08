@@ -2,7 +2,7 @@
 
 Spring AMQP的核心组件分为以下几个层次：
 
-```
+```text
 | 组件             | 职责                         | 对应AMQP概念        |
 |-----------------|-----------------------------|--------------------|
 | ConnectionFactory | 创建和管理Connection         | Connection         |
@@ -26,7 +26,7 @@ Spring AMQP提供了`CachingConnectionFactory`作为默认实现，底层使用R
 ### 2.2.1 缓存模式：Channel模式（默认）
 在Channel模式下，`CachingConnectionFactory`**维护一个共享的TCP Connection**，并在其上缓存多个Channel：
 
-```
+```text
 CachingConnectionFactory
   └── 共享 Connection（TCP连接）
         ├── Channel 1（被线程A使用）
@@ -206,7 +206,7 @@ factory.addChannelListener(new MyChannelListener());
 ## 3.2 RabbitAdmin的工作原理
 当Spring容器刷新（refresh）时，RabbitAdmin会执行以下操作：
 
-```
+```text
 1. 从容器中收集所有 Exchange 类型的 Bean
 2. 从容器中收集所有 Queue 类型的 Bean
 3. 从容器中收集所有 Binding 类型的 Bean
@@ -402,7 +402,7 @@ Spring AMQP提供了两种消息监听容器：
 Spring Boot默认使用`SimpleMessageListenerContainer`。
 
 ### 5.3.1 核心工作原理
-```
+```text
 SimpleMessageListenerContainer
   └── BlockingQueueConsumer（内部消费者实现）
         ├── 从AMQP Channel中拉取消息（通过basicConsume注册回调）
@@ -432,7 +432,7 @@ spring:
 ### 5.3.3 动态伸缩机制
 SimpleMessageListenerContainer支持根据队列中的积压消息数量动态增加或减少消费者线程：
 
-```
+```text
 - 当BlockingQueue中的未处理消息 >= maxConcurrency * prefetch * 0.5 时，增加消费者
 - 当消费者线程空闲超过一定时间（默认60秒）时，减少消费者
 - 消费者线程数范围：[concurrency, max-concurrency]
@@ -442,7 +442,7 @@ SimpleMessageListenerContainer支持根据队列中的积压消息数量动态�
 `DirectMessageListenerContainer`采用了更简单直接的设计：每个Queue被一个（或多个）独立的Consumer直接消费。
 
 ### 5.4.1 核心工作原理
-```
+```text
 DirectMessageListenerContainer
   └── 为每个Queue创建N个独立的Consumer（N = consumersPerQueue）
         ├── 每个Consumer使用独立的AMQP Channel
