@@ -1,5 +1,6 @@
-
 # 1. 配置体系概览
+
+## 1.1 四个配置层级
 
 Spring Cloud OpenFeign 支持多级配置：
 
@@ -10,6 +11,8 @@ Spring Cloud OpenFeign 支持多级配置：
   └── 自定义 Configuration 类配置
         └── @FeignClient(configuration = ...)
 ```
+
+理解这套体系的关键是一个容易被忽略的事实：**每个 @FeignClient 拥有自己独立的"子配置上下文"**。`FeignClientFactoryBean` 构建代理时，会把 `default` 的 yml 配置、当前 name/contextId 的 yml 配置、`configuration` 注解指定的类，依次注册为一个临时上下文的配置源，再从中按类型解析 `Contract`、`Encoder`、`Client` 等组件。所谓"多级覆盖"，本质就是同一个类型在子上下文中存在多个候选时的解析优先级问题。
 
 # 2. application.yml 全局配置
 
@@ -56,7 +59,7 @@ spring:
 
       # OkHttp / HttpClient 启用
       httpclient:
-        enabled: true                        # 启用 Apache HttpClient
+        enabled: true                        # 启用 Apache HttpClient 5
         max-connections: 200
         max-connections-per-route: 50
         time-to-live: 900                   # 连接存活时间 (s)
@@ -68,6 +71,8 @@ spring:
       circuitbreaker:
         enabled: true
 ```
+
+按作用范围把这些配置分三类记：**按客户端的**（`client.config.<name>` 下的超时/日志/组件类）、**全局开关型的**（`compression.*`、`httpclient.*`、`okhttp.*`、`circuitbreaker.*`，所有客户端共享）、**已迁移的**（`circuitbreaker.*` 在新版本中由 `spring.cloud.loadbalancer`/resilience4j 自身配置接管，旧键仅作兼容）。
 
 # 3. 指定 FeignClient 名称配置
 
@@ -84,7 +89,9 @@ spring:
             connect-timeout: 5000
 ```
 
-配置 key 与 `@FeignClient(name = "xxx")` 中的 `name` 一致。
+## 3.1 配置键到底匹配谁
+
+配置 key 与 `@FeignClient(name = "xxx")` 中的 `name` 一致。更精确的规则是：**先按 contextId 查找，找不到再按 name 查找**。没有指定 contextId 时二者相同，所以"用 name 当 key"在单客户端场景总是成立；一旦出现同服务多客户端，只有 contextId 这一份配置能生效——这是 §7 存在的理由。
 
 # 4. 自定义配置类
 
@@ -118,6 +125,8 @@ public class UserFeignConfig {
 public interface UserClient { }
 ```
 
+`configuration` 指定类的价值在于它能表达 yml 表达不了的东西：**有状态/有依赖的组件实例**（拦截器要注入 Token 管理器、Decoder 要注入 ObjectMapper 定制规则）。yml 里的 `retryer: com.example.MyRetryer` 只能按无参构造反射创建。两种入口的选择标准：纯参数→yml；需要协作对象→配置类。
+
 # 5. 自定义配置类的注意事项
 
 **配置类不要被 Spring 组件扫描到**，否则会成为全局配置：
@@ -147,6 +156,10 @@ public class UserFeignConfig {
     ))
 ```
 
+## 5.1 为什么一旦扫到就"全局污染"
+
+被主容器扫到的 `@Configuration`，其 `@Bean` 会注册进**主上下文**；而客户端子上下文解析组件时以主上下文为 parent——所有客户端都能向上找到这个 Bean，"专属配置"自然升级成了全局配置。典型的连锁症状：给 A 服务加的鉴权拦截器开始往 B、C 服务的请求里塞同样的头。规则背下来即可：**按服务的配置类必须对组件扫描不可见**；只有确定对所有客户端都成立的组件（全局 TraceId 注入、统一 ObjectMapper）才放主上下文。
+
 # 6. 代码配置 vs YAML 配置优先级
 
 ```text
@@ -158,6 +171,8 @@ default YAML 配置 (spring.cloud.openfeign.client.config.default)
     ↑ 覆盖
 Spring Boot 自动配置默认值  (最低)
 ```
+
+优先级成立的原因回到 §1.1：yml 各层最终也被翻译成配置源注册进同一个子上下文，显式 `configuration` 的 Bean 定义先于 yml 派生的定义参与按类型解析。**两个例外**要知道：`connect-timeout`/`read-timeout` 没有对应的组件 Bean 形态，只走 yml（注解侧无入口，不参与竞争）；`Retryer` 若 yml 与 @Bean 同时出现，某些 4.x 小版本的表现取决于 Bean 注册顺序，建议**同一组件只用一种入口**，不要依赖这个覆盖细节。
 
 # 7. contextId 的作用
 
@@ -187,6 +202,21 @@ spring:
 
 如果不指定 contextId，默认使用 name 的值。
 
+## 7.1 name 与 contextId 的分工
+
+两个属性服务于完全不同的机制，混用是高频困惑源：
+
+| 属性 | 职责 |
+|------|------|
+| `name`（或 `value`） | 负载均衡目标：作为服务名去注册中心发现实例；SpEL/占位符在此解析 |
+| `contextId` | 配置键（§3.1）、Spring Bean 名称、熔断器分组与 fallback 关联的标识 |
+
+同服务多接口（如按业务拆分的 v1/v2、读写分离的两个客户端）时，**不指定 contextId 会直接 Bean 定义冲突**（两个 FactoryBean 都想注册同名单元），报错信息里的 `bean with that name has already been defined` 说的就是这件事；此时正确做法不是打开 `allow-bean-definition-overriding`，而是给每个接口起唯一 contextId。
+
+## 7.2 url 属性与配置体系的关系
+
+`@FeignClient(url = "http://localhost:8080")` 直连模式会**绕过 name 的负载均衡语义**（`LoadBalancerFeignClient`/`FeignBlockingLoadBalancerClient` 不再参与实例选择），但 `client.config.<contextId>` 的超时等配置依然生效。灰度测试里"配了超时怎么还不生效"的问题，多半是把 url 写死在了注解上而配置键仍按服务名查找——先确认自己走的是哪条路。
+
 # 8. 全局熔断配置（Resilience4j）
 
 ```yaml
@@ -212,6 +242,8 @@ resilience4j:
         timeout-duration: 5s
 ```
 
+两个与配置键名相关的实践点：熔断器实例名默认由 `FeignClientName#methodKey` 拼装，方法签名里含 `$`、`/` 等字符会让 Resilience4j 的分组配置难以命中，`alphanumeric-ids.enabled: true` 可以换成纯字母数字 ID（见 §9 末行）；`timelimiter` 的 5s 与 Feign 的 read-timeout 是**叠加关系而非替代**——谁先触发谁产生异常，建议让 Feign 超时略小于 TimeLimiter，保证拿到的异常类型是可预期的 `SocketTimeoutException` 家族（细节见 `14_circuit-breaker.md`）。
+
 # 9. 常用配置速查表
 
 | 配置项路径 | 类型 | 默认值 | 说明 |
@@ -227,3 +259,5 @@ resilience4j:
 | `spring.cloud.openfeign.okhttp.enabled` | boolean | false | 启用 OkHttp |
 | `spring.cloud.openfeign.circuitbreaker.enabled` | boolean | false | 启用熔断器 |
 | `spring.cloud.openfeign.circuitbreaker.alphanumeric-ids.enabled` | boolean | false | 熔断器名称只含字母数字 |
+
+速查表里最常被误用的是 `decode404`/`dismiss404` 组合：`decode404: true` 让 404 进入 Decoder（配合返回 `Optional`/空对象表达"查无此记录"的正常语义）；`dismiss404` 直接返回 null。二者都是为了把"资源不存在"从异常降级成业务返回值——但如果下游用 404 表达"路由都没配"，这套配置会把真实故障吞成"没找到"，启用前必须和提供方确认 404 语义（延伸阅读：`8_error-handling.md`）。
